@@ -8,6 +8,7 @@ gem 'rails', '3.2.6'
 gem 'pg'
 
 gem 'devise'
+gem 'rails_admin'
 gem 'html5-rails'
 gem 'haml-rails'
 gem 'simple_form'
