@@ -1,7 +1,11 @@
 Chalkle::Application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+  ActiveAdmin.routes(self)
 
-  devise_for :admins, :path => 'secure'
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
+#  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+
+  match '/image' => 'image#generate'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
