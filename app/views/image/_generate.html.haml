@@ -1,10 +1,22 @@
 = form_tag do
   %p
-    = label :text, 'text'
-    = text_field_tag :text_text
+    = label :text, 'text' 
+    %br
+    = text_area_tag :text_text, "Text goes here", :tabindex => 1
 
   %p
     = label :text, 'size'
-    = text_field_tag :text_size
+    = text_field_tag :text_size, '24', :tabindex => 2
   %br
-= image_tag 'lesson-bg.png'
+
+.chalkle_image
+  %h2 Text goes here
+
+:javascript 
+  $('#text_text').keyup(function(e) {
+    $('.chalkle_image h2').html(e.target.value.replace(/\n/g, "\<br/\>", 'g'));
+  });
+  $('#text_size').keyup(function(e) {
+    $('.chalkle_image h2').css({"font-size" : e.target.value + "px"});
+  });
+
