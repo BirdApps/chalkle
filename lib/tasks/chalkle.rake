@@ -1,6 +1,39 @@
 begin
   namespace :chalkle do
 
+    desc "Pull chalklers from meetup" 
+    task "load_chalklers" => :environment do
+      for i in 0..2 do
+        results = RMeetup2::Base.get(:members, group_urlname: 'sixdegrees', offset: i)
+        puts results.data["meta"]
+        results.data["results"].each do |r|
+          Chalkler.create_from_meetup_hash(r)
+        end
+      end
+    end
+
+    desc "Pull events from meetup" 
+    task "load_events" => :environment do
+      for i in 0..1 do
+        results = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', offset: i, status:'upcoming,past,suggested,proposed')
+        puts results.data["meta"]
+        results.data["results"].each do |r|
+          Lesson.create_from_meetup_hash(r)
+        end
+      end
+    end
+
+    desc "Pull rsvps from meetup" 
+    task "load_bookings" => :environment do
+      for i in 0..8 do
+        results = RMeetup2::Base.get(:rsvps, event_id: Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.join(','), offset: i, fields: 'host' )
+        puts results.data["meta"]
+        results.data["results"].each do |r|
+          Booking.create_from_meetup_hash(r)
+        end
+      end
+    end
+
     desc 'import old data'
     task :import => :environment do
       require 'csv'
@@ -35,7 +68,7 @@ begin
         end
         lesson.category_id = row["category_id"]
         lesson.kind = row["type"]
-        lesson.title = row["title"]
+        lesson.name = row["title"]
         lesson.doing = row["doing"]
         lesson.learn = row["learn"]
         lesson.skill = row["skill"]

@@ -3,8 +3,9 @@ class CreateLessons < ActiveRecord::Migration
     create_table :lessons do |t|
       t.integer :category_id
       t.integer :teacher_id
+      t.integer :meetup_id
       t.string :kind
-      t.string :title
+      t.string :name
       t.text :doing
       t.text :learn
       t.integer :skill
@@ -16,6 +17,7 @@ class CreateLessons < ActiveRecord::Migration
       t.string :start
       t.string :end
       t.string :link
+      t.text :meetup_data
       t.timestamps
     end
   end
