@@ -1,9 +1,29 @@
 begin
   namespace :chalkle do
 
+    desc "test xero" 
+    task "xero" => :environment do
+      client = Xeroizer::PrivateApplication.new('WEVRYOBQ7URCIBTGNWQ2WAY74KN311', 'LFAKKVFIAXVNZ3OJJZNCII41JBK4W1', "#{Rails.root}/config/xero/privatekey.pem")
+    end
+
+    desc "Pull all meetup data"
+    task "load_all" => :environment do
+      Rake::Task["chalkle:load_chalklers"].execute
+      Rake::Task["chalkle:load_classes"].execute
+      Rake::Task["chalkle:load_bookings"].execute
+    end
+
+    desc "Reprocess all meetup data"
+    task "reprocess" => :environment do
+      Chalkler.all.each {|c| c.set_from_meetup_data; c.save}
+      Lesson.all.each {|l| l.set_from_meetup_data; l.save}
+      Booking.all.each {|b| b.set_from_meetup_data; b.save}
+    end
+
+
     desc "Pull chalklers from meetup" 
     task "load_chalklers" => :environment do
-      for i in 0..2 do
+      for i in 0..3 do
         results = RMeetup2::Base.get(:members, group_urlname: 'sixdegrees', offset: i)
         puts results.data["meta"]
         results.data["results"].each do |r|
@@ -13,9 +33,9 @@ begin
     end
 
     desc "Pull events from meetup" 
-    task "load_events" => :environment do
-      for i in 0..1 do
-        results = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', offset: i, status:'upcoming,past,suggested,proposed')
+    task "load_classes" => :environment do
+      for i in 0..2 do
+        results = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', offset: i, status:'upcoming,past,suggested,proposed', text_format: 'plain')
         puts results.data["meta"]
         results.data["results"].each do |r|
           Lesson.create_from_meetup_hash(r)
@@ -25,7 +45,7 @@ begin
 
     desc "Pull rsvps from meetup" 
     task "load_bookings" => :environment do
-      for i in 0..8 do
+      for i in 0..11 do
         results = RMeetup2::Base.get(:rsvps, event_id: Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.join(','), offset: i, fields: 'host' )
         puts results.data["meta"]
         results.data["results"].each do |r|

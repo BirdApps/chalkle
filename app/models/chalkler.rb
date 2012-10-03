@@ -6,8 +6,14 @@ class Chalkler < ActiveRecord::Base
   has_many :bookings
   has_many :lessons, through: :bookings
 
+  before_create :set_from_meetup_data
+
   def meetup_data
     JSON.parse(read_attribute(:meetup_data))
+  end
+
+  def set_from_meetup_data
+    self.created_at = Time.at(meetup_data["joined"] / 1000)
   end
 
   def self.create_from_meetup_hash result

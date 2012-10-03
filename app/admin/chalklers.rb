@@ -5,6 +5,7 @@ ActiveAdmin.register Chalkler do
     column :meetup_id
     column :email
     column :bio
+    column :created_at
     default_actions
   end
 end

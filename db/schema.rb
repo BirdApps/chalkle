@@ -78,22 +78,15 @@ ActiveRecord::Schema.define(:version => 20120930121519) do
     t.integer  "category_id"
     t.integer  "teacher_id"
     t.integer  "meetup_id"
-    t.string   "kind"
     t.string   "name"
-    t.text     "doing"
-    t.text     "learn"
-    t.integer  "skill"
-    t.string   "skill_note"
-    t.text     "bring"
-    t.string   "charge"
-    t.string   "cost"
-    t.text     "note"
-    t.string   "start"
-    t.string   "end"
-    t.string   "link"
+    t.string   "status"
+    t.text     "description"
+    t.decimal  "cost",        :precision => 8, :scale => 2, :default => 0.0
+    t.datetime "start_at"
+    t.integer  "duration"
     t.text     "meetup_data"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|

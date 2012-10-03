@@ -11,6 +11,7 @@ ActiveAdmin.register Booking do
     column :paid
     column :status
     column :guests
+    column :created_at
     default_actions
   end
   

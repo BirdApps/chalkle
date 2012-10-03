@@ -6,9 +6,8 @@ ActiveAdmin.register Lesson, as: 'Class' do
     column :category
     column :teacher
     column :cost
-    column :charge
-    column :start
-    column :end
+    column :start_at
+    column :created_at
     default_actions
   end
 
@@ -26,17 +25,8 @@ ActiveAdmin.register Lesson, as: 'Class' do
       row :rsvp_list do
         render partial: '/shared/rsvp_list', locals: {bookings: lesson.bookings.confirmed}
       end
-      row :kind 
-      row :doing 
-      row :learn 
-      row :skill 
-      row :skill_note
-      row :bring 
-      row :charge 
-      row :note 
-      row :start 
-      row :end 
-      row :link 
+      row :description
+      row :start_at
       row :meetup_data
     end
     active_admin_comments

@@ -7,8 +7,18 @@ class Booking < ActiveRecord::Base
   scope :paid, where(paid: true)
   scope :confirmed, where(status: "yes")
 
+  validates_uniqueness_of :chalkler_id, scope: :lesson_id
+  validates_uniqueness_of :meetup_id, allow_nil: true
+
+  before_create :set_from_meetup_data
+
   def meetup_data
     JSON.parse(read_attribute(:meetup_data))
+  end
+
+  def set_from_meetup_data
+    self.created_at = meetup_data["created"]
+    self.updated_at = meetup_data["updated"]
   end
 
   def self.create_from_meetup_hash result

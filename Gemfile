@@ -16,6 +16,7 @@ gem 'simple_form'
 gem 'airbrake'
 gem 'analytical'
 gem 'rmeetup2'
+gem 'xeroizer'
 
 # Gems used only for assets and not required
 # in production environments by default.
