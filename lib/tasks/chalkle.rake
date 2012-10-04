@@ -1,9 +1,9 @@
 begin
   namespace :chalkle do
 
-    desc "test xero" 
-    task "xero" => :environment do
-      client = Xeroizer::PrivateApplication.new('WEVRYOBQ7URCIBTGNWQ2WAY74KN311', 'LFAKKVFIAXVNZ3OJJZNCII41JBK4W1', "#{Rails.root}/config/xero/privatekey.pem")
+    desc "Load all payments from xero" 
+    task "load_payments" => :environment do
+      Payment.load_all_from_xero
     end
 
     desc "Pull all meetup data"

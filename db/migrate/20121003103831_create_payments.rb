@@ -1,11 +1,14 @@
 class CreatePayments < ActiveRecord::Migration
   def change
     create_table :payments do |t|
-      t.string :xero_id
       t.integer :booking_id
-      t.integer :chalkler_id
+      t.string :xero_id
+      t.string :xero_contact_id
+      t.string :xero_contact_name
+      t.date :date
+      t.boolean :complete_record_downloaded
+      t.decimal :total, :default => 0, :precision => 8, :scale => 2
       t.boolean :reconciled
-      t.text :xero_data
 
       t.timestamps
     end

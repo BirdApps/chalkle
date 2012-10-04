@@ -1,0 +1,11 @@
+@options = options_for_select(Booking.confirmed.unpaid.map{|b| next if b.chalkler.nil? || b.lesson.nil?; ["#{b.chalkler.name} - #{b.lesson.name}(#{b.lesson.meetup_id}) : #{b.lesson.start_at} : #{b.lesson.cost}", b.id]})
+
+table_for assigns[:payments] do
+  column :id
+  column :date
+  column :total
+  column :xero_contact_name
+  column "Booking" do |payment|
+    render partial: 'reconcile_form', locals: {options: @options, payment: payment}
+  end
+end

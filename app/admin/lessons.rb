@@ -1,4 +1,5 @@
 ActiveAdmin.register Lesson, as: 'Class' do
+  config.sort_order = "created_at_desc"
 
   index do
     column :id

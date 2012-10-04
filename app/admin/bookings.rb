@@ -1,4 +1,5 @@
 ActiveAdmin.register Booking do
+  config.sort_order = "created_at_desc"
   controller do
     def scoped_collection
       Booking.where(status: "yes")

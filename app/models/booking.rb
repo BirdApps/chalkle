@@ -4,7 +4,10 @@ class Booking < ActiveRecord::Base
   belongs_to :lesson
   belongs_to :chalkler
 
+  has_one :payment
+
   scope :paid, where(paid: true)
+  scope :unpaid, where("paid IS NOT true")
   scope :confirmed, where(status: "yes")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
@@ -19,6 +22,14 @@ class Booking < ActiveRecord::Base
   def set_from_meetup_data
     self.created_at = meetup_data["created"]
     self.updated_at = meetup_data["updated"]
+  end
+
+  def name
+    if lesson.present? && chalkler.present?
+      "#{lesson.name} (#{lesson.meetup_id}) - #{chalkler.name}"
+    else
+      id
+    end
   end
 
   def self.create_from_meetup_hash result

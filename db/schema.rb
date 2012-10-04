@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120930121519) do
+ActiveRecord::Schema.define(:version => 20121003103831) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -87,6 +87,19 @@ ActiveRecord::Schema.define(:version => 20120930121519) do
     t.text     "meetup_data"
     t.datetime "created_at",                                                 :null => false
     t.datetime "updated_at",                                                 :null => false
+  end
+
+  create_table "payments", :force => true do |t|
+    t.integer  "booking_id"
+    t.string   "xero_id"
+    t.string   "xero_contact_id"
+    t.string   "xero_contact_name"
+    t.date     "date"
+    t.boolean  "complete_record_downloaded"
+    t.decimal  "total",                      :precision => 8, :scale => 2, :default => 0.0
+    t.boolean  "reconciled"
+    t.datetime "created_at",                                                                :null => false
+    t.datetime "updated_at",                                                                :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|

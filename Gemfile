@@ -6,17 +6,24 @@ gem 'rails', '3.2.8'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-
+gem 'airbrake'
 gem 'devise'
-#gem 'rails_admin'
+
 gem 'activeadmin'
+
+gem 'analytical'
+
+gem 'jquery-rails'
+
+#apis
+gem 'rmeetup2'
+gem 'xeroizer'
+
+#interface
+gem 'chosen-rails'
 gem 'html5-rails'
 gem 'haml-rails'
 gem 'simple_form'
-gem 'airbrake'
-gem 'analytical'
-gem 'rmeetup2'
-gem 'xeroizer'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -30,8 +37,6 @@ group :assets do
   gem 'kalendae_assets'
   gem 'execjs'
 end
-
-gem 'jquery-rails'
 
 group :development do
   # Better documentation
