@@ -25,6 +25,12 @@ class Lesson < ActiveRecord::Base
     if c.present?
       self.category = c
       self.name = parts[1]
+    else
+      if parts[1]
+        c = Category.create(:name => parts[0])
+        self.category = c
+        self.name = parts[1]
+      end
     end
   end
 
