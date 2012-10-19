@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121019214140) do
+ActiveRecord::Schema.define(:version => 20121019231336) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -115,12 +115,5 @@ ActiveRecord::Schema.define(:version => 20121019214140) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
-
-  create_table "teachers", :force => true do |t|
-    t.string   "name"
-    t.text     "qualification"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
 
 end

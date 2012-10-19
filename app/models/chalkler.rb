@@ -5,6 +5,7 @@ class Chalkler < ActiveRecord::Base
 
   has_many :bookings
   has_many :lessons, through: :bookings
+  has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
 
   before_create :set_from_meetup_data
