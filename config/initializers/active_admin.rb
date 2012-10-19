@@ -127,3 +127,11 @@ ActiveAdmin.setup do |config|
   # To load a javascript file:
   #   config.register_javascript 'my_javascript.js'
 end
+
+#work around for mass assignment error
+module ActiveAdmin 
+  class Comment 
+    attr_accessible :resource_type, :resource_id, :body 
+  end 
+end 
+
