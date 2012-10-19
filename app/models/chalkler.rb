@@ -11,7 +11,7 @@ class Chalkler < ActiveRecord::Base
   before_create :set_from_meetup_data
 
   def meetup_data
-    JSON.parse(read_attribute(:meetup_data))
+    JSON.parse(read_attribute(:meetup_data)) if read_attribute(:meetup_data).present?
   end
 
   def set_from_meetup_data
