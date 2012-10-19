@@ -3,7 +3,7 @@ ActiveAdmin.register Chalkler do
   index do
     column :id
     column :name
-    column :meetup_id do
+    column :meetup_id do |chalkler|
       link_to chalkler.meetup_id, chalkler.meetup_data["link"]
     end
     column :email
