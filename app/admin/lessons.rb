@@ -20,6 +20,7 @@ ActiveAdmin.register Lesson, as: 'Class' do
         link_to lesson.meetup_id, lesson.meetup_data["event_url"]
       end
       row :cost 
+      row :teacher_cost 
       row :bookings do
         "#{lesson.bookings.paid.count} of #{lesson.bookings.confirmed.count} have paid " 
       end
