@@ -23,7 +23,7 @@ begin
 
     desc "Pull chalklers from meetup" 
     task "load_chalklers" => :environment do
-      for i in 0..3 do
+      for i in 0..4 do
         results = RMeetup2::Base.get(:members, group_urlname: 'sixdegrees', offset: i)
         puts results.data["meta"]
         results.data["results"].each do |r|
@@ -45,7 +45,7 @@ begin
 
     desc "Pull rsvps from meetup" 
     task "load_bookings" => :environment do
-      for i in 0..11 do
+      for i in 0..15 do
         results = RMeetup2::Base.get(:rsvps, event_id: Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.join(','), offset: i, fields: 'host' )
         puts results.data["meta"]
         results.data["results"].each do |r|

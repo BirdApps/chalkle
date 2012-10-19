@@ -50,4 +50,5 @@ after 'deploy:update_code' do
 end
 
 require "./config/boot"
+load 'deploy/assets'
 require "bundler/capistrano"
