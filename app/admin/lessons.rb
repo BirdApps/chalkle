@@ -33,5 +33,19 @@ ActiveAdmin.register Lesson, as: 'Class' do
     end
     active_admin_comments
   end
+
+  form do |f|
+    f.inputs :details do
+      f.input :name
+      f.input :category
+      f.input :teacher
+      f.input :cost
+      f.input :teacher_cost
+      f.input :start_at
+      f.input :duration
+      f.input :description
+    end
+    f.buttons
+  end
   
 end

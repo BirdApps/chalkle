@@ -1,6 +1,6 @@
 class Chalkler < ActiveRecord::Base
   attr_accessible :bio, :email, :meetup_data, :meetup_id, :name
-  validates_uniqueness_of :meetup_id
+  validates_uniqueness_of :meetup_id, allow_nil: true
   validates_uniqueness_of :email, allow_nil: true
 
   has_many :bookings

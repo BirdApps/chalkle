@@ -4,7 +4,7 @@ begin
     desc "Load all payments from xero" 
     task "load_payments" => :environment do
       Payment.load_all_from_xero
-      Payment.where(total: 0).each {|p| p.complete_record_download}
+      Payment.where(total: 0).each {|p| p.complete_record_download} #note this will only grab the first 60 or so
     end
 
     desc "Pull all meetup data"

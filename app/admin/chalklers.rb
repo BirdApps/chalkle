@@ -32,4 +32,16 @@ ActiveAdmin.register Chalkler do
     end
     active_admin_comments
   end
+
+  form do |f|
+    f.inputs :details do
+      f.input :name
+      f.input :meetup_id
+      f.input :email
+      f.input :bio
+    end
+
+    f.buttons
+  end
+
 end
