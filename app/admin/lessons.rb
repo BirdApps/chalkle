@@ -21,6 +21,8 @@ ActiveAdmin.register Lesson, as: 'Class' do
       end
       row :cost 
       row :teacher_cost 
+      row :start_at
+      row :duration
       row :bookings do
         "#{lesson.bookings.paid.count} of #{lesson.bookings.confirmed.count} have paid " 
       end
@@ -30,7 +32,6 @@ ActiveAdmin.register Lesson, as: 'Class' do
       row :description do
         simple_format lesson.description
       end
-      row :start_at
       row :meetup_data
     end
     active_admin_comments
