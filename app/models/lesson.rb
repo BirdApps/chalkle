@@ -12,10 +12,16 @@ class Lesson < ActiveRecord::Base
   before_create :set_from_meetup_data
 
   def meetup_data
-    JSON.parse(read_attribute(:meetup_data)) if read_attribute(:meetup_data).present?
+    data = read_attribute(:meetup_data)
+    if data.present?
+      JSON.parse(data)
+    else
+      {}
+    end
   end
 
   def set_from_meetup_data
+    return if meetup_data.empty?
     self.created_at = Time.at(meetup_data["created"] / 1000)
     self.updated_at = Time.at(meetup_data["updated"] / 1000)
     self.start_at = Time.at(meetup_data["time"] / 1000) if meetup_data["time"]

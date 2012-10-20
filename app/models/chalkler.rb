@@ -11,10 +11,16 @@ class Chalkler < ActiveRecord::Base
   before_create :set_from_meetup_data
 
   def meetup_data
-    JSON.parse(read_attribute(:meetup_data)) if read_attribute(:meetup_data).present?
+    data = read_attribute(:meetup_data)
+    if data.present?
+      JSON.parse(data)
+    else
+      {}
+    end
   end
 
   def set_from_meetup_data
+    return if meetup_data.empty?
     self.created_at = Time.at(meetup_data["joined"] / 1000)
   end
 

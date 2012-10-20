@@ -16,10 +16,16 @@ class Booking < ActiveRecord::Base
   before_create :set_from_meetup_data
 
   def meetup_data
-    JSON.parse(read_attribute(:meetup_data)) if read_attribute(:meetup_data).present?
+    data = read_attribute(:meetup_data)
+    if data.present?
+      JSON.parse(data)
+    else
+      {}
+    end
   end
 
   def set_from_meetup_data
+    return if meetup_data.empty?
     self.created_at = meetup_data["created"]
     self.updated_at = meetup_data["updated"]
   end
