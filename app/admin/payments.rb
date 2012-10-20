@@ -13,6 +13,7 @@ ActiveAdmin.register Payment do
     column :id
     column :date
     column :xero_contact_name
+    column :reconciled
     column :total
     default_actions
   end
