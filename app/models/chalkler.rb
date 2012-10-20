@@ -17,6 +17,13 @@ class Chalkler < ActiveRecord::Base
 
   before_create :set_from_meetup_data
 
+  def email_required?
+    false
+  end
+  def password_required?
+    false
+  end
+
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
