@@ -24,7 +24,7 @@ ActiveAdmin.register Chalkler do
         raw chalkler.lessons_taught.collect{|l| link_to "#{l.name} - #{l.start_at}", admin_class_path(l)}.join('<br/> ')
       end
       row :lessons do
-        raw chalkler.lessons.collect{|l| link_to "#{l.name} - #{l.start_at}", admin_class_path(l)}.join('<br/ ')
+        raw chalkler.lessons.collect{|l| link_to "#{l.name} - #{l.start_at}", admin_class_path(l)}.join('<br/> ')
       end
       row :meetup_data
       row :created_at
