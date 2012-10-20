@@ -27,7 +27,9 @@ ActiveAdmin.register Lesson, as: 'Class' do
       row :rsvp_list do
         render partial: '/shared/rsvp_list', locals: {bookings: lesson.bookings.confirmed}
       end
-      row :description
+      row :description do
+        simple_format lesson.description
+      end
       row :start_at
       row :meetup_data
     end
