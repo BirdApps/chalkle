@@ -88,6 +88,7 @@ group :test do
   gem 'steak'
   gem 'webrat'
   gem 'email_spec'
+  gem 'factory_girl_rails'
 
   # Test coverage
   gem 'simplecov'
