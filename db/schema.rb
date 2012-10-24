@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121020010911) do
+ActiveRecord::Schema.define(:version => 20121024034355) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -90,6 +90,13 @@ ActiveRecord::Schema.define(:version => 20121020010911) do
     t.datetime "locked_at"
   end
 
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.string   "api_key"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "lessons", :force => true do |t|
     t.integer  "category_id"
     t.integer  "teacher_id"
@@ -131,5 +138,12 @@ ActiveRecord::Schema.define(:version => 20121020010911) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
+
+  create_table "teachers", :force => true do |t|
+    t.string   "name"
+    t.text     "qualification"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
 end
