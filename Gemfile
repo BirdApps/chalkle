@@ -62,6 +62,7 @@ group :development, :test do
   # Automatic testing
   gem 'guard'
   gem 'guard-rspec'
+  gem 'guard-sass'
 
   # Placed here so generators work
   gem 'rspec'
@@ -79,8 +80,8 @@ group :test do
   # Core Testing
   gem 'capybara'
   gem 'capybara-webkit'
-  
-  # Test Helpers 
+
+  # Test Helpers
   gem 'database_cleaner'
   gem 'faker'
   gem 'timecop'
@@ -90,7 +91,7 @@ group :test do
 
   # Test coverage
   gem 'simplecov'
-  
+
   # Test feedback
   gem 'autotest'
   gem 'rspec-instafail', :require => false
