@@ -1,7 +1,7 @@
 begin
   namespace :chalkle do
 
-    desc "Load all payments from xero" 
+    desc "Load all payments from xero"
     task "load_payments" => :environment do
       Payment.load_all_from_xero
       Payment.where(total: 0).each {|p| p.complete_record_download} #note this will only grab the first 60 or so
@@ -21,10 +21,12 @@ begin
       Booking.all.each {|b| b.set_from_meetup_data; b.save}
     end
 
-
-    desc "Pull chalklers from meetup" 
+    desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
-      for i in 0..4 do
+      result = RMeetup2::Base.get(:members, group_urlname: 'sixdegrees', page: 1)
+      c = get_page_count(result)
+
+      for i in 0...c do
         results = RMeetup2::Base.get(:members, group_urlname: 'sixdegrees', offset: i)
         puts results.data["meta"]
         results.data["results"].each do |r|
@@ -33,10 +35,13 @@ begin
       end
     end
 
-    desc "Pull events from meetup" 
+    desc "Pull events from meetup"
     task "load_classes" => :environment do
-      for i in 0..2 do
-        results = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', offset: i, status:'upcoming,past,suggested,proposed', text_format: 'plain')
+      result = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', status:'upcoming,past,suggested,proposed', text_format: 'plain', page: 1)
+      c = get_page_count(result)
+
+      for i in 0...c do
+        results = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i)
         puts results.data["meta"]
         results.data["results"].each do |r|
           Lesson.create_from_meetup_hash(r)
@@ -44,9 +49,12 @@ begin
       end
     end
 
-    desc "Pull rsvps from meetup" 
+    desc "Pull rsvps from meetup"
     task "load_bookings" => :environment do
-      for i in 0..15 do
+      result = RMeetup2::Base.get(:rsvps, event_id: Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.join(','),  fields: 'host', page: 1)
+      c = get_page_count(result)
+
+      for i in 0...c do
         results = RMeetup2::Base.get(:rsvps, event_id: Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.join(','), offset: i, fields: 'host' )
         puts results.data["meta"]
         results.data["results"].each do |r|
@@ -69,7 +77,7 @@ begin
         c.id = row["id"]
         c.name = row["name"]
         c.save
-      end      
+      end
 
       csv_text = File.read(Rails.root.join('db/import/sub_categories.csv'))
       csv = CSV.parse(csv_text, :headers => true)
@@ -77,7 +85,7 @@ begin
       csv.each do |row|
         row = row.to_hash.with_indifferent_access
         #["id", "category_id", "type", "title", "doing", "learn", "skill", "skill_note", "teacher", "teacher_qualification", "bring", "charge", "cost", "book", "note", "start", "end", "link"]
-        
+
         lesson = Lesson.new
         if row["teacher"].present?
           teacher = teachers[row["teacher"]]
@@ -106,6 +114,10 @@ begin
       puts "#{Category.count} Categories"
       puts "#{Teacher.count} Teachers"
       puts "#{Lesson.count} Classes"
+    end
+
+    def get_page_count(results)
+      (results.data["meta"]["total_count"].to_f / 200).ceil
     end
   end
 end
