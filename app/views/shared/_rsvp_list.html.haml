@@ -3,6 +3,7 @@
     %tr
       %th Name
       %th Guests
+      %th Cost
       %th Paid
       %th Answers
       %th Booking
@@ -11,7 +12,8 @@
       %tr
         %td= link_to b.chalkler.name, admin_chalkler_path(b.chalkler)
         %td= b.guests
+        %td= b.cost
         %td= b.paid
-        %td= b.meetup_data["answers"].join('<br/>')
+        %td= b.meetup_data["answers"].join('<br/>') if b.meetup_data["answers"].present?
         %td= link_to 'View', admin_booking_path(b)
 
