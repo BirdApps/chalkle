@@ -5,8 +5,8 @@ class AddPriceToBooking < ActiveRecord::Migration
     change_column :lessons, :teacher_cost, :decimal, :default => nil, :precision => 8, :scale => 2
     Booking.all.each do |b|
       if b.lesson.present? && b.lesson.cost.present?
-        b.cost = b.lesson.cost * (1 + b.guests)
-        b.save
+        cost =  b.lesson.cost * (1 + b.guests)
+        b.update_attribute(:cost, cost)
       end
     end
   end
