@@ -1,5 +1,5 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :start_at, :duration, :meetup_data, :description
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, :description
 
   belongs_to :category
   belongs_to :teacher, class_name: "Chalkler"

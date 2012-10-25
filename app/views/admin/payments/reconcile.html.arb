@@ -1,4 +1,4 @@
-@options = options_for_select(Booking.confirmed.unpaid.map{|b| next if b.chalkler.nil? || b.lesson.nil?; ["#{b.chalkler.name} - #{b.lesson.name}(#{b.lesson.meetup_id}) : #{b.lesson.start_at} : #{b.lesson.cost}", b.id]})
+@options = options_for_select(Booking.nonzero.confirmed.unpaid.map{|b| next if b.chalkler.nil? || b.lesson.nil?; ["#{b.chalkler.name} - #{b.lesson.name}(#{b.lesson.meetup_id}) : #{b.lesson.start_at} : #{b.lesson.cost}", b.id]})
 
 table_for assigns[:payments] do
   column :id
