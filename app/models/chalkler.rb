@@ -42,7 +42,7 @@ class Chalkler < ActiveRecord::Base
     require 'iconv'
     conv = Iconv.new('UTF-8','LATIN1')
 
-    c = Chalkler.new
+    c = Chalkler.find_by_meetup_id(result["id"]) || Chalkler.new
     c.name = conv.iconv(result["name"])
     c.meetup_id = result["id"]
     c.bio = conv.iconv(result["bio"])
