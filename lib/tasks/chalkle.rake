@@ -51,14 +51,16 @@ begin
 
     desc "Pull rsvps from meetup"
     task "load_bookings" => :environment do
-      result = RMeetup2::Base.get(:rsvps, event_id: Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.join(','),  fields: 'host', page: 1)
-      c = get_page_count(result)
-
-      for i in 0...c do
-        results = RMeetup2::Base.get(:rsvps, event_id: Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.join(','), offset: i, fields: 'host' )
-        puts results.data["meta"]
-        results.data["results"].each do |r|
-          Booking.create_from_meetup_hash(r)
+      l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(100).to_a
+      l.each do |event_id|
+        result = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','),  fields: 'host', page: 1)
+        c = get_page_count(result)
+        for i in 0...c do
+          results = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','), offset: i, fields: 'host' )
+          puts results.data["meta"]
+          results.data["results"].each do |r|
+            Booking.create_from_meetup_hash(r)
+          end
         end
       end
     end
