@@ -44,7 +44,7 @@ class Booking < ActiveRecord::Base
     b = Booking.new
     b.chalkler = Chalkler.find_by_meetup_id result["member_id"]
     b.lesson = Lesson.find_by_meetup_id result["event_id"]
-    b.meetup_id = result["rsvp_id"]
+    b.meetup_id = result["id"]
     b.guests = result["guests"]
     b.status = result["response"]
     b.meetup_data = conv.iconv(result.to_json)
