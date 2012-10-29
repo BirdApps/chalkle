@@ -1,7 +1,7 @@
 begin
   namespace :chalkle do
 
-    desc "Load all payments from xero" 
+    desc "Load all payments from xero"
     task "load_payments" => :environment do
       Payment.load_all_from_xero
       Payment.where(total: 0).each {|p| p.complete_record_download} #note this will only grab the first 60 or so
@@ -22,7 +22,7 @@ begin
     end
 
 
-    desc "Pull chalklers from meetup" 
+    desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
       for i in 0..4 do
         results = RMeetup2::Base.get(:members, group_urlname: 'sixdegrees', offset: i)
@@ -33,7 +33,7 @@ begin
       end
     end
 
-    desc "Pull events from meetup" 
+    desc "Pull events from meetup"
     task "load_classes" => :environment do
       for i in 0..2 do
         results = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', offset: i, status:'upcoming,past,suggested,proposed', text_format: 'plain')
@@ -44,13 +44,16 @@ begin
       end
     end
 
-    desc "Pull rsvps from meetup" 
+    desc "Pull rsvps from meetup"
     task "load_bookings" => :environment do
-      for i in 0..15 do
-        results = RMeetup2::Base.get(:rsvps, event_id: Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.join(','), offset: i, fields: 'host' )
-        puts results.data["meta"]
-        results.data["results"].each do |r|
-          Booking.create_from_meetup_hash(r)
+      l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(100).to_a
+      l.each do |event_id|
+        for i in 0..12 do
+          results = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','), offset: i, fields: 'host' )
+          puts results.data["meta"]
+          results.data["results"].each do |r|
+            Booking.create_from_meetup_hash(r)
+          end
         end
       end
     end
@@ -69,7 +72,7 @@ begin
         c.id = row["id"]
         c.name = row["name"]
         c.save
-      end      
+      end
 
       csv_text = File.read(Rails.root.join('db/import/sub_categories.csv'))
       csv = CSV.parse(csv_text, :headers => true)
@@ -77,7 +80,7 @@ begin
       csv.each do |row|
         row = row.to_hash.with_indifferent_access
         #["id", "category_id", "type", "title", "doing", "learn", "skill", "skill_note", "teacher", "teacher_qualification", "bring", "charge", "cost", "book", "note", "start", "end", "link"]
-        
+
         lesson = Lesson.new
         if row["teacher"].present?
           teacher = teachers[row["teacher"]]
