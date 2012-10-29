@@ -4,6 +4,7 @@ require 'spec_helper'
 describe Chalkler do
   describe "user import" do
 
+    # ugly I know
     result = {
       "lon"=>174.77999877929688,
       "link"=>"http://www.meetup.com/members/12345678",
@@ -38,10 +39,11 @@ describe Chalkler do
     end
 
     it "will update an existing user using meetup data" do
-      c = FactoryGirl.create(:chalkler)
+      c = FactoryGirl.build(:chalkler)
+      c.failed_attempts = 2
+      c.save
       Chalkler.create_from_meetup_hash(result)
-      c = Chalkler.find_by_meetup_id(1234)
-      c.name.should == "Caitlin Oscars"
+      Chalkler.find_by_meetup_id(1234).failed_attempts.should == 2
     end
   end
 end
