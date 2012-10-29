@@ -21,6 +21,7 @@ ActiveAdmin.register Lesson, as: 'Class' do
       end
       row :cost 
       row :teacher_cost 
+      row :venue_cost 
       row :start_at
       row :duration
       row :bookings do
@@ -44,6 +45,7 @@ ActiveAdmin.register Lesson, as: 'Class' do
       f.input :teacher
       f.input :cost
       f.input :teacher_cost
+      f.input :venue_cost
       f.input :start_at
       f.input :duration
       f.input :description
