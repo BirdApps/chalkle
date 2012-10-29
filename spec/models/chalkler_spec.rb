@@ -39,11 +39,9 @@ describe Chalkler do
     end
 
     it "will update an existing user using meetup data" do
-      c = FactoryGirl.build(:chalkler)
-      c.failed_attempts = 2
-      c.save
+      c = FactoryGirl.create(:chalkler, name: "Jimmy Jones")
       Chalkler.create_from_meetup_hash(result)
-      Chalkler.find_by_meetup_id(1234).failed_attempts.should == 2
+      c.reload.name.should == "Caitlin Oscars"
     end
   end
 end
