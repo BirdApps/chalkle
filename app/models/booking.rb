@@ -46,10 +46,10 @@ class Booking < ActiveRecord::Base
   def self.create_from_meetup_hash result
     require 'iconv'
     conv = Iconv.new('UTF-8','LATIN1')
-    b = Booking.find_by_meetup_id(result["meetup_id"]) || Booking.new
+    b = Booking.find_by_meetup_id(result["id"]) || Booking.new
     b.chalkler = Chalkler.find_by_meetup_id result["member_id"]
     b.lesson = Lesson.find_by_meetup_id result["event_id"]
-    b.meetup_id = result["rsvp_id"]
+    b.meetup_id = result["id"]
     b.guests = result["guests"]
     b.status = result["response"]
     b.meetup_data = conv.iconv(result.to_json)
