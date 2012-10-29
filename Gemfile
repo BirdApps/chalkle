@@ -63,6 +63,7 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-sass'
+  gem 'guard-spork'
 
   # Placed here so generators work
   gem 'rspec'
@@ -74,6 +75,8 @@ group :development, :test do
   # Testing Javascript
   gem 'jasmine', '~> 1.1.0.rc2'
   gem 'jasmine-headless-webkit'
+
+  gem 'spork-rails'
 end
 
 group :test do

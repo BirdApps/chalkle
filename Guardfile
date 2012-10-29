@@ -10,6 +10,18 @@ guard 'livereload' do
   watch(%r{(app|vendor)/assets/\w+/(.+\.(css|js|html)).*})  { |m| "/assets/#{m[2]}" }
 end
 
+guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAILS_ENV' => 'test' } do
+  watch('config/application.rb')
+  watch('config/environment.rb')
+  watch(%r{^config/environments/.+\.rb$})
+  watch(%r{^config/initializers/.+\.rb$})
+  watch('Gemfile')
+  watch('Gemfile.lock')
+  watch('spec/spec_helper.rb') { :rspec }
+  watch('test/test_helper.rb') { :test_unit }
+  watch(%r{features/support/}) { :cucumber }
+end
+
 guard 'rspec', :version => 2, :cli => '--color' do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
@@ -33,8 +45,6 @@ guard 'rspec', :version => 2, :cli => '--color' do
   # FactoryGirl factories
   watch(%r{^spec/factories\.rb$}) { "spec" }
   watch(%r{^spec/factories/(.+)_factory\.rb$}) { |m| ["spec/models/#{m[1]}_spec.rb", "spec/controllers/#{m[1].pluralize}_controller_spec.rb", "spec/requests/#{m[1].pluralize}_spec.rb"] }
-
 end
-
 
 #guard 'sass', :input => 'sass', :output => 'css'
