@@ -1,7 +1,10 @@
 require 'spec_helper'
-# require 'iconv'
 
 describe Chalkler do
+
+  it { should validate_uniqueness_of :meetup_id }
+  it { should validate_uniqueness_of :email }
+
   describe "user import" do
 
     # ugly I know
