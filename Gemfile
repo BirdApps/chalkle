@@ -92,6 +92,7 @@ group :test do
   gem 'webrat'
   gem 'email_spec'
   gem 'factory_girl_rails'
+  gem 'shoulda'
 
   # Test coverage
   gem 'simplecov'
