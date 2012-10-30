@@ -6,5 +6,8 @@ class Group < ActiveRecord::Base
 
   has_many :group_admins
   has_many :admin_users, :through => :group_admins
+  has_many :group_chalklers
+  has_many :chalklers, :through => :group_chalklers
   has_many :lessons
+  has_many :bookings, :through => :lessons
 end

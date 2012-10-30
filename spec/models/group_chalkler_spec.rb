@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe GroupAdmin do
+describe GroupChalkler do
 end
