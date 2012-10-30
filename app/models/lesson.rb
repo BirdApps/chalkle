@@ -45,7 +45,7 @@ class Lesson < ActiveRecord::Base
     require 'iconv'
     conv = Iconv.new('UTF-8','LATIN1')
 
-    l = Lesson.new
+    l = Lesson.find_by_meetup_id(result["id"]) || Lesson.new
     l.name = conv.iconv(result["name"])
     l.meetup_id = result["id"]
     l.meetup_data = conv.iconv(result.to_json)
