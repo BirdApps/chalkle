@@ -1,7 +1,8 @@
 class Group < ActiveRecord::Base
-  attr_accessible :name, :api_key
+  attr_accessible :name, :url_name, :api_key
 
   validates :name, :presence => true
+  validates :url_name, :presence => true
   validates :api_key, :presence => true
 
   has_many :group_admins

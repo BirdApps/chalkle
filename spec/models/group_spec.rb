@@ -6,6 +6,10 @@ describe Group do
     FactoryGirl.build(:group, name: nil).should_not be_valid
   end
 
+  it "is invalid without a url_name" do
+    FactoryGirl.build(:group, url_name: nil).should_not be_valid
+  end
+
   it "is invalid without an API key" do
     FactoryGirl.build(:group, api_key: nil).should_not be_valid
   end
