@@ -7,8 +7,10 @@ class Chalkler < ActiveRecord::Base
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates_uniqueness_of :email, allow_blank: true
 
+  has_many :group_chalkers
+  has_many :groups, :through => :group_chalkers
   has_many :bookings
-  has_many :lessons, through: :bookings
+  has_many :lessons, :through => :bookings
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
 
