@@ -1,12 +1,13 @@
 class Lesson < ActiveRecord::Base
   attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, :description
 
-  belongs_to :group
+  has_many :group_lessons
+  has_many :groups, :through => :group_lessons
   belongs_to :category
   belongs_to :teacher, class_name: "Chalkler"
 
   has_many :bookings
-  has_many :chalklers, through: :bookings
+  has_many :chalklers, :through => :bookings
 
   validates_uniqueness_of :meetup_id, allow_nil: true
 
@@ -42,14 +43,14 @@ class Lesson < ActiveRecord::Base
   end
 
   def self.create_from_meetup_hash result
-    require 'iconv'
-    conv = Iconv.new('UTF-8','LATIN1')
+    # require 'iconv'
+    # conv = Iconv.new('UTF-8','LATIN1')
 
     l = Lesson.find_by_meetup_id(result["id"]) || Lesson.new
-    l.name = conv.iconv(result["name"])
+    l.name = result["name"].to_s.encode("UTF-8")
     l.meetup_id = result["id"]
-    l.meetup_data = conv.iconv(result.to_json)
-    l.description = conv.iconv(result["description"])
+    l.meetup_data = result.to_json#.encode("UTF-8")
+    l.description = result["description"].to_s.encode("UTF-8")
     l.save
   end
 end
