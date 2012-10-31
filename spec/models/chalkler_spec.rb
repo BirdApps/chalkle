@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Chalkler do
 
+  it { should have_many(:groups).through(:group_chalklers) }
   it { should validate_uniqueness_of :meetup_id }
   it { should validate_uniqueness_of :email }
 
@@ -33,9 +34,6 @@ describe Chalkler do
       "other_services"=>{},
       "lat"=>-41.279998779296875
     }
-
-    pending "converts LATIN1 strings to UTF8" do
-    end
 
     it "creates a new user using meetup data" do
       Chalkler.create_from_meetup_hash(result).should be_true
