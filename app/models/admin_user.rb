@@ -11,8 +11,8 @@ class AdminUser < ActiveRecord::Base
   has_many :lessons, :through => :groups
   has_many :chalklers, :through => :groups
   has_many :bookings, :through => :groups
-
-  scope :super, where(:super => true)
+  has_many :categories, :through => :groups
+  has_many :payments, :through => :groups
 
   after_create { |admin| admin.send_reset_password_instructions }
   before_destroy :raise_if_last

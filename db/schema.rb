@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121031011223) do
+ActiveRecord::Schema.define(:version => 20121031230054) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -100,6 +100,13 @@ ActiveRecord::Schema.define(:version => 20121031011223) do
 
   add_index "group_admins", ["group_id", "admin_user_id"], :name => "index_group_admins_on_group_id_and_admin_user_id", :unique => true
 
+  create_table "group_categories", :id => false, :force => true do |t|
+    t.integer "group_id",    :null => false
+    t.integer "category_id", :null => false
+  end
+
+  add_index "group_categories", ["group_id", "category_id"], :name => "index_group_categories_on_group_id_and_category_id", :unique => true
+
   create_table "group_chalklers", :id => false, :force => true do |t|
     t.integer "group_id",    :null => false
     t.integer "chalkler_id", :null => false
@@ -119,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20121031011223) do
     t.string   "api_key"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "urlname"
     t.string   "url_name"
   end
 
@@ -164,12 +172,5 @@ ActiveRecord::Schema.define(:version => 20121031011223) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
-
-  create_table "teachers", :force => true do |t|
-    t.string   "name"
-    t.text     "qualification"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
 
 end
