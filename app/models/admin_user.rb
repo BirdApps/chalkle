@@ -8,4 +8,10 @@ class AdminUser < ActiveRecord::Base
 
   has_many :group_admins
   has_many :groups, :through => :group_admins
+
+  after_create { |admin| admin.send_reset_password_instructions }
+
+  def password_required?
+    new_record? ? false : super
+  end
 end
