@@ -1,4 +1,6 @@
 ActiveAdmin.register Payment do
+  scope_to :current_admin_user
+
   config.sort_order = "date_desc"
 
   action_item only: :index do
@@ -40,5 +42,5 @@ ActiveAdmin.register Payment do
       render text: 'error', layout: false, status: 500
     end
   end
-  
+
 end

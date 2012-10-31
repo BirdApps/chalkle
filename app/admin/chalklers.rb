@@ -1,5 +1,8 @@
 ActiveAdmin.register Chalkler do
+  scope_to :current_admin_user
+
   config.sort_order = "created_at_desc"
+
   index do
     column :id
     column :name

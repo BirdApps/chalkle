@@ -1,5 +1,8 @@
 ActiveAdmin.register Booking do
+  scope_to :current_admin_user
+
   config.sort_order = "created_at_desc"
+
   controller do
     def scoped_collection
       Booking.where(status: "yes")
@@ -33,7 +36,7 @@ ActiveAdmin.register Booking do
     active_admin_comments
 
   end
-    
+
   form do |f|
     f.inputs :details do
       f.input :lesson
@@ -46,5 +49,5 @@ ActiveAdmin.register Booking do
 
     f.buttons
   end
-  
+
 end
