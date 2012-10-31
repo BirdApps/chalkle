@@ -43,14 +43,14 @@ class Lesson < ActiveRecord::Base
   end
 
   def self.create_from_meetup_hash result
-    # require 'iconv'
-    # conv = Iconv.new('UTF-8','LATIN1')
+    require 'iconv'
+    conv = Iconv.new('UTF-8','LATIN1')
 
     l = Lesson.find_by_meetup_id(result["id"]) || Lesson.new
-    l.name = result["name"].to_s.encode("UTF-8")
+    l.name = conv.iconv(result["name"])
     l.meetup_id = result["id"]
-    l.meetup_data = result.to_json#.encode("UTF-8")
-    l.description = result["description"].to_s.encode("UTF-8")
+    l.meetup_data = conv.iconv(result.to_json)
+    l.description = conv.iconv(result["description"])
     l.save
   end
 end
