@@ -1,13 +1,14 @@
 ActiveAdmin.register AdminUser do
-  config.sort_order = "email_asc"
+  menu :if => proc{ can?(:manage, AdminUser) }
+  controller.authorize_resource
 
-  scope :super
+  config.sort_order = "email_asc"
 
   index do
     column :id
     column :name
     column :email
-    column :super
+    column :role
     default_actions
   end
 
@@ -15,7 +16,7 @@ ActiveAdmin.register AdminUser do
     attributes_table do
       row :name
       row :email
-      row :super
+      row :role
       row :groups do
         raw admin_user.groups.collect{ |g| link_to g.name, admin_group_path(g)}.join(", ")
       end
@@ -28,7 +29,7 @@ ActiveAdmin.register AdminUser do
       f.input :name
       f.input :email
       f.input :groups, :as => :check_boxes
-      f.input :super, :label => "Has global admin rights"
+      f.input :role, :as => :select, :collection => ["super"]
     end
     f.buttons
   end

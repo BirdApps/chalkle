@@ -4,7 +4,7 @@ class AdminUser < ActiveRecord::Base
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessible :name, :super, :email, :password, :password_confirmation, :remember_me, :group_ids
+  attr_accessible :name, :role, :email, :password, :password_confirmation, :remember_me, :group_ids
 
   has_many :group_admins
   has_many :groups, :through => :group_admins

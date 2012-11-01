@@ -53,6 +53,7 @@ GEM
     bourbon (2.1.1)
       sass (>= 3.1)
     builder (3.0.3)
+    cancan (1.6.7)
     capistrano (2.12.0)
       highline
       net-scp (>= 1.0.0)
@@ -369,6 +370,7 @@ DEPENDENCIES
   analytical
   autotest
   bootstrap-sass (~> 2.0.4.0)
+  cancan
   capistrano
   capistrano-ext
   capybara
