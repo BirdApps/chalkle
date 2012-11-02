@@ -8,8 +8,9 @@ gem 'rails', '3.2.8'
 gem 'pg'
 gem 'airbrake'
 gem 'devise'
-
+gem 'cancan'
 gem 'activeadmin'
+gem 'activeadmin-cancan'
 
 gem 'analytical'
 
@@ -23,9 +24,8 @@ gem 'xeroizer'
 gem 'chosen-rails'
 gem 'html5-rails'
 gem 'haml-rails'
-gem 'simple_form'
+#gem 'simple_form'
 
-gem 'cancan'
 
 # Gems used only for assets and not required
 # in production environments by default.

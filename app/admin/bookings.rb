@@ -1,10 +1,15 @@
 ActiveAdmin.register Booking do
-  scope_to :current_admin_user
+  controller do
+    load_and_authorize_resource :except => :index
+    def scoped_collection
+      end_of_association_chain.accessible_by(current_ability)
+    end
+  end
 
   config.sort_order = "created_at_desc"
 
-  filter :lesson_groups_name, :as => :select,
-    :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}, :label => "Group"
+  filter :lesson_groups_name, :as => :select, :label => "Group",
+    :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
   filter :lesson
   filter :chalkler
   filter :cost

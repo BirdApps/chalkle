@@ -1,7 +1,4 @@
 ActiveAdmin.register AdminUser do
-  menu :if => proc{ can?(:manage, AdminUser) }
-  controller.authorize_resource
-
   config.sort_order = "email_asc"
 
   index do
@@ -32,7 +29,7 @@ ActiveAdmin.register AdminUser do
       f.input :name
       f.input :email
       f.input :groups, :as => :check_boxes
-      f.input :role, :as => :select, :collection => ["super"]
+      f.input :role, :as => :select, :collection => ["super", "group admin"]
     end
     f.buttons
   end
