@@ -7,6 +7,9 @@ ActiveAdmin.register AdminUser do
   index do
     column :id
     column :name
+    column :groups do |admin_user|
+      admin_user.groups.collect{|g| g.name}.join(", ")
+    end
     column :email
     column :role
     default_actions

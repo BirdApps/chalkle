@@ -3,9 +3,17 @@ ActiveAdmin.register Chalkler do
 
   config.sort_order = "created_at_desc"
 
+  filter :groups_name, :as => :select, :collection => Group.all.collect{|g| [g.name, g.name]}
+  filter :name
+  filter :meetup_id
+  filter :email
+
   index do
     column :id
     column :name
+    column :groups do |chalkler|
+      chalkler.groups.collect{|g| g.name}.join(", ")
+    end
     column :meetup_id do |chalkler|
       link_to chalkler.meetup_id, chalkler.meetup_data["link"]
     end

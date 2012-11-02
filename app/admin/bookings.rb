@@ -3,15 +3,28 @@ ActiveAdmin.register Booking do
 
   config.sort_order = "created_at_desc"
 
+  filter :lesson_groups_name, :as => :select,
+    :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}, :label => "Group"
+  filter :lesson
+  filter :chalkler
+  filter :cost
+  filter :paid
+  filter :guests
+  filter :created_at
+
   controller do
-    def scoped_collection
-      Booking.where(status: "yes")
-    end
+    # def scoped_collection
+      # Booking.where(status: "yes")
+    # end
   end
+
   index do
     column :id
     column :lesson
     column :chalkler
+    column :groups do |booking|
+      booking.lesson.groups.collect{|g| g.name}.join(", ")
+    end
     column :cost
     column :paid
     column :guests

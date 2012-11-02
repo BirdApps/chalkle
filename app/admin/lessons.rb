@@ -1,11 +1,12 @@
 ActiveAdmin.register Lesson, as: 'Class' do
-  scope_to :current_admin_user
-
   config.sort_order = "created_at_desc"
 
   index do
     column :id
     column :name
+    column :groups do |lesson|
+      lesson.groups.collect{|g| g.name}.join(", ")
+    end
     column :category
     column :teacher
     column :cost
