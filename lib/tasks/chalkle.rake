@@ -23,43 +23,62 @@ begin
 
     desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
-      result = RMeetup2::Base.get(:members, group_urlname: 'sixdegrees', page: 1)
-      c = get_page_count(result)
+      Group.all.each do |g|
+        next unless g.api_key?
+        RMeetup2::Base.api_key = g.api_key
 
-      for i in 0...c do
-        results = RMeetup2::Base.get(:members, group_urlname: 'sixdegrees', offset: i)
-        puts results.data["meta"]
-        results.data["results"].each do |r|
-          Chalkler.create_from_meetup_hash(r)
+        puts "Importing chalklers for group #{g.name}"
+        result = RMeetup2::Base.get(:members, group_urlname: g.url_name, page: 1)
+        c = get_page_count(result)
+
+        for i in 0...c do
+          results = RMeetup2::Base.get(:members, group_urlname: g.url_name, offset: i)
+          puts results.data["meta"]
+          results.data["results"].each do |r|
+            Chalkler.create_from_meetup_hash(r,g)
+          end
         end
       end
     end
 
     desc "Pull events from meetup"
     task "load_classes" => :environment do
-      result = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', status:'upcoming,past,suggested,proposed', text_format: 'plain', page: 1)
-      c = get_page_count(result)
+      Group.all.each do |g|
+        next unless g.api_key?
+        RMeetup2::Base.api_key = g.api_key
 
-      for i in 0...c do
-        results = RMeetup2::Base.get(:events, group_urlname: 'sixdegrees', status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i)
-        puts results.data["meta"]
-        results.data["results"].each do |r|
-          Lesson.create_from_meetup_hash(r)
+        puts "Importing classes for group #{g.name}"
+        result = RMeetup2::Base.get(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', page: 1)
+        c = get_page_count(result)
+
+        for i in 0...c do
+          results = RMeetup2::Base.get(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i)
+          puts results.data["meta"]
+          results.data["results"].each do |r|
+            Lesson.create_from_meetup_hash(r,g)
+          end
         end
       end
     end
 
     desc "Pull rsvps from meetup"
     task "load_bookings" => :environment do
+      # fix this.
       l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(100).to_a
-      l.each do |event_id|
-        result = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','),  fields: 'host', page: 1)
-        c = get_page_count(result)
-        for i in 0...c do
-          results = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','), offset: i, fields: 'host' )
-          puts results.data["meta"]
-          results.data["results"].each do |r|
-            Booking.create_from_meetup_hash(r)
+      Group.all.each do |g|
+        next unless g.api_key?
+        RMeetup2::Base.api_key = g.api_key
+
+        puts "Importing bookings for group #{g.name}"
+        l.each do |event_id|
+          result = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','),  fields: 'host', page: 1)
+          c = get_page_count(result)
+          for i in 0...c do
+            results = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','), offset: i, fields: 'host' )
+            puts results.data["meta"]
+            results.data["results"].each do |r|
+              Booking.create_from_meetup_hash(r)
+            end
           end
         end
       end
