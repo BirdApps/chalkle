@@ -35,11 +35,11 @@ describe Chalkler do
       "lat"=>-41.279998779296875
     }
 
-    it "creates a new user using meetup data" do
-      Chalkler.create_from_meetup_hash(result).should be_true
+    pending "creates a new user using meetup data" do
+      Chalkler.create_from_meetup_hash(result, group).should be_true
     end
 
-    it "will update an existing user using meetup data" do
+    pending "will update an existing user using meetup data" do
       c = FactoryGirl.create(:chalkler, name: "Jimmy Jones")
       Chalkler.create_from_meetup_hash(result)
       c.reload.name.should == "Caitlin Oscars"

@@ -6,5 +6,5 @@ describe AdminUser do
   it { should have_many(:chalklers).through(:groups) }
   it { should have_many(:bookings).through(:groups) }
   it { should have_many(:categories).through(:groups) }
-  it { should have_many(:payments).through(:groups) }
+  it { should have_many(:payments).through(:bookings) }
 end
