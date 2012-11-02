@@ -3,7 +3,6 @@ class Group < ActiveRecord::Base
 
   validates :name, :presence => true
   validates :url_name, :presence => true
-  validates :api_key, :presence => true
 
   has_many :group_admins
   has_many :admin_users, :through => :group_admins

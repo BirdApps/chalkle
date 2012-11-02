@@ -40,7 +40,7 @@ class Chalkler < ActiveRecord::Base
     self.created_at = Time.at(meetup_data["joined"] / 1000)
   end
 
-  def self.create_from_meetup_hash result
+  def self.create_from_meetup_hash(result, group)
     require 'iconv'
     conv = Iconv.new('UTF-8','LATIN1')
 
@@ -50,6 +50,7 @@ class Chalkler < ActiveRecord::Base
     c.bio = conv.iconv(result["bio"])
     c.meetup_data = conv.iconv(result.to_json)
     c.save
+    c.groups<< group unless c.groups.exists? group
   end
 
 end

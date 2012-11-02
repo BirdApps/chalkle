@@ -42,7 +42,7 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  def self.create_from_meetup_hash result
+  def self.create_from_meetup_hash(result, group)
     require 'iconv'
     conv = Iconv.new('UTF-8','LATIN1')
 
@@ -52,5 +52,6 @@ class Lesson < ActiveRecord::Base
     l.meetup_data = conv.iconv(result.to_json)
     l.description = conv.iconv(result["description"])
     l.save
+    l.groups<< group unless l.groups.exists? group
   end
 end
