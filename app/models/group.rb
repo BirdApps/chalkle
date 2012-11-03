@@ -10,7 +10,8 @@ class Group < ActiveRecord::Base
   has_many :chalklers, :through => :group_chalklers
   has_many :group_lessons
   has_many :lessons, :through => :group_lessons
+  has_many :bookings, :through => :lessons
+  has_many :payments, :through => :bookings
   has_many :group_categories
   has_many :categories, :through => :group_categories
-  has_many :bookings, :through => :lessons
 end

@@ -1,6 +1,9 @@
 ActiveAdmin.register Lesson, as: 'Class' do
   config.sort_order = "created_at_desc"
 
+  filter :groups_name, :as => :select, :label => "Group",
+    :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
+
   index do
     column :id
     column :name
