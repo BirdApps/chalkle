@@ -126,7 +126,6 @@ ActiveRecord::Schema.define(:version => 20121101001605) do
     t.string   "api_key"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.string   "urlname"
     t.string   "url_name"
   end
 
