@@ -3,7 +3,7 @@ ssh_options[:forward_agent] = true
 
 set :application, "chalkle"
 set :repository,  "git@github.com:enspiral/#{application}.git"
-set :user,        application 
+set :user,        application
 set :rake, "bundle exec rake"
 
 set :use_sudo,    false
@@ -52,3 +52,4 @@ end
 require "./config/boot"
 load 'deploy/assets'
 require "bundler/capistrano"
+require 'airbrake/capistrano'
