@@ -24,8 +24,7 @@ begin
     desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
       Group.all.each do |g|
-        next unless g.api_key?
-        RMeetup2::Base.api_key = g.api_key
+        next unless g.url_name?
 
         puts "Importing chalklers for group #{g.name}"
         result = RMeetup2::Base.get(:members, group_urlname: g.url_name, page: 1)
@@ -44,8 +43,7 @@ begin
     desc "Pull events from meetup"
     task "load_classes" => :environment do
       Group.all.each do |g|
-        next unless g.api_key?
-        RMeetup2::Base.api_key = g.api_key
+        next unless g.url_name?
 
         puts "Importing classes for group #{g.name}"
         result = RMeetup2::Base.get(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', page: 1)
@@ -63,22 +61,15 @@ begin
 
     desc "Pull rsvps from meetup"
     task "load_bookings" => :environment do
-      # fix this.
       l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(100).to_a
-      Group.all.each do |g|
-        next unless g.api_key?
-        RMeetup2::Base.api_key = g.api_key
-
-        puts "Importing bookings for group #{g.name}"
-        l.each do |event_id|
-          result = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','),  fields: 'host', page: 1)
-          c = get_page_count(result)
-          for i in 0...c do
-            results = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','), offset: i, fields: 'host' )
-            puts results.data["meta"]
-            results.data["results"].each do |r|
-              Booking.create_from_meetup_hash(r)
-            end
+      l.each do |event_id|
+        result = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','),  fields: 'host', page: 1)
+        c = get_page_count(result)
+        for i in 0...c do
+          results = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','), offset: i, fields: 'host' )
+          puts results.data["meta"]
+          results.data["results"].each do |r|
+            Booking.create_from_meetup_hash(r)
           end
         end
       end
