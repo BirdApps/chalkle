@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  attr_accessible :name, :url_name, :api_key
+  attr_accessible :name, :url_name
 
   validates :name, :presence => true
   validates :url_name, :presence => true

@@ -15,7 +15,6 @@ ActiveAdmin.register Group do
     attributes_table do
       row :name
       row :url_name
-      row :api_key
       row :created_at
       row :updated_at
     end
