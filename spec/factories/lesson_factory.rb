@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :lesson do
-    name Faker::Lorem.words
+    name { Faker::Lorem.words.join(" ") }
     meetup_id { (0...8).map{ rand(10) }.join }
     description Faker::Lorem.paragraph
     category
