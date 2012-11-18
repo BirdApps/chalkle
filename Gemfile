@@ -10,7 +10,6 @@ gem 'airbrake'
 gem 'devise'
 gem 'cancan'
 gem 'activeadmin'
-gem 'activeadmin-cancan'
 
 gem 'analytical'
 
