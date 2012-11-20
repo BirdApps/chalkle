@@ -19,6 +19,10 @@ class Booking < ActiveRecord::Base
 
   before_create :set_from_meetup_data
 
+  def cost
+    self.lesson.cost
+  end
+
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
