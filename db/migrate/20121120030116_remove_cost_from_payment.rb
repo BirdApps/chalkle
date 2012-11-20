@@ -1,4 +1,4 @@
-class RemoveCostFromBooking < ActiveRecord::Migration
+class RemoveCostFromPayment < ActiveRecord::Migration
   def up
     remove_column :bookings, :cost
   end
