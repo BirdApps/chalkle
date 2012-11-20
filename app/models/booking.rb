@@ -1,5 +1,5 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid, :cost
+  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid
 
   belongs_to :lesson
   belongs_to :chalkler
@@ -29,7 +29,7 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    self.lesson.cost * (1 + self.guests) if self.lesson.cost.present?
+    lesson.cost * (1 + guests) if lesson.cost.present?
   end
 
   def set_from_meetup_data
