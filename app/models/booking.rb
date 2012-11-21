@@ -3,7 +3,6 @@ class Booking < ActiveRecord::Base
 
   belongs_to :lesson
   belongs_to :chalkler
-
   has_one :payment
 
   scope :paid, where(paid: true)
@@ -12,7 +11,6 @@ class Booking < ActiveRecord::Base
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_uniqueness_of :meetup_id, allow_nil: true
-
   validates_presence_of :lesson_id
   validates_presence_of :chalkler_id
 
