@@ -7,7 +7,6 @@ class Booking < ActiveRecord::Base
   has_one :payment
 
   scope :paid, where(paid: true)
-  scope :nonzero, where("cost > 0")
   scope :unpaid, where("paid IS NOT true")
   scope :confirmed, where(status: "yes")
 
@@ -30,6 +29,10 @@ class Booking < ActiveRecord::Base
 
   def cost
     lesson.cost * (1 + guests) if lesson.cost.present?
+  end
+
+  def self.nonzero
+    joins(:lesson).where("lessons.cost > 0")
   end
 
   def set_from_meetup_data
