@@ -1,15 +1,14 @@
 FactoryGirl.define do
   factory :lesson do
-    name "Awesomeness class"
-    meetup_id 12345678
-    description "This is gonna be awesome!!!"
+    name { Faker::Lorem.words.join(" ") }
+    meetup_id { (0...8).map{ rand(10) }.join }
+    description Faker::Lorem.paragraph
     category
-    teacher
-    lesson
+    # teacher
 
     factory :lesson_with_bookings do
       ignore do
-        bookings_count 5
+        bookings_count { rand(5) }
       end
 
       after(:create) do |lesson, evaluator|
