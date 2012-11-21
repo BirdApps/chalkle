@@ -4,6 +4,7 @@ FactoryGirl.define do
     meetup_id { (0...8).map{ rand(10) }.join }
     description Faker::Lorem.paragraph
     category
+    cost { rand(10) }
     # teacher
 
     factory :lesson_with_bookings do
