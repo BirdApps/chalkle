@@ -6,6 +6,7 @@ FactoryGirl.define do
     category
     cost { rand(10) }
     # teacher
+    groups {[ FactoryGirl.create(:group) ]}
 
     factory :lesson_with_bookings do
       ignore do

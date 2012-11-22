@@ -26,16 +26,20 @@ describe AdminUser do
     end
 
     context "when is a group admin user" do
-      let(:admin_user){ FactoryGirl.create(:group_admin_user) }
-
-      pending { should be_able_to(:manage, FactoryGirl.create(:chalkler)) }
-      pending { should be_able_to(:manage, FactoryGirl.create(:category)) }
-      pending { should be_able_to(:manage, FactoryGirl.create(:lesson)) }
-      pending { should be_able_to(:manage, FactoryGirl.create(:booking)) }
-      pending { should be_able_to(:manage, FactoryGirl.create(:payment)) }
+      let(:group){ FactoryGirl.create(:group) }
+      let(:admin_user){ FactoryGirl.create(:group_admin_user, groups: [group]) }
 
       it { should_not be_able_to(:manage, FactoryGirl.create(:group)) }
       it { should_not be_able_to(:manage, FactoryGirl.create(:admin_user, email: "user@example.com")) }
+
+      context "and resource shares group" do
+        it { should be_able_to(:manage, FactoryGirl.create(:chalkler, groups: [group])) }
+        it { should be_able_to(:manage, FactoryGirl.create(:category, groups: [group])) }
+        it { should be_able_to(:manage, FactoryGirl.create(:lesson, groups: [group])) }
+        # these need to be a bit more complex: group < lesson < booking < payment
+        pending { should be_able_to(:manage, FactoryGirl.create(:booking)) }
+        pending { should be_able_to(:manage, FactoryGirl.create(:payment)) }
+      end
     end
   end
 end

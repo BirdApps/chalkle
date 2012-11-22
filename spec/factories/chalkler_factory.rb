@@ -4,5 +4,6 @@ FactoryGirl.define do
     email Faker::Internet.email
     meetup_id { (0...8).map{ rand(10) }.join }
     bio Faker::Lorem.paragraph
+    groups {[ FactoryGirl.create(:group) ]}
   end
 end
