@@ -1,4 +1,5 @@
-ActiveAdmin.register Lesson do #, as: 'Class' do
+# ActiveAdmin.register Lesson, as: 'Class' do
+ActiveAdmin.register Lesson do
   config.sort_order = "created_at_desc"
 
   filter :groups_name, :as => :select, :label => "Group",
