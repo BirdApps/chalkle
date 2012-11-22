@@ -4,6 +4,7 @@ class Chalkler < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable
 
   attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me
+
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates_uniqueness_of :email, allow_blank: true
 
@@ -13,9 +14,6 @@ class Chalkler < ActiveRecord::Base
   has_many :lessons, :through => :bookings
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
-
-
-  default_scope order(:name)
 
   before_create :set_from_meetup_data
 
