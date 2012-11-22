@@ -1,8 +1,13 @@
-ActiveAdmin.register Lesson, as: 'Class' do
+ActiveAdmin.register Lesson do #, as: 'Class' do
   config.sort_order = "created_at_desc"
 
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
+  filter :name
+  filter :category
+  filter :teacher
+  filter :cost
+  filter :start_at
 
   index do
     column :id
@@ -58,5 +63,4 @@ ActiveAdmin.register Lesson, as: 'Class' do
     end
     f.buttons
   end
-
 end

@@ -1,11 +1,4 @@
 ActiveAdmin.register Chalkler do
-  controller do
-    load_and_authorize_resource :except => :index
-    def scoped_collection
-      end_of_association_chain.accessible_by(current_ability)
-    end
-  end
-
   config.sort_order = "created_at_desc"
 
   filter :groups_name, :as => :select, :label => "Group",
@@ -28,6 +21,7 @@ ActiveAdmin.register Chalkler do
     column :created_at
     default_actions
   end
+
   show title: :name do |chalkler|
     attributes_table do
       row :name
@@ -60,5 +54,4 @@ ActiveAdmin.register Chalkler do
 
     f.buttons
   end
-
 end

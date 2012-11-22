@@ -1,7 +1,4 @@
 ActiveAdmin.register Group do
-  menu :if => proc{ can?(:manage, AdminUser) }
-  controller.authorize_resource
-
   config.sort_order = "name_asc"
 
   index do
