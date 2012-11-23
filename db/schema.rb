@@ -56,9 +56,8 @@ ActiveRecord::Schema.define(:version => 20121120030116) do
     t.integer  "guests"
     t.boolean  "paid"
     t.text     "meetup_data"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.decimal  "cost",        :precision => 8, :scale => 2
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "categories", :force => true do |t|
