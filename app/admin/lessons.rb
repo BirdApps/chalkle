@@ -3,6 +3,11 @@ ActiveAdmin.register Lesson, as: 'Class' do
 
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
+  filter :name
+  filter :category
+  filter :teacher
+  filter :cost
+  filter :start_at
 
   index do
     column :id
