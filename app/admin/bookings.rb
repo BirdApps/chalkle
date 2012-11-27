@@ -24,7 +24,7 @@ ActiveAdmin.register Booking do
       booking.lesson.groups.collect{|g| g.name}.join(", ")
     end
     column :status
-    column :cost
+    column :cost, :sortable => false
     column :paid
     column :guests
     column :created_at
