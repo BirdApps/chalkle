@@ -8,7 +8,6 @@ describe Booking do
   it { should validate_presence_of(:lesson_id) }
   it { should validate_presence_of(:chalkler_id) }
   it { should validate_uniqueness_of(:chalkler_id) }
-  it { should validate_uniqueness_of(:meetup_id) }
 
   describe "#cost" do
     subject { booking }
