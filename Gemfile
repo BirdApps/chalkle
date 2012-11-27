@@ -16,7 +16,9 @@ gem 'analytical'
 gem 'jquery-rails'
 
 #apis
+# rmeetup2 to be phased out.
 gem 'rmeetup2'
+gem 'rMeetup', :require => "rmeetup"
 gem 'xeroizer'
 
 #interface
