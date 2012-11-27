@@ -12,7 +12,7 @@ ActiveAdmin.register Booking do
 
   controller do
     def scoped_collection
-      Booking.where(status: "yes")
+      Booking.where("status = 'yes' OR status = 'waitlist'")
     end
   end
 
@@ -23,7 +23,8 @@ ActiveAdmin.register Booking do
     column :groups do |booking|
       booking.lesson.groups.collect{|g| g.name}.join(", ")
     end
-    column :cost
+    column :status
+    column :cost, :sortable => false
     column :paid
     column :guests
     column :created_at

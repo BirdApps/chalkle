@@ -13,6 +13,10 @@ class Lesson < ActiveRecord::Base
 
   before_create :set_from_meetup_data
 
+  def unpaid_count
+    bookings.confirmed.count - bookings.paid.count
+  end
+
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
