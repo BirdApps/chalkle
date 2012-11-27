@@ -19,6 +19,7 @@ ActiveAdmin.register Lesson do
     column :category
     column :teacher
     column :cost
+    column "Unpaid", :unpaid_count, sortable: false
     column :start_at
     column :created_at
     default_actions
