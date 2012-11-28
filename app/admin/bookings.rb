@@ -1,11 +1,4 @@
 ActiveAdmin.register Booking do
-  controller do
-    load_and_authorize_resource :except => :index
-    def scoped_collection
-      end_of_association_chain.accessible_by(current_ability)
-    end
-  end
-
   config.sort_order = "created_at_desc"
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
@@ -18,9 +11,9 @@ ActiveAdmin.register Booking do
   filter :created_at
 
   controller do
-    # def scoped_collection
-      # Booking.where(status: "yes")
-    # end
+    def scoped_collection
+      Booking.where("status = 'yes' OR status = 'waitlist'")
+    end
   end
 
   index do
@@ -30,7 +23,8 @@ ActiveAdmin.register Booking do
     column :groups do |booking|
       booking.lesson.groups.collect{|g| g.name}.join(", ")
     end
-    column :cost
+    column :status
+    column :cost, :sortable => false
     column :paid
     column :guests
     column :created_at
@@ -59,7 +53,6 @@ ActiveAdmin.register Booking do
     f.inputs :details do
       f.input :lesson
       f.input :chalkler
-      f.input :cost
       f.input :guests
       f.input :status, as: :select, collection: ["yes", "no", "waiting"]
       f.input :paid
@@ -67,5 +60,4 @@ ActiveAdmin.register Booking do
 
     f.buttons
   end
-
 end

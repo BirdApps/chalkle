@@ -2,7 +2,9 @@
   %thead
     %tr
       %th Name
+      %th Email
       %th Guests
+      %th Status
       %th Cost
       %th Paid
       %th Answers
@@ -11,7 +13,9 @@
     -bookings.each do |b|
       %tr
         %td= link_to b.chalkler.name, admin_chalkler_path(b.chalkler)
+        %td= mail_to b.chalkler.email
         %td= b.guests
+        %td= b.status
         %td= b.cost
         %td= b.paid
         %td= b.meetup_data["answers"].join('<br/>') if b.meetup_data["answers"].present?

@@ -1,19 +1,16 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid, :cost
+  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid
 
   belongs_to :lesson
   belongs_to :chalkler
-
   has_one :payment
 
   scope :paid, where(paid: true)
-  scope :nonzero, where("cost > 0")
   scope :unpaid, where("paid IS NOT true")
   scope :confirmed, where(status: "yes")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_uniqueness_of :meetup_id, allow_nil: true
-
   validates_presence_of :lesson_id
   validates_presence_of :chalkler_id
 
@@ -28,8 +25,15 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  def cost
+    lesson.cost * (1 + guests) if lesson.cost.present?
+  end
+
+  def self.nonzero
+    joins(:lesson).where("lessons.cost > 0")
+  end
+
   def set_from_meetup_data
-    self.cost = lesson.cost * (1 + guests) if lesson.cost.present?
     return if meetup_data.empty?
     self.created_at = meetup_data["created"]
     self.updated_at = meetup_data["updated"]

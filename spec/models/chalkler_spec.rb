@@ -7,41 +7,18 @@ describe Chalkler do
   it { should validate_uniqueness_of :email }
 
   describe "user import" do
+    result = MeetupApiStub.chalkler_response
 
-    # ugly I know
-    result = {
-      "lon"=>174.77999877929688,
-      "link"=>"http://www.meetup.com/members/12345678",
-      "self"=>{"common"=>{}},
-      "lang"=>"en_US",
-      "photo"=>{
-        "photo_link"=>"http://photos4.meetupstatic.com/photos/member/a/7/a/0/member_12345678.jpeg",
-        "thumb_link"=>"http://photos4.meetupstatic.com/photos/member/a/7/a/0/thumb_12345678.jpeg",
-        "photo_id"=>12345678
-      },
-      "city"=>"Wellington",
-      "country"=>"nz",
-      "id"=>12345678,
-      "visited"=>1349206517000,
-      "topics"=>[
-        {"id"=>638, "urlkey"=>"hiking", "name"=>"Hiking"},
-        {"id"=>7203, "urlkey"=>"edtech", "name"=>"Education & Technology"},
-        {"id"=>19491, "urlkey"=>"outdoor-activities", "name"=>"Outdoor activities"}
-      ],
-      "joined"=>1346658337000,
-      "bio"=>"Web dev who loves coffee yoga and every new moment",
-      "name"=>"Caitlin Oscars",
-      "other_services"=>{},
-      "lat"=>-41.279998779296875
-    }
-
-    pending "creates a new user using meetup data" do
-      Chalkler.create_from_meetup_hash(result, group).should be_true
+    it "creates a new user using meetup data" do
+      Chalkler.create_from_meetup_hash(result, FactoryGirl.create(:group)).should be_true
     end
 
-    pending "will update an existing user using meetup data" do
-      c = FactoryGirl.create(:chalkler, name: "Jimmy Jones")
-      Chalkler.create_from_meetup_hash(result)
+    it "will update an existing user using meetup data" do
+      Chalkler.create_from_meetup_hash(result, FactoryGirl.create(:group))
+      c = Chalkler.find_by_name "Caitlin Oscars"
+      c.name = "John"
+      c.save
+      Chalkler.create_from_meetup_hash(result, FactoryGirl.create(:group))
       c.reload.name.should == "Caitlin Oscars"
     end
   end

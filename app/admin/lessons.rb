@@ -1,4 +1,5 @@
-ActiveAdmin.register Lesson, as: 'Class' do
+# ActiveAdmin.register Lesson, as: 'Class' do
+ActiveAdmin.register Lesson do
   config.sort_order = "created_at_desc"
 
   filter :groups_name, :as => :select, :label => "Group",
@@ -18,6 +19,7 @@ ActiveAdmin.register Lesson, as: 'Class' do
     column :category
     column :teacher
     column :cost
+    column "Unpaid", :unpaid_count, sortable: false
     column :start_at
     column :created_at
     default_actions
@@ -63,5 +65,4 @@ ActiveAdmin.register Lesson, as: 'Class' do
     end
     f.buttons
   end
-
 end
