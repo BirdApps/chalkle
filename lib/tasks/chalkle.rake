@@ -63,38 +63,10 @@ begin
     task "load_bookings" => :environment do
       l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(10).to_a
       l.each do |event_id|
-        result = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','), fields: 'host', page: 1)
-        c = get_page_count(result)
-        for i in 0...c do
-          results = RMeetup2::Base.get(:rsvps, event_id: event_id.join(','), offset: i, fields: 'host' )
-          puts results.data["meta"]
-          results.data["results"].each do |r|
-            Booking.create_from_meetup_hash(r)
-          end
-        end
-      end
-    end
-
-    desc "Pull rsvps from meetup"
-    task "cycle_bookings" => :environment do
-      l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(10).to_a
-      l.each do |event_id|
-        puts event_id.count
         result = RMeetup::Client.fetch(:rsvps, {event_id: event_id.join(','),  fields: 'host'})
-        puts result.count
         result.each do |r|
           Booking.create_from_meetup_hash(r.rsvp)
         end
-      end
-    end
-
-    desc "Pull test rsvps from meetup"
-    task "load_booking" => :environment do
-      results = RMeetup2::Base.get(:rsvps, event_id: 90110032, fields: 'host' )
-      # puts results.data["meta"]
-      puts "retrieved #{results.data["results"].count} results"
-      results.data["results"].each do |r|
-        Booking.create_from_meetup_hash(r)
       end
     end
 
