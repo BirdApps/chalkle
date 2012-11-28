@@ -10,7 +10,6 @@ class Booking < ActiveRecord::Base
   scope :confirmed, where(status: "yes")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
-  # validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :lesson_id
   validates_presence_of :chalkler_id
 
