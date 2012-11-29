@@ -8,7 +8,6 @@ describe Booking do
   it { should validate_presence_of(:lesson_id) }
   it { should validate_presence_of(:chalkler_id) }
   it { should validate_uniqueness_of(:chalkler_id) }
-  it { should validate_uniqueness_of(:meetup_id) }
 
   describe "#cost" do
     subject { booking }
@@ -56,4 +55,26 @@ describe Booking do
     end
   end
 
+  describe ".create_from_meetup_hash" do
+
+    let(:result) { MeetupApiStub.booking_response }
+    let!(:chalkler) { FactoryGirl.create(:chalkler, meetup_id: 12345678) }
+    let!(:lesson) { FactoryGirl.create(:lesson, meetup_id: 12345678) }
+    let(:return_value) { Booking.create_from_meetup_hash(result) }
+
+    context "creates a valid Booking" do
+      specify { return_value.should be_true }
+    end
+
+    context "updates existing booking" do
+      let!(:booking) { FactoryGirl.create(:booking, meetup_id: 987654, chalkler: chalkler, lesson: lesson) }
+
+      before do
+        booking.save
+        Booking.create_from_meetup_hash result
+      end
+
+      pending { booking.meetup_id.should == 12345678 }
+    end
+  end
 end

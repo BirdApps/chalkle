@@ -10,7 +10,6 @@ class Booking < ActiveRecord::Base
   scope :confirmed, where(status: "yes")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
-  validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :lesson_id
   validates_presence_of :chalkler_id
 
@@ -50,7 +49,8 @@ class Booking < ActiveRecord::Base
   def self.create_from_meetup_hash result
     require 'iconv'
     conv = Iconv.new('UTF-8','LATIN1')
-    b = Booking.find_by_meetup_id(result["id"]) || Booking.new
+
+    b = Booking.joins([:lesson, :chalkler]).where("lessons.meetup_id = ? AND chalklers.meetup_id = ?", result["event_id"], result["member_id"]).readonly(false).first_or_initialize
     b.chalkler = Chalkler.find_by_meetup_id result["member_id"]
     b.lesson = Lesson.find_by_meetup_id result["event_id"]
     b.meetup_id = result["id"]

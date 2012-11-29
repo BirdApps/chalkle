@@ -12,7 +12,7 @@ ActiveAdmin.register Booking do
 
   controller do
     def scoped_collection
-      Booking.where("status = 'yes' OR status = 'waitlist'")
+      Booking.where("bookings.status = 'yes' OR bookings.status = 'waitlist'")
     end
   end
 
