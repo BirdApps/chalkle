@@ -47,16 +47,13 @@ class Booking < ActiveRecord::Base
   end
 
   def self.create_from_meetup_hash result
-    require 'iconv'
-    conv = Iconv.new('UTF-8','LATIN1')
-
     b = Booking.joins([:lesson, :chalkler]).where("lessons.meetup_id = ? AND chalklers.meetup_id = ?", result["event_id"], result["member_id"]).readonly(false).first_or_initialize
     b.chalkler = Chalkler.find_by_meetup_id result["member_id"]
     b.lesson = Lesson.find_by_meetup_id result["event_id"]
     b.meetup_id = result["id"]
     b.guests = result["guests"]
     b.status = result["response"]
-    b.meetup_data = conv.iconv(result.to_json)
+    b.meetup_data = result.to_json
     b.save
   end
 end
