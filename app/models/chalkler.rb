@@ -39,14 +39,11 @@ class Chalkler < ActiveRecord::Base
   end
 
   def self.create_from_meetup_hash(result, group)
-    require 'iconv'
-    conv = Iconv.new('UTF-8','LATIN1')
-
-    c = Chalkler.find_by_meetup_id(result["id"]) || Chalkler.new
-    c.name = conv.iconv(result["name"])
+    c = Chalkler.find_or_initialize_by_meetup_id(result["id"])
+    c.name = result["name"]
     c.meetup_id = result["id"]
-    c.bio = conv.iconv(result["bio"])
-    c.meetup_data = conv.iconv(result.to_json)
+    c.bio = result["bio"]
+    c.meetup_data = result.to_json
     c.save
     c.groups<< group unless c.groups.exists? group
   end
