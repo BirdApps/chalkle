@@ -32,10 +32,10 @@ ActiveAdmin.register Chalkler do
       row :email
       row :bio
       row :teaching do
-        raw chalkler.lessons_taught.collect{|l| link_to "#{l.name} - #{l.start_at}", admin_class_path(l)}.join('<br/> ')
+        raw chalkler.lessons_taught.collect{|l| link_to "#{l.name} - #{l.start_at}", admin_lesson_path(l)}.join('<br/> ')
       end
       row :lessons do
-        raw chalkler.lessons.collect{|l| link_to "#{l.name} - #{l.start_at}", admin_class_path(l)}.join('<br/> ')
+        raw chalkler.lessons.collect{|l| link_to "#{l.name} - #{l.start_at}", admin_lesson_path(l)}.join('<br/> ')
       end
       row :meetup_data
       row :created_at
