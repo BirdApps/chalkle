@@ -1,0 +1,21 @@
+%table
+  %thead
+    %tr
+      %th Name
+      %th Guests
+      %th Cost
+      %th Paid
+      %th Answers
+      %th Email
+      %th Booking
+  %tbody
+    -bookings.each do |b|
+      %tr
+        %td= link_to b.chalkler.name, admin_chalkler_path(b.chalkler)
+        %td= b.guests
+        %td= b.cost
+        %td= b.paid
+        %td= b.meetup_data["answers"].join('<br/>') if b.meetup_data["answers"].present?
+        %td= link_to b.chalkler.email, admin_chalkler_path(b.chalkler)
+        %td= link_to 'View', admin_booking_path(b)
+
