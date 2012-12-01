@@ -27,26 +27,14 @@ module MeetupApiStub
     }
   end
 
-  def self.booking_response
-    {
-      "zip"=>"meetup5",
-      "lon"=>"174.77999877929688",
-      "photo_url"=>"http://photos1.meetupstatic.com/photos/member/2/9/member_12345678.jpeg",
-      "link"=>"http://www.meetup.com/members/12345678",
-      "state"=>"",
-      "answers"=>["It's ALL gonna be awesome!"],
-      "guests"=>"1",
-      "event_id"=>12345678,
-      "member_id"=>12345678,
-      "city"=>"Wellington",
-      "country"=>"nz",
-      "response"=>"yes",
-      "coord"=>"-41.279998779296875",
-      "id"=>"12345678",
-      "updated"=>"Sun Oct 14 20:27:53 EDT 2012",
-      "created"=>"Sun Oct 14 20:26:27 EDT 2012",
-      "name"=>"jane whitcroft",
-      "comment"=>""
-    }
+  class BookingResponse
+    attr_reader :rsvp_id, :member, :event, :guests, :response
+    def initialize
+      @rsvp_id = 12345678
+      @member = { "member_id" => 12345678 }
+      @event = { "id" => 12345678 }
+      @guests = 1
+      @response = "yes"
+    end
   end
 end
