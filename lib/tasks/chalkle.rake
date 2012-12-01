@@ -65,7 +65,7 @@ begin
       l.each do |event_id|
         result = RMeetup::Client.fetch(:rsvps, {event_id: event_id.join(','),  fields: 'host'})
         result.each do |r|
-          Booking.create_from_meetup_hash(r.rsvp)
+          Booking.create_from_meetup_hash(r)
         end
       end
     end
