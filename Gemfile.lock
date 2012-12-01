@@ -1,3 +1,9 @@
+GIT
+  remote: git@github.com:kiesia/rmeetup.git
+  revision: 1659f5e71c94c54afbd7195f977d90077ce20df3
+  specs:
+    rMeetup (1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -228,7 +234,6 @@ GEM
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
-    rMeetup (1.0)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -403,7 +408,7 @@ DEPENDENCIES
   mailcatcher
   nifty-generators (>= 0.4.4)
   pg
-  rMeetup
+  rMeetup!
   rails (= 3.2.8)
   rmeetup2
   rspec

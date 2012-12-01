@@ -18,7 +18,7 @@ gem 'jquery-rails'
 #apis
 # rmeetup2 to be phased out.
 gem 'rmeetup2'
-gem 'rMeetup', :require => "rmeetup"
+gem 'rMeetup', :git => "git@github.com:kiesia/rmeetup.git", :require => "rmeetup"
 gem 'xeroizer'
 
 #interface
