@@ -27,8 +27,9 @@ module MeetupApiStub
     }
   end
 
-  class BookingResponse
+  class Rsvp
     attr_reader :rsvp_id, :member, :event, :guests, :response
+
     def initialize
       @rsvp_id = 12345678
       @member = { "member_id" => 12345678 }

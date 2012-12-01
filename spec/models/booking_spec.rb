@@ -57,7 +57,7 @@ describe Booking do
 
   describe ".create_from_meetup_hash" do
 
-    let(:result) { MeetupApiStub::BookingResponse.new }
+    let(:result) { MeetupApiStub::Rsvp.new }
     let!(:chalkler) { FactoryGirl.create(:chalkler, meetup_id: 12345678) }
     let!(:lesson) { FactoryGirl.create(:lesson, meetup_id: 12345678) }
     let(:return_value) { Booking.create_from_meetup_hash(result) }
