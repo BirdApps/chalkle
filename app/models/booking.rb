@@ -6,8 +6,10 @@ class Booking < ActiveRecord::Base
   has_one :payment
 
   scope :paid, where(paid: true)
-  scope :unpaid, where("paid IS NOT true")
+  scope :unpaid, where("bookings.paid IS NOT true")
   scope :confirmed, where(status: "yes")
+  scope :waitlist, where(status: "waitlist")
+  scope :billable, joins(:lesson).where("lessons.cost > 0")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_presence_of :lesson_id
@@ -26,10 +28,6 @@ class Booking < ActiveRecord::Base
 
   def cost
     lesson.cost * (1 + guests) if lesson.cost.present?
-  end
-
-  def self.nonzero
-    joins(:lesson).where("lessons.cost > 0")
   end
 
   def set_from_meetup_data
