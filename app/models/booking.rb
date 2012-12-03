@@ -6,9 +6,10 @@ class Booking < ActiveRecord::Base
   has_one :payment
 
   scope :paid, where(paid: true)
-  scope :unpaid, where("paid IS NOT true")
+  scope :unpaid, where("bookings.paid IS NOT true")
   scope :confirmed, where(status: "yes")
   scope :billable, joins(:lesson).where("lessons.cost > 0")
+  scope :waitlist, where(status: "waitlist")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_presence_of :lesson_id
