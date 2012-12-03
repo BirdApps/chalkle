@@ -4,6 +4,21 @@ GIT
   specs:
     rMeetup (1.0)
 
+GIT
+  remote: git@github.com:kiesia/xeroizer.git
+  revision: 192c2c922f50a22ee767a8d43ca8877a9d0b03b9
+  specs:
+    xeroizer (2.15.2)
+      activesupport
+      activesupport
+      builder (>= 2.1.2)
+      builder (>= 2.1.2)
+      i18n
+      nokogiri
+      nokogiri
+      oauth (= 0.4.5)
+      oauth (>= 0.3.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -354,16 +369,6 @@ GEM
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
-    xeroizer (2.15.1)
-      activesupport
-      activesupport
-      builder (>= 2.1.2)
-      builder (>= 2.1.2)
-      i18n
-      nokogiri
-      nokogiri
-      oauth (= 0.4.5)
-      oauth (>= 0.3.6)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -423,4 +428,4 @@ DEPENDENCIES
   tomdoc
   uglifier (>= 1.0.3)
   webrat
-  xeroizer
+  xeroizer!
