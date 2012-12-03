@@ -31,17 +31,17 @@ describe Booking do
     end
   end
 
-  describe ".nonzero" do
+  describe ".billable" do
     context "excludes bookings with a zero cost" do
       let(:lesson) { FactoryGirl.create(:lesson, cost: 0) }
       let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
-      it { Booking.nonzero.should_not include(booking) }
+      it { Booking.billable.should_not include(booking) }
     end
 
     context "includes bookings that have a cost" do
       let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
       let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
-      it { Booking.nonzero.should include(booking) }
+      it { Booking.billable.should include(booking) }
     end
   end
 
