@@ -31,6 +31,54 @@ describe Booking do
     end
   end
 
+  describe ".paid" do
+    context "excludes unpaid bookings" do
+      let(:booking) { FactoryGirl.create(:booking, paid: nil) }
+      it { Booking.paid.should_not include(booking) }
+    end
+
+    context "includes paid bookings" do
+      let(:booking) { FactoryGirl.create(:booking, paid: true) }
+      it { Booking.paid.should include(booking) }
+    end
+  end
+
+  describe ".unpaid" do
+    context "excludes paid bookings" do
+      let(:booking) { FactoryGirl.create(:booking, paid: true) }
+      it { Booking.unpaid.should_not include(booking) }
+    end
+
+    context "includes unpaid bookings" do
+      let(:booking) { FactoryGirl.create(:booking, paid: nil) }
+      it { Booking.unpaid.should include(booking) }
+    end
+  end
+
+  describe ".confirmed" do
+    context "excludes unconfirmed bookings" do
+      let(:booking) { FactoryGirl.create(:booking, status: "waitlist") }
+      it { Booking.confirmed.should_not include(booking) }
+    end
+
+    context "includes confirmed bookings" do
+      let(:booking) { FactoryGirl.create(:booking, status: "yes") }
+      it { Booking.confirmed.should include(booking) }
+    end
+  end
+
+  describe ".waitlist" do
+    context "excludes confirmed bookings" do
+      let(:booking) { FactoryGirl.create(:booking, status: "yes") }
+      it { Booking.waitlist.should_not include(booking) }
+    end
+
+    context "includes waitlisted bookings" do
+      let(:booking) { FactoryGirl.create(:booking, status: "waitlist") }
+      it { Booking.waitlist.should include(booking) }
+    end
+  end
+
   describe ".billable" do
     context "excludes bookings with a zero cost" do
       let(:lesson) { FactoryGirl.create(:lesson, cost: 0) }
