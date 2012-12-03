@@ -1,7 +1,6 @@
 ActiveAdmin.register Booking do
   scope :paid
   scope :confirmed
-  scope :waiting
   scope :billable
   config.sort_order = "created_at_desc"
 
