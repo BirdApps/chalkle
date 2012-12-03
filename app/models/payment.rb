@@ -24,7 +24,7 @@ class Payment < ActiveRecord::Base
   end
 
   def self.load_all_from_xero
-    transactions = Payment.xero.BankTransaction.all(where: {type: 'RECEIVE'})
+    transactions = Payment.xero.BankTransaction.all(where: {type: 'RECEIVE', is_reconciled: false})
     transactions.each do |t|
       Payment.create(
         xero_id: t.bank_transaction_id,
