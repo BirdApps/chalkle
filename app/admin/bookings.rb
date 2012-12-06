@@ -58,7 +58,7 @@ ActiveAdmin.register Booking do
       f.input :lesson
       f.input :chalkler
       f.input :guests, :required => true
-      f.input :status, as: :select, collection: ["yes", "no", "waitlist"]
+      f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
     end
 
