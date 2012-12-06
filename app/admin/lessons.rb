@@ -38,7 +38,7 @@ ActiveAdmin.register Lesson do
       row :start_at
       row :duration
       row :bookings do
-        "#{lesson.bookings.paid.count} of #{lesson.bookings.confirmed.count} have paid "
+        "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid"
       end
       row :rsvp_list do
         render partial: '/shared/rsvp_list', locals: {bookings: lesson.bookings.confirmed}
