@@ -1,12 +1,12 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled
+  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference
 
   belongs_to :booking
   has_one :chalkler, through: :booking
 
   serialize :xero_data
 
-  validates_uniqueness_of :xero_id
+  validates_uniqueness_of :reference
 
   scope :unreconciled, where("reconciled IS NOT true")
   default_scope order("date desc")
@@ -28,6 +28,7 @@ class Payment < ActiveRecord::Base
     transactions.each do |t|
       Payment.create(
         xero_id: t.bank_transaction_id,
+        reference: t.reference,
         xero_contact_id: t.contact.id,
         xero_contact_name: t.contact.name,
         date: t.date
