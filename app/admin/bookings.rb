@@ -29,7 +29,9 @@ ActiveAdmin.register Booking do
     end
     column :status
     column :cost, :sortable => false
-    column :paid
+    column :paid do |booking|
+      booking.set_paid
+    end
     column :guests
     column :created_at
     default_actions
@@ -57,7 +59,7 @@ ActiveAdmin.register Booking do
     f.inputs :details do
       f.input :lesson
       f.input :chalkler
-      f.input :guests, :required => true
+      f.input :guests
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
     end
