@@ -28,7 +28,12 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    lesson.cost*(1 + guests) if lesson.cost.present?
+    if lesson.cost.present? && guests.present?
+      lesson.cost*(1 + guests) if lesson.cost.present?
+    end
+    if lesson.cost.present?
+      lesson.cost*(1 + 0)
+    end
   end
 
   def set_from_meetup_data
@@ -50,7 +55,7 @@ class Booking < ActiveRecord::Base
     b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
     b.lesson = Lesson.find_by_meetup_id result.event["id"]
     b.meetup_id = result.rsvp_id
-    b.guests = result.guests
+    b.guests = result.guests 
     b.status = result.response
     b.meetup_data = result.to_json
     b.save
