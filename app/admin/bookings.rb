@@ -26,12 +26,11 @@ ActiveAdmin.register Booking do
     column :chalkler
     column :groups do |booking|
       booking.lesson.groups.collect{|g| g.name}.join(", ")
+      booking.set_paid
     end
     column :status
     column :cost, :sortable => false
-    column :paid do |booking|
-      booking.set_paid
-    end
+    column :paid 
     column :guests
     column :created_at
     default_actions
@@ -63,7 +62,6 @@ ActiveAdmin.register Booking do
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
     end
-
     f.buttons
   end
 end
