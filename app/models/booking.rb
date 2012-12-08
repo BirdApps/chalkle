@@ -36,6 +36,13 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  def set_paid
+    if self.lesson.cost.present? && self.lesson.cost==0.0
+      self.paid=true
+      self.save
+    end
+  end
+
   def set_from_meetup_data
     return if meetup_data.empty?
     self.created_at = meetup_data["created"]
