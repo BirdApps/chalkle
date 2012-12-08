@@ -7,8 +7,8 @@ ActiveAdmin.register Booking do
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
-  filter :lesson
-  filter :chalkler
+  filter :lesson, as: :select, collection: Lesson.order("name ASC").all
+  filter :chalkler, as: :select, collection: Chalkler.order("name ASC").all
   filter :cost
   filter :paid
   filter :guests
