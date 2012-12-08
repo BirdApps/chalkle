@@ -6,7 +6,7 @@ class Payment < ActiveRecord::Base
 
   serialize :xero_data
 
-  validates_uniqueness_of :reference
+  validates_uniqueness_of :xero_id
 
   scope :unreconciled, where("reconciled IS NOT true")
   default_scope order("date desc")
