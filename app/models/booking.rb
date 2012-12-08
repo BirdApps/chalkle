@@ -37,8 +37,14 @@ class Booking < ActiveRecord::Base
   end
 
   def set_paid
+    #set paid to true for free classes
     if self.lesson.cost.present? && self.lesson.cost==0.0
-      self.paid=true
+      self.paid = true
+      self.save
+    end
+    #set paid to true for teachers
+    if self.lesson.teacher_id.present? && self.chalkler_id==self.lesson.teacher_id
+      self.paid = true
       self.save
     end
   end
