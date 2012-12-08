@@ -57,7 +57,7 @@ ActiveAdmin.register Booking do
   form do |f|
     f.inputs :details do
       f.input :lesson
-      f.input :chalkler
+      f.input :chalkler, as: :select, collection: Chalkler.order("name ASC").all
       f.input :guests
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
