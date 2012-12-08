@@ -1,4 +1,8 @@
 ActiveAdmin.register Booking do
+  scope :paid
+  scope :confirmed
+  scope :billable
+  scope :waitlist
   config.sort_order = "created_at_desc"
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
