@@ -55,7 +55,7 @@ ActiveAdmin.register Lesson do
     f.inputs :details do
       f.input :name
       f.input :category
-      f.input :teacher
+      f.input :teacher, as: :select, collection: Chalkler.order("name ASC").all
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost
