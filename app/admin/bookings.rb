@@ -26,7 +26,6 @@ ActiveAdmin.register Booking do
     column :chalkler
     column :groups do |booking|
       booking.lesson.groups.collect{|g| g.name}.join(", ")
-      booking.set_paid
     end
     column :status
     column :cost, :sortable => false
@@ -48,10 +47,8 @@ ActiveAdmin.register Booking do
       row :meetup_data
       row :created_at
       row :updated_at
-
     end
     active_admin_comments
-
   end
 
   form do |f|
