@@ -24,6 +24,12 @@ describe Booking do
       specify { subject.cost.should == 10 }
     end
 
+    context "lesson has cost and booking has no guests" do
+      let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
+      let(:booking) { FactoryGirl.create(:booking, guests: nil, lesson: lesson) }
+      specify { subject.cost.to_f.should == 10 }
+    end
+
     context "lesson has cost and booking has guests" do
       let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
       let(:booking) { FactoryGirl.create(:booking, guests: 9, lesson: lesson) }

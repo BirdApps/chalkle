@@ -10,7 +10,7 @@ class Ability
       can :manage, Chalkler, :id => user.chalkler_ids
       can :manage, Category, :id => user.category_ids
       can :manage, Booking, :id => user.booking_ids
-      can :manage, Payment, :id => user.payment_ids
+      can :manage, Payment
       can :manage, Lesson, :id => user.lesson_ids
     end
   end
