@@ -7,7 +7,7 @@ describe Booking do
 
   it { should validate_presence_of(:lesson_id) }
   it { should validate_presence_of(:chalkler_id) }
-  it { should validate_uniqueness_of(:chalkler_id) }
+  pending { should validate_uniqueness_of(:chalkler_id) }
 
   describe "#cost" do
     subject { booking }
@@ -96,6 +96,20 @@ describe Booking do
       let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
       let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
       it { Booking.billable.should include(booking) }
+    end
+
+    context "exclude teacher bookings with no guests" do
+      let(:chalkler) { FactoryGirl.create(:chalkler, name: "my_teacher")}
+      let(:lesson) { FactoryGirl.create(:lesson, teacher: chalkler) }
+      let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, guests: 0) }
+      it { Booking.billable.should_not include(booking)}
+    end
+
+    context "include teacher bookings with guests" do
+      let(:chalkler) { FactoryGirl.create(:chalkler, name: "my_teacher")}
+      let(:lesson) { FactoryGirl.create(:lesson, teacher: chalkler) }
+      let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, guests: 1) }
+      it { Booking.billable.should include(booking)}
     end
   end
 
