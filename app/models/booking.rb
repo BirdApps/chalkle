@@ -9,8 +9,8 @@ class Booking < ActiveRecord::Base
   scope :unpaid, where("bookings.paid IS NOT true")
   scope :confirmed, where(status: "yes")
   scope :waitlist, where(status: "waitlist")
-  scope :interested, where("bookings.status='yes' OR bookings.status='waitlist' OR bookings.status='no-show' ")
-  scope :billable, joins(:lesson).where("lessons.cost > 0 and bookings.status='yes' ")
+  scope :interested, where("bookings.status='yes' OR bookings.status='waitlist' OR bookings.status='no-show'")
+  scope :billable, joins(:lesson).where(" (lessons.cost > 0 AND bookings.status='yes') AND ( (bookings.chalkler_id != lessons.teacher_id) OR (bookings.guests>0) )")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_presence_of :lesson_id
@@ -30,19 +30,6 @@ class Booking < ActiveRecord::Base
   def cost
     seats = (guests.present? && guests + 1) || 1
     lesson.cost * seats if lesson.cost.present?
-  end
-
-  def set_paid
-    #set paid to true for free classes
-    if self.lesson.cost.present? && self.lesson.cost==0.0
-      self.paid = true
-      self.save
-    end
-    #set paid to true for teachers
-    if self.lesson.teacher_id.present? && self.chalkler_id==self.lesson.teacher_id
-      self.paid = true
-      self.save
-    end
   end
 
   def set_from_meetup_data
