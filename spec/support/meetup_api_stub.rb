@@ -28,7 +28,7 @@ module MeetupApiStub
   end
 
   class Rsvp
-    attr_reader :rsvp_id, :member, :event, :guests, :response
+    attr_reader :rsvp_id, :member, :event, :guests, :response, :created, :mtime
 
     def initialize
       @rsvp_id = 12345678
@@ -36,6 +36,8 @@ module MeetupApiStub
       @event = { "id" => 12345678 }
       @guests = 1
       @response = "yes"
+      @created = 1351297791000
+      @mtime = 1351297791000
     end
   end
 end
