@@ -36,9 +36,8 @@ describe AdminUser do
         it { should be_able_to(:manage, FactoryGirl.create(:chalkler, groups: [group])) }
         it { should be_able_to(:manage, FactoryGirl.create(:category, groups: [group])) }
         it { should be_able_to(:manage, FactoryGirl.create(:lesson, groups: [group])) }
-        # these need to be a bit more complex: group < lesson < booking < payment
-        pending { should be_able_to(:manage, FactoryGirl.create(:booking)) }
-        pending { should be_able_to(:manage, FactoryGirl.create(:payment)) }
+        pending { should be_able_to(:manage, FactoryGirl.create(:booking, groups: [group])) }
+        it { should be_able_to(:manage, FactoryGirl.create(:payment)) }
       end
     end
   end
