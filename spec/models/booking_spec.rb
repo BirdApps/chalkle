@@ -98,18 +98,19 @@ describe Booking do
       it { Booking.billable.should include(booking) }
     end
 
-    context "exclude teacher bookings with no guests" do
-      let(:chalkler) { FactoryGirl.create(:chalkler, name: "my_teacher")}
-      let(:lesson) { FactoryGirl.create(:lesson, teacher: chalkler) }
-      let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, guests: 0) }
-      it { Booking.billable.should_not include(booking)}
-    end
+    context "teacher bookings" do
+      let(:teacher) { FactoryGirl.create(:chalkler, email: "example@testy.com", meetup_id: 1234)}
+      let(:lesson) { FactoryGirl.create(:lesson, teacher: teacher, cost: 10) }
 
-    context "include teacher bookings with guests" do
-      let(:chalkler) { FactoryGirl.create(:chalkler, name: "my_teacher")}
-      let(:lesson) { FactoryGirl.create(:lesson, teacher: chalkler) }
-      let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, guests: 1) }
-      it { Booking.billable.should include(booking)}
+      context "with guests" do
+        let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: teacher, guests: 1) }
+        it { Booking.billable.should include(booking) }
+      end
+
+      context "without guests" do
+        let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: teacher, guests: nil) }
+        it { Booking.billable.should_not include(booking) }
+      end
     end
   end
 
