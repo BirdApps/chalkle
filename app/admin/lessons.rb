@@ -4,9 +4,9 @@ ActiveAdmin.register Lesson do
 
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
-  filter :name
+  filter :name, as: :select, collection: Lesson.order("name ASC").all
   filter :category
-  filter :teacher
+  filter :teacher, as: :select, collection: Chalkler.order("name ASC").all
   filter :cost
   filter :start_at
 
@@ -38,10 +38,10 @@ ActiveAdmin.register Lesson do
       row :start_at
       row :duration
       row :bookings do
-        "#{lesson.bookings.paid.count} of #{lesson.bookings.confirmed.count} have paid "
+        "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid"
       end
       row :rsvp_list do
-        render partial: '/shared/rsvp_list', locals: {bookings: lesson.bookings.confirmed}
+        render partial: '/shared/rsvp_list', locals: {bookings: lesson.bookings.interested}
       end
       row :description do
         simple_format lesson.description
@@ -55,7 +55,7 @@ ActiveAdmin.register Lesson do
     f.inputs :details do
       f.input :name
       f.input :category
-      f.input :teacher
+      f.input :teacher, as: :select, collection: Chalkler.order("name ASC").all
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost

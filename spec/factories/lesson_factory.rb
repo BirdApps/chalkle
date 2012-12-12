@@ -1,11 +1,10 @@
 FactoryGirl.define do
   factory :lesson do
-    name { Faker::Lorem.words.join(" ") }
-    meetup_id { (0...8).map{ rand(10) }.join }
-    description Faker::Lorem.paragraph
+    name "Learning fun"
+    meetup_id 12345678
+    description "You should really learn, it's fun!"
     category
-    cost { rand(10) }
-    # teacher
+    cost 20
     groups {[ FactoryGirl.create(:group) ]}
 
     factory :lesson_with_bookings do

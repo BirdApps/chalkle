@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :chalkler do
-    name Faker::Name.name
-    email Faker::Internet.email
-    meetup_id { (0...8).map{ rand(10) }.join }
-    bio Faker::Lorem.paragraph
+    name "Ben Smith"
+    email "ben@hotmail.com"
+    meetup_id 12345678
+    bio "All about me!!"
     groups {[ FactoryGirl.create(:group) ]}
   end
 end

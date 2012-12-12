@@ -49,4 +49,18 @@ ActiveAdmin.register Payment do
     end
   end
 
+   form do |f|
+    f.inputs :details do
+      f.input :booking
+      f.input :xero_contact_name
+      f.input :xero_id, :label => "Unique Xero ID (required)", :required => "true"
+      f.input :date
+      f.input :total
+      f.input :reconciled
+      f.input :complete_record_downloaded, :as => :hidden, :value => "true"
+    end
+
+    f.buttons
+  end
+
 end
