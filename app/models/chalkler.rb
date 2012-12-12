@@ -27,7 +27,8 @@ class Chalkler < ActiveRecord::Base
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
-      JSON.parse(data)
+      member = JSON.parse(data)
+      member["member"]
     else
       {}
     end
@@ -39,10 +40,11 @@ class Chalkler < ActiveRecord::Base
   end
 
   def self.create_from_meetup_hash(result, group)
-    c = Chalkler.find_or_initialize_by_meetup_id(result["id"])
-    c.name = result["name"]
-    c.meetup_id = result["id"]
-    c.bio = result["bio"]
+    c = Chalkler.find_or_initialize_by_meetup_id(result.id)
+    c.name = result.name
+    c.meetup_id = result.id
+    c.email = result.email
+    c.bio = result.bio
     c.meetup_data = result.to_json
     c.save
     c.groups<< group unless c.groups.exists? group
