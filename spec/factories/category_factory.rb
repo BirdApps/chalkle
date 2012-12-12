@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :category do
-    name { Faker::Lorem.words.join(" ") }
+    name "Just a category"
     groups {[ FactoryGirl.create(:group) ]}
   end
 end
