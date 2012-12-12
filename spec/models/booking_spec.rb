@@ -125,8 +125,7 @@ describe Booking do
   end
 
   describe ".create_from_meetup_hash" do
-
-    let(:result) { MeetupApiStub::Rsvp.new }
+    let(:result) { MeetupApiStub::rsvp_response }
     let!(:chalkler) { FactoryGirl.create(:chalkler, meetup_id: 12345678) }
     let!(:lesson) { FactoryGirl.create(:lesson, meetup_id: 12345678) }
     let(:return_value) { Booking.create_from_meetup_hash(result) }
@@ -141,7 +140,7 @@ describe Booking do
         Booking.create_from_meetup_hash result
         @booking.reload
       end
-      it { @booking.guests.should == 1 }
+      specify { @booking.guests.should == 1 }
     end
   end
 end

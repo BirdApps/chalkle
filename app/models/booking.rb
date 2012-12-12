@@ -21,7 +21,8 @@ class Booking < ActiveRecord::Base
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
-      JSON.parse(data)
+      rsvp = JSON.parse(data)
+      rsvp["rsvp"]
     else
       {}
     end
@@ -34,8 +35,8 @@ class Booking < ActiveRecord::Base
 
   def set_from_meetup_data
     return if meetup_data.empty?
-    # self.created_at = Time.at(meetup_data["created"] / 1000)
-    # self.updated_at = Time.at(meetup_data["mtime"] / 1000)
+    self.created_at = Time.at(meetup_data["created"] / 1000)
+    self.updated_at = Time.at(meetup_data["mtime"] / 1000)
   end
 
   def name
