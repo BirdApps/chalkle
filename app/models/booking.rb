@@ -33,8 +33,8 @@ class Booking < ActiveRecord::Base
 
   def set_from_meetup_data
     return if meetup_data.empty?
-    self.created_at = meetup_data["created"]
-    self.updated_at = meetup_data["updated"]
+    # self.created_at = Time.at(meetup_data["created"] / 1000)
+    # self.updated_at = Time.at(meetup_data["mtime"] / 1000)
   end
 
   def name

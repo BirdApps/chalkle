@@ -121,14 +121,12 @@ describe Booking do
     end
 
     context "updates existing booking" do
-      let!(:booking) { FactoryGirl.create(:booking, meetup_id: 987654, chalkler: chalkler, lesson: lesson) }
-
       before do
-        booking.save
+        @booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
         Booking.create_from_meetup_hash result
+        @booking.reload
       end
-
-      pending { booking.meetup_id.should == 12345678 }
+      it { @booking.guests.should == 1 }
     end
   end
 end
