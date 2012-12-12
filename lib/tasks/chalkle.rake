@@ -74,8 +74,8 @@ begin
     task :fix_booking_dates => :environment do
       Booking.record_timestamps = false
       Booking.all.each do |b|
-        b.update_attribute(:created_at, Time.at(b.meetup_data["created"] / 1000))
-        b.update_attribute(:updated_at, Time.at(b.meetup_data["mtime"] / 1000))
+        b.update_attribute(:created_at, Time.at(b.meetup_data["created"] / 1000)) if b.meetup_data["created"].present?
+        b.update_attribute(:updated_at, Time.at(b.meetup_data["mtime"] / 1000)) if b.meetup_data["mtime"].present?
       end
     end
 
