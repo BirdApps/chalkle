@@ -10,7 +10,7 @@ class Booking < ActiveRecord::Base
   scope :confirmed, where(status: "yes")
   scope :waitlist, where(status: "waitlist")
   scope :interested, where("bookings.status='yes' OR bookings.status='waitlist' OR bookings.status='no-show'")
-  scope :billable, joins(:lesson).where(" (lessons.cost > 0 AND bookings.status='yes') AND ( (bookings.chalkler_id != lessons.teacher_id) OR (bookings.guests>0) )")
+  scope :billable, joins(:lesson).where("(lessons.cost > 0 AND bookings.status='yes') AND ((bookings.chalkler_id != lessons.teacher_id) OR (bookings.guests>0))")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_presence_of :lesson_id
@@ -51,8 +51,8 @@ class Booking < ActiveRecord::Base
     b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
     b.lesson = Lesson.find_by_meetup_id result.event["id"]
     b.meetup_id = result.rsvp_id
-    b.guests = result.guests 
-    b.status = result.response
+    b.guests = result.guests
+    b.status = result.response unless b.status == "no-show"
     b.meetup_data = result.to_json
     b.save
   end
