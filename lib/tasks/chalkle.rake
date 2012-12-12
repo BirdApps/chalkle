@@ -70,6 +70,15 @@ begin
       end
     end
 
+    desc "Reset Booking created_at and updated_at"
+    task :fix_booking_dates => :environment do
+      Booking.record_timestamps = false
+      Booking.all.each do |b|
+        b.update_attribute(:created_at, Time.at(b.meetup_data["created"] / 1000))
+        b.update_attribute(:updated_at, Time.at(b.meetup_data["mtime"] / 1000))
+      end
+    end
+
     desc 'import old data'
     task :import => :environment do
       require 'csv'
