@@ -128,7 +128,7 @@ describe Booking do
     let(:result) { MeetupApiStub::rsvp_response }
     let!(:chalkler) { FactoryGirl.create(:chalkler, meetup_id: 12345678) }
     let!(:lesson) { FactoryGirl.create(:lesson, meetup_id: 12345678) }
-    let(:return_value) { Booking.create_from_meetup_hash(result) }
+    let(:return_value) { Booking.create_from_meetup_hash result }
 
     context "creates a valid Booking" do
       specify { return_value.should be_true }
@@ -145,25 +145,30 @@ describe Booking do
 
     context "saves valid meetup_data" do
       before do
-        Booking.create_from_meetup_hash(result)
-        @booking = Booking.find_by_meetup_id(12345678)
+        Booking.create_from_meetup_hash result
+        @booking = Booking.find_by_meetup_id 12345678
       end
-      specify { @booking.meetup_data["rsvp_id"].should ==12345678 }
+      specify { @booking.meetup_data["rsvp_id"].should == 12345678 }
       specify { @booking.meetup_data["member"]["member_id"].should == 12345678 }
-      specify { @booking.meetup_data["event"]["id"].should == 12345678 }
-      specify { @booking.meetup_data["guests"].should == 1 }
-      specify { @booking.meetup_data["created"].should == 1351297791000 }
-      specify { @booking.meetup_data["mtime"].should == 1351297791000 }
+    end
+  end
+
+  describe "#set_from_meetup_data" do
+    let(:result) { MeetupApiStub::rsvp_response }
+
+    before do
+      FactoryGirl.create(:chalkler, meetup_id: 12345678)
+      FactoryGirl.create(:lesson, meetup_id: 12345678)
+      Booking.create_from_meetup_hash result
+      @booking = Booking.find_by_meetup_id 12345678
     end
 
     context "saves correct created_at value" do
-      before { Booking.create_from_meetup_hash(result) }
-      specify { Booking.find_by_meetup_id(12345678).created_at.to_time.to_i.should == 1351297791 }
+      specify { @booking.created_at.to_time.to_i.should == 1351297791 }
     end
 
     context "saves correct updated_at value" do
-      before { Booking.create_from_meetup_hash(result) }
-      specify { Booking.find_by_meetup_id(12345678).updated_at.to_time.to_i.should == 1351297791 }
+      specify { @booking.updated_at.to_time.to_i.should == 1351297791 }
     end
   end
 end
