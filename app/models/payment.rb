@@ -1,5 +1,5 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference
+  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible
 
   belongs_to :booking
   has_one :chalkler, through: :booking
@@ -9,6 +9,9 @@ class Payment < ActiveRecord::Base
   validates_uniqueness_of :xero_id
 
   scope :unreconciled, where("reconciled IS NOT true")
+  scope :show_invisible_only, where("payments.visible = 'false'")
+  scope :show_visible_only, where("payments.visible = 'true'")
+
   default_scope order("date desc")
 
   def self.xero_consumer_key= key
@@ -40,6 +43,7 @@ class Payment < ActiveRecord::Base
     transaction = Payment.xero.BankTransaction.find(xero_id)
     self.total = transaction.total
     self.complete_record_downloaded = true
+    self.visible = true
     save
   end
 
