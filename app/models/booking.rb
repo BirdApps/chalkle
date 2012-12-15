@@ -10,7 +10,7 @@ class Booking < ActiveRecord::Base
   scope :confirmed, where(status: "yes")
   scope :waitlist, where(status: "waitlist")
   scope :billable, joins(:lesson).where("lessons.cost > 0")
-  scope :show_invisible_only, where("bookings.visible = 'false'")
+  scope :show_invisible_only, where("bookings.visible IS NOT false")
   scope :show_visible_only, where("bookings.visible = 'true'")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
