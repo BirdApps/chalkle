@@ -60,6 +60,7 @@ ActiveAdmin.register Booking do
       row :status
       row :guests
       row :cost
+      row :additional_cost
       row :paid
       row :meetup_data
       row :created_at
@@ -75,6 +76,7 @@ ActiveAdmin.register Booking do
       f.input :lesson
       f.input :chalkler
       f.input :guests
+      f.input :additional_cost
       f.input :status, as: :select, collection: ["yes", "no", "waiting"]
       f.input :paid
       f.input :visible, :as => :hidden, :value => "true"
