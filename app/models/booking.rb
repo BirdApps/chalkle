@@ -1,5 +1,5 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid, :visible
+  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid, :visible, :additional_cost
 
   belongs_to :lesson
   belongs_to :chalkler
@@ -29,8 +29,8 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    seats = (guests.present? && guests + 1) || 1
-    lesson.cost * seats if lesson.cost.present?
+    seats = (guests.present? && guests + 1) || 1 
+    (lesson.cost * seats + additional_cost) if lesson.cost.present?
   end
 
   def set_from_meetup_data
@@ -56,6 +56,7 @@ class Booking < ActiveRecord::Base
     b.status = result.response
     b.meetup_data = result.to_json
     b.visible = true
+    b.additional_cost = 0.0
     b.save
   end
 end
