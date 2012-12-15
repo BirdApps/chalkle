@@ -20,7 +20,11 @@ ActiveAdmin.register Payment do
   end
 
   action_item only: :show, if: proc{payment.visible} do |payment|
-    link_to 'Make Invisible', make_invisible_admin_payment_path(params[:id])
+    link_to 'Make Invisible', change_visible_admin_payment_path(params[:id])
+  end
+
+  action_item only: :show, if: proc{!payment.visible} do |payment|
+    link_to 'Make Visible', change_visible_admin_payment_path(params[:id])
   end
 
   index do
@@ -43,9 +47,9 @@ ActiveAdmin.register Payment do
     redirect_to action: 'show'
   end
 
-  member_action :make_invisible do
+  member_action :change_visible do
     payment = Payment.find(params[:id])
-    payment.visible = false
+    payment.visible = !payment.visible
     payment.save
     redirect_to action: 'show'
   end
