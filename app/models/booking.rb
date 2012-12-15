@@ -1,5 +1,5 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid
+  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid, :visible
 
   belongs_to :lesson
   belongs_to :chalkler
@@ -10,6 +10,8 @@ class Booking < ActiveRecord::Base
   scope :confirmed, where(status: "yes")
   scope :waitlist, where(status: "waitlist")
   scope :billable, joins(:lesson).where("lessons.cost > 0")
+  scope :show_invisible_only, where("bookings.visible = 'false'")
+  scope :show_visible_only, where("bookings.visible = 'true'")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_presence_of :lesson_id
@@ -53,6 +55,7 @@ class Booking < ActiveRecord::Base
     b.guests = result.guests
     b.status = result.response
     b.meetup_data = result.to_json
+    b.visible = true
     b.save
   end
 end
