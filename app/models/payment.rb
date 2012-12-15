@@ -9,7 +9,7 @@ class Payment < ActiveRecord::Base
   validates_uniqueness_of :xero_id
 
   scope :unreconciled, where("reconciled IS NOT true")
-  scope :show_invisible_only, where("payments.visible = 'false'")
+  scope :show_invisible_only, where("payment IS NOT false")
   scope :show_visible_only, where("payments.visible = 'true'")
 
   default_scope order("date desc")
