@@ -1,6 +1,9 @@
 ActiveAdmin.register Payment do
   config.sort_order = "date_desc"
 
+  scope :show_invisible_only
+  scope :show_visible_only, :default => true
+
   # filter :groups_name, :as => :select, :label => "Group",
     # :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
   filter :xero_contact_name
@@ -14,6 +17,10 @@ ActiveAdmin.register Payment do
 
   action_item only: :show, if: proc{!payment.complete_record_downloaded} do |payment|
     link_to 'Download from Xero', download_from_xero_admin_payment_path(params[:id])
+  end
+
+  action_item only: :show, if: proc{payment.visible} do |payment|
+    link_to 'Make Invisible', make_invisible_admin_payment_path(params[:id])
   end
 
   index do
@@ -33,6 +40,13 @@ ActiveAdmin.register Payment do
   member_action :download_from_xero do
     payment = Payment.find(params[:id])
     payment.complete_record_download
+    redirect_to action: 'show'
+  end
+
+  member_action :make_invisible do
+    payment = Payment.find(params[:id])
+    payment.visible = false
+    payment.save
     redirect_to action: 'show'
   end
 
