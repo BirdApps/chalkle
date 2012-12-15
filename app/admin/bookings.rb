@@ -3,6 +3,8 @@ ActiveAdmin.register Booking do
   scope :confirmed
   scope :billable
   scope :waitlist
+  scope :show_invisible_only
+  scope :show_visible_only, :default => true
   config.sort_order = "created_at_desc"
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
@@ -14,10 +16,25 @@ ActiveAdmin.register Booking do
   filter :guests
   filter :created_at
 
+  action_item only: :show, if: proc{booking.visible} do |booking|
+    link_to 'Make Invisible', change_visible_admin_booking_path(params[:id])
+  end
+
+  action_item only: :show, if: proc{!booking.visible} do |booking|
+    link_to 'Make Visible', change_visible_admin_booking_path(params[:id])
+  end
+
   controller do
     def scoped_collection
       Booking.where("bookings.status = 'yes' OR bookings.status = 'waitlist'")
     end
+  end
+
+  member_action :change_visible do
+    booking = Booking.find(params[:id])
+    booking.visible = !booking.visible
+    booking.save
+    redirect_to action: 'show'
   end
 
   index do
@@ -47,7 +64,7 @@ ActiveAdmin.register Booking do
       row :meetup_data
       row :created_at
       row :updated_at
-
+      row :visible
     end
     active_admin_comments
 
@@ -60,6 +77,7 @@ ActiveAdmin.register Booking do
       f.input :guests
       f.input :status, as: :select, collection: ["yes", "no", "waiting"]
       f.input :paid
+      f.input :visible, :as => :hidden, :value => "true"
     end
 
     f.buttons
