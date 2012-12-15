@@ -131,4 +131,28 @@ describe Booking do
       pending { booking.meetup_id.should == 12345678 }
     end
   end
+
+  describe ".show_visible_only" do
+    context "show visible only should include visible booking" do
+      let(:booking) { FactoryGirl.create(:booking, visible: true) }
+      it { Booking.show_visible_only.should include(booking) }
+    end
+
+    context "show visible only should not include invisible booking" do
+      let(:booking) { FactoryGirl.create(:booking, visible: false) }
+      it { Booking.show_visible_only.should_not include(booking) }
+    end
+
+  describe ".show_invisible_only" do
+    context "show invisible only should include invisible booking" do
+      let(:booking) { FactoryGirl.create(:booking, visible: false) }
+      it { Booking.show_invisible_only.should include(booking) }
+    end
+
+    context "show invisible only should not include visible booking" do
+      let(:booking) { FactoryGirl.create(:booking, visible: true) }
+      it { Booking.show_invisible_only.should_not include(booking) }
+    end
+
+  end
 end
