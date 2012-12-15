@@ -2,6 +2,9 @@
 ActiveAdmin.register Lesson do
   config.sort_order = "created_at_desc"
 
+  scope :show_invisible_only
+  scope :show_visible_only, :default => true
+
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
   filter :name
@@ -9,6 +12,21 @@ ActiveAdmin.register Lesson do
   filter :teacher
   filter :cost
   filter :start_at
+
+  action_item only: :show, if: proc{lesson.visible} do |lesson|
+    link_to 'Make Invisible', change_visible_admin_lesson_path(params[:id])
+  end
+
+  action_item only: :show, if: proc{!lesson.visible} do |lesson|
+    link_to 'Make Visible', change_visible_admin_lesson_path(params[:id])
+  end
+
+  member_action :change_visible do
+    lesson = Lesson.find(params[:id])
+    lesson.visible = !lesson.visible
+    lesson.save
+    redirect_to action: 'show'
+  end
 
   index do
     column :id
@@ -37,6 +55,7 @@ ActiveAdmin.register Lesson do
       row :venue_cost
       row :start_at
       row :duration
+      row :visible
       row :bookings do
         "#{lesson.bookings.paid.count} of #{lesson.bookings.confirmed.count} have paid "
       end
@@ -60,6 +79,7 @@ ActiveAdmin.register Lesson do
       f.input :teacher_cost
       f.input :venue_cost
       f.input :start_at
+      f.input :visible, :as => :hidden, :value => "true"
       f.input :duration
       f.input :description
     end
