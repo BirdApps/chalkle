@@ -1,5 +1,5 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, :description
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, :description, :visible
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
@@ -10,6 +10,9 @@ class Lesson < ActiveRecord::Base
   has_many :chalklers, :through => :bookings
 
   validates_uniqueness_of :meetup_id, allow_nil: true
+
+  scope :show_invisible_only, where("lessons.visible = 'false'")
+  scope :show_visible_only, where("visible IS NOT false")
 
   before_create :set_from_meetup_data
 
@@ -52,6 +55,7 @@ class Lesson < ActiveRecord::Base
     l.meetup_id = result["id"]
     l.description = result["description"]
     l.meetup_data = result.to_json
+    l.visible = true
     l.save
     l.groups<< group unless l.groups.exists? group
   end
