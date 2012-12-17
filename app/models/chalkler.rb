@@ -48,6 +48,7 @@ class Chalkler < ActiveRecord::Base
     c.meetup_data = result.to_json
     c.save
     c.groups<< group unless c.groups.exists? group
+    c.valid?
   end
 
 end
