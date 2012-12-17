@@ -10,117 +10,114 @@ describe Booking do
   pending { should validate_uniqueness_of(:chalkler_id) }
 
   describe "#cost" do
-    subject { booking }
-
-    context "lesson has no cost" do
-      let(:lesson) { FactoryGirl.create(:lesson, cost: nil) }
-      let(:booking) { FactoryGirl.create(:booking, guests: 0, lesson: lesson) }
-      specify { subject.cost.should be_nil }
+    it "returns nil when lesson has no cost" do
+      lesson = FactoryGirl.create(:lesson, cost: nil)
+      booking = FactoryGirl.create(:booking, guests: 0, lesson: lesson)
+      booking.cost.should be_nil
     end
 
-    context "lesson has no guests" do
-      let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
-      let(:booking) { FactoryGirl.create(:booking, guests: 0, lesson: lesson) }
-      specify { subject.cost.should == 10 }
+    it "returns cost from lesson" do
+      lesson = FactoryGirl.create(:lesson, cost: 10)
+      booking = FactoryGirl.create(:booking, guests: 0, lesson: lesson)
+      booking.cost.should == 10
     end
 
-    context "lesson has cost and booking has no guests" do
-      let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
-      let(:booking) { FactoryGirl.create(:booking, guests: nil, lesson: lesson) }
-      specify { subject.cost.to_f.should == 10 }
+    it "calculates cost when booking has no guests" do
+      lesson = FactoryGirl.create(:lesson, cost: 10)
+      booking = FactoryGirl.create(:booking, guests: nil, lesson: lesson)
+      booking.cost.to_f.should == 10
     end
 
-    context "lesson has cost and booking has guests" do
-      let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
-      let(:booking) { FactoryGirl.create(:booking, guests: 9, lesson: lesson) }
-      specify { subject.cost.to_f.should == 100 }
+    it "calculates cost when booking has guests" do
+      lesson = FactoryGirl.create(:lesson, cost: 10)
+      booking =  FactoryGirl.create(:booking, guests: 9, lesson: lesson)
+      booking.cost.to_f.should == 100
     end
   end
 
   describe ".paid" do
-    context "excludes unpaid bookings" do
-      let(:booking) { FactoryGirl.create(:booking, paid: nil) }
-      it { Booking.paid.should_not include(booking) }
+    it "excludes unpaid bookings" do
+      booking = FactoryGirl.create(:booking, paid: nil)
+      Booking.paid.should_not include(booking)
     end
 
-    context "includes paid bookings" do
-      let(:booking) { FactoryGirl.create(:booking, paid: true) }
-      it { Booking.paid.should include(booking) }
+    it "includes paid bookings" do
+      booking = FactoryGirl.create(:booking, paid: true)
+      Booking.paid.should include(booking)
     end
   end
 
   describe ".unpaid" do
-    context "excludes paid bookings" do
-      let(:booking) { FactoryGirl.create(:booking, paid: true) }
-      it { Booking.unpaid.should_not include(booking) }
+    it "excludes paid bookings" do
+      booking = FactoryGirl.create(:booking, paid: true)
+      Booking.unpaid.should_not include(booking)
     end
 
-    context "includes unpaid bookings" do
-      let(:booking) { FactoryGirl.create(:booking, paid: nil) }
-      it { Booking.unpaid.should include(booking) }
+    it "includes unpaid bookings" do
+      booking = FactoryGirl.create(:booking, paid: nil)
+      Booking.unpaid.should include(booking)
     end
   end
 
   describe ".confirmed" do
-    context "excludes unconfirmed bookings" do
-      let(:booking) { FactoryGirl.create(:booking, status: "waitlist") }
-      it { Booking.confirmed.should_not include(booking) }
+    it "excludes unconfirmed bookings" do
+      booking = FactoryGirl.create(:booking, status: "waitlist")
+      Booking.confirmed.should_not include(booking)
     end
 
-    context "includes confirmed bookings" do
-      let(:booking) { FactoryGirl.create(:booking, status: "yes") }
-      it { Booking.confirmed.should include(booking) }
+    it "includes confirmed bookings" do
+      booking = FactoryGirl.create(:booking, status: "yes")
+      Booking.confirmed.should include(booking)
     end
   end
 
   describe ".waitlist" do
-    context "excludes confirmed bookings" do
-      let(:booking) { FactoryGirl.create(:booking, status: "yes") }
-      it { Booking.waitlist.should_not include(booking) }
+    it "excludes confirmed bookings" do
+      booking = FactoryGirl.create(:booking, status: "yes")
+      Booking.waitlist.should_not include(booking)
     end
 
-    context "includes waitlisted bookings" do
-      let(:booking) { FactoryGirl.create(:booking, status: "waitlist") }
-      it { Booking.waitlist.should include(booking) }
+    it "includes waitlisted bookings" do
+      booking = FactoryGirl.create(:booking, status: "waitlist")
+      Booking.waitlist.should include(booking)
     end
   end
 
   describe ".billable" do
-    context "excludes bookings with a zero cost" do
-      let(:lesson) { FactoryGirl.create(:lesson, cost: 0) }
-      let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
-      it { Booking.billable.should_not include(booking) }
+    it "excludes bookings with a zero cost" do
+      lesson = FactoryGirl.create(:lesson, cost: 0)
+      booking = FactoryGirl.create(:booking, lesson: lesson)
+      Booking.billable.should_not include(booking)
     end
 
-    context "includes bookings that have a cost" do
-      let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
-      let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
-      it { Booking.billable.should include(booking) }
+    it "includes bookings that have a cost" do
+      lesson = FactoryGirl.create(:lesson, cost: 10)
+      booking = FactoryGirl.create(:booking, lesson: lesson)
+      Booking.billable.should include(booking)
     end
 
-    context "teacher bookings" do
+    context "booking belongs to the teacher" do
       let(:teacher) { FactoryGirl.create(:chalkler, email: "example@testy.com", meetup_id: 1234)}
       let(:lesson) { FactoryGirl.create(:lesson, teacher: teacher, cost: 10) }
 
-      context "with guests" do
-        let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: teacher, guests: 1) }
-        it { Booking.billable.should include(booking) }
+      it "is included with guests" do
+        booking = FactoryGirl.create(:booking, lesson: lesson, chalkler: teacher, guests: 1)
+        Booking.billable.should include(booking)
       end
 
-      context "without guests" do
-        let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: teacher, guests: nil) }
-        it { Booking.billable.should_not include(booking) }
+      it "is excluded without guests" do
+        booking = FactoryGirl.create(:booking, lesson: lesson, chalkler: teacher, guests: nil)
+        Booking.billable.should_not include(booking)
       end
     end
   end
 
   describe "#name" do
-    subject { booking }
-    context "creates name when lesson and chalkler present" do
-      let(:lesson) { FactoryGirl.create(:lesson, name: "lesson_name", meetup_id: 12345678) }
-      let(:chalkler) { FactoryGirl.create(:chalkler, name: "chalkler_name") }
-      let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler) }
-      specify { subject.name.should == "lesson_name (12345678) - chalkler_name" }
+    it "creates name when lesson and chalkler present" do
+      lesson = FactoryGirl.create(:lesson, name: "lesson_name", meetup_id: 12345678)
+      chalkler = FactoryGirl.create(:chalkler, name: "chalkler_name")
+      booking = FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler)
+      booking.name.should == "lesson_name (12345678) - chalkler_name"
     end
   end
 
@@ -130,26 +127,21 @@ describe Booking do
     let!(:lesson) { FactoryGirl.create(:lesson, meetup_id: 12345678) }
     let(:return_value) { Booking.create_from_meetup_hash result }
 
-    context "creates a valid Booking" do
-      specify { return_value.should be_true }
+    it "creates a valid Booking" do
+      return_value.should be_true
     end
 
-    context "updates existing booking" do
-      before do
-        @booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
-        Booking.create_from_meetup_hash result
-        @booking.reload
-      end
-      specify { @booking.guests.should == 1 }
+    it "updates existing booking" do
+      booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
+      Booking.create_from_meetup_hash result
+      booking.reload.guests.should == 1
     end
 
-    context "saves valid meetup_data" do
-      before do
-        Booking.create_from_meetup_hash result
-        @booking = Booking.find_by_meetup_id 12345678
-      end
-      specify { @booking.meetup_data["rsvp_id"].should == 12345678 }
-      specify { @booking.meetup_data["member"]["member_id"].should == 12345678 }
+    it "saves valid meetup_data" do
+      Booking.create_from_meetup_hash result
+      booking = Booking.find_by_meetup_id 12345678
+      booking.meetup_data["rsvp_id"].should == 12345678
+      booking.meetup_data["member"]["member_id"].should == 12345678
     end
   end
 
@@ -163,12 +155,12 @@ describe Booking do
       @booking = Booking.find_by_meetup_id 12345678
     end
 
-    context "saves correct created_at value" do
-      specify { @booking.created_at.to_time.to_i.should == 1351297791 }
+    it "saves correct created_at value" do
+      @booking.created_at.to_time.to_i.should == 1351297791
     end
 
-    context "saves correct updated_at value" do
-      specify { @booking.updated_at.to_time.to_i.should == 1351297791 }
+    it "saves correct updated_at value" do
+      @booking.updated_at.to_time.to_i.should == 1351297791
     end
   end
 end
