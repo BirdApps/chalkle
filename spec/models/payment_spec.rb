@@ -3,28 +3,26 @@ require 'spec_helper'
 describe Payment do
   it { should validate_uniqueness_of(:xero_id) }
 
+  let(:payment) { FactoryGirl.create(:payment) }
+
   describe ".visible" do
-    it "should include visible payment" do
-      payment = FactoryGirl.create(:payment, visible: true) 
-      Payment.visible.should include(payment)
-   	end
+    it {Payment.visible.should include(payment)}    
 
    	it "should not include hidden payment" do
-      payment = FactoryGirl.create(:payment, visible: false) 
+      payment.visible = false
+      payment.save
       Payment.visible.should_not include(payment) 
    	end
-   end
+  end
 
   describe ".hidden" do
     it "should include hidden payment" do
-      payment = FactoryGirl.create(:payment, visible: false) 
+      payment.visible = false
+      payment.save      
       Payment.hidden.should include(payment) 
    	end
 
-   	it "should not include visible payment" do
-      payment = FactoryGirl.create(:payment, visible: true) 
-      Payment.hidden.should_not include(payment) 
-   	end
+   	it {Payment.hidden.should_not include(payment)}       	
   end
 
 end

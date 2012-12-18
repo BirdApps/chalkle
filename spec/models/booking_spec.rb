@@ -132,28 +132,26 @@ describe Booking do
     end
   end
 
+  let(:booking) { FactoryGirl.create(:booking) }
+
   describe ".visible" do
-    it "includes visible bookings" do
-      booking = FactoryGirl.create(:booking, visible: true) 
-      Booking.visible.should include(booking)
-    end
+    it {Booking.visible.should include(booking)}
 
     it "should not include invisible booking" do
-      booking = FactoryGirl.create(:booking, visible: false) 
+      booking.visible = false
+      booking.save
       Booking.visible.should_not include(booking) 
     end
   end
 
   describe ".hidden" do
     it "includes hidden bookings" do
-      booking = FactoryGirl.create(:booking, visible: false) 
+      booking.visible = false
+      booking.save
       Booking.hidden.should include(booking) 
     end
 
-    it "should not include visible booking" do
-      booking = FactoryGirl.create(:booking, visible: true) 
-      Booking.hidden.should_not include(booking)
-    end
+    it {Booking.hidden.should_not include(booking)}
   end
 
 end
