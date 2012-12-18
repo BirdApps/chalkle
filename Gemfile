@@ -16,8 +16,6 @@ gem 'analytical'
 gem 'jquery-rails'
 
 #apis
-# rmeetup2 to be phased out.
-gem 'rmeetup2'
 gem 'rMeetup', :git => "git@github.com:kiesia/rmeetup.git", :require => "rmeetup"
 gem 'xeroizer', :git => "git@github.com:kiesia/xeroizer.git"
 
@@ -25,7 +23,7 @@ gem 'xeroizer', :git => "git@github.com:kiesia/xeroizer.git"
 gem 'chosen-rails'
 gem 'html5-rails'
 gem 'haml-rails'
-#gem 'simple_form'
+gem 'simple_form'
 
 
 # Gems used only for assets and not required
