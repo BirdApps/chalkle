@@ -36,8 +36,12 @@ describe AdminUser do
         it { should be_able_to(:manage, FactoryGirl.create(:chalkler, groups: [group])) }
         it { should be_able_to(:manage, FactoryGirl.create(:category, groups: [group])) }
         it { should be_able_to(:manage, FactoryGirl.create(:lesson, groups: [group])) }
-        pending { should be_able_to(:manage, FactoryGirl.create(:booking, groups: [group])) }
         it { should be_able_to(:manage, FactoryGirl.create(:payment)) }
+
+        it "should be able to manage bookings" do
+          lesson = FactoryGirl.create(:lesson, groups: [group])
+          should be_able_to(:manage, FactoryGirl.create(:booking, lesson: lesson))
+        end
       end
     end
   end
