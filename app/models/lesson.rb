@@ -11,10 +11,11 @@ class Lesson < ActiveRecord::Base
 
   validates_uniqueness_of :meetup_id, allow_nil: true
 
-  scope :show_invisible_only, where("lessons.visible = 'false'")
-  scope :show_visible_only, where("visible IS NOT false")
+  scope :hidden, where(visible: false)
+  scope :visible, where(visible: true)
 
   before_create :set_from_meetup_data
+  before_create :set_metadata
 
   def unpaid_count
     bookings.confirmed.count - bookings.paid.count
@@ -49,13 +50,16 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def set_metadata
+    self.visible = true
+  end
+
   def self.create_from_meetup_hash(result, group)
     l = Lesson.find_or_initialize_by_meetup_id(result["id"])
     l.name = result["name"]
     l.meetup_id = result["id"]
     l.description = result["description"]
     l.meetup_data = result.to_json
-    l.visible = true
     l.save
     l.groups<< group unless l.groups.exists? group
   end

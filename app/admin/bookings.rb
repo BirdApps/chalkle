@@ -3,8 +3,8 @@ ActiveAdmin.register Booking do
   scope :confirmed
   scope :billable
   scope :waitlist
-  scope :show_invisible_only
-  scope :show_visible_only, :default => true
+  scope :hidden
+  scope :visible, :default => true
   config.sort_order = "created_at_desc"
 
   filter :lesson_groups_name, :as => :select, :label => "Group",

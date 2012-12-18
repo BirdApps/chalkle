@@ -1,8 +1,8 @@
 ActiveAdmin.register Payment do
   config.sort_order = "date_desc"
 
-  scope :show_invisible_only
-  scope :show_visible_only, :default => true
+  scope :hidden
+  scope :visible, :default => true
 
   # filter :groups_name, :as => :select, :label => "Group",
     # :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}

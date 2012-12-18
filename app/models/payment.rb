@@ -9,10 +9,10 @@ class Payment < ActiveRecord::Base
   validates_uniqueness_of :xero_id
 
   scope :unreconciled, where("reconciled IS NOT true")
-  scope :show_invisible_only, where("visible IS NOT false")
-  scope :show_visible_only, where("payments.visible = 'true'")
+  scope :hidden, where(visible: false)
+  scope :visible, where(visible: true)
 
-  default_scope order("date desc")
+  before_create :set_metadata
 
   def self.xero_consumer_key= key
     @@xero_consumer_key = key
@@ -24,6 +24,10 @@ class Payment < ActiveRecord::Base
 
   def self.xero
     @@xero ||= Xeroizer::PrivateApplication.new(@@xero_consumer_key, @@xero_consumer_secret, "#{Rails.root}/config/xero/privatekey.pem")
+  end
+
+  def set_metadata
+    self.visible = true
   end
 
   def self.load_all_from_xero
@@ -43,7 +47,6 @@ class Payment < ActiveRecord::Base
     transaction = Payment.xero.BankTransaction.find(xero_id)
     self.total = transaction.total
     self.complete_record_downloaded = true
-    self.visible = true
     save
   end
 

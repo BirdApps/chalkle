@@ -10,14 +10,15 @@ class Booking < ActiveRecord::Base
   scope :confirmed, where(status: "yes")
   scope :waitlist, where(status: "waitlist")
   scope :billable, joins(:lesson).where("lessons.cost > 0")
-  scope :show_invisible_only, where("bookings.visible IS NOT false")
-  scope :show_visible_only, where("bookings.visible = 'true'")
+  scope :hidden, where(visible: false)
+  scope :visible, where(visible: true)
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_presence_of :lesson_id
   validates_presence_of :chalkler_id
 
   before_create :set_from_meetup_data
+  before_create :set_metadata
 
   def meetup_data
     data = read_attribute(:meetup_data)
@@ -39,6 +40,10 @@ class Booking < ActiveRecord::Base
     self.updated_at = meetup_data["updated"]
   end
 
+  def set_metadata
+    self.visible = true
+  end
+
   def name
     if lesson.present? && chalkler.present?
       "#{lesson.name} (#{lesson.meetup_id}) - #{chalkler.name}"
@@ -55,7 +60,6 @@ class Booking < ActiveRecord::Base
     b.guests = result.guests
     b.status = result.response
     b.meetup_data = result.to_json
-    b.visible = true
     b.additional_cost = 0.0
     b.save
   end
