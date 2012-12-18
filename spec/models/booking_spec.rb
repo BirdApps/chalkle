@@ -129,6 +129,7 @@ describe Booking do
 
     it "creates a valid Booking" do
       return_value.should be_true
+      Booking.find_by_meetup_id(12345678).should be_valid
     end
 
     it "updates existing booking" do

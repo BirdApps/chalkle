@@ -16,16 +16,16 @@ describe Chalkler do
     end
 
     it "updates an existing chalkler" do
-      @chalkler = FactoryGirl.create(:chalkler, meetup_id: 12345678, name: "Jim Smith")
+      chalkler = FactoryGirl.create(:chalkler, meetup_id: 12345678, name: "Jim Smith")
       Chalkler.create_from_meetup_hash(result, group)
-      @chalkler.reload.name.should == "Caitlin Oscars"
+      chalkler.reload.name.should == "Caitlin Oscars"
     end
 
     it "saves valid #meetup_data" do
       Chalkler.create_from_meetup_hash(result, group)
-      @chalkler = Chalkler.find_by_meetup_id 12345678
-      @chalkler.meetup_data["id"].should == 12345678
-      @chalkler.meetup_data["name"].should == "Caitlin Oscars"
+      chalkler = Chalkler.find_by_meetup_id 12345678
+      chalkler.meetup_data["id"].should == 12345678
+      chalkler.meetup_data["name"].should == "Caitlin Oscars"
     end
   end
 
@@ -35,8 +35,8 @@ describe Chalkler do
 
     it "saves correct created_at value" do
       Chalkler.create_from_meetup_hash(result, group)
-      @chalkler = Chalkler.find_by_meetup_id 12345678
-      @chalkler.created_at.to_time.to_i.should == 1346658337
+      chalkler = Chalkler.find_by_meetup_id 12345678
+      chalkler.created_at.to_time.to_i.should == 1346658337
     end
   end
 end
