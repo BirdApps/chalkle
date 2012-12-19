@@ -21,10 +21,9 @@ gem 'xeroizer', :git => "git@github.com:kiesia/xeroizer.git"
 
 #interface
 gem 'chosen-rails'
-gem 'html5-rails'
+gem 'modernizr-rails'
 gem 'haml-rails'
 gem 'simple_form'
-
 
 # Gems used only for assets and not required
 # in production environments by default.
