@@ -29,7 +29,7 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    seats = (guests.present? && guests + 1) || 1
+    seats = guests.present? ? guests + 1 : 1
     lesson.cost * seats if lesson.cost.present?
   end
 
