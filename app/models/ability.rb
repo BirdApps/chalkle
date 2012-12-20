@@ -5,13 +5,43 @@ class Ability
     user ||= AdminUser.new
     case user.role
     when "super"
-      can :manage, :all
+      can :manage, AdminUser
+      can :manage, Group
+
+      can :read, Chalkler
+      can :create, Chalkler
+      can :update, Chalkler
+
+      can :read, Booking
+      can :create, Booking
+      can :update, Booking
+
+      can :read, Lesson
+      can :update, Lesson
+
+      can :read, Payment
+      can :create, Payment
+      can :update, Payment
+
+      can :manage, Category
+
     when "group admin"
-      can :manage, Chalkler, :id => user.chalkler_ids
-      can :manage, Category, :id => user.category_ids
-      can :manage, Booking, :id => user.booking_ids
-      can :manage, Payment
-      can :manage, Lesson, :id => user.lesson_ids
+      can :read, Chalkler, :id => user.chalkler_ids
+      can :update, Chalkler, :id => user.chalkler_ids
+      can :create, Chalkler
+
+      can :read, Booking, :id => user.booking_ids
+      can :update, Booking, :id => user.booking_ids
+      can :create, Booking
+
+      can :read, Lesson, :id => user.lesson_ids
+      can :update, Lesson, :id => user.lesson_ids
+
+      can :read, Payment
+      can :create, Payment
+      can :update, Payment
+
+      can :manage, Category
     end
   end
 end

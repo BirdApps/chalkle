@@ -17,12 +17,24 @@ describe AdminUser do
       let(:admin_user){ FactoryGirl.create(:super_admin_user) }
 
       it { should be_able_to(:manage, FactoryGirl.create(:admin_user, email: "user@example.com")) }
-      it { should be_able_to(:manage, FactoryGirl.create(:chalkler)) }
       it { should be_able_to(:manage, FactoryGirl.create(:group)) }
+
+      it { should be_able_to(:read, FactoryGirl.create(:chalkler)) }
+      it { should be_able_to(:create, FactoryGirl.create(:chalkler)) }
+      it { should be_able_to(:update, FactoryGirl.create(:chalkler)) }
+
+      it { should be_able_to(:read, FactoryGirl.create(:booking)) }
+      it { should be_able_to(:create, FactoryGirl.create(:booking)) }
+      it { should be_able_to(:update, FactoryGirl.create(:booking)) }
+
+      it { should be_able_to(:read, FactoryGirl.create(:lesson)) }
+      it { should be_able_to(:update, FactoryGirl.create(:lesson)) }
+
+      it { should be_able_to(:read, FactoryGirl.create(:payment)) }
+      it { should be_able_to(:create, FactoryGirl.create(:payment)) }
+      it { should be_able_to(:update, FactoryGirl.create(:payment)) }
+
       it { should be_able_to(:manage, FactoryGirl.create(:category)) }
-      it { should be_able_to(:manage, FactoryGirl.create(:lesson)) }
-      it { should be_able_to(:manage, FactoryGirl.create(:booking)) }
-      it { should be_able_to(:manage, FactoryGirl.create(:payment)) }
     end
 
     context "when is a group admin user" do
@@ -33,15 +45,30 @@ describe AdminUser do
       it { should_not be_able_to(:manage, FactoryGirl.create(:admin_user, email: "user@example.com")) }
 
       context "and resource shares group" do
-        it { should be_able_to(:manage, FactoryGirl.create(:chalkler, groups: [group])) }
-        it { should be_able_to(:manage, FactoryGirl.create(:category, groups: [group])) }
-        it { should be_able_to(:manage, FactoryGirl.create(:lesson, groups: [group])) }
-        it { should be_able_to(:manage, FactoryGirl.create(:payment)) }
+        it { should be_able_to(:read, FactoryGirl.create(:chalkler, groups: [group])) }
+        it { should be_able_to(:update, FactoryGirl.create(:chalkler, groups: [group])) }
+        it { should be_able_to(:create, FactoryGirl.create(:chalkler)) }
 
-        it "should be able to manage bookings" do
+        it { should be_able_to(:read, FactoryGirl.create(:lesson, groups: [group])) }
+        it { should be_able_to(:update, FactoryGirl.create(:lesson, groups: [group])) }
+
+        it { should be_able_to(:read, FactoryGirl.create(:payment)) }
+        it { should be_able_to(:create, FactoryGirl.create(:payment)) }
+        it { should be_able_to(:update, FactoryGirl.create(:payment)) }
+
+        it { should be_able_to(:manage, FactoryGirl.create(:category)) }
+
+        it "should be able to read bookings" do
           lesson = FactoryGirl.create(:lesson, groups: [group])
-          should be_able_to(:manage, FactoryGirl.create(:booking, lesson: lesson))
+          should be_able_to(:read, FactoryGirl.create(:booking, lesson: lesson))
         end
+
+        it "should be able to update bookings" do
+          lesson = FactoryGirl.create(:lesson, groups: [group])
+          should be_able_to(:update, FactoryGirl.create(:booking, lesson: lesson))
+        end
+
+        it { should be_able_to(:create, FactoryGirl.create(:booking)) }
       end
     end
   end
