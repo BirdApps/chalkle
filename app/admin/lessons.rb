@@ -58,11 +58,11 @@ ActiveAdmin.register Lesson do
   end
 
   action_item only: :show, if: proc{lesson.visible} do |lesson|
-    link_to 'Hide', toggle_visible_admin_lesson_path(params[:id])
+    link_to 'Delete', toggle_visible_admin_lesson_path(params[:id])
   end
 
   action_item only: :show, if: proc{!lesson.visible} do |lesson|
-    link_to 'Unhide', toggle_visible_admin_lesson_path(params[:id])
+    link_to 'Restore record', toggle_visible_admin_lesson_path(params[:id])
   end
 
   member_action :toggle_visible do
