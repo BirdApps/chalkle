@@ -9,8 +9,8 @@ ActiveAdmin.register Booking do
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
-  filter :lesson
-  filter :chalkler
+  filter :lesson, as: :select, collection: Lesson.order("name ASC").all
+  filter :chalkler, as: :select, collection: Chalkler.order("name ASC").all
   filter :cost
   filter :paid
   filter :guests
@@ -68,20 +68,19 @@ ActiveAdmin.register Booking do
       row :visible
     end
     active_admin_comments
-
   end
 
   form do |f|
     f.inputs :details do
       f.input :lesson
-      f.input :chalkler
+      f.input :chalkler, as: :select, collection: Chalkler.order("name ASC").all
       f.input :guests
       f.input :additional_cost
       f.input :status, as: :select, collection: ["yes", "no", "waiting"]
+      f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
       f.input :visible, :as => :hidden, :value => "true"
     end
-
     f.buttons
   end
 end

@@ -81,6 +81,4 @@ ActiveAdmin.register Payment do
 
     f.buttons
   end
-
 end
-

@@ -9,7 +9,8 @@ class Booking < ActiveRecord::Base
   scope :unpaid, where("bookings.paid IS NOT true")
   scope :confirmed, where(status: "yes")
   scope :waitlist, where(status: "waitlist")
-  scope :billable, joins(:lesson).where("lessons.cost > 0")
+  scope :interested, where("bookings.status='yes' OR bookings.status='waitlist' OR bookings.status='no-show'")
+  scope :billable, joins(:lesson).where("(lessons.cost > 0 AND bookings.status='yes') AND ((bookings.chalkler_id != lessons.teacher_id) OR (bookings.guests>0))")
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
 
@@ -23,21 +24,23 @@ class Booking < ActiveRecord::Base
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
-      JSON.parse(data)
+      rsvp = JSON.parse(data)
+      rsvp["rsvp"]
     else
       {}
     end
   end
 
   def cost
-    seats = (guests.present? && guests + 1) || 1 
+    seats = guests.present? ? guests + 1 : 1
     (lesson.cost * seats + additional_cost) if lesson.cost.present?
+    # lesson.cost * seats if lesson.cost.present?
   end
 
   def set_from_meetup_data
     return if meetup_data.empty?
-    self.created_at = meetup_data["created"]
-    self.updated_at = meetup_data["updated"]
+    self.created_at = Time.at(meetup_data["created"] / 1000)
+    self.updated_at = Time.at(meetup_data["mtime"] / 1000)
   end
 
   def set_metadata
@@ -58,7 +61,7 @@ class Booking < ActiveRecord::Base
     b.lesson = Lesson.find_by_meetup_id result.event["id"]
     b.meetup_id = result.rsvp_id
     b.guests = result.guests
-    b.status = result.response
+    b.status = result.response unless b.status == "no-show"
     b.meetup_data = result.to_json
     b.additional_cost = 0.0
     b.save

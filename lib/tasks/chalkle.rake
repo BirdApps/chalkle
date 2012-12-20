@@ -25,15 +25,11 @@ begin
     task "load_chalklers" => :environment do
       Group.all.each do |g|
         next unless g.url_name?
-
         puts "Importing chalklers for group #{g.name}"
-        result = RMeetup2::Base.get(:members, group_urlname: g.url_name, page: 1)
-        c = get_page_count(result)
-
-        for i in 0...c do
-          results = RMeetup2::Base.get(:members, group_urlname: g.url_name, offset: i)
-          puts results.data["meta"]
-          results.data["results"].each do |r|
+        total_pages = RMeetup::Client.fetch(:members, { group_urlname: g.url_name }).total_pages
+        for i in 0...total_pages do
+          results = RMeetup::Client.fetch(:members, { group_urlname: g.url_name, offset: i })
+          results.each do |r|
             Chalkler.create_from_meetup_hash(r,g)
           end
         end
@@ -44,15 +40,11 @@ begin
     task "load_classes" => :environment do
       Group.all.each do |g|
         next unless g.url_name?
-
         puts "Importing classes for group #{g.name}"
-        result = RMeetup2::Base.get(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', page: 1)
-        c = get_page_count(result)
-
-        for i in 0...c do
-          results = RMeetup2::Base.get(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i)
-          puts results.data["meta"]
-          results.data["results"].each do |r|
+        total_pages = RMeetup::Client.fetch(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain').total_pages
+        for i in 0...total_pages do
+          results = RMeetup::Client.fetch(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i)
+          results.each do |r|
             Lesson.create_from_meetup_hash(r,g)
           end
         end
@@ -67,6 +59,15 @@ begin
         result.each do |r|
           Booking.create_from_meetup_hash(r)
         end
+      end
+    end
+
+    desc "Reset Booking created_at and updated_at"
+    task :fix_booking_dates => :environment do
+      Booking.record_timestamps = false
+      Booking.all.each do |b|
+        b.update_attribute(:created_at, Time.at(b.meetup_data["created"] / 1000)) if b.meetup_data["created"].present?
+        b.update_attribute(:updated_at, Time.at(b.meetup_data["mtime"] / 1000)) if b.meetup_data["mtime"].present?
       end
     end
 
@@ -121,10 +122,6 @@ begin
       puts "#{Category.count} Categories"
       puts "#{Teacher.count} Teachers"
       puts "#{Lesson.count} Classes"
-    end
-
-    def get_page_count(result)
-      (result.data["meta"]["total_count"].to_f / 200).ceil
     end
   end
 end

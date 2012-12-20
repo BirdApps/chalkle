@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :group do
-    name Faker::Address.city
-    url_name { Faker::Internet.user_name(name) }
+    name "Wellington"
+    url_name "wellington"
   end
 end

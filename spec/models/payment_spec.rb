@@ -6,23 +6,23 @@ describe Payment do
   let(:payment) { FactoryGirl.create(:payment) }
 
   describe ".visible" do
-    it {Payment.visible.should include(payment)}    
+    it {Payment.visible.should include(payment)}
 
    	it "should not include hidden payment" do
       payment.visible = false
       payment.save
-      Payment.visible.should_not include(payment) 
+      Payment.visible.should_not include(payment)
    	end
   end
 
   describe ".hidden" do
     it "should include hidden payment" do
       payment.visible = false
-      payment.save      
-      Payment.hidden.should include(payment) 
+      payment.save
+      Payment.hidden.should include(payment)
    	end
 
-   	it {Payment.hidden.should_not include(payment)}       	
+   	it {Payment.hidden.should_not include(payment)}
   end
 
 end

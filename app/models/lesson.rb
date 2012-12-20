@@ -24,7 +24,8 @@ class Lesson < ActiveRecord::Base
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
-      JSON.parse(data)
+      event = JSON.parse(data)
+      event["event"]
     else
       {}
     end
@@ -55,12 +56,13 @@ class Lesson < ActiveRecord::Base
   end
 
   def self.create_from_meetup_hash(result, group)
-    l = Lesson.find_or_initialize_by_meetup_id(result["id"])
-    l.name = result["name"]
-    l.meetup_id = result["id"]
-    l.description = result["description"]
+    l = Lesson.find_or_initialize_by_meetup_id result.id
+    l.name = result.name
+    l.meetup_id = result.id
+    l.description = result.description
     l.meetup_data = result.to_json
     l.save
     l.groups<< group unless l.groups.exists? group
+    l.valid?
   end
 end
