@@ -1,11 +1,10 @@
 ActiveAdmin.register Booking do
+  config.sort_order = "created_at_desc"
+
   scope :paid
   scope :confirmed
   scope :billable
   scope :waitlist
-  scope :hidden
-  scope :visible, :default => true
-  config.sort_order = "created_at_desc"
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
@@ -16,25 +15,10 @@ ActiveAdmin.register Booking do
   filter :guests
   filter :created_at
 
-  action_item only: :show, if: proc{booking.visible} do |booking|
-    link_to 'Make Invisible', change_visible_admin_booking_path(params[:id])
-  end
-
-  action_item only: :show, if: proc{!booking.visible} do |booking|
-    link_to 'Make Visible', change_visible_admin_booking_path(params[:id])
-  end
-
   controller do
     def scoped_collection
-      Booking.where("bookings.status = 'yes' OR bookings.status = 'waitlist'")
+      Booking.visible.interested
     end
-  end
-
-  member_action :change_visible do
-    booking = Booking.find(params[:id])
-    booking.visible = !booking.visible
-    booking.save
-    redirect_to action: 'show'
   end
 
   index do
@@ -68,6 +52,21 @@ ActiveAdmin.register Booking do
       row :visible
     end
     active_admin_comments
+  end
+
+  action_item only: :show, if: proc{booking.visible} do |booking|
+    link_to 'Hide', toggle_visible_admin_booking_path(params[:id])
+  end
+
+  action_item only: :show, if: proc{!booking.visible} do |booking|
+    link_to 'Unhide', toggle_visible_admin_booking_path(params[:id])
+  end
+
+  member_action :toggle_visible do
+    booking = Booking.find(params[:id])
+    booking.visible = !booking.visible
+    booking.save
+    redirect_to action: 'show'
   end
 
   form do |f|

@@ -1,9 +1,5 @@
-# ActiveAdmin.register Lesson, as: 'Class' do
 ActiveAdmin.register Lesson do
   config.sort_order = "created_at_desc"
-
-  scope :hidden
-  scope :visible, :default => true
 
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
@@ -13,19 +9,10 @@ ActiveAdmin.register Lesson do
   filter :cost
   filter :start_at
 
-  action_item only: :show, if: proc{lesson.visible} do |lesson|
-    link_to 'Make Invisible', change_visible_admin_lesson_path(params[:id])
-  end
-
-  action_item only: :show, if: proc{!lesson.visible} do |lesson|
-    link_to 'Make Visible', change_visible_admin_lesson_path(params[:id])
-  end
-
-  member_action :change_visible do
-    lesson = Lesson.find(params[:id])
-    lesson.visible = !lesson.visible
-    lesson.save
-    redirect_to action: 'show'
+  controller do
+    def scoped_collection
+      Lesson.visible
+    end
   end
 
   index do
@@ -68,6 +55,21 @@ ActiveAdmin.register Lesson do
       row :meetup_data
     end
     active_admin_comments
+  end
+
+  action_item only: :show, if: proc{lesson.visible} do |lesson|
+    link_to 'Hide', toggle_visible_admin_lesson_path(params[:id])
+  end
+
+  action_item only: :show, if: proc{!lesson.visible} do |lesson|
+    link_to 'Unhide', toggle_visible_admin_lesson_path(params[:id])
+  end
+
+  member_action :toggle_visible do
+    lesson = Lesson.find(params[:id])
+    lesson.visible = !lesson.visible
+    lesson.save
+    redirect_to action: 'show'
   end
 
   form do |f|

@@ -1,30 +1,15 @@
 ActiveAdmin.register Payment do
   config.sort_order = "date_desc"
 
-  scope :hidden
-  scope :visible, :default => true
-
-  # filter :groups_name, :as => :select, :label => "Group",
-    # :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
   filter :xero_contact_name
   filter :total
   filter :created_ad
   filter :updated_at
 
-  action_item only: :index do
-    link_to 'Reconcile', reconcile_admin_payments_path
-  end
-
-  action_item only: :show, if: proc{!payment.complete_record_downloaded} do |payment|
-    link_to 'Download from Xero', download_from_xero_admin_payment_path(params[:id])
-  end
-
-  action_item only: :show, if: proc{payment.visible} do |payment|
-    link_to 'Make Invisible', change_visible_admin_payment_path(params[:id])
-  end
-
-  action_item only: :show, if: proc{!payment.visible} do |payment|
-    link_to 'Make Visible', change_visible_admin_payment_path(params[:id])
+  controller do
+    def scoped_collection
+      Payment.visible
+    end
   end
 
   index do
@@ -37,6 +22,22 @@ ActiveAdmin.register Payment do
     default_actions
   end
 
+  action_item only: :index do
+    link_to 'Reconcile', reconcile_admin_payments_path
+  end
+
+  action_item only: :show, if: proc{ !payment.complete_record_downloaded } do |payment|
+    link_to 'Download from Xero', download_from_xero_admin_payment_path(params[:id])
+  end
+
+  action_item only: :show, if: proc{ payment.visible } do |payment|
+    link_to 'Hide', toggle_visible_admin_payment_path(params[:id])
+  end
+
+  action_item only: :show, if: proc{ !payment.visible } do |payment|
+    link_to 'Unhide', toggle_visible_admin_payment_path(params[:id])
+  end
+
   collection_action :reconcile do
     @payments = Payment.unreconciled.limit(20)
   end
@@ -47,7 +48,7 @@ ActiveAdmin.register Payment do
     redirect_to action: 'show'
   end
 
-  member_action :change_visible do
+  member_action :toggle_visible do
     payment = Payment.find(params[:id])
     payment.visible = !payment.visible
     payment.save
@@ -76,7 +77,6 @@ ActiveAdmin.register Payment do
       f.input :total
       f.input :reconciled
       f.input :complete_record_downloaded, :as => :hidden, :value => "true"
-      f.input :visible, :as => :hidden, :value => "true"
     end
 
     f.buttons
