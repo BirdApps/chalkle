@@ -55,18 +55,19 @@ ActiveAdmin.register Booking do
   end
 
   action_item only: :show, if: proc{booking.visible} do |booking|
-    link_to 'Delete', toggle_visible_admin_booking_path(params[:id])
+    link_to 'Delete', set_visible_admin_booking_path(params[:id])
   end
 
   action_item only: :show, if: proc{!booking.visible} do |booking|
-    link_to 'Restore record', toggle_visible_admin_booking_path(params[:id])
+    link_to 'Restore record', set_visible_admin_booking_path(params[:id])
   end
 
-  member_action :toggle_visible do
+  member_action :set_visible do
     booking = Booking.find(params[:id])
     booking.visible = !booking.visible
     booking.save
-    redirect_to action: 'show'
+    redirect_to "http://google.com"
+    # redirect_to admin_bookings_url
   end
 
   form do |f|

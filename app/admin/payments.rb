@@ -50,9 +50,10 @@ ActiveAdmin.register Payment do
 
   member_action :toggle_visible do
     payment = Payment.find(params[:id])
-    payment.visible = !payment.visible
-    payment.save
-    redirect_to action: 'show'
+    payment.visible = false
+    if payment.save!
+      # redirect_to { action: index }, notice: "record deleted"
+    end
   end
 
   member_action :do_reconcile, method: :post do
