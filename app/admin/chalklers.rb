@@ -14,7 +14,7 @@ ActiveAdmin.register Chalkler do
       chalkler.groups.collect{|g| g.name}.join(", ")
     end
     column :meetup_id do |chalkler|
-      link_to chalkler.meetup_id, chalkler.meetup_data["link"]
+      link_to chalkler.meetup_id, chalkler.meetup_data["link"] if chalkler.meetup_data.present?
     end
     column :email
     column :bio
@@ -27,7 +27,7 @@ ActiveAdmin.register Chalkler do
       row :name
       row :id
       row :meetup_id do
-        link_to chalkler.meetup_id, chalkler.meetup_data["link"]
+        link_to chalkler.meetup_id, chalkler.meetup_data["link"] if chalkler.meetup_data.present?
       end
       row :email
       row :bio
