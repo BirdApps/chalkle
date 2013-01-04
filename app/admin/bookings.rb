@@ -46,10 +46,14 @@ ActiveAdmin.register Booking do
       row :cost
       row :additional_cost
       row :paid
+      row :answers do
+        if booking.answers
+          render partial: "/admin/bookings/answers", locals: { answers: booking.answers }
+        end
+      end
       row :meetup_data
       row :created_at
       row :updated_at
-      row :visible
     end
     active_admin_comments
   end

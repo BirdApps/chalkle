@@ -37,6 +37,11 @@ class Booking < ActiveRecord::Base
     # lesson.cost * seats if lesson.cost.present?
   end
 
+  def answers
+    return if meetup_data.empty? || (meetup_data["answers"][0] == "" && meetup_data["answers"].length == 1)
+    meetup_data["answers"]
+  end
+
   def set_from_meetup_data
     return if meetup_data.empty?
     self.created_at = Time.at(meetup_data["created"] / 1000)
