@@ -3,6 +3,10 @@ class AddVisibleToModels < ActiveRecord::Migration
     add_column :payments, :visible, :boolean
     add_column :bookings, :visible, :boolean
     add_column :lessons, :visible, :boolean
+
+    Payments.all.each { |p| p.update_attribute visible, true }
+    Booking.all.each { |p| p.update_attribute visible, true }
+    Lesson.all.each { |p| p.update_attribute visible, true }
   end
 
   def down
