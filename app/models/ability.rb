@@ -8,17 +8,19 @@ class Ability
       can :manage, AdminUser
       can :manage, Group
       can [:read, :create, :update], Chalkler
-      can [:read, :create, :update, :set_visible], [Booking, Payment]
-      can [:read, :update, :set_visible], Lesson
+      can [:read, :create, :update, :hide, :unhide], [Booking, Payment]
+      can [:reconcile, :do_reconcile, :download_from_xero], Payment
+      can [:read, :update, :hide, :unhide], Lesson
       can :manage, Category
 
     when "group admin"
       can [:read, :update], Chalkler, :id => user.chalkler_ids
       can :create, Chalkler
-      can [:read, :update, :set_visible], Booking, :id => user.booking_ids
+      can [:read, :update, :hide, :unhide], Booking, :id => user.booking_ids
       can :create, Booking
-      can [:read, :update, :set_visible], Lesson, :id => user.lesson_ids
-      can [:read, :create, :update, :set_visible], Payment
+      can [:read, :update, :hide, :unhide], Lesson, :id => user.lesson_ids
+      can [:read, :create, :update, :hide, :unhide], Payment
+      can [:reconcile, :do_reconcile, :download_from_xero], Payment
       can :manage, Category
     end
   end

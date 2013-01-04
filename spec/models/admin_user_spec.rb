@@ -26,13 +26,22 @@ describe AdminUser do
       it { should be_able_to(:read, FactoryGirl.create(:booking)) }
       it { should be_able_to(:create, FactoryGirl.create(:booking)) }
       it { should be_able_to(:update, FactoryGirl.create(:booking)) }
+      it { should be_able_to(:hide, FactoryGirl.create(:booking)) }
+      it { should be_able_to(:unhide, FactoryGirl.create(:booking)) }
 
       it { should be_able_to(:read, FactoryGirl.create(:lesson)) }
       it { should be_able_to(:update, FactoryGirl.create(:lesson)) }
+      it { should be_able_to(:hide, FactoryGirl.create(:lesson)) }
+      it { should be_able_to(:unhide, FactoryGirl.create(:lesson)) }
 
       it { should be_able_to(:read, FactoryGirl.create(:payment)) }
       it { should be_able_to(:create, FactoryGirl.create(:payment)) }
       it { should be_able_to(:update, FactoryGirl.create(:payment)) }
+      it { should be_able_to(:hide, FactoryGirl.create(:payment)) }
+      it { should be_able_to(:unhide, FactoryGirl.create(:payment)) }
+      it { should be_able_to(:reconcile, FactoryGirl.create(:payment)) }
+      it { should be_able_to(:do_reconcile, FactoryGirl.create(:payment)) }
+      it { should be_able_to(:download_from_xero, FactoryGirl.create(:payment)) }
 
       it { should be_able_to(:manage, FactoryGirl.create(:category)) }
     end
@@ -51,10 +60,17 @@ describe AdminUser do
 
         it { should be_able_to(:read, FactoryGirl.create(:lesson, groups: [group])) }
         it { should be_able_to(:update, FactoryGirl.create(:lesson, groups: [group])) }
+        it { should be_able_to(:hide, FactoryGirl.create(:lesson, groups: [group])) }
+        it { should be_able_to(:unhide, FactoryGirl.create(:lesson, groups: [group])) }
 
         it { should be_able_to(:read, FactoryGirl.create(:payment)) }
         it { should be_able_to(:create, FactoryGirl.create(:payment)) }
         it { should be_able_to(:update, FactoryGirl.create(:payment)) }
+        it { should be_able_to(:hide, FactoryGirl.create(:payment)) }
+        it { should be_able_to(:unhide, FactoryGirl.create(:payment)) }
+        it { should be_able_to(:reconcile, FactoryGirl.create(:payment)) }
+        it { should be_able_to(:do_reconcile, FactoryGirl.create(:payment)) }
+        it { should be_able_to(:download_from_xero, FactoryGirl.create(:payment)) }
 
         it { should be_able_to(:manage, FactoryGirl.create(:category)) }
 
@@ -66,6 +82,16 @@ describe AdminUser do
         it "should be able to update bookings" do
           lesson = FactoryGirl.create(:lesson, groups: [group])
           should be_able_to(:update, FactoryGirl.create(:booking, lesson: lesson))
+        end
+
+        it "should be able to hide bookings" do
+          lesson = FactoryGirl.create(:lesson, groups: [group])
+          should be_able_to(:hide, FactoryGirl.create(:booking, lesson: lesson))
+        end
+
+        it "should be able to unhide bookings" do
+          lesson = FactoryGirl.create(:lesson, groups: [group])
+          should be_able_to(:unhide, FactoryGirl.create(:booking, lesson: lesson))
         end
 
         it { should be_able_to(:create, FactoryGirl.create(:booking)) }

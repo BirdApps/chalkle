@@ -1,4 +1,4 @@
-ActiveAdmin.register Lesson do
+ActiveAdmin.register Lesson  do
   config.sort_order = "created_at_desc"
 
   filter :groups_name, :as => :select, :label => "Group",
@@ -57,19 +57,36 @@ ActiveAdmin.register Lesson do
     active_admin_comments
   end
 
-  action_item only: :show, if: proc{lesson.visible} do |lesson|
-    link_to 'Delete', toggle_visible_admin_lesson_path(params[:id])
+  action_item(only: :show, if: proc { can?(:hide, resource) && lesson.visible }) do
+    link_to 'Delete Lesson',
+      hide_admin_lesson_path(resource),
+      :data => { :confirm => "Are you sure you wish to delete this Lesson?" }
   end
 
-  action_item only: :show, if: proc{!lesson.visible} do |lesson|
-    link_to 'Restore record', toggle_visible_admin_lesson_path(params[:id])
+  action_item(only: :show, if: proc{ can?(:unhide, resource) && !lesson.visible}) do
+    link_to 'Restore record', unhide_admin_lesson_path(resource)
   end
 
-  member_action :toggle_visible do
+  member_action :hide do
     lesson = Lesson.find(params[:id])
-    lesson.visible = !lesson.visible
-    lesson.save
-    redirect_to action: 'show'
+    lesson.visible = false
+    if lesson.save!
+      flash[:notice] = "Lesson #{lesson.id} deleted!"
+    else
+      flash[:warn] = "Lesson #{lesson.id} could not be deleted!"
+    end
+    redirect_to :action => :index
+  end
+
+  member_action :unhide do
+    lesson = Lesson.find(params[:id])
+    lesson.visible = true
+    if lesson.save!
+      flash[:notice] = "Lesson #{lesson.id} restored!"
+    else
+      flash[:warn] = "Lesson #{lesson.id} could not be restored!"
+    end
+    redirect_to :action => :index
   end
 
   form do |f|

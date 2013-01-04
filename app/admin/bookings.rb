@@ -54,21 +54,36 @@ ActiveAdmin.register Booking do
     active_admin_comments
   end
 
-  action_item(only: :show, if: proc { can?(:set_visible, resource) && booking.visible }) do
+  action_item(only: :show, if: proc { can?(:hide, resource) && booking.visible }) do
     link_to 'Delete Booking',
-      set_visible_admin_booking_path(resource),
+      hide_admin_booking_path(resource),
       :data => { :confirm => "Are you sure you wish to delete this Booking?" }
   end
 
-  action_item(only: :show, if: proc{ can?(:set_visible, resource) && !booking.visible }) do
-    link_to 'Restore Booking', set_visible_admin_booking_path(resource)
+  action_item(only: :show, if: proc{ can?(:unhide, resource) && !booking.visible }) do
+    link_to 'Restore Booking', unhide_admin_booking_path(resource)
   end
 
-  member_action :set_visible do
+  member_action :hide do
     booking = Booking.find(params[:id])
-    booking.visible = !booking.visible
-    booking.save
-    redirect_to :admin_bookings
+    booking.visible = false
+    if booking.save!
+      flash[:notice] = "Booking #{booking.id} deleted!"
+    else
+      flash[:warn] = "Could not delete Booking!"
+    end
+    redirect_to :action => :index
+  end
+
+  member_action :unhide do
+    booking = Booking.find(params[:id])
+    booking.visible = true
+    if booking.save!
+      flash[:notice] = "Booking #{booking.id} restored!"
+    else
+      flash[:warn] = "Could not restore Booking!"
+    end
+    redirect_to :action => :index
   end
 
   form do |f|

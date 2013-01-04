@@ -30,12 +30,14 @@ ActiveAdmin.register Payment do
     link_to 'Download from Xero', download_from_xero_admin_payment_path(params[:id])
   end
 
-  action_item only: :show, if: proc{ payment.visible } do |payment|
-    link_to 'Delete', toggle_visible_admin_payment_path(params[:id])
+  action_item(only: :show, if: proc { can?(:hide, resource) && payment.visible }) do
+    link_to 'Delete Payment',
+      hide_admin_payment_path(resource),
+      :data => { :confirm => "Are you sure you wish to delete this Payment?" }
   end
 
-  action_item only: :show, if: proc{ !payment.visible } do |payment|
-    link_to 'Restore record', toggle_visible_admin_payment_path(params[:id])
+  action_item(only: :show, if: proc{ can?(:unhide, resource) && !payment.visible }) do
+    link_to 'Restore Payment', unhide_admin_payment_path(resource)
   end
 
   collection_action :reconcile do
@@ -45,15 +47,29 @@ ActiveAdmin.register Payment do
   member_action :download_from_xero do
     payment = Payment.find(params[:id])
     payment.complete_record_download
-    redirect_to action: 'show'
+    redirect_to :action => :show
   end
 
-  member_action :toggle_visible do
+  member_action :hide do
     payment = Payment.find(params[:id])
     payment.visible = false
     if payment.save!
-      # redirect_to { action: index }, notice: "record deleted"
+      flash[:notice] = "Payment #{payment.id} deleted!"
+    else
+      flash[:warn] = "Payment #{payment.id} could not be deleted!"
     end
+    redirect_to :action => :index
+  end
+
+  member_action :unhide do
+    payment = Payment.find(params[:id])
+    payment.visible = true
+    if payment.save!
+      flash[:notice] = "Payment #{payment.id} restored!"
+    else
+      flash[:warn] = "Payment #{payment.id} could not be restored!"
+    end
+    redirect_to :action => :index
   end
 
   member_action :do_reconcile, method: :post do
