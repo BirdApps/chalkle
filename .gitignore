@@ -8,7 +8,7 @@
 /.bundle
 
 /config/database.yml
-/vender/bundle
+/vender/bundle/*
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
