@@ -54,20 +54,21 @@ ActiveAdmin.register Booking do
     active_admin_comments
   end
 
-  action_item only: :show, if: proc{booking.visible} do |booking|
-    link_to 'Delete', set_visible_admin_booking_path(params[:id])
+  action_item(only: :show, if: proc { can?(:set_visible, resource) && booking.visible }) do
+    link_to 'Delete Booking',
+      set_visible_admin_booking_path(resource),
+      :data => { :confirm => "Are you sure you wish to delete this Booking?" }
   end
 
-  action_item only: :show, if: proc{!booking.visible} do |booking|
-    link_to 'Restore record', set_visible_admin_booking_path(params[:id])
+  action_item(only: :show, if: proc{ can?(:set_visible, resource) && !booking.visible }) do
+    link_to 'Restore Booking', set_visible_admin_booking_path(resource)
   end
 
   member_action :set_visible do
     booking = Booking.find(params[:id])
     booking.visible = !booking.visible
     booking.save
-    redirect_to "http://google.com"
-    # redirect_to admin_bookings_url
+    redirect_to :admin_bookings
   end
 
   form do |f|
@@ -76,10 +77,8 @@ ActiveAdmin.register Booking do
       f.input :chalkler, as: :select, collection: Chalkler.order("name ASC").all
       f.input :guests
       f.input :additional_cost
-      f.input :status, as: :select, collection: ["yes", "no", "waiting"]
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
-      f.input :visible, :as => :hidden, :value => "true"
     end
     f.buttons
   end
