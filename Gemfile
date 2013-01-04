@@ -8,7 +8,7 @@ gem 'rails', '3.2.8'
 gem 'pg'
 gem 'airbrake'
 gem 'devise'
-gem 'cancan'
+gem 'cancan', '~> 1.6.8'
 gem 'activeadmin'
 
 gem 'analytical'
