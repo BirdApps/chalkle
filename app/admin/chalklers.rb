@@ -14,7 +14,11 @@ ActiveAdmin.register Chalkler do
       chalkler.groups.collect{|g| g.name}.join(", ")
     end
     column :meetup_id do |chalkler|
-      link_to chalkler.meetup_id, chalkler.meetup_data["link"]
+      if chalkler.meetup_data.present?
+        link_to chalkler.meetup_id, chalkler.meetup_data["link"]
+      else
+        "non-meetup"
+      end
     end
     column :email
     column :bio
@@ -27,7 +31,11 @@ ActiveAdmin.register Chalkler do
       row :name
       row :id
       row :meetup_id do
-        link_to chalkler.meetup_id, chalkler.meetup_data["link"]
+        if chalkler.meetup_data.present?
+          link_to chalkler.meetup_id, chalkler.meetup_data["link"]
+        else
+          "non-meetup"
+        end
       end
       row :email
       row :bio
@@ -47,6 +55,7 @@ ActiveAdmin.register Chalkler do
   form do |f|
     f.inputs :details do
       f.input :name
+      f.input :groups
       f.input :meetup_id
       f.input :email
       f.input :bio
