@@ -83,7 +83,7 @@ ActiveAdmin.register Booking do
     else
       flash[:warn] = "Could not restore Booking!"
     end
-    redirect_to :action => :index
+    redirect_to :back
   end
 
   form do |f|

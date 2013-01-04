@@ -58,7 +58,7 @@ ActiveAdmin.register Payment do
     else
       flash[:warn] = "Payment #{payment.id} could not be deleted!"
     end
-    redirect_to :action => :index
+    redirect_to :back
   end
 
   member_action :unhide do
@@ -69,7 +69,7 @@ ActiveAdmin.register Payment do
     else
       flash[:warn] = "Payment #{payment.id} could not be restored!"
     end
-    redirect_to :action => :index
+    redirect_to :back
   end
 
   member_action :do_reconcile, method: :post do

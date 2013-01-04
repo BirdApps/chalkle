@@ -86,7 +86,7 @@ ActiveAdmin.register Lesson  do
     else
       flash[:warn] = "Lesson #{lesson.id} could not be restored!"
     end
-    redirect_to :action => :index
+    redirect_to :back
   end
 
   form do |f|
