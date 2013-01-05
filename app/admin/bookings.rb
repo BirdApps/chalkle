@@ -44,7 +44,7 @@ ActiveAdmin.register Booking do
       row :status
       row :guests
       row :cost
-      row :additional_cost
+      row :cost_override
       row :paid
       row :answers do
         if booking.answers
