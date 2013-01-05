@@ -42,8 +42,6 @@ ActiveAdmin.register Payment do
     active_admin_comments
   end
 
-
-
   action_item only: :index do
     link_to 'Reconcile', reconcile_admin_payments_path
   end
@@ -80,7 +78,7 @@ ActiveAdmin.register Payment do
     else
       flash[:warn] = "Payment #{payment.id} could not be deleted!"
     end
-    redirect_to :back
+    redirect_to :action => :index
   end
 
   member_action :unhide do
