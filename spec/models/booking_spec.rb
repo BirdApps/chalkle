@@ -12,14 +12,14 @@ describe Booking do
   describe "#cost" do
     it "returns nil when lesson has no cost" do
       lesson = FactoryGirl.create(:lesson, cost: nil)
-      booking = FactoryGirl.create(:booking, guests: 0, lesson: lesson)
+      booking = FactoryGirl.create(:booking, guests: 5, lesson: lesson)
       booking.cost.should be_nil
     end
 
     it "returns cost from lesson" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
       booking = FactoryGirl.create(:booking, guests: 0, lesson: lesson)
-      booking.cost.should == 10
+      booking.cost.to_f.should == 10
     end
 
     it "calculates cost when booking has no guests" do
@@ -32,6 +32,12 @@ describe Booking do
       lesson = FactoryGirl.create(:lesson, cost: 10)
       booking =  FactoryGirl.create(:booking, guests: 9, lesson: lesson)
       booking.cost.to_f.should == 100
+    end
+
+    it "sets a correct cost_override" do
+      lesson = FactoryGirl.create(:lesson, cost: 10)
+      booking =  FactoryGirl.create(:booking, cost_override: 20, lesson: lesson)
+      booking.cost.to_f.should == 20
     end
   end
 
@@ -173,7 +179,7 @@ describe Booking do
     it "should not include invisible booking" do
       booking.visible = false
       booking.save
-      Booking.visible.should_not include(booking) 
+      Booking.visible.should_not include(booking)
     end
   end
 
@@ -181,7 +187,7 @@ describe Booking do
     it "includes hidden bookings" do
       booking.visible = false
       booking.save
-      Booking.hidden.should include(booking) 
+      Booking.hidden.should include(booking)
     end
 
     it {Booking.hidden.should_not include(booking)}

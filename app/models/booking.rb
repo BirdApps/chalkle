@@ -1,5 +1,5 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :paid, :visible, :additional_cost
+  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :cost_override, :paid, :visible
 
   belongs_to :lesson
   belongs_to :chalkler
@@ -21,6 +21,14 @@ class Booking < ActiveRecord::Base
   before_create :set_from_meetup_data
   before_create :set_metadata
 
+  def name
+    if lesson.present? && chalkler.present?
+      "#{lesson.name} (#{lesson.meetup_id}) - #{chalkler.name}"
+    else
+      id
+    end
+  end
+
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
@@ -32,9 +40,9 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
+    return cost_override if cost_override > 0
     seats = guests.present? ? guests + 1 : 1
-    (lesson.cost * seats + additional_cost) if lesson.cost.present?
-    # lesson.cost * seats if lesson.cost.present?
+    lesson.cost.present? ? (lesson.cost * seats) : nil
   end
 
   def answers
@@ -52,14 +60,6 @@ class Booking < ActiveRecord::Base
     self.visible = true
   end
 
-  def name
-    if lesson.present? && chalkler.present?
-      "#{lesson.name} (#{lesson.meetup_id}) - #{chalkler.name}"
-    else
-      id
-    end
-  end
-
   def self.create_from_meetup_hash result
     b = Booking.find_or_initialize_by_meetup_id result.rsvp_id
     b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
@@ -68,7 +68,6 @@ class Booking < ActiveRecord::Base
     b.guests = result.guests
     b.status = result.response unless b.status == "no-show"
     b.meetup_data = result.to_json
-    b.additional_cost = 0.0
     b.save
   end
 end
