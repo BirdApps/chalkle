@@ -18,9 +18,31 @@ ActiveAdmin.register Payment do
     column :date
     column :xero_contact_name
     column :reconciled
-    column :total
+    column :total do |payment|
+      number_to_currency payment.total
+    end
     default_actions
   end
+
+  show do |payment|
+    attributes_table do
+      row :booking
+      row :reference
+      row :xero_id
+      row :xero_contact_id
+      row :xero_contact_name
+      row :date
+      row :complete_record_downloaded
+      row :total do
+        number_to_currency payment.total
+      end
+      row :reconciled
+      row :updated_at
+    end
+    active_admin_comments
+  end
+
+
 
   action_item only: :index do
     link_to 'Reconcile', reconcile_admin_payments_path
@@ -93,7 +115,6 @@ ActiveAdmin.register Payment do
       f.input :date
       f.input :total
       f.input :reconciled
-      f.input :complete_record_downloaded, :as => :hidden, :value => "true"
     end
 
     f.buttons

@@ -29,7 +29,9 @@ ActiveAdmin.register Booking do
       booking.lesson.groups.collect{|g| g.name}.join(", ")
     end
     column :status
-    column :cost, :sortable => false
+    column :cost, :sortable => false do |booking|
+      number_to_currency booking.cost
+    end
     column :paid
     column :guests
     column :created_at
@@ -43,8 +45,13 @@ ActiveAdmin.register Booking do
       row :chalkler
       row :status
       row :guests
-      row :cost
-      row :cost_override
+      row :cost do
+        if booking.cost_override?
+          "#{number_to_currency booking.cost_override} (cost override)"
+        else
+          number_to_currency booking.cost
+        end
+      end
       row :paid
       row :answers do
         if booking.answers
@@ -95,7 +102,7 @@ ActiveAdmin.register Booking do
       f.input :lesson
       f.input :chalkler, as: :select, collection: Chalkler.order("name ASC").all
       f.input :guests
-      f.input :additional_cost
+      f.input :cost_override
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
     end

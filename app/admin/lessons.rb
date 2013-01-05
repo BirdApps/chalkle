@@ -23,7 +23,9 @@ ActiveAdmin.register Lesson  do
     end
     column :category
     column :teacher
-    column :cost
+    column :cost do |lesson|
+      number_to_currency lesson.cost
+    end
     column "Unpaid", :unpaid_count, sortable: false
     column :start_at
     column :created_at
@@ -37,12 +39,17 @@ ActiveAdmin.register Lesson  do
       row :meetup_id do
         link_to lesson.meetup_id, lesson.meetup_data["event_url"]
       end
-      row :cost
-      row :teacher_cost
-      row :venue_cost
+      row :cost do
+        number_to_currency lesson.cost
+      end
+      row :teacher_cost do
+        number_to_currency lesson.teacher_cost
+      end
+      row :venue_cost do
+        number_to_currency lesson.venue_cost
+      end
       row :start_at
       row :duration
-      row :visible
       row :bookings do
         "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid"
       end
@@ -98,7 +105,6 @@ ActiveAdmin.register Lesson  do
       f.input :teacher_cost
       f.input :venue_cost
       f.input :start_at
-      f.input :visible, :as => :hidden, :value => "true"
       f.input :duration
       f.input :description
     end
