@@ -41,9 +41,9 @@ begin
       Group.all.each do |g|
         next unless g.url_name?
         puts "Importing classes for group #{g.name}"
-        total_pages = RMeetup::Client.fetch(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain').total_pages
+        total_pages = RMeetup::Client.fetch(:events, { group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
         for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:events, group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i)
+          results = RMeetup::Client.fetch(:events, { group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
           results.each do |r|
             Lesson.create_from_meetup_hash(r,g)
           end
