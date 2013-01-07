@@ -3,8 +3,8 @@ ActiveAdmin.register Chalkler do
 
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
-  filter :name
   filter :meetup_id
+  filter :name
   filter :email
 
   index do

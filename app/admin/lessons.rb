@@ -3,6 +3,7 @@ ActiveAdmin.register Lesson  do
 
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
+  filter :meetup_id
   filter :name, as: :select, collection: Lesson.order("name ASC").all
   filter :category
   filter :teacher, as: :select, collection: Chalkler.order("name ASC").all
