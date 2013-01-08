@@ -38,7 +38,7 @@ ActiveAdmin.register Lesson  do
       row :category
       row :teacher
       row :meetup_id do
-        link_to lesson.meetup_id, lesson.meetup_data["event_url"]
+        link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
       end
       row :cost do
         number_to_currency lesson.cost
