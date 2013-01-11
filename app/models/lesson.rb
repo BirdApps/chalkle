@@ -62,7 +62,7 @@ class Lesson < ActiveRecord::Base
     l.description = result.description
     l.meetup_data = result.to_json
     l.save
-    l.groups<< group unless l.groups.exists? group
+    l.groups << group
     l.valid?
   end
 end
