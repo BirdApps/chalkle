@@ -55,7 +55,7 @@ ActiveAdmin.register Chalkler do
   form do |f|
     f.inputs :details do
       f.input :name
-      f.input :groups
+      f.input :groups, :as => :check_boxes
       f.input :meetup_id
       f.input :email
       f.input :bio
