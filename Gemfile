@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -51,8 +51,6 @@ group :development do
 
   # Helpful Rails Generators
   gem 'nifty-generators', '>= 0.4.4', :require => false
-
-  gem 'guard-livereload'
 end
 
 group :development, :test do
@@ -64,6 +62,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'guard-sass'
   gem 'guard-spork'
+  gem 'guard-livereload'
 
   # Placed here so generators work
   gem 'rspec'
@@ -75,8 +74,6 @@ group :development, :test do
   # Testing Javascript
   gem 'jasmine', '~> 1.1.0.rc2'
   gem 'jasmine-headless-webkit'
-
-  gem 'spork-rails'
 end
 
 group :test do
