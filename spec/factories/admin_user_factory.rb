@@ -1,9 +1,10 @@
 FactoryGirl.define do
+  sequence(:email) { |n| "jill#{n}@hotmail.com" }
+
   factory :admin_user do
     name "Jill Scott"
-    email "jill@hotmail.com"
+    email
     role "super"
-    groups {[ FactoryGirl.create(:group) ]}
 
     factory :super_admin_user do
       role "super"

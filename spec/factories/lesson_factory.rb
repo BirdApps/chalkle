@@ -1,11 +1,10 @@
 FactoryGirl.define do
   factory :lesson do
     name "Learning fun"
-    meetup_id 12345678
+    meetup_id
     description "You should really learn, it's fun!"
     category
     cost 20
-    groups {[ FactoryGirl.create(:group) ]}
 
     factory :lesson_with_bookings do
       ignore do
