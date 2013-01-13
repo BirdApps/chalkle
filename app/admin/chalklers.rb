@@ -7,6 +7,12 @@ ActiveAdmin.register Chalkler do
   filter :name
   filter :email
 
+  controller do
+    def scoped_collection
+      end_of_association_chain.visible.accessible_by(current_ability)
+    end
+  end
+
   index do
     column :id
     column :name
@@ -55,7 +61,7 @@ ActiveAdmin.register Chalkler do
   form do |f|
     f.inputs :details do
       f.input :name
-      f.input :groups
+      f.input :groups, :as => :check_boxes
       f.input :meetup_id
       f.input :email
       f.input :bio

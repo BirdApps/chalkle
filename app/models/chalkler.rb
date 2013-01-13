@@ -3,7 +3,7 @@ class Chalkler < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me
+  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me, :group_ids
 
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates_uniqueness_of :email, allow_blank: true
@@ -47,7 +47,7 @@ class Chalkler < ActiveRecord::Base
     c.bio = result.bio
     c.meetup_data = result.to_json
     c.save
-    c.groups<< group unless c.groups.exists? group
+    c.groups << group
     c.valid?
   end
 

@@ -21,6 +21,9 @@
         %td= b.status
         %td= number_to_currency b.cost
         %td= b.paid
-        %td= b.meetup_data["answers"].join('<br/>') if b.meetup_data["answers"].present?
+        %td
+          %ul
+            -b.answers.each do |a|
+              %li= a
         %td= link_to 'View', admin_booking_path(b)
 

@@ -6,13 +6,11 @@ gem 'rails', '3.2.11'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-gem 'airbrake'
-gem 'devise'
+gem 'airbrake', '~> 3.1.6'
+gem 'devise', '~> 2.2.0'
 gem 'cancan', '~> 1.6.8'
-gem 'activeadmin'
-
+gem 'activeadmin', '~> 0.5.1'
 gem 'analytical'
-
 gem 'jquery-rails'
 
 #apis
@@ -27,7 +25,6 @@ gem 'simple_form'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  # gem 'modernizr-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'bootstrap-sass', '~> 2.0.4.0'
   gem 'coffee-rails', '~> 3.2.1'
@@ -54,19 +51,16 @@ group :development do
 end
 
 group :development, :test do
-  # Debugging depending on the ruby you are running
-  gem 'hpricot'
-
   # Automatic testing
-  gem 'guard'
-  gem 'guard-rspec'
-  gem 'guard-sass'
-  gem 'guard-spork'
-  gem 'guard-livereload'
+  gem 'guard', '~> 1.6.1'
+  gem 'guard-spork', '~> 1.4.1'
+  gem 'guard-rspec', '~> 2.3.3'
+  gem 'guard-sass', '~> 1.0.1', :require => false
+  gem 'guard-livereload', '~> 1.1.3'
+  gem 'rb-inotify', '~> 0.8.8'
 
   # Placed here so generators work
-  gem 'rspec'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.0'
 
   # Opening webpages during tests
   gem 'launchy'
@@ -83,19 +77,13 @@ group :test do
 
   # Test Helpers
   gem 'database_cleaner'
-  gem 'faker'
   gem 'timecop'
   gem 'steak'
   gem 'webrat'
   gem 'email_spec'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.1.0'
   gem 'shoulda'
 
   # Test coverage
   gem 'simplecov'
-
-  # Test feedback
-  gem 'autotest'
-  gem 'rspec-instafail', :require => false
-  gem 'fuubar'
 end

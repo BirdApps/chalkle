@@ -8,7 +8,7 @@ ActiveAdmin.register Payment do
 
   controller do
     def scoped_collection
-      Payment.visible
+      end_of_association_chain.visible.accessible_by(current_ability)
     end
   end
 

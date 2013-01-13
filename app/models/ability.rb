@@ -14,14 +14,8 @@ class Ability
       can :manage, Category
 
     when "group admin"
-      can [:read, :update], Chalkler, :id => user.chalkler_ids
-      can :create, Chalkler
-      can [:read, :update, :hide, :unhide], Booking, :id => user.booking_ids
-      can :create, Booking
-      can [:read, :update, :hide, :unhide], Lesson, :id => user.lesson_ids
-      can [:read, :create, :update, :hide, :unhide], Payment
-      can [:reconcile, :do_reconcile, :download_from_xero], Payment
-      can :manage, Category
+      can [:read, :update], Lesson, :id => user.lesson_ids
+      cannot [:read, :update, :destroy], [Payment, Booking, Chalkler, Category, AdminUser, Group]
     end
   end
 end
