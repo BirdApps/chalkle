@@ -1,5 +1,5 @@
 ActiveAdmin.register Lesson  do
-  config.sort_order = "created_at_desc"
+  config.sort_order = "start_at_desc"
 
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
@@ -50,7 +50,9 @@ ActiveAdmin.register Lesson  do
         number_to_currency lesson.venue_cost
       end
       row :start_at
-      row :duration
+      row :duration do
+        "#{lesson.duration / 60} minutes" if lesson.duration?
+      end
       row :bookings do
         "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid"
       end
