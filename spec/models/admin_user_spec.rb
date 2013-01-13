@@ -10,13 +10,12 @@ describe AdminUser do
   it { should have_many(:payments).through(:bookings) }
 
   describe "abilities" do
-    subject { ability }
-    let(:ability){ Ability.new(admin_user) }
-
-    context "when is an super admin user" do
+    context "super admin user" do
+      subject { ability }
+      let(:ability){ Ability.new(admin_user) }
       let(:admin_user){ FactoryGirl.create(:super_admin_user) }
 
-      it { should be_able_to(:manage, FactoryGirl.create(:admin_user, email: "user@example.com")) }
+      it { should be_able_to(:manage, FactoryGirl.create(:admin_user)) }
       it { should be_able_to(:manage, FactoryGirl.create(:group)) }
 
       it { should be_able_to(:read, FactoryGirl.create(:chalkler)) }
@@ -46,55 +45,50 @@ describe AdminUser do
       it { should be_able_to(:manage, FactoryGirl.create(:category)) }
     end
 
-    context "when is a group admin user" do
-      let(:group){ FactoryGirl.create(:group) }
-      let(:admin_user){ FactoryGirl.create(:group_admin_user, groups: group) }
+    context "group admin user" do
+      before do
+        @group = FactoryGirl.create(:group)
+        @admin_user = FactoryGirl.create(:group_admin_user)
+        @admin_user.groups << @group
+      end
 
-      pending { should_not be_able_to(:manage, FactoryGirl.create(:group)) }
-      pending { should_not be_able_to(:manage, FactoryGirl.create(:admin_user, email: "user@example.com")) }
+      it "should be able to administrate lessons" do
+        lesson = FactoryGirl.create(:lesson)
+        lesson.groups << @group
+        ability = Ability.new @admin_user
+        ability.should be_able_to(:read, lesson)
+        ability.should be_able_to(:update, lesson)
+      end
 
-      context "and resource shares group" do
-        pending { should be_able_to(:read, FactoryGirl.create(:chalkler, groups: [group])) }
-        pending { should be_able_to(:update, FactoryGirl.create(:chalkler, groups: [group])) }
-        pending { should be_able_to(:create, FactoryGirl.create(:chalkler)) }
+      it "should not be able to administrate groups" do
+        ability = Ability.new @admin_user
+        ability.should_not be_able_to(:view, @group)
+        ability.should_not be_able_to(:update, @group)
+        ability.should_not be_able_to(:destroy, @group)
+      end
 
-        pending { should be_able_to(:read, FactoryGirl.create(:lesson, groups: [group])) }
-        pending { should be_able_to(:update, FactoryGirl.create(:lesson, groups: [group])) }
-        pending { should be_able_to(:hide, FactoryGirl.create(:lesson, groups: [group])) }
-        pending { should be_able_to(:unhide, FactoryGirl.create(:lesson, groups: [group])) }
+      it "should not be able to administrate admin users" do
+        ability = Ability.new @admin_user
+        admin_user_2 = FactoryGirl.create(:admin_user)
+        ability.should_not be_able_to(:view, admin_user_2)
+        ability.should_not be_able_to(:update, admin_user_2)
+        ability.should_not be_able_to(:destroy, admin_user_2)
+      end
 
-        pending { should be_able_to(:read, FactoryGirl.create(:payment)) }
-        pending { should be_able_to(:create, FactoryGirl.create(:payment)) }
-        pending { should be_able_to(:update, FactoryGirl.create(:payment)) }
-        pending { should be_able_to(:hide, FactoryGirl.create(:payment)) }
-        pending { should be_able_to(:unhide, FactoryGirl.create(:payment)) }
-        pending { should be_able_to(:reconcile, FactoryGirl.create(:payment)) }
-        pending { should be_able_to(:do_reconcile, FactoryGirl.create(:payment)) }
-        pending { should be_able_to(:download_from_xero, FactoryGirl.create(:payment)) }
+      it "should not be able to administrate bookings" do
+        lesson = FactoryGirl.create(:lesson)
+        booking = FactoryGirl.create(:booking, lesson: lesson)
+        lesson.groups << @group
+        ability = Ability.new @admin_user
+        ability.should_not be_able_to(:view, booking)
+        ability.should_not be_able_to(:update, booking)
+        ability.should_not be_able_to(:destroy, booking)
+      end
 
-        pending { should be_able_to(:manage, FactoryGirl.create(:category)) }
-
-        pending "should be able to read bookings" do
-          lesson = FactoryGirl.create(:lesson, groups: [group])
-          should be_able_to(:read, FactoryGirl.create(:booking, lesson: lesson))
-        end
-
-        pending "should be able to update bookings" do
-          lesson = FactoryGirl.create(:lesson, groups: [group])
-          should be_able_to(:update, FactoryGirl.create(:booking, lesson: lesson))
-        end
-
-        pending "should be able to hide bookings" do
-          lesson = FactoryGirl.create(:lesson, groups: [group])
-          should be_able_to(:hide, FactoryGirl.create(:booking, lesson: lesson))
-        end
-
-        pending "should be able to unhide bookings" do
-          lesson = FactoryGirl.create(:lesson, groups: [group])
-          should be_able_to(:unhide, FactoryGirl.create(:booking, lesson: lesson))
-        end
-
-        pending { should be_able_to(:create, FactoryGirl.create(:booking)) }
+      it "should not be able to administrate payments" do
+        payment = FactoryGirl.create(:payment)
+        ability = Ability.new @admin_user
+        ability.should_not be_able_to(:view, payment)
       end
     end
   end
