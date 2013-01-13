@@ -23,5 +23,4 @@
         %td= b.paid
         %td
           =render "/admin/bookings/answers", :answers => b.answers
-        %td= link_to 'View', admin_booking_path(b)
-
+        %td= link_to 'View', admin_booking_path(b) if can? :read, b
