@@ -1,5 +1,14 @@
 ActiveAdmin.register_page "Trash" do
-  menu label: "Trash"
+  menu label: "Trash", :if => proc{ current_admin_user.role == "super" }
+
+  controller do
+    def index
+      if current_admin_user.role != "super"
+        flash[:warn] = "Viewing deleted records not authorised!"
+        redirect_to admin_dashboard_path
+      end
+    end
+  end
 
   content do
     @lessons = Lesson.find_all_by_visible false
