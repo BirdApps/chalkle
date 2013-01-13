@@ -7,6 +7,12 @@ ActiveAdmin.register Chalkler do
   filter :name
   filter :email
 
+  controller do
+    def scoped_collection
+      end_of_association_chain.visible.accessible_by(current_ability)
+    end
+  end
+
   index do
     column :id
     column :name

@@ -12,7 +12,7 @@ ActiveAdmin.register Lesson  do
 
   controller do
     def scoped_collection
-      Lesson.visible
+      end_of_association_chain.visible.accessible_by(current_ability)
     end
   end
 

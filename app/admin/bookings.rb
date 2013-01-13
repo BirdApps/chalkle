@@ -18,7 +18,7 @@ ActiveAdmin.register Booking do
 
   controller do
     def scoped_collection
-      Booking.visible.interested
+      end_of_association_chain.visible.interested.accessible_by(current_ability)
     end
   end
 
