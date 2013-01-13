@@ -51,7 +51,7 @@ ActiveAdmin.register Lesson  do
       end
       row :start_at
       row :duration do
-        "#{lesson.duration/60} minutes"
+        "#{lesson.duration / 60} minutes" if lesson.duration?
       end
       row :bookings do
         "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid"
