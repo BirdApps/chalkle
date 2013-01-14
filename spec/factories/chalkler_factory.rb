@@ -6,5 +6,6 @@ FactoryGirl.define do
     email "ben@hotmail.com"
     meetup_id
     bio "All about me!!"
+    gst "234 78 990"
   end
 end

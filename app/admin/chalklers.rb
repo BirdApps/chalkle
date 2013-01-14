@@ -7,12 +7,6 @@ ActiveAdmin.register Chalkler do
   filter :name
   filter :email
 
-  controller do
-    def scoped_collection
-      end_of_association_chain.visible.accessible_by(current_ability)
-    end
-  end
-
   index do
     column :id
     column :name
@@ -44,6 +38,7 @@ ActiveAdmin.register Chalkler do
         end
       end
       row :email
+      row :gst
       row :bio
       row :teaching do
         raw chalkler.lessons_taught.collect{|l| link_to "#{l.name} - #{l.start_at}", admin_lesson_path(l)}.join('<br/> ')
@@ -64,9 +59,9 @@ ActiveAdmin.register Chalkler do
       f.input :groups, :as => :check_boxes
       f.input :meetup_id
       f.input :email
+      f.input :gst
       f.input :bio
     end
-
-    f.buttons
+    f.actions
   end
 end

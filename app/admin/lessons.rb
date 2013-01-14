@@ -37,6 +37,13 @@ ActiveAdmin.register Lesson  do
     attributes_table do
       row :category
       row :teacher
+      row :teacher_gst_number do
+        if lesson.teacher && lesson.teacher.gst?
+          lesson.teacher.gst
+        else
+          "Not GST registered"
+        end
+      end
       row :meetup_id do
         link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
       end

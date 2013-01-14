@@ -3,8 +3,20 @@ require 'spec_helper'
 describe Chalkler do
 
   it { should have_many(:groups).through(:group_chalklers) }
-  it { should validate_uniqueness_of :meetup_id }
-  it { should validate_uniqueness_of :email }
+
+  describe "creation" do
+    it "should have a valid factory" do
+      FactoryGirl.build(:chalkler).should be_valid
+    end
+
+    it { should validate_uniqueness_of :meetup_id }
+    it { should validate_uniqueness_of :email }
+
+    it "should validate GST numbers" do
+      FactoryGirl.build(:chalkler, gst: "ash 8765").should_not be_valid
+      FactoryGirl.build(:chalkler, gst: "23 345 8765").should be_valid
+    end
+  end
 
   describe ".create_from_meetup_hash" do
     let(:result) { MeetupApiStub.chalkler_response }

@@ -3,10 +3,11 @@ class Chalkler < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me, :group_ids
+  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me, :group_ids, :gst
 
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates_uniqueness_of :email, allow_blank: true
+  validates_format_of :gst, allow_blank: true, with: /\A[\d ]+\z/
 
   has_many :group_chalklers
   has_many :groups, :through => :group_chalklers
@@ -20,6 +21,7 @@ class Chalkler < ActiveRecord::Base
   def email_required?
     false
   end
+
   def password_required?
     false
   end
