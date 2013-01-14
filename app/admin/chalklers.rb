@@ -1,6 +1,11 @@
 ActiveAdmin.register Chalkler do
   config.sort_order = "created_at_desc"
 
+  controller do
+    load_resource :except => :index
+    authorize_resource
+  end
+
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
   filter :meetup_id

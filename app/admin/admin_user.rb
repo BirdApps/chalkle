@@ -1,6 +1,11 @@
 ActiveAdmin.register AdminUser do
   config.sort_order = "email_asc"
 
+  controller do
+    load_resource :except => :index
+    authorize_resource
+  end
+
   index do
     column :id
     column :name
@@ -31,6 +36,6 @@ ActiveAdmin.register AdminUser do
       f.input :groups, :as => :check_boxes
       f.input :role, :as => :select, :collection => ["super", "group admin"]
     end
-    f.buttons
+    f.actions
   end
 end

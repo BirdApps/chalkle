@@ -1,6 +1,11 @@
 ActiveAdmin.register Payment do
   config.sort_order = "date_desc"
 
+  controller do
+    load_resource :except => :index
+    authorize_resource
+  end
+
   filter :xero_contact_name
   filter :total
   filter :created_ad

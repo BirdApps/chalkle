@@ -17,6 +17,9 @@ ActiveAdmin.register Booking do
   filter :created_at
 
   controller do
+    load_resource :except => :index
+    authorize_resource
+
     def scoped_collection
       end_of_association_chain.visible.interested.accessible_by(current_ability)
     end
