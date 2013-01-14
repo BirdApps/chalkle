@@ -110,7 +110,7 @@ ActiveAdmin.register Lesson  do
     f.inputs :details do
       f.input :name
       f.input :category
-      f.input :teacher, as: :select, collection: Chalkler.order("name ASC").all
+      f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("name ASC")
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost
@@ -118,6 +118,6 @@ ActiveAdmin.register Lesson  do
       f.input :duration
       f.input :description
     end
-    f.buttons
+    f.actions
   end
 end
