@@ -14,8 +14,9 @@ class Ability
       can :manage, Category
 
     when "group admin"
+      can :read, Chalkler, :id => user.chalkler_ids
       can [:read, :update], Lesson, :id => user.lesson_ids
-      cannot [:read, :update, :destroy], [Payment, Booking, Chalkler, Category, AdminUser, Group]
+      cannot [:read, :update, :destroy], [Payment, Booking, Category, AdminUser, Group]
     end
   end
 end
