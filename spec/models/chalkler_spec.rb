@@ -14,7 +14,7 @@ describe Chalkler do
 
     it "should validate GST numbers" do
       FactoryGirl.build(:chalkler, gst: "ash 8765").should_not be_valid
-      FactoryGirl.build(:chalkler, gst: "23 345 8765").should be_valid
+      FactoryGirl.build(:chalkler, gst: "23-345 8765").should be_valid
     end
   end
 
