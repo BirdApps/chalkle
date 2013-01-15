@@ -3,6 +3,7 @@
 table_for assigns[:payments] do
   column :id
   column :date
+  column :reference
   column :total
   column :xero_contact_name
   column "Booking" do |payment|
