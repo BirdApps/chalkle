@@ -7,7 +7,7 @@ class Chalkler < ActiveRecord::Base
 
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates_uniqueness_of :email, allow_blank: true
-  validates_format_of :gst, allow_blank: true, with: /\A[\d ]+\z/
+  validates_format_of :gst, allow_blank: true, with: /\A[\d -]+\z/
 
   has_many :group_chalklers
   has_many :groups, :through => :group_chalklers
