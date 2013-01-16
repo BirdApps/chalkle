@@ -9,9 +9,9 @@ ActiveAdmin.register Lesson  do
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
   filter :meetup_id
-  filter :name, as: :select, collection: Lesson.order("name ASC").all
+  filter :name, as: :select, :collection => proc{ Lesson.accessible_by(current_ability).order("name ASC") }
   filter :category
-  filter :teacher, as: :select, collection: Chalkler.order("name ASC").all
+  filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("name ASC") }
   filter :cost
   filter :start_at
 
