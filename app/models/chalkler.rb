@@ -7,7 +7,7 @@ class Chalkler < ActiveRecord::Base
 
   validates_uniqueness_of :meetup_id, allow_blank: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true, format: {with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+  validates :email, allow_blank: true, format: {with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   validates_format_of :gst, allow_blank: true, with: /\A[\d -]+\z/
 
   has_many :group_chalklers
