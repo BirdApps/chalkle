@@ -11,7 +11,7 @@ ActiveAdmin.register Lesson  do
   filter :meetup_id
   filter :name, as: :select, :collection => proc{ Lesson.accessible_by(current_ability).order("name ASC") }
   filter :category
-  filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("name ASC") }
+  filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("LOWER(name) ASC") }
   filter :cost
   filter :start_at
 
@@ -115,7 +115,7 @@ ActiveAdmin.register Lesson  do
     f.inputs :details do
       f.input :name
       f.input :category
-      f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("name ASC")
+      f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost
