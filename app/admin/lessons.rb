@@ -66,10 +66,16 @@ ActiveAdmin.register Lesson  do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
       row :bookings do
-        "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid"
+        "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid."
       end
       row :rsvp_list do
         render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested }
+      end
+      row :teacher_email do
+        render partial: "/admin/lessons/teacher_rsvp_email", locals: { bookings: lesson.bookings.visible.interested, teachers: lesson.teacher.name, title: lesson.name, price: lesson.cost }
+      end
+      row :pay_reminder_email do
+        render partial: "/admin/lessons/pay_reminder_email", locals: { title: lesson.name, price: lesson.cost, reference: lesson.meetup_id }
       end
       row :description do
         simple_format lesson.description
