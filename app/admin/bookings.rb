@@ -101,6 +101,28 @@ ActiveAdmin.register Booking do
     redirect_to :back
   end
 
+  member_action :record_cash_payment do
+    booking = Booking.find(params[:id])
+    booking.paid = true
+    payment = Payment.create(
+       xero_id: "CASH-Class#{booking.lesson_id}-Chalkler#{booking.chalkler_id}",
+       reference: booking.lesson.meetup_id.present? ? booking.lesson.meetup_id : "LessonID#{booking.lesson_id}",
+       xero_contact_id: booking.chalkler.name,
+       xero_contact_name: booking.chalkler.name,
+       date: Date.today(),
+       booking_id: booking.id,
+       reconciled: true,
+       complete_record_downloaded: true,
+       total: booking.cost
+     )
+    if booking.save! && payment.save!
+      flash[:notice] = "Cash payment of $#{booking.cost} was paid by #{booking.chalkler.name}"
+    else
+      flash[:warn] = "Cash payment could not be recorded"
+    end
+    redirect_to :back
+  end
+
   form do |f|
     f.inputs :details do
       f.input :lesson
