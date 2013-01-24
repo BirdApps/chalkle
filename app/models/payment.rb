@@ -1,5 +1,5 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible
+  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible, :cash_payment
 
   belongs_to :booking
   has_one :chalkler, through: :booking
@@ -47,6 +47,7 @@ class Payment < ActiveRecord::Base
     transaction = Payment.xero.BankTransaction.find(xero_id)
     self.total = transaction.total
     self.complete_record_downloaded = true
+    cash_payment = false
     save
   end
 

@@ -41,6 +41,7 @@ ActiveAdmin.register Payment do
       row :total do
         number_to_currency payment.total
       end
+      row :cash_payment
       row :reconciled
       row :updated_at
     end
