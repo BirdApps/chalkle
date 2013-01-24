@@ -66,7 +66,7 @@ ActiveAdmin.register Lesson  do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
       row :bookings do
-        "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid"
+        "There are #{lesson.bookings.confirmed.visible.count} confirmed bookings, #{lesson.bookings.paid.visible.count} bookings have paid"
       end
       row :rsvp_list do
         render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested }
