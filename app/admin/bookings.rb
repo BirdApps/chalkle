@@ -103,7 +103,7 @@ ActiveAdmin.register Booking do
 
   form do |f|
     f.inputs :details do
-      f.input :lesson, as: :select, collection: Lesson.order("LOWER(name) ASC").visible
+      f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).order("LOWER(name) ASC").visible
       f.input :chalkler, as: :select, collection: Chalkler.order("name ASC").all
       f.input :guests
       f.input :cost_override
