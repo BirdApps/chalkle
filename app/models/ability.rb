@@ -10,7 +10,7 @@ class Ability
       can [:read, :create, :update], Chalkler
       can [:read, :create, :update, :hide, :unhide], [Booking, Payment]
       can [:reconcile, :do_reconcile, :download_from_xero], Payment
-      can [:read, :update, :hide, :unhide], Lesson
+      can [:read, :update, :hide, :unhide, :lesson_email], Lesson
       can :manage, Category
 
     when "group admin"
