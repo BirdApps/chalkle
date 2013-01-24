@@ -10,7 +10,7 @@ ActiveAdmin.register Booking do
     :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
   filter :meetup_id
   filter :lesson, as: :select, collection: Lesson.order("name ASC").all
-  filter :chalkler, as: :select, collection: Chalkler.order("name ASC").all
+  filter :chalkler, as: :select, collection: Chalkler.order("LOWER(name) ASC").all
   filter :cost
   filter :paid
   filter :guests
@@ -104,7 +104,7 @@ ActiveAdmin.register Booking do
   form do |f|
     f.inputs :details do
       f.input :lesson
-      f.input :chalkler, as: :select, collection: Chalkler.order("name ASC").all
+      f.input :chalkler, as: :select, collection: Chalkler.order("LOWER(name) ASC").all
       f.input :guests
       f.input :cost_override
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
