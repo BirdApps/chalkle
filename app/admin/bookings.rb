@@ -106,7 +106,7 @@ ActiveAdmin.register Booking do
     booking.paid = true
     payment = Payment.create(
        xero_id: "CASH-Class#{booking.lesson_id}-Chalkler#{booking.chalkler_id}",
-       reference: booking.lesson.meetup_id.present? ? booking.lesson.meetup_id : "LessonID#{booking.lesson_id}",
+       reference: booking.lesson.meetup_id.present? ? booking.lesson.meetup_id.to_s : "LessonID#{booking.lesson_id}",
        xero_contact_id: booking.chalkler.name,
        xero_contact_name: booking.chalkler.name,
        date: Date.today(),
