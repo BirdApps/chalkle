@@ -89,7 +89,7 @@ ActiveAdmin.register Lesson  do
     link_to 'Restore record', unhide_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible}) do
+  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible && lesson.bookings.visible.interested.count > 0}) do
     link_to 'Show emails', lesson_email_admin_lesson_path(resource)
   end
 
