@@ -13,7 +13,12 @@
     -bookings.each do |b|
       %tr
         %td= link_to b.chalkler.name, admin_chalkler_path(b.chalkler)
-        %td= link_to b.chalkler.meetup_id, "http://www.meetup.com/sixdegrees/message/?recipientId=#{b.chalkler.meetup_id}"
+        -if b.chalkler.meetup_id.present?
+          %td= link_to b.chalkler.meetup_id, "http://www.meetup.com/sixdegrees/message/?recipientId=#{b.chalkler.meetup_id}"
+        -elsif b.chalkler.email.present?
+          %td= mail_to b.chalkler.email
+        -else
+          %td= "no contact"
         %td= b.guests
         %td= b.status
         %td= number_to_currency b.cost
