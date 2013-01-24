@@ -9,7 +9,7 @@ ActiveAdmin.register Booking do
   filter :lesson_groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
   filter :meetup_id
-  filter :lesson, as: :select, collection: Lesson.order("name ASC").all
+  filter :lesson, as: :select, collection: proc{ Lesson.accessible_by(current_ability).order("LOWER(name) ASC").visible }
   filter :chalkler, as: :select, collection: Chalkler.order("name ASC").all
   filter :cost
   filter :paid
@@ -103,7 +103,7 @@ ActiveAdmin.register Booking do
 
   form do |f|
     f.inputs :details do
-      f.input :lesson
+      f.input :lesson, as: :select, collection: Lesson.order("LOWER(name) ASC").visible
       f.input :chalkler, as: :select, collection: Chalkler.order("name ASC").all
       f.input :guests
       f.input :cost_override
