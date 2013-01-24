@@ -71,12 +71,6 @@ ActiveAdmin.register Lesson  do
       row :rsvp_list do
         render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested }
       end
-      row :teacher_email do
-        render partial: "/admin/lessons/teacher_rsvp_email", locals: { bookings: lesson.bookings.visible.interested, teachers: lesson.teacher.name, title: lesson.name, price: lesson.cost }
-      end
-      row :pay_reminder_email do
-        render partial: "/admin/lessons/pay_reminder_email", locals: { title: lesson.name, price: lesson.cost, reference: lesson.meetup_id }
-      end
       row :description do
         simple_format lesson.description
       end
@@ -93,6 +87,10 @@ ActiveAdmin.register Lesson  do
 
   action_item(only: :show, if: proc{ can?(:unhide, resource) && !lesson.visible}) do
     link_to 'Restore record', unhide_admin_lesson_path(resource)
+  end
+
+  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible}) do
+    link_to 'Show emails', lesson_email_admin_lesson_path(resource)
   end
 
   member_action :hide do
@@ -115,6 +113,14 @@ ActiveAdmin.register Lesson  do
       flash[:warn] = "Lesson #{lesson.id} could not be restored!"
     end
     redirect_to :back
+  end
+
+  member_action :lesson_email do
+    lesson = Lesson.find(params[:id])
+    render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.interested, 
+      teachers: lesson.teacher.present? ? lesson.teacher.name : nil, 
+      title: lesson.name.present? ? lesson.name : "that is coming up", price: lesson.cost.present? ? lesson.cost : 0, 
+      reference: lesson.meetup_id.present? ? lesson.meetup_id : "Your Name" }
   end
 
   form do |f|
