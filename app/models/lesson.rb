@@ -18,7 +18,7 @@ class Lesson < ActiveRecord::Base
   before_create :set_metadata
 
   def unpaid_count
-    bookings.confirmed.count - bookings.paid.count
+    bookings.confirmed.visible.count - bookings.paid.visible.count
   end
 
   def meetup_data

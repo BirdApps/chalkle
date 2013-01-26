@@ -1,11 +1,11 @@
 GIT
-  remote: git@github.com:kiesia/rmeetup.git
+  remote: git://github.com/kiesia/rmeetup.git
   revision: 51e2056712745a4da1c0351282a9a80103d1011c
   specs:
     rMeetup (1.0)
 
 GIT
-  remote: git@github.com:kiesia/xeroizer.git
+  remote: git://github.com/kiesia/xeroizer.git
   revision: 192c2c922f50a22ee767a8d43ca8877a9d0b03b9
   specs:
     xeroizer (2.15.2)

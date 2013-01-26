@@ -9,9 +9,9 @@ ActiveAdmin.register Lesson  do
   filter :groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
   filter :meetup_id
-  filter :name, as: :select, :collection => proc{ Lesson.accessible_by(current_ability).order("name ASC") }
+  filter :name
   filter :category
-  filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("name ASC") }
+  filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("LOWER(name) ASC") }
   filter :cost
   filter :start_at
 
@@ -66,7 +66,7 @@ ActiveAdmin.register Lesson  do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
       row :bookings do
-        "There are #{lesson.bookings.confirmed.count} confirmed bookings, #{lesson.bookings.paid.count} bookings have paid."
+        "There are #{lesson.bookings.confirmed.visible.count} confirmed bookings, #{lesson.bookings.paid.visible.count} bookings have paid"
       end
       row :rsvp_list do
         render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested }
@@ -117,9 +117,9 @@ ActiveAdmin.register Lesson  do
 
   member_action :lesson_email do
     lesson = Lesson.find(params[:id])
-    render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.interested, 
-      teachers: lesson.teacher.present? ? lesson.teacher.name : nil, 
-      title: lesson.name.present? ? lesson.name : "that is coming up", price: lesson.cost.present? ? lesson.cost : 0, 
+    render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.interested,
+      teachers: lesson.teacher.present? ? lesson.teacher.name : nil,
+      title: lesson.name.present? ? lesson.name : "that is coming up", price: lesson.cost.present? ? lesson.cost : 0,
       reference: lesson.meetup_id.present? ? lesson.meetup_id : "Your Name" }
   end
 
@@ -127,7 +127,7 @@ ActiveAdmin.register Lesson  do
     f.inputs :details do
       f.input :name
       f.input :category
-      f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("name ASC")
+      f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost
