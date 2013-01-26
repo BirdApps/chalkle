@@ -66,9 +66,14 @@ ActiveAdmin.register Payment do
     link_to 'Restore Payment', unhide_admin_payment_path(resource)
   end
 
+  action_item(only: :show, if: proc { can?(:unreconcile, resource) && payment.reconciled }) do
+    link_to 'Unreconcile Payment', unreconcile_admin_payment_path(resource)
+  end
+
   collection_action :reconcile do
     @payments = Payment.unreconciled.limit(20)
   end
+
 
   member_action :download_from_xero do
     payment = Payment.find(params[:id])
@@ -96,6 +101,20 @@ ActiveAdmin.register Payment do
       flash[:warn] = "Payment #{payment.id} could not be restored!"
     end
     redirect_to :back
+  end
+
+  member_action :unreconcile do
+    payment = Payment.find(params[:id])
+    booking = Booking.find(payment.booking_id)
+    payment.reconciled = false
+    payment.booking_id = nil
+    booking.paid = false
+    if payment.save! && booking.save!
+      flash[:notice] = "Payment unreconciled"
+    else
+      flash[:warn] = "Payment can not be unreconciled"
+    end
+    redirect_to :action => :show
   end
 
   member_action :do_reconcile, method: :post do
