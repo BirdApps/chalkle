@@ -50,10 +50,10 @@ ActiveAdmin.register Booking do
       row :status
       row :guests
       row :cost do
-        if booking.cost_override?
-          "#{number_to_currency booking.cost_override} (cost override)"
-        else
+        if booking.cost_override.nil?
           number_to_currency booking.cost
+        else
+          "#{number_to_currency booking.cost} (cost override)"
         end
       end
       row :paid
@@ -103,10 +103,10 @@ ActiveAdmin.register Booking do
 
   form do |f|
     f.inputs :details do
-      f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).order("LOWER(name) ASC").visible
-      f.input :chalkler, as: :select, collection: Chalkler.order("name ASC").all
+      f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).visible.order("LOWER(name) ASC")
+      f.input :chalkler, as: :select, collection: Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
       f.input :guests
-      f.input :cost_override
+      f.input :cost_override, label: "cost override (Leave empty for no override)"
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
     end

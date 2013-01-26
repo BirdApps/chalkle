@@ -40,7 +40,7 @@ class Booking < ActiveRecord::Base
   end
 
   def cost
-    return cost_override if cost_override?
+    return cost_override unless cost_override.nil?
     seats = guests.present? ? guests + 1 : 1
     lesson.cost.present? ? (lesson.cost * seats) : nil
   end

@@ -150,6 +150,21 @@ describe Booking do
       booking.meetup_data["rsvp_id"].should == 12345678
       booking.meetup_data["member"]["member_id"].should == 12345678
     end
+
+    pending "won't update past classes" do
+      booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
+      booking.start_at = Chronic.parse("a year ago")
+      booking.save
+      Booking.create_from_meetup_hash result
+      booking.reload.guests.should == 20
+    end
+
+    pending "won't update after 7pm on the eve of a class" do
+      start_at = Chronic.parse "yesterday at "
+      booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
+      Booking.create_from_meetup_hash result
+      booking.reload.guests.should == 1
+    end
   end
 
   describe "#set_from_meetup_data" do
