@@ -12,10 +12,11 @@ gem 'cancan', '~> 1.6.8'
 gem 'activeadmin', '~> 0.5.1'
 gem 'analytical'
 gem 'jquery-rails'
+gem 'chronic'
 
 #apis
-gem 'rMeetup', :git => "git@github.com:kiesia/rmeetup.git", :require => "rmeetup"
-gem 'xeroizer', :git => "git@github.com:kiesia/xeroizer.git"
+gem 'rMeetup', :git => "git://github.com/kiesia/rmeetup.git", :require => "rmeetup"
+gem 'xeroizer', :git => "git://github.com/kiesia/xeroizer.git"
 
 #interface
 gem 'chosen-rails'
