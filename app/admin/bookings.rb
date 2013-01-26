@@ -50,7 +50,11 @@ ActiveAdmin.register Booking do
       row :status
       row :guests
       row :cost do
-       number_to_currency booking.cost
+        if booking.cost_override.nil?
+          number_to_currency booking.cost
+        else
+          "#{number_to_currency booking.cost} (cost override)"
+        end
       end
       row :paid
       row :answers do

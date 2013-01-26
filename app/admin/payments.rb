@@ -109,7 +109,7 @@ ActiveAdmin.register Payment do
     payment.booking_id = nil
     booking.paid = false
     if payment.save! && booking.save!
-      flash[:notice] = "Payment is unreconciled"
+      flash[:notice] = "Payment unreconciled"
     else
       flash[:warn] = "Payment can not be unreconciled"
     end
