@@ -8,6 +8,7 @@ class Lesson < ActiveRecord::Base
 
   has_many :bookings
   has_many :chalklers, :through => :bookings
+  has_many :payments, :through => :bookings
 
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_numericality_of :teacher_payment, allow_nil: true
@@ -20,16 +21,6 @@ class Lesson < ActiveRecord::Base
 
   def unpaid_count
     bookings.confirmed.visible.count - bookings.paid.visible.count
-  end
-
-  def cash_collected
-    total = 0
-    (bookings.paid).each do |b|
-      if b.payment.cash_payment
-        total = total + (b.payment.total.present? ? b.payment.total : 0)
-      end
-    end
-    return total
   end
 
   def meetup_data
