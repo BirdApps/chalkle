@@ -8,6 +8,7 @@ class Lesson < ActiveRecord::Base
 
   has_many :bookings
   has_many :chalklers, :through => :bookings
+  has_many :payments, :through => :bookings
 
   validates_uniqueness_of :meetup_id, allow_nil: true
 
@@ -19,14 +20,6 @@ class Lesson < ActiveRecord::Base
 
   def unpaid_count
     bookings.confirmed.visible.count - bookings.paid.visible.count
-  end
-
-  def collected_revenue
-    total = 0
-    (bookings.confirmed.visible.paid).each do |b|
-      total = total + (b.cost.present? ? b.cost : 0)
-    end
-    return total
   end
 
   def expected_revenue
