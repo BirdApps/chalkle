@@ -21,6 +21,26 @@ class Lesson < ActiveRecord::Base
     bookings.confirmed.visible.count - bookings.paid.visible.count
   end
 
+  def collected_revenue
+    total = 0
+    (bookings.confirmed.visible.paid).each do |b|
+      total = total + (b.cost.present? ? b.cost : 0)
+    end
+    return total
+  end
+
+  def expected_revenue
+    total = 0
+    (bookings.confirmed.visible).each do |b|
+      total = total + (b.cost.present? ? b.cost : 0)
+    end
+    return total
+  end
+
+  def unpaid_revenue
+    expected_revenue - collected_revenue
+  end
+
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?

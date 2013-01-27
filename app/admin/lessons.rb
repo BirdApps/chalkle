@@ -32,9 +32,10 @@ ActiveAdmin.register Lesson  do
     column :cost do |lesson|
       number_to_currency lesson.cost
     end
-    column "Unpaid", :unpaid_count, sortable: false
+    column "Unpaid Amount" do |lesson|
+     number_to_currency (lesson.expected_revenue - lesson.collected_revenue), sortable: false
+   end
     column :start_at
-    column :created_at
     default_actions
   end
 
@@ -66,10 +67,10 @@ ActiveAdmin.register Lesson  do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
       row :bookings do
-        "There are #{lesson.bookings.confirmed.visible.count} confirmed bookings, #{lesson.bookings.paid.visible.count} bookings have paid"
+        "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
       end
       row :rsvp_list do
-        render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested }
+        render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc") }
       end
       row :description do
         simple_format lesson.description
