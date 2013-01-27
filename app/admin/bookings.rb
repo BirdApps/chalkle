@@ -5,6 +5,7 @@ ActiveAdmin.register Booking do
   scope :confirmed
   scope :billable
   scope :waitlist
+  scope :no
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
@@ -21,7 +22,7 @@ ActiveAdmin.register Booking do
     authorize_resource
 
     def scoped_collection
-      end_of_association_chain.visible.interested.accessible_by(current_ability)
+      end_of_association_chain.visible.accessible_by(current_ability)
     end
   end
 
