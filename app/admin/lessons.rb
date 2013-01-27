@@ -24,6 +24,7 @@ ActiveAdmin.register Lesson  do
   index do
     column :id
     column :name
+    column :attendance
     column :groups do |lesson|
       lesson.groups.collect{|g| g.name}.join(", ")
     end
@@ -41,7 +42,8 @@ ActiveAdmin.register Lesson  do
 
   show title: :name do |lesson|
     attributes_table do
-      row :category
+     row :attendance
+     row :category
       row :teacher
       row :teacher_gst_number do
         if lesson.teacher && lesson.teacher.gst?

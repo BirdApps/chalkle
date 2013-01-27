@@ -37,8 +37,8 @@ class Lesson < ActiveRecord::Base
     return total
   end
 
-  def unpaid_revenue
-    expected_revenue - collected_revenue
+  def attendance
+    bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
   end
 
   def meetup_data
