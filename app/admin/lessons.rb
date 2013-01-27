@@ -89,8 +89,12 @@ ActiveAdmin.register Lesson  do
     link_to 'Restore record', unhide_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible && lesson.bookings.visible.interested.count > 0}) do
-    link_to 'Show emails', lesson_email_admin_lesson_path(resource)
+  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible && (lesson.bookings.visible.interested.count > 0)}) do
+    link_to 'Preclass emails', lesson_email_admin_lesson_path(resource)
+  end
+
+  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.interested.count > 0) && ((lesson.start_at.present? ? lesson.start_at.to_datetime : Date.yesterday()) < Date.today())}) do
+    link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
   end
 
   member_action :hide do
@@ -123,6 +127,20 @@ ActiveAdmin.register Lesson  do
       reference: lesson.meetup_id.present? ? lesson.meetup_id : "Your Name" }
   end
 
+  member_action :payment_summary_email do
+    lesson = Lesson.find(params[:id])
+    total = 0
+    (lesson.bookings.paid).each do |b|
+      if b.payment.cash_payment
+        total = total + (b.payment.total.present? ? b.payment.total : 0)
+      end
+    end
+    render partial: "/admin/lessons/payment_summary_email", locals: { teachers: lesson.teacher.present? ? lesson.teacher.name : nil,
+      title: lesson.name.present? ? lesson.name : nil, date: (lesson.start_at.present? ? lesson.start_at : Date.yesterday()).strftime("%d %b. %Y"), 
+      attendees: lesson.bookings.confirmed.visible.sum(:guests) + lesson.bookings.confirmed.visible.count, 
+      teacher_cost: lesson.teacher_cost.present? ? lesson.teacher_cost : 0, cash_paid: total, venue_cost: lesson.venue_cost.present? ? lesson.venue_cost : 0 }
+  end
+
   form do |f|
     f.inputs :details do
       f.input :name
@@ -131,6 +149,7 @@ ActiveAdmin.register Lesson  do
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost
+      f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
       f.input :start_at
       f.input :duration
       f.input :description
