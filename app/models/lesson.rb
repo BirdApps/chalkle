@@ -1,5 +1,5 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, :description, :visible
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, :description, :visible, :teacher_payment
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
@@ -10,6 +10,7 @@ class Lesson < ActiveRecord::Base
   has_many :chalklers, :through => :bookings
 
   validates_uniqueness_of :meetup_id, allow_nil: true
+  validates_numericality_of :teacher_payment, allow_nil: true
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -19,6 +20,12 @@ class Lesson < ActiveRecord::Base
 
   def unpaid_count
     bookings.confirmed.visible.count - bookings.paid.visible.count
+  end
+
+  def cash_collected
+    total = 0
+    (booking.confirmed.visible).each do |b|
+    end
   end
 
   def meetup_data
