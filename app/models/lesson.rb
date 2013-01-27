@@ -24,8 +24,12 @@ class Lesson < ActiveRecord::Base
 
   def cash_collected
     total = 0
-    (booking.confirmed.visible).each do |b|
+    (bookings.paid).each do |b|
+      if b.payment.cash_payment
+        total = total + (b.payment.total.present? ? b.payment.total : 0)
+      end
     end
+    return total
   end
 
   def meetup_data
