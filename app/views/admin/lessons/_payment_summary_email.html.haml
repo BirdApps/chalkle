@@ -1,0 +1,34 @@
+Hi #{teachers},
+%br
+%br
+Here is a summary of Chalkle's payment to you (GST exclusive) for this class, #{title} on #{date}:
+%br
+%br
+Total number of attendees = #{attendees}
+%br
+Payment to you per attendee = #{number_to_currency teacher_cost}
+%br
+Total payment for this class = #{number_to_currency teacher_cost*attendees}
+%br
+%br
+Less
+%br
+Cash you received = #{number_to_currency cash_paid}
+%br
+Venue cost = #{number_to_currency venue_cost}
+%br
+%br
+Total payment to be transferred to you = #{number_to_currency (teacher_cost*attendees-cash_paid-venue_cost)}
+%br
+%br
+
+An invoice sent to #{link_to 'Silvia',"mailto:silvia@chalkle.com"} for this amount will activate the payment to you on the 20th of every month. If you are going to pay GST on this amount, please include your GST registration number in the invoice.
+%br
+%br
+Please do not hesitate to contact me should you have any questions.
+%br
+%br
+Regards,
+%br
+Chalkle
+%br
