@@ -15,7 +15,7 @@ class Lesson < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :recent, where("start_at > current_date - 3 AND start_at < current_date + 5")
-  scope :upcoming, where("start_at > current_date AND start_at < current_date + 7")
+  scope :upcoming, where("start_at >= current_date AND start_at < current_date + 7")
   scope :last_week, where("start_at > current_date - 7 AND start_at < current_date ")
 
   before_create :set_from_meetup_data
