@@ -66,7 +66,7 @@ class Booking < ActiveRecord::Base
     b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
     b.lesson = Lesson.find_by_meetup_id result.event["id"]
     b.meetup_id = result.rsvp_id
-    if b.lesson.class_done
+    if b.lesson.class_not_done
       b.guests = result.guests
       b.status = result.response
     end
