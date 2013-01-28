@@ -23,6 +23,14 @@ class Lesson < ActiveRecord::Base
     bookings.confirmed.visible.count - bookings.paid.visible.count
   end
 
+  def class_not_done
+    ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
+  end
+
+  def attendance
+    bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
+  end
+
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?

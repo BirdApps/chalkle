@@ -93,7 +93,7 @@ ActiveAdmin.register Lesson  do
     link_to 'Preclass emails', lesson_email_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.interested.count > 0) && ((lesson.start_at.present? ? lesson.start_at.to_datetime : Date.yesterday()) < Date.today())}) do
+  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.interested.count > 0) && !lesson.class_not_done}) do
     link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
   end
 
@@ -129,10 +129,7 @@ ActiveAdmin.register Lesson  do
 
   member_action :payment_summary_email do
     lesson = Lesson.find(params[:id])
-    render partial: "/admin/lessons/payment_summary_email", locals: { teachers: lesson.teacher.present? ? lesson.teacher.name : nil,
-      title: lesson.name.present? ? lesson.name : nil, date: (lesson.start_at.present? ? lesson.start_at : Date.yesterday()).strftime("%d %b. %Y"), 
-      attendees: lesson.bookings.confirmed.visible.sum(:guests) + lesson.bookings.confirmed.visible.count, 
-      teacher_cost: lesson.teacher_cost.present? ? lesson.teacher_cost : 0, cash_paid: lesson.payments.cash.sum(:total), venue_cost: lesson.venue_cost.present? ? lesson.venue_cost : 0 }
+    render partial: "/admin/lessons/payment_summary_email", locals: { lesson: lesson }
   end
 
   form do |f|
