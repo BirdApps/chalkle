@@ -5,7 +5,7 @@ ActiveAdmin.register Booking do
   scope :confirmed
   scope :billable
   scope :waitlist
-  scope :no
+  scope :status_no
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
     :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
