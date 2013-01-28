@@ -34,7 +34,7 @@ ActiveAdmin.register Lesson  do
       number_to_currency lesson.cost
     end
     column "Unpaid Amount" do |lesson|
-     number_to_currency (lesson.expected_revenue - lesson.payments.sum(:total)/1.15), sortable: false
+      number_to_currency lesson.uncollected_revenue, sortable: false
    end
     column :start_at
     default_actions
