@@ -14,12 +14,14 @@ class Lesson < ActiveRecord::Base
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
+  scope :recent, where("start_at > current_date - 3 AND start_at < current_date + 5")
+  scope :upcoming, where("start_at > current_date AND start_at < current_date + 7")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
 
   def unpaid_count
-    bookings.confirmed.visible.count - bookings.paid.visible.count
+    bookings.confirmed.visible.count - bookings.confirmed.visible.paid.count
   end
 
   def expected_revenue
@@ -40,6 +42,34 @@ class Lesson < ActiveRecord::Base
 
   def attendance
     bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
+  end
+
+  def pay_involved
+    (cost.present? ? cost : 0) > 0 
+  end
+
+  def TODO_Attendee_List
+    if (start_at > DateTime.now()) && (start_at <= DateTime.tomorrow() + 1) && pay_involved
+      return true
+    else
+      return false
+    end
+  end
+
+  def TODO_Pay_Reminder
+    if unpaid_count > 0 && pay_involved && ( start_at < DateTime.now() + 3 )
+      return true
+    else
+      return false
+    end
+  end
+
+  def TODO_Payment_Summary
+    if pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() )
+      return true
+    else
+      return false
+    end
   end
 
   def meetup_data
