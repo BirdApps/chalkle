@@ -4,21 +4,21 @@ Hi #{lesson.teacher.present? ? lesson.teacher.name : nil},
 Here is a summary of Chalkle's payment to you (GST exclusive) for this class, #{lesson.name.present? ? lesson.name : nil} on #{(lesson.start_at.present? ? lesson.start_at : Date.yesterday()).strftime("%d %b. %Y")}:
 %br
 %br
-Total number of attendees = #{lesson.attendance}
+Total number of attendees = #{attendance=lesson.attendance}
 %br
-Payment to you per attendee = #{number_to_currency lesson.teacher_cost.present? ? lesson.teacher_cost : 0}
+Payment to you per attendee = #{number_to_currency teacher_cost=(lesson.teacher_cost.present? ? lesson.teacher_cost : 0)}
 %br
-Total payment for this class = #{number_to_currency (lesson.teacher_cost.present? ? lesson.teacher_cost : 0)*lesson.attendance}
+Total payment for this class = #{number_to_currency teacher_cost*attendance}
 %br
 %br
 Less
 %br
-Cash you received = #{number_to_currency lesson.payments.cash.sum(:total)}
+Cash you received = #{number_to_currency cash=lesson.payments.cash.sum(:total)}
 %br
-Venue cost = #{number_to_currency (lesson.venue_cost.present? ? lesson.venue_cost : 0)}
+Venue cost = #{number_to_currency venue=(lesson.venue_cost.present? ? lesson.venue_cost : 0)}
 %br
 %br
-Total payment to be transferred to you = #{number_to_currency (lesson.teacher_cost*lesson.attendance-lesson.payments.cash.sum(:total)-(lesson.venue_cost.present? ? lesson.venue_cost : 0))}
+Total payment to be transferred to you = #{number_to_currency teacher_cost*attendance-cash-venue}
 %br
 %br
 
