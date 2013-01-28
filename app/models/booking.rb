@@ -13,7 +13,7 @@ class Booking < ActiveRecord::Base
   scope :billable, joins(:lesson).where("(lessons.cost > 0 AND bookings.status='yes') AND ((bookings.chalkler_id != lessons.teacher_id) OR (bookings.guests>0))")
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :no, where("bookings.status='no'")
+  scope :status_no, where("bookings.status='no'")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_presence_of :lesson_id
@@ -66,7 +66,7 @@ class Booking < ActiveRecord::Base
     b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
     b.lesson = Lesson.find_by_meetup_id result.event["id"]
     b.meetup_id = result.rsvp_id
-    if ( (b.lesson.start_at.present? ? b.lesson.start_at.to_datetime : Date.today()) - Date.today() > -1)
+    if b.lesson.class_done
       b.guests = result.guests
       b.status = result.response
     end
