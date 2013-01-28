@@ -23,20 +23,20 @@ ActiveAdmin.register_page "Dashboard" do
             end
         end
 
-        panel "Class email task list" do
-            table_for Lesson.accessible_by(current_ability).visible.recent.order("start_at asc") do 
-              column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-              column("Date") {|lesson| lesson.start_at}
-              if current_admin_user.role=="super"
-                column("TODO:Pay Reminder") {|lesson| link_to("Email students", admin_lesson_path(lesson)) if lesson.TODO_Pay_Reminder }
-                column("TODO:Attendee List") {|lesson| link_to("Email teacher", lesson_email_admin_lesson_path(lesson)) if lesson.TODO_Attendee_List }
-                column("TODO:Payment Summary") {|lesson| link_to("Email teacher", admin_lesson_path(lesson)) if lesson.TODO_Payment_Summary } # to change path to payment summary email after merge
-              end
+        if current_admin_user.role=="super"
+            panel "Class email task list" do
+                table_for Lesson.accessible_by(current_ability).visible.recent.order("start_at asc") do 
+                  column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
+                  column("Date") {|lesson| lesson.start_at}
+                  column("TODO:Pay Reminder") {|lesson| link_to("Email students", admin_lesson_path(lesson)) if lesson.TODO_Pay_Reminder }
+                  column("TODO:Attendee List") {|lesson| link_to("Email teacher", lesson_email_admin_lesson_path(lesson)) if lesson.TODO_Attendee_List }
+                  column("TODO:Payment Summary") {|lesson| link_to("Email teacher", admin_lesson_path(lesson)) if lesson.TODO_Payment_Summary } # to change path to payment summary email after merge
+                end
             end
         end
 
-        panel "Recent class performance" do
-            table_for Lesson.accessible_by(current_ability).visible.recent.order("start_at asc") do 
+        panel "Past class performance" do
+            table_for Lesson.accessible_by(current_ability).visible.last_week.order("start_at asc") do 
                 column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
                 column("Group") {|lesson| lesson.groups.collect{|g| g.name}.join(", ") }
                 column("Attendance") {|lesson| lesson.attendance}
