@@ -33,9 +33,11 @@ ActiveAdmin.register Lesson  do
     column :cost do |lesson|
       number_to_currency lesson.cost
     end
-    column "Unpaid Amount" do |lesson|
-      number_to_currency lesson.uncollected_revenue, sortable: false
-   end
+    if current_admin_user.role=="super"
+      column "Unpaid Amount" do |lesson|
+        number_to_currency lesson.uncollected_revenue, sortable: false
+     end
+    end
     column :start_at
     default_actions
   end
@@ -68,16 +70,20 @@ ActiveAdmin.register Lesson  do
       row :duration do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
-      row :bookings do
-        "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
+      if current_admin_user.role=="super"
+        row :bookings_to_collect do
+          "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
+        end
       end
       row :rsvp_list do
-        render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc") }
+        render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
       end
       row :description do
         simple_format lesson.description
       end
-      row :meetup_data
+      if current_admin_user.role=="super"
+        row :meetup_data
+      end
     end
     active_admin_comments
   end
