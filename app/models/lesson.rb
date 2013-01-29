@@ -12,11 +12,16 @@ class Lesson < ActiveRecord::Base
 
   validates_uniqueness_of :meetup_id, allow_nil: true
 
+  #Time span for classes requiring attention
+  past = "3"
+  immediate_future = "5"
+  week = "7"
+
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :recent, where("start_at > current_date - 3 AND start_at < current_date + 5")
-  scope :upcoming, where("start_at >= current_date AND start_at < current_date + 7")
-  scope :last_week, where("start_at > current_date - 7 AND start_at < current_date ")
+  scope :recent, where("start_at > current_date - " + past + " AND start_at < current_date + " + immediate_future)
+  scope :upcoming, where("start_at >= current_date AND start_at < current_date + "+week)
+  scope :last_week, where("start_at > current_date - " + week + " AND start_at < current_date ")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
@@ -66,7 +71,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def TODO_Payment_Summary
-    if pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() )
+    if pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
       return true
     else
       return false
