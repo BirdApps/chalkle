@@ -105,18 +105,18 @@ ActiveAdmin.register Booking do
   member_action :record_cash_payment do
     booking = Booking.find(params[:id])
     booking.paid = true
-    payment = Payment.new(
-      xero_id: "CASH-Class#{booking.lesson_id}-Chalkler#{booking.chalkler_id}",
-      reference: booking.lesson.meetup_id.present? ? "#{booking.lesson.meetup_id} #{booking.chalkler.name}" : "LessonID#{booking.lesson_id} #{booking.chalkler.name}",
-      xero_contact_id: booking.chalkler.name,
-      xero_contact_name: booking.chalkler.name,
-      date: Date.today(),
-      booking_id: booking.id,
-      reconciled: true,
-      complete_record_downloaded: true,
-      cash_payment: true,
-      total: booking.cost*1.15
-    )
+    desired_xero_id = "CASH-Class#{booking.lesson_id}-Chalkler#{booking.chalkler_id}"
+    payment = Payment.find_or_initialize_by_xero_id desired_xero_id
+    payment.reference = booking.lesson.meetup_id.present? ? "#{booking.lesson.meetup_id} #{booking.chalkler.name}" : "LessonID#{booking.lesson_id} #{booking.chalkler.name}"
+    payment.xero_contact_id = booking.chalkler.name
+    payment.xero_contact_name = booking.chalkler.name
+    payment.date = Date.today()
+    payment.booking_id = booking.id
+    payment.reconciled = true
+    payment.complete_record_downloaded = true
+    payment.cash_payment = true
+    payment.total = booking.cost*1.15
+    payment.visible = true
     if booking.save! && payment.save!
       flash[:notice] = "Cash payment of $#{booking.cost*1.15} was paid by #{booking.chalkler.name}"
     else
