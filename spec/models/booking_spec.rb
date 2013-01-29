@@ -12,25 +12,25 @@ describe Booking do
   describe "#cost" do
     it "returns nil when lesson has no cost" do
       lesson = FactoryGirl.create(:lesson, cost: nil)
-      booking = FactoryGirl.create(:booking, guests: 5, lesson: lesson)
+      booking = FactoryGirl.create(:booking, guests: 5, cost_override: nil, lesson: lesson)
       booking.cost.should be_nil
     end
 
     it "returns cost from lesson" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
-      booking = FactoryGirl.create(:booking, guests: 0, lesson: lesson)
+      booking = FactoryGirl.create(:booking, guests: 0, cost_override: nil, lesson: lesson)
       booking.cost.to_f.should == 10
     end
 
     it "calculates cost when booking has no guests" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
-      booking = FactoryGirl.create(:booking, guests: nil, lesson: lesson)
+      booking = FactoryGirl.create(:booking, guests: nil, cost_override: nil, lesson: lesson)
       booking.cost.to_f.should == 10
     end
 
     it "calculates cost when booking has guests" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
-      booking =  FactoryGirl.create(:booking, guests: 9, lesson: lesson)
+      booking =  FactoryGirl.create(:booking, guests: 9, cost_override: nil, lesson: lesson)
       booking.cost.to_f.should == 100
     end
 
