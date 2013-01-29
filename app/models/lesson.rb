@@ -8,6 +8,7 @@ class Lesson < ActiveRecord::Base
 
   has_many :bookings
   has_many :chalklers, :through => :bookings
+  has_many :payments, :through => :bookings
 
   validates_uniqueness_of :meetup_id, allow_nil: true
 
@@ -23,6 +24,26 @@ class Lesson < ActiveRecord::Base
 
   def class_not_done
     ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
+  end
+
+  def expected_revenue
+    total = 0
+    bookings.confirmed.visible.each do |b|
+      total = total + (b.cost.present? ? b.cost : 0)
+    end
+    return total
+  end
+
+  def collected_revenue
+    payments.sum(:total)/1.15
+  end
+
+  def uncollected_revenue
+    expected_revenue - collected_revenue    
+  end
+
+  def attendance
+    bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
   end
 
   def meetup_data
