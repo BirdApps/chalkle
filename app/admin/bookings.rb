@@ -70,7 +70,7 @@ ActiveAdmin.register Booking do
     active_admin_comments
   end
 
-  action_item(only: :show, if: proc { can?(:hide, resource) && booking.visible }) do
+  action_item(only: :show, if: proc { can?(:hide, resource) && booking.visible && !booking.paid }) do
     link_to 'Delete Booking',
       hide_admin_booking_path(resource),
       :data => { :confirm => "Are you sure you wish to delete this Booking?" }
