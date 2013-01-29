@@ -4,6 +4,16 @@ ActiveAdmin.register Chalkler do
   controller do
     load_resource :except => :index
     authorize_resource
+
+    def create
+      @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst], 
+        meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name])
+      if @chalkler.save
+        update!
+      else
+        redirect_to :back
+      end
+    end
   end
 
   filter :groups_name, :as => :select, :label => "Group",
