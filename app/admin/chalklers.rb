@@ -6,8 +6,13 @@ ActiveAdmin.register Chalkler do
     authorize_resource
 
     def create
-      params.delete :group_ids
-      Chalkler.create(bio: params[:bio], email: params[:email], name: params[:name], gst: params[:gst], meetup_id: params[:meetup_id])
+      @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst], 
+        meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name])
+      if @chalkler.save
+        update!
+      else
+        redirect_to :back
+      end
     end
   end
 
