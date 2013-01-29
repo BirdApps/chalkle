@@ -4,6 +4,11 @@ ActiveAdmin.register Chalkler do
   controller do
     load_resource :except => :index
     authorize_resource
+
+    def create
+      params[:chalkler].delete :group_ids
+      create!(Chalkler.create(params[:chalkler]))
+    end
   end
 
   filter :groups_name, :as => :select, :label => "Group",
