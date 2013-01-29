@@ -13,15 +13,15 @@ class Lesson < ActiveRecord::Base
   validates_uniqueness_of :meetup_id, allow_nil: true
 
   #Time span for classes requiring attention
-  past = "3"
-  immediate_future = "5"
-  week = "7"
+  PAST = 3
+  IMMEDIATE_FUTURE= 5
+  WEEK = 7
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :recent, where("start_at > current_date - " + past + " AND start_at < current_date + " + immediate_future)
-  scope :upcoming, where("start_at >= current_date AND start_at < current_date + "+week)
-  scope :last_week, where("start_at > current_date - " + week + " AND start_at < current_date ")
+  scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
+  scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
+  scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
@@ -54,28 +54,16 @@ class Lesson < ActiveRecord::Base
     (cost.present? ? cost : 0) > 0 
   end
 
-  def TODO_Attendee_List
-    if (start_at > DateTime.now()) && (start_at <= DateTime.tomorrow() + 1) && pay_involved
-      return true
-    else
-      return false
-    end
+  def todo_attendee_list
+    return (start_at > DateTime.now()) && (start_at <= DateTime.tomorrow() + 1) && pay_involved
   end
 
-  def TODO_Pay_Reminder
-    if unpaid_count > 0 && pay_involved && ( start_at < DateTime.now() + 3 )
-      return true
-    else
-      return false
-    end
+  def todo_pay_reminder
+    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.now() + 3 )
   end
 
-  def TODO_Payment_Summary
-    if pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
-      return true
-    else
-      return false
-    end
+  def todo_payment_summary
+    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
   end
 
   def meetup_data

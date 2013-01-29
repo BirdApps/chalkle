@@ -28,9 +28,9 @@ ActiveAdmin.register_page "Dashboard" do
                 table_for Lesson.accessible_by(current_ability).visible.recent.order("start_at asc") do 
                   column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
                   column("Date") {|lesson| lesson.start_at}
-                  column("TODO:Pay Reminder") {|lesson| link_to("Email students", admin_lesson_path(lesson)) if lesson.TODO_Pay_Reminder }
-                  column("TODO:Attendee List") {|lesson| link_to("Email teacher", lesson_email_admin_lesson_path(lesson)) if lesson.TODO_Attendee_List }
-                  column("TODO:Payment Summary") {|lesson| link_to("Email teacher", admin_lesson_path(lesson)) if lesson.TODO_Payment_Summary } # to change path to payment summary email after merge
+                  column("TODO:Pay Reminder") {|lesson| link_to("Email students", admin_lesson_path(lesson)) if lesson.todo_pay_reminder }
+                  column("TODO:Attendee List") {|lesson| link_to("Email teacher", lesson_email_admin_lesson_path(lesson)) if lesson.todo_attendee_list }
+                  column("TODO:Payment Summary") {|lesson| link_to("Email teacher", admin_lesson_path(lesson)) if lesson.todo_payment_summary } # to change path to payment summary email after merge
                 end
             end
         end
