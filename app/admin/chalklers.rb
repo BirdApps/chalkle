@@ -6,8 +6,8 @@ ActiveAdmin.register Chalkler do
     authorize_resource
 
     def create
-      params[:chalkler].delete :group_ids
-      create!(Chalkler.create(params[:chalkler]))
+      params.delete :group_ids
+      Chalkler.create(bio: params[:bio], email: params[:email], name: params[:name], gst: params[:gst], meetup_id: params[:meetup_id])
     end
   end
 
