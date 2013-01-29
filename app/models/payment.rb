@@ -13,6 +13,7 @@ class Payment < ActiveRecord::Base
   scope :unreconciled, where("reconciled IS NOT true")
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
+  scope :cash, where(cash_payment: true)
 
   before_create :set_metadata
 

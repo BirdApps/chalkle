@@ -92,8 +92,12 @@ ActiveAdmin.register Lesson  do
     link_to 'Restore record', unhide_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible && lesson.bookings.visible.interested.count > 0}) do
-    link_to 'Show emails', lesson_email_admin_lesson_path(resource)
+  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible && (lesson.bookings.visible.interested.count > 0)}) do
+    link_to 'Preclass emails', lesson_email_admin_lesson_path(resource)
+  end
+
+  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.interested.count > 0) && !lesson.class_not_done}) do
+    link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
   end
 
   member_action :hide do
@@ -126,6 +130,11 @@ ActiveAdmin.register Lesson  do
       reference: lesson.meetup_id.present? ? lesson.meetup_id : "Your Name" }
   end
 
+  member_action :payment_summary_email do
+    lesson = Lesson.find(params[:id])
+    render partial: "/admin/lessons/payment_summary_email", locals: { lesson: lesson }
+  end
+
   form do |f|
     f.inputs :details do
       f.input :name
@@ -134,6 +143,7 @@ ActiveAdmin.register Lesson  do
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost
+      f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
       f.input :start_at
       f.input :duration
       f.input :description
