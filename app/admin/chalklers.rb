@@ -61,7 +61,9 @@ ActiveAdmin.register Chalkler do
       row :lessons do
         render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons }
       end
-      row :meetup_data
+      if current_admin_user.role=="super"
+        row :meetup_data
+      end
       row :created_at
       row :updated_at
     end

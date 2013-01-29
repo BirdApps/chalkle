@@ -8,7 +8,8 @@
       %th Cost
       %th Paid
       %th Answers
-      %th Booking
+      -if role=="super"
+        %th Booking
       %th Cash
   %tbody
     -bookings.each do |b|
@@ -26,6 +27,7 @@
         %td= b.paid
         %td
           =render "/admin/bookings/answers", :answers => b.answers if b.answers
-        %td= link_to 'View', admin_booking_path(b) if can? :read, b
+        -if role=="super"
+          %td= link_to 'View', admin_booking_path(b) if can? :read, b
         -if (b.cost.present? ? b.cost : 0) > 0 && b.paid != true
           %td= link_to "Pay #{number_to_currency b.cost*1.15}", record_cash_payment_admin_booking_path(b)
