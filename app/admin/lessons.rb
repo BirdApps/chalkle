@@ -66,6 +66,17 @@ ActiveAdmin.register Lesson  do
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
+      if current_admin_user.role=="super"
+        row :teacher_payment do
+          number_to_currency lesson.teacher_payment
+        end
+        row :income do
+          number_to_currency lesson.income
+        end
+        row :uncollected_revenue do
+          number_to_currency lesson.uncollected_revenue
+        end
+      end
       row :start_at
       row :duration do
         "#{lesson.duration / 60} minutes" if lesson.duration?
