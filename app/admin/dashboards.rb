@@ -30,7 +30,7 @@ ActiveAdmin.register_page "Dashboard" do
                   column("Date") {|lesson| lesson.start_at}
                   column("TODO:Pay Reminder") {|lesson| link_to("Email students", admin_lesson_path(lesson)) if lesson.todo_pay_reminder }
                   column("TODO:Attendee List") {|lesson| link_to("Email teacher", lesson_email_admin_lesson_path(lesson)) if lesson.todo_attendee_list }
-                  column("TODO:Payment Summary") {|lesson| link_to("Email teacher", admin_lesson_path(lesson)) if lesson.todo_payment_summary } # to change path to payment summary email after merge
+                  column("TODO:Payment Summary") {|lesson| link_to("Email teacher", payment_summary_email_admin_lesson_path(lesson)) if lesson.todo_payment_summary } # to change path to payment summary email after merge
                 end
             end
         end
@@ -41,8 +41,7 @@ ActiveAdmin.register_page "Dashboard" do
                 column("Group") {|lesson| lesson.groups.collect{|g| g.name}.join(", ") }
                 column("Attendance") {|lesson| lesson.attendance}
                 if current_admin_user.role=="super"
-                    column("Income") {|lesson| number_to_currency lesson.collected_revenue} # subtract teacher payment after that has been merged
-                    column("Potential Writeoff") {|lesson| number_to_currency lesson.uncollected_revenue}
+                    column("Income") {|lesson| number_to_currency lesson.income} 
                 end
             end
         end
