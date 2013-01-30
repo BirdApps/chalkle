@@ -4,6 +4,16 @@ ActiveAdmin.register Chalkler do
   controller do
     load_resource :except => :index
     authorize_resource
+
+    def create
+      @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst], 
+        meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name])
+      if @chalkler.save
+        update!
+      else
+        redirect_to :back
+      end
+    end
   end
 
   filter :groups_name, :as => :select, :label => "Group",
@@ -51,7 +61,9 @@ ActiveAdmin.register Chalkler do
       row :lessons do
         render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons }
       end
-      row :meetup_data
+      if current_admin_user.role=="super"
+        row :meetup_data
+      end
       row :created_at
       row :updated_at
     end

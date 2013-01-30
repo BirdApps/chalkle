@@ -1,0 +1,34 @@
+Hi #{lesson.teacher.present? ? lesson.teacher.name : nil},
+%br
+%br
+Here is a summary of Chalkle's payment to you (GST exclusive) for this class, #{lesson.name.present? ? lesson.name : nil} on #{(lesson.start_at.present? ? lesson.start_at : Date.yesterday()).strftime("%d %b. %Y")}:
+%br
+%br
+Total number of attendees = #{attendance=lesson.attendance}
+%br
+Payment to you per attendee = #{number_to_currency teacher_cost=(lesson.teacher_cost.present? ? lesson.teacher_cost : 0)}
+%br
+Total payment for this class = #{number_to_currency teacher_cost*attendance}
+%br
+%br
+Less
+%br
+Cash you received = #{number_to_currency cash=lesson.payments.cash.sum(:total)}
+%br
+Venue cost = #{number_to_currency venue=(lesson.venue_cost.present? ? lesson.venue_cost : 0)}
+%br
+%br
+Total payment to be transferred to you = #{number_to_currency teacher_cost*attendance-cash-venue}
+%br
+%br
+
+An invoice sent to #{link_to 'Silvia',"mailto:silvia@chalkle.com"} for this amount will activate the payment to you on the 20th of every month. If you are going to pay GST on this amount, please include your GST registration number in the invoice.
+%br
+%br
+Please do not hesitate to contact me should you have any questions.
+%br
+%br
+Regards,
+%br
+Chalkle
+%br
