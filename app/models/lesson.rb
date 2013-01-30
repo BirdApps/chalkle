@@ -51,6 +51,10 @@ class Lesson < ActiveRecord::Base
     expected_revenue - collected_revenue    
   end
 
+  def income
+    collected_revenue - ( teacher_payment.present? ? teacher_payment : 0 )
+  end
+
   def attendance
     bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
   end
