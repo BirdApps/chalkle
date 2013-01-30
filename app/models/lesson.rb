@@ -13,14 +13,22 @@ class Lesson < ActiveRecord::Base
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_numericality_of :teacher_payment, allow_nil: true
 
+  #Time span for classes requiring attention
+  PAST = 3
+  IMMEDIATE_FUTURE= 5
+  WEEK = 7
+
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
+  scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
+  scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
+  scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
 
   def unpaid_count
-    bookings.confirmed.visible.count - bookings.paid.visible.count
+    bookings.confirmed.visible.count - bookings.confirmed.visible.paid.count
   end
 
   def class_not_done
@@ -45,6 +53,22 @@ class Lesson < ActiveRecord::Base
 
   def attendance
     bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
+  end
+
+  def pay_involved
+    (cost.present? ? cost : 0) > 0 
+  end
+
+  def todo_attendee_list
+    return (start_at > DateTime.now()) && (start_at <= DateTime.tomorrow() + 1) && pay_involved
+  end
+
+  def todo_pay_reminder
+    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.now() + 3 )
+  end
+
+  def todo_payment_summary
+    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
   end
 
   def meetup_data
