@@ -30,7 +30,7 @@ ActiveAdmin.register_page "Dashboard" do
                   column("Date") {|lesson| lesson.start_at}
                   column("TODO:Pay Reminder") {|lesson| link_to("Email students", admin_lesson_path(lesson)) if lesson.todo_pay_reminder }
                   column("TODO:Attendee List") {|lesson| link_to("Email teacher", lesson_email_admin_lesson_path(lesson)) if lesson.todo_attendee_list }
-                  column("TODO:Payment Summary") {|lesson| link_to("Email teacher", payment_summary_email_admin_lesson_path(lesson)) if lesson.todo_payment_summary } # to change path to payment summary email after merge
+                  column("TODO:Payment Summary") {|lesson| link_to("Email teacher", payment_summary_email_admin_lesson_path(lesson)) if lesson.todo_payment_summary } 
                 end
             end
         end
