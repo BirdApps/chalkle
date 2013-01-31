@@ -71,7 +71,7 @@ ActiveAdmin.register Payment do
   end
 
   collection_action :reconcile do
-    @payments = Payment.unreconciled.limit(20)
+    @payments = Payment.visible.unreconciled.limit(20)
   end
 
 
