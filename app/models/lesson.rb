@@ -52,7 +52,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def income
-    collected_revenue - ( teacher_payment.present? ? teacher_payment : 0 )
+    collected_revenue - ( teacher_payment.present? ? teacher_payment : 0 ) - ( venue_cost.present? ? venue_cost : 0 )
   end
 
   def attendance
