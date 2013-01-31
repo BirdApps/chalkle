@@ -1,0 +1,10 @@
+= simple_form_for(:chalkers_preferences, url: chalklers_preferences_path) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :email
+    = f.input :email_frequency
+    = f.input :categories, collection: Category.all
+
+  .form-actions
+    = f.button :submit, 'Submit', class: 'btn'

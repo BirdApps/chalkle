@@ -9,6 +9,8 @@ Chalkle::Application.routes.draw do
   namespace :chalklers do
     root to: "dashboard#index"
     match '/classes' => 'dashboard#classes', as: 'classes'
+
+    put '/preferences' => 'preferences#save', as: 'preferences'
   end
 
   match '/image' => 'image#generate'

@@ -3,7 +3,8 @@ class Chalkler < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me, :group_ids, :gst, :provider, :uid
+  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me, 
+    :group_ids, :gst, :provider, :uid, :email_frequency
 
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates :email, allow_blank: true, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
