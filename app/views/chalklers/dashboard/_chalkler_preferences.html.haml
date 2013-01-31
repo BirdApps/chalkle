@@ -3,8 +3,8 @@
 
   .form-inputs
     = f.input :email
-    = f.input :email_frequency
-    = f.input :categories, collection: Category.all
+    = f.input :email_frequency, collection: Chalkler.email_frequency_select_options, include_blank: false
+    = f.input :categories, as: :check_boxes, collection: Category.select_options, include_blank: false
 
   .form-actions
-    = f.button :submit, 'Submit', class: 'btn'
+    = f.button :submit, 'Save Email Preferences', class: 'btn-primary'

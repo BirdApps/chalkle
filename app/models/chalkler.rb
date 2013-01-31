@@ -17,7 +17,14 @@ class Chalkler < ActiveRecord::Base
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
 
+  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly never)
+
   before_create :set_from_meetup_data
+
+  #TODO: Move into a presenter class like Draper sometime
+  def self.email_frequency_select_options
+    EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
+  end
 
   def email_required?
     false
