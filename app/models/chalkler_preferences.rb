@@ -13,11 +13,16 @@ class ChalklerPreferences
   def update_attributes(params)
     @email            = params[:email]
     @email_frequency  = params[:email_frequency]
-    @email_categories = params[:email_categories]
+    @email_categories = parse_categories_params(params[:email_categories])
     persist_to_chalkler
   end
 
   private
+
+  def parse_categories_params(email_categories)
+    email_categories = email_categories.to_a.delete_if(&:blank?)
+    email_categories.map(&:to_i)
+  end
 
   def persist_to_chalkler
     @chalkler.email            = @email
