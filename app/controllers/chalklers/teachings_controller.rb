@@ -5,12 +5,11 @@ class Chalklers::TeachingsController < Chalklers::BaseController
 
   def create
   	@chalkler_teaching = Teaching.new(current_chalkler)
-  	if @chalkler_teaching.update_attributes(params[:teaching])
+  	if @chalkler_teaching.submit(params[:teaching])
   		redirect_to root_url
   		flash[:success] = "Your class has been submitted"
   	else
-  		flash[:notice] = "There is an error in submitting your class"
-  		render 'new'
+      render 'new'
   	end
   end
 
