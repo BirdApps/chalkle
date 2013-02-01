@@ -17,6 +17,8 @@ class Chalkler < ActiveRecord::Base
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
 
+  serialize :email_categories
+
   EMAIL_FREQUENCY_OPTIONS = %w(daily weekly never)
 
   before_create :set_from_meetup_data

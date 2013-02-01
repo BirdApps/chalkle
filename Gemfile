@@ -16,6 +16,7 @@ gem 'activeadmin',   '~> 0.5.1'
 gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails',  '~> 2.1.4'
 gem 'chronic',       '~> 0.9.0'
+gem 'informal',      '~> 0.1.0'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
