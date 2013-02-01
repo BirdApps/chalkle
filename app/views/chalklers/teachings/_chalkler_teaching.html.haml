@@ -1,22 +1,32 @@
-= simple_form_for(@chalkler_teaching, url: chalklers_teachings_path, html: { method: :post, class: 'form-horizontal' }) do |f|
+= simple_form_for(@chalkler_teaching, url: chalklers_teachings_path, html: { method: :post, class: 'form-vertical' }) do |f|
   = f.error_notification
 
   .form-inputs
-    = f.input :name, :label => "What is the title of your class?"
-    = f.label :lesson_type, "What type of class is it?"
-    = f.select :lesson_type, [['Test Flight', 'test flight'], ['Introduction','intro'], ['Next Step','next step'], ['Tips and Tricks','tips & tricks'], ['Practice','practice'], ['Master Class','master class'], ['Zero to Hero','zero to hero']] 
-    = f.label :bio, "Why are you a great teacher for this class?"
-    = f.text_area :bio, :placeholder => current_chalkler.bio
-    = f.label :do_during_class, "What will we do during the class?"
-    = f.text_area :do_during_class, :placeholder => "Speak as though you are describing it to your grandmother"
-    = f.label :learning_outcomes, "What will we learn from this class?"
-    = f.text_area :learning_outcomes, :placeholder => "We will learn xxx"
-    = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in minutes"
-    = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST)?" 
+    %h3
+      Class overview
+
+    = f.input :title, :label => "What is the title of your class?", :as => :text, :input_html => { :rows => 1, :class => "span12" }, :placeholder => "A sassy title will help to attract more chalklers"
+    = f.input :lesson_type, :label => "What type of class is it? ", :collection => [['Test Flight', 'test flight'], ['Introduction','intro'], ['Next Step','next step'], ['Tips and Tricks','tips & tricks'], ['Practice','practice'], ['Master Class','master class'], ['Zero to Hero','zero to hero']], :input_html => { :multiple => false } 
+    = f.input :bio, :label => "Why are you a great teacher for this class?", :as => :text, :placeholder => current_chalkler.bio.to_s, :input_html => { :rows => 3, :class => "span12" }
+    = f.input :do_during_class, :label => "What will we do during the class?", :as => :text, :placeholder => "Speak as though you are describing it to your grandmother", :input_html => { :rows => 6, :class => "span12" }
+    = f.input :learning_outcomes, :label => "What will we learn from this class?", :as => :text, :placeholder => "We will learn xxx", :input_html => { :rows => 3, :class => "span12" }
+
+    %h3
+      Class Details
+    = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in minutes", :wrapper => :append do
+      = f.input_field :duration
+      = content_tag :span, "Minutes", :class => "add-on"
+    end
+    = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST per attendee)?"
     = f.input :max_attendee, :label => "What is the maximum number of attendees for this class?"
     = f.input :min_attendee, :label => "What is the minimum number of attendees for which you are willing to teach this class?"
     = f.label :suggested_times, "What are three possible date/times when you can teach the class?"
     = f.text_area :suggested_times
+    = f.label :prerequisites, "What are equipments or resources you need for this class?"
+    = f.input :prerequisites, :placeholder => "This can be things attendees need to bring or equipments we will provide such as projectors or speakers"
+
+    %h3
+      Anything else
     = f.label :anything_else, "Is there anything else we should know?"
     = f.text_area :anything_else
 
