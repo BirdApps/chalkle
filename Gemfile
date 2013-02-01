@@ -7,7 +7,7 @@ gem 'rails', '3.2.11'
 
 gem 'pg'
 gem 'airbrake', '~> 3.1.6'
-gem 'devise', '~> 2.2.0'
+gem 'devise', '~> 2.2.3'
 gem 'cancan', '~> 1.6.8'
 gem 'activeadmin', '~> 0.5.1'
 gem 'analytical'
