@@ -1,0 +1,9 @@
+= simple_form_for(@lesson, url: '/lessons/new', html: { method: :put, class: 'form-horizontal' }) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name, :placeholder => "Name of your class", :label => "Name of your class", :type => "text_field"
+    = f.input :teacher, :placeholder => current_chalkler.name, :label => "Your name", :type => "text_field"
+
+  .form-actions
+    = f.button :submit, 'Submit your class', class: 'btn-primary'

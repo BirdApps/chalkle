@@ -1,0 +1,24 @@
+= simple_form_for(@chalkler_teaching, url: chalklers_teachings_path, html: { method: :post, class: 'form-horizontal' }) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name, :label => "What is the title of your class?"
+    = f.label :lesson_type, "What type of class is it?"
+    = f.select :lesson_type, [['Test Flight', 'test flight'], ['Introduction','intro'], ['Next Step','next step'], ['Tips and Tricks','tips & tricks'], ['Practice','practice'], ['Master Class','master class'], ['Zero to Hero','zero to hero']] 
+    = f.label :bio, "Why are you a great teacher for this class?"
+    = f.text_area :bio, :placeholder => current_chalkler.bio
+    = f.label :do_during_class, "What will we do during the class?"
+    = f.text_area :do_during_class, :placeholder => "Speak as though you are describing it to your grandmother"
+    = f.label :learning_outcomes, "What will we learn from this class?"
+    = f.text_area :learning_outcomes, :placeholder => "We will learn xxx"
+    = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in minutes"
+    = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST)?" 
+    = f.input :max_attendee, :label => "What is the maximum number of attendees for this class?"
+    = f.input :min_attendee, :label => "What is the minimum number of attendees for which you are willing to teach this class?"
+    = f.label :suggested_times, "What are three possible date/times when you can teach the class?"
+    = f.text_area :suggested_times
+    = f.label :anything_else, "Is there anything else we should know?"
+    = f.text_area :anything_else
+
+  .form-actions
+    = f.button :submit, 'Submit my class', class: 'btn-primary'
