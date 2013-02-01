@@ -1,4 +1,4 @@
-= simple_form_for(@chalkler_email_preferences, url: chalklers_preferences_path, html: { class: 'form-horizontal' }) do |f|
+= simple_form_for(@chalkler_email_preferences, url: chalklers_preferences_path, html: { method: :put, class: 'form-horizontal' }) do |f|
   = f.error_notification
 
   .form-inputs

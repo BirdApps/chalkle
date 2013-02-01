@@ -1,5 +1,5 @@
 class ChalklerPreferences
-  include Informal::Model
+  include ActiveAttr::Model
 
   attr_accessor :email, :email_frequency, :email_categories
 
