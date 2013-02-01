@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe ChalklerEmailPreferences do
+describe ChalklerPreferences do
   let(:chalkler) { double('chalkler', email: 'test@user.com', email_frequency: 'weekly', email_categories: [1]) }
 
   describe "#initialize" do
-    before { @email_prefs = ChalklerEmailPreferences.new(chalkler) }
+    before { @email_prefs = ChalklerPreferences.new(chalkler) }
 
     it "extracts an email" do
       @email_prefs.email.should eq('test@user.com')

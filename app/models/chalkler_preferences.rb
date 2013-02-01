@@ -1,4 +1,4 @@
-class ChalklerEmailPreferences
+class ChalklerPreferences
   include Informal::Model
 
   attr_accessor :email, :email_frequency, :email_categories
