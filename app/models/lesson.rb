@@ -68,7 +68,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def todo_pay_reminder
-    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.now() + 3 )
+    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.now() + 4 )
   end
 
   def todo_payment_summary
