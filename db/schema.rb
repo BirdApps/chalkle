@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130131232334) do
+ActiveRecord::Schema.define(:version => 20130202064111) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -93,9 +93,9 @@ ActiveRecord::Schema.define(:version => 20130131232334) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "gst"
-    t.string   "email_frequency"
     t.string   "provider"
     t.string   "uid"
+    t.string   "email_frequency"
     t.text     "email_categories"
   end
 
@@ -139,18 +139,19 @@ ActiveRecord::Schema.define(:version => 20130131232334) do
     t.integer  "teacher_id"
     t.integer  "meetup_id"
     t.string   "name"
-    t.string   "status"
+    t.string   "status",                                        :default => "Unreviewed"
     t.text     "description"
     t.decimal  "cost",            :precision => 8, :scale => 2
     t.datetime "start_at"
     t.integer  "duration"
     t.text     "meetup_data"
-    t.datetime "created_at",                                    :null => false
-    t.datetime "updated_at",                                    :null => false
+    t.datetime "created_at",                                                              :null => false
+    t.datetime "updated_at",                                                              :null => false
     t.decimal  "teacher_cost",    :precision => 8, :scale => 2
     t.decimal  "venue_cost",      :precision => 8, :scale => 2
     t.boolean  "visible"
     t.decimal  "teacher_payment", :precision => 8, :scale => 2
+    t.string   "lesson_type"
   end
 
   create_table "payments", :force => true do |t|

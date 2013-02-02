@@ -1,5 +1,6 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, :description, :visible, :teacher_payment
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, 
+  :description, :visible, :teacher_payment, :lesson_type
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
@@ -12,6 +13,7 @@ class Lesson < ActiveRecord::Base
 
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_numericality_of :teacher_payment, allow_nil: true
+  validates :status, :inclusion => { :in => ["Published","On-hold","Unreviewed"], :message => "%{value} is not a valid status"}
 
   #Time span for classes requiring attention
   PAST = 3
@@ -23,6 +25,7 @@ class Lesson < ActiveRecord::Base
   scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
   scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
   scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
+  scope :unreviewed, where("status = 'Unreviewed' ")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
@@ -111,6 +114,7 @@ class Lesson < ActiveRecord::Base
 
   def self.create_from_meetup_hash(result, group)
     l = Lesson.find_or_initialize_by_meetup_id result.id
+    l.status = "Published"
     l.name = result.name
     l.meetup_id = result.id
     l.description = result.description
