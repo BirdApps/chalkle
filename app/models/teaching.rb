@@ -2,7 +2,7 @@ class Teaching
   include ActiveAttr::Model
 
   attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_type, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee, 
-  :suggested_times, :prerequisites, :anything_else
+  :suggested_dates, :prerequisites, :anything_else
 
   validates :title, :presence => { :message => "What we will do during the class can not be blank"}
   validates :do_during_class, :presence => { :message => "What we will do during the class can not be blank"}

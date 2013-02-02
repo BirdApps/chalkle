@@ -13,6 +13,8 @@
 
     %h3
       Class Details
+    = f.input :suggested_dates, :label => "What are three possible dates/times when you can teach this class?", :as => :text, :input_html => { :rows => 2, :class => "span12" }
+    = f.input :prerequisites, :label => "What are equipments or resources you need for this class?", :placeholder => "These can be things that attendees need to bring or equipments chalkle will provide such as projectors", :as => :text, :input_html => { :rows => 2, :class => "span12" }
     = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in minutes", :wrapper => :append do
       = f.input_field :duration
       = content_tag :span, "Minutes", :class => "add-on"
@@ -31,15 +33,9 @@
       = f.input_field :max_attendee
       = content_tag :span, "People", :class => "add-on"
 
-    = f.label :suggested_times, "What are three possible date/times when you can teach the class?"
-    = f.text_area :suggested_times
-    = f.label :prerequisites, "What are equipments or resources you need for this class?"
-    = f.input :prerequisites, :placeholder => "This can be things attendees need to bring or equipments we will provide such as projectors or speakers"
-
     %h3
-      Anything else
-    = f.label :anything_else, "Is there anything else we should know?"
-    = f.text_area :anything_else
+      Anything else?
+    = f.input :anything_else, :label => "Is there anything else you would like to tell us about this class?", as: :text, :input_html => { :rows => 3, :class => "span12" }
 
   .form-actions
     = f.button :submit, 'Submit my class', class: 'btn-primary'
