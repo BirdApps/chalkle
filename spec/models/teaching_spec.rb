@@ -80,16 +80,10 @@ describe "Teachings" do
     end
   end
 
-  describe "price calculation" do
-  	it "return 20% on top of input" do
-  	  @chalkler_teaching.price_calculation(10).should == 12.0
-  	end
-  end
-
   describe "form submit" do
 
   	let(:params2) { { title: 'My new class', lesson_type: 'intro', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '60',
-    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', suggested_dates: 'March 1st 2013' , anything_else: 'Nothing'} }
+    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' , anything_else: 'Nothing'} }
 
   	it "create an unreviewed lesson with correct form" do
   		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unreviewed, :count).by(1)
@@ -130,13 +124,25 @@ describe "Teachings" do
   	    	@lesson.duration.should == params2[:duration].to_i*60
   	    end
 
+        it "has the correct price" do
+          @lesson.cost.should == 24
+        end
+
   	    it "has the correct teacher cost" do
   	    	@lesson.teacher_cost.should == 20
   	    end
 
-  	    it "has the correct price" do
-  	    	@lesson.cost.should == 24
+  	    it "has the correct max attendee" do
+  	    	@lesson.max_attendee.should == params2[:max_attendee].to_i
   	    end
+
+        it "has the correct min attendee" do
+          @lesson.min_attendee.should == params2[:min_attendee].to_i
+        end
+
+        it "has the correct availabilities" do
+          @lesson.availabilities.should == params2[:availabilities]
+        end
   	end
   end
 end

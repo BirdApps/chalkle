@@ -13,7 +13,7 @@
 
     %h3
       Class Details
-    = f.input :suggested_dates, :label => "What are three possible dates/times when you can teach this class?", :as => :text, :input_html => { :rows => 2, :class => "span12" }
+    = f.input :availabilities, :label => "When are you available to teach this class?", :as => :text, :input_html => { :rows => 2, :class => "span12" }
     = f.input :prerequisites, :label => "What are equipments or resources you need for this class?", :placeholder => "These can be things that attendees need to bring or equipments chalkle will provide such as projectors", :as => :text, :input_html => { :rows => 2, :class => "span12" }
     = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in minutes", :wrapper => :append do
       = f.input_field :duration
