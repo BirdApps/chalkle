@@ -68,6 +68,16 @@ describe "Teachings" do
   		params[:teacher_cost] = '10'
   		@chalkler_teaching.check_valid_input(params).should be_false
   	end
+
+    it "returns false when min number of attendee is not an integer" do
+      params[:min_attendee] = '1.3'
+      @chalkler_teaching.check_valid_input(params).should be_false
+    end
+
+    it "returns false when max number of attendee is not an integer" do
+      params[:max_attendee] = '10.3'
+      @chalkler_teaching.check_valid_input(params).should be_false
+    end
   end
 
   describe "price calculation" do
@@ -107,6 +117,14 @@ describe "Teachings" do
   	    it "has the correct lesson type" do
   	    	@lesson.lesson_type.should == params2[:lesson_type]
   	    end
+
+        it "has the correct what we will do during class" do
+          @lesson.do_during_class.should == params2[:do_during_class]
+        end
+
+        it "has the correct what we will learn from class" do
+          @lesson.learning_outcomes.should == params2[:learning_outcomes]
+        end
 
   	    it "has the correct duration" do
   	    	@lesson.duration.should == params2[:duration].to_i*60

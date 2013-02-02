@@ -8,11 +8,13 @@ class Teaching
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
   validates :do_during_class, :presence => { :message => "What we will do during the class can not be blank"}
   validates :learning_outcomes, :presence => { :message => "What we will learn from this class can not be blank"}
-  validates :duration, :allow_blank => true, :numericality => { :greater_than => 0, :message => "Only numbers greater than 0 should be entered here"}
+  validates :duration, :allow_blank => true, :numericality => { :only_integer => true, :message => "Only integer number of minutes are allowed"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "You can not be paid for a free class" }, :if => "self.free_lesson=='1'"
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
   validates :max_attendee, :allow_blank => true, :numericality => {:greater_than => 0, :message => "Number of people must be greater than 0" }
+  validates :max_attendee, :allow_blank => true, :numericality => {:only_integer => true, :message => "Only integer number of people are allowed" }
   validates :min_attendee, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Number of people must be greater than or equal to 0" }
+  validates :min_attendee, :allow_blank => true, :numericality => {:only_integer => true, :message => "Only integer number of people are allowed"  }
 
   def initialize(chalkler)
   	@chalkler = chalkler
@@ -37,7 +39,8 @@ class Teaching
   def submit(params)
     if check_valid_input(params)
       @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, lesson_type: @lesson_type, teacher_bio: @bio, do_during_class: @do_during_class, 
-        duration: @duration.to_i*60, cost: price_calculation(@teacher_cost), teacher_cost: @teacher_cost, status: "Unreviewed")
+        learning_outcomes: @learning_outcomes, duration: @duration.to_i*60, cost: price_calculation(@teacher_cost), teacher_cost: @teacher_cost, 
+        max_attendee: @max_attendee.to_i, min_attendee: @min_attendee.to_i, status: "Unreviewed")
       @lesson.save
     else
       return false

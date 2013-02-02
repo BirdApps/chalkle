@@ -55,6 +55,12 @@ ActiveAdmin.register Lesson  do
         row :do_during_class do
           simple_format lesson.do_during_class
         end
+        row :learning_outcomes do
+          simple_format lesson.learning_outcomes
+        end
+        row :availabilities do
+          simple_format lesson.availabilities
+        end
       end
       row :teacher_gst_number do
         if lesson.teacher && lesson.teacher.gst?
@@ -76,6 +82,8 @@ ActiveAdmin.register Lesson  do
       row :duration do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
+      row :max_attendee
+      row :min_attendee      
 
       #only view these for published classes
       if lesson.status == "Published"
@@ -174,6 +182,10 @@ ActiveAdmin.register Lesson  do
       if lesson.status != "Published"
         f.input :teacher_bio
         f.input :do_during_class, :label => "What we will do during this class"
+        f.input :learning_outcomes, :label => "What we will learn from this class"
+        f.input :max_attendee
+        f.input :min_attendee
+        f.input :availabilities
       end
       f.input :cost
       f.input :teacher_cost

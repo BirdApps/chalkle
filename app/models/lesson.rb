@@ -1,6 +1,6 @@
 class Lesson < ActiveRecord::Base
   attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, 
-  :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee
+  :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
