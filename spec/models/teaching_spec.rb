@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
   let(:params) { { title: 'My new class', lesson_type: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
-  free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', suggested_dates: '' , anythingelse: ''} }
+  free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', suggested_dates: '' , anything_else: ''} }
 
   before {  @chalkler_teaching = Teaching.new(chalkler) }
   
@@ -72,15 +72,53 @@ describe "Teachings" do
 
   describe "price calculation" do
   	it "return 20% on top of input" do
-  	  @chalkler_teaching.price_calculation(10).should == 1.20
+  	  @chalkler_teaching.price_calculation(10).should == 12.0
   	end
   end
 
   describe "form submit" do
 
+  	let(:params2) { { title: 'My new class', lesson_type: 'introduction', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '60',
+    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', suggested_dates: 'March 1st 2013' , anything_else: 'Nothing'} }
+
+  	it "create an unreviewed lesson with correct form" do
+  		expect { @chalkler_teaching.submit(params2) }.to change(Lesson, :count).by(1)
+  	end
+
+  	it "do not create an unreviewed lesson with empty form" do
+  		expect { @chalkler_teaching.submit({}) }.not_to change(Lesson, :count)
+  	end
+
+  	it "create a lesson with the correct name" do
+  		@chalkler_teaching.submit(params2) 
+  		Lesson.find_by_name(params2[:title]).should_not be_nil
+  	end
+
+  	describe "created lesson" do
+  	  before do
+  	    @chalkler_teaching.submit(params2)
+  	    @lesson = Lesson.find_by_name(params2[:title])
+  	  end
+
+  	    it "has the correct teacher" do
+  	    	@lesson.teacher_id.should == chalkler.id
+  	    end
+
+  	    it "has the correct lesson type" do
+  	    	@lesson.lesson_type.should == 'intro'
+  	    end
+
+  	    it "has the correct duration" do
+  	    	@lesson.lesson_type.should == params[:duration].to_i*60
+  	    end
+
+  	    it "has the correct teacher cost" do
+  	    	@lesson.teacher_cost.should == 20
+  	    end
+
+  	    it "has the correct price" do
+  	    	@lesson.cost.should == 24
+  	    end
+  	end
   end
-
-
-
-
 end

@@ -32,17 +32,21 @@ class Teaching
     self.valid?
   end
 
-  def submit()
-    @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, duration: @duration.to_i*60, cost: price_calculation(self.teacher_cost), 
-      teacher_cost: @teacher_cost)
-    @lesson.save
+  def submit(params)
+    if check_valid_input(params)
+      @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, duration: @duration.to_i*60, cost: price_calculation(self.teacher_cost), 
+        teacher_cost: @teacher_cost)
+      @lesson.save
+    else
+      return false
+    end
   end
 
   def price_calculation(teacher_cost)
     (teacher_cost.blank? ? 0: teacher_cost.to_d*1.20)
   end
 
-  
+
 
 
 end
