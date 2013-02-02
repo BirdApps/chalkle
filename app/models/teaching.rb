@@ -20,6 +20,7 @@ class Teaching
   	@chalkler = chalkler
     @teacher_id = @chalkler.id
     @bio = @chalkler.bio
+    @groups = @chalkler.groups
   end
 
   def check_valid_input(params)
@@ -42,7 +43,11 @@ class Teaching
       @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, lesson_type: @lesson_type, teacher_bio: @bio, do_during_class: @do_during_class, 
         learning_outcomes: @learning_outcomes, duration: @duration.to_i*60, cost: price_calculation(@teacher_cost), teacher_cost: @teacher_cost, 
         max_attendee: @max_attendee.to_i, min_attendee: @min_attendee.to_i, availabilities: @availabilities, status: "Unreviewed")
-      @lesson.save
+      if @lesson.save
+        @lesson.groups = @groups
+      else
+        return false
+      end
     else
       return false
     end

@@ -2,10 +2,14 @@ require 'spec_helper'
 
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
+  let(:group) { FactoryGirl.create(:group) }
   let(:params) { { title: 'My new class', lesson_type: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
   free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', suggested_dates: '' , anything_else: ''} }
 
-  before {  @chalkler_teaching = Teaching.new(chalkler) }
+  before do
+    chalkler.groups << group
+    @chalkler_teaching = Teaching.new(chalkler)
+  end
   
   describe "initialize" do
 
@@ -16,6 +20,7 @@ describe "Teachings" do
   	it "extract the bio of current chalkler" do
   		@chalkler_teaching.bio = chalkler.bio
   	end
+
   end
 
   describe "form validation" do
@@ -95,7 +100,7 @@ describe "Teachings" do
 
   	it "create a lesson with the correct name" do
   		@chalkler_teaching.submit(params2) 
-  		Lesson.find_by_name(params2[:title]).should_not be_nil
+  		Lesson.find_by_name(params2[:title]).should be_valid
   	end
 
   	describe "created lesson" do
@@ -107,6 +112,10 @@ describe "Teachings" do
   	    it "has the correct teacher" do
   	    	@lesson.teacher_id.should == chalkler.id
   	    end
+
+        it "has the correct group" do
+          @lesson.groups.should == chalkler.groups
+        end
 
   	    it "has the correct lesson type" do
   	    	@lesson.lesson_type.should == params2[:lesson_type]
