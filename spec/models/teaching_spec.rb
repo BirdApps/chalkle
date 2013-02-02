@@ -78,15 +78,15 @@ describe "Teachings" do
 
   describe "form submit" do
 
-  	let(:params2) { { title: 'My new class', lesson_type: 'introduction', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '60',
+  	let(:params2) { { title: 'My new class', lesson_type: 'intro', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '60',
     free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', suggested_dates: 'March 1st 2013' , anything_else: 'Nothing'} }
 
   	it "create an unreviewed lesson with correct form" do
-  		expect { @chalkler_teaching.submit(params2) }.to change(Lesson, :count).by(1)
+  		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unreviewed, :count).by(1)
   	end
 
   	it "do not create an unreviewed lesson with empty form" do
-  		expect { @chalkler_teaching.submit({}) }.not_to change(Lesson, :count)
+  		expect { @chalkler_teaching.submit({}) }.not_to change(Lesson.unreviewed, :count)
   	end
 
   	it "create a lesson with the correct name" do
@@ -105,11 +105,11 @@ describe "Teachings" do
   	    end
 
   	    it "has the correct lesson type" do
-  	    	@lesson.lesson_type.should == 'intro'
+  	    	@lesson.lesson_type.should == params2[:lesson_type]
   	    end
 
   	    it "has the correct duration" do
-  	    	@lesson.lesson_type.should == params[:duration].to_i*60
+  	    	@lesson.duration.should == params2[:duration].to_i*60
   	    end
 
   	    it "has the correct teacher cost" do
