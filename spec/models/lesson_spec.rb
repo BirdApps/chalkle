@@ -72,6 +72,12 @@ describe Lesson do
       Lesson.create_from_meetup_hash(result, group)
       Category.find_by_name("music and dance").should be_valid
     end
+
+    it "set lesson to published" do
+      Lesson.create_from_meetup_hash(result, group)
+      lesson = Lesson.find_by_meetup_id 12345678
+      lesson.status.should == "Published"
+    end
   end
 
 end
