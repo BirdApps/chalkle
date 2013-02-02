@@ -44,7 +44,7 @@ ActiveAdmin.register Lesson  do
 
   show title: :name do |lesson|
     attributes_table do
-      row :attendance
+      row :status
       row :category
       row :lesson_type
       row :teacher
@@ -55,10 +55,8 @@ ActiveAdmin.register Lesson  do
           "Not GST registered"
         end
       end
-      row :meetup_id do
-        link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
-      end
-      row :cost do
+
+      row "Price" do
         number_to_currency lesson.cost
       end
       row :teacher_cost do
@@ -67,34 +65,40 @@ ActiveAdmin.register Lesson  do
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
-      if current_admin_user.role=="super"
-        row :teacher_payment do
-          number_to_currency lesson.teacher_payment
-        end
-        row :income do
-          number_to_currency lesson.income
-        end
-        row :uncollected_revenue do
-          number_to_currency lesson.uncollected_revenue
-        end
-      end
-      row :start_at
       row :duration do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
-      if current_admin_user.role=="super"
-        row :bookings_to_collect do
+
+      #only view these for published classes
+      if lesson.status == "Published"
+        if current_admin_user.role=="super"
+          row :teacher_payment do
+            number_to_currency lesson.teacher_payment
+          end
+          row :income do
+            number_to_currency lesson.income
+          end
+          row :uncollected_revenue do
+            number_to_currency lesson.uncollected_revenue
+          end
+          row :attendance
+          row :bookings_to_collect do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
+          end
+          row :rsvp_list do
+            render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+          end
         end
-      end
-      row :rsvp_list do
-        render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
-      end
-      row :description do
-        simple_format lesson.description
-      end
-      if current_admin_user.role=="super"
-        row :meetup_data
+        row :start_at
+        row :meetup_id do
+          link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
+        end
+        row :description do
+          simple_format lesson.description
+        end
+        if current_admin_user.role=="super"
+          row :meetup_data
+        end
       end
     end
     active_admin_comments
