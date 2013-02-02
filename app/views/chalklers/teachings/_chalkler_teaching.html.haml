@@ -16,10 +16,21 @@
     = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in minutes", :wrapper => :append do
       = f.input_field :duration
       = content_tag :span, "Minutes", :class => "add-on"
-    end
-    = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST per attendee)?"
-    = f.input :max_attendee, :label => "What is the maximum number of attendees for this class?"
-    = f.input :min_attendee, :label => "What is the minimum number of attendees for which you are willing to teach this class?"
+
+    = f.input :free_lesson, :label => false, :inline_label => "Check here if you want this class to be offered for free", as: :boolean
+
+    = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST)?", :wrapper => :prepend do
+      = f.input_field :teacher_cost, :placeholder => "0.00"
+      = content_tag :span, "Per attendee", :class => "add-on"
+
+    = f.input :max_attendee, :label => "What is the maximum number of attendees for this class?", :wrapper => :append do
+      = f.input_field :max_attendee
+      = content_tag :span, "People", :class => "add-on"
+
+    = f.input :min_attendee, :label => "What is the minimum number of attendees for this class?", :wrapper => :append do
+      = f.input_field :max_attendee
+      = content_tag :span, "People", :class => "add-on"
+
     = f.label :suggested_times, "What are three possible date/times when you can teach the class?"
     = f.text_area :suggested_times
     = f.label :prerequisites, "What are equipments or resources you need for this class?"
