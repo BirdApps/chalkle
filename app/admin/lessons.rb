@@ -113,7 +113,7 @@ ActiveAdmin.register Lesson  do
     link_to 'Preclass emails', lesson_email_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.interested.count > 0) && !lesson.class_not_done}) do
+  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.confirmed.count > 0) && !lesson.class_not_done}) do
     link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
   end
 
@@ -141,7 +141,7 @@ ActiveAdmin.register Lesson  do
 
   member_action :lesson_email do
     lesson = Lesson.find(params[:id])
-    render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.interested,
+    render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.confirmed,
       teachers: lesson.teacher.present? ? lesson.teacher.name : nil,
       title: lesson.name.present? ? lesson.name : "that is coming up", price: lesson.cost.present? ? lesson.cost : 0,
       reference: lesson.meetup_id.present? ? lesson.meetup_id : "Your Name" }
