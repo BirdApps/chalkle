@@ -23,6 +23,7 @@ class Teaching
   def check_valid_input(params)
     @title = params[:title]
     @lesson_type = params[:lesson_type]
+    @bio = params[:bio]
     @do_during_class = params[:do_during_class]
     @learning_outcomes = params[:learning_outcomes]
     @duration = params[:duration]
@@ -35,8 +36,8 @@ class Teaching
 
   def submit(params)
     if check_valid_input(params)
-      @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, lesson_type: @lesson_type, duration: @duration.to_i*60, 
-        cost: price_calculation(@teacher_cost), teacher_cost: @teacher_cost, status: "Unreviewed")
+      @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, lesson_type: @lesson_type, teacher_bio: @bio, do_during_class: @do_during_class, 
+        duration: @duration.to_i*60, cost: price_calculation(@teacher_cost), teacher_cost: @teacher_cost, status: "Unreviewed")
       @lesson.save
     else
       return false

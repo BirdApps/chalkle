@@ -48,6 +48,14 @@ ActiveAdmin.register Lesson  do
       row :category
       row :lesson_type
       row :teacher
+      if lesson.status != "Published"
+        row :teacher_bio do
+          simple_format lesson.teacher_bio
+        end
+        row :do_during_class do
+          simple_format lesson.do_during_class
+        end
+      end
       row :teacher_gst_number do
         if lesson.teacher && lesson.teacher.gst?
           lesson.teacher.gst
@@ -163,13 +171,19 @@ ActiveAdmin.register Lesson  do
       f.input :category
       f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
       f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
+      if lesson.status != "Published"
+        f.input :teacher_bio
+        f.input :do_during_class, :label => "What we will do during this class"
+      end
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost
-      f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-      f.input :start_at
       f.input :duration
-      f.input :description
+      if lesson.status == "Published"
+        f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
+        f.input :start_at
+        f.input :description
+      end
       f.input :status, :as => :select, :collection => ["Published", "On-hold", "Unreviewed"]
     end
     f.actions
