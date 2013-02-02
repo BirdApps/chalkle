@@ -44,8 +44,9 @@ ActiveAdmin.register Lesson  do
 
   show title: :name do |lesson|
     attributes_table do
-     row :attendance
-     row :category
+      row :attendance
+      row :category
+      row :lesson_type
       row :teacher
       row :teacher_gst_number do
         if lesson.teacher && lesson.teacher.gst?
@@ -156,6 +157,7 @@ ActiveAdmin.register Lesson  do
     f.inputs :details do
       f.input :name
       f.input :category
+      f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
       f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
       f.input :cost
       f.input :teacher_cost
@@ -164,6 +166,7 @@ ActiveAdmin.register Lesson  do
       f.input :start_at
       f.input :duration
       f.input :description
+      f.input :status, :as => :select, :collection => ["Published", "On-hold", "Unreviewed"]
     end
     f.actions
   end
