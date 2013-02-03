@@ -23,8 +23,6 @@ class Teaching
     @groups = @chalkler.groups
   end
 
-
-
   def submit(params)
     if check_valid_input(params)
       @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, lesson_type: @lesson_type, teacher_bio: @bio, do_during_class: @do_during_class, 
