@@ -13,6 +13,18 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
       column do
 
+        panel "Classes for review" do
+            table_for Lesson.accessible_by(current_ability).visible.unpublished.order("updated_at asc") do 
+              column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
+              column("Teacher") {|lesson| link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher)) }
+              column("Type") {|lesson| lesson.lesson_type }
+              column("Category") {|lesson| lesson.category }
+              column("Last Update") {|lesson| lesson.updated_at }
+              column("Status") {|lesson| lesson.status }
+              column("Price") {|lesson| number_to_currency lesson.cost }
+            end
+        end
+
         panel "Upcoming classes" do
             table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do 
               column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
