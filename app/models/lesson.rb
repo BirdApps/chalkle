@@ -18,9 +18,9 @@ class Lesson < ActiveRecord::Base
   WEEK = 7
 
   #Lesson statuses
-  STATUS_1 = "Unreviewed" 
+  STATUS_3 = "Unreviewed" 
   STATUS_2 = "On-hold"
-  STATUS_3 = "Published"
+  STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3]
 
   validates_uniqueness_of :meetup_id, allow_nil: true
@@ -32,14 +32,14 @@ class Lesson < ActiveRecord::Base
   scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
   scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
   scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
-  scope :unpublished, where("(status = '" + STATUS_1 + "' ) OR (status = '" + STATUS_2 + "' )")
-  scope :published, where("status = '" + STATUS_3 + "'")
+  scope :unpublished, where("(status = '" + STATUS_3 + "' ) OR (status = '" + STATUS_2 + "' )")
+  scope :published, where("status = '" + STATUS_1 + "'")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
 
   def published?
-    status == STATUS_3
+    status == STATUS_1
   end
 
   def valid_statuses
