@@ -2,7 +2,7 @@ class Teaching
   include ActiveAttr::Model
 
   attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_type, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee, 
-  :availabilities, :prerequisites, :anything_else
+  :availabilities, :prerequisites, :additional_comments
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
@@ -35,6 +35,8 @@ class Teaching
     @max_attendee = params[:max_attendee]
     @min_attendee = params[:min_attendee]
     @availabilities = params[:availabilities]
+    @prerequisites = params[:prerequisites]
+    @additional_comments = params[:additional_comments]
     self.valid?
   end
 
@@ -42,7 +44,8 @@ class Teaching
     if check_valid_input(params)
       @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, lesson_type: @lesson_type, teacher_bio: @bio, do_during_class: @do_during_class, 
         learning_outcomes: @learning_outcomes, duration: @duration.to_i*60, cost: price_calculation(@teacher_cost), teacher_cost: @teacher_cost, 
-        max_attendee: @max_attendee.to_i, min_attendee: @min_attendee.to_i, availabilities: @availabilities, status: "Unreviewed")
+        max_attendee: @max_attendee.to_i, min_attendee: @min_attendee.to_i, availabilities: @availabilities, prerequisites: @prerequisites, 
+        additional_comments: @additional_comments, status: "Unreviewed")
       if @lesson.save
         @lesson.groups = @groups
       else

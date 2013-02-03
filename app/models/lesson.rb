@@ -26,7 +26,7 @@ class Lesson < ActiveRecord::Base
   scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
   scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
   scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
-  scope :unreviewed, where("status = 'Unreviewed' ")
+  scope :unpublished, where("(status = 'Unreviewed') OR (status = 'On-hold')")
 
   before_create :set_from_meetup_data
   before_create :set_metadata

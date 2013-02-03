@@ -4,7 +4,7 @@ describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
   let(:group) { FactoryGirl.create(:group) }
   let(:params) { { title: 'My new class', lesson_type: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
-  free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', suggested_dates: '' , anything_else: ''} }
+  free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', availabilities: '' , additional_comments: ''} }
 
   before do
     chalkler.groups << group
@@ -88,14 +88,15 @@ describe "Teachings" do
   describe "form submit" do
 
   	let(:params2) { { title: 'My new class', lesson_type: 'intro', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '60',
-    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' , anything_else: 'Nothing'} }
+    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' , 
+    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about'} }
 
   	it "create an unreviewed lesson with correct form" do
-  		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unreviewed, :count).by(1)
+  		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unpublished, :count).by(1)
   	end
 
   	it "do not create an unreviewed lesson with empty form" do
-  		expect { @chalkler_teaching.submit({}) }.not_to change(Lesson.unreviewed, :count)
+  		expect { @chalkler_teaching.submit({}) }.not_to change(Lesson.unpublished, :count)
   	end
 
   	it "create a lesson with the correct name" do
@@ -151,6 +152,14 @@ describe "Teachings" do
 
         it "has the correct availabilities" do
           @lesson.availabilities.should == params2[:availabilities]
+        end
+
+        it "has the correct prerequisite" do
+          @lesson.prerequisites.should == params2[:prerequisites]
+        end
+
+        it "has the correct anything else" do
+          @lesson.additional_comments.should == params2[:additional_comments]
         end
   	end
   end

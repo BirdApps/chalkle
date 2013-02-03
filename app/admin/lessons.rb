@@ -61,6 +61,14 @@ ActiveAdmin.register Lesson  do
         row :availabilities do
           simple_format lesson.availabilities
         end
+        row :prerequisites do
+          simple_format lesson.prerequisites
+        end
+        row :additional_comments do
+          simple_format lesson.additional_comments
+        end
+        row :created_at
+        row :updated_at 
       end
       row :teacher_gst_number do
         if lesson.teacher && lesson.teacher.gst?
@@ -186,6 +194,8 @@ ActiveAdmin.register Lesson  do
         f.input :max_attendee
         f.input :min_attendee
         f.input :availabilities
+        f.input :prerequisites
+        f.input :additional_comments
       end
       f.input :cost
       f.input :teacher_cost
@@ -193,7 +203,7 @@ ActiveAdmin.register Lesson  do
       f.input :duration
       if lesson.status == "Published"
         f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-        f.input :start_at
+        f.input :start_at, :as => :datepicker
         f.input :description
       end
       f.input :status, :as => :select, :collection => ["Published", "On-hold", "Unreviewed"]
