@@ -4,6 +4,15 @@ describe Chalkler do
 
   it { should have_many(:groups).through(:group_chalklers) }
 
+  describe '.email_frequency_select_options' do
+    it "provides an array of options that can be used in select dropdowns" do
+      stub_const("Chalkler::EMAIL_FREQUENCY_OPTIONS", %w(yes no))
+
+      required_array = [%w(Yes yes), %w(No no)]
+      Chalkler.email_frequency_select_options.should eq(required_array)
+    end
+  end
+
   describe "creation" do
     it "should have a valid factory" do
       FactoryGirl.build(:chalkler).should be_valid

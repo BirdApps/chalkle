@@ -1,9 +1,10 @@
 class Chalkler < ActiveRecord::Base
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me, :group_ids, :gst
+  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me, 
+    :group_ids, :gst, :provider, :uid, :email_frequency
 
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates :email, allow_blank: true, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
@@ -16,7 +17,16 @@ class Chalkler < ActiveRecord::Base
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
 
+  serialize :email_categories
+
+  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly never)
+
   before_create :set_from_meetup_data
+
+  #TODO: Move into a presenter class like Draper sometime
+  def self.email_frequency_select_options
+    EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
+  end
 
   def email_required?
     false

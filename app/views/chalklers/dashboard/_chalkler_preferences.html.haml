@@ -1,0 +1,10 @@
+= simple_form_for(@chalkler_email_preferences, url: chalklers_preferences_path, html: { method: :put, class: 'form-horizontal' }) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :email
+    = f.input :email_frequency, collection: Chalkler.email_frequency_select_options, include_blank: false
+    = f.input :email_categories, as: :check_boxes, collection: Category.select_options, include_blank: false
+
+  .form-actions
+    = f.button :submit, 'Save Email Preferences', class: 'btn-primary'

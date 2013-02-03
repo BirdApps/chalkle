@@ -1,7 +1,6 @@
 class Chalklers::DashboardController < Chalklers::BaseController
-  layout 'chalklers' 
-
   def index
+    @chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
   end
 
   def classes
