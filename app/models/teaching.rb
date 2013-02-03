@@ -23,12 +23,16 @@ class Teaching
     @groups = @chalkler.groups
   end
 
+  def lesson_args
+    { "name" => @title, "teacher_id" => @teacher_id, "lesson_type" => @lesson_type, "teacher_bio" => @bio, "do_during_class" => @do_during_class, 
+    "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60, "cost" => price_calculation(@teacher_cost), "teacher_cost" => @teacher_cost, 
+    "max_attendee" => @max_attendee.to_i, "min_attendee" => @min_attendee.to_i, "availabilities" => @availabilities, "prerequisites" => @prerequisites, 
+    "additional_comments" => @additional_comments, "status" => "Unreviewed"}
+  end
+
   def submit(params)
     if check_valid_input(params)
-      @lesson = Lesson.new(name: @title, teacher_id: @teacher_id, lesson_type: @lesson_type, teacher_bio: @bio, do_during_class: @do_during_class, 
-        learning_outcomes: @learning_outcomes, duration: @duration.to_i*60, cost: price_calculation(@teacher_cost), teacher_cost: @teacher_cost, 
-        max_attendee: @max_attendee.to_i, min_attendee: @min_attendee.to_i, availabilities: @availabilities, prerequisites: @prerequisites, 
-        additional_comments: @additional_comments, status: "Unreviewed")
+      @lesson = Lesson.new(lesson_args)
       if @lesson.save
         @lesson.groups = @groups
       else

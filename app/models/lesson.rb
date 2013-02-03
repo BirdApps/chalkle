@@ -130,7 +130,7 @@ class Lesson < ActiveRecord::Base
 
   def self.create_from_meetup_hash(result, group)
     l = Lesson.find_or_initialize_by_meetup_id result.id
-    l.status = "Published"
+    l.status = STATUS_1
     l.name = result.name
     l.meetup_id = result.id
     l.description = result.description
