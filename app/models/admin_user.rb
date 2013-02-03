@@ -26,5 +26,4 @@ class AdminUser < ActiveRecord::Base
       raise "Can't delete last admin user"
     end
   end
-
 end
