@@ -48,7 +48,7 @@ ActiveAdmin.register Lesson  do
       row :category
       row :lesson_type
       row :teacher
-      if lesson.status != "Published"
+      if !lesson.published?
         row :teacher_bio do
           simple_format lesson.teacher_bio
         end
@@ -94,7 +94,7 @@ ActiveAdmin.register Lesson  do
       row :min_attendee      
 
       #only view these for published classes
-      if lesson.status == "Published"
+      if lesson.published?
         if current_admin_user.role=="super"
           row :teacher_payment do
             number_to_currency lesson.teacher_payment
@@ -187,7 +187,7 @@ ActiveAdmin.register Lesson  do
       f.input :category
       f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
       f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
-      if lesson.status != "Published"
+      if !lesson.published?
         f.input :teacher_bio
         f.input :do_during_class, :label => "What we will do during this class"
         f.input :learning_outcomes, :label => "What we will learn from this class"
@@ -201,12 +201,12 @@ ActiveAdmin.register Lesson  do
       f.input :teacher_cost
       f.input :venue_cost
       f.input :duration
-      if lesson.status == "Published"
+      if lesson.published?
         f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
         f.input :start_at
         f.input :description
       end
-      f.input :status, :as => :select, :collection => ["Published", "On-hold", "Unreviewed"]
+      f.input :status, :as => :select, :collection =>  ["Published","On-hold","Unreviewed"]
     end
     f.actions
   end
