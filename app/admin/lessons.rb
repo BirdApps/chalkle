@@ -203,7 +203,7 @@ ActiveAdmin.register Lesson  do
       f.input :duration
       if lesson.status == "Published"
         f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-        f.input :start_at, :as => :datepicker
+        f.input :start_at
         f.input :description
       end
       f.input :status, :as => :select, :collection => ["Published", "On-hold", "Unreviewed"]
