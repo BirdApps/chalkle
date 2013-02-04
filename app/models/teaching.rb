@@ -1,7 +1,7 @@
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_type, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee, 
+  attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_type, :do_during_class, :learning_outcomes, :duration, :free_lesson, :donation, :teacher_cost, :max_attendee, :min_attendee, 
   :availabilities, :prerequisites, :additional_comments
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
@@ -10,6 +10,7 @@ class Teaching
   validates :learning_outcomes, :presence => { :message => "What we will learn from this class can not be blank"}
   validates :duration, :allow_blank => true, :numericality => { :only_integer => true, :message => "Only integer number of minutes are allowed"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "You can not be paid for a free class" }, :if => "self.free_lesson=='1'"
+  validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "You can not be paid by us if you choose to collect donations instead" }, :if => "self.donation=='1'"
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
   validates :max_attendee, :allow_blank => true, :numericality => {:greater_than => 0, :message => "Number of people must be greater than 0" }
   validates :max_attendee, :allow_blank => true, :numericality => {:only_integer => true, :message => "Only integer number of people are allowed" }
@@ -52,6 +53,7 @@ class Teaching
     @duration = params[:duration]
     @teacher_cost = params[:teacher_cost]
     @free_lesson = params[:free_lesson]
+    @donation = params[:donation]
     @max_attendee = params[:max_attendee]
     @min_attendee = params[:min_attendee]
     @availabilities = params[:availabilities]
@@ -65,6 +67,5 @@ class Teaching
   def price_calculation(teacher_cost)
     (teacher_cost.blank? ? 0: teacher_cost.to_d*1.20)
   end
-
 
 end

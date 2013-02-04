@@ -185,7 +185,7 @@ ActiveAdmin.register Lesson  do
     f.inputs :details do
       f.input :name
       f.input :category
-      f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+      f.input :lesson_type, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
       f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
       if !lesson.published?
         f.input :teacher_bio

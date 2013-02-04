@@ -74,6 +74,12 @@ describe "Teachings" do
   		@chalkler_teaching.check_valid_input(params).should be_false
   	end
 
+    it "returns false when teacher cost is nonzero and donation box is checked" do
+      params[:donation] = '1'
+      params[:teacher_cost] = '10'
+      @chalkler_teaching.check_valid_input(params).should be_false
+    end
+
     it "returns false when min number of attendee is not an integer" do
       params[:min_attendee] = '1.3'
       @chalkler_teaching.check_valid_input(params).should be_false
@@ -87,7 +93,7 @@ describe "Teachings" do
 
   describe "form submit" do
 
-  	let(:params2) { { title: 'My new class', lesson_type: 'intro', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '60',
+  	let(:params2) { { title: 'My new class', lesson_type: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '60',
     free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' , 
     prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about'} }
 

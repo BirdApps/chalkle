@@ -2,17 +2,18 @@
   = f.error_notification
 
   .form-inputs
-    %h3
+    %h4
       Class overview
-
+    %br
     = f.input :title, :label => "What is the title of your class?", :as => :text, :input_html => { :rows => 1, :class => "span12" }, :placeholder => "A sassy title will help to attract more chalklers"
-    = f.input :lesson_type, :label => "What type of class is it? ", :collection => [['Test Flight', 'test flight'], ['Introduction','intro'], ['Next Step','next step'], ['Tips and Tricks','tips & tricks'], ['Practice','practice'], ['Master Class','master class'], ['Zero to Hero','zero to hero']], :input_html => { :multiple => false } 
+    = f.input :lesson_type, :label => "What type of class is it? ", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false } 
     = f.input :bio, :label => "Why are you a great teacher for this class?", :as => :text, :placeholder => current_chalkler.bio.to_s, :input_html => { :rows => 3, :class => "span12" }
     = f.input :do_during_class, :label => "What will we do during the class?", :as => :text, :placeholder => "Speak as though you are describing it to your grandmother", :input_html => { :rows => 6, :class => "span12" }
     = f.input :learning_outcomes, :label => "What will we learn from this class?", :as => :text, :placeholder => "We will learn xxx", :input_html => { :rows => 3, :class => "span12" }
 
-    %h3
+    %h4
       Class Details
+    %br
     = f.input :availabilities, :label => "When are you available to teach this class?", :as => :text, :input_html => { :rows => 2, :class => "span12" }
     = f.input :prerequisites, :label => "What are equipments or resources you need for this class?", :placeholder => "These can be things that attendees need to bring or equipments chalkle will provide such as projectors", :as => :text, :input_html => { :rows => 2, :class => "span12" }
     = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in minutes", :wrapper => :append do
@@ -20,6 +21,7 @@
       = content_tag :span, "Minutes", :class => "add-on"
 
     = f.input :free_lesson, :label => false, :inline_label => "Check here if you want this class to be offered for free", as: :boolean
+    = f.input :donation, :label => false, :inline_label => "Check here if want to collect donations yourself instead of being paid through us", as: :boolean
 
     = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST)?", :wrapper => :prepend do
       = f.input_field :teacher_cost, :placeholder => "0.00"
@@ -33,8 +35,9 @@
       = f.input_field :min_attendee
       = content_tag :span, "People", :class => "add-on"
 
-    %h3
+    %h4
       Anything else?
+    %br
     = f.input :additional_comments, :label => "Is there anything else you would like to tell us about this class?", as: :text, :input_html => { :rows => 3, :class => "span12" }
 
   .form-actions
