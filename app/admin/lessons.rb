@@ -147,6 +147,10 @@ ActiveAdmin.register Lesson  do
     link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
   end
 
+  action_item(only: :show, if: proc{ can?(:meetup_template,resource) && lesson.visible && !lesson.published? }) do
+    link_to 'Meetup Template', meetup_template_admin_lesson_path(resource)
+  end
+
   member_action :hide do
     lesson = Lesson.find(params[:id])
     lesson.visible = false
@@ -180,6 +184,11 @@ ActiveAdmin.register Lesson  do
   member_action :payment_summary_email do
     lesson = Lesson.find(params[:id])
     render partial: "/admin/lessons/payment_summary_email", locals: { lesson: lesson }
+  end
+
+  member_action :meetup_template do
+    lesson = Lesson.find(params[:id])
+    render partial: "/admin/lessons/meetup_template", locals: { lesson: lesson }
   end
 
   form do |f|
