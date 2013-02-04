@@ -94,7 +94,7 @@ describe "Teachings" do
   describe "form submit" do
 
   	let(:params2) { { title: 'My new class', lesson_type: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '60',
-    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' , 
+    free_lesson: '0', donation: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' , 
     prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about'} }
 
   	it "create an unreviewed lesson with correct form" do
@@ -144,6 +144,10 @@ describe "Teachings" do
           @lesson.cost.should == 24
         end
 
+        it "has the correct donation setting" do
+          @lesson.donation.should be_false
+        end
+
   	    it "has the correct teacher cost" do
   	    	@lesson.teacher_cost.should == 20
   	    end
@@ -164,7 +168,7 @@ describe "Teachings" do
           @lesson.prerequisites.should == params2[:prerequisites]
         end
 
-        it "has the correct anything else" do
+        it "has the correct additional comments" do
           @lesson.additional_comments.should == params2[:additional_comments]
         end
   	end
