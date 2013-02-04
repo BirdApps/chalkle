@@ -1,6 +1,7 @@
 .navbar.navbar-inverse.navbar-fixed-top
   .navbar-inner
     .container
-      = link_to 'Chalkle', root_path, class: 'brand'
+      = link_to 'chalkle', root_path, class: 'brand'
+    -if chalkler_signed_in?
       = link_to 'Teach', '/chalklers/teachings/new'
-      = link_to 'Sign out', '/chalklers/sign_out', method: 'delete'
+      = link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
