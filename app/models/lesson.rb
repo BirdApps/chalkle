@@ -1,7 +1,7 @@
 class Lesson < ActiveRecord::Base
   attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, 
   :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities,
-  :prerequisites, :additional_comments
+  :prerequisites, :additional_comments, :donation
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
@@ -26,6 +26,8 @@ class Lesson < ActiveRecord::Base
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_numericality_of :teacher_payment, allow_nil: true
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
+  validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "Donation classes have no teacher cost" }, :if => "self.donation==true"
+  validates :cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "Donation classes have no price" }, :if => "self.donation==true"
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
