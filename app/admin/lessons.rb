@@ -81,6 +81,7 @@ ActiveAdmin.register Lesson  do
       row "Price" do
         number_to_currency lesson.cost
       end
+      row :donation
       row :teacher_cost do
         number_to_currency lesson.teacher_cost
       end
@@ -197,7 +198,8 @@ ActiveAdmin.register Lesson  do
         f.input :prerequisites
         f.input :additional_comments
       end
-      f.input :cost
+      f.input :donation
+      f.input :cost, :label => "Price"
       f.input :teacher_cost
       f.input :venue_cost
       f.input :duration

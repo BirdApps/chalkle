@@ -26,7 +26,7 @@ class Teaching
 
   def lesson_args
     { "name" => @title, "teacher_id" => @teacher_id, "lesson_type" => @lesson_type, "teacher_bio" => @bio, "do_during_class" => @do_during_class, 
-    "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60, "cost" => price_calculation(@teacher_cost), "teacher_cost" => @teacher_cost, 
+    "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60, "cost" => price_calculation(@teacher_cost), "donation" => @donation, "teacher_cost" => @teacher_cost, 
     "max_attendee" => @max_attendee.to_i, "min_attendee" => @min_attendee.to_i, "availabilities" => @availabilities, "prerequisites" => @prerequisites, 
     "additional_comments" => @additional_comments, "status" => "Unreviewed"}
   end
