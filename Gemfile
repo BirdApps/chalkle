@@ -68,8 +68,8 @@ group :development, :test do
   gem 'guard-rspec',       '~> 2.3.3'
   gem 'guard-sass',        '~> 1.0.1', :require => false
   gem 'guard-livereload',  '~> 1.1.3'
-  gem 'rb-inotify',        '~> 0.9.0' if RUBY_PLATFORM.downcase.include?('linux')
-  gem 'rb-fsevent',        '~> 0.9.3' if RUBY_PLATFORM.downcase.include?('darwin')
+#  gem 'rb-inotify',        '~> 0.9.0' if RUBY_PLATFORM.downcase.include?('linux')
+# gem 'rb-fsevent',        '~> 0.9.3' if RUBY_PLATFORM.downcase.include?('darwin')
 
   # Placed here so generators work
   gem 'rspec-rails',  '~> 2.12.2'
