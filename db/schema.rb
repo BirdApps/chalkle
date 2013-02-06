@@ -93,9 +93,9 @@ ActiveRecord::Schema.define(:version => 20130131232334) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "gst"
-    t.string   "email_frequency"
     t.string   "provider"
     t.string   "uid"
+    t.string   "email_frequency"
     t.text     "email_categories"
   end
 
@@ -145,10 +145,11 @@ ActiveRecord::Schema.define(:version => 20130131232334) do
     t.datetime "start_at"
     t.integer  "duration"
     t.text     "meetup_data"
-    t.datetime "created_at",                                    :null => false
-    t.datetime "updated_at",                                    :null => false
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
     t.decimal  "teacher_cost",    :precision => 8, :scale => 2
     t.decimal  "venue_cost",      :precision => 8, :scale => 2
+    t.boolean  "teacher_paid",                                  :default => false
     t.boolean  "visible"
     t.decimal  "teacher_payment", :precision => 8, :scale => 2
   end

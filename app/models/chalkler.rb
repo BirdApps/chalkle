@@ -55,7 +55,6 @@ class Chalkler < ActiveRecord::Base
     c = Chalkler.find_or_initialize_by_meetup_id(result.id)
     c.name = result.name
     c.meetup_id = result.id
-    c.email = result.email
     c.bio = result.bio
     c.meetup_data = result.to_json
     c.save
