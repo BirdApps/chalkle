@@ -129,9 +129,10 @@ ActiveRecord::Schema.define(:version => 20130204010046) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.string   "url_name"
+    t.string   "bank_account_id"
   end
 
   create_table "lessons", :force => true do |t|

@@ -53,7 +53,7 @@ group :development do
 
   # Helpful Rails Generators
   gem 'nifty-generators',  '~> 0.4.6',  :require => false
-  
+
   # Better error reports and logs
   gem 'meta_request',       '~> 0.2.1'
   gem 'quiet_assets',       '~> 1.0.1'
@@ -88,6 +88,7 @@ end
 
 group :test do
   # Core Testing
+  gem 'cucumber-rails', :require => false
   gem 'capybara',         '~> 2.0.2'
   gem 'capybara-webkit',  '~> 0.14.0'
 
