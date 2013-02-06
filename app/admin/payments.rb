@@ -56,7 +56,7 @@ ActiveAdmin.register Payment do
     link_to 'Download from Xero', download_from_xero_admin_payment_path(params[:id])
   end
 
-  action_item(only: :show, if: proc { can?(:hide, resource) && payment.visible }) do
+  action_item(only: :show, if: proc { can?(:hide, resource) && payment.visible && !payment.reconciled }) do
     link_to 'Delete Payment',
       hide_admin_payment_path(resource),
       :data => { :confirm => "Are you sure you wish to delete this Payment?" }
@@ -71,7 +71,7 @@ ActiveAdmin.register Payment do
   end
 
   collection_action :reconcile do
-    @payments = Payment.unreconciled.limit(20)
+    @payments = Payment.visible.unreconciled.limit(20)
   end
 
 

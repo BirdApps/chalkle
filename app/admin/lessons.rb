@@ -24,6 +24,7 @@ ActiveAdmin.register Lesson  do
   index do
     column :id
     column :name
+    column :attendance
     column :groups do |lesson|
       lesson.groups.collect{|g| g.name}.join(", ")
     end
@@ -32,15 +33,19 @@ ActiveAdmin.register Lesson  do
     column :cost do |lesson|
       number_to_currency lesson.cost
     end
-    column "Unpaid", :unpaid_count, sortable: false
+    if current_admin_user.role=="super"
+      column "Unpaid Amount" do |lesson|
+        number_to_currency lesson.uncollected_revenue, sortable: false
+     end
+    end
     column :start_at
-    column :created_at
     default_actions
   end
 
   show title: :name do |lesson|
     attributes_table do
-      row :category
+     row :attendance
+     row :category
       row :teacher
       row :teacher_gst_number do
         if lesson.teacher && lesson.teacher.gst?
@@ -61,20 +66,35 @@ ActiveAdmin.register Lesson  do
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
+      if current_admin_user.role=="super"
+        row :teacher_payment do
+          number_to_currency lesson.teacher_payment
+        end
+        row :income do
+          number_to_currency lesson.income
+        end
+        row :uncollected_revenue do
+          number_to_currency lesson.uncollected_revenue
+        end
+      end
       row :start_at
       row :duration do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
-      row :bookings do
-        "There are #{lesson.bookings.confirmed.visible.count} confirmed bookings, #{lesson.bookings.paid.visible.count} bookings have paid"
+      if current_admin_user.role=="super"
+        row :bookings_to_collect do
+          "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
+        end
       end
       row :rsvp_list do
-        render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested }
+        render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
       end
       row :description do
         simple_format lesson.description
       end
-      row :meetup_data
+      if current_admin_user.role=="super"
+        row :meetup_data
+      end
     end
     active_admin_comments
   end
@@ -89,8 +109,12 @@ ActiveAdmin.register Lesson  do
     link_to 'Restore record', unhide_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible && lesson.bookings.visible.interested.count > 0}) do
-    link_to 'Show emails', lesson_email_admin_lesson_path(resource)
+  action_item(only: :show, if: proc{ can?(:lesson_email, resource) && lesson.visible && (lesson.bookings.visible.confirmed.count > 0)}) do
+    link_to 'Preclass emails', lesson_email_admin_lesson_path(resource)
+  end
+
+  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.confirmed.count > 0) && !lesson.class_not_done}) do
+    link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
   end
 
   member_action :hide do
@@ -117,10 +141,15 @@ ActiveAdmin.register Lesson  do
 
   member_action :lesson_email do
     lesson = Lesson.find(params[:id])
-    render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.interested,
+    render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.confirmed,
       teachers: lesson.teacher.present? ? lesson.teacher.name : nil,
       title: lesson.name.present? ? lesson.name : "that is coming up", price: lesson.cost.present? ? lesson.cost : 0,
       reference: lesson.meetup_id.present? ? lesson.meetup_id : "Your Name" }
+  end
+
+  member_action :payment_summary_email do
+    lesson = Lesson.find(params[:id])
+    render partial: "/admin/lessons/payment_summary_email", locals: { lesson: lesson }
   end
 
   form do |f|
@@ -131,6 +160,7 @@ ActiveAdmin.register Lesson  do
       f.input :cost
       f.input :teacher_cost
       f.input :venue_cost
+      f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
       f.input :start_at
       f.input :duration
       f.input :description

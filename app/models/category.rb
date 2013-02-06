@@ -4,4 +4,10 @@ class Category < ActiveRecord::Base
   has_many :group_categories
   has_many :groups, :through => :group_categories
   has_many :lessons
+
+  #TODO: Move into a presenter class like Draper sometime
+  #FIXME: Data should be inforced in some convention so lowercase conversion is not required here (probably all lowercase)
+  def self.select_options
+    all(order: "LOWER(name)").map { |c| [c.name.titleize, c.id] }
+  end
 end

@@ -3,14 +3,17 @@ class Payment < ActiveRecord::Base
 
   belongs_to :booking
   has_one :chalkler, through: :booking
+  has_one :lesson, through: :booking
 
   serialize :xero_data
 
   validates_uniqueness_of :xero_id
+  validates_numericality_of :total, allow_nil: false
 
   scope :unreconciled, where("reconciled IS NOT true")
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
+  scope :cash, where(cash_payment: true)
 
   before_create :set_metadata
 
