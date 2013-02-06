@@ -14,6 +14,7 @@ task :staging do
   set :branch,    "staging"
   set :rails_env, "staging"
   set :deploy_to, "/home/#{user}/staging"
+  set :bundle_without, [:development, :test]
 
   role :web, domain
   role :app, domain
