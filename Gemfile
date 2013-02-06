@@ -88,6 +88,7 @@ end
 
 group :test do
   # Core Testing
+  gem 'cucumber-rails', :require => false
   gem 'capybara',         '~> 2.0.2'
   gem 'capybara-webkit',  '~> 0.14.0'
 
