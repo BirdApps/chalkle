@@ -44,9 +44,32 @@ ActiveAdmin.register Lesson  do
 
   show title: :name do |lesson|
     attributes_table do
-     row :attendance
-     row :category
+      row :status
+      row :category
+      row :lesson_type
       row :teacher
+      if !lesson.published?
+        row :teacher_bio do
+          simple_format lesson.teacher_bio
+        end
+        row :do_during_class do
+          simple_format lesson.do_during_class
+        end
+        row :learning_outcomes do
+          simple_format lesson.learning_outcomes
+        end
+        row :availabilities do
+          simple_format lesson.availabilities
+        end
+        row :prerequisites do
+          simple_format lesson.prerequisites
+        end
+        row :additional_comments do
+          simple_format lesson.additional_comments
+        end
+        row :created_at
+        row :updated_at 
+      end
       row :teacher_gst_number do
         if lesson.teacher && lesson.teacher.gst?
           lesson.teacher.gst
@@ -54,46 +77,53 @@ ActiveAdmin.register Lesson  do
           "Not GST registered"
         end
       end
-      row :meetup_id do
-        link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
-      end
-      row :cost do
+
+      row "Price" do
         number_to_currency lesson.cost
       end
+      row :donation
       row :teacher_cost do
         number_to_currency lesson.teacher_cost
       end
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
-      if current_admin_user.role=="super"
-        row :teacher_payment do
-          number_to_currency lesson.teacher_payment
-        end
-        row :income do
-          number_to_currency lesson.income
-        end
-        row :uncollected_revenue do
-          number_to_currency lesson.uncollected_revenue
-        end
-      end
-      row :start_at
       row :duration do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
-      if current_admin_user.role=="super"
-        row :bookings_to_collect do
+      row :max_attendee
+      row :min_attendee      
+
+      #only view these for published classes
+      if lesson.published?
+        if current_admin_user.role=="super"
+          row :teacher_payment do
+            number_to_currency lesson.teacher_payment
+          end
+          row :income do
+            number_to_currency lesson.income
+          end
+          row :uncollected_revenue do
+            number_to_currency lesson.uncollected_revenue
+          end
+          row :attendance
+          row :bookings_to_collect do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
+          end
+          row :rsvp_list do
+            render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+          end
         end
-      end
-      row :rsvp_list do
-        render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
-      end
-      row :description do
-        simple_format lesson.description
-      end
-      if current_admin_user.role=="super"
-        row :meetup_data
+        row :start_at
+        row :meetup_id do
+          link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
+        end
+        row :description do
+          simple_format lesson.description
+        end
+        if current_admin_user.role=="super"
+          row :meetup_data
+        end
       end
     end
     active_admin_comments
@@ -115,6 +145,10 @@ ActiveAdmin.register Lesson  do
 
   action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.confirmed.count > 0) && !lesson.class_not_done}) do
     link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
+  end
+
+  action_item(only: :show, if: proc{ can?(:meetup_template,resource) && lesson.visible && !lesson.published? }) do
+    link_to 'Meetup Template', meetup_template_admin_lesson_path(resource)
   end
 
   member_action :hide do
@@ -152,18 +186,38 @@ ActiveAdmin.register Lesson  do
     render partial: "/admin/lessons/payment_summary_email", locals: { lesson: lesson }
   end
 
+  member_action :meetup_template do
+    lesson = Lesson.find(params[:id])
+    render partial: "/admin/lessons/meetup_template", locals: { lesson: lesson }
+  end
+
   form do |f|
     f.inputs :details do
       f.input :name
       f.input :category
+      f.input :lesson_type, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
       f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
-      f.input :cost
+      if !lesson.published?
+        f.input :teacher_bio
+        f.input :do_during_class, :label => "What we will do during this class"
+        f.input :learning_outcomes, :label => "What we will learn from this class"
+        f.input :max_attendee
+        f.input :min_attendee
+        f.input :availabilities
+        f.input :prerequisites
+        f.input :additional_comments
+      end
+      f.input :donation
+      f.input :cost, :label => "Price"
       f.input :teacher_cost
       f.input :venue_cost
-      f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-      f.input :start_at
       f.input :duration
-      f.input :description
+      if lesson.published?
+        f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
+        f.input :start_at
+        f.input :description
+      end
+      f.input :status, :as => :select, :collection =>  ["Published","On-hold","Unreviewed"]
     end
     f.actions
   end
