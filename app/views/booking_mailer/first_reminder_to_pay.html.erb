@@ -1,0 +1,11 @@
+Hello <%= @chalkler.name %>
+
+Thank you for signing up to the upcoming chalkle class, <%= @lesson.name %>. This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details: 
+
+Account number: 38-9012-0815531-00 
+Name: Chalkle Limited
+Reference number: <%= @lesson.meetup_id %> - Your name
+Payment Amount: $<%= (@lesson.cost.present? ? @lesson.cost : 0) *1.15 %> per person incl. GST 
+
+Thank you for supporting Chalkle and we look forward to seeing you soon! 
+Chalkle 
