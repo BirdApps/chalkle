@@ -11,6 +11,19 @@ ActiveAdmin.register_page "Dashboard" do
   content :title => proc{ I18n.t("active_admin.dashboard") } do
     columns do
       column do
+
+        panel "Classes for review" do
+          table_for Lesson.accessible_by(current_ability).visible.unpublished.order("updated_at asc") do 
+            column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
+            column("Teacher") {|lesson| link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher)) }
+            column("Type") {|lesson| lesson.lesson_type }
+            column("Category") {|lesson| lesson.category }
+            column("Last Update") {|lesson| lesson.updated_at }
+            column("Status") {|lesson| lesson.status }
+            column("Price") {|lesson| number_to_currency lesson.cost }
+          end
+        end
+
         panel "Upcoming classes" do
           table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
             column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
@@ -22,6 +35,7 @@ ActiveAdmin.register_page "Dashboard" do
         end
 
         if current_admin_user.role=="super"
+
           panel "Class email task list" do
             table_for Lesson.accessible_by(current_ability).visible.recent.order("start_at asc") do
               column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }

@@ -1,0 +1,63 @@
+#{lesson.category.present? ? lesson.category : nil} : #{lesson.name}
+
+%p
+#{lesson.start_at.present? ? lesson.start_at : nil}
+
+%p
+%b what we are doing:
+%br
+#{simple_format lesson.do_during_class}
+
+%p
+%b what you will learn:
+%br
+#{simple_format lesson.learning_outcomes}
+
+%p
+%b type of class: 
+
+%p
+%b skill required: 
+#{lesson.lesson_type}
+
+%p
+%b your chalkler will be:
+%br
+#{simple_format lesson.teacher_bio}
+
+%p
+%b what people need to bring:
+%br
+#{lesson.prerequisites.blank? ? "None" : (simple_format lesson.prerequisites)}
+
+%p
+%b cost: 
+-if lesson.donation
+  donation / koha
+-else
+  #{lesson.cost ? lesson.cost : "free"}
+(+ GST)
+
+-if lesson.cost
+  %p
+  %b how to book and pay:
+  %br
+  RSVP and pay using this paypal link or 
+  %br
+  deposit #{lesson.cost*1.15} by bank transfer or at any Kiwibank branch into this account
+  %br
+  \#38-9012-0815531-00
+  %br
+  Reference: #{lesson.meetup_id.present? ? lesson.meetup_id : "Event Meetup ID"} - Your name
+
+%p
+%p
+
+%b about chalkle:
+%br
+Chalkle connects people interested in teaching and learning from each other face-to-face -- in a fun, social environment!
+%br
+Choose from many affordable lessons up for grabs (from intros to master classes) in agriculture, art and craft, business, construction, digital media, food, languages, music and performance, science, technology and zombie survival... and around half the lessons are free!
+
+
+

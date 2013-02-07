@@ -1,5 +1,7 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :title, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, :description, :visible, :teacher_payment
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, 
+  :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities,
+  :prerequisites, :additional_comments, :donation
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
@@ -10,22 +12,41 @@ class Lesson < ActiveRecord::Base
   has_many :chalklers, :through => :bookings
   has_many :payments, :through => :bookings
 
-  validates_uniqueness_of :meetup_id, allow_nil: true
-  validates_numericality_of :teacher_payment, allow_nil: true
-
   #Time span for classes requiring attention
   PAST = 3
   IMMEDIATE_FUTURE= 5
   WEEK = 7
+
+  #Lesson statuses
+  STATUS_3 = "Unreviewed" 
+  STATUS_2 = "On-hold"
+  STATUS_1 = "Published"
+  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3]
+
+  validates_uniqueness_of :meetup_id, allow_nil: true
+  validates_numericality_of :teacher_payment, allow_nil: true
+  validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
+  validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "Donation classes have no teacher cost" }, :if => "self.donation==true"
+  validates :cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "Donation classes have no price" }, :if => "self.donation==true"
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
   scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
   scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
+  scope :unpublished, where("(status = '" + STATUS_3 + "' ) OR (status = '" + STATUS_2 + "' )")
+  scope :published, where("status = '" + STATUS_1 + "'")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
+
+  def published?
+    status == STATUS_1
+  end
+
+  def valid_statuses
+    VALID_STATUSES
+  end
 
   def unpaid_count
     bookings.confirmed.visible.count - bookings.confirmed.visible.paid.count
@@ -111,6 +132,7 @@ class Lesson < ActiveRecord::Base
 
   def self.create_from_meetup_hash(result, group)
     l = Lesson.find_or_initialize_by_meetup_id result.id
+    l.status = STATUS_1
     l.name = result.name
     l.meetup_id = result.id
     l.description = result.description
