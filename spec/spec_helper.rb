@@ -1,7 +1,14 @@
 require 'rubygems'
 require 'spork'
+require 'email_spec'
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
+
+#allowing all examples to access email_spec
+RSpec.configure do |config|
+  config.include(EmailSpec::Helpers)
+  config.include(EmailSpec::Matchers)
+end
 
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
