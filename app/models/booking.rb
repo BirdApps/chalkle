@@ -72,5 +72,8 @@ class Booking < ActiveRecord::Base
     end
     b.meetup_data = result.to_json
     b.save
+    if b.status == 'yes' && b.cost > 0
+      BookingMailer.first_reminder_to_pay(b.chalkler, b.lesson).deliver
+    end
   end
 end
