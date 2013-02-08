@@ -208,11 +208,51 @@ describe Booking do
     it {Booking.hidden.should_not include(booking)}
   end
 
-  describe "emails" do
+  describe "reminder to pay emails" do
     it "never email teachers" do
       booking.chalkler_id = booking.lesson.teacher_id
       booking.save
       booking.emailable.should be_false
+    end
+
+    it "never email free classes" do
+      lesson = FactoryGirl.create(:lesson, cost: 0)
+      booking =  FactoryGirl.create(:booking, lesson: lesson)
+      booking.emailable.should be_false
+    end
+
+    it "never email free bookings" do
+      booking.cost_override = 0
+      booking.save
+      booking.emailable.should be_false
+    end
+
+    it "never email booking status of no" do
+      booking.status = 'no'
+      booking.save
+      booking.emailable.should be_false
+    end
+
+    it "never email booking status of waitlist" do
+      booking.status = 'waitlist'
+      booking.save
+      booking.emailable.should be_false
+    end
+
+    it "never email paid bookings" do
+      booking.paid = true
+      booking.save
+      booking.emailable.should be_false
+    end
+  end
+
+  describe "first reminder to pay email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler_id: 456, paid: false, status: 'yes') }
+
+    it "send to new bookings" do
+      booking.created_at = Date.today
+      booking.first_email_condition.should be_true
     end
   end
 
