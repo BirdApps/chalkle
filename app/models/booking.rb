@@ -103,41 +103,39 @@ class Booking < ActiveRecord::Base
     URI.escape(self.chalkler.name) + " - " + URI.escape(self.lesson.name.gsub(/&/,"and"))
   end
 
+  def email_preamble
+    URI.escape("
+Thank you for signing up to the upcoming chalkle class, ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(". This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details:
+") + self.lesson.payment_detail_bank
+  end
+
+  def email_ending
+    URI.escape("
+      
+Thank you for supporting chalkle and we look forward to seeing you soon!
+chalkle")
+  end
+
   def send_first_email
     # if first_email_condition
     #   BookingMailer.first_reminder_to_pay(self.chalkler, self.lesson).deliver
     # end
-    URI.escape("
-Thank you for signing up to the upcoming Chalkle class, ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(". This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details:
-") + self.lesson.payment_detail_bank + URI.escape("
-
-Thank you for supporting Chalkle and we look forward to seeing you soon!
-Chalkle")
+    self.email_preamble + self.email_ending
   end
 
   def send_second_email
     # if second_email_condition
     #   BookingMailer.second_reminder_to_pay(self.chalkler, self.lesson).deliver
     # end
-  URI.escape("
-Thank you for signing up to the upcoming Chalkle class, ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(". This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details:
-") + self.lesson.payment_detail_bank + URI.escape("
+  self.email_preamble + URI.escape("
 
-If we do not receive your payment within the next 24 hours, your RSVP status will be moved to waitlist to allow other Chalklers to attend this class.
-
-Thank you for supporting Chalkle and we look forward to seeing you soon!
-Chalkle")
+If we do not receive your payment within the next 24 hours, your RSVP status will be moved to waitlist to allow other chalklers to attend this class.") + self.email_ending
   end
 
   def send_third_email
-  URI.escape("
-Thank you for signing up to the upcoming Chalkle class, ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(". This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details:
-") + self.lesson.payment_detail_bank + URI.escape("
+  self.email_preamble + URI.escape("
 
-Your RSVP status will be moved to yes when we have received your payment.
-
-Thank you for supporting Chalkle and we look forward to seeing you soon!
-Chalkle")
+Your RSVP status will be moved to yes when we have received your payment.") + self.email_ending
   end
 
   def send_reminder_after_class
@@ -153,10 +151,7 @@ We have been reconciling our payments and have not found your payment for this c
 If you have not made a payment for this class, you can do so by bank transfer or cash deposit at any Kiwibank branch using the following details:
   ") + self.lesson.payment_detail_bank + URI.escape("
 
-Please note, in accordance with chalkle policy payment is required for all who RSVP'd yes on the day of the class even if you choose to not show up. 
-
-Thank you for supporting Chalkle and we look forward to seeing you soon! 
-Chalkle")
+Please note, in accordance with chalkle policy payment is required for all who RSVP'd yes on the day of the class even if you choose to not show up.") + self.email_ending 
   end
 
   def reminder_email
