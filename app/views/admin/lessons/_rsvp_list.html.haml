@@ -7,9 +7,11 @@
       %th Status
       %th Cost
       %th Paid
-      %th Answers
+      -if role!="super"
+        %th Answers
       -if role=="super"
         %th Booking
+        %th Reminder
       %th Cash
   %tbody
     -bookings.each do |b|
@@ -25,9 +27,14 @@
         %td= b.status
         %td= number_to_currency b.cost
         %td= b.paid
-        %td
-          =render "/admin/bookings/answers", :answers => b.answers if b.answers
+        -if role!="super"
+          %td
+            =render "/admin/bookings/answers", :answers => b.answers if b.answers
         -if role=="super"
           %td= link_to 'View', admin_booking_path(b) if can? :read, b
+          -if b.reminder_email
+            %td= link_to 'Reminder', "http://www.meetup.com/sixdegrees/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{b.email_subject}&body=Hi+#{b.chalkler.name.split[0]},#{b.reminder_email}"
+          -else
+            %td= ""
         -if (b.cost.present? ? b.cost : 0) > 0 && b.paid != true
           %td= link_to "Pay #{number_to_currency b.cost*1.15}", record_cash_payment_admin_booking_path(b)
