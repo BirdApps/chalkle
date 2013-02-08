@@ -75,18 +75,24 @@ class Booking < ActiveRecord::Base
     b.save
   end
 
+  def is_teacher
+    self.lesson.teacher_id.present? ? (self.chalkler_id == self.lesson.teacher_id) : true
+  end
 
+  def emailable
+    self.status=='yes' && self.cost > 0 && !self.is_teacher && !self.paid
+  end
 
   def first_email_condition
-    self.status == 'yes' && self.cost > 0 && self.lesson.class_not_done
+    self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up 
   end
 
   def second_email_condition
-    self.status == 'yes' && self.cost > 0 && self.lesson.class_coming_up
+    self.emailable && self.lesson.class_coming_up
   end
 
   def reminder_after_class_condition
-    self.status == 'yes' && self.cost > 0 && !self.lesson.class_not_done
+    self.emailable && !self.lesson.class_not_done
   end
 
   def send_first_email
