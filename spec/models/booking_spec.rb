@@ -293,12 +293,40 @@ describe Booking do
   end
 
   describe "reminder to pay after class email" do
-    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today - 10) }
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today - 3) }
     let(:chalkler) { FactoryGirl.create(:chalkler) }
     let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: nil, status: 'yes') }
 
     it "send to booking still unpaid" do
       booking.reminder_after_class_condition.should be_true
+    end
+  end
+
+  describe "no show email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today - 3) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: nil, status: 'no-show') }
+
+    it "send to bookings marked as no-show" do
+      booking.no_show_email_condition.should be_true
+    end
+
+    it "do not send to booking not marked as no-show" do
+      booking.status = 'yes'
+      booking.save
+      booking.no_show_email_condition.should be_false
+    end
+
+    it "do not send to paid booking" do
+      booking.paid = true
+      booking.save
+      booking.no_show_email_condition.should be_false
+    end
+
+    it "do not send to future classes" do
+      lesson.start_at = Date.today + 3
+      lesson.save
+      booking.no_show_email_condition.should be_false
     end
   end
 
