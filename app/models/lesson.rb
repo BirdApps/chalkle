@@ -100,7 +100,7 @@ class Lesson < ActiveRecord::Base
     return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
   end
 
-  def payment_detail
+  def payment_detail_bank
     price = (cost.present? ? cost : 0)*1.15
     reference = meetup_id.present? ? meetup_id : ""
     URI.escape("
