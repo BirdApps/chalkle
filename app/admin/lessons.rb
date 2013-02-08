@@ -70,13 +70,13 @@ ActiveAdmin.register Lesson  do
         row :created_at
         row :updated_at 
       end
-      row :teacher_gst_number do
-        if lesson.teacher && lesson.teacher.gst?
-          lesson.teacher.gst
-        else
-          "Not GST registered"
-        end
-      end
+      # row :teacher_gst_number do
+      #   if lesson.teacher && lesson.teacher.gst?
+      #     lesson.teacher.gst
+      #   else
+      #     "Not GST registered"
+      #   end
+      # end
 
       row "Price" do
         number_to_currency lesson.cost
