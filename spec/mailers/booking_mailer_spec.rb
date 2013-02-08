@@ -9,7 +9,7 @@ describe BookingMailer do
     describe "made on meetup" do
       let(:booking_mailer) { BookingMailer }
 
-      it "should send a reminder to pay email when a new booking is made on meetup" do
+      pending "should send a reminder to pay email when a new booking is made on meetup" do
         result = MeetupApiStub::rsvp_response
         lesson = Lesson.create(name: "ABC", meetup_id: 12345678, cost: 10, start_at: Date.tomorrow)
         chalkler = FactoryGirl.create(:chalkler, meetup_id: 12345678) 
