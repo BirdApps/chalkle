@@ -21,6 +21,7 @@ class Booking < ActiveRecord::Base
 
   before_create :set_from_meetup_data
   before_create :set_metadata
+  after_create :send_first_email
 
   def name
     if lesson.present? && chalkler.present?
@@ -72,8 +73,38 @@ class Booking < ActiveRecord::Base
     end
     b.meetup_data = result.to_json
     b.save
-    if b.status == 'yes' && b.cost > 0
-      BookingMailer.first_reminder_to_pay(b.chalkler, b.lesson).deliver
+  end
+
+
+
+  def first_email_condition
+    self.status == 'yes' && self.cost > 0 && self.lesson.class_not_done
+  end
+
+  def second_email_condition
+    self.status == 'yes' && self.cost > 0 && self.lesson.class_coming_up
+  end
+
+  def reminder_after_class_condition
+    self.status == 'yes' && self.cost > 0 && !self.lesson.class_not_done
+  end
+
+  def send_first_email
+    if first_reminder_condition
+      BookingMailer.first_reminder_to_pay(self.chalkler, self.lesson).deliver
     end
   end
+
+  def send_second_email
+    if second_reminder_condition
+      BookingMailer.second_reminder_to_pay(self.chalkler, self.lesson).deliver
+    end
+  end
+
+  def send_reminder_after_class
+    if reminder_after_class_condition
+      BookingMailer.reminder_after_class(self.chalkler, self.lesson).deliver
+    end
+  end
+
 end
