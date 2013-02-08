@@ -80,7 +80,7 @@ class Booking < ActiveRecord::Base
   end
 
   def emailable
-    self.status=='yes' && self.cost > 0 && !self.is_teacher && !self.paid
+    self.status=='yes' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && !self.paid
   end
 
   def first_email_condition
@@ -96,13 +96,13 @@ class Booking < ActiveRecord::Base
   end
 
   def send_first_email
-    if first_reminder_condition
+    if first_email_condition
       BookingMailer.first_reminder_to_pay(self.chalkler, self.lesson).deliver
     end
   end
 
   def send_second_email
-    if second_reminder_condition
+    if second_email_condition
       BookingMailer.second_reminder_to_pay(self.chalkler, self.lesson).deliver
     end
   end

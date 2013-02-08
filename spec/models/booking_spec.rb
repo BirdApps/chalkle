@@ -151,10 +151,10 @@ describe Booking do
       booking.meetup_data["member"]["member_id"].should == 12345678
     end
 
-    pending "won't update past classes" do
+    it "won't update past classes" do
       booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
-      booking.start_at = Chronic.parse("a year ago")
-      booking.save
+      lesson.start_at = Chronic.parse("a year ago")
+      lesson.save
       Booking.create_from_meetup_hash result
       booking.reload.guests.should == 20
     end
@@ -206,6 +206,14 @@ describe Booking do
     end
 
     it {Booking.hidden.should_not include(booking)}
+  end
+
+  describe "emails" do
+    it "never email teachers" do
+      booking.chalkler_id = booking.lesson.teacher_id
+      booking.save
+      booking.emailable.should be_false
+    end
   end
 
 end
