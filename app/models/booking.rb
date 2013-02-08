@@ -105,7 +105,7 @@ class Booking < ActiveRecord::Base
     # end
     URI.escape("
 Thank you for signing up to the upcoming Chalkle class, ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(". This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details:
-") + self.lesson.payment_detail + URI.escape("
+") + self.lesson.payment_detail_bank + URI.escape("
 
 Thank you for supporting Chalkle and we look forward to seeing you soon!
 Chalkle")
@@ -117,7 +117,7 @@ Chalkle")
     # end
   URI.escape("
 Thank you for signing up to the upcoming Chalkle class, ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(". This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details:
-") + self.lesson.payment_detail + URI.escape("
+") + self.lesson.payment_detail_bank + URI.escape("
 
 If we do not receive your payment within the next 24 hours, your RSVP status will be moved to waitlist to allow other Chalklers to attend this class.
 
@@ -136,7 +136,9 @@ We hope you have enjoyed your recent chalkle class, ") + URI.escape(self.lesson.
 We have been reconciling our payments and have not found your payment for this class in our records. It may be that your name did not match your payment, and in this case we are very sorry for the email, or that you paid cash on the day and your name was not recorded. If this is the case could you please let us know by replying to this email. 
 
 If you have not made a payment for this class, you can do so by bank transfer or cash deposit at any Kiwibank branch using the following details:
-  ") + self.lesson.payment_detail + URI.escape("
+  ") + self.lesson.payment_detail_bank + URI.escape("
+
+Please note, in accordance with chalkle policy payment is required for all who RSVP'd yes on the day of the class even if you choose to not show up. 
 
 Thank you for supporting Chalkle and we look forward to seeing you soon! 
 Chalkle")
