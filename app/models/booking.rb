@@ -159,8 +159,7 @@ Please note, in accordance with chalkle policy payment is required for all who R
 
   def send_no_show_email
     URI.escape("
-You have been given a no-show on your chalkle attendance record because you 
-did not show up for the class ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(", which you had RSVP'd for.
+You have been given a no-show on your chalkle attendance record because you did not show up for the class ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(", which you had RSVP'd for.
 
 Showing up to a class you have committed to is very important because: 
 
