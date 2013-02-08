@@ -91,6 +91,10 @@ class Booking < ActiveRecord::Base
     self.emailable && self.lesson.class_coming_up
   end
 
+  def third_email_condition
+    self.status=='waitlist' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true) && self.lesson.class_coming_up
+  end
+
   def reminder_after_class_condition
     self.emailable && !self.lesson.class_not_done
   end
@@ -125,6 +129,17 @@ Thank you for supporting Chalkle and we look forward to seeing you soon!
 Chalkle")
   end
 
+  def send_third_email
+  URI.escape("
+Thank you for signing up to the upcoming Chalkle class, ") + URI.escape(self.lesson.name.gsub(/&/,"and")) + URI.escape(". This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details:
+") + self.lesson.payment_detail_bank + URI.escape("
+
+Your RSVP status will be moved to yes when we have received your payment.
+
+Thank you for supporting Chalkle and we look forward to seeing you soon!
+Chalkle")
+  end
+
   def send_reminder_after_class
     # if reminder_after_class_condition
     #   BookingMailer.reminder_after_class(self.chalkler, self.lesson).deliver
@@ -149,6 +164,8 @@ Chalkle")
       return send_first_email
     elsif second_email_condition
       return send_second_email
+    elsif third_email_condition
+      return send_third_email
     elsif reminder_after_class_condition
       return send_reminder_after_class
     else

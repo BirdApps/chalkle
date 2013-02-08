@@ -276,6 +276,22 @@ describe Booking do
     end
   end
 
+  describe "third reminder to pay email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today + 3) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: nil, status: 'waitlist') }
+
+    it "send to those on waitlist" do
+      booking.third_email_condition.should be_true
+    end
+
+    it "do not send to yes" do
+      booking.status = 'yes'
+      booking.save
+      booking.third_email_condition.should be_false
+    end
+  end
+
   describe "reminder to pay after class email" do
     let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today - 10) }
     let(:chalkler) { FactoryGirl.create(:chalkler) }
