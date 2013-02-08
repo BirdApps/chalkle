@@ -247,12 +247,42 @@ describe Booking do
   end
 
   describe "first reminder to pay email" do
-    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123) }
-    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler_id: 456, paid: false, status: 'yes') }
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today + 10) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: false, status: 'yes') }
 
     it "send to new bookings" do
-      booking.created_at = Date.today
       booking.first_email_condition.should be_true
+    end
+
+    it "not send to new bookings with lessons in the next three days" do
+      lesson.start_at = Date.today + 1
+      booking.first_email_condition.should be_false
+    end
+  end
+
+  describe "second reminder to pay email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today + 10) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: false, status: 'yes') }
+
+    it "not send to new bookings with lessons more than three days away" do
+      booking.second_email_condition.should be_false
+    end
+
+    it "send to new bookings with lessons in the next three days" do
+      lesson.start_at = Date.today + 3
+      booking.second_email_condition.should be_true
+    end
+  end
+
+  describe "reminder to pay after class email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today - 10) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: false, status: 'yes') }
+
+    it "send to booking still unpaid" do
+      booking.reminder_after_class_condition.should be_true
     end
   end
 
