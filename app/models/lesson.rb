@@ -56,6 +56,10 @@ class Lesson < ActiveRecord::Base
     ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
   end
 
+  def class_coming_up
+    class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 3)
+  end
+
   def expected_revenue
     total = 0
     bookings.confirmed.visible.each do |b|
