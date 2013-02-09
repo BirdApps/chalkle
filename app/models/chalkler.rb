@@ -56,7 +56,6 @@ class Chalkler < ActiveRecord::Base
     c.name = result.name
     c.meetup_id = result.id
     c.provider = "meetup"
-    c.uid = c.meetup_id.to_s
     c.uid = result.id
     c.bio = result.bio
     c.meetup_data = result.to_json
