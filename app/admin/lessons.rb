@@ -111,7 +111,7 @@ ActiveAdmin.register Lesson  do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
           end
           row :rsvp_list do
-            render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+            render partial: "/admin/lessons/rsvp_list", locals: { group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
           end
         end
         row :start_at
