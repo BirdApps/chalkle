@@ -1,5 +1,5 @@
 class Chalklers::PreferencesController < Chalklers::BaseController
-  def save
+    def save
     @chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
 
     if @chalkler_email_preferences.update_attributes(params[:chalkler_preferences])
