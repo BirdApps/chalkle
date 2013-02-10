@@ -1,4 +1,8 @@
 class Chalklers::PreferencesController < Chalklers::BaseController
+  def new
+  	@chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
+  end
+
   def save
     @chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
 
@@ -6,7 +10,7 @@ class Chalklers::PreferencesController < Chalklers::BaseController
       redirect_to root_url, notice: 'Your preferences have been saved.'
     else
       flash[:error] = 'There was a problem saving your preferences.'
-      render controller: 'chalklers/dashboard', action: 'index'
+      redirect_to :back
     end
   end
 end

@@ -2,9 +2,10 @@
   .navbar-inner
     .container
       = link_to 'chalkle', root_path, class: 'brand'
-      .ul
+      .nav-collapse.collapse
+        .ul.nav
         -if chalkler_signed_in?
-          = link_to 'Learn', 'http://www.chalkle.com', class: 'nav'
-          = link_to 'Teach', '/chalklers/teachings/new', class: 'nav'
-          = link_to 'Settings', '/preferences', class: 'nav'
-          = link_to 'Sign out', destroy_chalkler_session_path, method: 'delete', class: 'nav'
+          = link_to 'Learn', 'http://www.chalkle.com'
+          = link_to 'Teach', '/chalklers/teachings/new'
+          = link_to 'Settings', '/preferences'
+          = link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
