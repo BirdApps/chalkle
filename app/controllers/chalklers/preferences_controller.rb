@@ -1,8 +1,4 @@
 class Chalklers::PreferencesController < Chalklers::BaseController
-  def new
-  	@chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
-  end
-
   def save
     @chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
 
