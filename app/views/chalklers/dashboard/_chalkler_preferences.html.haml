@@ -3,9 +3,6 @@
 
   %h2 Set your email preferences
   %br/
-  %h4
-    %b Note: even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account. 
-  %br/
   .form-inputs
     = f.input :email, :label => "What email do you want us to contact you at?"
     = f.input :email_frequency, :label => "How often do you want to hear from us?", :collection => Chalkler.email_frequency_select_options, include_blank: false 
@@ -17,6 +14,9 @@
     %h4
       Send me emails about classes run by the following organisations
     = f.input :email_channels, :label => false, as: :check_boxes, :collection => Channel.select_options, include_blank: false
+    %br/
+    %b Note: 
+    even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account. 
 
   .form-actions
     = f.button :submit, 'Save Email Preferences', class: 'btn-primary'
