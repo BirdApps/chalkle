@@ -70,6 +70,7 @@ class Chalkler < ActiveRecord::Base
     chalkler = Chalkler.create(name:auth.extra.raw_info.name,
                          provider:auth.provider,
                          uid:auth.uid.to_s,
+                         meetup_id: auth.uid,
                          email:auth.info.email,
                          password:Devise.friendly_token[0,20]
                          )
