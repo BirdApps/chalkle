@@ -1,7 +1,10 @@
-%h1== Welcome #{current_chalkler.name}!
+%h1== Welcome #{current_chalkler.name.split[0]}!
 
 %hr
 
-%h2 Your Email Preferences
+%p We have built this portal to help you manage all your chalkle activities. 
+
+%hr
+
 = render partial: 'chalkler_preferences'
 
