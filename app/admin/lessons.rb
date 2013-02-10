@@ -70,13 +70,13 @@ ActiveAdmin.register Lesson  do
         row :created_at
         row :updated_at 
       end
-      row :teacher_gst_number do
-        if lesson.teacher && lesson.teacher.gst?
-          lesson.teacher.gst
-        else
-          "Not GST registered"
-        end
-      end
+      # row :teacher_gst_number do
+      #   if lesson.teacher && lesson.teacher.gst?
+      #     lesson.teacher.gst
+      #   else
+      #     "Not GST registered"
+      #   end
+      # end
 
       row "Price" do
         number_to_currency lesson.cost
@@ -111,7 +111,7 @@ ActiveAdmin.register Lesson  do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
           end
           row :rsvp_list do
-            render partial: "/admin/lessons/rsvp_list", locals: { bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+            render partial: "/admin/lessons/rsvp_list", locals: { group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
           end
         end
         row :start_at

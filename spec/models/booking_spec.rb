@@ -151,10 +151,10 @@ describe Booking do
       booking.meetup_data["member"]["member_id"].should == 12345678
     end
 
-    pending "won't update past classes" do
+    it "won't update past classes" do
       booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
-      booking.start_at = Chronic.parse("a year ago")
-      booking.save
+      lesson.start_at = Chronic.parse("a year ago")
+      lesson.save
       Booking.create_from_meetup_hash result
       booking.reload.guests.should == 20
     end
@@ -206,6 +206,128 @@ describe Booking do
     end
 
     it {Booking.hidden.should_not include(booking)}
+  end
+
+  describe "reminder to pay emails" do
+    it "never email teachers" do
+      booking.chalkler_id = booking.lesson.teacher_id
+      booking.save
+      booking.emailable.should be_false
+    end
+
+    it "never email free classes" do
+      lesson = FactoryGirl.create(:lesson, cost: 0)
+      booking =  FactoryGirl.create(:booking, lesson: lesson)
+      booking.emailable.should be_false
+    end
+
+    it "never email free bookings" do
+      booking.cost_override = 0
+      booking.save
+      booking.emailable.should be_false
+    end
+
+    it "never email booking status of no" do
+      booking.status = 'no'
+      booking.save
+      booking.emailable.should be_false
+    end
+
+    it "never email booking status of waitlist" do
+      booking.status = 'waitlist'
+      booking.save
+      booking.emailable.should be_false
+    end
+
+    it "never email paid bookings" do
+      booking.paid = true
+      booking.save
+      booking.emailable.should be_false
+    end
+  end
+
+  describe "first reminder to pay email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today + 10) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: false, status: 'yes') }
+
+    it "send to new bookings" do
+      booking.first_email_condition.should be_true
+    end
+
+    it "not send to new bookings with lessons in the next three days" do
+      lesson.start_at = Date.today + 1
+      booking.first_email_condition.should be_false
+    end
+  end
+
+  describe "second reminder to pay email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today + 10) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: nil, status: 'yes') }
+
+    it "not send to new bookings with lessons more than three days away" do
+      booking.second_email_condition.should be_false
+    end
+
+    it "send to new bookings with lessons in the next three days" do
+      lesson.start_at = Date.today + 3
+      booking.second_email_condition.should be_true
+    end
+  end
+
+  describe "third reminder to pay email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today + 3) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: nil, status: 'waitlist') }
+
+    it "send to those on waitlist" do
+      booking.third_email_condition.should be_true
+    end
+
+    it "do not send to yes" do
+      booking.status = 'yes'
+      booking.save
+      booking.third_email_condition.should be_false
+    end
+  end
+
+  describe "reminder to pay after class email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today - 3) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: nil, status: 'yes') }
+
+    it "send to booking still unpaid" do
+      booking.reminder_after_class_condition.should be_true
+    end
+  end
+
+  describe "no show email" do
+    let(:lesson) { FactoryGirl.create(:lesson, cost: 10, teacher_id: 123, start_at: Date.today - 3) }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+    let(:booking) { FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, paid: nil, status: 'no-show') }
+
+    it "send to bookings marked as no-show" do
+      booking.no_show_email_condition.should be_true
+    end
+
+    it "do not send to booking not marked as no-show" do
+      booking.status = 'yes'
+      booking.save
+      booking.no_show_email_condition.should be_false
+    end
+
+    it "do not send to paid booking" do
+      booking.paid = true
+      booking.save
+      booking.no_show_email_condition.should be_false
+    end
+
+    it "do not send to future classes" do
+      lesson.start_at = Date.today + 3
+      lesson.save
+      booking.no_show_email_condition.should be_false
+    end
   end
 
 end

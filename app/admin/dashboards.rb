@@ -15,7 +15,7 @@ ActiveAdmin.register_page "Dashboard" do
         panel "Classes for review" do
           table_for Lesson.accessible_by(current_ability).visible.unpublished.order("updated_at asc") do 
             column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-            column("Teacher") {|lesson| link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher)) }
+            column("Teacher") {|lesson| lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher" }
             column("Type") {|lesson| lesson.lesson_type }
             column("Category") {|lesson| lesson.category }
             column("Last Update") {|lesson| lesson.updated_at }

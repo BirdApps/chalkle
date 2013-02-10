@@ -56,6 +56,10 @@ class Lesson < ActiveRecord::Base
     ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
   end
 
+  def class_coming_up
+    class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 4)
+  end
+
   def expected_revenue
     total = 0
     bookings.confirmed.visible.each do |b|
@@ -94,6 +98,16 @@ class Lesson < ActiveRecord::Base
 
   def todo_payment_summary
     return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
+  end
+
+  def payment_detail_bank
+    price = (cost.present? ? cost : 0)*1.15
+    reference = meetup_id.present? ? meetup_id : ""
+    URI.escape("
+Account number: 38-9012-0815531-00
+Name: Chalkle Limited
+Reference number: ") + reference.to_s + URI.escape(" - Your name
+Payment Amount: $") + price.round(2).to_s + URI.escape(" per person incl. GST")
   end
 
   def meetup_data
