@@ -61,7 +61,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def class_may_cancel
-    class_coming_up && ( bookings.confirmed.visible.count < (min_attendee.present? ? min_attendee : 2) )
+    class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
   end
 
   def expected_revenue
