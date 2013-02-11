@@ -3,9 +3,9 @@
     .container
       = link_to 'chalkle', root_path, class: 'brand'
       .nav-collapse.collapse
-        .ul.nav
-        -if chalkler_signed_in?
-          = link_to 'Learn', 'http://www.chalkle.com'
-          = link_to 'Teach', '/chalklers/teachings/new'
-          = link_to 'Settings', '/preferences'
-          = link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
+        %ul.nav
+          -if chalkler_signed_in?
+            %li= link_to 'Learn', 'http://www.chalkle.com'
+            %li= link_to 'Teach', '/chalklers/teachings/new'
+            %li= link_to 'Settings', '/preferences'
+            %li= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
