@@ -18,7 +18,7 @@ class ChalklerPreferences
     @email_frequency  = params[:email_frequency]
     @email_categories = parse_categories_params(params[:email_categories])
     @email_channels   = parse_channels_params(params[:email_channels])
-    persist_to_chalkler
+    valid? && persist_to_chalkler
   end
 
   private
