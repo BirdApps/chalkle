@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130210033742) do
+ActiveRecord::Schema.define(:version => 20130211230419) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(:version => 20130210033742) do
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
-    t.integer  "min_attendee",                                      :default => 1
+    t.integer  "min_attendee",                                      :default => 2
     t.text     "availabilities"
     t.text     "prerequisites"
     t.text     "additional_comments"
