@@ -6,13 +6,15 @@
     %p We will never clutter your inbox with emails. Use the form below to tell us how you want us to contact you
 
   .form-inputs
-    = f.input :email, :label => "What email do you want us to contact you at?"
-    = f.input :email_frequency, :label => "How often do you want to hear from us?", :collection => Chalkler.email_frequency_select_options, include_blank: false 
-    %br/
+    %h4
+      What email do you want us to contact you at?
+    = f.input :email, :label => false
+    %h4
+      How often do you want to hear from us?
+    = f.input :email_frequency, :label => false, :collection => Chalkler.email_frequency_select_options, include_blank: false 
     %h4
       Send me emails about classes in the following categories
     = f.input :email_categories, :label => false, as: :check_boxes, collection: Category.select_options, include_blank: false
-    %br/
     %h4
       Send me emails about classes run by the following organisations
     = f.input :email_channels, :label => false, as: :check_boxes, :collection => Channel.select_options, include_blank: false

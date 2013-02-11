@@ -6,6 +6,9 @@
         %ul.nav
           -if chalkler_signed_in?
             %li= link_to 'Learn', 'http://www.chalkle.com'
+            %li.divider-vertical
             %li= link_to 'Teach', '/chalklers/teachings/new'
-            %li= link_to 'Email Settings', 'chalklers/settings'
+            %li.divider-vertical
+            %li= link_to 'Email Settings', '/chalklers/settings'
+            %li.divider-vertical
             %li= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
