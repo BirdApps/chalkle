@@ -111,7 +111,7 @@ ActiveAdmin.register Lesson  do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
           end
           row :rsvp_list do
-            render partial: "/admin/lessons/rsvp_list", locals: { group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+            render partial: "/admin/lessons/rsvp_list", locals: { class_may_cancel: lesson.class_may_cancel, may_cancel_email: lesson.may_cancel_email, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
           end
         end
         row :start_at
@@ -201,12 +201,12 @@ ActiveAdmin.register Lesson  do
         f.input :teacher_bio
         f.input :do_during_class, :label => "What we will do during this class"
         f.input :learning_outcomes, :label => "What we will learn from this class"
-        f.input :max_attendee
-        f.input :min_attendee
         f.input :availabilities
         f.input :prerequisites
         f.input :additional_comments
       end
+      f.input :max_attendee
+      f.input :min_attendee
       f.input :donation
       f.input :cost, :label => "Price"
       f.input :teacher_cost

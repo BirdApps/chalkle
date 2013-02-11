@@ -60,6 +60,10 @@ class Lesson < ActiveRecord::Base
     class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 4)
   end
 
+  def class_may_cancel
+    class_coming_up && ( bookings.confirmed.visible.count < (min_attendee.present? ? min_attendee : 2) )
+  end
+
   def expected_revenue
     total = 0
     bookings.confirmed.visible.each do |b|
@@ -108,6 +112,16 @@ Account number: 38-9012-0815531-00
 Name: Chalkle Limited
 Reference number: ") + reference.to_s + URI.escape(" - Your name
 Payment Amount: $") + price.round(2).to_s + URI.escape(" per person incl. GST")
+  end
+
+  def may_cancel_email
+    URI.escape("
+
+Thank you for signing up to the upcoming chalkle class ") + URI.escape(name.gsub(/&/,"and")) + URI.escape(". We are writing to tell you that a minimum number of ") + (min_attendee.present? ? min_attendee : 2).to_s + URI.escape(" people is required for this class to go ahead, so there is a possibility that this class could be cancelled. 
+
+If it is, you will receive a notice from Meetup upon cancellation and we will try to schedule the class for another date. Please accept our sincerely apologies for this inconvenience.
+
+Your Chalkle Administrator")
   end
 
   def meetup_data
