@@ -80,4 +80,17 @@ describe Lesson do
     end
   end
 
+  describe "cancellation email" do
+    let(:lesson) { FactoryGirl.create(:lesson_with_bookings) }
+
+    pending "do not send cancellation email for sufficient bookings" do
+      lesson.class_may_cancel.should be_false
+    end
+
+    pending "sends cancellation email for too little bookings" do
+      lesson.min_attendee = 10
+      lesson.class_may_cancel.should be_true
+    end
+  end
+
 end
