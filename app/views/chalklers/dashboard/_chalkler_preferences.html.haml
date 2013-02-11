@@ -1,8 +1,10 @@
 = simple_form_for(@chalkler_email_preferences, url: chalklers_preferences_path, html: { method: :put, class: 'form-vertical' }) do |f|
   = f.error_notification
 
-  %h2 Set your email preferences
-  %br/
+  .hero-unit
+    %h2 Set Your Email Preferences
+    %p We will never clutter your inbox with emails. Use the form below to tell us how you want us to contact you
+
   .form-inputs
     = f.input :email, :label => "What email do you want us to contact you at?"
     = f.input :email_frequency, :label => "How often do you want to hear from us?", :collection => Chalkler.email_frequency_select_options, include_blank: false 
