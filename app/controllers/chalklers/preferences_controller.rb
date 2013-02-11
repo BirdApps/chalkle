@@ -6,7 +6,7 @@ class Chalklers::PreferencesController < Chalklers::BaseController
       redirect_to root_url, notice: 'Your preferences have been saved.'
     else
       flash[:error] = 'There was a problem saving your preferences.'
-      redirect_to :back
+      render template: 'chalklers/dashboard/index'
     end
   end
 end
