@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204010046) do
+ActiveRecord::Schema.define(:version => 20130210033742) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -97,6 +97,13 @@ ActiveRecord::Schema.define(:version => 20130204010046) do
     t.string   "uid"
     t.string   "email_frequency"
     t.text     "email_categories"
+    t.text     "email_channels"
+  end
+
+  create_table "channels", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "group_admins", :id => false, :force => true do |t|
@@ -129,10 +136,9 @@ ActiveRecord::Schema.define(:version => 20130204010046) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "url_name"
-    t.string   "bank_account_id"
   end
 
   create_table "lessons", :force => true do |t|
@@ -153,7 +159,7 @@ ActiveRecord::Schema.define(:version => 20130204010046) do
     t.boolean  "visible"
     t.decimal  "teacher_payment",     :precision => 8, :scale => 2
     t.string   "lesson_type"
-    t.string   "teacher_bio"
+    t.text     "teacher_bio"
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
