@@ -10,8 +10,8 @@ Chalkle::Application.routes.draw do
     root to: "dashboard#index"
     match '/classes' => 'dashboard#classes', as: 'classes'
     resources :teachings
-    get '/settings' => 'preferences#show', as: 'preferences'
-    put '/settings' => 'preferences#save', as: 'preferences'
+    get '/preferences' => 'preferences#show', as: 'preferences'
+    put '/preferences' => 'preferences#save', as: 'preferences'
   end
 
   match '/image' => 'image#generate'
