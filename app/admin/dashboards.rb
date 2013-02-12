@@ -42,16 +42,16 @@ ActiveAdmin.register_page "Dashboard" do
 
         if current_admin_user.role=="super"
 
-        panel "Super User Upcoming classes" do
-          table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
-            column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-            column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
-            column("Price") { |lesson| number_to_currency lesson.cost }
-            column("Teacher cost") { |lesson| number_to_currency lesson.teacher_cost }
-            column("Venue cost") { |lesson| number_to_currency lesson.venue_cost }
-            column("May Cancel") { |lesson| link_to("Email them", admin_lesson_path(lesson)) if lesson.class_may_cancel }
+          panel "Super User Upcoming classes" do
+            table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
+              column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
+              column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
+              column("Price") { |lesson| number_to_currency lesson.cost }
+              column("Teacher cost") { |lesson| number_to_currency lesson.teacher_cost }
+              column("Venue cost") { |lesson| number_to_currency lesson.venue_cost }
+              column("May Cancel") { |lesson| link_to("Email them", admin_lesson_path(lesson)) if lesson.class_may_cancel }
+            end
           end
-        end
 
           panel "Class email task list" do
             table_for Lesson.accessible_by(current_ability).visible.recent.order("start_at asc") do
@@ -62,6 +62,7 @@ ActiveAdmin.register_page "Dashboard" do
               column("TODO:Payment Summary") { |lesson| link_to("Email teacher", payment_summary_email_admin_lesson_path(lesson)) if lesson.todo_payment_summary }
             end
           end
+
         end
 
         panel "Past class performance" do
@@ -73,6 +74,7 @@ ActiveAdmin.register_page "Dashboard" do
                 column("Income") { |lesson| number_to_currency lesson.income}
             end
           end
+          
         end
       end
     end
