@@ -159,7 +159,7 @@ ActiveRecord::Schema.define(:version => 20130211230419) do
     t.boolean  "visible"
     t.decimal  "teacher_payment",     :precision => 8, :scale => 2
     t.string   "lesson_type"
-    t.text     "teacher_bio"
+    t.string   "teacher_bio"
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
