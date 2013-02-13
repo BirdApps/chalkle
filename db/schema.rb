@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(:version => 20130212235126) do
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
-    t.integer  "min_attendee",                                      :default => 2
+    t.integer  "min_attendee",                                      :default => 1
     t.text     "availabilities"
     t.text     "prerequisites"
     t.text     "additional_comments"
