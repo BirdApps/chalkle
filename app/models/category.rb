@@ -8,6 +8,6 @@ class Category < ActiveRecord::Base
   #TODO: Move into a presenter class like Draper sometime
   #FIXME: Data should be inforced in some convention so lowercase conversion is not required here (probably all lowercase)
   def self.select_options
-    all(order: "id").map { |c| [c.name, c.id] }
+    all(order: "id").map { |c| [c.name.capitalize, c.id] }
   end
 end
