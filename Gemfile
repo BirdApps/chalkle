@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 gem 'pg', '~> 0.14.1'
 
 # Authentication
@@ -41,6 +41,7 @@ group :assets do
 end
 
 group :development do
+  gem 'rb-readline'
   # Better documentation
   gem 'tomdoc',  '~> 0.2.5',  :require => false
 
