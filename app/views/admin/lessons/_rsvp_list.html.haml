@@ -38,7 +38,7 @@
           -else
             %td= ""
         -if class_may_cancel
-          %td= link_to 'Email them', "http://www.meetup.com/" + group_url.first + "/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{b.email_subject}&body=Hi+#{b.chalkler.name.split[0]},#{may_cancel_email}"
+          %td= link_to 'Email them', "http://www.meetup.com/" + group_url.first + "/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{b.email_subject}&body=Hi+#{b.chalkler.name.split[0]},#{may_cancel_email(lesson.name, lesson.min_attendee)}"
         -else
           %td= ""
         -if (b.cost.present? ? b.cost : 0) > 0 && b.paid != true

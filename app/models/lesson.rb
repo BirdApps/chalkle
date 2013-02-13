@@ -114,16 +114,6 @@ Reference number: ") + reference.to_s + URI.escape(" - Your name
 Payment Amount: $") + price.round(2).to_s + URI.escape(" per person incl. GST")
   end
 
-  def may_cancel_email
-    URI.escape("
-
-Thank you for signing up to the upcoming chalkle class ") + URI.escape(name.gsub(/&/,"and")) + URI.escape(". We are writing to tell you that a minimum number of ") + (min_attendee.present? ? min_attendee : 2).to_s + URI.escape(" people is required for this class to go ahead. 
-
-If it is, you will receive a notice from Meetup upon cancellation and we will try to schedule the class for another date. 
-
-Your Chalkle Administrator")
-  end
-
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?

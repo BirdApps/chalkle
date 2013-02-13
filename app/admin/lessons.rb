@@ -19,6 +19,7 @@ ActiveAdmin.register Lesson  do
     def scoped_collection
       end_of_association_chain.visible.accessible_by(current_ability)
     end
+    helper LessonHelper
   end
 
   index do
@@ -112,7 +113,7 @@ ActiveAdmin.register Lesson  do
           end
         end
         row :rsvp_list do
-          render partial: "/admin/lessons/rsvp_list", locals: { class_may_cancel: lesson.class_may_cancel, may_cancel_email: lesson.may_cancel_email, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, class_may_cancel: lesson.class_may_cancel, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
         row :start_at
         row :meetup_id do
