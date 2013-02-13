@@ -1,7 +1,7 @@
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_skill, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee, 
+  attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_skill, :category_id, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee, 
   :availabilities, :prerequisites, :additional_comments, :venue
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
@@ -24,7 +24,7 @@ class Teaching
   end
 
   def lesson_args
-    { "name" => @title, "teacher_id" => @teacher_id, "lesson_skill" => @lesson_skill, "teacher_bio" => @bio, "do_during_class" => @do_during_class, 
+    { "name" => @title, "teacher_id" => @teacher_id, "lesson_skill" => @lesson_skill, "category_id" => @category_id, "teacher_bio" => @bio, "do_during_class" => @do_during_class, 
     "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60*60, "cost" => price_calculation(@teacher_cost), "teacher_cost" => @teacher_cost, 
     "max_attendee" => @max_attendee.to_i, "min_attendee" => @min_attendee.to_i, "availabilities" => @availabilities, "prerequisites" => @prerequisites, 
     "additional_comments" => @additional_comments, "venue" => @venue, "status" => "Unreviewed"}
@@ -46,6 +46,7 @@ class Teaching
   def check_valid_input(params)
     @title = params[:title]
     @lesson_skill = params[:lesson_skill]
+    @category_id = params[:category_id]
     @bio = params[:bio]
     @do_during_class = params[:do_during_class]
     @learning_outcomes = params[:learning_outcomes]
