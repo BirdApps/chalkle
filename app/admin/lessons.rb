@@ -113,7 +113,7 @@ ActiveAdmin.register Lesson  do
           end
         end
         row :rsvp_list do
-          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, class_may_cancel: lesson.class_may_cancel, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
         row :start_at
         row :meetup_id do
