@@ -330,8 +330,6 @@ GEM
       thor (>= 0.14.6, < 2.0)
     rainbow (1.1.4)
     rake (10.0.3)
-    rb-inotify (0.9.0)
-      ffi (>= 0.5.0)
     rb-readline (0.4.2)
     rdoc (3.12.1)
       json (~> 1.4)
@@ -475,7 +473,6 @@ DEPENDENCIES
   quiet_assets (~> 1.0.1)
   rMeetup!
   rails (= 3.2.12)
-  rb-inotify (~> 0.9.0)
   rb-readline
   rspec-rails (~> 2.12.2)
   sass-rails (~> 3.2.6)
