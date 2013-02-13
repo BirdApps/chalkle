@@ -19,6 +19,7 @@ ActiveAdmin.register Lesson  do
     def scoped_collection
       end_of_association_chain.visible.accessible_by(current_ability)
     end
+    helper LessonHelper
   end
 
   index do
@@ -116,9 +117,9 @@ ActiveAdmin.register Lesson  do
           row :bookings_to_collect do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
           end
-          row :rsvp_list do
-            render partial: "/admin/lessons/rsvp_list", locals: { group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
-          end
+        end
+        row :rsvp_list do
+          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
         row :start_at
         row :description do
@@ -208,13 +209,13 @@ ActiveAdmin.register Lesson  do
         f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
         f.input :lesson_skill, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
         f.input :teacher_bio
-        f.input :max_attendee
-        f.input :min_attendee
         f.input :availabilities
         f.input :venue
         f.input :prerequisites
         f.input :additional_comments
       end
+      f.input :max_attendee
+      f.input :min_attendee
       f.input :cost, :label => "Price excluding GST"
       f.input :teacher_cost
       f.input :venue_cost
