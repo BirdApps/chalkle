@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
   let(:group) { FactoryGirl.create(:group) }
-  let(:params) { { title: 'My new class', lesson_skill: '', category_id: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
+  let(:params) { { title: 'My new class', lesson_skill: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
   free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', availabilities: '' , additional_comments: ''} }
 
   before do
@@ -93,7 +93,7 @@ describe "Teachings" do
 
   describe "form submit" do
 
-  	let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', category_id: '1', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
+  	let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
     free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' , 
     prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about'} }
 
@@ -126,10 +126,6 @@ describe "Teachings" do
 
   	    it "has the correct lesson skill" do
   	    	@lesson.lesson_skill.should == params2[:lesson_skill]
-  	    end
-
-  	    it "has the correct category id" do
-  	    	@lesson.category_id.should == params2[:category_id].to_i
   	    end
 
         it "has the correct what we will do during class" do
