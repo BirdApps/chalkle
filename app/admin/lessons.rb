@@ -206,27 +206,17 @@ ActiveAdmin.register Lesson  do
         f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
         f.input :do_during_class, :label => "What we will do during this class"
         f.input :learning_outcomes, :label => "What we will learn from this class"
-<<<<<<< HEAD
-=======
         f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
         f.input :lesson_skill, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
         f.input :teacher_bio
-        f.input :max_attendee
-        f.input :min_attendee
->>>>>>> master
         f.input :availabilities
         f.input :venue
         f.input :prerequisites
         f.input :additional_comments
       end
-<<<<<<< HEAD
       f.input :max_attendee
       f.input :min_attendee
-      f.input :donation
-      f.input :cost, :label => "Price"
-=======
       f.input :cost, :label => "Price excluding GST"
->>>>>>> master
       f.input :teacher_cost
       f.input :venue_cost
       f.input :duration, :label => "Duration in seconds"
