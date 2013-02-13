@@ -24,35 +24,24 @@ ActiveAdmin.register_page "Dashboard" do
           end
         end
 
-        if current_admin_user.role!="super"
-
-          panel "Channel Admin Upcoming classes" do
-            table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
-              column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-              column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
-              column("Advertised Price") { |lesson| number_to_currency (lesson.cost.present? ? lesson.cost*1.15 : nil) }
-              column("Attendee") { |lesson| lesson.attendance}
-              column("Min Attendee") { |lesson| lesson.min_attendee }
-              column("May Cancel") { |lesson| link_to("Email them", admin_lesson_path(lesson)) if lesson.class_may_cancel }
-            end
-          end
-
-        end
-
-
-        if current_admin_user.role=="super"
-
-          panel "Super User Upcoming classes" do
-            table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
-              column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-              column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
+        panel "Upcoming classes" do
+          table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
+            column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
+            column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
+            if current_admin_user.role == "super"
               column("Price") { |lesson| number_to_currency lesson.cost }
               column("Teacher cost") { |lesson| number_to_currency lesson.teacher_cost }
               column("Venue cost") { |lesson| number_to_currency lesson.venue_cost }
-              column("May Cancel") { |lesson| link_to("Email them", admin_lesson_path(lesson)) if lesson.class_may_cancel }
+            else
+              column("Advertised Price") { |lesson| number_to_currency (lesson.cost.present? ? lesson.cost*1.15 : nil) }
+              column("Attendee") { |lesson| lesson.attendance}
+              column("Min Attendee") { |lesson| lesson.min_attendee }
             end
+            column("May Cancel") { |lesson| link_to("Email them", admin_lesson_path(lesson)) if lesson.class_may_cancel }
           end
+        end
 
+        if current_admin_user.role=="super"
           panel "Class email task list" do
             table_for Lesson.accessible_by(current_ability).visible.recent.order("start_at asc") do
               column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
