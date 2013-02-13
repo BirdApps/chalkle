@@ -45,21 +45,28 @@ ActiveAdmin.register Lesson  do
   show title: :name do |lesson|
     attributes_table do
       row :status
-      row :category
-      row :lesson_type
+      row :meetup_id do
+        link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
+      end
       row :teacher
+      row :category
       if !lesson.published?
-        row :teacher_bio do
-          simple_format lesson.teacher_bio
-        end
         row :do_during_class do
           simple_format lesson.do_during_class
         end
         row :learning_outcomes do
           simple_format lesson.learning_outcomes
         end
+        row :lesson_type
+        row :lesson_skill
+        row :teacher_bio do
+          simple_format lesson.teacher_bio
+        end
         row :availabilities do
           simple_format lesson.availabilities
+        end
+        row :venue do
+          simple_format lesson.venue
         end
         row :prerequisites do
           simple_format lesson.prerequisites
@@ -67,8 +74,6 @@ ActiveAdmin.register Lesson  do
         row :additional_comments do
           simple_format lesson.additional_comments
         end
-        row :created_at
-        row :updated_at 
       end
       # row :teacher_gst_number do
       #   if lesson.teacher && lesson.teacher.gst?
@@ -77,11 +82,12 @@ ActiveAdmin.register Lesson  do
       #     "Not GST registered"
       #   end
       # end
-
-      row "Price" do
+      row "Advertised price including GST" do
+        number_to_currency (lesson.cost.present? ? lesson.cost*1.15 : nil)
+      end
+      row "Price excluding GST" do
         number_to_currency lesson.cost
       end
-      row :donation
       row :teacher_cost do
         number_to_currency lesson.teacher_cost
       end
@@ -115,15 +121,14 @@ ActiveAdmin.register Lesson  do
           end
         end
         row :start_at
-        row :meetup_id do
-          link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
-        end
         row :description do
           simple_format lesson.description
         end
         if current_admin_user.role=="super"
           row :meetup_data
         end
+        row :created_at
+        row :updated_at 
       end
     end
     active_admin_comments
@@ -194,24 +199,26 @@ ActiveAdmin.register Lesson  do
   form do |f|
     f.inputs :details do
       f.input :name
-      f.input :category
-      f.input :lesson_type, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
       f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
+      f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
       if !lesson.published?
-        f.input :teacher_bio
+        f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
         f.input :do_during_class, :label => "What we will do during this class"
         f.input :learning_outcomes, :label => "What we will learn from this class"
+        f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+        f.input :lesson_skill, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
+        f.input :teacher_bio
         f.input :max_attendee
         f.input :min_attendee
         f.input :availabilities
+        f.input :venue
         f.input :prerequisites
         f.input :additional_comments
       end
-      f.input :donation
-      f.input :cost, :label => "Price"
+      f.input :cost, :label => "Price excluding GST"
       f.input :teacher_cost
       f.input :venue_cost
-      f.input :duration
+      f.input :duration, :label => "Duration in seconds"
       if lesson.published?
         f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
         f.input :start_at
