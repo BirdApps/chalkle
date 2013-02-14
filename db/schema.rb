@@ -130,9 +130,10 @@ ActiveRecord::Schema.define(:version => 20130214004456) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.string   "url_name"
+    t.string   "bank_account_id"
   end
 
   create_table "lessons", :force => true do |t|
@@ -153,7 +154,7 @@ ActiveRecord::Schema.define(:version => 20130214004456) do
     t.boolean  "visible"
     t.decimal  "teacher_payment",     :precision => 8, :scale => 2
     t.string   "lesson_type"
-    t.string   "teacher_bio"
+    t.text     "teacher_bio"
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
