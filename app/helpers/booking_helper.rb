@@ -6,7 +6,7 @@ module BookingHelper
 
 	def email_ending
     URI.escape("
-      
+
 Thank you for supporting chalkle and we look forward to seeing you soon!
 chalkle")
   	end
@@ -54,25 +54,25 @@ Your RSVP status will be moved to yes when we have received your payment.") + em
     URI.escape("
 We hope you have enjoyed your recent chalkle class, ") + URI.escape(name.gsub(/&/,"and"))  + URI.escape(".
 
-We have been reconciling our payments and have not found your payment for this class in our records. It may be that your name did not match your payment, and in this case we are very sorry for the email, or that you paid cash on the day and your name was not recorded. If this is the case could you please let us know by replying to this email. 
+We have been reconciling our payments and have not found your payment for this class in our records. It may be that your name did not match your payment, and in this case we are very sorry for the email, or that you paid cash on the day and your name was not recorded. If this is the case could you please let us know by replying to this email.
 
 If you have not made a payment for this class, you can do so by bank transfer or cash deposit at any Kiwibank branch using the following details:
   ") + payment_detail_bank(reference, price) + URI.escape("
 
-Please note, in accordance with chalkle policy payment is required for all who RSVP'd yes on the day of the class even if you choose to not show up.") + email_ending 
+Please note, in accordance with chalkle policy payment is required for all who RSVP'd yes on the day of the class even if you choose to not show up.") + email_ending
   end
 
   def send_no_show_email(name)
     URI.escape("
 You have been given a no-show on your chalkle attendance record because you did not show up for the class ") + URI.escape(name.gsub(/&/,"and")) + URI.escape(", which you had RSVP'd for.
 
-Showing up to a class you have committed to is very important because: 
+Showing up to a class you have committed to is very important because:
 
-1. Chalkle classes are very popular and when you don't show up you have taken up a spot someone else could have enjoyed, and 
+1. Chalkle classes are very popular and when you don't show up you have taken up a spot someone else could have enjoyed, and
 
-2. Our teachers have dedicated a lot of time and effort in planning this class for you. When you don't show up it shows a lack of respect for the teacher's time 
+2. Our teachers have dedicated a lot of time and effort in planning this class for you. When you don't show up it shows a lack of respect for the teacher's time
 
-We recognise that from time to time there will be unavoidable situations which will result in a no-show. For this reason we allow each member 3 no-shows every six months. If you exceed the limited number of no-shows within 6 months, your chalkle membership will be suspended. After another six month period you may request to rejoin.") + self.email_ending 
+We recognise that from time to time there will be unavoidable situations which will result in a no-show. For this reason we allow each member 3 no-shows every six months. If you exceed the limited number of no-shows within 6 months, your chalkle membership will be suspended. After another six month period you may request to rejoin.") + self.email_ending
   end
 
   def reminder_email_content(choice, class_name, reference, price)
