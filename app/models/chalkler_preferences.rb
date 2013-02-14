@@ -10,7 +10,7 @@ class ChalklerPreferences
     @email            = @chalkler.email
     @email_frequency  = @chalkler.email_frequency
     @email_categories = @chalkler.email_categories
-    @email_streams   = @chalkler.email_streams
+    @email_streams    = @chalkler.email_streams
   end
 
   def update_attributes(params)
