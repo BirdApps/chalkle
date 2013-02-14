@@ -17,7 +17,7 @@
     = f.input :email_categories, :label => false, as: :check_boxes, collection: Category.select_options, include_blank: false
     %h4
       Send me emails about classes run by the following organisations
-    = f.input :email_channels, :label => false, as: :check_boxes, :collection => Channel.select_options, include_blank: false
+    = f.input :email_streams, :label => false, as: :check_boxes, :collection => Streams.select_options, include_blank: false
     %br/
     %b Note: 
     even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account. 
