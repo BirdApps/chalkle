@@ -1,4 +1,4 @@
-class Streams < ActiveRecord::Base
+class Stream < ActiveRecord::Base
   attr_accessible :name
 
   has_many :lessons
