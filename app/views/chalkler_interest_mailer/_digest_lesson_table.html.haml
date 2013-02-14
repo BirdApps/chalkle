@@ -1,0 +1,10 @@
+%table
+  %thead
+    %tr
+      %th Title
+      %th Date of class
+  %tbody
+    -interesting_lessons.each do |lesson|
+      %tr
+        %td= link_to lesson.name, "http://www.chalkle.com"
+        %td= lesson.start_at

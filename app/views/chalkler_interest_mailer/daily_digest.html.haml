@@ -1,0 +1,10 @@
+Hello #{@chalkler.name.split[0]},
+
+Here is your daily digest for today #{Date.today()}
+
+- if !( @new_interesting_lessons = @new_lessons.find(:all, :conditions => ["category_id IN (?)", @chalkler.email_categories] ) ).nil?
+  New classes in the last 24 hours:
+  = render partial: "chalkler_interest_mailer/digest_lesson_table", locals: { interesting_lessons: @new_interesting_lessons }
+
+Thank you for supporting chalkle and we look forward to seeing you soon!
+chalkle
