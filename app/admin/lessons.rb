@@ -20,6 +20,7 @@ ActiveAdmin.register Lesson  do
       end_of_association_chain.visible.accessible_by(current_ability)
     end
     helper LessonHelper
+    helper BookingHelper
   end
 
   index do
