@@ -1,7 +1,7 @@
 class LoadNewCategories < ActiveRecord::Migration
   def up
-  	Category.delete_all
-  	Category.create(:name  =>  "Agriculture & Environment")
+	Category.delete_all
+	Category.create(:name  =>  "Agriculture & Environment")
 	Category.create(:name  =>  "Art & Handcrafts")
 	Category.create(:name  =>  "Business & Finances")
 	Category.create(:name  =>  "Computers & Technology")
