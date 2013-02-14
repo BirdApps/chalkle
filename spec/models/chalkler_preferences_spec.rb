@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe ChalklerPreferences do
-  let(:chalkler) { double('chalkler', email: 'test@user.com', email_frequency: 'weekly', email_categories: [1], email_channels: [1]) }
-  let(:params) { { email: 'tested@user.com', email_frequency: 'none', email_categories: ['2', ''], email_channels: ['2',''] } }
+  let(:chalkler) { double('chalkler', email: 'test@user.com', email_frequency: 'weekly', email_categories: [1], email_streams: [1]) }
+  let(:params) { { email: 'tested@user.com', email_frequency: 'none', email_categories: ['2', ''], email_streams: ['2',''] } }
 
   describe '#initialize' do
     before { @email_prefs = ChalklerPreferences.new(chalkler) }
@@ -19,8 +19,8 @@ describe ChalklerPreferences do
       @email_prefs.email_categories.should eq([1])
     end
 
-    it 'extracts the eamil channels' do
-      @email_prefs.email_channels.should eq([1])
+    it 'extracts the eamil streams' do
+      @email_prefs.email_streams.should eq([1])
     end
   end
 
@@ -56,8 +56,8 @@ describe ChalklerPreferences do
         @email_prefs.email_categories.should eq([2])
       end
 
-      it 'extracts the email channels' do
-        @email_prefs.email_channels.should eq([2])
+      it 'extracts the email streams' do
+        @email_prefs.email_streams.should eq([2])
       end
 
       it 'extracts an email' do
@@ -72,8 +72,8 @@ describe ChalklerPreferences do
         @new_chalkler.email_categories.should eq([2])
       end
 
-      it 'extracts the eamil channels' do
-        @new_chalkler.email_channels.should eq([2])
+      it 'extracts the eamil streams' do
+        @new_chalkler.email_streams.should eq([2])
       end
     end
   end

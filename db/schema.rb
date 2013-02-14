@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130212235126) do
+ActiveRecord::Schema.define(:version => 20130214002403) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -100,12 +100,6 @@ ActiveRecord::Schema.define(:version => 20130212235126) do
     t.text     "email_channels"
   end
 
-  create_table "channels", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "group_admins", :id => false, :force => true do |t|
     t.integer "group_id",      :null => false
     t.integer "admin_user_id", :null => false
@@ -159,7 +153,7 @@ ActiveRecord::Schema.define(:version => 20130212235126) do
     t.boolean  "visible"
     t.decimal  "teacher_payment",     :precision => 8, :scale => 2
     t.string   "lesson_type"
-    t.string   "teacher_bio"
+    t.text     "teacher_bio"
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
@@ -200,5 +194,11 @@ ActiveRecord::Schema.define(:version => 20130212235126) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
+
+  create_table "streams", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
 end

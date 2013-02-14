@@ -18,7 +18,7 @@ class Chalkler < ActiveRecord::Base
   has_many :payments
 
   serialize :email_categories
-  serialize :email_channels
+  serialize :email_streams
 
   EMAIL_FREQUENCY_OPTIONS = %w(daily weekly monthly almost-never)
 
