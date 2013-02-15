@@ -1,5 +1,15 @@
 class BookingMailer < ActionMailer::Base
+  layout 'generic_mailer'
   default from: "accounts@chalkle.com"
+
+  if self.included_modules.include?(AbstractController::Callbacks)
+    raise "You've already included AbstractController::Callbacks, remove this line."
+  else
+    include AbstractController::Callbacks
+  end
+
+  before_filter :add_inline_attachments!
+
 
   def first_reminder_to_pay(chalkler,lesson) 
   	#this email is sent both when a new confirmed booking is made, unless it is made less than 3 days from start of class
@@ -30,4 +40,8 @@ class BookingMailer < ActionMailer::Base
     mail(to: chalkler.email, subject: chalkler.name + " - " + lesson.name)
   end
 
+  def add_inline_attachments!
+    attachments.inline["logo.png"] = File.read("#{Rails.root}/public/logo.png")
+    puts attachments.inspect
+  end
 end

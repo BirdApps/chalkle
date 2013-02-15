@@ -36,7 +36,8 @@ Chalkle::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
-
-  ActionMailer::Base.delivery_method = :file
-  ActionMailer::Base.file_settings = { location: Rails.root.join("tmp/mail") }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  #ActionMailer::Base.delivery_method = :file
+  #ActionMailer::Base.file_settings = { location: Rails.root.join("tmp/mail") }
 end
