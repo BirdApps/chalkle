@@ -109,9 +109,9 @@ describe Chalkler do
     let(:chalkler2) { FactoryGirl.create(:chalkler, email: "test@abc.com") }
 
     before do
-      @lesson1 = FactoryGirl.create(:lesson, name: "Test Lesson 1", category_id: 1,start_at: 10.days.from_now, created_at: 1.days.ago, status: "Published")
-      @lesson2 = FactoryGirl.create(:lesson, name: "Test Lesson 2", category_id: 1,start_at: 6.days.from_now, created_at: 1.day.ago, status: "Published")
-      @lesson3 = FactoryGirl.create(:lesson, name: "Test Lesson 3", category_id: 1,start_at: 1.days.from_now, created_at: 1.day.ago, status: "Published")
+      @lesson1 = FactoryGirl.create(:lesson, name: "Test Lesson 1", category_id: 1,start_at: 10.days.from_now, created_at: 10.days.ago, status: "Published")
+      @lesson2 = FactoryGirl.create(:lesson, name: "Test Lesson 2", category_id: 1,start_at: 6.days.from_now, created_at: 10.day.ago, status: "Published")
+      @lesson3 = FactoryGirl.create(:lesson, name: "Test Lesson 3", category_id: 1,start_at: 1.days.from_now, created_at: 10.day.ago, status: "Published")
       chalkler.email_categories = [1]
       chalkler2.email_categories = [1]
       chalkler.email_frequency = "daily"
