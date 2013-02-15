@@ -7,7 +7,7 @@
     %br/
     Here is your chalkle #{@frequency.to_s} digest for #{Date.today()}
     
-    -if !(new_interesting_lessons = @new_lessons.find(:all, :conditions => ["category_id IN (?)", @chalkler.email_categories] )).nil?
+    -if !@new_lessons.nil?
       New chalkle Classes, Tailored For You:
       %table
         %thead
@@ -16,13 +16,13 @@
             %th Date of class
             %th What will we do
         %tbody
-          -new_interesting_lessons.each do |lesson|
+          -@new_lessons.each do |lesson|
             %tr
               %td= link_to lesson.name, lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com"
               %td= lesson.start_at
               %td= lesson.do_during_class
 
-    -if !(still_open_interesting_lessons = @still_open_lessons.find(:all, :conditions => ["category_id IN (?)", @chalkler.email_categories] )).nil?
+    -if !@still_open_lessons.nil?
       There is still time to sign up for these classes:
       %table
         %thead
@@ -31,7 +31,7 @@
             %th Date of class
             %th 
         %tbody
-          -still_open_interesting_lessons.each do |lesson|
+          -@still_open_lessons.each do |lesson|
             %tr
               %td= lesson.name
               %td= lesson.start_at
