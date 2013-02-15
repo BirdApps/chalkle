@@ -60,9 +60,9 @@ class Chalkler < ActiveRecord::Base
 
   def filtered_still_open_lessons
     if self.email_frequency == "daily"
-      lesson_filter(self,Lesson.where("start_at > current_date + 1 AND start_at <= current_date + 2 AND status = 'Published' AND visible = true "))
+      lesson_filter(self,Lesson.where("start_at > current_date + 1 AND start_at <= current_date + 2 AND status = 'Published' AND visible = true AND created_at <= current_date - 1"))
     elsif self.email_frequency == "weekly"
-      lesson_filter(self,Lesson.where("start_at > current_date + 1 AND start_at <= current_date + 8 AND status = 'Published' AND visible = true "))
+      lesson_filter(self,Lesson.where("start_at > current_date + 1 AND start_at <= current_date + 8 AND status = 'Published' AND visible = true AND created_at <= current_date - 7"))
     end
   end
 
