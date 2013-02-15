@@ -20,7 +20,7 @@ class Chalkler < ActiveRecord::Base
   serialize :email_categories
   serialize :email_streams
 
-  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly monthly almost-never)
+  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly)
 
   before_create :set_from_meetup_data
 
@@ -35,6 +35,35 @@ class Chalkler < ActiveRecord::Base
 
   def password_required?
     false
+  end
+
+  def lesson_filter(chalkler,lessons)
+    filtered_lessons = lessons.find(:all, :conditions => ["category_id IN (?)", chalkler.email_categories] )
+    if filtered_lessons.count == 0
+      if chalkler.email_frequency == "daily"
+        return lessons.find(:all, :limit => 5)
+      elsif chalkler.email_frequency == "weekly"
+        return lessons.find(:all, :limit => 10)
+      end
+    else
+      return filtered_lessons
+    end
+  end
+
+  def filtered_new_lessons
+    if self.email_frequency == "daily"
+      lesson_filter(self,Lesson.visible.where("created_at >= current_date - 1 AND created_at <= current_date"))
+    elsif self.email_frequency == "weekly"
+      lesson_filter(self,Lesson.visible.where("created_at >= current_date - 7 AND created_at <= current_date"))
+    end
+  end
+
+  def filtered_still_open_lessons
+    if self.email_frequency == "daily"
+      lesson_filter(self,Lesson.visible.where("start_at >= current_date + 1 AND start_at <= current_date + 3"))
+    elsif self.email_frequency == "weekly"
+      lesson_filter(self,Lesson.visible.where("start_at >= current_date + 1 AND start_at <= current_date + 7"))
+    end
   end
 
   def meetup_data
