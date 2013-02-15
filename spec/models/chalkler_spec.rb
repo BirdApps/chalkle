@@ -66,9 +66,9 @@ describe Chalkler do
     let(:chalkler2) { FactoryGirl.create(:chalkler, email: "test@abc.com") }
 
     before do
-      @lesson1 = FactoryGirl.create(:lesson, name: "Test Lesson 1", category_id: 1,start_at: Date.tomorrow, created_at: 10.days.ago)
-      @lesson2 = FactoryGirl.create(:lesson, name: "Test Lesson 2", category_id: 1,start_at: 10.days.from_now, created_at: 5.days.ago)
-      @lesson3 = FactoryGirl.create(:lesson, name: "Test Lesson 3", category_id: 1,start_at: Date.tomorrow, created_at: 1.day.ago)
+      @lesson1 = FactoryGirl.create(:lesson, name: "Test Lesson 1", category_id: 1,start_at: Date.tomorrow, created_at: 10.days.ago, status: "Published")
+      @lesson2 = FactoryGirl.create(:lesson, name: "Test Lesson 2", category_id: 1,start_at: 10.days.from_now, created_at: 5.days.ago, status: "Published")
+      @lesson3 = FactoryGirl.create(:lesson, name: "Test Lesson 3", category_id: 1,start_at: Date.tomorrow, created_at: 1.day.ago, status: "Published")
       chalkler.email_categories = [1]
       chalkler2.email_categories = [1]
       chalkler.email_frequency = "daily"
@@ -90,6 +90,18 @@ describe Chalkler do
     it "should not contain lessons created before last week for email frequency weekly" do
       chalkler2.filtered_new_lessons.should_not include(@lesson1)
     end
+
+    it "should not contain invisible lessons" do
+      @lesson2.visible = false
+      @lesson2.save
+      chalkler2.filtered_new_lessons.should_not include(@lesson2)
+    end
+
+    it "should not contain unpublished lessons" do
+      @lesson2.status = "Unreviewed"
+      @lesson2.save
+      chalkler2.filtered_new_lessons.should_not include(@lesson2)
+    end
   end
 
   describe "Digest mail section on still open lessons" do
@@ -97,20 +109,20 @@ describe Chalkler do
     let(:chalkler2) { FactoryGirl.create(:chalkler, email: "test@abc.com") }
 
     before do
-      @lesson1 = FactoryGirl.create(:lesson, name: "Test Lesson 1", category_id: 1,start_at: 10.days.from_now, created_at: 1.days.ago)
-      @lesson2 = FactoryGirl.create(:lesson, name: "Test Lesson 2", category_id: 1,start_at: 6.days.from_now, created_at: 1.day.ago)
-      @lesson3 = FactoryGirl.create(:lesson, name: "Test Lesson 3", category_id: 1,start_at: 2.days.from_now, created_at: 1.day.ago)
+      @lesson1 = FactoryGirl.create(:lesson, name: "Test Lesson 1", category_id: 1,start_at: 10.days.from_now, created_at: 1.days.ago, status: "Published")
+      @lesson2 = FactoryGirl.create(:lesson, name: "Test Lesson 2", category_id: 1,start_at: 6.days.from_now, created_at: 1.day.ago, status: "Published")
+      @lesson3 = FactoryGirl.create(:lesson, name: "Test Lesson 3", category_id: 1,start_at: 1.days.from_now, created_at: 1.day.ago, status: "Published")
       chalkler.email_categories = [1]
       chalkler2.email_categories = [1]
       chalkler.email_frequency = "daily"
       chalkler2.email_frequency = "weekly"
     end
 
-    it "should contain lessons within next 3 days for email frequency daily" do
+    it "should contain lessons within next 1 day for email frequency daily" do
       chalkler.filtered_still_open_lessons.should include(@lesson3)
     end
 
-    it "should not contain lessons more than 3 days for email frequency daily" do
+    it "should not contain lessons more than 2 days for email frequency daily" do
       chalkler.filtered_still_open_lessons.should_not include(@lesson2)
     end
 
@@ -120,6 +132,18 @@ describe Chalkler do
 
     it "should not contain lessons more than 7 days for email frequency weekly" do
       chalkler2.filtered_still_open_lessons.should_not include(@lesson1)
+    end
+
+    it "should not contain invisible lessons" do
+      @lesson2.visible = false
+      @lesson2.save
+      chalkler2.filtered_new_lessons.should_not include(@lesson2)
+    end
+
+    it "should not contain unpublished lessons" do
+      @lesson2.status = "Unreviewed"
+      @lesson2.save
+      chalkler2.filtered_new_lessons.should_not include(@lesson2)
     end
   end
 
