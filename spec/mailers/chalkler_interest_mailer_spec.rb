@@ -16,8 +16,8 @@ describe ChalklerInterestMailer do
       chalkler2.email_frequency = [8]
       chalkler.email_frequency = "daily"
       chalkler2.email_frequency = "weekly"
-      @email = ChalklerInterestMailer.digest(chalkler,chalkler.filtered_new_lessons,chalkler.filtered_still_open_lessons,chalkler.email_frequency).deliver
-      @email2 = ChalklerInterestMailer.digest(chalkler2,chalkler2.filtered_new_lessons,chalkler2.filtered_still_open_lessons,chalkler2.email_frequency).deliver
+      @email = ChalklerInterestMailer.digest(chalkler,chalkler.filtered_new_lessons,chalkler.filtered_still_open_lessons).deliver
+      @email2 = ChalklerInterestMailer.digest(chalkler2,chalkler2.filtered_new_lessons,chalkler2.filtered_still_open_lessons).deliver
     end
 
     it "should deliver to the right person" do
