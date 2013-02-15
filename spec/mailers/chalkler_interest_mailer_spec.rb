@@ -4,7 +4,7 @@ describe ChalklerInterestMailer do
   include EmailSpec::Helpers
   include EmailSpec::Matchers
 
-  describe "Digest mail content" do
+  describe "Daily digest mail content" do
     let(:chalkler) { FactoryGirl.create(:chalkler) }
     let(:chalkler2) { FactoryGirl.create(:chalkler, email: "test@abc.com") }
 
@@ -34,10 +34,6 @@ describe ChalklerInterestMailer do
 
     it "should not include lesson which not in chalkler's interest category" do
       @email.should_not have_body_text(@lesson2.name)
-    end
-
-    it "should include lesson 2 when there are no lessons within chalker's interest categories" do
-      @email2.should have_body_text(@lesson2.name)
     end
   end
 
