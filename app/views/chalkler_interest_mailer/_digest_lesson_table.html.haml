@@ -6,5 +6,5 @@
   %tbody
     -interesting_lessons.each do |lesson|
       %tr
-        %td= link_to lesson.name, "http://www.chalkle.com"
+        %td= link_to lesson.name, lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com"
         %td= lesson.start_at

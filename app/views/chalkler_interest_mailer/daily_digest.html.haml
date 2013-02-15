@@ -2,9 +2,20 @@ Hello #{@chalkler.name.split[0]},
 
 Here is your daily digest for today #{Date.today()}
 
-- if !( @new_interesting_lessons = @new_lessons.find(:all, :conditions => ["category_id IN (?)", @chalkler.email_categories] ) ).nil?
+-if !(interesting_lessons = @new_lessons.find(:all, :conditions => ["category_id IN (?)", @chalkler.email_categories] )).nil?
   New classes in the last 24 hours:
-  = render partial: "chalkler_interest_mailer/digest_lesson_table", locals: { interesting_lessons: @new_interesting_lessons }
+  %table
+    %thead
+      %tr
+        %th Title
+        %th Date of class
+    %tbody
+      -interesting_lessons.each do |lesson|
+        %tr
+          %td= link_to lesson.name, lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com"
+          %td= lesson.start_at
+
+          = render :partial => '/chalkler_interest_mailer/digest_lesson_table', interesting_lessons: interesting_lessons 
 
 Thank you for supporting chalkle and we look forward to seeing you soon!
 chalkle
