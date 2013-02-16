@@ -1,7 +1,11 @@
 require 'spec_helper'
 
 describe Category do
-  context 'class methods' do
+  context "creation" do
+    it { should validate_presence_of :name }
+  end
+
+  context "class methods" do
     let(:work) { double('work', name: 'work', id: 1) }
     let(:play) { double('play', name: 'play', id: 2) }
     let(:categories) { [work, play] }

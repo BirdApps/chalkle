@@ -1,13 +1,13 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, 
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
   :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities,
   :prerequisites, :additional_comments, :donation, :lesson_skill, :venue
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
-  belongs_to :category
+  has_many :lesson_categories
+  has_many :categories, :through => :lesson_categories
   belongs_to :teacher, class_name: "Chalkler"
-
   has_many :bookings
   has_many :chalklers, :through => :bookings
   has_many :payments, :through => :bookings
@@ -18,7 +18,7 @@ class Lesson < ActiveRecord::Base
   WEEK = 7
 
   #Lesson statuses
-  STATUS_3 = "Unreviewed" 
+  STATUS_3 = "Unreviewed"
   STATUS_2 = "On-hold"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3]
@@ -39,6 +39,7 @@ class Lesson < ActiveRecord::Base
 
   before_create :set_from_meetup_data
   before_create :set_metadata
+  after_create :set_category
 
   def published?
     status == STATUS_1
@@ -77,7 +78,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def uncollected_revenue
-    expected_revenue - collected_revenue    
+    expected_revenue - collected_revenue
   end
 
   def income
@@ -89,7 +90,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def pay_involved
-    (cost.present? ? cost : 0) > 0 
+    (cost.present? ? cost : 0) > 0
   end
 
   def todo_attendee_list
@@ -120,18 +121,24 @@ class Lesson < ActiveRecord::Base
     self.updated_at = Time.at(meetup_data["updated"] / 1000)
     self.start_at = Time.at(meetup_data["time"] / 1000) if meetup_data["time"]
     self.duration = meetup_data["duration"] / 1000 if meetup_data["duration"]
-    parts = name.split(":")
+  end
+
+  def set_category
+    return unless self.name?
+    parts = self.name.split(":")
     c = Category.find_by_name parts[0]
     if c.present?
-      self.category = c
+      self.categories << c
       self.name = parts[1]
     else
       if parts[1]
         c = Category.create(:name => parts[0])
-        self.category = c
+        puts c.name
+        self.categories << c
         self.name = parts[1]
       end
     end
+    self.save
   end
 
   def set_metadata
