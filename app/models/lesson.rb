@@ -1,5 +1,5 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, 
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
   :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities,
   :prerequisites, :additional_comments, :donation, :lesson_skill, :venue
 
@@ -7,7 +7,7 @@ class Lesson < ActiveRecord::Base
   has_many :groups, :through => :group_lessons
   belongs_to :category
   belongs_to :teacher, class_name: "Chalkler"
-
+  has_one :lesson_image
   has_many :bookings
   has_many :chalklers, :through => :bookings
   has_many :payments, :through => :bookings
@@ -18,7 +18,7 @@ class Lesson < ActiveRecord::Base
   WEEK = 7
 
   #Lesson statuses
-  STATUS_3 = "Unreviewed" 
+  STATUS_3 = "Unreviewed"
   STATUS_2 = "On-hold"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3]
@@ -77,7 +77,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def uncollected_revenue
-    expected_revenue - collected_revenue    
+    expected_revenue - collected_revenue
   end
 
   def income
@@ -89,7 +89,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def pay_involved
-    (cost.present? ? cost : 0) > 0 
+    (cost.present? ? cost : 0) > 0
   end
 
   def todo_attendee_list
