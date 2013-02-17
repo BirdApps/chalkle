@@ -50,6 +50,7 @@ class Chalkler < ActiveRecord::Base
     end
   end
 
+  # Change created_at to published_at when migration on lesson table has been completed
   def filtered_new_lessons
     if self.email_frequency == "daily"
       lesson_filter(self,Lesson.where("created_at > current_date - 1 AND created_at <= current_date AND status = 'Published' AND visible = true "))
