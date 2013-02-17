@@ -137,9 +137,6 @@ describe "Teachings" do
         end
 
   	    it "has the correct duration" do
-          puts @lesson.duration
-          puts params2[:duration]
-
   	    	@lesson.duration.should == params2[:duration].to_i*60*60
   	    end
 
