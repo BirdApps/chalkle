@@ -100,9 +100,8 @@ ActiveAdmin.register Lesson  do
         "#{lesson.duration / 60} minutes" if lesson.duration?
       end
       row :max_attendee
-      row :min_attendee      
+      row :min_attendee
 
-      #only view these for published classes
       if lesson.published?
         if current_admin_user.role=="super"
           row :teacher_payment do
@@ -130,9 +129,10 @@ ActiveAdmin.register Lesson  do
           row :meetup_data
         end
         row :created_at
-        row :updated_at 
+        row :updated_at
       end
     end
+
     active_admin_comments
   end
 
@@ -198,36 +198,5 @@ ActiveAdmin.register Lesson  do
     render partial: "/admin/lessons/meetup_template", locals: { lesson: lesson }
   end
 
-  form do |f|
-    f.inputs :details do
-      f.input :name
-      f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
-      f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
-      if !lesson.published?
-        f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
-        f.input :do_during_class, :label => "What we will do during this class"
-        f.input :learning_outcomes, :label => "What we will learn from this class"
-        f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
-        f.input :lesson_skill, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
-        f.input :teacher_bio
-        f.input :availabilities
-        f.input :venue
-        f.input :prerequisites
-        f.input :additional_comments
-      end
-      f.input :max_attendee
-      f.input :min_attendee
-      f.input :cost, :label => "Price excluding GST"
-      f.input :teacher_cost
-      f.input :venue_cost
-      f.input :duration, :label => "Duration in seconds"
-      if lesson.published?
-        f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-        f.input :start_at
-        f.input :description
-      end
-      f.input :status, :as => :select, :collection =>  ["Published","On-hold","Unreviewed"]
-    end
-    f.actions
-  end
+  form :partial => 'form'
 end

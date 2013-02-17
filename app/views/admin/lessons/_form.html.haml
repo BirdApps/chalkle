@@ -1,0 +1,45 @@
+=semantic_form_for [:admin, @lesson] do |f|
+  =f.inputs :details do
+    =f.input :name
+    =f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
+    -# f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
+    =if !@lesson.published?
+      =f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
+      =f.input :do_during_class, :label => "What we will do during this class"
+      =f.input :learning_outcomes, :label => "What we will learn from this class"
+      =f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+      =f.input :lesson_skill, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
+      =f.input :teacher_bio
+      =f.input :availabilities
+      =f.input :venue
+      =f.input :prerequisites
+      =f.input :additional_comments
+    =f.input :max_attendee
+    =f.input :min_attendee
+    =f.input :cost, :label => "Price excluding GST"
+    =f.input :teacher_cost
+    =f.input :venue_cost
+    =f.input :duration, :label => "Duration in seconds"
+    =if @lesson.published?
+      =f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
+      =f.input :start_at
+      =f.input :description
+    =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Unreviewed"]
+
+  =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
+    =fi.input :title, :as => :text
+    =fi.input :pointsize, :label => "Text Size"
+    .chalkle_image
+      %h2
+        -if @lesson.lesson_image.present? && @lesson.lesson_image.title.present?
+          =@lesson.lesson_image.title
+        -else
+          Text goes here
+
+    :coffeescript
+      $('#lesson_lesson_image_attributes_title').keyup (e) ->
+        $('.chalkle_image h2').html(e.target.value.replace(/\n/g, "\<br/\>", 'g'))
+      $('#lesson_lesson_image_attributes_pointsize').keyup (e) ->
+        $('.chalkle_image h2').css({"font-size": e.target.value + "pt"})
+
+  =f.actions
