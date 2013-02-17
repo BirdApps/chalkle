@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Lesson do
-  it { should have_one(:lesson_image) }
-
+  it { should have_one :lesson_image }
   it { should validate_uniqueness_of :meetup_id }
+  it { should accept_nested_attributes_for :lesson_image }
 
   let(:lesson) { FactoryGirl.create(:lesson) }
 

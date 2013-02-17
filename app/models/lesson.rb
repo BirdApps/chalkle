@@ -1,16 +1,21 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
-  :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities,
-  :prerequisites, :additional_comments, :donation, :lesson_skill, :venue
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost,
+    :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
+    :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
+    :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
+    :availabilities, :prerequisites, :additional_comments, :donation,
+    :lesson_skill, :venue, :lesson_image_title, :lesson_image_pointsize
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
   belongs_to :category
   belongs_to :teacher, class_name: "Chalkler"
-  has_one :lesson_image
+  has_one :lesson_image, :dependent => :destroy, :inverse_of => :lesson
   has_many :bookings
   has_many :chalklers, :through => :bookings
   has_many :payments, :through => :bookings
+
+  accepts_nested_attributes_for :lesson_image
 
   #Time span for classes requiring attention
   PAST = 3
