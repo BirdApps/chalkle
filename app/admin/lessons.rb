@@ -129,9 +129,10 @@ ActiveAdmin.register Lesson  do
         if current_admin_user.role=="super"
           row :meetup_data
         end
-        row :created_at
-        row :updated_at 
       end
+      row :created_at
+      row :published_at
+      row :updated_at 
     end
     active_admin_comments
   end

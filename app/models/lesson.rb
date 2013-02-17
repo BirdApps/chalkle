@@ -1,7 +1,7 @@
 class Lesson < ActiveRecord::Base
   attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, 
   :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities,
-  :prerequisites, :additional_comments, :donation, :lesson_skill, :venue
+  :prerequisites, :additional_comments, :donation, :lesson_skill, :venue, :published_at
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
@@ -145,6 +145,7 @@ class Lesson < ActiveRecord::Base
     l.meetup_id = result.id
     l.description = result.description
     l.meetup_data = result.to_json
+    l.published_at = Time.at(l.meetup_data["created"] / 1000)
     l.save
     l.groups << group unless l.groups.exists? group
     l.valid?
