@@ -4,7 +4,7 @@ class Lesson < ActiveRecord::Base
     :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
     :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
     :availabilities, :prerequisites, :additional_comments, :donation,
-    :lesson_skill, :venue, :lesson_image_title, :lesson_image_pointsize
+    :lesson_skill, :venue, :lesson_image_attributes
 
   has_many :group_lessons
   has_many :groups, :through => :group_lessons
