@@ -52,6 +52,7 @@ ActiveAdmin.register Lesson  do
       end
       row :teacher
       row :category
+      row :start_at
       if !lesson.published?
         row :do_during_class do
           simple_format lesson.do_during_class
@@ -90,14 +91,14 @@ ActiveAdmin.register Lesson  do
       row "Price excluding GST" do
         number_to_currency lesson.cost
       end
-      row :teacher_cost do
+      row "Teacher payment per attendee" do
         number_to_currency lesson.teacher_cost
       end
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
       row :duration do
-        "#{lesson.duration / 60} minutes" if lesson.duration?
+        "#{lesson.duration / 60 / 60} hours" if lesson.duration?
       end
       row :max_attendee
       row :min_attendee      
@@ -122,7 +123,6 @@ ActiveAdmin.register Lesson  do
         row :rsvp_list do
           render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
-        row :start_at
         row :description do
           simple_format lesson.description
         end
@@ -203,6 +203,7 @@ ActiveAdmin.register Lesson  do
       f.input :name
       f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
       f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
+      f.input :start_at
       if !lesson.published?
         f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
         f.input :do_during_class, :label => "What we will do during this class"
@@ -223,7 +224,6 @@ ActiveAdmin.register Lesson  do
       f.input :duration, :label => "Duration in seconds"
       if lesson.published?
         f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-        f.input :start_at
         f.input :description
       end
       f.input :status, :as => :select, :collection =>  ["Published","On-hold","Unreviewed"]
