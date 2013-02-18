@@ -53,6 +53,13 @@ ActiveAdmin.register Chalkler do
         end
       end
       row :email
+      row :email_frequency
+      row "Email categories" do
+        chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
+      end
+      row "Email streams" do
+        chalkler.email_streams.collect{|c| Stream.find(c,:select => :name).name}.join(", ")
+      end
       row :gst
       row :bio
       row :teaching do
