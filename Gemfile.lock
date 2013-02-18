@@ -78,7 +78,8 @@ GEM
       coderay (>= 1.0.0)
       erubis (>= 2.7.0)
     binding_of_caller (0.6.8)
-    bootstrap-sass (2.0.4.2)
+    bootstrap-sass (2.3.0.0)
+      sass (~> 3.2)
     bourbon (3.0.1)
       sass (>= 3.2.0)
       thor
@@ -434,7 +435,7 @@ DEPENDENCIES
   analytical (~> 3.0.12)
   better_errors (~> 0.3.2)
   binding_of_caller (~> 0.6.8)
-  bootstrap-sass (~> 2.0.4.2)
+  bootstrap-sass (~> 2.3.0.0)
   cancan (~> 1.6.8)
   capistrano (~> 2.14.1)
   capistrano-ext (~> 1.2.1)
