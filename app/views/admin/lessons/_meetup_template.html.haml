@@ -1,5 +1,5 @@
 
-#{lesson.category.present? ? lesson.category.name : nil} : #{lesson.name}
+#{lesson.category.present? ? (lesson.category.name).downcase : nil} : #{lesson.name.downcase}
 
 %br
 Start time: #{lesson.start_at.present? ? lesson.start_at.to_formatted_s(:long) : nil}
@@ -22,12 +22,12 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 
 %br
 %b type of class 
-#{lesson.lesson_type}
+#{lesson.lesson_type.downcase}
 
 %br
 %br
 %b skill required 
-#{lesson.lesson_skill}
+#{lesson.lesson_skill.downcase}
 
 %br
 %br
@@ -36,7 +36,7 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 #{simple_format lesson.teacher_bio}
 
 %br
-%b what you need to bring
+%b what to bring
 %br
 #{lesson.prerequisites.blank? ? "None" : (simple_format lesson.prerequisites)}
 
@@ -46,7 +46,9 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 %br
 -if lesson.cost
   %br
-  %b how to book and pay:
+  %b how to book and pay
+  %br
+  We expect pre-payment for all classes.
   %br
   RSVP and pay using this paypal link or 
   %br
@@ -55,12 +57,12 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
   \#38-9012-0815531-00
   %br
   Reference: #{lesson.meetup_id.present? ? lesson.meetup_id : "Event Meetup ID"} - Your name
-  %br
-  We expect pre-payment for all classes.
 
 %br
 %br
-We require a minimum of #{lesson.min_attendee} people to run this class.
+%b note
+%br
+We require a minimum of #{lesson.min_attendee} people for this class to go ahead.
 %br
 %br
 %b our cancellation policy

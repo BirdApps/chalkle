@@ -54,25 +54,29 @@ ActiveAdmin.register Lesson  do
       row :category
       row :start_at
       if !lesson.published?
-        row :do_during_class do
-          simple_format lesson.do_during_class
-        end
-        row :learning_outcomes do
-          simple_format lesson.learning_outcomes
-        end
-        row :lesson_type
-        row :lesson_skill
-        row :teacher_bio do
-          simple_format lesson.teacher_bio
-        end
-        row :availabilities do
-          simple_format lesson.availabilities
-        end
-        row :venue do
+        row "venue for this class" do
           simple_format lesson.venue
         end
-        row :prerequisites do
+        row "What we are doing" do
+          simple_format lesson.do_during_class
+        end
+        row "What you will learn" do
+          simple_format lesson.learning_outcomes
+        end
+        row "type of class" do
+          lesson.lesson_type
+        end
+        row "skill required" do
+          lesson.lesson_skill
+        end
+        row "your chalkler will be" do
+          simple_format lesson.teacher_bio
+        end
+        row "What to bring" do
           simple_format lesson.prerequisites
+        end
+        row "Availability of the teacher" do
+          simple_format lesson.availabilities
         end
         row :additional_comments do
           simple_format lesson.additional_comments
@@ -205,22 +209,22 @@ ActiveAdmin.register Lesson  do
       f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
       f.input :start_at
       if !lesson.published?
-        f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
-        f.input :do_during_class, :label => "What we will do during this class"
-        f.input :learning_outcomes, :label => "What we will learn from this class"
-        f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
-        f.input :lesson_skill, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
-        f.input :teacher_bio
-        f.input :availabilities
         f.input :venue
-        f.input :prerequisites
+        f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
+        f.input :do_during_class, :label => "What we are doing"
+        f.input :learning_outcomes, :label => "What you will learn"
+        f.input :lesson_type, :label => "Type of class", :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+        f.input :lesson_skill, :label => "Skills required", :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
+        f.input :teacher_bio, :label => "Your chalkler will be"
+        f.input :prerequisites, :label => "What to bring"
+        f.input :availabilities, :label => "Availability of the teacher"
         f.input :additional_comments
       end
-      f.input :max_attendee
-      f.input :min_attendee
       f.input :cost, :label => "Price excluding GST"
       f.input :teacher_cost
       f.input :venue_cost
+      f.input :max_attendee
+      f.input :min_attendee
       f.input :duration, :label => "Duration in seconds"
       if lesson.published?
         f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
