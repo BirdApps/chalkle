@@ -343,7 +343,7 @@
                   %table#templateHeader{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "600"}
                     %tr
                       %td.headerContent
-                        = image_tag attachments['logo.png'].url
+                        %img{ src: 'http://' + Rails.application.config.action_mailer.default_url_options[:host] + '/logo.png', alt: 'Chalkle : Six degrees of education.'}/
               %tr
                 %td{:align => "center", :valign => "top"}
                   %table#templateBody{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "600"}
@@ -375,5 +375,5 @@
                           %tr
                             %td#utility{:valign => "middle"}
                               %div
-                                %a{:href => "#{url_for chalklers_preferences_path}"} update subscription preferences
+                                %a{:href => "#{chalklers_preferences_url}"} update subscription preferences
             %br/
