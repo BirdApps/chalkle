@@ -1,5 +1,7 @@
-
 #{lesson.category.present? ? lesson.category.name : nil} : #{lesson.name}
+
+.image
+  =image_tag lesson.image.url if lesson.image
 
 %p
 Date: #{lesson.start_at.present? ? lesson.start_at : nil}
@@ -18,11 +20,11 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 #{simple_format lesson.learning_outcomes}
 
 %p
-%b type of class 
+%b type of class
 #{lesson.lesson_type}
 
 %p
-%b skill required 
+%b skill required
 #{lesson.lesson_skill}
 
 %p
@@ -36,14 +38,14 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 #{lesson.prerequisites.blank? ? "None" : (simple_format lesson.prerequisites)}
 
 %p
-%b cost 
+%b cost
 #{lesson.cost? ? (cost = number_with_precision(lesson.cost*1.15, :precision => 2, :significant => false)) : "free"} (incl. GST)
 
 -if lesson.cost
   %p
   %b how to book and pay:
   %br
-  RSVP and pay using this paypal link or 
+  RSVP and pay using this paypal link or
   %br
   deposit #{cost} into chalkle's Kiwibank account:
   %br

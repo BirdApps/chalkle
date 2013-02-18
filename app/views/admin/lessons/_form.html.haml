@@ -27,19 +27,16 @@
     =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Unreviewed"]
 
   =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
-    =fi.input :title, :as => :text
-    =fi.input :pointsize, :label => "Text Size"
-    .chalkle_image
-      %h2
-        -if @lesson.lesson_image.present? && @lesson.lesson_image.title.present?
-          =@lesson.lesson_image.title
-        -else
-          Text goes here
+    -title = (@lesson.lesson_image.try(:title)) ? @lesson.lesson_image.title : @lesson.name
+    =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved.",  :input_html => { :rows => 5, :value => title }
+    -# .chalkle_image
+      -# %h2
 
-    :coffeescript
-      $('#lesson_lesson_image_attributes_title').keyup (e) ->
-        $('.chalkle_image h2').html(e.target.value.replace(/\n/g, "\<br/\>", 'g'))
-      $('#lesson_lesson_image_attributes_pointsize').keyup (e) ->
-        $('.chalkle_image h2').css({"font-size": e.target.value + "pt"})
+    -# :coffeescript
+      -# $ ->
+        -# t = $('#lesson_lesson_image_attributes_title')
+        -# $('.chalkle_image h2').html(t.val().replace(/\n/g, "\<br/\>", 'g'))
+      -# $('#lesson_lesson_image_attributes_title').keyup (e) ->
+        -# $('.chalkle_image h2').html(e.target.value.replace(/\n/g, "\<br/\>", 'g'))
 
   =f.actions

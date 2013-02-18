@@ -45,6 +45,10 @@ class Lesson < ActiveRecord::Base
   before_create :set_from_meetup_data
   before_create :set_metadata
 
+  def image
+    lesson_image.image rescue nil
+  end
+
   def published?
     status == STATUS_1
   end
@@ -58,7 +62,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def class_not_done
-    ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
+    ((start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
   end
 
   def class_coming_up
@@ -119,6 +123,20 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def self.create_from_meetup_hash(result, group)
+    l = Lesson.find_or_initialize_by_meetup_id result.id
+    l.status = STATUS_1
+    l.name = result.name
+    l.meetup_id = result.id
+    l.description = result.description
+    l.meetup_data = result.to_json
+    l.save
+    l.groups << group unless l.groups.exists? group
+    l.valid?
+  end
+
+  private
+
   def set_from_meetup_data
     return if meetup_data.empty?
     self.created_at = Time.at(meetup_data["created"] / 1000)
@@ -141,17 +159,5 @@ class Lesson < ActiveRecord::Base
 
   def set_metadata
     self.visible = true
-  end
-
-  def self.create_from_meetup_hash(result, group)
-    l = Lesson.find_or_initialize_by_meetup_id result.id
-    l.status = STATUS_1
-    l.name = result.name
-    l.meetup_id = result.id
-    l.description = result.description
-    l.meetup_data = result.to_json
-    l.save
-    l.groups << group unless l.groups.exists? group
-    l.valid?
   end
 end

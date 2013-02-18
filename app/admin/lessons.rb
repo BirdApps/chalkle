@@ -125,6 +125,9 @@ ActiveAdmin.register Lesson  do
         row :description do
           simple_format lesson.description
         end
+        row :image do
+          image_tag lesson.image.url if lesson.image
+        end
         if current_admin_user.role=="super"
           row :meetup_data
         end
@@ -150,11 +153,11 @@ ActiveAdmin.register Lesson  do
     link_to 'Preclass emails', lesson_email_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.confirmed.count > 0) && !lesson.class_not_done}) do
+  action_item(only: :show, if: proc{ can?(:payment_summary_email, resource) && lesson.visible && (lesson.bookings.visible.confirmed.count > 0) && !lesson.class_not_done}) do
     link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:meetup_template,resource) && lesson.visible && !lesson.published? }) do
+  action_item(only: :show, if: proc{ can?(:meetup_template, resource) && lesson.visible && !lesson.published? }) do
     link_to 'Meetup Template', meetup_template_admin_lesson_path(resource)
   end
 
