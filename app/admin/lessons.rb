@@ -52,26 +52,31 @@ ActiveAdmin.register Lesson  do
       end
       row :teacher
       row :category
+      row :start_at
       if !lesson.published?
-        row :do_during_class do
-          simple_format lesson.do_during_class
-        end
-        row :learning_outcomes do
-          simple_format lesson.learning_outcomes
-        end
-        row :lesson_type
-        row :lesson_skill
-        row :teacher_bio do
-          simple_format lesson.teacher_bio
-        end
-        row :availabilities do
-          simple_format lesson.availabilities
-        end
-        row :venue do
+        row "venue for this class" do
           simple_format lesson.venue
         end
-        row :prerequisites do
+        row "What we are doing" do
+          simple_format lesson.do_during_class
+        end
+        row "What you will learn" do
+          simple_format lesson.learning_outcomes
+        end
+        row "type of class" do
+          lesson.lesson_type
+        end
+        row "skill required" do
+          lesson.lesson_skill
+        end
+        row "your chalkler will be" do
+          simple_format lesson.teacher_bio
+        end
+        row "What to bring" do
           simple_format lesson.prerequisites
+        end
+        row "Availability of the teacher" do
+          simple_format lesson.availabilities
         end
         row :additional_comments do
           simple_format lesson.additional_comments
@@ -90,14 +95,14 @@ ActiveAdmin.register Lesson  do
       row "Price excluding GST" do
         number_to_currency lesson.cost
       end
-      row :teacher_cost do
+      row "Teacher payment per attendee" do
         number_to_currency lesson.teacher_cost
       end
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
       row :duration do
-        "#{lesson.duration / 60} minutes" if lesson.duration?
+        "#{lesson.duration / 60 / 60} hours" if lesson.duration?
       end
       row :max_attendee
       row :min_attendee      
@@ -122,7 +127,6 @@ ActiveAdmin.register Lesson  do
         row :rsvp_list do
           render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
-        row :start_at
         row :description do
           simple_format lesson.description
         end
@@ -203,27 +207,27 @@ ActiveAdmin.register Lesson  do
       f.input :name
       f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
       f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
+      f.input :start_at
       if !lesson.published?
-        f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
-        f.input :do_during_class, :label => "What we will do during this class"
-        f.input :learning_outcomes, :label => "What we will learn from this class"
-        f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
-        f.input :lesson_skill, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
-        f.input :teacher_bio
-        f.input :availabilities
         f.input :venue
-        f.input :prerequisites
+        f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
+        f.input :do_during_class, :label => "What we are doing"
+        f.input :learning_outcomes, :label => "What you will learn"
+        f.input :lesson_type, :label => "Type of class", :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+        f.input :lesson_skill, :label => "Skills required", :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
+        f.input :teacher_bio, :label => "Your chalkler will be"
+        f.input :prerequisites, :label => "What to bring"
+        f.input :availabilities, :label => "Availability of the teacher"
         f.input :additional_comments
       end
-      f.input :max_attendee
-      f.input :min_attendee
       f.input :cost, :label => "Price excluding GST"
       f.input :teacher_cost
       f.input :venue_cost
+      f.input :max_attendee
+      f.input :min_attendee
       f.input :duration, :label => "Duration in seconds"
       if lesson.published?
         f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-        f.input :start_at
         f.input :description
       end
       f.input :status, :as => :select, :collection =>  ["Published","On-hold","Unreviewed"]
