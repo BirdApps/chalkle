@@ -1,6 +1,6 @@
 class RenameGroupToChannel < ActiveRecord::Migration
   def up
-    rename_table :group, :channel
+    rename_table :groups, :channels
 
     rename_table :group_admins, :channel_admins
     rename_column :channel_admins, :group_id, :channel_id
@@ -24,7 +24,7 @@ class RenameGroupToChannel < ActiveRecord::Migration
   end
 
   def down
-    rename_table :channel, :group
+    rename_table :channels, :groups
 
     rename_table :channel_admins, :group_admins
     rename_column :group_admins, :channel_id, :group_id
