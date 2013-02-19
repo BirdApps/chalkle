@@ -8,7 +8,7 @@ End time: #{ (lesson.start_at.present? && lesson.duration.present?) ? (lesson.st
 %br
 Location: #{lesson.venue.present? ? lesson.venue : nil}
 
-.image
+.meetup_image
   =image_tag lesson.image.url if lesson.image
 
 %br

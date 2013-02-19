@@ -6,6 +6,7 @@
     =f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
     =f.input :start_at
     -if !@lesson.published?
+      =f.input :availabilities, :label => "Availability of the teacher"
       =f.input :venue
       =f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
       =f.input :do_during_class, :label => "What we are doing"
@@ -14,7 +15,6 @@
       =f.input :lesson_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
       =f.input :teacher_bio, :label => "Your chalkler will be"
       =f.input :prerequisites, :label => "What to bring"
-      =f.input :availabilities, :label => "Availability of the teacher"
       =f.input :additional_comments
     =f.input :cost, :label => "Price excluding GST"
     =f.input :teacher_cost

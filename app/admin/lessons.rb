@@ -54,6 +54,9 @@ ActiveAdmin.register Lesson  do
       row :category
       row :start_at
       if !lesson.published?
+        row "Availability of the teacher" do
+          simple_format lesson.availabilities
+        end
         row "venue for this class" do
           simple_format lesson.venue
         end
@@ -74,9 +77,6 @@ ActiveAdmin.register Lesson  do
         end
         row "What to bring" do
           simple_format lesson.prerequisites
-        end
-        row "Availability of the teacher" do
-          simple_format lesson.availabilities
         end
         row :additional_comments do
           simple_format lesson.additional_comments
