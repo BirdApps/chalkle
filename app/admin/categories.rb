@@ -9,8 +9,8 @@ ActiveAdmin.register Category do
   index do
     column :id
     column :name
-    column :groups do |category|
-      category.groups.collect{|g| g.name}.join(", ")
+    column :channels do |category|
+      category.channels.collect{|c| c.name}.join(", ")
     end
     default_actions
   end

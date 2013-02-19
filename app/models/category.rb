@@ -1,8 +1,8 @@
 class Category < ActiveRecord::Base
   attr_accessible :name
 
-  has_many :group_categories
-  has_many :groups, :through => :group_categories
+  has_many :channel_categories
+  has_many :channels, :through => :channel_categories
   has_many :lessons
 
   #TODO: Move into a presenter class like Draper sometime

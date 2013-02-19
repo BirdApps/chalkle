@@ -6,7 +6,7 @@ class Ability
     case user.role
     when "super"
       can :manage, AdminUser
-      can :manage, Group
+      can :manage, Channel
       can [:read, :create, :update], Chalkler
       can [:read, :create, :update, :hide, :unhide], [Booking, Payment]
       can [:record_cash_payment], Booking
@@ -15,11 +15,11 @@ class Ability
       can [:read, :create, :update], LessonImage
       can :manage, Category
 
-    when "group admin"
+    when "channel admin"
       can :read, Chalkler, :id => user.chalkler_ids
       can [:read, :update, :meetup_template], Lesson, :id => user.lesson_ids
       can [:record_cash_payment], Booking
-      cannot [:read, :update, :destroy], [Payment, Booking, Category, AdminUser, Group]
+      cannot [:read, :update, :destroy], [Payment, Booking, Category, AdminUser, Channel]
     end
   end
 end

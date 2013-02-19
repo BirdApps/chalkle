@@ -1,5 +1,5 @@
-class GroupChalkler < ActiveRecord::Base
-  validates_uniqueness_of :chalkler_id, :scope => :group_id
-  belongs_to :group
+class ChannelChalkler < ActiveRecord::Base
+  validates_uniqueness_of :chalkler_id, :scope => :channel_id
+  belongs_to :channel
   belongs_to :chalkler
 end

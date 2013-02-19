@@ -1,5 +1,5 @@
-class GroupLesson < ActiveRecord::Base
-  validates_uniqueness_of :lesson_id, :scope => :group_id
-  belongs_to :group
+class ChannelLesson < ActiveRecord::Base
+  validates_uniqueness_of :lesson_id, :scope => :channel_id
+  belongs_to :channel
   belongs_to :lesson
 end

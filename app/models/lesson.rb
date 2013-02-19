@@ -6,8 +6,8 @@ class Lesson < ActiveRecord::Base
     :availabilities, :prerequisites, :additional_comments, :donation,
     :lesson_skill, :venue, :lesson_image_attributes
 
-  has_many :group_lessons
-  has_many :groups, :through => :group_lessons
+  has_many :channel_lessons
+  has_many :channels, :through => :channel_lessons
   belongs_to :category
   belongs_to :teacher, class_name: "Chalkler"
   has_one :lesson_image, :dependent => :destroy, :inverse_of => :lesson
@@ -123,7 +123,7 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  def self.create_from_meetup_hash(result, group)
+  def self.create_from_meetup_hash(result, channel)
     l = Lesson.find_or_initialize_by_meetup_id result.id
     l.status = STATUS_1
     l.name = result.name
@@ -131,7 +131,7 @@ class Lesson < ActiveRecord::Base
     l.description = result.description
     l.meetup_data = result.to_json
     l.save
-    l.groups << group unless l.groups.exists? group
+    l.channels << channel unless l.channels.exists? channel
     l.valid?
   end
 

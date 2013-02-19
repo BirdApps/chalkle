@@ -23,12 +23,12 @@ begin
 
     desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
-      Group.all.each do |g|
+      Channel.all.each do |g|
         next unless g.url_name?
-        puts "Importing chalklers for group #{g.name}"
-        total_pages = RMeetup::Client.fetch(:members, { group_urlname: g.url_name }).total_pages
+        puts "Importing chalklers for channel #{g.name}"
+        total_pages = RMeetup::Client.fetch(:members, { channel_urlname: g.url_name }).total_pages
         for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:members, { group_urlname: g.url_name, offset: i })
+          results = RMeetup::Client.fetch(:members, { channel_urlname: g.url_name, offset: i })
           results.each do |r|
             Chalkler.create_from_meetup_hash(r,g)
           end
@@ -38,12 +38,12 @@ begin
 
     desc "Pull events from meetup"
     task "load_classes" => :environment do
-      Group.all.each do |g|
+      Channel.all.each do |g|
         next unless g.url_name?
-        puts "Importing classes for group #{g.name}"
-        total_pages = RMeetup::Client.fetch(:events, { group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
+        puts "Importing classes for channel #{g.name}"
+        total_pages = RMeetup::Client.fetch(:events, { channel_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
         for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:events, { group_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
+          results = RMeetup::Client.fetch(:events, { channel_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
           results.each do |r|
             Lesson.create_from_meetup_hash(r,g)
           end

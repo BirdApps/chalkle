@@ -16,8 +16,8 @@ ActiveAdmin.register Chalkler do
     end
   end
 
-  filter :groups_name, :as => :select, :label => "Group",
-    :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
+  filter :channels_name, :as => :select, :label => "Channel",
+    :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :name
   filter :email
@@ -25,8 +25,8 @@ ActiveAdmin.register Chalkler do
   index do
     column :id
     column :name
-    column :groups do |chalkler|
-      chalkler.groups.collect{|g| g.name}.join(", ")
+    column :channels do |chalkler|
+      chalkler.channels.collect{|c| c.name}.join(", ")
     end
     column :meetup_id do |chalkler|
       if chalkler.meetup_data.present?
@@ -80,7 +80,7 @@ ActiveAdmin.register Chalkler do
   form do |f|
     f.inputs :details do
       f.input :name
-      f.input :groups, :as => :check_boxes
+      f.input :channels, :as => :check_boxes
       f.input :meetup_id
       f.input :email
       f.input :gst
