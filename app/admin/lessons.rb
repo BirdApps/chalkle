@@ -106,7 +106,6 @@ ActiveAdmin.register Lesson  do
       end
       row :max_attendee
       row :min_attendee
-
       if lesson.published?
         if current_admin_user.role=="super"
           row :teacher_payment do
@@ -129,14 +128,15 @@ ActiveAdmin.register Lesson  do
         row :description do
           simple_format lesson.description
         end
-        row :image do
-          image_tag lesson.image.url if lesson.image
-        end
         if current_admin_user.role=="super"
           row :meetup_data
         end
         row :created_at
         row :updated_at
+      end
+
+      row :image do
+        image_tag lesson.image.url if lesson.image
       end
     end
 
