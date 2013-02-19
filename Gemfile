@@ -17,6 +17,7 @@ gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails',  '~> 2.1.4'
 gem 'chronic',       '~> 0.9.0'
 gem 'active_attr',   '~> 0.7.0'
+gem 'dragonfly',     '~> 0.9.14'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
@@ -33,6 +34,7 @@ group :assets do
   gem 'sass-rails',          '~> 3.2.6'
   gem 'bootstrap-sass',      '~> 2.0.4.2'
   gem 'coffee-rails',        '~> 3.2.2'
+  gem 'coffee-filter',       '~> 0.1.3'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.9.1'
   gem 'haml_assets',         '~> 0.2.1'
@@ -64,12 +66,12 @@ end
 
 group :development, :test do
   # Automatic testing
+  gem 'rb-inotify',        '~> 0.8.8'
   gem 'guard',             '~> 1.6.2'
   gem 'guard-spork',       '~> 1.4.1'
   gem 'guard-rspec',       '~> 2.3.3'
   gem 'guard-sass',        '~> 1.0.1', :require => false
   gem 'guard-livereload',  '~> 1.1.3'
-#  gem 'rb-inotify',        '~> 0.9.0' if RUBY_PLATFORM.downcase.include?('linux')
 # gem 'rb-fsevent',        '~> 0.9.3' if RUBY_PLATFORM.downcase.include?('darwin')
 
   # Placed here so generators work

@@ -35,7 +35,6 @@ namespace :deploy do
   end
 end
 
-
 namespace :assets do
   task :precompile, :roles => :web do
     run "cd #{release_path} && RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
@@ -49,6 +48,15 @@ end
 after 'deploy:update_code' do
   deploy.symlink_configs
 end
+
+namespace :dragonfly do
+  desc "Symlink the Rack::Cache files"
+  task :symlink, :roles => [:app] do
+    run "mkdir -p #{shared_path}/tmp/dragonfly && ln -nfs #{shared_path}/tmp/dragonfly #{release_path}/tmp/dragonfly"
+  end
+end
+after 'deploy:update_code', 'dragonfly:symlink'
+
 
 require "./config/boot"
 load 'deploy/assets'

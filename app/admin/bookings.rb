@@ -8,10 +8,10 @@ ActiveAdmin.register Booking do
   scope :status_no
 
   filter :lesson_groups_name, :as => :select, :label => "Group",
-    :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
+    :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
   filter :meetup_id
   filter :lesson, as: :select, collection: proc{ Lesson.accessible_by(current_ability).order("LOWER(name) ASC").visible }
-  filter :chalkler, as: :select, collection: Chalkler.order("name ASC").all
+  filter :chalkler, as: :select, collection: proc{ Chalkler.order("name ASC").all }
   filter :cost
   filter :paid
   filter :guests

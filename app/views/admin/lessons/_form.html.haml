@@ -1,0 +1,33 @@
+=semantic_form_for [:admin, @lesson] do |f|
+  =f.inputs :details do
+    =f.input :name
+    =f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
+    -# convert to nested form
+    -# =f.input :categories, :as => :select, :collection => Category.order("LOWER(name) ASC")
+    =f.input :start_at
+    -if !@lesson.published?
+      =f.input :venue
+      =f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
+      =f.input :do_during_class, :label => "What we are doing"
+      =f.input :learning_outcomes, :label => "What you will learn"
+      =f.input :lesson_type, :as => :select, :label => "Type of class", :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+      =f.input :lesson_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
+      =f.input :teacher_bio, :label => "Your chalkler will be"
+      =f.input :prerequisites, :label => "What to bring"
+      =f.input :availabilities, :label => "Availability of the teacher"
+      =f.input :additional_comments
+    =f.input :cost, :label => "Price excluding GST"
+    =f.input :teacher_cost
+    =f.input :venue_cost
+    =f.input :max_attendee
+    =f.input :min_attendee
+    =f.input :duration, :label => "Duration in seconds"
+    -if @lesson.published?
+      =f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
+      =f.input :description
+    =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Unreviewed"]
+
+  =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
+    -title = (@lesson.lesson_image.try(:title)) ? @lesson.lesson_image.title : @lesson.name
+    =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved.",  :input_html => { :rows => 5, :value => title }
+  =f.actions
