@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
-  let(:group) { FactoryGirl.create(:group) }
+  let(:channel) { FactoryGirl.create(:channel) }
   let(:params) { { title: 'My new class', lesson_skill: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
   free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', availabilities: '' , additional_comments: ''} }
 
   before do
-    chalkler.groups << group
+    chalkler.channels << channel
     @chalkler_teaching = Teaching.new(chalkler)
   end
 
@@ -120,8 +120,8 @@ describe "Teachings" do
   	    	@lesson.teacher_id.should == chalkler.id
   	    end
 
-        it "has the correct group" do
-          @lesson.groups.should == chalkler.groups
+        it "has the correct channel" do
+          @lesson.channels.should == chalkler.channels
         end
 
   	    it "has the correct lesson skill" do

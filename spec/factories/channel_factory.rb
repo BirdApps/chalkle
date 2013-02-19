@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :group do
+  factory :channel do
     name "Wellington"
     url_name "wellington"
   end
