@@ -145,7 +145,7 @@ class Lesson < ActiveRecord::Base
     l.meetup_id = result.id
     l.description = result.description
     l.meetup_data = result.to_json
-    l.published_at = Time.at(l.meetup_data["created"] / 1000)
+    l.published_at = Time.at(result.created / 1000)
     l.save
     l.groups << group unless l.groups.exists? group
     l.valid?
