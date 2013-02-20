@@ -55,10 +55,18 @@ ActiveAdmin.register Chalkler do
       row :email
       row :email_frequency
       row "Email categories" do
-        chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
+        if chalkler.email_categories.present?
+          chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
+        else
+          "No email categories selected"
+        end
       end
       row "Email streams" do
-        chalkler.email_streams.collect{|c| Stream.find(c,:select => :name).name}.join(", ")
+        if chalkler.email_streams.present?
+          chalkler.email_streams.collect{|c| Stream.find(c,:select => :name).name}.join(", ")
+        else
+          "No email streams selected"
+        end
       end
       row :gst
       row :bio
