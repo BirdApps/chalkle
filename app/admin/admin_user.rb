@@ -4,6 +4,15 @@ ActiveAdmin.register AdminUser do
   controller do
     load_resource :except => :index
     authorize_resource
+
+    def create
+      @admin_user = AdminUser.new(email: params[:admin_user][:email], role: params[:admin_user][:role], name: params[:admin_user][:name])
+      if @admin_user.save
+        update!
+      else
+        redirect_to :back
+      end
+    end
   end
 
   index do
