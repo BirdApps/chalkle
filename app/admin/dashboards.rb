@@ -13,14 +13,14 @@ ActiveAdmin.register_page "Dashboard" do
       column do
 
         panel "Classes for review" do
-          table_for Lesson.accessible_by(current_ability).visible.unpublished.order("updated_at asc") do 
-            column("Name") {|lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-            column("Teacher") {|lesson| lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher" }
-            column("Type") {|lesson| lesson.lesson_type }
-            column("Category") {|lesson| lesson.category.present? ? lesson.category.name : "Not assigned"}
-            column("Last Update") {|lesson| lesson.updated_at }
-            column("Status") {|lesson| lesson.status }
-            column("Price") {|lesson| number_to_currency lesson.cost }
+          table_for Lesson.accessible_by(current_ability).visible.unpublished.order("updated_at asc") do
+            column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
+            column("Teacher") { |lesson| lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher" }
+            column("Type") { |lesson| lesson.lesson_type }
+            column("Category") { |lesson| lesson.category.present? ? lesson.category.name : "Not assigned"}
+            column("Last Update") { |lesson| lesson.updated_at.to_formatted_s(:long) }
+            column("Status") { |lesson| lesson.status }
+            column("Price") { |lesson| number_to_currency lesson.cost }
           end
         end
 
@@ -63,8 +63,8 @@ ActiveAdmin.register_page "Dashboard" do
                 column("Income") { |lesson| number_to_currency lesson.income}
             end
           end
-          
         end
+
       end
     end
   end

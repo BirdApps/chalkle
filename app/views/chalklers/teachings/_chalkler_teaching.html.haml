@@ -12,7 +12,7 @@
     = f.input :title, :label => "What is the title of your class?", :as => :text, :input_html => { :rows => 1, :class => "span12" }, :placeholder => "A catchy title will help to attract more chalklers. For example: protect your assets - yours, mine or ours?"
     = f.input :do_during_class, :label => "What will we do during the class?", :as => :text, :placeholder => "Enter a short paragraph here to give people an overview of the class. For example: An introduction to protecting personal assets. This class will cover specific protection mechanisms: agreements contracting out of the Property (Relationships) Act 1976, trusts and touch on wills and enduring powers of attorney", :input_html => { :rows => 2, :class => "span12" }
     = f.input :learning_outcomes, :label => "What will we learn from this class?", :as => :text, :placeholder => "List what people will learn in a format suitable for bullet points. For example: Identify the various ways personal assets can be protected; Identify the most suitable asset protection for the circumstances; Understand the importance of review and updating arrangements, as time goes by and/or circumstances change.", :input_html => { :rows => 6, :class => "span12" }
-    = f.input :lesson_skill, :label => "What is the skill level of this class ", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false } 
+    = f.input :lesson_skill, :label => "What is the skill level of this class?", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }
     = f.input :bio, :label => "Why are you a great teacher for this class?", :as => :text, :placeholder => "Tell us about the experience or background you have, which is relevant for this class. In particular unusal or interesting stories from your past are particularly welcomed. For example: I am a litigatory practised in the area of property and commercial law for 13 years specialising in asset protection, trusts and wills.", :input_html => { :rows => 3, :class => "span12" }
 
     %h3
@@ -20,7 +20,7 @@
     %br
     = f.input :availabilities, :label => "When are you available to teach this class?", :placeholder => "Give us an idea of the days or time of day when you would be available to teach this class. ", :as => :text, :input_html => { :rows => 1, :class => "span12" }
     =f.input :venue, :label => "If you would like to teach the class in your own venue, please tell us where it is and when it is available.", :placeholder => "For example: Level 4, 19 Hargreaves Street, Ponsonby, Auckland. Available weekdays after 6pm.", :as => :text, :input_html => { :rows => 1, :class => "span12" }
-    = f.input :prerequisites, :label => "What are equipment or resources you need for this class?", :placeholder => "These can be things that attendees need to bring or equipment chalkle will provide such as projectors", :as => :text, :input_html => { :rows => 1, :class => "span12" }
+    = f.input :prerequisites, :label => "What equipment or resources do you need for this class?", :placeholder => "These can be things that attendees need to bring or equipment chalkle will provide such as projectors", :as => :text, :input_html => { :rows => 1, :class => "span12" }
     = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in hours", :wrapper => :append do
       = f.input_field :duration
       = content_tag :span, "Hours", :class => "add-on"

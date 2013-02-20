@@ -52,25 +52,30 @@ ActiveAdmin.register Lesson  do
       end
       row :teacher
       row :category
+      row :start_at
       if !lesson.published?
-        row :do_during_class do
-          simple_format lesson.do_during_class
-        end
-        row :learning_outcomes do
-          simple_format lesson.learning_outcomes
-        end
-        row :lesson_type
-        row :lesson_skill
-        row :teacher_bio do
-          simple_format lesson.teacher_bio
-        end
-        row :availabilities do
+        row "Availability of the teacher" do
           simple_format lesson.availabilities
         end
-        row :venue do
+        row "venue for this class" do
           simple_format lesson.venue
         end
-        row :prerequisites do
+        row "What we are doing" do
+          simple_format lesson.do_during_class
+        end
+        row "What you will learn" do
+          simple_format lesson.learning_outcomes
+        end
+        row "type of class" do
+          lesson.lesson_type
+        end
+        row "skill required" do
+          lesson.lesson_skill
+        end
+        row "your chalkler will be" do
+          simple_format lesson.teacher_bio
+        end
+        row "What to bring" do
           simple_format lesson.prerequisites
         end
         row :additional_comments do
@@ -90,19 +95,17 @@ ActiveAdmin.register Lesson  do
       row "Price excluding GST" do
         number_to_currency lesson.cost
       end
-      row :teacher_cost do
+      row "Teacher payment per attendee" do
         number_to_currency lesson.teacher_cost
       end
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
       row :duration do
-        "#{lesson.duration / 60} minutes" if lesson.duration?
+        "#{lesson.duration / 60 / 60} hours" if lesson.duration?
       end
       row :max_attendee
-      row :min_attendee      
-
-      #only view these for published classes
+      row :min_attendee
       if lesson.published?
         if current_admin_user.role=="super"
           row :teacher_payment do
@@ -122,18 +125,24 @@ ActiveAdmin.register Lesson  do
         row :rsvp_list do
           render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
-        row :start_at
         row :description do
           simple_format lesson.description
         end
         if current_admin_user.role=="super"
           row :meetup_data
         end
+        row :created_at
+        row :updated_at
+      end
+
+      row :image do
+        image_tag lesson.image.url if lesson.image
       end
       row :created_at
       row :published_at
-      row :updated_at 
+      row :updated_at
     end
+
     active_admin_comments
   end
 
@@ -151,11 +160,11 @@ ActiveAdmin.register Lesson  do
     link_to 'Preclass emails', lesson_email_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:payment_summary_email,resource) && lesson.visible && (lesson.bookings.visible.confirmed.count > 0) && !lesson.class_not_done}) do
+  action_item(only: :show, if: proc{ can?(:payment_summary_email, resource) && lesson.visible && (lesson.bookings.visible.confirmed.count > 0) && !lesson.class_not_done}) do
     link_to 'Payment email', payment_summary_email_admin_lesson_path(resource)
   end
 
-  action_item(only: :show, if: proc{ can?(:meetup_template,resource) && lesson.visible && !lesson.published? }) do
+  action_item(only: :show, if: proc{ can?(:meetup_template, resource) && lesson.visible && !lesson.published? }) do
     link_to 'Meetup Template', meetup_template_admin_lesson_path(resource)
   end
 
@@ -199,36 +208,5 @@ ActiveAdmin.register Lesson  do
     render partial: "/admin/lessons/meetup_template", locals: { lesson: lesson }
   end
 
-  form do |f|
-    f.inputs :details do
-      f.input :name
-      f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
-      f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
-      if !lesson.published?
-        f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
-        f.input :do_during_class, :label => "What we will do during this class"
-        f.input :learning_outcomes, :label => "What we will learn from this class"
-        f.input :lesson_type, :as => :select, :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
-        f.input :lesson_skill, :as => :select, :collection => ["Beginner", "Intermediate", "Advanced"]
-        f.input :teacher_bio
-        f.input :availabilities
-        f.input :venue
-        f.input :prerequisites
-        f.input :additional_comments
-      end
-      f.input :max_attendee
-      f.input :min_attendee
-      f.input :cost, :label => "Price excluding GST"
-      f.input :teacher_cost
-      f.input :venue_cost
-      f.input :duration, :label => "Duration in seconds"
-      if lesson.published?
-        f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-        f.input :start_at
-        f.input :description
-      end
-      f.input :status, :as => :select, :collection =>  ["Published","On-hold","Unreviewed"]
-    end
-    f.actions
-  end
+  form :partial => 'form'
 end

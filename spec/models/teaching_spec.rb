@@ -10,7 +10,7 @@ describe "Teachings" do
     chalkler.groups << group
     @chalkler_teaching = Teaching.new(chalkler)
   end
-  
+
   describe "initialize" do
 
   	it "assign current chalkler as teacher" do
@@ -74,11 +74,11 @@ describe "Teachings" do
   		@chalkler_teaching.check_valid_input(params).should be_false
   	end
 
-    #it "returns false when teacher cost is nonzero and donation box is checked" do
-      #params[:donation] = '1'
-      #params[:teacher_cost] = '10'
-      #@chalkler_teaching.check_valid_input(params).should be_false
-    #end
+    pending "returns false when teacher cost is nonzero and donation box is checked" do
+      params[:donation] = '1'
+      params[:teacher_cost] = '10'
+      @chalkler_teaching.check_valid_input(params).should be_false
+    end
 
     it "returns false when min number of attendee is not an integer" do
       params[:min_attendee] = '1.3'
@@ -94,7 +94,7 @@ describe "Teachings" do
   describe "form submit" do
 
   	let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
-    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' , 
+    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
     prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about'} }
 
   	it "create an unreviewed lesson with correct form" do
@@ -106,7 +106,7 @@ describe "Teachings" do
   	end
 
   	it "create a lesson with the correct name" do
-  		@chalkler_teaching.submit(params2) 
+  		@chalkler_teaching.submit(params2)
   		Lesson.find_by_name(params2[:title]).should be_valid
   	end
 

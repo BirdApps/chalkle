@@ -12,6 +12,7 @@ class Ability
       can [:record_cash_payment], Booking
       can [:reconcile, :do_reconcile, :download_from_xero, :unreconcile], Payment
       can [:read, :update, :hide, :unhide, :lesson_email, :payment_summary_email, :meetup_template], Lesson
+      can [:read, :create, :update], LessonImage
       can :manage, Category
 
     when "group admin"
