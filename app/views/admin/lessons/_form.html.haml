@@ -2,8 +2,7 @@
   =f.inputs :details do
     =f.input :name
     =f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
-    -# convert to nested form
-    =f.input :category, :as => :select, :collection => Category.order("LOWER(name) ASC")
+    =f.input :categories
     =f.input :start_at
     -if !@lesson.published?
       =f.input :availabilities, :label => "Availability of the teacher"
