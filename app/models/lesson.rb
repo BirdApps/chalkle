@@ -10,11 +10,11 @@ class Lesson < ActiveRecord::Base
   has_many :channels, :through => :channel_lessons
   has_many :lesson_categories
   has_many :categories, :through => :lesson_categories
-  belongs_to :teacher, class_name: "Chalkler"
-  has_one :lesson_image, :dependent => :destroy, :inverse_of => :lesson
   has_many :bookings
   has_many :chalklers, :through => :bookings
   has_many :payments, :through => :bookings
+  belongs_to :teacher, class_name: "Chalkler"
+  has_one :lesson_image, :dependent => :destroy, :inverse_of => :lesson
 
   accepts_nested_attributes_for :lesson_image
 
@@ -132,7 +132,6 @@ class Lesson < ActiveRecord::Base
     l.meetup_id = result.id
     l.description = result.description
     l.meetup_data = result.to_json
-    l.published_at = Time.at(result.created / 1000) if result.created.present?
     l.save
     l.channels << channel unless l.channels.exists? channel
     l.valid?
@@ -143,31 +142,22 @@ class Lesson < ActiveRecord::Base
   def set_from_meetup_data
     return if meetup_data.empty?
     self.created_at = Time.at(meetup_data["created"] / 1000)
+    self.published_at = Time.at(meetup_data["created"] / 1000)
     self.updated_at = Time.at(meetup_data["updated"] / 1000)
     self.start_at = Time.at(meetup_data["time"] / 1000) if meetup_data["time"]
     self.duration = meetup_data["duration"] / 1000 if meetup_data["duration"]
   end
 
   def set_category
-    return unless self.name?
-    parts = self.name.split(":")
-    c = Category.find_by_name parts[0]
-    if c.present?
-      self.categories << c
-      self.name = parts[1]
-    else
-      if parts[1]
-        c = Category.create(:name => parts[0])
-        puts c.name
-        self.categories << c
-        self.name = parts[1]
-      end
-    end
+    return unless self.name? && self.name.include?(':')
+    parts = self.name.split(':')
+    c = Category.find_or_create_by_name parts[0]
+    self.categories << c
+    self.name = parts[1].strip
     self.save
   end
 
   def set_metadata
     self.visible = true
   end
-
 end

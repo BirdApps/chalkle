@@ -29,6 +29,19 @@ describe Lesson do
     it { Lesson.hidden.should_not include(lesson) }
   end
 
+  describe "cancellation email" do
+    let(:lesson2) { FactoryGirl.create(:lesson, start_at: Date.today, min_attendee: 3) }
+
+    it "sends cancellation email for too little bookings" do
+      lesson2.class_may_cancel.should be_true
+    end
+
+    it "do not send cancellation email for sufficient bookings" do
+      booking = FactoryGirl.create(:booking, lesson: lesson2, status: 'yes', guests: 5)
+      lesson2.class_may_cancel.should be_false
+    end
+  end
+
   describe ".create_from_meetup_hash" do
     let(:result) { MeetupApiStub.lesson_response }
     let(:channel) { FactoryGirl.create(:channel) }
@@ -77,18 +90,6 @@ describe Lesson do
       lesson.duration.should == 600
     end
 
-    pending "associates with existing category" do
-      category = FactoryGirl.create(:category, name: "music and dance")
-      Lesson.create_from_meetup_hash(result, channel)
-      lesson = Lesson.find_by_meetup_id 12345678
-      lesson.category_id.should == category.id
-    end
-
-    pending "creates new category where none exists" do
-      Lesson.create_from_meetup_hash(result, group)
-      Category.find_by_name("music and dance").should be_valid
-    end
-
     it "set lesson to published" do
       Lesson.create_from_meetup_hash(result, channel)
       lesson = Lesson.find_by_meetup_id 12345678
@@ -96,28 +97,21 @@ describe Lesson do
     end
   end
 
-  describe "cancellation email" do
-    let(:lesson2) { FactoryGirl.create(:lesson, start_at: Date.today, min_attendee: 3) }
-
-    it "sends cancellation email for too little bookings" do
-      lesson2.class_may_cancel.should be_true
-    end
-
-    it "do not send cancellation email for sufficient bookings" do
-      booking = FactoryGirl.create(:booking, lesson: lesson2, status: 'yes', guests: 5)
-      lesson2.class_may_cancel.should be_false
-    end
-  end
-
-  describe "#set_categories" do
+  describe "#set_category" do
     it "should create a new category from lesson title" do
       FactoryGirl.create(:lesson, name: "category1: a new lesson")
-      Lesson.find_by_name("category1").valid?.should be_true
+      Category.find_by_name("category1").valid?.should be_true
     end
 
-    pending "should create an association where a category already exists" do
+    it "should strip whitespace from the lesson name" do
+      lesson = FactoryGirl.create(:lesson, name: "category1: a new lesson ")
+      lesson.name.should == 'a new lesson'
+    end
+
+    it "should create an association" do
       category = FactoryGirl.create(:category, name: "category1")
       lesson = FactoryGirl.create(:lesson, name: "category1: a new lesson")
+      lesson.categories.should include category
     end
   end
 
