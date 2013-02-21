@@ -138,6 +138,9 @@ ActiveAdmin.register Lesson  do
       row :image do
         image_tag lesson.image.url if lesson.image
       end
+      row :created_at
+      row :published_at
+      row :updated_at
     end
 
     active_admin_comments

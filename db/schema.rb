@@ -196,6 +196,7 @@ ActiveRecord::Schema.define(:version => 20130217234139) do
     t.boolean  "donation",                                          :default => false
     t.string   "lesson_skill"
     t.text     "venue"
+    t.datetime "published_at"
     t.integer  "lesson_image_id"
   end
 

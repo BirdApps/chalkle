@@ -4,7 +4,7 @@ class Lesson < ActiveRecord::Base
     :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
     :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
     :availabilities, :prerequisites, :additional_comments, :donation,
-    :lesson_skill, :venue, :lesson_image_attributes
+    :lesson_skill, :venue, :published_at, :lesson_image_attributes
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -130,6 +130,7 @@ class Lesson < ActiveRecord::Base
     l.meetup_id = result.id
     l.description = result.description
     l.meetup_data = result.to_json
+    l.published_at = Time.at(result.created / 1000) if result.created.present?
     l.save
     l.channels << channel unless l.channels.exists? channel
     l.valid?
@@ -160,4 +161,5 @@ class Lesson < ActiveRecord::Base
   def set_metadata
     self.visible = true
   end
+
 end
