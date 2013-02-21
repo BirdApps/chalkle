@@ -11,7 +11,7 @@ describe Category do
     let(:categories) { [work, play] }
 
     describe ".select_options" do
-      it "provides an array of options that can be used in select dropdowns" do
+      pending "provides an array of options that can be used in select dropdowns" do
         Category.stub(:all) { categories }
 
         required_array = [['Work', 1], ['Play', 2]]
