@@ -9,9 +9,6 @@ ActiveAdmin.register Category do
   index do
     column :id
     column :name
-    column :channels do |category|
-      category.channels.collect{|c| c.name}.join(", ")
-    end
     default_actions
   end
 end

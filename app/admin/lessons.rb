@@ -10,7 +10,8 @@ ActiveAdmin.register Lesson  do
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :name
-  filter :category
+  filter :categories_name, :as => :select, :label => "Category",
+    :collection => proc{ Category.all.collect{ |c| [c.name, c.name] }}
   filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("LOWER(name) ASC") }
   filter :cost
   filter :start_at
@@ -28,9 +29,11 @@ ActiveAdmin.register Lesson  do
     column :name
     column :attendance
     column :channels do |lesson|
-      lesson.channels.collect{|c| c.name}.join(", ")
+      lesson.channels.collect{ |c| c.name}.join(", ")
     end
-    column :category
+    column :categories do |lesson|
+      lesson.categories.collect{ |c| c.name}.join(", ")
+    end
     column :teacher
     column :cost do |lesson|
       number_to_currency lesson.cost
@@ -51,7 +54,9 @@ ActiveAdmin.register Lesson  do
         link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
       end
       row :teacher
-      row :category
+      row :categories do |lesson|
+        lesson.categories.collect{ |c| c.name}.join(", ")
+      end
       row :start_at
       if !lesson.published?
         row "Availability of the teacher" do
