@@ -17,7 +17,9 @@ ActiveAdmin.register_page "Dashboard" do
             column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
             column("Teacher") { |lesson| lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher" }
             column("Type") { |lesson| lesson.lesson_type }
-            column("Category") { |lesson| lesson.category.present? ? lesson.category.name : "Not assigned"}
+            column :categories do |lesson|
+              lesson.categories.collect{ |c| c.name }.join(", ")
+            end
             column("Last Update") { |lesson| lesson.updated_at.to_formatted_s(:long) }
             column("Status") { |lesson| lesson.status }
             column("Price") { |lesson| number_to_currency lesson.cost }
