@@ -50,13 +50,13 @@ describe Lesson do
     end
 
     it "set status to published" do
-      Lesson.create_from_meetup_hash(result, group)
+      Lesson.create_from_meetup_hash(result, channel)
       lesson = Lesson.find_by_meetup_id 12345678
       lesson.status.should == "Published"
     end
 
     it "set correct published date" do
-      Lesson.create_from_meetup_hash(result, group)
+      Lesson.create_from_meetup_hash(result, channel)
       lesson = Lesson.find_by_meetup_id 12345678
       lesson.published_at.to_time.to_i.should == 1351297791
     end
