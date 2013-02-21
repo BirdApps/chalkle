@@ -9,6 +9,7 @@
 
 /config/database.yml
 /vendor/bundle
+/public/system
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

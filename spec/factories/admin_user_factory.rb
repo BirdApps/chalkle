@@ -10,8 +10,8 @@ FactoryGirl.define do
       role "super"
     end
 
-    factory :group_admin_user do
-      role "group admin"
+    factory :channel_admin_user do
+      role "channel admin"
     end
   end
 end

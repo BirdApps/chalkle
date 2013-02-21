@@ -1,4 +1,4 @@
-ActiveAdmin.register Group do
+ActiveAdmin.register Channel do
   config.sort_order = "name_asc"
 
   controller do
@@ -13,7 +13,7 @@ ActiveAdmin.register Group do
     default_actions
   end
 
-  show title: :name do |group|
+  show title: :name do |channel|
     attributes_table do
       row :name
       row :url_name

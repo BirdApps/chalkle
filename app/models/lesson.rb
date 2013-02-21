@@ -1,16 +1,22 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
-  :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities,
-  :prerequisites, :additional_comments, :donation, :lesson_skill, :venue
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost,
+    :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
+    :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
+    :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
+    :availabilities, :prerequisites, :additional_comments, :donation,
+    :lesson_skill, :venue, :published_at, :lesson_image_attributes
 
-  has_many :group_lessons
-  has_many :groups, :through => :group_lessons
+  has_many :channel_lessons
+  has_many :channels, :through => :channel_lessons
   has_many :lesson_categories
   has_many :categories, :through => :lesson_categories
   belongs_to :teacher, class_name: "Chalkler"
+  has_one :lesson_image, :dependent => :destroy, :inverse_of => :lesson
   has_many :bookings
   has_many :chalklers, :through => :bookings
   has_many :payments, :through => :bookings
+
+  accepts_nested_attributes_for :lesson_image
 
   #Time span for classes requiring attention
   PAST = 3
@@ -41,6 +47,10 @@ class Lesson < ActiveRecord::Base
   before_create :set_metadata
   after_create :set_category
 
+  def image
+    lesson_image.image rescue nil
+  end
+
   def published?
     status == STATUS_1
   end
@@ -54,7 +64,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def class_not_done
-    ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
+    ((start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
   end
 
   def class_coming_up
@@ -115,6 +125,21 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def self.create_from_meetup_hash(result, channel)
+    l = Lesson.find_or_initialize_by_meetup_id result.id
+    l.status = STATUS_1
+    l.name = result.name
+    l.meetup_id = result.id
+    l.description = result.description
+    l.meetup_data = result.to_json
+    l.published_at = Time.at(result.created / 1000) if result.created.present?
+    l.save
+    l.channels << channel unless l.channels.exists? channel
+    l.valid?
+  end
+
+  private
+
   def set_from_meetup_data
     return if meetup_data.empty?
     self.created_at = Time.at(meetup_data["created"] / 1000)
@@ -145,15 +170,4 @@ class Lesson < ActiveRecord::Base
     self.visible = true
   end
 
-  def self.create_from_meetup_hash(result, group)
-    l = Lesson.find_or_initialize_by_meetup_id result.id
-    l.status = STATUS_1
-    l.name = result.name
-    l.meetup_id = result.id
-    l.description = result.description
-    l.meetup_data = result.to_json
-    l.save
-    l.groups << group unless l.groups.exists? group
-    l.valid?
-  end
 end

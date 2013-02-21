@@ -7,11 +7,11 @@ ActiveAdmin.register Booking do
   scope :waitlist
   scope :status_no
 
-  filter :lesson_groups_name, :as => :select, :label => "Group",
-    :collection => proc{ current_admin_user.groups.collect{|g| [g.name, g.name] }}
+  filter :lesson_channels_name, :as => :select, :label => "Channel",
+    :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :lesson, as: :select, collection: proc{ Lesson.accessible_by(current_ability).order("LOWER(name) ASC").visible }
-  filter :chalkler, as: :select, collection: Chalkler.order("name ASC").all
+  filter :chalkler, as: :select, collection: proc{ Chalkler.order("name ASC").all }
   filter :cost
   filter :paid
   filter :guests
@@ -30,8 +30,8 @@ ActiveAdmin.register Booking do
     column :id
     column :lesson
     column :chalkler
-    column :groups do |booking|
-      booking.lesson.groups.collect{|g| g.name}.join(", ")
+    column :channels do |booking|
+      booking.lesson.channels.collect{|c| c.name}.join(", ")
     end
     column :status
     column :cost, :sortable => false do |booking|

@@ -9,8 +9,8 @@ ActiveAdmin.register AdminUser do
   index do
     column :id
     column :name
-    column :groups do |admin_user|
-      admin_user.groups.collect{|g| g.name}.join(", ")
+    column :channels do |admin_user|
+      admin_user.channels.collect{|c| c.name}.join(", ")
     end
     column :email
     column :role
@@ -22,8 +22,8 @@ ActiveAdmin.register AdminUser do
       row :name
       row :email
       row :role
-      row :groups do
-        raw admin_user.groups.collect{ |g| link_to g.name, admin_group_path(g)}.join(", ")
+      row :channels do
+        raw admin_user.channels.collect{ |c| link_to c.name, admin_channel_path(c)}.join(", ")
       end
     end
     active_admin_comments
@@ -33,8 +33,8 @@ ActiveAdmin.register AdminUser do
     f.inputs "Admin User Details" do
       f.input :name
       f.input :email
-      f.input :groups, :as => :check_boxes
-      f.input :role, :as => :select, :collection => ["super", "group admin"]
+      f.input :channels, :as => :check_boxes
+      f.input :role, :as => :select, :collection => ["super", "channel admin"]
     end
     f.actions
   end
