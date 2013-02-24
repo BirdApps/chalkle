@@ -6,11 +6,12 @@ ActiveAdmin.register Lesson  do
     authorize_resource
   end
 
-  filter :groups_name, :as => :select, :label => "Group",
-    :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
+  filter :channels_name, :as => :select, :label => "Channel",
+    :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :name
-  filter :category
+  filter :categories_name, :as => :select, :label => "Category",
+    :collection => proc{ Category.all.collect{ |c| [c.name, c.name] }}
   filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("LOWER(name) ASC") }
   filter :cost
   filter :start_at
@@ -27,10 +28,12 @@ ActiveAdmin.register Lesson  do
     column :id
     column :name
     column :attendance
-    column :groups do |lesson|
-      lesson.groups.collect{|g| g.name}.join(", ")
+    column :channels do |lesson|
+      lesson.channels.collect{ |c| c.name}.join(", ")
     end
-    column :category
+    column :categories do |lesson|
+      lesson.categories.collect{ |c| c.name}.join(", ")
+    end
     column :teacher
     column :cost do |lesson|
       number_to_currency lesson.cost
@@ -51,7 +54,9 @@ ActiveAdmin.register Lesson  do
         link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
       end
       row :teacher
-      row :category
+      row :categories do |lesson|
+        lesson.categories.collect{ |c| c.name}.join(", ")
+      end
       row :start_at
       if !lesson.published?
         row "Availability of the teacher" do
@@ -123,7 +128,7 @@ ActiveAdmin.register Lesson  do
           end
         end
         row :rsvp_list do
-          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, group_url: lesson.groups.collect{|g| g.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, channel_url: lesson.channels.collect{|c| c.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
         row :description do
           simple_format lesson.description
@@ -138,6 +143,9 @@ ActiveAdmin.register Lesson  do
       row :image do
         image_tag lesson.image.url if lesson.image
       end
+      row :created_at
+      row :published_at
+      row :updated_at
     end
 
     active_admin_comments
@@ -190,7 +198,7 @@ ActiveAdmin.register Lesson  do
   member_action :lesson_email do
     lesson = Lesson.find(params[:id])
     render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.confirmed,
-      teachers: lesson.teacher.present? ? lesson.teacher.name : nil,
+      teachers: lesson.teacher.present? ? lesson.teacher.name.split[0].titleize : nil,
       title: lesson.name.present? ? lesson.name : "that is coming up", price: lesson.cost.present? ? lesson.cost : 0,
       reference: lesson.meetup_id.present? ? lesson.meetup_id : "Your Name" }
   end

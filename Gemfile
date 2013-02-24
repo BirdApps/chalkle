@@ -32,7 +32,7 @@ gem 'simple_form',   '~> 2.0.4'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',          '~> 3.2.6'
-  gem 'bootstrap-sass',      '~> 2.0.4.2'
+  gem 'bootstrap-sass',      '~> 2.3.0.0'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'coffee-filter',       '~> 0.1.3'
   gem 'uglifier',            '~> 1.3.0'
