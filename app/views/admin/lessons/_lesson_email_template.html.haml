@@ -1,7 +1,10 @@
 Hi #{teachers},
 
-%p Here are the attendees we have on record for your class, #{title}
-%table{:style=>"border: 1px; width: 25%"}
+%p Here are the attendees we have on record for your class, #{title} and their answers to the preclass question, what are you looking forward to learning from this class?
+%table{:style=>"border: 1px; width: 60%"}
+  %col{:width => "20px"}
+  %col{:width => "5px"}
+  %col{:width => "300px"}
   %tbody
     -bookings.each do |b|
       %tr
@@ -14,9 +17,11 @@ Hi #{teachers},
             %td= "(paid)"
           - else
             %td= ""
+        %td= render "/admin/bookings/answers", :answers => b.answers if b.answers
+        
 -if price > 0
   %p You can expect to receive cash payment of #{number_to_currency price*1.15} per person including GST from those who were not able to pay electronically.
-  %p Can you reply to this email after the class if actual class attendance differs from this list.
+  %p Please reply to this email after the class if actual class attendance differs from this list.
   %p Have a great class and I shall follow up with you subsequent to the class.
 %p Chalkle
 
