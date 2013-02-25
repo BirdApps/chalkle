@@ -1,4 +1,3 @@
-
 #{lesson.category.present? ? (lesson.category.name).downcase : nil} : #{lesson.name.downcase}
 
 %br
@@ -8,6 +7,9 @@ End time: #{ (lesson.start_at.present? && lesson.duration.present?) ? (lesson.st
 
 %br
 Location: #{lesson.venue.present? ? lesson.venue : nil}
+
+.meetup_image{ :style => 'margin: 1em 0;' }
+  =image_tag lesson.image.url if lesson.image
 
 %br
 %br
@@ -21,13 +23,13 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 #{simple_format lesson.learning_outcomes}
 
 %br
-%b type of class 
-#{lesson.lesson_type.downcase}
+%b type of class
+#{lesson.lesson_type.downcase if lesson.lesson_type?}
 
 %br
 %br
-%b skill required 
-#{lesson.lesson_skill.downcase}
+%b skill required
+#{lesson.lesson_skill.downcase if lesson.lesson_skill?}
 
 %br
 %br
@@ -41,7 +43,8 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 #{lesson.prerequisites.blank? ? "None" : (simple_format lesson.prerequisites)}
 
 %br
-%b cost 
+%b cost
+
 #{lesson.cost? ? (cost = number_with_precision(lesson.cost*1.15, :precision => 2, :significant => false)) : "free"} (incl. GST)
 %br
 -if lesson.cost
@@ -50,7 +53,7 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
   %br
   We expect pre-payment for all classes.
   %br
-  RSVP and pay using this paypal link or 
+  RSVP and pay using this paypal link or
   %br
   deposit #{cost} into chalkle's Kiwibank account:
   %br
@@ -81,6 +84,3 @@ If you cancel your RSVP:
 chalkle&deg connects people interested in teaching and learning from each other face-to-face -- in a fun, social environment!
 %br
 Choose from many affordable lessons up for grabs (from intros to master classes) in agriculture, art and craft, business, construction, digital media, food, languages, music and performance, science, technology and zombie survival... and many of the lessons are free!
-
-
-

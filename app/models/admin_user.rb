@@ -4,14 +4,14 @@ class AdminUser < ActiveRecord::Base
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessible :name, :role, :email, :password, :password_confirmation, :remember_me, :group_ids
+  attr_accessible :name, :role, :email, :password, :password_confirmation, :remember_me, :channel_ids
 
-  has_many :group_admins
-  has_many :groups, :through => :group_admins
-  has_many :lessons, :through => :groups, :uniq => true
-  has_many :chalklers, :through => :groups, :uniq => true
-  has_many :bookings, :through => :groups, :uniq => true
-  has_many :categories, :through => :groups, :uniq => true
+  has_many :channel_admins
+  has_many :channels, :through => :channel_admins
+  has_many :lessons, :through => :channels, :uniq => true
+  has_many :chalklers, :through => :channels, :uniq => true
+  has_many :bookings, :through => :channels, :uniq => true
+  has_many :categories, :through => :channels, :uniq => true
   has_many :payments, :through => :bookings
 
   after_create { |admin| admin.send_reset_password_instructions }

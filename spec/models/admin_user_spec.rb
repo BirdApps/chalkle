@@ -2,11 +2,11 @@ require 'spec_helper'
 require 'cancan/matchers'
 
 describe AdminUser do
-  it { should have_many(:groups).through(:group_admins) }
-  it { should have_many(:lessons).through(:groups) }
-  it { should have_many(:chalklers).through(:groups) }
-  it { should have_many(:bookings).through(:groups) }
-  it { should have_many(:categories).through(:groups) }
+  it { should have_many(:channels).through(:channel_admins) }
+  it { should have_many(:lessons).through(:channels) }
+  it { should have_many(:chalklers).through(:channels) }
+  it { should have_many(:bookings).through(:channels) }
+  it { should have_many(:categories).through(:channels) }
   it { should have_many(:payments).through(:bookings) }
 
   describe "abilities" do
@@ -16,7 +16,7 @@ describe AdminUser do
       let(:admin_user){ FactoryGirl.create(:super_admin_user) }
 
       it { should be_able_to(:manage, FactoryGirl.create(:admin_user)) }
-      it { should be_able_to(:manage, FactoryGirl.create(:group)) }
+      it { should be_able_to(:manage, FactoryGirl.create(:channel)) }
 
       it { should be_able_to(:read, FactoryGirl.create(:chalkler)) }
       it { should be_able_to(:create, FactoryGirl.create(:chalkler)) }
@@ -45,26 +45,26 @@ describe AdminUser do
       it { should be_able_to(:manage, FactoryGirl.create(:category)) }
     end
 
-    context "group admin user" do
+    context "channel admin user" do
       before do
-        @group = FactoryGirl.create(:group)
-        @admin_user = FactoryGirl.create(:group_admin_user)
-        @admin_user.groups << @group
+        @channel = FactoryGirl.create(:channel)
+        @admin_user = FactoryGirl.create(:channel_admin_user)
+        @admin_user.channels << @channel
       end
 
       it "should be able to administrate lessons" do
         lesson = FactoryGirl.create(:lesson)
-        lesson.groups << @group
+        lesson.channels << @channel
         ability = Ability.new @admin_user
         ability.should be_able_to(:read, lesson)
         ability.should be_able_to(:update, lesson)
       end
 
-      it "should not be able to administrate groups" do
+      it "should not be able to administrate channels" do
         ability = Ability.new @admin_user
-        ability.should_not be_able_to(:view, @group)
-        ability.should_not be_able_to(:update, @group)
-        ability.should_not be_able_to(:destroy, @group)
+        ability.should_not be_able_to(:view, @channel)
+        ability.should_not be_able_to(:update, @channel)
+        ability.should_not be_able_to(:destroy, @channel)
       end
 
       it "should not be able to administrate admin users" do
@@ -78,7 +78,7 @@ describe AdminUser do
       it "should not be able to administrate bookings" do
         lesson = FactoryGirl.create(:lesson)
         booking = FactoryGirl.create(:booking, lesson: lesson)
-        lesson.groups << @group
+        lesson.channels << @channel
         ability = Ability.new @admin_user
         ability.should_not be_able_to(:view, booking)
         ability.should_not be_able_to(:update, booking)
