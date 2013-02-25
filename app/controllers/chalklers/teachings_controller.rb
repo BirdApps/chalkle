@@ -7,7 +7,7 @@ class Chalklers::TeachingsController < Chalklers::BaseController
   	@chalkler_teaching = Teaching.new(current_chalkler)
   	if @chalkler_teaching.submit(params[:teaching])
   	 redirect_to root_url
-  	 flash[:success] = "Your class has been submitted"
+  	 flash[:notice] = "Your class has been submitted"
   	else
       render 'new'
   	end
