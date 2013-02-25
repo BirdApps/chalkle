@@ -2,8 +2,9 @@
 
 %html
   %head
+    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:400,700' rel='stylesheet' type='text/css'>
     %meta{ charset: 'utf-8' }
-    %title chalkle
+    %title= yield(:title)
 
     = csrf_meta_tag
     = stylesheet_link_tag    "application", media: "all"
