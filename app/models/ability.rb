@@ -19,7 +19,9 @@ class Ability
       can :read, Chalkler, :id => user.chalkler_ids
       can [:read, :update, :meetup_template], Lesson, :id => user.lesson_ids
       can [:record_cash_payment], Booking
+      can [:read, :create, :update], LessonImage
       cannot [:read, :update, :destroy], [Payment, Booking, Category, AdminUser, Channel]
+      cannot :destroy, LessonImage
     end
   end
 end
