@@ -23,14 +23,14 @@ begin
 
     desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
-      Channel.all.each do |g|
-        next unless g.url_name?
-        puts "Importing chalklers for channel #{g.name}"
-        total_pages = RMeetup::Client.fetch(:members, { channel_urlname: g.url_name }).total_pages
+      Channel.all.each do |c|
+        next unless c.url_name?
+        puts "Importing chalklers for channel #{c.name}"
+        total_pages = RMeetup::Client.fetch(:members, { group_urlname: c.url_name }).total_pages
         for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:members, { channel_urlname: g.url_name, offset: i })
+          results = RMeetup::Client.fetch(:members, { group_urlname: c.url_name, offset: i })
           results.each do |r|
-            Chalkler.create_from_meetup_hash(r,g)
+            Chalkler.create_from_meetup_hash(r,c)
           end
         end
       end
@@ -38,14 +38,14 @@ begin
 
     desc "Pull events from meetup"
     task "load_classes" => :environment do
-      Channel.all.each do |g|
-        next unless g.url_name?
-        puts "Importing classes for channel #{g.name}"
-        total_pages = RMeetup::Client.fetch(:events, { channel_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
+      Channel.all.each do |c|
+        next unless c.url_name?
+        puts "Importing classes for channel #{c.name}"
+        total_pages = RMeetup::Client.fetch(:events, { group_urlname: c.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
         for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:events, { channel_urlname: g.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
+          results = RMeetup::Client.fetch(:events, { group_urlname: c.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
           results.each do |r|
-            Lesson.create_from_meetup_hash(r,g)
+            Lesson.create_from_meetup_hash(r,c)
           end
         end
       end
@@ -55,7 +55,7 @@ begin
     task "load_bookings" => :environment do
       l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(10).to_a
       l.each do |event_id|
-        result = RMeetup::Client.fetch(:rsvps, {event_id: event_id.join(','),  fields: 'host'})
+        result = RMeetup::Client.fetch(:rsvps, { event_id: event_id.join(','),  fields: 'host' })
         result.each do |r|
           Booking.create_from_meetup_hash(r)
         end
