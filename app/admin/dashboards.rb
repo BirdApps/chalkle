@@ -45,7 +45,7 @@ ActiveAdmin.register_page "Dashboard" do
 
         if current_admin_user.role=="super"
           panel "Class email task list" do
-            table_for Lesson.accessible_by(current_ability).visible.recent.order("start_at asc") do
+            table_for Lesson.accessible_by(current_ability).visible.recent.published.order("start_at asc") do
               column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
               column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
               column("TODO:Pay Reminder") { |lesson| link_to("Email students", admin_lesson_path(lesson)) if lesson.todo_pay_reminder }
