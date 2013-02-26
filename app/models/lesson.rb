@@ -25,10 +25,11 @@ class Lesson < ActiveRecord::Base
   WEEK = 7
 
   #Lesson statuses
+  STATUS_4 = "Approved"
   STATUS_3 = "Unreviewed"
   STATUS_2 = "On-hold"
   STATUS_1 = "Published"
-  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3]
+  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4]
 
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_numericality_of :teacher_payment, allow_nil: true

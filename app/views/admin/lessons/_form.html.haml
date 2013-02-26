@@ -24,7 +24,7 @@
     -if @lesson.published?
       =f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
       =f.input :description
-    =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Unreviewed"]
+    =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", , "Approved", "Unreviewed"]
 
   =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
     -title = (@lesson.lesson_image.try(:title)) ? @lesson.lesson_image.title : @lesson.name
