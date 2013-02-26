@@ -9,4 +9,18 @@ describe Channel do
 
   it { should validate_presence_of :name }
   it { should validate_presence_of :url_name }
+
+  let(:channel) { FactoryGirl.create(:channel) }
+
+  describe "default values" do
+
+  	it "should set default teacher percentage" do
+  		channel.teacher_percentage.should == 0.8
+  	end
+
+  	it "should set default channel percentage" do
+  		channel.channel_percentage.should == 0.0
+  	end
+
+  end
 end
