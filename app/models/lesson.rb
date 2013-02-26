@@ -46,7 +46,6 @@ class Lesson < ActiveRecord::Base
 
   before_create :set_from_meetup_data
   before_create :set_metadata
-  after_create :set_category
 
   def image
     lesson_image.image rescue nil
@@ -135,7 +134,17 @@ class Lesson < ActiveRecord::Base
     l.meetup_data = result.to_json
     l.save
     l.channels << channel unless l.channels.exists? channel
+    l.set_category
     l.valid?
+  end
+
+  def set_category
+    return unless self.name? && self.name.include?(':')
+    parts = self.name.split(':')
+    c = Category.find_or_create_by_name parts[0]
+    self.categories << c
+    self.name = parts[1].strip
+    self.save
   end
 
   private
@@ -147,15 +156,6 @@ class Lesson < ActiveRecord::Base
     self.updated_at = Time.at(meetup_data["updated"] / 1000)
     self.start_at = Time.at(meetup_data["time"] / 1000) if meetup_data["time"]
     self.duration = meetup_data["duration"] / 1000 if meetup_data["duration"]
-  end
-
-  def set_category
-    return unless self.name? && self.name.include?(':')
-    parts = self.name.split(':')
-    c = Category.find_or_create_by_name parts[0]
-    self.categories << c
-    self.name = parts[1].strip
-    self.save
   end
 
   def set_metadata
