@@ -23,4 +23,24 @@ describe Channel do
   	end
 
   end
+
+  describe "validation" do
+  	
+  	it "should not allow teacher percentage greater than 1" do
+  		channel.teacher_percentage = 1.2
+  		channel.should_not be_valid
+  	end
+
+  	it "should not allow channel percentage greater than 1" do
+  		channel.channel_percentage = 1.2
+  		channel.should_not be_valid
+  	end
+
+  	it "should not allow sum of percentages greater than 1" do
+  		channel.channel_percentage = 0.8
+  		channel.teacher_percentage = 0.8
+  		channel.should_not be_valid
+  	end
+  	
+  end
 end
