@@ -75,6 +75,11 @@ describe Lesson do
       lesson = Lesson.find_by_meetup_id 12345678
       lesson.published_at.to_time.to_i.should == 1351297791
     end
+
+    it "doesn't add another category when category assignment already exists" do
+      Lesson.create_from_meetup_hash(result, channel)
+      Lesson.create_from_meetup_hash(result, channel)
+    end
   end
 
   describe "#set_from_meetup_data" do
@@ -114,6 +119,7 @@ describe Lesson do
     it "should create an association" do
       @lesson.categories.should include @category
     end
+
   end
 
 end

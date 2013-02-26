@@ -143,7 +143,7 @@ class Lesson < ActiveRecord::Base
     return unless self.name? && self.name.include?(':')
     parts = self.name.split(':')
     c = Category.find_or_create_by_name parts[0]
-    self.categories << c
+    self.categories << c unless self.categories.exists? c
     self.name = parts[1].strip
     self.save
   end
