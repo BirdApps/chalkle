@@ -85,7 +85,6 @@ describe Lesson do
       Lesson.create_from_meetup_hash(result, channel)
       lesson = Lesson.find_by_meetup_id 12345678
       lesson.created_at.to_time.to_i.should == 1351297791
-      lesson.updated_at.to_time.to_i.should == 1351297791
       lesson.start_at.to_time.to_i.should == 1351297791
       lesson.duration.should == 600
     end
