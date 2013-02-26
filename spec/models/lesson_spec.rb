@@ -54,7 +54,7 @@ describe Lesson do
     it "updates existing lesson" do
       lesson = FactoryGirl.create(:lesson, meetup_id: 12345678, name: "cool class")
       Lesson.create_from_meetup_hash(result, channel)
-      lesson.reload.name.should == "music and dance: awesome class"
+      lesson.reload.name.should == "awesome class"
     end
 
     it "saves valid #meetup_data" do
@@ -98,20 +98,22 @@ describe Lesson do
   end
 
   describe "#set_category" do
+    before do
+      @category = FactoryGirl.create(:category, name: "category1")
+      @lesson = FactoryGirl.create(:lesson, name: "category1: a new lesson")
+      @lesson.set_category
+    end
+
     it "should create a new category from lesson title" do
-      FactoryGirl.create(:lesson, name: "category1: a new lesson")
       Category.find_by_name("category1").valid?.should be_true
     end
 
     it "should strip whitespace from the lesson name" do
-      lesson = FactoryGirl.create(:lesson, name: "category1: a new lesson ")
-      lesson.name.should == 'a new lesson'
+      @lesson.name.should == 'a new lesson'
     end
 
     it "should create an association" do
-      category = FactoryGirl.create(:category, name: "category1")
-      lesson = FactoryGirl.create(:lesson, name: "category1: a new lesson")
-      lesson.categories.should include category
+      @lesson.categories.should include @category
     end
   end
 
