@@ -3,8 +3,9 @@ require 'spec_helper'
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
   let(:channel) { FactoryGirl.create(:channel) }
+  let(:category) { FactoryGirl.create(:category, name: "music and dance") }
   let(:params) { { title: 'My new class', lesson_skill: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
-  free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', availabilities: '' , additional_comments: ''} }
+  free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', availabilities: '' , additional_comments: '', category_primary_id: category.id} }
 
   before do
     chalkler.channels << channel
@@ -15,10 +16,6 @@ describe "Teachings" do
 
   	it "assign current chalkler as teacher" do
   	  @chalkler_teaching.teacher_id = chalkler.id
-  	end
-
-  	it "extract the bio of current chalkler" do
-  		@chalkler_teaching.bio = chalkler.bio
   	end
 
   end
@@ -89,13 +86,19 @@ describe "Teachings" do
       params[:max_attendee] = '10.3'
       @chalkler_teaching.check_valid_input(params).should be_false
     end
+
+    it "returns false when a primary category is not assigned" do
+      params[:category_primary_id] = '0'
+      @chalkler_teaching.check_valid_input(params).should be_false
+    end
   end
 
   describe "form submit" do
 
-  	let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
+  	let(:category) { FactoryGirl.create(:category, name: "music and dance") }
+    let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
     free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
-    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about'} }
+    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id} }
 
   	it "create an unreviewed lesson with correct form" do
   		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unpublished, :count).by(1)
@@ -105,15 +108,15 @@ describe "Teachings" do
   		expect { @chalkler_teaching.submit({}) }.not_to change(Lesson.unpublished, :count)
   	end
 
-  	it "create a lesson with the correct name" do
-  		@chalkler_teaching.submit(params2)
-  		Lesson.find_by_name(params2[:title]).should be_valid
-  	end
+    it "create a lesson with the correct name" do
+      @chalkler_teaching.submit(params2)
+      Lesson.find_by_name(category.name + " : " + params2[:title]).should be_valid
+    end
 
   	describe "created lesson" do
   	  before do
   	    @chalkler_teaching.submit(params2)
-  	    @lesson = Lesson.find_by_name(params2[:title])
+  	    @lesson = Lesson.find_by_name(category.name + " : " + params2[:title])
   	  end
 
   	    it "has the correct teacher" do
@@ -127,6 +130,10 @@ describe "Teachings" do
   	    it "has the correct lesson skill" do
   	    	@lesson.lesson_skill.should == params2[:lesson_skill]
   	    end
+
+        it "has the correct category" do
+          @lesson.category_ids.should == [category.id]
+        end
 
         it "has the correct what we will do during class" do
           @lesson.do_during_class.should == params2[:do_during_class]
