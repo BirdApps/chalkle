@@ -1,4 +1,4 @@
-#{lesson.category.present? ? (lesson.category.name).downcase : nil} : #{lesson.name.downcase}
+#{lesson.name.downcase}
 
 %br
 Start time: #{lesson.start_at.present? ? lesson.start_at.to_formatted_s(:long) : nil}
