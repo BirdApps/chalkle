@@ -1,16 +1,23 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data, 
-  :description, :visible, :teacher_payment, :lesson_type, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities,
-  :prerequisites, :additional_comments, :donation, :lesson_skill, :venue
+  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost,
+    :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
+    :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
+    :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
+    :availabilities, :prerequisites, :additional_comments, :donation,
+    :lesson_skill, :venue, :published_at, :category_ids,
+    :lesson_image_attributes
 
-  has_many :group_lessons
-  has_many :groups, :through => :group_lessons
-  belongs_to :category
-  belongs_to :teacher, class_name: "Chalkler"
-
+  has_many :channel_lessons
+  has_many :channels, :through => :channel_lessons
+  has_many :lesson_categories
+  has_many :categories, :through => :lesson_categories
   has_many :bookings
   has_many :chalklers, :through => :bookings
   has_many :payments, :through => :bookings
+  belongs_to :teacher, class_name: "Chalkler"
+  has_one :lesson_image, :dependent => :destroy, :inverse_of => :lesson
+
+  accepts_nested_attributes_for :lesson_image
 
   #Time span for classes requiring attention
   PAST = 3
@@ -18,7 +25,7 @@ class Lesson < ActiveRecord::Base
   WEEK = 7
 
   #Lesson statuses
-  STATUS_3 = "Unreviewed" 
+  STATUS_3 = "Unreviewed"
   STATUS_2 = "On-hold"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3]
@@ -39,6 +46,11 @@ class Lesson < ActiveRecord::Base
 
   before_create :set_from_meetup_data
   before_create :set_metadata
+  after_create :set_category
+
+  def image
+    lesson_image.image rescue nil
+  end
 
   def published?
     status == STATUS_1
@@ -53,7 +65,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def class_not_done
-    ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
+    ((start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
   end
 
   def class_coming_up
@@ -77,7 +89,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def uncollected_revenue
-    expected_revenue - collected_revenue    
+    expected_revenue - collected_revenue
   end
 
   def income
@@ -89,7 +101,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def pay_involved
-    (cost.present? ? cost : 0) > 0 
+    (cost.present? ? cost : 0) > 0
   end
 
   def todo_attendee_list
@@ -114,31 +126,7 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  def set_from_meetup_data
-    return if meetup_data.empty?
-    self.created_at = Time.at(meetup_data["created"] / 1000)
-    self.updated_at = Time.at(meetup_data["updated"] / 1000)
-    self.start_at = Time.at(meetup_data["time"] / 1000) if meetup_data["time"]
-    self.duration = meetup_data["duration"] / 1000 if meetup_data["duration"]
-    parts = name.split(":")
-    c = Category.find_by_name parts[0]
-    if c.present?
-      self.category = c
-      self.name = parts[1]
-    else
-      if parts[1]
-        c = Category.create(:name => parts[0])
-        self.category = c
-        self.name = parts[1]
-      end
-    end
-  end
-
-  def set_metadata
-    self.visible = true
-  end
-
-  def self.create_from_meetup_hash(result, group)
+  def self.create_from_meetup_hash(result, channel)
     l = Lesson.find_or_initialize_by_meetup_id result.id
     l.status = STATUS_1
     l.name = result.name
@@ -146,7 +134,31 @@ class Lesson < ActiveRecord::Base
     l.description = result.description
     l.meetup_data = result.to_json
     l.save
-    l.groups << group unless l.groups.exists? group
+    l.channels << channel unless l.channels.exists? channel
     l.valid?
+  end
+
+  private
+
+  def set_from_meetup_data
+    return if meetup_data.empty?
+    self.created_at = Time.at(meetup_data["created"] / 1000)
+    self.published_at = Time.at(meetup_data["created"] / 1000)
+    self.updated_at = Time.at(meetup_data["updated"] / 1000)
+    self.start_at = Time.at(meetup_data["time"] / 1000) if meetup_data["time"]
+    self.duration = meetup_data["duration"] / 1000 if meetup_data["duration"]
+  end
+
+  def set_category
+    return unless self.name? && self.name.include?(':')
+    parts = self.name.split(':')
+    c = Category.find_or_create_by_name parts[0]
+    self.categories << c
+    self.name = parts[1].strip
+    self.save
+  end
+
+  def set_metadata
+    self.visible = true
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130214071857) do
+ActiveRecord::Schema.define(:version => 20130219132647) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -100,43 +100,58 @@ ActiveRecord::Schema.define(:version => 20130214071857) do
     t.text     "email_streams"
   end
 
-  create_table "group_admins", :id => false, :force => true do |t|
-    t.integer "group_id",      :null => false
+  create_table "channel_admins", :id => false, :force => true do |t|
+    t.integer "channel_id",    :null => false
     t.integer "admin_user_id", :null => false
   end
 
-  add_index "group_admins", ["group_id", "admin_user_id"], :name => "index_group_admins_on_group_id_and_admin_user_id", :unique => true
+  add_index "channel_admins", ["channel_id", "admin_user_id"], :name => "index_channel_admins_on_channel_id_and_admin_user_id", :unique => true
 
-  create_table "group_categories", :id => false, :force => true do |t|
-    t.integer "group_id",    :null => false
+  create_table "channel_categories", :id => false, :force => true do |t|
+    t.integer "channel_id",  :null => false
     t.integer "category_id", :null => false
   end
 
-  add_index "group_categories", ["group_id", "category_id"], :name => "index_group_categories_on_group_id_and_category_id", :unique => true
+  add_index "channel_categories", ["channel_id", "category_id"], :name => "index_channel_categories_on_channel_id_and_category_id", :unique => true
 
-  create_table "group_chalklers", :id => false, :force => true do |t|
-    t.integer "group_id",    :null => false
+  create_table "channel_chalklers", :id => false, :force => true do |t|
+    t.integer "channel_id",  :null => false
     t.integer "chalkler_id", :null => false
   end
 
-  add_index "group_chalklers", ["group_id", "chalkler_id"], :name => "index_group_chalklers_on_group_id_and_chalkler_id", :unique => true
+  add_index "channel_chalklers", ["channel_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
 
-  create_table "group_lessons", :id => false, :force => true do |t|
-    t.integer "group_id",  :null => false
-    t.integer "lesson_id", :null => false
+  create_table "channel_lessons", :id => false, :force => true do |t|
+    t.integer "channel_id", :null => false
+    t.integer "lesson_id",  :null => false
   end
 
-  add_index "group_lessons", ["group_id", "lesson_id"], :name => "index_group_lessons_on_group_id_and_lesson_id", :unique => true
+  add_index "channel_lessons", ["channel_id", "lesson_id"], :name => "index_channel_lessons_on_channel_id_and_lesson_id", :unique => true
 
-  create_table "groups", :force => true do |t|
+  create_table "channels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "url_name"
   end
 
+  create_table "lesson_categories", :id => false, :force => true do |t|
+    t.integer "lesson_id",   :null => false
+    t.integer "category_id", :null => false
+  end
+
+  add_index "lesson_categories", ["lesson_id", "category_id"], :name => "index_lesson_categories_on_lesson_id_and_category_id", :unique => true
+
+  create_table "lesson_images", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "lesson_id"
+    t.string   "image_uid"
+    t.string   "image_name"
+  end
+
   create_table "lessons", :force => true do |t|
-    t.integer  "category_id"
     t.integer  "teacher_id"
     t.integer  "meetup_id"
     t.string   "name"
@@ -164,6 +179,7 @@ ActiveRecord::Schema.define(:version => 20130214071857) do
     t.boolean  "donation",                                          :default => false
     t.string   "lesson_skill"
     t.text     "venue"
+    t.datetime "published_at"
   end
 
   create_table "payments", :force => true do |t|

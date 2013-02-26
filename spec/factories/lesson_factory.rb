@@ -3,7 +3,6 @@ FactoryGirl.define do
     name "Learning fun"
     meetup_id
     description "You should really learn, it's fun!"
-    category
     cost 20
 
     factory :lesson_with_bookings do

@@ -20,7 +20,7 @@ class Teaching
   	@chalkler = chalkler
     @teacher_id = @chalkler.id
     @bio = @chalkler.bio
-    @groups = @chalkler.groups
+    @channels = @chalkler.channels
   end
 
   def lesson_args
@@ -34,7 +34,7 @@ class Teaching
     if check_valid_input(params)
       @lesson = Lesson.new(lesson_args)
       if @lesson.save
-        @lesson.groups = @groups
+        @lesson.channels = @channels
       else
         return false
       end
