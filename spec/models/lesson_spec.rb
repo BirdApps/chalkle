@@ -76,10 +76,6 @@ describe Lesson do
       lesson.published_at.to_time.to_i.should == 1351297791
     end
 
-    it "doesn't add another category when category assignment already exists" do
-      Lesson.create_from_meetup_hash(result, channel)
-      Lesson.create_from_meetup_hash(result, channel)
-    end
   end
 
   describe "#set_from_meetup_data" do
@@ -102,9 +98,10 @@ describe Lesson do
   end
 
   describe "#set_category" do
+    
     before do
       @category = FactoryGirl.create(:category, name: "category1")
-      @lesson = FactoryGirl.create(:lesson, name: "category1: a new lesson")
+      @lesson =  FactoryGirl.create(:lesson, name: "category1: a new lesson") 
       @lesson.set_category
     end
 
@@ -118,6 +115,12 @@ describe Lesson do
 
     it "should create an association" do
       @lesson.categories.should include @category
+    end
+
+    it "should not try to reassign the same category" do
+      @lesson.name = "category1: a new lesson"
+      @lesson.set_category      
+      @lesson.categories.should == [@category]
     end
 
   end
