@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130226231809) do
+ActiveRecord::Schema.define(:version => 20130226235554) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -158,31 +158,32 @@ ActiveRecord::Schema.define(:version => 20130226231809) do
     t.integer  "teacher_id"
     t.integer  "meetup_id"
     t.string   "name"
-    t.string   "status",                                            :default => "Unreviewed"
+    t.string   "status",                                                    :default => "Unreviewed"
     t.text     "description"
-    t.decimal  "cost",                :precision => 8, :scale => 2
+    t.decimal  "cost",                        :precision => 8, :scale => 2
     t.datetime "start_at"
     t.integer  "duration"
     t.text     "meetup_data"
-    t.datetime "created_at",                                                                  :null => false
-    t.datetime "updated_at",                                                                  :null => false
-    t.decimal  "teacher_cost",        :precision => 8, :scale => 2
-    t.decimal  "venue_cost",          :precision => 8, :scale => 2
+    t.datetime "created_at",                                                                          :null => false
+    t.datetime "updated_at",                                                                          :null => false
+    t.decimal  "teacher_cost",                :precision => 8, :scale => 2
+    t.decimal  "venue_cost",                  :precision => 8, :scale => 2
     t.boolean  "visible"
-    t.decimal  "teacher_payment",     :precision => 8, :scale => 2
+    t.decimal  "teacher_payment",             :precision => 8, :scale => 2
     t.string   "lesson_type"
     t.text     "teacher_bio"
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
-    t.integer  "min_attendee",                                      :default => 2
+    t.integer  "min_attendee",                                              :default => 2
     t.text     "availabilities"
     t.text     "prerequisites"
     t.text     "additional_comments"
-    t.boolean  "donation",                                          :default => false
+    t.boolean  "donation",                                                  :default => false
     t.string   "lesson_skill"
     t.text     "venue"
     t.datetime "published_at"
+    t.decimal  "channel_percentage_override", :precision => 8, :scale => 2
   end
 
   create_table "payments", :force => true do |t|
