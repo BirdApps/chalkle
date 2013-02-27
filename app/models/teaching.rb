@@ -2,7 +2,7 @@ class Teaching
   include ActiveAttr::Model
 
   attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_skill, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee, 
-  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :lesson_channel_id
+  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
@@ -20,11 +20,12 @@ class Teaching
   def initialize(chalkler)
   	@chalkler = chalkler
     @teacher_id = @chalkler.id
+    @channels = @chalkler.channels
   end
 
   def lesson_args
     { "name" => meetup_event_name(@category_primary_id,@title), "teacher_id" => @teacher_id, "lesson_skill" => @lesson_skill, "teacher_bio" => @bio, "do_during_class" => @do_during_class, 
-    "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60*60, "cost" => price_calculation(@teacher_cost), "teacher_cost" => @teacher_cost, 
+    "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60*60, "cost" => price_calculation(@teacher_cost, @channels.first), "teacher_cost" => @teacher_cost, 
     "max_attendee" => @max_attendee.to_i, "min_attendee" => @min_attendee.to_i, "availabilities" => @availabilities, "prerequisites" => @prerequisites, 
     "additional_comments" => @additional_comments, "venue" => @venue, "status" => "Unreviewed"}
   end
@@ -33,7 +34,7 @@ class Teaching
     if check_valid_input(params)
       @lesson = Lesson.new(lesson_args)
       if @lesson.save
-        @lesson.channels = [Channel.find(@lesson_channel_id)]
+        @lesson.channels = @channels
         @lesson.category_ids = @category_primary_id
       else
         return false
@@ -59,14 +60,13 @@ class Teaching
     @additional_comments = params[:additional_comments]
     @venue = params[:venue]
     @category_primary_id = params[:category_primary_id].to_i
-    @lesson_channel_id = params[:lesson_channel_id].to_i
     self.valid?
   end
 
   private
 
-  def price_calculation(teacher_cost)
-    (teacher_cost.blank? ? 0: teacher_cost.to_d*1.20)
+  def price_calculation(teacher_cost,channel)
+    (teacher_cost.blank? ? 0: teacher_cost.to_d / (1 - channel.chalkle_percentage - channel.channel_percentage))
   end
 
   def meetup_event_name(category_primary_id,title)

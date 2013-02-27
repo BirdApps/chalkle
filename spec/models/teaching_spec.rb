@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
-  let(:channel) { FactoryGirl.create(:channel) }
+  let(:channel) { FactoryGirl.create(:channel, chalkle_percentage: 0.1, channel_percentage: 0.1) }
   let(:category) { FactoryGirl.create(:category, name: "music and dance") }
   let(:params) { { title: 'My new class', lesson_skill: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
   free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', availabilities: '' , additional_comments: '', category_primary_id: category.id} }
@@ -96,10 +96,9 @@ describe "Teachings" do
   describe "form submit" do
 
   	let(:category) { FactoryGirl.create(:category, name: "music and dance") }
-    let(:channel) { FactoryGirl.create(:channel, name: "my channel")}
     let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
     free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
-    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, lesson_channel_id: channel.id} }
+    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id} }
 
   	it "create an unreviewed lesson with correct form" do
   		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unpublished, :count).by(1)
@@ -125,7 +124,7 @@ describe "Teachings" do
   	    end
 
         it "has the correct channel" do
-          @lesson.channels.should == [channel]
+          @lesson.channels.should == chalkler.channels
         end
 
   	    it "has the correct lesson skill" do
@@ -149,7 +148,7 @@ describe "Teachings" do
   	    end
 
         it "has the correct price" do
-          @lesson.cost.should == 24
+          @lesson.cost.should == 20/0.8
         end
 
         pending "has the correct donation setting" do
