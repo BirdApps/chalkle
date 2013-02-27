@@ -16,8 +16,8 @@ ActiveAdmin.register Chalkler do
     end
   end
 
-  filter :groups_name, :as => :select, :label => "Group",
-    :collection => proc{ current_admin_user.groups.collect{ |g| [g.name, g.name] }}
+  filter :channels_name, :as => :select, :label => "Channel",
+    :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :name
   filter :email
@@ -25,8 +25,8 @@ ActiveAdmin.register Chalkler do
   index do
     column :id
     column :name
-    column :groups do |chalkler|
-      chalkler.groups.collect{|g| g.name}.join(", ")
+    column :channels do |chalkler|
+      chalkler.channels.collect{|c| c.name}.join(", ")
     end
     column :meetup_id do |chalkler|
       if chalkler.meetup_data.present?
@@ -53,6 +53,21 @@ ActiveAdmin.register Chalkler do
         end
       end
       row :email
+      row :email_frequency
+      row "Email categories" do
+        if chalkler.email_categories.present?
+          chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
+        else
+          "No email categories selected"
+        end
+      end
+      row "Email streams" do
+        if chalkler.email_streams.present?
+          chalkler.email_streams.collect{|c| Stream.find(c,:select => :name).name}.join(", ")
+        else
+          "No email streams selected"
+        end
+      end
       row :gst
       row :bio
       row :teaching do
@@ -73,7 +88,7 @@ ActiveAdmin.register Chalkler do
   form do |f|
     f.inputs :details do
       f.input :name
-      f.input :groups, :as => :check_boxes
+      f.input :channels, :as => :check_boxes
       f.input :meetup_id
       f.input :email
       f.input :gst

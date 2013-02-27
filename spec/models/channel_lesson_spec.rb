@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe GroupLesson do
+describe ChannelLesson do
 end

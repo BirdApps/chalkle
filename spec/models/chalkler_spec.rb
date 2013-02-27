@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Chalkler do
 
-  it { should have_many(:groups).through(:group_chalklers) }
+  it { should have_many(:channels).through(:channel_chalklers) }
 
   describe '.email_frequency_select_options' do
     it "provides an array of options that can be used in select dropdowns" do
@@ -29,21 +29,21 @@ describe Chalkler do
 
   describe ".create_from_meetup_hash" do
     let(:result) { MeetupApiStub.chalkler_response }
-    let(:group) { FactoryGirl.create(:group) }
+    let(:channel) { FactoryGirl.create(:channel) }
 
     it "saves valid chalkler" do
-      Chalkler.create_from_meetup_hash(result, group)
+      Chalkler.create_from_meetup_hash(result, channel)
       Chalkler.find_by_meetup_id(12345678).should be_valid
     end
 
     it "updates an existing chalkler" do
       chalkler = FactoryGirl.create(:chalkler, meetup_id: 12345678, name: "Jim Smith")
-      Chalkler.create_from_meetup_hash(result, group)
+      Chalkler.create_from_meetup_hash(result, channel)
       chalkler.reload.name.should == "Caitlin Oscars"
     end
 
     it "saves valid #meetup_data" do
-      Chalkler.create_from_meetup_hash(result, group)
+      Chalkler.create_from_meetup_hash(result, channel)
       chalkler = Chalkler.find_by_meetup_id 12345678
       chalkler.meetup_data["id"].should == 12345678
       chalkler.meetup_data["name"].should == "Caitlin Oscars"
@@ -52,10 +52,10 @@ describe Chalkler do
 
   describe "#set_from_meetup_data" do
     let(:result) { MeetupApiStub::chalkler_response }
-    let(:group) { FactoryGirl.create(:group) }
+    let(:channel) { FactoryGirl.create(:channel) }
 
     it "saves correct created_at value" do
-      Chalkler.create_from_meetup_hash(result, group)
+      Chalkler.create_from_meetup_hash(result, channel)
       chalkler = Chalkler.find_by_meetup_id 12345678
       chalkler.created_at.to_time.to_i.should == 1346658337
     end
