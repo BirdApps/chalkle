@@ -96,9 +96,10 @@ describe "Teachings" do
   describe "form submit" do
 
   	let(:category) { FactoryGirl.create(:category, name: "music and dance") }
+    let(:channel) { FactoryGirl.create(:channel, name: "my channel")}
     let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
     free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
-    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id} }
+    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, lesson_channel_id: channel.id} }
 
   	it "create an unreviewed lesson with correct form" do
   		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unpublished, :count).by(1)
@@ -124,7 +125,7 @@ describe "Teachings" do
   	    end
 
         it "has the correct channel" do
-          @lesson.channels.should == chalkler.channels
+          @lesson.channels.should == [channel]
         end
 
   	    it "has the correct lesson skill" do

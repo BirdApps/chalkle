@@ -15,6 +15,7 @@
       = f.input :learning_outcomes, :label => "What will we learn from this class?", :as => :text, :placeholder => "List what people will learn in a format suitable for bullet points. For example: Identify the various ways personal assets can be protected; Identify the most suitable asset protection for the circumstances; Understand the importance of review and updating arrangements, as time goes by and/or circumstances change.", :input_html => { :rows => 6, :class => "span12" }
       = f.input :category_primary_id, :label => "What is the primary category of this class?", :collection => Category.select_options
       = f.input :lesson_skill, :label => "What is the skill level of this class ", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false } 
+      =f.input :lesson_channel_id, :label => "Select the channel to use for advertising the class", :collection => Channel.select_options, include_blank: false 
       = f.input :bio, :label => "Why are you a great teacher for this class?", :as => :text, :placeholder => "Tell us about the experience or background you have, which is relevant for this class. In particular unusal or interesting stories from your past are particularly welcomed. For example: I am a litigatory practised in the area of property and commercial law for 13 years specialising in asset protection, trusts and wills.", :input_html => { :rows => 3, :class => "span12" }
 
       %h3
