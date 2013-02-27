@@ -116,4 +116,18 @@ describe Lesson do
     end
   end
 
+  describe "class costs" do
+
+    let(:lesson) { FactoryGirl.create(:lesson) }
+    
+    describe "default values" do
+      
+      it "should set default channel cost" do
+        lesson.channel_cost.should == 0.0
+      end
+
+    end
+  
+  end
+
 end
