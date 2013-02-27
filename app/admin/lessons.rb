@@ -100,7 +100,13 @@ ActiveAdmin.register Lesson  do
       row "Price excluding GST" do
         number_to_currency lesson.cost
       end
-      row "Teacher payment per attendee" do
+      row "Chalkle income per attendee" do
+        number_to_currency lesson.chalkle_income_per_person
+      end
+      row "Channel income per attendee" do
+        number_to_currency lesson.channel_cost
+      end
+      row "Teacher income per attendee" do
         number_to_currency lesson.teacher_cost
       end
       row :venue_cost do

@@ -15,8 +15,10 @@
       =f.input :teacher_bio, :label => "Your chalkler will be"
       =f.input :prerequisites, :label => "What to bring"
       =f.input :additional_comments
-    =f.input :cost, :label => "Price excluding GST"
-    =f.input :teacher_cost
+    =f.input :cost, :label => "Advertised price excluding GST"
+    =f.input :chalkle_percentage, :label => "Percentage of revenue going to chalkle", :input_html => { :readonly => true }
+    =f.input :channel_cost, :label => "Channel income per attendee"
+    =f.input :teacher_cost, :label => "Teacher income per attendee"
     =f.input :venue_cost
     =f.input :max_attendee
     =f.input :min_attendee
@@ -30,3 +32,15 @@
     -title = (@lesson.lesson_image.try(:title)) ? @lesson.lesson_image.title : @lesson.name
     =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved.",  :input_html => { :rows => 5, :value => title }
   =f.actions
+
+:javascript    
+  $('#lesson_channel_cost').keyup(function(e) {
+    var chalkle_percentage = parseFloat($('#lesson_chalkle_percentage').val());
+    var direct_cost = parseFloat(e.target.value) + parseFloat($('#lesson_teacher_cost').val());
+    $('#lesson_cost').val(direct_cost / (1 - chalkle_percentage));
+  });
+  $('#lesson_teacher_cost').keyup(function(e) {
+    var chalkle_percentage = parseFloat($('#lesson_chalkle_percentage').val());
+    var direct_cost = parseFloat(e.target.value) + parseFloat($('#lesson_channel_cost').val());
+    $('#lesson_cost').val(direct_cost/(1 - chalkle_percentage));
+  });
