@@ -26,4 +26,8 @@ class Channel < ActiveRecord::Base
     errors.add(:chalkle_percentage, "Sum of revenue percentages must be less than or equal to 1") unless (channel_percentage + teacher_percentage + chalkle_percentage <= 1)
   end
 
+  def self.select_options
+    all(order: "name").map { |c| [c.name, c.id] }
+  end
+
 end
