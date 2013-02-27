@@ -1,0 +1,80 @@
+@import "bootstrap";
+@import "bourbon";
+@import "image";
+
+@font-face {
+  font-family: "Eraser";
+  src: url("/assets/erasdust-webfont.eot");
+  src: url("/assets/erasdust-webfont.eot?#iefix") format("embedded-opentype");
+  src: url("/assets/erasdust-webfont.woff") format("woff");
+  src: url("/assets/erasdust-webfont.ttf") format("truetype");
+  src: url("/assets/erasdust-webfont.svg#EraserDustRegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+$pink: #cd4063;
+$blackboard: #2d2c29;
+$font_family_chalk: "Cabin Sketch", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+
+body {
+  padding-top: 0;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.navbar {
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 1em;
+  margin-bottom: 30px;
+  .brand {
+    padding: 0;
+    margin: 0;
+  }
+  .navbar-inner {
+    background: #222222 asset-url("bg_grey_fabric.png", image) left top repeat;
+    padding: 10px 0;
+    border-bottom: solid 1px gray;
+  }
+  .nav {
+    margin-top: 7px;
+    float: right;
+    li {
+      margin-left: 15px;
+      &.fl-right {float: right;}
+      &.no-right-margin {margin: 0 0 0 15px;}
+      a {
+        -webkit-transition: all 0.5s;
+        position: relative;
+        color: white;
+        display: block;
+        padding: 7px 10px;
+        line-height: 18px;
+        text-decoration: none;
+        border-radius: 2px;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border: dashed 1px #999999;
+        &.no-border { border: none; font-weight: normal;}
+        text-shadow: 0px 1px 0px black;
+        &:hover {
+          background: none;
+          color: $pink;
+          -webkit-transform: rotate(-2deg);
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.hero-unit {
+  font-family: $font_family_chalk;
+  @include radial-gradient($blackboard, darken($blackboard, 9%));
+  color: white;
+  padding: 20px 60px;
+}
+
+@import "forms";
+@import "typography";

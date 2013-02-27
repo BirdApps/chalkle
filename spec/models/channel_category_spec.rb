@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GroupCategory do
-  it { should belong_to(:group) }
+describe ChannelCategory do
+  it { should belong_to(:channel) }
   it { should belong_to(:category) }
 end
