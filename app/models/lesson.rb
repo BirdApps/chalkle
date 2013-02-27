@@ -34,8 +34,8 @@ class Lesson < ActiveRecord::Base
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_numericality_of :teacher_payment, allow_nil: true
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
-  validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "Donation classes have no teacher cost" }, :if => "self.donation==true"
-  validates :cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "Donation classes have no price" }, :if => "self.donation==true"
+  validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
+  validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Advertised price must be positive" }
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -47,6 +47,22 @@ class Lesson < ActiveRecord::Base
 
   before_create :set_from_meetup_data
   before_create :set_metadata
+
+  def chalkle_percentage
+    if channels.present?
+      return channels.collect{|c| c.chalkle_percentage}.first
+    else
+      return 0.125
+    end
+  end
+
+  def channel_percentage
+    if channels.present?
+      return channels.collect{|c| c.channel_percentage}.first
+    else
+      return 0.125
+    end
+  end
 
   def image
     lesson_image.image rescue nil

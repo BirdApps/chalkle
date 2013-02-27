@@ -97,14 +97,14 @@ ActiveAdmin.register Lesson  do
       row "Advertised price including GST" do
         number_to_currency (lesson.cost.present? ? lesson.cost*1.15 : nil)
       end
-      row "Price excluding GST" do
+      row "Advertised price excluding GST" do
         number_to_currency lesson.cost
       end
       row "Chalkle income per attendee" do
-        number_to_currency lesson.chalkle_income_per_person
+        number_to_currency (lesson.cost.present? ? lesson.chalkle_percentage*lesson.cost : nil)
       end
       row "Channel income per attendee" do
-        number_to_currency lesson.channel_cost
+        number_to_currency (lesson.cost.present? ? lesson.channel_percentage*lesson.cost : nil)
       end
       row "Teacher income per attendee" do
         number_to_currency lesson.teacher_cost
