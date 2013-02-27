@@ -9,6 +9,35 @@ describe Lesson do
 
   let(:lesson) { FactoryGirl.create(:lesson) }
 
+  describe "validation" do
+    
+    it "should not allow non numercial teacher cost" do
+      lesson.teacher_cost = "resres"
+      lesson.should_not be_valid
+    end
+
+    it "should not allow non numercial cost" do
+      lesson.cost = "resres"
+      lesson.should_not be_valid
+    end
+
+    it "should not allow negative cost" do
+      lesson.cost = -10
+      lesson.should_not be_valid
+    end
+
+    it "should not allow non numerical teacher payment" do
+      lesson.teacher_payment = "resres"
+      lesson.should_not be_valid
+    end
+
+    it "should not allow non valid status" do
+      lesson.status = "resres"
+      lesson.should_not be_valid
+    end
+
+  end
+
   describe ".visible" do
     it { Lesson.visible.should include(lesson) }
 
@@ -116,14 +145,34 @@ describe Lesson do
     end
   end
 
-  describe "class costs" do
+  describe "lesson costs" do
 
-    let(:lesson) { FactoryGirl.create(:lesson) }
+    let(:result) { MeetupApiStub::lesson_response }
+    let(:channel) { FactoryGirl.create(:channel, chalkle_percentage: 0.2) }
     
     describe "default values" do
-      
-      it "should set default channel cost" do
-        lesson.channel_cost.should == 0.0
+
+      before do
+        Lesson.create_from_meetup_hash(result, channel)
+        @lesson = Lesson.find_by_meetup_id 12345678
+      end
+
+      it "should retrieve the channel's channel percentage" do
+        @lesson.channel_percentage.should == channel.channel_percentage
+      end
+
+      it "should retrieve the channel's chalkle percentage" do
+        @lesson.chalkle_percentage.should == channel.chalkle_percentage
+      end
+
+      it "should use default chalkle percentage if there are no channels" do
+        lesson2 = FactoryGirl.create(:lesson, meetup_id: 516473924)
+        lesson2.chalkle_percentage.should == 0.125
+      end
+
+      it "should use default channel percentage if there are no channels" do
+        lesson2 = FactoryGirl.create(:lesson, meetup_id: 516473924)
+        lesson2.channel_percentage.should == 0.125
       end
 
     end
