@@ -133,9 +133,8 @@ ActiveRecord::Schema.define(:version => 20130226235554) do
     t.datetime "created_at",                                                          :null => false
     t.datetime "updated_at",                                                          :null => false
     t.string   "url_name"
-    t.decimal  "channel_percentage", :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "teacher_percentage", :precision => 8, :scale => 2, :default => 0.8
-    t.decimal  "chalkle_percentage", :precision => 8, :scale => 2, :default => 0.125
+    t.decimal  "channel_percentage", :precision => 8, :scale => 2, :default => 0.125
+    t.decimal  "teacher_percentage", :precision => 8, :scale => 2, :default => 0.75
   end
 
   create_table "lesson_categories", :id => false, :force => true do |t|

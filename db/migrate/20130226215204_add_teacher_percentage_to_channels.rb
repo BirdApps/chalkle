@@ -1,6 +1,6 @@
 class AddTeacherPercentageToChannels < ActiveRecord::Migration
   def up
-  	add_column :channels, :teacher_percentage, :decimal, :default => 0.8, :precision => 8, :scale => 2
+  	add_column :channels, :teacher_percentage, :decimal, :default => 0.75, :precision => 8, :scale => 2
 
   	Channel.reset_column_information
 

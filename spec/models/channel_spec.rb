@@ -11,18 +11,17 @@ describe Channel do
   it { should validate_presence_of :url_name }
   it { should validate_presence_of :teacher_percentage }
   it { should validate_presence_of :channel_percentage }
-  it { should validate_presence_of :chalkle_percentage }
 
   let(:channel) { FactoryGirl.create(:channel) }
 
   describe "default values" do
 
   	it "should set default teacher percentage" do
-  		channel.teacher_percentage.should == 0.8
+  		channel.teacher_percentage.should == 0.75
   	end
 
   	it "should set default channel percentage" do
-  		channel.channel_percentage.should == 0.0
+  		channel.channel_percentage.should == 0.125
   	end
 
   	it "should set default chalkle percentage" do
@@ -43,15 +42,9 @@ describe Channel do
   		channel.should_not be_valid
   	end
 
-  	it "should not allow chalkle percentage greater than 1" do
-  		channel.chalkle_percentage = 1.2
-  		channel.should_not be_valid
-  	end
-
-  	it "should not allow sum of percentages greater than 1" do
-  		channel.channel_percentage = 0.8
-  		channel.teacher_percentage = 0.8
-  		channel.chalkle_percentage = 0.5
+  	it "should not allow sum of percentages greater than 0.875" do
+  		channel.channel_percentage = 0.6
+  		channel.teacher_percentage = 0.4
   		channel.should_not be_valid
   	end
 

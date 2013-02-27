@@ -31,6 +31,16 @@ describe Lesson do
       lesson.should_not be_valid
     end
 
+    it "should not allow non numerical channel percentage override" do
+      lesson.channel_percentage_override = "resres"
+      lesson.should_not be_valid
+    end
+
+    it "should not allow channel percentage override greater than 1" do
+      lesson.channel_percentage_override = 1.2
+      lesson.should_not be_valid
+    end
+
     it "should not allow non valid status" do
       lesson.status = "resres"
       lesson.should_not be_valid
@@ -148,7 +158,7 @@ describe Lesson do
   describe "lesson costs" do
 
     let(:result) { MeetupApiStub::lesson_response }
-    let(:channel) { FactoryGirl.create(:channel, chalkle_percentage: 0.2) }
+    let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.2, teacher_percentage: 0.5) }
     
     describe "default values" do
 
@@ -175,6 +185,20 @@ describe Lesson do
         lesson2.channel_percentage.should == 0.125
       end
 
+    end
+
+    describe "override exists" do
+      
+      before do
+        Lesson.create_from_meetup_hash(result, channel)
+        @lesson = Lesson.find_by_meetup_id 12345678
+      end
+
+      it "should override the default channel percentage" do
+        @lesson.channel_percentage_override = 0.0
+        @lesson.save
+        @lesson.channel_percentage.should == 0.0
+      end
     end
   
   end
