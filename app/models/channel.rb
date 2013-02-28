@@ -23,8 +23,8 @@ class Channel < ActiveRecord::Base
 
   def percentage_sum_validation
     return unless channel_percentage and teacher_percentage
-    errors.add(:channel_percentage, "Sum of revenue percentages must be equal to 1") unless (channel_percentage + teacher_percentage <= 1 - CHALKLE_PERCENTAGE)
-    errors.add(:teacher_percentage, "Sum of revenue percentages must be equal to 1") unless (channel_percentage + teacher_percentage <= 1 - CHALKLE_PERCENTAGE)
+    errors.add(:channel_percentage, "Sum of revenue percentages must be less than chalkle percentage") unless (channel_percentage + teacher_percentage <= 1 - CHALKLE_PERCENTAGE)
+    errors.add(:teacher_percentage, "Sum of revenue percentages must be less than chalkle percentage") unless (channel_percentage + teacher_percentage <= 1 - CHALKLE_PERCENTAGE)
   end
 
   def chalkle_percentage

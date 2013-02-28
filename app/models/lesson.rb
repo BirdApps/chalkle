@@ -5,7 +5,7 @@ class Lesson < ActiveRecord::Base
     :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
     :availabilities, :prerequisites, :additional_comments, :donation,
     :lesson_skill, :venue, :published_at, :category_ids,
-    :lesson_image_attributes, :channel_percentage_override
+    :lesson_image_attributes, :channel_percentage_override, :chalkle_percentage_override
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -37,7 +37,9 @@ class Lesson < ActiveRecord::Base
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Advertised price must be positive" }
   validates :channel_percentage_override, allow_nil: true, :numericality => {:less_than_or_equal_to => 1, :message => "Channel percentage can not be greater than 100%" }
-  
+  validate :channel_percentage_validation
+  validate :revenue_split_validation
+
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
@@ -49,12 +51,21 @@ class Lesson < ActiveRecord::Base
   before_create :set_from_meetup_data
   before_create :set_metadata
 
+  def revenue_split_validation
+    return unless (channel_percentage_override.present? || chalkle_percentage_override.present?) and teacher_cost.present? and cost.present?
+    if ( ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) != 0) )
+      errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
+      errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
+      errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle") 
+    end
+  end
+
   def channel_percentage_validation
     return unless channel_percentage and chalkle_percentage
     errors.add(:channel_percentage_override, "Percentage of revenue paid to channel is too high") unless (channel_percentage <= 1 - chalkle_percentage)
   end
 
-  def chalkle_percentage
+  def default_chalkle_percentage
     if channels.present?
       return channels.collect{|c| c.chalkle_percentage}.first
     else
@@ -62,13 +73,22 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  def channel_percentage
-    return channel_percentage_override unless channel_percentage_override.nil?
+  def chalkle_percentage
+    return chalkle_percentage_override unless chalkle_percentage_override.nil?
+    default_chalkle_percentage
+  end
+
+  def default_channel_percentage
     if channels.present?
       return channels.collect{|c| c.channel_percentage}.first
     else
       return 0.125
     end
+  end
+
+  def channel_percentage
+    return channel_percentage_override unless channel_percentage_override.nil?
+    default_channel_percentage
   end
 
   def image

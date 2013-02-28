@@ -16,8 +16,10 @@
       =f.input :prerequisites, :label => "What to bring"
       =f.input :additional_comments
     =f.input :cost, :label => "Advertised price excluding GST"
-    =f.input :chalkle_percentage, :label => "Default % of revenue paid chalkle", :input_html => { :disabled => true, :readonly => true }
-    =f.input :channel_percentage, :label => "Default % of revenue paid channel", :input_html => { :disabled => true, :readonly => true }
+    =f.input :default_chalkle_percentage, :label => "Default % of revenue paid chalkle", :input_html => { :disabled => true, :readonly => true }
+    -if current_admin_user.role=="super"
+      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle"
+    =f.input :default_channel_percentage, :label => "Default % of revenue paid channel", :input_html => { :disabled => true, :readonly => true }
     =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel"
     =f.input :teacher_cost, :label => "Teacher income per attendee"
     =f.input :venue_cost
@@ -34,25 +36,56 @@
     =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved.",  :input_html => { :rows => 5, :value => title }
   =f.actions
 
-:javascript    
+:javascript
+
   $('#lesson_teacher_cost').keyup(function(e) {
-    var teacher_percentage = 1 - parseFloat($('#lesson_channel_percentage').val()) - parseFloat($('#lesson_chalkle_percentage').val());
-    if (e.target.value){
-      $('#lesson_cost').val(e.target.value / teacher_percentage);   
+    if ($('#lesson_channel_percentage_override').val()){
+      $channel_percentage = parseFloat( $('#lesson_channel_percentage_override').val() );
+    }
+    else{
+      $channel_percentage = parseFloat( $('#lesson_default_channel_percentage').val() );
+    }
+
+    if ($('#lesson_chalkle_percentage_override').val()){
+      $chalkle_percentage = parseFloat( $('#lesson_chalkle_percentage_override').val() );
+    }
+    else{
+      $chalkle_percentage = parseFloat( $('#lesson_default_chalkle_percentage').val() );
+    }
+
+    if (e.target.value) {
+      $('#lesson_cost').val( e.target.value / (1 - $channel_percentage - $chalkle_percentage) );   
     }
     else{
       $('#lesson_cost').val('Missing teacher income per attendee'); 
     }
   });
+
   $('#lesson_channel_percentage_override').keyup(function(e) {
     if (e.target.value){
-      var teacher_percentage = 1 - parseFloat(e.target.value) - parseFloat($('#lesson_chalkle_percentage').val());
+      $channel_percentage = e.target.value;
     }
     else{
-      var teacher_percentage = 1 - parseFloat($('#lesson_channel_percentage').val()) - parseFloat($('#lesson_chalkle_percentage').val());
+      $channel_percentage = parseFloat( $('#lesson_default_channel_percentage').val() );
+    }
+
+    if ($('#lesson_teacher_cost').val()){
+      $('#lesson_cost').val( parseFloat($('#lesson_teacher_cost').val()) / (1 - $channel_percentage - $chalkle_percentage));
+    }
+    else{
+      $('#lesson_cost').val('Missing teacher income per attendee'); 
+    }
+  });
+
+  $('#lesson_chalkle_percentage_override').keyup(function(e) {
+    if (e.target.value){
+      $chalkle_percentage = parseFloat( e.target.value)
+    }
+    else{
+      $chalkle_percentage = parseFloat( $('#lesson_default_chalkle_percentage').val() );
     }
     if ($('#lesson_teacher_cost').val()){
-      $('#lesson_cost').val(parseFloat($('#lesson_teacher_cost').val()) / teacher_percentage);
+      $('#lesson_cost').val( parseFloat($('#lesson_teacher_cost').val()) / (1 - $channel_percentage - $chalkle_percentage));
     }
     else{
       $('#lesson_cost').val('Missing teacher income per attendee'); 

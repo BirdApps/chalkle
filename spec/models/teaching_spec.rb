@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
-  let(:channel) { FactoryGirl.create(:channel, chalkle_percentage: 0.1, channel_percentage: 0.1) }
+  let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.1, teacher_percentage: 0.5) }
   let(:category) { FactoryGirl.create(:category, name: "music and dance") }
   let(:params) { { title: 'My new class', lesson_skill: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
   free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', availabilities: '' , additional_comments: '', category_primary_id: category.id} }
@@ -148,7 +148,7 @@ describe "Teachings" do
   	    end
 
         it "has the correct price" do
-          @lesson.cost.should == 20/0.8
+          @lesson.cost.should == (20/0.5).to_d
         end
 
         pending "has the correct donation setting" do

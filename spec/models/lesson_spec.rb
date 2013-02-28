@@ -9,37 +9,9 @@ describe Lesson do
 
   let(:lesson) { FactoryGirl.create(:lesson) }
 
-  describe "validation" do
+  describe "column validations" do
     
-    it "should not allow non numercial teacher cost" do
-      lesson.teacher_cost = "resres"
-      lesson.should_not be_valid
-    end
 
-    it "should not allow non numercial cost" do
-      lesson.cost = "resres"
-      lesson.should_not be_valid
-    end
-
-    it "should not allow negative cost" do
-      lesson.cost = -10
-      lesson.should_not be_valid
-    end
-
-    it "should not allow non numerical teacher payment" do
-      lesson.teacher_payment = "resres"
-      lesson.should_not be_valid
-    end
-
-    it "should not allow non numerical channel percentage override" do
-      lesson.channel_percentage_override = "resres"
-      lesson.should_not be_valid
-    end
-
-    it "should not allow channel percentage override greater than 1" do
-      lesson.channel_percentage_override = 1.2
-      lesson.should_not be_valid
-    end
 
     it "should not allow non valid status" do
       lesson.status = "resres"
@@ -160,12 +132,43 @@ describe Lesson do
     let(:result) { MeetupApiStub::lesson_response }
     let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.2, teacher_percentage: 0.5) }
     
+    before do
+      Lesson.create_from_meetup_hash(result, channel)
+      @lesson = Lesson.find_by_meetup_id 12345678
+    end
+    
+    describe "cost validations" do
+      it "should not allow non numercial teacher cost" do
+        lesson.teacher_cost = "resres"
+        lesson.should_not be_valid
+      end
+
+      it "should not allow non numercial cost" do
+        lesson.cost = "resres"
+        lesson.should_not be_valid
+      end
+
+      it "should not allow negative cost" do
+        lesson.cost = -10
+        lesson.should_not be_valid
+      end
+
+      it "should not allow non numerical teacher payment" do
+        lesson.teacher_payment = "resres"
+        lesson.should_not be_valid
+      end
+
+      it "should not allow teacher cost greater than cost" do
+        lesson.cost = 10
+        lesson.teacher_cost = 20
+        lesson.should_not be_valid
+      end
+
+    end
+
     describe "default values" do
 
-      before do
-        Lesson.create_from_meetup_hash(result, channel)
-        @lesson = Lesson.find_by_meetup_id 12345678
-      end
+
 
       it "should retrieve the channel's channel percentage" do
         @lesson.channel_percentage.should == channel.channel_percentage
@@ -199,6 +202,29 @@ describe Lesson do
         @lesson.save
         @lesson.channel_percentage.should == 0.0
       end
+
+      it "should override the default chalkle percentage" do
+        @lesson.chalkle_percentage_override = 0.5
+        @lesson.save
+        @lesson.chalkle_percentage.should == 0.5
+      end
+
+      it "should not allow non numerical channel percentage override" do
+        lesson.channel_percentage_override = "resres"
+        lesson.should_not be_valid
+      end
+
+      it "should not allow channel percentage override greater than 1" do
+        lesson.channel_percentage_override = 1.2
+        lesson.should_not be_valid
+      end
+
+      it "should not allow channel percentage that cause total cost to exceed price" do
+        @lesson.chalkle_percentage_override = 0.5
+        @lesson.cost = 10
+        @lesson.teacher_cost = 0
+      end
+
     end
   
   end

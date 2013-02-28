@@ -27,14 +27,14 @@ class Teaching
     { "name" => meetup_event_name(@category_primary_id,@title), "teacher_id" => @teacher_id, "lesson_skill" => @lesson_skill, "teacher_bio" => @bio, "do_during_class" => @do_during_class, 
     "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60*60, "cost" => price_calculation(@teacher_cost, @channels.first), "teacher_cost" => @teacher_cost, 
     "max_attendee" => @max_attendee.to_i, "min_attendee" => @min_attendee.to_i, "availabilities" => @availabilities, "prerequisites" => @prerequisites, 
-    "additional_comments" => @additional_comments, "venue" => @venue, "status" => "Unreviewed"}
+    "additional_comments" => @additional_comments, "venue" => @venue, "status" => "Unreviewed", "channel_percentage_override" => nil, "chalkle_percentage_override" => nil}
   end
 
   def submit(params)
     if check_valid_input(params)
       @lesson = Lesson.new(lesson_args)
       if @lesson.save
-        @lesson.channels = @channels
+        @lesson.channels = [@channels.first]
         @lesson.category_ids = @category_primary_id
       else
         return false
@@ -66,7 +66,7 @@ class Teaching
   private
 
   def price_calculation(teacher_cost,channel)
-    (teacher_cost.blank? ? 0: teacher_cost.to_d / (1 - channel.chalkle_percentage - channel.channel_percentage))
+    teacher_cost.blank? ? 0: ( teacher_cost.to_d / (1 - channel.chalkle_percentage - channel.channel_percentage) ) 
   end
 
   def meetup_event_name(category_primary_id,title)
