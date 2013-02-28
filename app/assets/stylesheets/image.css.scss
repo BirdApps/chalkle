@@ -1,13 +1,14 @@
 @font-face {
-    font-family: 'Eraser';
-    src: url('/assets/erasdust-webfont.eot');
-    src: url('/assets/erasdust-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/assets/erasdust-webfont.woff') format('woff'),
-         url('/assets/erasdust-webfont.ttf') format('truetype'),
-         url('/assets/erasdust-webfont.svg#EraserDustRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'MrChalk';
+  src: url('/assets/25FE67_0_0.eot');
+  src: url('/assets/25FE67_0_0.eot?#iefix') format('embedded-opentype'),
+  url('/assets/25FE67_0_0.woff') format('woff'),
+  url('/assets/25FE67_0_0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
+
+$font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
 div.meetup_image {
   margin: 1em 0;
@@ -29,9 +30,9 @@ div.chalkle_image {
      border: medium none !important;
      color: #AAA;
      display: table-cell;
-     font-family: Eraser;
+     font-family: $font_family_chalk;
      font-weight: normal;
-     letter-spacing: 3pt;
+     letter-spacing: 2pt;
      line-height: 1;
      vertical-align: middle;
      word-wrap: normal;

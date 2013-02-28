@@ -32,6 +32,7 @@ class Lesson < ActiveRecord::Base
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4]
 
   validates_uniqueness_of :meetup_id, allow_nil: true
+  validates_presence_of :name
   validates_numericality_of :teacher_payment, allow_nil: true
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
@@ -183,23 +184,27 @@ class Lesson < ActiveRecord::Base
   def self.create_from_meetup_hash(result, channel)
     l = Lesson.find_or_initialize_by_meetup_id result.id
     l.status = STATUS_1
-    l.name = result.name
+    l.name = l.set_name result.name
     l.meetup_id = result.id
     l.description = result.description
     l.meetup_data = result.to_json
     l.save
+    l.set_category result.name
     l.channels << channel unless l.channels.exists? channel
-    l.set_category
     l.valid?
   end
 
-  def set_category
-    return unless self.name? && self.name.include?(':')
-    parts = self.name.split(':')
-    c = Category.find_or_create_by_name parts[0]
-    self.categories << c
-    self.name = parts[1].strip
-    self.save
+  def set_category(name)
+    return unless name.include?(':')
+    parts = name.split(':')
+    c = Category.find_by_name parts[0]
+    categories << c unless (c.nil? || categories.exists?(c))
+  end
+
+  def set_name(name)
+    return name.strip unless name.include?(':')
+    parts = name.split(':')
+    parts[1].strip
   end
 
   private

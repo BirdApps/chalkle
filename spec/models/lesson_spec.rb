@@ -61,6 +61,7 @@ describe Lesson do
     end
 
     it "updates existing lesson" do
+      FactoryGirl.create(:category, name: "music and dance")
       lesson = FactoryGirl.create(:lesson, meetup_id: 12345678, name: "cool class")
       Lesson.create_from_meetup_hash(result, channel)
       lesson.reload.name.should == "awesome class"
@@ -84,6 +85,7 @@ describe Lesson do
       lesson = Lesson.find_by_meetup_id 12345678
       lesson.published_at.to_time.to_i.should == 1351297791
     end
+
   end
 
   describe "#set_from_meetup_data" do
@@ -97,31 +99,28 @@ describe Lesson do
       lesson.start_at.to_time.to_i.should == 1351297791
       lesson.duration.should == 600
     end
-
-    it "set lesson to published" do
-      Lesson.create_from_meetup_hash(result, channel)
-      lesson = Lesson.find_by_meetup_id 12345678
-      lesson.status.should == "Published"
-    end
   end
 
   describe "#set_category" do
-    before do
-      @category = FactoryGirl.create(:category, name: "category1")
-      @lesson = FactoryGirl.create(:lesson, name: "category1: a new lesson")
-      @lesson.set_category
-    end
-
-    it "should create a new category from lesson title" do
-      Category.find_by_name("category1").valid?.should be_true
-    end
-
-    it "should strip whitespace from the lesson name" do
-      @lesson.name.should == 'a new lesson'
-    end
-
     it "should create an association" do
-      @lesson.categories.should include @category
+      category = FactoryGirl.create(:category, name: "category")
+      lesson = FactoryGirl.create(:lesson)
+      lesson.set_category 'category: a new lesson'
+      lesson.categories.should include category
+    end
+  end
+
+  describe "#set_name" do
+    before do
+      @lesson = Lesson.new
+    end
+
+    it "returns text after the colon" do
+      @lesson.set_name('zzz: xxx').should == 'xxx'
+    end
+
+    it "strips whitespace from the lesson name" do
+      @lesson.set_name(' xxx ').should == 'xxx'
     end
   end
 
