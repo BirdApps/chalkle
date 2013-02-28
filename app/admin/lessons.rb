@@ -22,6 +22,12 @@ ActiveAdmin.register Lesson  do
     end
     helper LessonHelper
     helper BookingHelper
+
+    def update
+      params[:lesson][:chalkle_percentage_override] = (params[:lesson][:chalkle_percentage_override].to_d/100).to_s unless params[:lesson][:chalkle_percentage_override].nil?
+      params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].nil?     
+      update!
+    end
   end
 
   index do

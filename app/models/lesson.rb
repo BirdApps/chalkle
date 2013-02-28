@@ -37,7 +37,9 @@ class Lesson < ActiveRecord::Base
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Advertised price must be positive" }
   validates :channel_percentage_override, allow_nil: true, :numericality => {:less_than_or_equal_to => 1, :message => "Channel percentage can not be greater than 100%" }
-  validate :channel_percentage_validation
+  validates :chalkle_percentage_override, allow_nil: true, :numericality => {:less_than_or_equal_to => 1, :message => "Chalkle percentage can not be greater than 100%" }
+  validate :max_channel_percentage
+  validate :max_teacher_cost
   validate :revenue_split_validation
 
   scope :hidden, where(visible: false)
@@ -51,18 +53,27 @@ class Lesson < ActiveRecord::Base
   before_create :set_from_meetup_data
   before_create :set_metadata
 
+  #allow for mismatch due to rounding
   def revenue_split_validation
     return unless (channel_percentage_override.present? || chalkle_percentage_override.present?) and teacher_cost.present? and cost.present?
-    if ( ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) != 0) )
+    if ( ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) > 0.1) || ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) < -0.1))
       errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
       errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
       errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle") 
     end
   end
 
-  def channel_percentage_validation
+  def max_channel_percentage
     return unless channel_percentage and chalkle_percentage
     errors.add(:channel_percentage_override, "Percentage of revenue paid to channel is too high") unless (channel_percentage <= 1 - chalkle_percentage)
+  end
+
+  def max_teacher_cost
+    return unless teacher_cost and cost
+    if (teacher_cost > cost)
+      errors.add(:teacher_cost, "Payment to teacher must be less than advertised price")
+      errors.add(:cost, "Payment to teacher must be less than advertised price") 
+    end 
   end
 
   def default_chalkle_percentage
@@ -205,4 +216,5 @@ class Lesson < ActiveRecord::Base
   def set_metadata
     self.visible = true
   end
+
 end

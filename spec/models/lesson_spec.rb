@@ -10,8 +10,6 @@ describe Lesson do
   let(:lesson) { FactoryGirl.create(:lesson) }
 
   describe "column validations" do
-    
-
 
     it "should not allow non valid status" do
       lesson.status = "resres"
@@ -135,40 +133,39 @@ describe Lesson do
     before do
       Lesson.create_from_meetup_hash(result, channel)
       @lesson = Lesson.find_by_meetup_id 12345678
+      @lesson.cost = 20
+      @lesson.save
     end
     
     describe "cost validations" do
       it "should not allow non numercial teacher cost" do
-        lesson.teacher_cost = "resres"
-        lesson.should_not be_valid
+        @lesson.teacher_cost = "resres"
+        @lesson.should_not be_valid
       end
 
       it "should not allow non numercial cost" do
-        lesson.cost = "resres"
-        lesson.should_not be_valid
+        @lesson.cost = "resres"
+        @lesson.should_not be_valid
       end
 
       it "should not allow negative cost" do
-        lesson.cost = -10
-        lesson.should_not be_valid
+        @lesson.cost = -10
+        @lesson.should_not be_valid
       end
 
       it "should not allow non numerical teacher payment" do
-        lesson.teacher_payment = "resres"
-        lesson.should_not be_valid
+        @lesson.teacher_payment = "resres"
+        @lesson.should_not be_valid
       end
 
       it "should not allow teacher cost greater than cost" do
-        lesson.cost = 10
-        lesson.teacher_cost = 20
-        lesson.should_not be_valid
+        @lesson.teacher_cost = 40
+        @lesson.should_not be_valid
       end
 
     end
 
     describe "default values" do
-
-
 
       it "should retrieve the channel's channel percentage" do
         @lesson.channel_percentage.should == channel.channel_percentage
@@ -191,16 +188,27 @@ describe Lesson do
     end
 
     describe "override exists" do
-      
-      before do
-        Lesson.create_from_meetup_hash(result, channel)
-        @lesson = Lesson.find_by_meetup_id 12345678
-      end
 
       it "should override the default channel percentage" do
         @lesson.channel_percentage_override = 0.0
         @lesson.save
         @lesson.channel_percentage.should == 0.0
+      end
+
+      it "should not allow non numerical channel percentage override" do
+        @lesson.channel_percentage_override = "resres"
+        @lesson.should_not be_valid
+      end
+
+      it "should not allow channel percentage override greater than 1" do
+        @lesson.channel_percentage_override = 1.2
+        @lesson.should_not be_valid
+      end
+
+      it "should not allow channel percentage that exceeds 1 - chalkle percentage" do
+        @lesson.channel_percentage_override = 1 - @lesson.chalkle_percentage + 0.1
+        @lesson.save
+        @lesson.should_not be_valid
       end
 
       it "should override the default chalkle percentage" do
@@ -209,20 +217,46 @@ describe Lesson do
         @lesson.chalkle_percentage.should == 0.5
       end
 
-      it "should not allow non numerical channel percentage override" do
-        lesson.channel_percentage_override = "resres"
-        lesson.should_not be_valid
+      it "should not allow non numerical chalkle percentage override" do
+        @lesson.chalkle_percentage_override = "resres"
+        @lesson.should_not be_valid
       end
 
-      it "should not allow channel percentage override greater than 1" do
-        lesson.channel_percentage_override = 1.2
-        lesson.should_not be_valid
+      it "should not allow chalkle percentage override greater than 1" do
+        @lesson.chalkle_percentage_override = 1.2
+        @lesson.should_not be_valid
       end
 
-      it "should not allow channel percentage that cause total cost to exceed price" do
-        @lesson.chalkle_percentage_override = 0.5
-        @lesson.cost = 10
-        @lesson.teacher_cost = 0
+      it "should not allow sum of teacher cost, channel cost and chalkle cost to not equal cost" do
+        @lesson.cost = 20;
+        @lesson.teacher_cost = 10;
+        @lesson.chalkle_percentage_override = 0.2
+        @lesson.channel_percentage_override = 0.6
+        @lesson.should_not be_valid
+      end
+
+      it "should allow sum of teacher cost, channel cost and chalkle cost that equal cost" do
+        @lesson.cost = 20;
+        @lesson.teacher_cost = 10;
+        @lesson.chalkle_percentage_override = 0.2
+        @lesson.channel_percentage_override = 0.3
+        @lesson.should be_valid
+      end
+
+      it "when teacher cost is 0, should not allow sum of chalkle and channel percentage not equal 1" do
+        @lesson.cost = 20;
+        @lesson.teacher_cost = 0;
+        @lesson.chalkle_percentage_override = 0.2
+        @lesson.channel_percentage_override = 0.3
+        @lesson.should_not be_valid
+      end
+
+      it "when teacher cost is 0, should allow sum of chalkle and channel percentage equal 1" do
+        @lesson.cost = 20;
+        @lesson.teacher_cost = 0;
+        @lesson.chalkle_percentage_override = 0.7
+        @lesson.channel_percentage_override = 0.3
+        @lesson.should be_valid
       end
 
     end
