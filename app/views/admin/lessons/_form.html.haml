@@ -43,57 +43,42 @@
   =f.actions
 
 :javascript
+  var ChannelPercentage = {
+    set: function(override) {
+      if (override){
+        return parseFloat( override ) / 100;
+      }
+      else{
+        return parseFloat( $('#lesson_default_channel_percentage').val() );
+      }
+    }
+  };
 
-  $('#lesson_teacher_cost').keyup(function(e) {
-    if ($('#lesson_channel_percentage_override').val()){
-      $channel_percentage = parseFloat( $('#lesson_channel_percentage_override').val() ) / 100;
+  var ChalklePercentage = {
+    set: function(override) {
+      if (override){
+        return parseFloat( override ) / 100;
+      }
+      else{
+        return parseFloat( $('#lesson_default_chalkle_percentage').val() );
+      }
     }
-    else{
-      $channel_percentage = parseFloat( $('#lesson_default_channel_percentage').val() );
-    }
+  };
 
-    if ($('#lesson_chalkle_percentage_override').val()){
-      $chalkle_percentage = parseFloat( $('#lesson_chalkle_percentage_override').val() ) / 100;
+  var Price = {
+    set: function(ChannelOverride, ChalkleOverride) {
+      if ($('#lesson_teacher_cost').val()){        
+        $('#lesson_cost').val( parseFloat($('#lesson_teacher_cost').val()) / ( 1 - ChannelPercentage.set(ChannelOverride) - ChalklePercentage.set(ChalkleOverride) ) );
+      }
+      else{
+        $('#lesson_cost').val('Missing teacher income per attendee');
+      }
     }
-    else{
-      $chalkle_percentage = parseFloat( $('#lesson_default_chalkle_percentage').val() );
-    }
-
-    if (e.target.value) {
-      $('#lesson_cost').val( e.target.value / (1 - $channel_percentage - $chalkle_percentage));   
-    }
-    else{
-      $('#lesson_cost').val('Missing teacher income per attendee'); 
+  };
+  
+  $(document).keyup( function(e) {
+    if ( (e.target.id=='lesson_teacher_cost') || (e.target.id=='lesson_channel_percentage_override') || (e.target.id=='lesson_chalkle_percentage_override') ){
+      Price.set($('#lesson_channel_percentage_override').val(),$('#lesson_chalkle_percentage_override').val() );
     }
   });
 
-  $('#lesson_channel_percentage_override').keyup(function(e) {
-    if (e.target.value){
-      $channel_percentage = e.target.value / 100;
-    }
-    else{
-      $channel_percentage = parseFloat( $('#lesson_default_channel_percentage').val() );
-    }
-
-    if ($('#lesson_teacher_cost').val()){
-      $('#lesson_cost').val( parseFloat($('#lesson_teacher_cost').val()) / (1 - $channel_percentage - $chalkle_percentage));
-    }
-    else{
-      $('#lesson_cost').val('Missing teacher income per attendee'); 
-    }
-  });
-
-  $('#lesson_chalkle_percentage_override').keyup(function(e) {
-    if (e.target.value){
-      $chalkle_percentage = parseFloat(e.target.value) / 100
-    }
-    else{
-      $chalkle_percentage = parseFloat( $('#lesson_default_chalkle_percentage').val() );
-    }
-    if ($('#lesson_teacher_cost').val()){
-      $('#lesson_cost').val( parseFloat($('#lesson_teacher_cost').val()) / (1 - $channel_percentage - $chalkle_percentage));
-    }
-    else{
-      $('#lesson_cost').val('Missing teacher income per attendee'); 
-    }
-  });
