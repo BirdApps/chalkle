@@ -1,16 +1,25 @@
 .sign-in-buttons {
-  padding-left: 180px;
   a {
-    padding-left: 20px;
+    padding-left: 10px;
+    font-size: 13px;
+    color: #ccc;
   }
 }
 
 .sign-in-meetup {
-  .text-center {
+  .content {
+    background: #ececec;
+    padding: 10px 20px 20px 20px;
+    @include border-radius(4px);
+  }
+  legend {
+    color: $pink;
+    margin-bottom: 10px;
+    border-bottom: none;
   }
   a {
     display: inline-block;
-    margin-top: 40px;
+    margin-top: 20px;
     color: #fff!important;
     -moz-box-shadow: #ed6b7c 1px 1px 0 0 inset;
     -webkit-box-shadow: #ed6b7c 1px 1px 0 0 inset;
