@@ -1,16 +1,24 @@
-Hello <%= @chalkler.name.split[0] %>,
+%h3{style: "border-bottom: solid 1px #ececec; padding-bottom: 5px;"}
+  Hello #{@chalkler.name.split[0]},
 We hope you have enjoyed your recent chalkle class, <%= @lesson.name %>. 
-
+%br/
+%br/
 We have been reconciling our payments and have not found your payment for this class in our records. It may be that your name did not match your payment, and in this case we are very sorry for the email, or that you paid cash on the day and your name was not recorded. If this is the case could you please let us know by replying to this email. 
-
+%br/
+%br/
 If you have not made a payment for this class, you can do so by bank transfer or cash deposit at any Kiwibank branch using the following details:
-
+%br/
+%br/
 Account number: 38-9012-0815531-00 
+%br/
 Name: Chalkle Limited
-Reference number: <%= @lesson.meetup_id %> - Your name
-Payment Amount: $<%= (@lesson.cost.present? ? @lesson.cost : 0) *1.15 %> per person incl. GST 
-
+%br/
+Reference number: #{ @lesson.meetup_id } - Your name
+%br/
+Payment Amount: $#{ (@lesson.cost.present? ? @lesson.cost : 0) *1.15 } per person incl. GST 
+%br/
 Please note, in accordance with chalkle policy payment is required for all who RSVP'd yes on the day of the class even if you choose to not show up. 
-
+%br/
 Thank you for supporting Chalkle and we look forward to seeing you soon! 
+%br/
 Chalkle 
