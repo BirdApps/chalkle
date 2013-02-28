@@ -29,10 +29,6 @@ ActiveAdmin.register Lesson  do
       update!
     end
 
-    def edit
-      @lesson.chalkle_percentage_override = @lesson.chalkle_percentage_override*100 unless @lesson.chalkle_percentage_override.nil?
-      @lesson.channel_percentage_override = @lesson.channel_percentage_override*100 unless @lesson.channel_percentage_override.nil?
-    end
   end
 
   index do
