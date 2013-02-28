@@ -16,14 +16,17 @@
       =f.input :prerequisites, :label => "What to bring"
       =f.input :additional_comments
     -if @lesson.teacher_cost == 0
-      =f.input :cost, :label => "Advertised price excluding GST, only editable if teacher income is 0"
+      =f.input :cost, :label => "Advertised price excluding GST", :hint => "To edit this, set Teacher Income Per Attendee to 0 and save"
     -else
-      =f.input :cost, :label => "Advertised price excluding GST, only editable if teacher income is 0", :input_html => { :readonly => true }
-    =f.input :default_chalkle_percentage, :label => "Default % of revenue paid chalkle", :input_html => { :disabled => true, :readonly => true }
+      =f.input :cost, :label => "Advertised price excluding GST", :input_html => { :readonly => true }, :hint => "To edit this, set Teacher Income Per Attendee to 0 and save"
+    =f.input :default_chalkle_percentage, :as => :hidden, :label => "Default % of revenue paid chalkle", :input_html => { :disabled => true, :readonly => true }
     -if current_admin_user.role=="super"
-      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle"
-    =f.input :default_channel_percentage, :label => "Default % of revenue paid channel", :input_html => { :disabled => true, :readonly => true }
-    =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel"
+      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%"
+    =f.input :default_channel_percentage, :as => :hidden, :label => "Default % of revenue paid channel", :input_html => { :disabled => true, :readonly => true,}
+    -if current_admin_user.role=="super"
+      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%"
+    -else
+      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default channel percentage is #{@lesson.default_channel_percentage*100}%, default chalkle percentage is #{@lesson.default_chalkle_percentage*100}%"
     =f.input :teacher_cost, :label => "Teacher income per attendee"
     =f.input :venue_cost
     =f.input :max_attendee
