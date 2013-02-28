@@ -65,7 +65,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def max_channel_percentage
-    return unless channel_percentage and chalkle_percentage
+    return unless channel_percentage_override.present? and chalkle_percentage
     errors.add(:channel_percentage_override, "Percentage of revenue paid to channel is too high") unless (channel_percentage <= 1 - chalkle_percentage)
   end
 
