@@ -67,7 +67,7 @@ class Teaching
   private
 
   def price_calculation(teacher_cost,channel)
-    teacher_cost.blank? ? 0: ( teacher_cost.to_d / (1 - channel.chalkle_percentage - channel.channel_percentage) ) 
+    (teacher_cost.blank? || channel.teacher_percentage== 0) ? 0: ( teacher_cost.to_d / channel.teacher_percentage ) 
   end
 
   def meetup_event_name(category_primary_id,title)
