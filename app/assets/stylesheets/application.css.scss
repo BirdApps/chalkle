@@ -1,6 +1,5 @@
 @import "bootstrap";
 @import "bourbon";
-@import "image";
 
 @font-face {
   font-family: "Eraser";
@@ -13,10 +12,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'MrChalk';
+  src: url('/assets/25FE67_0_0.eot');
+  src: url('/assets/25FE67_0_0.eot?#iefix') format('embedded-opentype'), 
+  url('/assets/25FE67_0_0.woff') format('woff'), 
+  url('/assets/25FE67_0_0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+$font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
 
 $pink: #cd4063;
 $blackboard: #2d2c29;
-$font_family_chalk: "Cabin Sketch", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
 body {
   padding-top: 0;
@@ -76,5 +85,6 @@ body {
   padding: 20px 60px;
 }
 
+@import "image";
 @import "forms";
 @import "typography";

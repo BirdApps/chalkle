@@ -1,0 +1,41 @@
+.sign-in-buttons {
+  padding-left: 180px;
+  a {
+    padding-left: 20px;
+  }
+}
+
+.sign-in-meetup {
+  .text-center {
+  }
+  a {
+    display: inline-block;
+    margin-top: 40px;
+    color: #fff!important;
+    -moz-box-shadow: #ed6b7c 1px 1px 0 0 inset;
+    -webkit-box-shadow: #ed6b7c 1px 1px 0 0 inset;
+    -o-box-shadow: #ed6b7c 1px 1px 0 0 inset;
+    box-shadow: #ed6b7c 1px 1px 0 0 inset;
+    border: 1px solid #b4152b;
+    background: #e11b36;
+    background: -webkit-gradient(linear,left top,left bottom,from(#e9465c),to(#e11b36));
+    background: -moz-linear-gradient(top,#e9465c,#e11b36);
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,startColorstr='#e9465c',endColorstr='#e11b36');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9465c', endColorstr='#e11b36')";
+    text-shadow: #ba3849 -1px -1px 0;
+    text-decoration: none!important;
+    text-align: center;
+    zoom: 1;
+    color: #484848;
+    font-weight: bold;
+    font-family: helvetica,arial,sans-serif;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    line-height: 1;
+    font-size: 16px;
+    padding: .5em .75em .4em;
+    height: auto;
+    width: auto;
+  }
+}
