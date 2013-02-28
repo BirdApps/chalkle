@@ -1,3 +1,4 @@
+=javascript_include_tag "lessons", :debug => true
 =semantic_form_for [:admin, @lesson] do |f|
   =f.inputs :details do
     =f.input :name
@@ -19,12 +20,10 @@
       =f.input :cost, :label => "Advertised price excluding GST", :hint => "To edit this, set Teacher Income Per Attendee to 0 and save"
     -else
       =f.input :cost, :label => "Advertised price excluding GST", :input_html => { :readonly => true }, :hint => "To edit this, set Teacher Income Per Attendee to 0 and save"
-    =f.input :default_chalkle_percentage, :as => :hidden, :label => "Default % of revenue paid chalkle", :input_html => { :disabled => true, :readonly => true }
     -if current_admin_user.role=="super"
-      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%"
-    =f.input :default_channel_percentage, :as => :hidden, :label => "Default % of revenue paid channel", :input_html => { :disabled => true, :readonly => true,}
+      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%. Enter 20 for 20%"
     -if current_admin_user.role=="super"
-      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%"
+      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%. Enter 20 for 20%"
     -else
       =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default channel percentage is #{@lesson.default_channel_percentage*100}%, default chalkle percentage is #{@lesson.default_chalkle_percentage*100}%"
     =f.input :teacher_cost, :label => "Teacher income per attendee"
@@ -43,42 +42,7 @@
   =f.actions
 
 :javascript
-  var ChannelPercentage = {
-    set: function(override) {
-      if (override){
-        return parseFloat( override ) / 100;
-      }
-      else{
-        return parseFloat( $('#lesson_default_channel_percentage').val() );
-      }
-    }
-  };
+  var default_channel_percentage = "#{@lesson.default_channel_percentage}";
+  var default_chalkle_percentage = "#{@lesson.default_chalkle_percentage}"; 
 
-  var ChalklePercentage = {
-    set: function(override) {
-      if (override){
-        return parseFloat( override ) / 100;
-      }
-      else{
-        return parseFloat( $('#lesson_default_chalkle_percentage').val() );
-      }
-    }
-  };
-
-  var Price = {
-    set: function(ChannelOverride, ChalkleOverride) {
-      if ($('#lesson_teacher_cost').val()){        
-        $('#lesson_cost').val( parseFloat($('#lesson_teacher_cost').val()) / ( 1 - ChannelPercentage.set(ChannelOverride) - ChalklePercentage.set(ChalkleOverride) ) );
-      }
-      else{
-        $('#lesson_cost').val('Missing teacher income per attendee');
-      }
-    }
-  };
-  
-  $(document).keyup( function(e) {
-    if ( (e.target.id=='lesson_teacher_cost') || (e.target.id=='lesson_channel_percentage_override') || (e.target.id=='lesson_chalkle_percentage_override') ){
-      Price.set($('#lesson_channel_percentage_override').val(),$('#lesson_chalkle_percentage_override').val() );
-    }
-  });
 

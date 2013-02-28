@@ -51,12 +51,18 @@ describe Channel do
   end
 
   describe ".select_options" do
-  	let(:channel1) { FactoryGirl.create(:channel, name: "channel1") }
+  	let(:chalkler) { FactoryGirl.create(:chalkler)}
+    let(:channel1) { FactoryGirl.create(:channel, name: "channel1") }
   	let(:channel2) { FactoryGirl.create(:channel, name: "channel2") }
+
+    before do
+      chalkler.channels << channel1
+      chalkler.channels << channel2
+    end
 
   	it "should provdie an array of options that can be used in dropdowns" do
   		required_array = [['channel1', channel1.id],['channel2', channel2.id]]
-  		Channel.select_options.should eq(required_array)
+  		Channel.select_options(chalkler.channels).should eq(required_array)
   	end
   end
 
