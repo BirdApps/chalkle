@@ -31,8 +31,8 @@ class Channel < ActiveRecord::Base
     1 - teacher_percentage - channel_percentage
   end
 
-  def self.select_options
-    all(order: "name").map { |c| [c.name, c.id] }
+  def self.select_options(channel)
+    channel.map { |c| [c.name, c.id] }
   end
 
 end

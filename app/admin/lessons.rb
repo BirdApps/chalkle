@@ -28,6 +28,12 @@ ActiveAdmin.register Lesson  do
       params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].nil?     
       update!
     end
+
+    def edit
+      @lesson.chalkle_percentage_override = @lesson.chalkle_percentage_override*100 unless @lesson.chalkle_percentage_override.nil?
+      @lesson.channel_percentage_override = @lesson.channel_percentage_override*100 unless @lesson.channel_percentage_override.nil?
+      edit!
+    end
   end
 
   index do
