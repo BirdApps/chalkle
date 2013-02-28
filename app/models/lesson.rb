@@ -57,7 +57,7 @@ class Lesson < ActiveRecord::Base
   #allow for mismatch due to rounding
   def revenue_split_validation
     return unless (channel_percentage_override.present? || chalkle_percentage_override.present?) and teacher_cost.present? and cost.present?
-    if ( ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) > 0.1) || ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) < -0.1))
+    if ( ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) > 0.05) || ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) < -0.05))
       errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
       errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
       errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle") 
