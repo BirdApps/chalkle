@@ -41,7 +41,7 @@ Scenario: A booking with no details should render correctly
 Scenario: An admin user with no details should render correctly
   Given I am logged in
   And there is an admin user with no details
-  When I visit the "Admin User" page
+  When I visit the "Admin Users" page
   Then I should still see this admin user
 
 
