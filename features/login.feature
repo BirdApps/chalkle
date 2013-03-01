@@ -16,11 +16,6 @@ Feature: Login
     When I login as "test@chalkle.com" with an incorrect password
     Then I should not be logged in
 
-  Scenario: New password
-    Given "test@chalkle.com" is a channel admin
-    When I click on "Forgot your password?"
-    Then I should be directed to the password reset page
-  
   Scenario: Password reset
     Given "test@chalkle.com" received a password reset token
     When I click on the link

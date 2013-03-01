@@ -24,15 +24,6 @@ When /^I login as "(.*?)" with an incorrect password$/ do |email|
   click_button "Login"
 end
 
-When /^I click on "(.*?)"$/ do |text|
-  visit '/admin/login'
-  click_link(text)
-end
-
-Then /^I should be directed to the password reset page$/ do
-  page.should have_content('Reset My Password')
-end
-
 Given /^"(.*?)" received a password reset token$/ do |arg1|
   pending # express the regexp above with the code you wish you had
 end
