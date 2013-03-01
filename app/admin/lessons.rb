@@ -67,10 +67,10 @@ ActiveAdmin.register Lesson  do
       row :start_at
       if !lesson.published?
         row "Availability of the teacher" do
-          simple_format lesson.availabilities
+          lesson.availabilities
         end
         row "venue for this class" do
-          simple_format lesson.venue
+          lesson.venue
         end
         row "What we are doing" do
           simple_format lesson.do_during_class
@@ -102,7 +102,7 @@ ActiveAdmin.register Lesson  do
       #   end
       # end
       row "Advertised price including GST" do
-        number_to_currency (lesson.cost.present? ? lesson.cost*1.15 : nil)
+        number_to_currency lesson.gst_price
       end
       row "Advertised price excluding GST" do
         number_to_currency lesson.cost

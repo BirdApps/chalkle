@@ -16,14 +16,15 @@
       =f.input :teacher_bio, :label => "Your chalkler will be"
       =f.input :prerequisites, :label => "What to bring"
       =f.input :additional_comments
+    =f.input :gst_price, :label => "Advertised price including GST", :input_html => { :disabled => true }, :hint => "To change this, alter the advertised price excluding GST or teacher income per attendee"
     -if @lesson.teacher_cost == 0
       =f.input :cost, :label => "Advertised price excluding GST"
     -else
-      =f.input :cost, :label => "Advertised price excluding GST", :input_html => { :readonly => true }, :hint => "To edit this, set Teacher Income Per Attendee to 0 and save"
-    -@lesson.chalkle_percentage_override = @lesson.chalkle_percentage_override*100
+      =f.input :cost, :label => "Advertised price excluding GST", :input_html => { :readonly => true }, :hint => "To change this, alter Teacher Income Per Attendee. If Teacher has no income, edit this directly by setting Teacher Income Per Attendee to 0 and save"
+    -(@lesson.chalkle_percentage_override = @lesson.chalkle_percentage_override*100) if @lesson.chalkle_percentage_override.present?
     -if current_admin_user.role=="super"
       =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%. For example, enter 20 for 20%"
-    -@lesson.channel_percentage_override = @lesson.channel_percentage_override*100
+    -(@lesson.channel_percentage_override = @lesson.channel_percentage_override*100) if @lesson.channel_percentage_override.present?
     -if current_admin_user.role=="super"
       =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%. For example, enter 20 for 20%"
     -else
