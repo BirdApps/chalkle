@@ -103,6 +103,10 @@ class Lesson < ActiveRecord::Base
     default_channel_percentage
   end
 
+  def gst_price
+    cost.present? ? cost*1.15 : nil
+  end
+
   def image
     lesson_image.image rescue nil
   end
