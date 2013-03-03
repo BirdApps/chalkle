@@ -23,10 +23,10 @@
       =f.input :cost, :label => "Advertised price excluding GST", :input_html => { :readonly => true }, :hint => "To change this, alter Teacher Income Per Attendee. If the Teacher has no income, come back and edit this directly by first setting Teacher Income Per Attendee to 0 and save"
     -(@lesson.chalkle_percentage_override = @lesson.chalkle_percentage_override*100) unless @lesson.chalkle_percentage_override.nil? 
     -if current_admin_user.role=="super"
-      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%. For example, enter 20 for 20%"
+      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%. Enter 20 for 20%"
     -(@lesson.channel_percentage_override = @lesson.channel_percentage_override*100) unless @lesson.channel_percentage_override.nil?
     -if current_admin_user.role=="super"
-      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%. For example, enter 20 for 20%"
+      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%. Enter 20 for 20%"
     -else
       =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default channel percentage is #{@lesson.default_channel_percentage*100}%, default chalkle percentage is #{@lesson.default_chalkle_percentage*100}%. For example, enter 20 for 20%"
     =f.input :teacher_cost, :label => "Teacher income per attendee"
