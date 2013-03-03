@@ -20,7 +20,11 @@ class Teaching
   def initialize(chalkler)
   	@chalkler = chalkler
     @teacher_id = @chalkler.id
-    @channels = @chalkler.channels
+    if @chalkler.channels.length > 0
+      @channels = @chalkler.channels
+    else
+      @channels = [Channel.find(1)]
+    end
   end
 
   def lesson_args
@@ -67,7 +71,7 @@ class Teaching
   private
 
   def price_calculation(teacher_cost,channel)
-    (teacher_cost.blank? || channel.teacher_percentage== 0) ? 0: ( teacher_cost.to_d / channel.teacher_percentage ) 
+    (teacher_cost.blank? || channel.teacher_percentage== 0) ? 0: ( teacher_cost.to_d*1.15 / channel.teacher_percentage ).ceil / 1.15 
   end
 
   def meetup_event_name(category_primary_id,title)
