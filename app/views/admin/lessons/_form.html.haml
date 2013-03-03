@@ -16,7 +16,7 @@
       =f.input :teacher_bio, :label => "Your chalkler will be"
       =f.input :prerequisites, :label => "What to bring"
       =f.input :additional_comments
-    =f.input :gst_price, :label => "Advertised price including GST", :input_html => { :disabled => true }, :hint => "To change this, alter the advertised price excluding GST or teacher income per attendee"
+    =f.input :gst_price, :label => "Advertised price including GST", :input_html => { :disabled => true }, :hint => "To change this, alter the Teacher Income Per Attendee or Advertised price excluding GST"
     -if @lesson.teacher_cost == 0
       =f.input :cost, :label => "Advertised price excluding GST"
     -else
