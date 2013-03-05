@@ -21,6 +21,18 @@ task :staging do
   role :db,  domain, :primary => true
 end
 
+task :staging do
+  set :domain,    "newchalkle.enspiral.info"
+  set :branch,    "production"
+  set :rails_env, "production"
+  set :deploy_to, "/home/#{user}/production"
+  set :bundle_without, [:development, :test]
+
+  role :web, domain
+  role :app, domain
+  role :db,  domain, :primary => true
+end
+
 namespace :deploy do
   task :start do ; end
   task :stop do ; end
