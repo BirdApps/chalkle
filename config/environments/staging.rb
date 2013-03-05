@@ -65,5 +65,14 @@ Chalkle::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.action_mailer.default_url_options = { host: "my.chalkle.com" }
+  config.action_mailer.default_url_options = { host: "staging.my.chalkle.com" }
+
+  ActionMailer::Base.delivery_method = :smtp
+	ActionMailer::Base.smtp_settings = {
+	  :user_name => 'chalkle-24b10ef389f7e02b',
+	  :password => '05a8b4efeb8d5955',
+	  :address => 'mailtrap.io',
+	  :port => '2525',
+	  :authentication => :plain,
+	}
 end
