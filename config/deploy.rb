@@ -21,7 +21,7 @@ task :staging do
   role :db,  domain, :primary => true
 end
 
-task :staging do
+task :production do
   set :domain,    "newchalkle.enspiral.info"
   set :branch,    "production"
   set :rails_env, "production"
