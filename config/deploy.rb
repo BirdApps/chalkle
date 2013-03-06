@@ -10,7 +10,7 @@ set :use_sudo,    false
 set :scm, :git
 
 task :staging do
-  set :domain,    "newchalkle.enspiral.info"
+  set :domain,    "my.chalkle.com"
   set :branch,    "staging"
   set :rails_env, "staging"
   set :deploy_to, "/home/#{user}/staging"
@@ -22,7 +22,7 @@ task :staging do
 end
 
 task :production do
-  set :domain,    "newchalkle.enspiral.info"
+  set :domain,    "my.chalkle.com"
   set :branch,    "production"
   set :rails_env, "production"
   set :deploy_to, "/home/#{user}/production"
@@ -57,18 +57,15 @@ namespace :assets do
   end
 end
 
-after 'deploy:update_code' do
-  deploy.symlink_configs
-end
-
 namespace :dragonfly do
   desc "Symlink the Rack::Cache files"
   task :symlink, :roles => [:app] do
     run "mkdir -p #{shared_path}/tmp/dragonfly && ln -nfs #{shared_path}/tmp/dragonfly #{release_path}/tmp/dragonfly"
   end
 end
-after 'deploy:update_code', 'dragonfly:symlink'
 
+after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs"
+after "deploy:update", "deploy:cleanup"
 
 require "./config/boot"
 load 'deploy/assets'
