@@ -6,9 +6,10 @@ ActiveAdmin.register Chalkler do
     authorize_resource
 
     def create
-      @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst], 
+      @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst],
         meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name])
-      if @chalkler.save
+      if @chalkler.save && current_admin_user.channels.any?
+        @chalkler.channels << current_admin_user.channels.first
         update!
       else
         redirect_to :back
@@ -88,7 +89,6 @@ ActiveAdmin.register Chalkler do
   form do |f|
     f.inputs :details do
       f.input :name
-      f.input :channels, :as => :check_boxes
       f.input :meetup_id
       f.input :email
       f.input :gst
