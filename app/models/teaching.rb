@@ -64,7 +64,11 @@ class Teaching
     @additional_comments = params[:additional_comments]
     @venue = params[:venue]
     @category_primary_id = params[:category_primary_id].to_i
-    @channel_id = params[:channel_id].to_i
+    if @channels.length > 1
+      @channel_id = params[:channel_id].to_i
+    else 
+      @channel_id = @channels[0].id
+    end
     self.valid?
   end
 
