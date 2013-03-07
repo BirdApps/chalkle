@@ -3,9 +3,9 @@ class Chalklers::PreferencesController < Chalklers::BaseController
    	@chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
 
       if @chalkler_email_preferences.update_attributes(params[:chalkler_preferences])
-        redirect_to root_url, notice: 'Your preferences have been saved.'
+        redirect_to chalklers_meetup_email_settings_url, notice: 'Your preferences have been saved.'
       else
-      render template: 'chalklers/dashboard/index'
+        render template: 'chalklers/dashboard/index'
       end
   end
 
