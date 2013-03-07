@@ -17,7 +17,8 @@ module MeetupApiStub
       "created" => 1351297791000,
       "updated" => 1351297791000,
       "time" => 1351297791000,
-      "duration" => 600000
+      "duration" => 600000,
+      "rsvp_limit" => 10
     })
   end
 
