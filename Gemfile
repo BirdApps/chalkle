@@ -18,6 +18,7 @@ gem 'jquery-rails',  '~> 2.1.4'
 gem 'chronic',       '~> 0.9.0'
 gem 'active_attr',   '~> 0.7.0'
 gem 'dragonfly',     '~> 0.9.14'
+gem 'delayed_job_active_record'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
