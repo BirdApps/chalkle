@@ -34,7 +34,7 @@ ActiveAdmin.register Lesson  do
   index do
     column :id
     column :name
-    column :attendance
+    column :attendance, :sortable => false
     column :channels do |lesson|
       lesson.channels.collect{ |c| c.name}.join(", ")
     end
