@@ -8,5 +8,5 @@ describe Channel do
   it { should have_many(:categories).through(:channel_categories) }
 
   it { should validate_presence_of :name }
-  it { should validate_presence_of :url_name }
+  it { should validate_uniqueness_of :email }
 end
