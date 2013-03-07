@@ -1,0 +1,16 @@
+%p 
+  Thanks! 
+%p
+  chalkle° thrives on people willing to share their skills. 
+%p
+  We will be in touch if we have any questions. If all details are finalised your class will be announced in due course. 
+%p
+  If you have any questions or need to make changes please contact your
+  #{channel_plural?(current_chalkler, "Curator")}:
+- current_chalkler.channels.each do |channel|
+  %p
+    %strong=channel.name
+  - channel.channel_admins.each do |ca|
+    - if ca.admin_user
+      =mail_to ca.admin_user.email
+      %br
