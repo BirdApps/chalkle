@@ -14,7 +14,7 @@ Price = set: (ChannelOverride, ChalkleOverride) ->
   if $("#lesson_teacher_cost").val()
     NewGSTPrice = Math.ceil 1.15*parseFloat($("#lesson_teacher_cost").val()) / (1 - ChannelPercentage.set(ChannelOverride) - ChalklePercentage.set(ChalkleOverride))
     NewPrice = NewGSTPrice/1.15
-    $("#lesson_cost").val NewPrice
+    $("#lesson_cost").val NewPrice.toFixed 2
     $("#lesson_gst_price").val NewGSTPrice
   else
     $("#lesson_cost").val "Missing teacher income per attendee"
