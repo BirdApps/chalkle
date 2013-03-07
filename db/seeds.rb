@@ -7,5 +7,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 AdminUser.create(email: 'joshua@enspiral.com', password: 'password', role: 'super')
+Chalkler.create(email: 'chalkler@example.com', password: 'password', name: 'Julie User')
 Channel.create(name: 'Wellington', url_name: 'sixdegrees')
-Channel.create(name: 'Wellington Whānau', url_name: 'whanau')
+Channel.create(name: 'Wellington Whaanau', url_name: 'whanau')
