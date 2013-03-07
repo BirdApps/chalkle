@@ -117,6 +117,10 @@ class Lesson < ActiveRecord::Base
     return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
   end
 
+  def gst_price
+    cost.present? ? (cost*1.15).round(1) : nil
+  end
+
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
@@ -134,6 +138,7 @@ class Lesson < ActiveRecord::Base
     l.meetup_id = result.id
     l.description = result.description
     l.meetup_data = result.to_json
+    l.max_attendee = result.rsvp_limit
     l.save
     l.set_category result.name
     l.channels << channel unless l.channels.exists? channel

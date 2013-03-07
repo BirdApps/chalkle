@@ -110,13 +110,13 @@ describe "Teachings" do
 
     it "create a lesson with the correct name" do
       @chalkler_teaching.submit(params2)
-      Lesson.find_by_name(category.name + " : " + params2[:title]).should be_valid
+      Lesson.find_by_name((category.name + ": " + params2[:title]).downcase).should be_valid
     end
 
   	describe "created lesson" do
   	  before do
   	    @chalkler_teaching.submit(params2)
-  	    @lesson = Lesson.find_by_name(category.name + " : " + params2[:title])
+  	    @lesson = Lesson.find_by_name((category.name + ": " + params2[:title]).downcase)
   	  end
 
   	    it "has the correct teacher" do
@@ -148,7 +148,7 @@ describe "Teachings" do
   	    end
 
         it "has the correct price" do
-          @lesson.cost.should == 24
+          @lesson.cost.should == 24.35
         end
 
         pending "has the correct donation setting" do

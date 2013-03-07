@@ -66,11 +66,11 @@ class Teaching
   private
 
   def price_calculation(teacher_cost)
-    (teacher_cost.blank? ? 0: teacher_cost.to_d*1.20)
+    (teacher_cost.blank? ? 0: ((teacher_cost.to_d*1.20*1.15).ceil) / 1.15)
   end
 
   def meetup_event_name(category_primary_id,title)
-    return ( Category.find(category_primary_id, :select => "name").name + " : " + title )
+    return ( Category.find(category_primary_id, :select => "name").name + ": " + title ).downcase
   end
 
 end

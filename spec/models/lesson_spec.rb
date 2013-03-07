@@ -65,6 +65,12 @@ describe Lesson do
       lesson.meetup_data["description"].should == "all about the class"
     end
 
+    it "saves the correct RSVP limit" do
+      Lesson.create_from_meetup_hash(result, channel)
+      lesson = Lesson.find_by_meetup_id 12345678
+      lesson.max_attendee.should == 10
+    end
+
     it "set status to published" do
       Lesson.create_from_meetup_hash(result, channel)
       lesson = Lesson.find_by_meetup_id 12345678
