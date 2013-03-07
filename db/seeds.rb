@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -5,4 +6,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-AdminUser.create(:email => 'joshua@enspiral.com', :password => 'password')
+AdminUser.create(email: 'joshua@enspiral.com', password: 'password', role: 'super')
+Channel.create(name: 'Wellington', url_name: 'sixdegrees')
+Channel.create(name: 'Wellington Whānau', url_name: 'whanau')
