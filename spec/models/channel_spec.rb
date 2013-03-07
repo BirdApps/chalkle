@@ -9,14 +9,15 @@ describe Channel do
 
   it { should validate_presence_of :name }
 
-  it "should not allow email without @" do
-  	channel = Channel.create(name: "test", email: "abs123")
-  	channel.should_not be_valid
-  end
+  describe "email validations" do
+    it "should not allow email without @" do
+    	channel = Channel.create(name: "test", email: "abs123")
+    	channel.should_not be_valid
+    end
 
-  it "should not allow with @ but no ." do
-  	channel = Channel.create(name: "test", email: "abs@123")
-  	channel.should_not be_valid
+    it "should not allow with @ but no ." do
+    	channel = Channel.create(name: "test", email: "abs@123")
+    	channel.should_not be_valid
+    end
   end
-
 end
