@@ -2,7 +2,7 @@ class Channel < ActiveRecord::Base
   attr_accessible :name, :url_name, :email
 
   validates :name, :presence => true
-  validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
+  validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
 
   has_many :channel_admins
   has_many :admin_users, :through => :channel_admins
