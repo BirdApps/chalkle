@@ -1,17 +1,17 @@
-Given /^I am logged in$/ do
-    AdminUser.create(email: "test@chalkle.com", password: 'password', password_confirmation: 'password', role: "super")
-    visit '/admin/login'
-    fill_in "admin_user_email", :with => "test@chalkle.com"
-    fill_in "admin_user_password", :with => "password"
-    click_button "Login"
+Given /^I am logged in with the "(.*?)" role$/ do |role|
+  AdminUser.create(email: "test@chalkle.com", password: 'password', role: role)
+  visit '/admin/login'
+  fill_in "admin_user_email", :with => "test@chalkle.com"
+  fill_in "admin_user_password", :with => "password"
+  click_button "Login"
 end
 
 Given /^there is an unreconciled payments with no details$/ do
   @payment = Payment.create(xero_id: "abc", total: 10)
 end
 
-When /^I visit the "(.*?)" page$/ do |page_name|
-  click_link page_name
+When /^I visit the "(.*?)" page$/ do |page|
+  click_link page
 end
 
 Then /^I should still see this payment$/ do
