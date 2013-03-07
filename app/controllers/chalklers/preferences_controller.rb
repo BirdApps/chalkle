@@ -14,4 +14,8 @@ class Chalklers::PreferencesController < Chalklers::BaseController
 
     render template: 'chalklers/dashboard/settings'
   end
+
+  def meetup_email_settings
+    render 'chalklers/dashboard/meetup_email_settings'
+  end
 end

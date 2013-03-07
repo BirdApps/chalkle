@@ -23,6 +23,7 @@
 }
 
 $font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+$font_family_normal: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
 $pink: #cd4063;
 $blackboard: #2d2c29;
@@ -31,6 +32,9 @@ body {
   padding-top: 0;
 }
 
+.center {
+  text-align: center;
+}
 .navbar {
   font-weight: bold;
   font-size: 15px;
@@ -82,6 +86,15 @@ body {
   @include radial-gradient($blackboard, darken($blackboard, 9%));
   color: white;
   padding: 20px 60px;
+}
+
+.walkthrough {
+  img {
+    margin-bottom: 20px;
+  }
+  h2 {
+    margin: 0 0 10px 0;
+  }
 }
 
 @import "image";
