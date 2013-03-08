@@ -5,7 +5,7 @@ class Lesson < ActiveRecord::Base
     :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
     :availabilities, :prerequisites, :additional_comments, :donation,
     :lesson_skill, :venue, :published_at, :category_ids,
-    :lesson_image_attributes, :material_cost
+    :lesson_image_attributes, :material_cost, :suggested_audience
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons

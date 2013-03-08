@@ -88,6 +88,9 @@ ActiveAdmin.register Lesson  do
         row "What to bring" do
           simple_format lesson.prerequisites
         end
+        row "What type of audience is it appropriate for" do 
+          simple_format lesson.suggested_audience
+        end
         row :additional_comments do
           simple_format lesson.additional_comments
         end
