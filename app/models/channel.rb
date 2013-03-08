@@ -15,7 +15,4 @@ class Channel < ActiveRecord::Base
   has_many :channel_categories
   has_many :categories, :through => :channel_categories
 
-  def self.select_options(channel)
-    channel.map { |c| [c.name, c.id] }
-  end
 end
