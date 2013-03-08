@@ -1,4 +1,5 @@
 class ChalklerInterestMailer < ActionMailer::Base
+  layout 'generic_mailer'
   default from: "noreply@chalkle.com"
 
   def digest(chalkler,new_lessons,still_open_lessons) 
