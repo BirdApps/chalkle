@@ -1,0 +1,10 @@
+=semantic_form_for [:admin, @chalkler] do |f|
+  =f.inputs :details do
+    =f.input :name
+    =f.input :meetup_id
+    =f.input :email
+    =f.input :gst
+    =f.input :bio
+    -if current_admin_user.channels.length > 1
+      =f.input :channels, :as => :check_boxes, :collection => Channel.select_options(current_admin_user.channels), :include_blank => false
+  =f.actions
