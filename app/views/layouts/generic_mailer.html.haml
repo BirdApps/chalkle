@@ -1,0 +1,29 @@
+!!! Strict
+%html{:xmlns => "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    %title Chalkle system email
+    :css
+      #outlook a {padding:0;}
+      body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;} 
+      .ExternalClass {width:100%;}
+      .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
+      table td {border-collapse: collapse;}
+
+  %body{style:"width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;"}
+    %table#backgroundTable{:border => "0", :cellpadding => "0", :cellspacing => "0", style: "border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; margin:0; padding:0; width:100% !important; line-height: 100% !important;"}
+      %tr
+        %td{ :valign => "top"}
+          %table{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0", style: "border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"}
+            %tr
+              %td{style: " border-left: solid 1px #000000; border-right: solid 1px #000000; margin: 0 auto; background-color: #000000;", :valign => "top", :width => "600"}
+                %img{ :style => "outline:none; text-decoration:none; -ms-interpolation-mode: bicubic; display: block;", src: 'http://' + Rails.application.config.action_mailer.default_url_options[:host] + '/logo.gif', width: "600", height: "100", alt: 'Chalkle : Six degrees of education.'}/
+            %tr
+              %td{style: "padding: 20px; color:#444444; border-left: solid 1px #ececec; border-right: solid 1px #ececec;", :valign => "top", :width => "600"}
+                =yield
+            %tr
+              %td{:valign =>"top", :style => "background-color: #ececec; padding: 15px 0; text-align: center;", :width => "600"}
+                %a{:href => "#{chalklers_preferences_url}", :style => "color: #cd4063; text-decoration: none;", :target => "_blank", :title => "Change email settings"} Change your email settings
+                %span{style:"color:#cccccc;"} &nbsp;|&nbsp; 
+                %a{:href => "#{root_url}", :style => "color: #cd4063; text-decoration: none;", :target => "_blank", :title => "Visit site"} Visit site

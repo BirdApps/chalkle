@@ -1,4 +1,5 @@
 class BookingMailer < ActionMailer::Base
+  layout 'generic_mailer'
   default from: "accounts@chalkle.com"
 
   def first_reminder_to_pay(chalkler,lesson) 
@@ -29,5 +30,4 @@ class BookingMailer < ActionMailer::Base
     @lesson = lesson
     mail(to: chalkler.email, subject: chalkler.name + " - " + lesson.name)
   end
-
 end
