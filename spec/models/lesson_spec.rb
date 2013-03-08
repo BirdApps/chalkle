@@ -121,4 +121,19 @@ describe Lesson do
     end
   end
 
+  describe "material cost validation" do
+    before do
+      @lesson = FactoryGirl.create(:lesson)
+    end
+    it "assigns default material cost" do
+      @lesson.material_cost.should == 0
+    end
+
+    it "does not allow non numerical costs" do 
+      @lesson.material_cost = "rewrew"
+      @lesson.should_not be_valid
+    end
+
+  end
+
 end

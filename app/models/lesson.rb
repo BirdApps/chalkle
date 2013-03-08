@@ -5,7 +5,7 @@ class Lesson < ActiveRecord::Base
     :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
     :availabilities, :prerequisites, :additional_comments, :donation,
     :lesson_skill, :venue, :published_at, :category_ids,
-    :lesson_image_attributes
+    :lesson_image_attributes, :material_cost
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -34,6 +34,7 @@ class Lesson < ActiveRecord::Base
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
   validates_numericality_of :teacher_payment, allow_nil: true
+  validates_numericality_of :material_cost, allow_nil: false
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "Donation classes have no teacher cost" }, :if => "self.donation==true"
   validates :cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "Donation classes have no price" }, :if => "self.donation==true"

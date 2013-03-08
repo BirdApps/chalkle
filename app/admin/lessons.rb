@@ -111,6 +111,9 @@ ActiveAdmin.register Lesson  do
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
+      row :material_cost do
+        number_to_currency lesson.material_cost
+      end
       row :duration do
         pluralize(lesson.duration / 60 / 60, "hour") if lesson.duration?
       end
