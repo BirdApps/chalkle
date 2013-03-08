@@ -22,6 +22,11 @@ ActiveAdmin.register Lesson  do
     end
     helper LessonHelper
     helper BookingHelper
+
+    def update
+      params[:lesson][:duration] = (params[:lesson][:duration].to_d*60*60).to_i if !params[:lesson][:duration].blank?
+      update!
+    end
   end
 
   index do
@@ -107,7 +112,7 @@ ActiveAdmin.register Lesson  do
         number_to_currency lesson.venue_cost
       end
       row :duration do
-        "#{lesson.duration / 60 / 60} hours" if lesson.duration?
+        pluralize(lesson.duration / 60 / 60, "hour") if lesson.duration?
       end
       row :max_attendee
       row :min_attendee

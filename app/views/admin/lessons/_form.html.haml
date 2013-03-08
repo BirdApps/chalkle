@@ -20,7 +20,8 @@
     =f.input :venue_cost
     =f.input :max_attendee
     =f.input :min_attendee
-    =f.input :duration, :label => "Duration in seconds"
+    -@lesson.duration = @lesson.duration/60/60 if !@lesson.duration.nil?
+    =f.input :duration, :label => "Duration in hours"
     -if @lesson.published?
       =f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
       =f.input :description
@@ -28,5 +29,5 @@
 
   =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
     -title = (@lesson.lesson_image.try(:title)) ? @lesson.lesson_image.title : @lesson.name
-    =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved.",  :input_html => { :rows => 5, :value => title }
+    =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved. Break title into multiple lines to make the text bigger",  :input_html => { :rows => 5, :value => title }
   =f.actions
