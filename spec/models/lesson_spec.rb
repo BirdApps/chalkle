@@ -83,6 +83,24 @@ describe Lesson do
       lesson.published_at.to_time.to_i.should == 1351297791
     end
 
+    it "update published date for a lesson already created" do
+      Lesson.create_from_meetup_hash(result, channel)
+      lesson = Lesson.find_by_meetup_id 12345678
+      lesson.published_at = Date.today()
+      lesson.save
+      Lesson.create_from_meetup_hash(result, channel)
+      lesson.reload.published_at.to_time.to_i.should == 1351297791
+    end
+
+    it "update start_at time" do
+      Lesson.create_from_meetup_hash(result, channel)
+      lesson = Lesson.find_by_meetup_id 12345678
+      lesson.start_at = Date.today()
+      lesson.save
+      Lesson.create_from_meetup_hash(result, channel)
+      lesson.reload.start_at.to_time.to_i.should == 1351297791
+    end
+
   end
 
   describe "#set_from_meetup_data" do
