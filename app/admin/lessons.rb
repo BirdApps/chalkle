@@ -57,6 +57,9 @@ ActiveAdmin.register Lesson  do
       row :categories do |lesson|
         lesson.categories.collect{ |c| c.name}.join(", ")
       end
+      row :channels do |lesson|
+        lesson.channels.collect{ |c| c.name}.join(", ")
+      end
       row :start_at
       if !lesson.published?
         row "Availability of the teacher" do
