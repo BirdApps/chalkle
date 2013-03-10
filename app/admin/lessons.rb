@@ -22,6 +22,13 @@ ActiveAdmin.register Lesson  do
     end
     helper LessonHelper
     helper BookingHelper
+
+    def update
+      params[:lesson][:chalkle_percentage_override] = (params[:lesson][:chalkle_percentage_override].to_d/100).to_s unless params[:lesson][:chalkle_percentage_override].blank?
+      params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].blank?     
+      update!
+    end
+
   end
 
   index do
@@ -60,10 +67,10 @@ ActiveAdmin.register Lesson  do
       row :start_at
       if !lesson.published?
         row "Availability of the teacher" do
-          simple_format lesson.availabilities
+          lesson.availabilities
         end
         row "venue for this class" do
-          simple_format lesson.venue
+          lesson.venue
         end
         row "What we are doing" do
           simple_format lesson.do_during_class
@@ -95,12 +102,18 @@ ActiveAdmin.register Lesson  do
       #   end
       # end
       row "Advertised price including GST" do
-        number_to_currency (lesson.cost.present? ? lesson.cost*1.15 : nil)
+        number_to_currency lesson.gst_price
       end
-      row "Price excluding GST" do
+      row "Advertised price excluding GST" do
         number_to_currency lesson.cost
       end
-      row "Teacher payment per attendee" do
+      row "Chalkle income per attendee" do
+        number_to_currency (lesson.cost.present? ? lesson.chalkle_percentage*lesson.cost : nil)
+      end
+      row "Channel income per attendee" do
+        number_to_currency (lesson.cost.present? ? lesson.channel_percentage*lesson.cost : nil)
+      end
+      row "Teacher income per attendee" do
         number_to_currency lesson.teacher_cost
       end
       row :venue_cost do
