@@ -150,11 +150,7 @@ describe "Teachings" do
   	    end
 
         it "has the correct price" do
-<<<<<<< HEAD
           @lesson.cost.should == (20/0.5).to_d
-=======
-          @lesson.cost.should == 24.35
->>>>>>> master
         end
 
         pending "has the correct donation setting" do
