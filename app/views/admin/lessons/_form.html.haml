@@ -5,7 +5,7 @@
     =f.input :categories
     =f.input :start_at
     -if !@lesson.published?
-      =f.input :channels, :as => :check_boxes, :collection => current_admin_user.channels
+      =f.input :channels, :as => :check_boxes, :collection => Channel.accessible_by(current_ability)
       =f.input :availabilities, :label => "Availability of the teacher"
       =f.input :venue
       =f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
