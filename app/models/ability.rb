@@ -16,7 +16,8 @@ class Ability
       can :manage, Category
 
     when "channel admin"
-      can :read, Chalkler, :id => user.chalkler_ids
+      can :create, Chalkler
+      can [:read, :update], Chalkler, :id => user.chalkler_ids
       can [:read, :update, :meetup_template], Lesson, :id => user.lesson_ids
       can [:record_cash_payment], Booking
       can [:read, :create, :update], LessonImage

@@ -45,9 +45,9 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 %br
 %b cost
 
-#{lesson.cost? ? (cost = number_with_precision(lesson.cost*1.15, :precision => 2, :significant => false)) : "free"} (incl. GST)
+#{lesson.cost? ? (cost = number_with_precision(lesson.cost*1.15, :precision => 2, :significant => false)) : "free"} (incl. GST) 
 %br
--if lesson.cost
+-if lesson.cost?
   %br
   %b how to book and pay
   %br

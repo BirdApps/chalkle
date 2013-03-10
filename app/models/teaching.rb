@@ -79,7 +79,7 @@ class Teaching
   end
 
   def meetup_event_name(category_primary_id,title)
-    return ( Category.find(category_primary_id, :select => "name").name + " : " + title )
+    return ( Category.find(category_primary_id, :select => "name").name + ": " + title ).downcase
   end
 
 end

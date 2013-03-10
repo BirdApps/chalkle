@@ -1,11 +1,13 @@
 class Channel < ActiveRecord::Base
-  attr_accessible :name, :url_name, :channel_percentage, :teacher_percentage
+<<<<<<< HEAD
+  attr_accessible :name, :url_name, :channel_percentage, :teacher_percentage, :email
 
   validates :name, :presence => true
   validates :url_name, :presence => true
   validates :channel_percentage, :presence => true, :allow_blank => false, :numericality => { :less_than_or_equal_to => 1, :message => "Channel percentage of revenue must be less than or equal to 1"}
   validates :teacher_percentage, :presence => true, :allow_blank => false, :numericality => { :less_than_or_equal_to => 1, :message => "Teacher percentage of revenue must be less than or equal to 1"}
   validate :percentage_sum_validation
+  validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
 
   has_many :channel_admins
   has_many :admin_users, :through => :channel_admins

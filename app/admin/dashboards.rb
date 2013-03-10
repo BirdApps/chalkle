@@ -22,7 +22,7 @@ ActiveAdmin.register_page "Dashboard" do
             end
             column("Last Update") { |lesson| lesson.updated_at.to_formatted_s(:long) }
             column("Status") { |lesson| lesson.status }
-            column("Price") { |lesson| number_to_currency lesson.cost }
+            column("Price (incl GST)") { |lesson| number_to_currency lesson.gst_price }
           end
         end
 

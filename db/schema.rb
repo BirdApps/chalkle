@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130227075539) do
+=======
+ActiveRecord::Schema.define(:version => 20130307015618) do
+>>>>>>> master
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -133,8 +137,12 @@ ActiveRecord::Schema.define(:version => 20130227075539) do
     t.datetime "created_at",                                                          :null => false
     t.datetime "updated_at",                                                          :null => false
     t.string   "url_name"
+<<<<<<< HEAD
     t.decimal  "channel_percentage", :precision => 8, :scale => 2, :default => 0.125
     t.decimal  "teacher_percentage", :precision => 8, :scale => 2, :default => 0.75
+=======
+    t.string   "email"
+>>>>>>> master
   end
 
   create_table "lesson_categories", :id => false, :force => true do |t|
