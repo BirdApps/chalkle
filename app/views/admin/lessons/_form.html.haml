@@ -14,6 +14,7 @@
       =f.input :lesson_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
       =f.input :teacher_bio, :label => "Your chalkler will be"
       =f.input :prerequisites, :label => "What to bring"
+      =f.input :suggested_audience, :label => "Appropriate audience"
       =f.input :additional_comments
     =f.input :gst_price, :label => "Advertised price including GST", :input_html => { :disabled => true }, :hint => "To change this, alter the Teacher Income Per Attendee or Advertised price excluding GST"
     -if @lesson.teacher_cost == 0
@@ -30,9 +31,11 @@
       =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default channel percentage is #{@lesson.default_channel_percentage*100}%, default chalkle percentage is #{@lesson.default_chalkle_percentage*100}%. For example, enter 20 for 20%"
     =f.input :teacher_cost, :label => "Teacher income per attendee"
     =f.input :venue_cost
+    =f.input :material_cost
     =f.input :max_attendee
     =f.input :min_attendee
-    =f.input :duration, :label => "Duration in seconds"
+    -@lesson.duration = @lesson.duration/60/60 if !@lesson.duration.nil?
+    =f.input :duration, :label => "Duration in hours"
     -if @lesson.published?
       =f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
       =f.input :description
@@ -40,7 +43,7 @@
 
   =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
     -title = (@lesson.lesson_image.try(:title)) ? @lesson.lesson_image.title : @lesson.name
-    =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved.",  :input_html => { :rows => 5, :value => title }
+    =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved. Break title into multiple lines to make the text bigger",  :input_html => { :rows => 5, :value => title }
   =f.actions
 
 :javascript
