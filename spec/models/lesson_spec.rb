@@ -279,7 +279,6 @@ describe Lesson do
 
     end
   
->>>>>>> master
   end
 
 end
