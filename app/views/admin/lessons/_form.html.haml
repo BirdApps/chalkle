@@ -16,8 +16,20 @@
       =f.input :prerequisites, :label => "What to bring"
       =f.input :suggested_audience, :label => "Appropriate audience"
       =f.input :additional_comments
-    =f.input :cost, :label => "Price excluding GST"
-    =f.input :teacher_cost
+    =f.input :gst_price, :label => "Advertised price including GST", :input_html => { :disabled => true }, :hint => "To change this, alter the Teacher Income Per Attendee or Advertised price excluding GST"
+    -if @lesson.teacher_cost == 0
+      =f.input :cost, :label => "Advertised price excluding GST"
+    -else
+      =f.input :cost, :label => "Advertised price excluding GST", :input_html => { :readonly => true }, :hint => "To change this, alter Teacher Income Per Attendee. If the Teacher has no income, come back and edit this directly by first setting Teacher Income Per Attendee to 0 and save"
+    -(@lesson.chalkle_percentage_override = @lesson.chalkle_percentage_override*100) if @lesson.chalkle_percentage_override?
+    -if current_admin_user.role=="super"
+      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%. Enter 20 for 20%"
+    -(@lesson.channel_percentage_override = @lesson.channel_percentage_override*100) if @lesson.channel_percentage_override?
+    -if current_admin_user.role=="super"
+      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%. Enter 20 for 20%"
+    -else
+      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default channel percentage is #{@lesson.default_channel_percentage*100}%, default chalkle percentage is #{@lesson.default_chalkle_percentage*100}%. For example, enter 20 for 20%"
+    =f.input :teacher_cost, :label => "Teacher income per attendee"
     =f.input :venue_cost
     =f.input :material_cost
     =f.input :max_attendee
@@ -33,3 +45,7 @@
     -title = (@lesson.lesson_image.try(:title)) ? @lesson.lesson_image.title : @lesson.name
     =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved. Break title into multiple lines to make the text bigger",  :input_html => { :rows => 5, :value => title }
   =f.actions
+
+:javascript
+  var default_channel_percentage = "#{@lesson.default_channel_percentage}";
+  var default_chalkle_percentage = "#{@lesson.default_chalkle_percentage}";
