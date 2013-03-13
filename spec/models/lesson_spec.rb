@@ -142,6 +142,7 @@ describe Lesson do
       @lesson.material_cost = "rewrew"
       @lesson.should_not be_valid
     end
+  end
 
   describe "lesson costs" do
 
