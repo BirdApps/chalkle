@@ -56,15 +56,9 @@ ActiveAdmin.register_page "Dashboard" do
 
         end
 
-        panel "Past class performance" do
-          table_for Lesson.accessible_by(current_ability).visible.last_week.order("start_at asc") do
-            column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-            column("Channel") { |lesson| lesson.channels.collect{|c| c.name}.join(", ") }
-            column("Attendance") { |lesson| lesson.attendance}
-            if current_admin_user.role=="super"
-                column("Income") { |lesson| number_to_currency lesson.income}
-            end
-          end
+        panel "Class performance" do
+          days = [7,30,60]
+          render partial: "/admin/dashboard/performance", locals: {channels: Channel.accessible_by(current_ability), days: days}
         end
 
       end

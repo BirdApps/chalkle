@@ -279,6 +279,15 @@ describe Lesson do
       end
 
     end
+
+    describe "Performance calculation methods" do
+      before do
+        @lesson1 = FactoryGirl.create(:lesson, meetup_id: 516473924, cost: 10, teacher_cost: 1, teacher_payment: )
+      end
+      it "calculates total revenue from lessons" do
+        
+      end
+    end
   
   end
 
