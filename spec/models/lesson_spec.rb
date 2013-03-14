@@ -93,10 +93,7 @@ describe Lesson do
     end
 
     it "update published date for a lesson already created" do
-      Lesson.create_from_meetup_hash(result, channel)
-      lesson = Lesson.find_by_meetup_id 12345678
-      lesson.published_at = Date.today()
-      lesson.save
+      lesson = FactoryGirl.create(:lesson, meetup_id: 12345678, start_at: Date.today)
       Lesson.create_from_meetup_hash(result, channel)
       lesson.reload.published_at.to_time.to_i.should == 1351297791
     end

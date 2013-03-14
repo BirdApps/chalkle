@@ -198,8 +198,8 @@ class Lesson < ActiveRecord::Base
     l.description = result.description
     l.meetup_data = result.to_json
     l.max_attendee = result.rsvp_limit
-    l.start_at = result.time if ( result.status == "upcoming" && result.time.present?)
-    l.published_at = Time.at(result.created / 1000) if ( result.status == "upcoming" && result.created.present? )
+    l.start_at = result.time if (result.status == "upcoming" && result.time.present?)
+    l.published_at = Time.at(result.created / 1000) if (result.status == "upcoming" && result.created.present?)
     l.save
     l.set_category result.name
     l.channels << channel unless l.channels.exists? channel
