@@ -31,7 +31,7 @@ class Teaching
     { "name" => meetup_event_name(@category_primary_id,@title), "teacher_id" => @teacher_id, "lesson_skill" => @lesson_skill, "teacher_bio" => @bio, "do_during_class" => @do_during_class, 
     "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60*60, "cost" => price_calculation(@teacher_cost, Channel.find(@channel_id)), "teacher_cost" => @teacher_cost, 
     "max_attendee" => @max_attendee.to_i, "min_attendee" => @min_attendee.to_i, "availabilities" => @availabilities, "prerequisites" => @prerequisites, 
-    "additional_comments" => @additional_comments, "venue" => @venue, "status" => "Unreviewed", "channel_percentage_override" => nil, "chalkle_percentage_override" => nil, "suggested_audience" => @suggested_audience}
+    "additional_comments" => @additional_comments, "venue" => @venue, "status" => "Unreviewed", "channel_percentage_override" => nil, "chalkle_percentage_override" => nil, "suggested_audience" => nil}
   end
 
   def submit(params)
@@ -64,7 +64,6 @@ class Teaching
     @additional_comments = params[:additional_comments]
     @venue = params[:venue]
     @category_primary_id = params[:category_primary_id].to_i
-    @suggested_audience = params[:suggested_audience]
     if @channels.length > 1
       @channel_id = params[:channel_id].to_i
     else 
