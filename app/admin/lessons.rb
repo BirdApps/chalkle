@@ -22,6 +22,14 @@ ActiveAdmin.register Lesson  do
     end
     helper LessonHelper
     helper BookingHelper
+
+    def update
+      params[:lesson][:duration] = (params[:lesson][:duration].to_d*60*60).to_i if !params[:lesson][:duration].blank?
+      params[:lesson][:chalkle_percentage_override] = (params[:lesson][:chalkle_percentage_override].to_d/100).to_s unless params[:lesson][:chalkle_percentage_override].blank?
+      params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].blank?     
+      update!
+    end
+
   end
 
   index do
@@ -63,10 +71,10 @@ ActiveAdmin.register Lesson  do
       row :start_at
       if !lesson.published?
         row "Availability of the teacher" do
-          simple_format lesson.availabilities
+          lesson.availabilities
         end
         row "venue for this class" do
-          simple_format lesson.venue
+          lesson.venue
         end
         row "What we are doing" do
           simple_format lesson.do_during_class
@@ -86,6 +94,9 @@ ActiveAdmin.register Lesson  do
         row "What to bring" do
           simple_format lesson.prerequisites
         end
+        row "What type of audience is it appropriate for" do 
+          simple_format lesson.suggested_audience
+        end
         row :additional_comments do
           simple_format lesson.additional_comments
         end
@@ -98,19 +109,28 @@ ActiveAdmin.register Lesson  do
       #   end
       # end
       row "Advertised price including GST" do
-        number_to_currency (lesson.cost.present? ? lesson.cost*1.15 : nil)
+        number_to_currency lesson.gst_price
       end
-      row "Price excluding GST" do
+      row "Advertised price excluding GST" do
         number_to_currency lesson.cost
       end
-      row "Teacher payment per attendee" do
+      row "Chalkle income per attendee" do
+        number_to_currency (lesson.cost.present? ? lesson.chalkle_percentage*lesson.cost : nil)
+      end
+      row "Channel income per attendee" do
+        number_to_currency (lesson.cost.present? ? lesson.channel_percentage*lesson.cost : nil)
+      end
+      row "Teacher income per attendee" do
         number_to_currency lesson.teacher_cost
       end
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
+      row :material_cost do
+        number_to_currency lesson.material_cost
+      end
       row :duration do
-        "#{lesson.duration / 60 / 60} hours" if lesson.duration?
+        pluralize(lesson.duration / 60 / 60, "hour") if lesson.duration?
       end
       row :max_attendee
       row :min_attendee
