@@ -1,7 +1,7 @@
 -channels.each do |c|
   %h3
     #{c.name} Channel
-  %h5 
+  %h4 
     Financial
   %table
     %thead
@@ -19,16 +19,14 @@
           %td #{number_to_currency Lesson.total_cost(day,c.id)}
           %td #{number_to_currency Lesson.total_revenue(day,c.id) - Lesson.total_cost(day,c.id)}
 
-  %h5 
-    Volume
+  %h4 
+    Classes
   %table
     %thead
       %tr
         %th Period
         %th Not cancelled classes
         %th Cancelled classes
-        %th Attendees (percent filled)
-        %th Members (New / % active) 
         %th Paid classes / Unpaid classes
 
     %tbody
@@ -38,6 +36,22 @@
         %td #{Lesson.not_cancel(day,c.id).sum} classes (#{Lesson.not_cancel(day,c.id).first} new / #{Lesson.not_cancel(day,c.id).last} repeat)
         %td #{Lesson.cancel(day,c.id).sum} classes (#{Lesson.cancel(day,c.id).first} new / #{Lesson.cancel(day,c.id).last} repeat)
         %td #{Lesson.attendee(day,c.id)} ( #{number_to_percentage Lesson.fill_fraction(day,c.id)} )
+
+  %h5
+    Top five categories are:
+
+
+  %h4 
+    Chalklers
+  %table
+    %thead
+      %tr
+        %th Period
+        %th Attendees (% filled)
+        %th New members
+
+    %tbody
+
 
 
      
