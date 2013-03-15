@@ -88,15 +88,8 @@ body {
   padding: 20px 60px;
 }
 
-.walkthrough {
-  img {
-    margin-bottom: 20px;
-  }
-  h2 {
-    margin: 0 0 10px 0;
-  }
-}
 
 @import "image";
 @import "forms";
 @import "typography";
+@import "modules/chalklers";
