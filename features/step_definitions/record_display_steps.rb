@@ -6,7 +6,7 @@ Given /^I am logged in with the "(.*?)" role$/ do |role|
   click_button "Login"
 end
 
-Given /^there is an unreconciled payments with no details$/ do
+Given /^there is an unreconciled payment with no details$/ do
   @payment = Payment.create(xero_id: "abc", total: 10)
 end
 
@@ -14,7 +14,7 @@ When /^I visit the "(.*?)" page$/ do |page|
   click_link page
 end
 
-Then /^I should still see this payment$/ do
+Then /^I should see this payment$/ do
   page.should have_content("#{@payment.total}")
 end
 
@@ -22,7 +22,7 @@ Given /^there is a lesson with no details$/ do
   @lesson = Lesson.create(name: "test class")
 end
 
-Then /^I should still see this lesson$/ do
+Then /^I should see this lesson$/ do
   page.should have_content("#{@lesson.name}")
 end
 
@@ -30,7 +30,7 @@ Given /^there is a channel with no details$/ do
   @channel = Channel.create(name: "test channel", url_name: "blah")
 end
 
-Then /^I should still see this channel$/ do
+Then /^I should see this channel$/ do
   page.should have_content("#{@channel.name}")
   page.should have_content("#{@channel.url_name}")
 end
@@ -68,4 +68,9 @@ end
 Then /^I should still see this admin user$/ do
   page.should have_content("#{@admin.email}")
 end
+
+Then /^I should see the dashboard$/ do
+  page.should have_content("Dashboard")
+end
+
 

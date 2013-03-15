@@ -43,3 +43,9 @@ Scenario: An admin user with no details should render correctly
   And there is an admin user with no details
   When I visit the "Admin Users" page
   Then I should still see this admin user
+
+Scenario: Dashboard should render correctly with no records
+  Given I am logged in with the "super" role
+  And there is a booking with no details
+  When I visit the "Dashboard" page
+  Then I should see the dashboard
