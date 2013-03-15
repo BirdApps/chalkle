@@ -60,4 +60,25 @@ describe Chalkler do
       chalkler.created_at.to_time.to_i.should == 1346658337
     end
   end
+
+  describe "Performance calculation methods" do
+    before do 
+      @channel = FactoryGirl.create(:channel)
+      @lesson = FactoryGirl.create(:lesson)
+      (1..5).each do |i|
+        chalkler = FactoryGirl.create(:chalkler, meetup_id: i*11111111, email: "test#{i}@gmail.com", created_at: 1.year.ago)
+        chalkler.channels << @channel
+        FactoryGirl.create(:booking, lesson_id: @lesson.id, chalkler_id: chalkler.id, created_at: i.months.ago)
+      end    
+    end
+    it "calculates the number of new members" do
+      chalkler2 = FactoryGirl.create(:chalkler, meetup_id: 1234565, email: "test@gmail.com", created_at: 1.day.ago)
+      chalkler2.channels << @channel
+      Chalkler.new_chalklers(2,0,@channel.id).should == 1
+    end
+
+    it "calculates the number of active members" do
+      Chalkler.percent_active(0.weeks.ago,@channel.id).should == 60
+    end
+  end
 end

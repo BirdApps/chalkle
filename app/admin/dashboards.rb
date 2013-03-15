@@ -57,8 +57,8 @@ ActiveAdmin.register_page "Dashboard" do
         end
 
         panel "Class performance" do
-          days = [7,30,60]
-          render partial: "/admin/dashboard/performance", locals: {channels: Channel.accessible_by(current_ability), days: days}
+          num_weeks = 6
+          render partial: "/admin/dashboard/performance", locals: {channels: Channel.accessible_by(current_ability), num_weeks: num_weeks}
         end
 
       end
