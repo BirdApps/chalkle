@@ -2,16 +2,16 @@
   %h3
     #{c.name} Channel
   %h4 
-    Financials
+    Financials (excl. GST)
   %table
     %thead
       %tr
         %th Week
-        %th Revenue
-        %th % Change revenue
+        %th Turnover
+        %th % Change turnover
         %th Cost*
         %th % Change cost
-        %th Profit
+        %th Gross Profit
         %th % Change profit
 
     %tbody
@@ -26,7 +26,7 @@
         %tr
           -previous_week = (Date.today() - last_day.weeks_ago(i + 1) ).to_i
           -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
-          -end_date = [(Date.today() - last_day.weeks_ago(i-1) ).to_i,0].max
+          -end_date = (Date.today() - last_day.weeks_ago(i-1) ).to_i
           -revenues[i-1] = Channel.total_revenue(start_date,end_date,c.id).to_d
           -revenues[i] = Channel.total_revenue(previous_week,start_date,c.id)
           -revenues_change[i-1] = (revenues[i] > 0) ? (revenues[i-1]/revenues[i] - 1.0)*100.0 : nil
@@ -36,7 +36,7 @@
           -profits[i-1] = revenues[i-1] - costs[i-1]
           -profits[i] = revenues[i] - costs[i]
           -profits_change[i-1] = (profits[i] > 0) ? (profits[i-1]/profits[i] - 1.0)*100.0 : nil
-          %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")}
+          %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")} #{ "(projected)" if end_date < 0}
           %td #{number_to_currency revenues[i-1]}
           %td #{number_to_percentage( revenues_change[i-1], :precision => 0)}
           %td #{number_to_currency costs[i-1]}
@@ -51,12 +51,12 @@
         -costs_change.reject! {|x| x.nil?}
         -profits_change.reject! {|x| x.nil?}
         %td <b> Average of #{num_weeks} weeks </b>
-        %td <b> #{number_to_currency revenues.sum / revenues.length} </b>
-        %td <b> #{number_to_percentage( revenues_change.sum / revenues_change.length, :precision => 0)} </b>
-        %td <b> #{number_to_currency costs.sum / costs.length} </b>
-        %td <b> #{number_to_percentage( costs_change.sum / costs_change.length, :precision => 0)} </b>
-        %td <b> #{number_to_currency profits.sum / profits.length} </b>
-        %td <b> #{number_to_percentage( profits_change.sum / profits_change.length, :precision => 0)} </b>
+        %td <b> #{number_to_currency(revenues.sum / revenues.length)} </b>
+        %td <b> #{number_to_percentage( revenues_change.length > 0 ? revenues_change.sum / revenues_change.length : nil, :precision => 0)} </b>
+        %td <b> #{number_to_currency(costs.sum / costs.length )} </b>
+        %td <b> #{number_to_percentage( costs_change.length > 0 ? costs_change.sum / costs_change.length : nil, :precision => 0)} </b>
+        %td <b> #{number_to_currency(profits.sum / profits.length)} </b>
+        %td <b> #{number_to_percentage( profits_change.length > 0 ? profits_change.sum / profits_change.length : nil, :precision => 0)} </b>
 
   %p
     *Cost includes teacher, venue and material cost
@@ -69,10 +69,10 @@
         %th Week
         %th Classes ran
         %th % Change Classes
+        %th Paid classes ran
+        %th % Change paid classes
         %th Cancellations
         %th % Change cancellations
-        %th Paid classes
-        %th % Change paid classes
 
     %tbody
       -lessons = []
@@ -85,23 +85,23 @@
         %tr
           -previous_week = (Date.today() - last_day.weeks_ago(i + 1) ).to_i
           -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
-          -end_date = [(Date.today() - last_day.weeks_ago(i-1) ).to_i,0].max
+          -end_date = (Date.today() - last_day.weeks_ago(i-1) ).to_i
           -lessons[i-1] = Channel.classes_run(start_date,end_date,c.id)
           -lessons[i] = Channel.classes_run(previous_week,start_date,c.id)          
           -lessons_change[i-1] = (lessons[i].sum() > 0) ? (lessons[i-1].sum().to_d/lessons[i].sum() - 1.0)*100.0 : nil
+          -pay_lessons[i-1] = Channel.classes_pay(start_date,end_date,c.id).first
+          -pay_lessons[i] = Channel.classes_pay(previous_week,start_date,c.id).first
+          -pay_lessons_change[i-1] = (pay_lessons[i] > 0) ? (pay_lessons[i-1].to_d/pay_lessons[i] - 1.0)*100.0 : nil
           -cancellations[i-1] = Channel.classes_cancel(start_date,end_date,c.id)
           -cancellations[i] = Channel.classes_cancel(previous_week,start_date,c.id)
           -cancellations_change[i-1] = (cancellations[i].sum() > 0) ? (cancellations[i-1].sum().to_d/cancellations[i].sum() - 1.0)*100.0 : nil
-          -pay_lessons[i-1] = Channel.classes_pay(start_date,end_date,c.id).first.to_d
-          -pay_lessons[i] = Channel.classes_pay(previous_week,start_date,c.id).first
-          -pay_lessons_change[i-1] = (pay_lessons[i] > 0) ? (pay_lessons[i-1]/pay_lessons[i] - 1.0)*100.0 : nil
-          %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")}
+          %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")} #{ "(projected)" if end_date < 0}
           %td #{lessons[i-1].sum()} ( #{lessons[i-1].first} new / #{lessons[i-1].last} repeat )
           %td #{number_to_percentage( lessons_change[i-1], :precision => 0)}
-          %td #{cancellations[i-1].sum()} ( #{cancellations[i-1].first} new / #{cancellations[i-1].last} repeat )
-          %td #{number_to_percentage( cancellations_change[i-1], :precision => 0)}
           %td #{pay_lessons[i-1]} paid classes ( #{lessons[i-1].sum() - pay_lessons[i-1]} free classes )
           %td #{number_to_percentage( pay_lessons_change[i-1], :precision => 0)}
+          %td #{cancellations[i-1].sum()} ( #{cancellations[i-1].first} new / #{cancellations[i-1].last} repeat )
+          %td #{number_to_percentage( cancellations_change[i-1], :precision => 0)}
           -lessons[i-1] = lessons[i-1].sum()
           -cancellations[i-1] = cancellations[i-1].sum()
       %tr
@@ -113,11 +113,11 @@
         -pay_lessons_change.reject! {|x| x.nil?}
         %td <b> Average of #{num_weeks} weeks </b>
         %td <b> #{number_to_human lessons.sum.to_d / lessons.length} classes </b>
-        %td <b> #{number_to_percentage( lessons_change.sum / lessons_change.length, :precision => 0)} </b>
-        %td <b> #{number_to_human cancellations.sum.to_d / cancellations.length} classes </b>
-        %td <b> #{number_to_percentage( cancellations_change.sum / cancellations_change.length, :precision => 0)} </b>
+        %td <b> #{number_to_percentage( lessons_change.length > 0 ? lessons_change.sum / lessons_change.length : nil, :precision => 0)} </b>
         %td <b> #{number_to_human pay_lessons.sum.to_d / pay_lessons.length} classes </b>
-        %td <b> #{number_to_percentage( pay_lessons_change.sum / pay_lessons_change.length, :precision => 0)} </b>
+        %td <b> #{number_to_percentage( pay_lessons_change.length > 0 ? pay_lessons_change.sum.to_d / pay_lessons_change.length : nil, :precision => 0)} </b>
+        %td <b> #{number_to_human cancellations.sum.to_d / cancellations.length} classes </b>
+        %td <b> #{number_to_percentage( cancellations_change.length > 0 ? cancellations_change.sum / cancellations_change.length : nil, :precision => 0)} </b>
 
   %h4 
     Chalklers
@@ -141,7 +141,7 @@
         %tr
           -previous_week = (Date.today() - last_day.weeks_ago(i + 1) ).to_i
           -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
-          -end_date = [(Date.today() - last_day.weeks_ago(i-1) ).to_i,0].max
+          -end_date = (Date.today() - last_day.weeks_ago(i-1) ).to_i
           -attendees[i-1] = Channel.attendee(start_date,end_date,c.id).to_d
           -attendees[i] = Channel.attendee(previous_week,start_date,c.id)
           -attendees_change[i-1] = (attendees[i] > 0) ? (attendees[i-1]/attendees[i] - 1.0)*100.0 : nil
@@ -150,7 +150,7 @@
           -new_members_change[i-1] = (new_members[i] > 0) ? (new_members[i-1]/new_members[i] - 1.0)*100.0 : nil
           -active_members[i-1] = Channel.percent_active(i-1,c.id)
           -active_members[i] = Channel.percent_active(i,c.id)
-          %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")}
+          %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")} #{ "(projected)" if end_date < 0} 
           %td #{attendees[i-1]} chalklers ( The average class is #{number_to_percentage(Channel.fill_fraction(start_date,end_date,c.id),:precision => 0) } filled )
           %td #{number_to_percentage( attendees_change[i-1], :precision => 0)}
           %td #{new_members[i-1]}
@@ -165,9 +165,9 @@
         -new_members_change.reject! {|x| x.nil?}
         %td <b> Average of #{num_weeks} weeks </b>
         %td <b> #{number_to_human attendees.sum / attendees.length} chalklers </b>
-        %td <b> #{number_to_percentage( attendees_change.sum / attendees_change.length, :precision => 0)} </b>
+        %td <b> #{number_to_percentage( attendees_change.length > 0 ? attendees_change.sum / attendees_change.length : 0, :precision => 0)} </b>
         %td <b> #{number_to_human new_members.sum / new_members.length} chalklers </b>
-        %td <b> #{number_to_percentage( new_members_change.sum / new_members_change.length, :precision => 0)} </b>
+        %td <b> #{number_to_percentage( new_members_change.length > 0 ? new_members_change.sum / new_members_change.length : 0, :precision => 0)} </b>
         %td <b> #{number_to_percentage( active_members.sum / active_members.length, :precision => 0)} </b>
 
   %p
