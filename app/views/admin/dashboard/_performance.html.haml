@@ -8,19 +8,35 @@
       %tr
         %th Week
         %th Revenue
+        %th % Change revenue
         %th Cost*
+        %th % Change cost
         %th Profit
+        %th % Change profit
 
     %tbody
       -last_day = Date.today().end_of_week(start_day= :wednesday)
       -(1..num_weeks).each do |i|
         %tr
+          -previous_week = (Date.today() - last_day.weeks_ago(i + 1) ).to_i
           -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
           -end_date = [(Date.today() - last_day.weeks_ago(i-1) ).to_i,0].max
+          -old_revenue = Channel.total_revenue(previous_week,start_date,c.id)
+          -new_revenue = Channel.total_revenue(start_date,end_date,c.id)
+          -revenue_change = (old_revenue > 0) ? (new_revenue/old_revenue - 1.0)*100.0 : nil
+          -old_cost = Channel.total_cost(previous_week,start_date,c.id)
+          -new_cost = Channel.total_cost(start_date,end_date,c.id)
+          -cost_change = (old_cost > 0) ? (new_cost/old_cost - 1.0)*100.0 : nil
+          -old_profit = old_revenue - old_cost
+          -new_profit = new_revenue - new_cost
+          -profit_change = (old_profit > 0) ? (new_profit/old_profit - 1.0)*100.0 : nil
           %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")}
-          %td #{number_to_currency Lesson.total_revenue(start_date,end_date,c.id)}
-          %td #{number_to_currency Lesson.total_cost(start_date,end_date,c.id)}
-          %td #{number_to_currency ( Lesson.total_revenue(start_date,end_date,c.id) - Lesson.total_cost(start_date,end_date,c.id) )}
+          %td #{number_to_currency new_revenue}
+          %td #{number_to_percentage( revenue_change, :precision => 0)}
+          %td #{number_to_currency new_cost}
+          %td #{number_to_percentage( cost_change, :precision => 0)}
+          %td #{number_to_currency new_profit}
+          %td #{number_to_percentage( profit_change, :precision => 0)}
   %p
     *Cost includes teacher, venue and material cost
 
@@ -31,23 +47,34 @@
       %tr
         %th Week
         %th Classes ran
-        %th Cancelled classes
-        %th Paid classes / Unpaid classes
-        %th New Teachers
+        %th % Change Classes
+        %th Cancellations
+        %th % Change cancellations
+        %th Paid classes
+        %th % Change paid classes
 
     %tbody
       -(1..num_weeks).each do |i|
         %tr
+          -previous_week = (Date.today() - last_day.weeks_ago(i + 1) ).to_i
           -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
           -end_date = [(Date.today() - last_day.weeks_ago(i-1) ).to_i,0].max
+          -old_classes = Channel.classes_run(previous_week,start_date,c.id)
+          -new_classes = Channel.classes_run(start_date,end_date,c.id)
+          -classes_change = (old_classes.sum() > 0) ? (new_classes.sum().to_d/old_classes.sum() - 1.0)*100.0 : nil
+          -old_cancel = Channel.classes_cancel(previous_week,start_date,c.id)
+          -new_cancel = Channel.classes_cancel(start_date,end_date,c.id)
+          -cancel_change = (old_cancel.sum() > 0) ? (new_cancel.sum().to_d/old_cancel.sum() - 1.0)*100.0 : nil
+          -old_pay_classes = Channel.classes_pay(previous_week,start_date,c.id).first
+          -new_pay_classes = Channel.classes_pay(start_date,end_date,c.id).first
+          -pay_classes_change = (old_pay_classes > 0) ? (new_pay_classes.to_d/old_pay_classes - 1.0)*100.0 : nil
           %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")}
-          %td #{Lesson.classes_run(start_date,end_date,c.id).sum()} ( #{Lesson.classes_run(start_date,end_date,c.id).first} new / #{Lesson.classes_run(start_date,end_date,c.id).last} repeat )
-          %td #{Lesson.classes_cancel(start_date,end_date,c.id).sum()} ( #{Lesson.classes_cancel(start_date,end_date,c.id).first} new / #{Lesson.classes_cancel(start_date,end_date,c.id).last} repeat )
-          %td #{Lesson.classes_pay(start_date,end_date,c.id).first} paid classes / #{Lesson.classes_pay(start_date,end_date,c.id).last} free classes
-
-  %h5
-    Top five categories are:
-
+          %td #{new_classes.sum()} ( #{new_classes.first} new / #{new_classes.last} repeat )
+          %td #{number_to_percentage( classes_change, :precision => 0)}
+          %td #{new_cancel.sum()} ( #{new_cancel.first} new / #{new_cancel.last} repeat )
+          %td #{number_to_percentage( cancel_change, :precision => 0)}
+          %td #{new_pay_classes} paid classes ( #{new_classes.sum() - new_pay_classes} free classes )
+          %td #{number_to_percentage( pay_classes_change, :precision => 0)}
 
   %h4 
     Chalklers
@@ -56,21 +83,39 @@
       %tr
         %th Period
         %th Attendees
+        %th % Change attendees
         %th New members
+        %th % Change new members
         %th Active members*
 
     %tbody
       -(1..num_weeks).each do |i|
         %tr
+          -previous_week = (Date.today() - last_day.weeks_ago(i + 1) ).to_i
           -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
           -end_date = [(Date.today() - last_day.weeks_ago(i-1) ).to_i,0].max
+
+          -old_attendee = Channel.attendee(previous_week,start_date,c.id)
+          -new_attendee = Channel.attendee(start_date,end_date,c.id)
+          -attendee_change = (old_attendee > 0) ? (new_attendee.to_d/old_attendee - 1.0)*100.0 : nil
+          -old_new_member = Channel.new_chalklers(previous_week,start_date,c.id)
+          -new_new_member = Channel.new_chalklers(start_date,end_date,c.id)
+          -new_member_change = (old_new_member > 0) ? (new_new_member.to_d/old_new_member - 1.0)*100.0 : nil
+          -old_active = Channel.percent_active(i,c.id)
+          -new_active = Channel.percent_active(i - 1,c.id)
+          -active_change = (old_active > 0) ? (new_active.to_d/old_active - 1.0)*100.0 : nil
+
           %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")}
-          %td #{Lesson.attendee(start_date,end_date,c.id)} chalklers attended ( Average class is #{number_to_percentage(Lesson.fill_fraction(start_date,end_date,c.id),:precision => 0) } filled )
-          %td #{Chalkler.new_chalklers(start_date,end_date,c.id)}
-          %td #{number_to_percentage(Chalkler.percent_active(last_day.weeks_ago(i-1),c.id),:precision => 0)}
+          %td #{old_attendee} chalklers ( The average class is #{number_to_percentage(Channel.fill_fraction(start_date,end_date,c.id),:precision => 0) } filled )
+          %td #{number_to_percentage( attendee_change, :precision => 0)}
+          %td #{Channel.new_chalklers(start_date,end_date,c.id)}
+          %td #{number_to_percentage( new_member_change, :precision => 0)}
+          %td #{number_to_percentage(Channel.percent_active(i-1,c.id),:precision => 0)}
   %p
     *A chalkler is active if he has RSVP activities within the last 3 months
 
+  %h5
+    Top five categories are:
 
 
 

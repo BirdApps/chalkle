@@ -37,34 +37,6 @@ class Chalkler < ActiveRecord::Base
     false
   end
 
-  # performance calculation methods
-  def self.new_chalklers(start_days_ago,end_days_ago,channel_id)
-    c = Chalkler.joins(:channel_chalklers).where("id=channel_chalklers.chalkler_id and channel_chalklers.channel_id=#{channel_id} and created_at > current_date - #{start_days_ago} and created_at <= current_date - #{end_days_ago}")
-    return c.length
-  end
-
-  def last_activity
-    if bookings.empty?
-      return created_at
-    else
-      return bookings.order(:created_at).reverse.first.created_at
-    end
-  end
-
-  def self.active_chalklers(today,channel_id)
-    total = 0
-    Chalkler.members(channel_id).each { |c| (total = total + 1) if c.last_activity < today.months_ago(3) }
-    return total
-  end
-
-  def self.percent_active(today,channel_id)
-    if Chalkler.members(channel_id).empty?
-      return 0
-    else
-      return ( Chalkler.active_chalklers(today,channel_id).to_d / Chalkler.members(channel_id).length.to_d )* 100
-    end
-  end
-
   def meetup_data
     data = read_attribute(:meetup_data)
     if data.present?
@@ -105,11 +77,6 @@ class Chalkler < ActiveRecord::Base
                              )
       end
     chalkler
-  end
-
-  private
-  def self.members(channel_id)
-    Chalkler.joins(:channel_chalklers).where("id=channel_chalklers.chalkler_id and channel_chalklers.channel_id=#{channel_id}")
   end
 
 end

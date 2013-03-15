@@ -217,93 +217,6 @@ class Lesson < ActiveRecord::Base
     parts[1].strip
   end
 
-  # performance calculation methods
-  def self.total_revenue(start_days_ago,end_days_ago,channel_id)
-    l = Lesson.lesson_selection(start_days_ago,end_days_ago,channel_id)
-    total = 0
-    l.each do |lesson|
-      total = lesson.collected_revenue + total
-    end
-    return total
-  end
-
-  def self.total_cost(start_days_ago,end_days_ago,channel_id)
-    l = Lesson.lesson_selection(start_days_ago,end_days_ago,channel_id)
-    total = 0
-    l.each do |lesson|
-      if lesson.teacher_payment.present?
-        total = total + lesson.teacher_payment + (lesson.venue_cost.present? ? lesson.venue_cost : 0) + (lesson.material_cost.present? ? lesson.material_cost : 0)
-      else
-        total = total + lesson.attendance*(lesson.teacher_cost.present? ? lesson.teacher_cost : 0)
-      end
-    end
-    return total
-  end
-
-  def self.classes_run(start_days_ago,end_days_ago,channel_id)
-    Lesson.new_repeat_class(Lesson.lesson_selection(start_days_ago,end_days_ago,channel_id),Lesson.past_classes(start_days_ago,channel_id))
-  end
-
-  def self.classes_cancel(start_days_ago,end_days_ago,channel_id)
-    Lesson.new_repeat_class(Lesson.cancel_classes(start_days_ago,end_days_ago,channel_id),Lesson.past_classes(start_days_ago,channel_id))
-  end
-
-  def self.classes_pay(start_days_ago,end_days_ago,channel_id)
-    l = Lesson.lesson_selection(start_days_ago,end_days_ago,channel_id)
-    free = 0
-    l.each do |lesson|
-      if lesson.cost == 0 || lesson.cost.nil?
-        free = free + 1
-      end
-    end
-    return [l.length - free, free]
-  end
-
-  def self.new_repeat_class(lessons_new,lessons_past)
-    new_lesson = 0
-    lessons_new.each do |lesson|
-      if lessons_past.find_by_name(lesson.name).nil?
-        new_lesson = new_lesson + 1
-      end
-    end
-    return [new_lesson, lessons_new.length - new_lesson]
-  end
-
-  def self.attendee(start_days_ago,end_days_ago,channel_id)
-    l = Lesson.lesson_selection(start_days_ago,end_days_ago,channel_id)
-    total = 0
-    l.each do |lesson|
-      total = total + lesson.attendance
-    end
-    return total
-  end
-
-  def self.seats(start_days_ago,end_days_ago,channel_id)
-    l = Lesson.lesson_selection(start_days_ago,end_days_ago,channel_id)
-    total = 0
-    l.each do |lesson|
-      if lesson.attendance > 0
-        total = total + (lesson.max_attendee.present? ? lesson.max_attendee : lesson.attendance)
-      end
-    end
-    return total
-  end
-
-  def self.fill_fraction(start_days_ago,end_days_ago,channel_id)
-    l = Lesson.lesson_selection(start_days_ago,end_days_ago,channel_id)
-    total = 0
-    l.each do |lesson|
-      if lesson.attendance > 0
-        total = total + lesson.attendance.to_d / (lesson.max_attendee.present? ? lesson.max_attendee.to_d : lesson.attendance.to_d)
-      end
-    end
-    if l.length > 0
-      return total / l.length*100
-    else
-      return 0
-    end
-  end
-
   private
 
   def set_from_meetup_data
@@ -317,18 +230,6 @@ class Lesson < ActiveRecord::Base
 
   def set_metadata
     self.visible = true
-  end
-
-  def self.lesson_selection(start_days_ago,end_days_ago,channel_id)
-    Lesson.visible.published.joins(:channel_lessons).where("id=channel_lessons.lesson_id and channel_lessons.channel_id=#{channel_id} and start_at > current_date - #{start_days_ago} and start_at <= current_date - #{end_days_ago}")
-  end
-
-  def self.cancel_classes(start_days_ago,end_days_ago,channel_id)
-    Lesson.hidden.published.joins(:channel_lessons).where("id=channel_lessons.lesson_id and channel_lessons.channel_id=#{channel_id} and start_at > current_date - #{start_days_ago} and start_at <= current_date - #{end_days_ago}")
-  end
-
-  def self.past_classes(start_days_ago,channel_id)
-    Lesson.visible.published.joins(:channel_lessons).where("id=channel_lessons.lesson_id and channel_lessons.channel_id=#{channel_id} and start_at < current_date - #{start_days_ago}")
   end
 
 end
