@@ -20,7 +20,7 @@ class Chalkler < ActiveRecord::Base
   serialize :email_categories
   serialize :email_streams
 
-  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly monthly almost-never)
+  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly)
 
   before_create :set_from_meetup_data
 
