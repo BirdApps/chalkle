@@ -63,13 +63,13 @@ class Channel < ActiveRecord::Base
     new_members[0] = new_chalklers((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
     new_members_change = []
     active_members = []
-    active_members[0] = percent_active(0)
+    active_members[0] = percent_active(Date.today() - last_day)
     (1..num_weeks).each do |i|
       attendees[i] = attendee((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
       attendees_change[i-1] = (attendees[i] > 0) ? (attendees[i-1].to_d/attendees[i] - 1.0)*100.0 : nil
       new_members[i] = new_chalklers((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
       new_members_change[i-1] = (new_members[i] > 0) ? (new_members[i-1].to_d/new_members[i] - 1.0)*100.0 : nil
-      active_members[i] = percent_active(i)
+      active_members[i] = percent_active((Date.today() - last_day.weeks_ago(i)).to_i)
     end
     attendees.pop
     new_members.pop
