@@ -3,8 +3,17 @@ class ChalklerDigest
     Chalkler.where("email IS NOT NULL AND email_frequency = ?", frequency)
   end
 
+  def prepare_digest
+  end
 
+  def queue_digest!
+  end
 
+  def load_new_lessons
+  end
+
+  def load_open_lessons
+  end
 
   def self.lesson_filter(chalkler,lessons)
     filtered_lessons = lessons.find(:all, :conditions => ["category_id IN (?)", chalkler.email_categories] )
