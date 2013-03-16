@@ -116,17 +116,6 @@ class Channel < ActiveRecord::Base
     return total
   end
 
-  def self.seats(start_days_ago,end_days_ago,channel_id)
-    l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
-    total = 0
-    l.each do |lesson|
-      if lesson.attendance > 0
-        total = total + (lesson.max_attendee.present? ? lesson.max_attendee : lesson.attendance)
-      end
-    end
-    return total
-  end
-
   def self.fill_fraction(start_days_ago,end_days_ago,channel_id)
     l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
     total = 0
