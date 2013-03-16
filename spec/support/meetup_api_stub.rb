@@ -11,13 +11,15 @@ module MeetupApiStub
 
   def self.lesson_response
     RMeetup::Type::Event.new({
+      "status" => "upcoming",
       "id" => 12345678,
       "name" => "music and dance: awesome class",
       "description" => "all about the class",
       "created" => 1351297791000,
       "updated" => 1351297791000,
       "time" => 1351297791000,
-      "duration" => 600000
+      "duration" => 600000,
+      "rsvp_limit" => 10
     })
   end
 

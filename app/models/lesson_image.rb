@@ -27,7 +27,7 @@ class LessonImage < ActiveRecord::Base
   def generate
     self.image = File.new("#{Rails.root}/app/assets/images/lesson-bg.png")
     title = LessonImage.sanitize_title(self.title)
-    self.image.convert!(" \( -gravity center -font #{Rails.root}/app/assets/fonts/erasdust-webfont.ttf -background none -fill '#AAAAAA' -size 350x350 label:\"#{title}\" +distort SRT '%[fx:w/2],%[fx:h/2] 1 354 215,225' \) -flatten")
+    self.image.convert!(" \( -gravity center -font #{Rails.root}/app/assets/fonts/mrchalk.ttf -background none -fill '#AAAAAA' -size 400x350 label:\"#{title}\" +distort SRT '%[fx:w/2],%[fx:h/2] 1 354 215,225' \) -flatten")
     self.image.name = LessonImage.sanitize_filename(self.title)
   end
 
