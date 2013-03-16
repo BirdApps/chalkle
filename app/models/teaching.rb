@@ -1,7 +1,7 @@
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_skill, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee, 
+  attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_skill, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee,
   :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
@@ -28,10 +28,27 @@ class Teaching
   end
 
   def lesson_args
-    { "name" => meetup_event_name(@category_primary_id,@title), "teacher_id" => @teacher_id, "lesson_skill" => @lesson_skill, "teacher_bio" => @bio, "do_during_class" => @do_during_class, 
-    "learning_outcomes" => @learning_outcomes, "duration" => @duration.to_i*60*60, "cost" => price_calculation(@teacher_cost, Channel.find(@channel_id)), "teacher_cost" => @teacher_cost, 
-    "max_attendee" => @max_attendee.to_i, "min_attendee" => @min_attendee.to_i, "availabilities" => @availabilities, "prerequisites" => @prerequisites, 
-    "additional_comments" => @additional_comments, "venue" => @venue, "status" => "Unreviewed", "channel_percentage_override" => nil, "chalkle_percentage_override" => nil, "suggested_audience" => @suggested_audience}
+    {
+      "name" => meetup_event_name(@category_primary_id,@title),
+      "teacher_id" => @teacher_id,
+      "lesson_skill" => @lesson_skill,
+      "teacher_bio" => @bio,
+      "do_during_class" => @do_during_class,
+      "learning_outcomes" => @learning_outcomes,
+      "duration" => @duration.to_i*60*60,
+      "cost" => price_calculation(@teacher_cost, Channel.find(@channel_id)),
+      "teacher_cost" => @teacher_cost,
+      "max_attendee" => @max_attendee.to_i,
+      "min_attendee" => @min_attendee.to_i,
+      "availabilities" => @availabilities,
+      "prerequisites" => @prerequisites,
+      "additional_comments" => @additional_comments,
+      "venue" => @venue,
+      "status" => "Unreviewed",
+      "channel_percentage_override" => nil,
+      "chalkle_percentage_override" => nil,
+      "suggested_audience" => @suggested_audience
+    }
   end
 
   def submit(params)
@@ -67,7 +84,7 @@ class Teaching
     @suggested_audience = params[:suggested_audience]
     if @channels.length > 1
       @channel_id = params[:channel_id].to_i
-    else 
+    else
       @channel_id = @channels[0].id
     end
     self.valid?
@@ -76,7 +93,7 @@ class Teaching
   private
 
   def price_calculation(teacher_cost,channel)
-    (teacher_cost.blank? || channel.teacher_percentage== 0) ? 0: ( teacher_cost.to_d*1.15 / channel.teacher_percentage ).ceil / 1.15 
+    (teacher_cost.blank? || channel.teacher_percentage== 0) ? 0: ( teacher_cost.to_d*1.15 / channel.teacher_percentage ).ceil / 1.15
   end
 
   def meetup_event_name(category_primary_id,title)

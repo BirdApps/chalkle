@@ -34,7 +34,8 @@
           %td= number_to_currency b.cost
           %td= link_to 'View', admin_booking_path(b) if can? :read, b
           -if b.reminder_email_choice
-            %td= link_to ( b.status=='no-show' ? 'No-show' : 'Reminder' ), "http://www.meetup.com/" + channel_url.first + "/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{email_subject(b.chalkler.name,lesson.name)}&body=Hi+#{b.chalkler.name.split[0]},#{reminder_email_content(b.reminder_email_choice, lesson.name, (lesson.meetup_id.present? ? lesson.meetup_id : ""),lesson.gst_price)}"
+            -event_url = lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : nil
+            %td= link_to ( b.status=='no-show' ? 'No-show' : 'Reminder' ), "http://www.meetup.com/" + channel_url.first + "/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{email_subject(b.chalkler.name,lesson.name)}&body=Hi+#{b.chalkler.name.split[0]},#{reminder_email_content(b.reminder_email_choice, lesson.name, (lesson.meetup_id.present? ? lesson.meetup_id : ""),lesson.gst_price, event_url)}"
           -else
             %td= ""
         -if lesson.class_may_cancel
