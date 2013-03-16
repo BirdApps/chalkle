@@ -277,6 +277,7 @@ describe Lesson do
         @lesson.channel_percentage_override = 0.3
         @lesson.should be_valid
       end
+
     end
   
   end

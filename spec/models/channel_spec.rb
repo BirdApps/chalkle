@@ -78,7 +78,7 @@ describe Channel do
     end
   end
 
-  describe "Performance calculation methods on chalkler activities" do
+  describe "Performance calculation methods, section: chalklers" do
     before do 
       @channel = FactoryGirl.create(:channel)
       @lesson1 = FactoryGirl.create(:lesson, name: "test 1")
@@ -102,7 +102,7 @@ describe Channel do
     end
   end
 
-  describe "Performance calculation methods on lesson activities" do
+  describe "Performance calculation methods, section: classes" do
     before do
       @channel = FactoryGirl.create(:channel)
       @chalkler = FactoryGirl.create(:channel, channel_percentage: 0.2, teacher_percentage: 0.5)
@@ -135,10 +135,10 @@ describe Channel do
       Channel.fill_fraction(3,0,@channel.id).should == 30
     end
 
-    it "calculates paid and unpaid classes" do
+    it "calculates number of paid classes" do
       lesson2 = FactoryGirl.create(:lesson, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 2.days.ago, cost: 0)
       lesson2.channels << @channel
-      Channel.classes_pay(3,0,@channel.id).should == [5,1]
+      Channel.classes_pay(3,0,@channel.id).should == 5
     end
   end
 
