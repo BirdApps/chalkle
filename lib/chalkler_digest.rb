@@ -30,7 +30,6 @@ class ChalklerDigest
   end
 
   def default_new_lessons
-    date_offset = (@frequency == 'daily') ? 1 : 7
     Lesson.where("created_at > CURRENT_DATE - ? AND
                  created_at <= CURRENT_DATE AND
                  status = 'Published' AND
@@ -49,12 +48,12 @@ class ChalklerDigest
   end
 
   def default_open_lessons
-    Lesson.joins(:categories).where("lessons.start_at > CURRENT_DATE + 1 AND
-                                    lessons.start_at <= CURRENT_DATE + ? AND
-                                    lessons.created_at <= CURRENT_DATE - ? AND
-                                    lessons.status = 'Published' AND
-                                    lessons.visible = true",
-                                    @date_offset + 1, @date_offset).limit(@limit)
+    Lesson.where("start_at > CURRENT_DATE + 1 AND
+                  start_at <= CURRENT_DATE + ? AND
+                  created_at <= CURRENT_DATE - ? AND
+                  status = 'Published' AND
+                  visible = true",
+                  @date_offset + 1, @date_offset).limit(@limit)
   end
 
 end
