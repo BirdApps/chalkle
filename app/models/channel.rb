@@ -39,25 +39,25 @@ class Channel < ActiveRecord::Base
   end
 
   # channel performance calculation methods, section : chalklers
-  def self.new_chalklers(start_days_ago, end_days_ago, channel_id)
-    Channel.find(channel_id).chalklers.where("created_at > current_date - #{start_days_ago} and created_at <= current_date - #{end_days_ago}").count
+  def new_chalklers(start_days_ago, end_days_ago)
+    chalklers.where("created_at > current_date - #{start_days_ago} and created_at <= current_date - #{end_days_ago}").count
   end
 
-  def self.active_chalklers(end_days_ago, channel_id)
-    Channel.find(channel_id).chalklers.joins("LEFT OUTER JOIN bookings ON bookings.chalkler_id=chalklers.id").where("bookings.created_at > current_date - #{end_days_ago} - INTERVAL '3 MONTHS' OR chalklers.created_at > current_date - #{end_days_ago} - INTERVAL '3 MONTHS'").select("DISTINCT(chalklers.id)").count
+  def active_chalklers(end_days_ago)
+    chalklers.joins("LEFT OUTER JOIN bookings ON bookings.chalkler_id=chalklers.id").where("bookings.created_at > current_date - #{end_days_ago} - INTERVAL '3 MONTHS' OR chalklers.created_at > current_date - #{end_days_ago} - INTERVAL '3 MONTHS'").select("DISTINCT(chalklers.id)").count
   end
 
-  def self.percent_active(end_days_ago, channel_id)
-    if Channel.find(channel_id).chalklers.empty?
+  def percent_active(end_days_ago)
+    if chalklers.empty?
       return 0
     else
-      return (100.0*Channel.active_chalklers(end_days_ago,channel_id) / Channel.find(channel_id).chalklers.count)
+      return (100.0*active_chalklers(end_days_ago) / chalklers.count)
     end
   end
 
   # channel performance calculation methods, section : classes
-  def self.total_revenue(start_days_ago,end_days_ago,channel_id)
-    l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
+  def total_revenue(start_days_ago,end_days_ago)
+    l = lesson_ran(start_days_ago,end_days_ago)
     total = 0.0
     l.each do |lesson|
       total = lesson.collected_revenue + total
@@ -65,8 +65,8 @@ class Channel < ActiveRecord::Base
     return total
   end
 
-  def self.total_cost(start_days_ago,end_days_ago,channel_id)
-    l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
+  def total_cost(start_days_ago,end_days_ago)
+    l = lesson_ran(start_days_ago,end_days_ago)
     total = 0.0
     l.each do |lesson|
       if lesson.teacher_payment.present?
@@ -78,26 +78,40 @@ class Channel < ActiveRecord::Base
     return total
   end
 
-  def self.new_repeat_class(lessons_new,lessons_past)
-    new_lesson = 0
-    lessons_new.each do |lesson|
-      if lessons_past.find_by_name(lesson.name).nil?
-        new_lesson = new_lesson + 1
-      end
+  def financials(last_day, num_weeks)
+    turnover = []
+    turnover_change = []
+    costs = []
+    costs_change = []
+    profits = []
+    profits_change = []
+    turnover[0] = total_revenue((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    costs[0] = total_cost((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    profits[0] = turnover[0] - costs[0]
+    (1..num_weeks).each do |i|
+      turnover[i] = total_revenue((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
+      turnover_change[i-1] = (turnover[i] > 0) ? (turnover[i-1]/turnover[i] - 1.0)*100.0 : nil
+      costs[i] = total_cost((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
+      costs_change[i-1] = (costs[i] > 0) ? (costs[i-1]/costs[i] - 1.0)*100.0 : nil
+      profits[i] = turnover[i] - costs[i]
+      profits_change[i-1] = (profits[i] > 0) ? (profits[i-1]/profits[i] - 1.0)*100.0 : nil
     end
-    return [new_lesson, lessons_new.length - new_lesson]
+    turnover.pop
+    costs.pop
+    profits.pop
+    return [turnover, turnover_change, costs, costs_change, profits, profits_change]
   end
 
-  def self.classes_run(start_days_ago,end_days_ago,channel_id)
-    Channel.new_repeat_class(Channel.lesson_ran(start_days_ago,end_days_ago,channel_id),Channel.past_classes(start_days_ago,channel_id))
+  def classes_run(start_days_ago,end_days_ago)
+    new_repeat_class(lesson_ran(start_days_ago,end_days_ago),past_classes(start_days_ago))
   end
 
-  def self.classes_cancel(start_days_ago,end_days_ago,channel_id)
-    Channel.new_repeat_class(Channel.cancel_classes(start_days_ago,end_days_ago,channel_id),Channel.past_classes(start_days_ago,channel_id))
+  def classes_cancel(start_days_ago,end_days_ago)
+    new_repeat_class(cancel_classes(start_days_ago,end_days_ago),past_classes(start_days_ago))
   end
 
-  def self.classes_pay(start_days_ago,end_days_ago,channel_id)
-    l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
+  def classes_pay(start_days_ago,end_days_ago)
+    l = lesson_ran(start_days_ago,end_days_ago)
     free = 0
     l.each do |lesson|
       if lesson.cost == 0 || lesson.cost.nil?
@@ -107,8 +121,8 @@ class Channel < ActiveRecord::Base
     return l.length - free
   end
 
-  def self.attendee(start_days_ago,end_days_ago,channel_id)
-    l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
+  def attendee(start_days_ago,end_days_ago)
+    l = lesson_ran(start_days_ago,end_days_ago)
     total = 0
     l.each do |lesson|
       total = total + lesson.attendance
@@ -116,8 +130,8 @@ class Channel < ActiveRecord::Base
     return total
   end
 
-  def self.fill_fraction(start_days_ago,end_days_ago,channel_id)
-    l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
+  def fill_fraction(start_days_ago,end_days_ago)
+    l = lesson_ran(start_days_ago,end_days_ago)
     total = 0
     l.each do |lesson|
       if lesson.attendance > 0
@@ -133,17 +147,26 @@ class Channel < ActiveRecord::Base
 
   private
 
-  def self.lesson_ran(start_days_ago,end_days_ago,channel_id)
-    Channel.find(channel_id).lessons.visible.published.where("start_at > current_date - #{start_days_ago} and start_at <= current_date - #{end_days_ago}")
+  def lesson_ran(start_days_ago,end_days_ago)
+    lessons.visible.published.where("start_at > current_date - #{start_days_ago} and start_at <= current_date - #{end_days_ago}")
   end
 
-  def self.cancel_classes(start_days_ago,end_days_ago,channel_id)
-    Channel.find(channel_id).lessons.hidden.published.where("start_at > current_date - #{start_days_ago} and start_at <= current_date - #{end_days_ago}")
+  def cancel_classes(start_days_ago,end_days_ago)
+    lessons.hidden.published.where("start_at > current_date - #{start_days_ago} and start_at <= current_date - #{end_days_ago}")
   end
 
-  def self.past_classes(start_days_ago,channel_id)
-    Channel.find(channel_id).lessons.visible.published.where("start_at < current_date - #{start_days_ago}")
+  def past_classes(start_days_ago)
+    lessons.visible.published.where("start_at < current_date - #{start_days_ago}")
   end
 
+  def new_repeat_class(lessons_new,lessons_past)
+  new_lesson = 0
+    lessons_new.each do |lesson|
+      if lessons_past.find_by_name(lesson.name).nil?
+        new_lesson = new_lesson + 1
+      end
+    end
+    return [new_lesson, lessons_new.length - new_lesson]
+  end
 
 end

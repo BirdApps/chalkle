@@ -94,11 +94,11 @@ describe Channel do
     it "calculates the number of new members" do
       chalkler2 = FactoryGirl.create(:chalkler, meetup_id: 1234565, email: "test@gmail.com", created_at: 1.day.ago)
       chalkler2.channels << @channel
-      Channel.new_chalklers(2,0,@channel.id).should == 1
+      @channel.new_chalklers(2,0).should == 1
     end
 
     it "calculates the number of active members" do
-      Channel.percent_active(0,@channel.id).should == 60
+      @channel.percent_active(0).should == 60
     end
   end
 
@@ -114,31 +114,31 @@ describe Channel do
       end
     end
     it "calculates total revenue" do
-      Channel.total_revenue(3,0,@channel.id).should == 150        
+      @channel.total_revenue(3,0).should == 150        
     end
     it "calculates total cost from lessons" do
-      Channel.total_cost(3,0,@channel.id).should == 75  
+      @channel.total_cost(3,0).should == 75  
     end
 
     it "calculates new and repeat lessons from classes run" do
       lesson2 = FactoryGirl.create(:lesson, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 50.days.ago)
       lesson2.channels << @channel
-      Channel.classes_run(3,0,@channel.id).should == [4,1]
+      @channel.classes_run(3,0).should == [4,1]
       lesson2.destroy  
     end
 
     it "calculates total attendee" do
-      Channel.attendee(3,0,@channel.id).should == 15
+      @channel.attendee(3,0).should == 15
     end
 
     it "calculates fill fraction" do
-      Channel.fill_fraction(3,0,@channel.id).should == 30
+      @channel.fill_fraction(3,0).should == 30
     end
 
     it "calculates number of paid classes" do
       lesson2 = FactoryGirl.create(:lesson, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 2.days.ago, cost: 0)
       lesson2.channels << @channel
-      Channel.classes_pay(3,0,@channel.id).should == 5
+      @channel.classes_pay(3,0).should == 5
     end
   end
 
