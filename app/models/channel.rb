@@ -57,19 +57,19 @@ class Channel < ActiveRecord::Base
 
   def performance_chalklers(last_day, num_weeks)
     attendees = []
-    attendees[0] = c.attendee((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    attendees[0] = attendee((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
     attendees_change = []
     new_members = []
-    new_members[0] = c.new_chalklers((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    new_members[0] = new_chalklers((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
     new_members_change = []
     active_members = []
-    active_members[0] = c.percent_active(0)
+    active_members[0] = percent_active(0)
     (1..num_weeks).each do |i|
-      attendees[i] = c.attendee(previous_week,start_date)
+      attendees[i] = attendee((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
       attendees_change[i-1] = (attendees[i] > 0) ? (attendees[i-1].to_d/attendees[i] - 1.0)*100.0 : nil
-      new_members[i] = c.new_chalklers(previous_week,start_date)
+      new_members[i] = new_chalklers((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
       new_members_change[i-1] = (new_members[i] > 0) ? (new_members[i-1].to_d/new_members[i] - 1.0)*100.0 : nil
-      active_members[i] = c.percent_active(i)
+      active_members[i] = percent_active(i)
     end
     attendees.pop
     new_members.pop
@@ -165,6 +165,30 @@ class Channel < ActiveRecord::Base
     else
       return 0
     end
+  end
+
+  def performance_lessons(last_day, num_weeks)
+    lessons = []
+    lessons[0] = classes_run((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    lessons_change = []
+    pay_lessons = []
+    pay_lessons[0] = classes_pay((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    pay_lessons_change =[]
+    cancellations = []
+    cancellations[0] = classes_cancel((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    cancellations_change = []
+    (1..num_weeks).each do |i|
+      lessons[i] = classes_run((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)         
+      lessons_change[i-1] = (lessons[i].sum() > 0) ? (lessons[i-1].sum().to_d/lessons[i].sum() - 1.0)*100.0 : nil
+      pay_lessons[i] = classes_pay((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
+      pay_lessons_change[i-1] = (pay_lessons[i] > 0) ? (pay_lessons[i-1].to_d/pay_lessons[i] - 1.0)*100.0 : nil
+      cancellations[i] = classes_cancel((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
+      cancellations_change[i-1] = (cancellations[i].sum() > 0) ? (cancellations[i-1].sum().to_d/cancellations[i].sum() - 1.0)*100.0 : nil
+    end
+    lessons.pop
+    pay_lessons.pop
+    cancellations.pop
+    return [lessons, lessons_change, pay_lessons, pay_lessons_change, cancellations, cancellations_change]
   end
 
   private

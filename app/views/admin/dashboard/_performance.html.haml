@@ -63,27 +63,18 @@
         %th % Change cancellations
 
     %tbody
-      -lessons = []
-      -lessons[0] = c.classes_run((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
-      -lessons_change = []
-      -pay_lessons = []
-      -pay_lessons[0] = c.classes_pay((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
-      -pay_lessons_change =[]
-      -cancellations = []
-      -cancellations[0] = c.classes_cancel((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
-      -cancellations_change = []
-
+      -performance_lessons = c.performance_lessons(last_day, num_weeks)
+      -lessons = performance_lessons[0]
+      -lessons_change = performance_lessons[1]
+      -pay_lessons = performance_lessons[2]
+      -pay_lessons_change = performance_lessons[3]
+      -cancellations = performance_lessons[4]
+      -cancellations_change = performance_lessons[5]
       -(1..num_weeks).each do |i|
         %tr
           -previous_week = (Date.today() - last_day.weeks_ago(i + 1) ).to_i
           -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
           -end_date = (Date.today() - last_day.weeks_ago(i-1) ).to_i
-          -lessons[i] = c.classes_run(previous_week,start_date)          
-          -lessons_change[i-1] = (lessons[i].sum() > 0) ? (lessons[i-1].sum().to_d/lessons[i].sum() - 1.0)*100.0 : nil
-          -pay_lessons[i] = c.classes_pay(previous_week,start_date)
-          -pay_lessons_change[i-1] = (pay_lessons[i] > 0) ? (pay_lessons[i-1].to_d/pay_lessons[i] - 1.0)*100.0 : nil
-          -cancellations[i] = c.classes_cancel(previous_week,start_date)
-          -cancellations_change[i-1] = (cancellations[i].sum() > 0) ? (cancellations[i-1].sum().to_d/cancellations[i].sum() - 1.0)*100.0 : nil
           %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")} #{ "(projected)" if end_date < 0}
           %td #{lessons[i-1].sum()} ( #{lessons[i-1].first} new / #{lessons[i-1].last} repeat )
           %td #{number_to_percentage( lessons_change[i-1], :precision => 0)}
@@ -94,9 +85,6 @@
           -lessons[i-1] = lessons[i-1].sum()
           -cancellations[i-1] = cancellations[i-1].sum()
       %tr
-        -lessons.pop
-        -cancellations.pop
-        -pay_lessons.pop
         -lessons_change.reject! {|x| x.nil?}
         -cancellations_change.reject! {|x| x.nil?}
         -pay_lessons_change.reject! {|x| x.nil?}
@@ -121,7 +109,7 @@
         %th Active members*
 
     %tbody
-      -performance_chalklers = c.performance_chalkelrs(last_day, num_weeks)
+      -performance_chalklers = c.performance_chalklers(last_day, num_weeks)
       -attendees = performance_chalklers[0]
       -attendees_change = performance_chalklers[1]
       -new_members = performance_chalklers[2]
