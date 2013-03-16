@@ -55,6 +55,28 @@ class Channel < ActiveRecord::Base
     end
   end
 
+  def performance_chalklers(last_day, num_weeks)
+    attendees = []
+    attendees[0] = c.attendee((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    attendees_change = []
+    new_members = []
+    new_members[0] = c.new_chalklers((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
+    new_members_change = []
+    active_members = []
+    active_members[0] = c.percent_active(0)
+    (1..num_weeks).each do |i|
+      attendees[i] = c.attendee(previous_week,start_date)
+      attendees_change[i-1] = (attendees[i] > 0) ? (attendees[i-1].to_d/attendees[i] - 1.0)*100.0 : nil
+      new_members[i] = c.new_chalklers(previous_week,start_date)
+      new_members_change[i-1] = (new_members[i] > 0) ? (new_members[i-1].to_d/new_members[i] - 1.0)*100.0 : nil
+      active_members[i] = c.percent_active(i)
+    end
+    attendees.pop
+    new_members.pop
+    active_members.pop
+    return [attendees, attendees_change, new_members, new_members_change, active_members]
+  end
+
   # channel performance calculation methods, section : classes
   def total_revenue(start_days_ago,end_days_ago)
     l = lesson_ran(start_days_ago,end_days_ago)
@@ -78,7 +100,7 @@ class Channel < ActiveRecord::Base
     return total
   end
 
-  def financials(last_day, num_weeks)
+  def performance_financials(last_day, num_weeks)
     turnover = []
     turnover_change = []
     costs = []
