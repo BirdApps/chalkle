@@ -55,58 +55,49 @@ Then /^the email frequency "(.*?)" should be displayed$/ do |frequency|
   find_field('chalkler_preferences_email_frequency').value.should eq frequency
 end
 
-Given /^"(.*?)" and "(.*?)" are email categories$/ do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+Given /^"(.*?)" and "(.*?)" are email categories$/ do |category1, category2|
+  Category.create(name: category1)
+  Category.create(name: category2)
 end
 
-When /^I select "(.*?)" as my email category$/ do |name|
-  page.select(name)
+When /^I select "(.*?)" and "(.*?)" as my email categories$/ do |category1, category2|
+  page.check(category1)
+  page.check(category2)
 end
 
-Then /^my email category should be saved$/ do
-  
+Then /^my email categories should be "(.*?)" and "(.*?)"$/ do |category1, category2|
+  @chalkler.reload
+  @chalkler.email_categories.should == [Category.find_by_name(category1).id, Category.find_by_name(category2).id]
 end
 
-Given /^I had set my category to "(.*?)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+Given /^I had set my email categories to "(.*?)" and "(.*?)"$/ do |category1, category2|
+  @chalkler.email_categories = [Category.find_by_name(category1).id, Category.find_by_name(category2).id]
+  @chalkler.save
 end
 
-Then /^the email category "(.*?)" should be checked$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+Then /^the email categories "(.*?)" and "(.*?)" should be checked$/ do |category1, category2|  
+  find("#chalkler_preferences_email_categories_#{Category.find_by_name(category1).id}").should be_checked
+  find("#chalkler_preferences_email_categories_#{Category.find_by_name(category2).id}").should be_checked
 end
 
-Given /^"(.*?)" is an email stream$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+Given /^"(.*?)" is an email stream$/ do |stream1|
+  Stream.create(name: stream1)
 end
 
-When /^I select "(.*?)" as my email stream$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+When /^I select "(.*?)" as my email stream$/ do |stream1|
+  page.check(stream1)
 end
 
-Then /^my stream should be saved$/ do
-  pending # express the regexp above with the code you wish you had
+Then /^my stream should be "(.*?)"$/ do |stream1|
+  @chalkler.reload
+  @chalkler.email_streams.should == [Stream.find_by_name(stream1).id]
 end
 
-Given /^I had set my stream to "(.*?)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+Given /^I had set my stream to "(.*?)"$/ do |stream1|
+  @chalkler.email_streams = [Stream.find_by_name(stream1).id]
+  @chalkler.save
 end
 
-Then /^the email stream "(.*?)" should be checked$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
-
-Given /^there is an unreconciled payment with no details$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^I should see this payment$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^I should see this lesson$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^I should see this channel$/ do
-  pending # express the regexp above with the code you wish you had
+Then /^the email stream "(.*?)" should be checked$/ do |stream1|
+  find("#chalkler_preferences_email_streams_#{Stream.find_by_name(stream1).id}").should be_checked
 end

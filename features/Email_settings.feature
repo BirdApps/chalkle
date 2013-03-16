@@ -18,7 +18,6 @@ Scenario: Chalkler can change their email address
   When I visit the "Email Settings" page
   And I type in my email as "new@chalkle.com"
   And I click on the button "Save Email Preferences"
-  Then I should see the confirmation message
   And my email should be saved
 
 Scenario: Form load with chalkler's existing email address
@@ -30,7 +29,8 @@ Scenario: Form load with chalkler's existing email address
 Scenario: Chalkler can change their email frequency
   Given I am logged in as a registered chalkler
   When I visit the "Email Settings" page
-  And I select "daily" as my email frequency
+  And I select "Daily" as my email frequency
+  And I click on the button "Save Email Preferences"
   Then my email frequency should be "daily"
 
 Scenario: Form load with chalkler's existing email frequency
@@ -43,27 +43,28 @@ Scenario: Chalkler can change their email category
   Given "businesses and finances" and "food & drink" are email categories
   And I am logged in as a registered chalkler
   When I visit the "Email Settings" page
-  And I select "businesses and finances" as my email category
-  And I select "food & drink" as my email category
-  Then my email category should be saved
+  And I select "businesses and finances" and "food & drink" as my email categories
+  And I click on the button "Save Email Preferences"
+  Then my email categories should be "businesses and finances" and "food & drink"
 
 Scenario: Form load with chalkler's existing categories
-  Given I am logged in as a registered chalkler
-  And "food & drink" is an email category
-  And I had set my category to "food & drink"
+  Given "businesses and finances" and "food & drink" are email categories
+  And I am logged in as a registered chalkler
+  And I had set my email categories to "businesses and finances" and "food & drink"
   When I visit the "Email Settings" page
-  Then the email category "food & drink" should be checked
+  Then the email categories "businesses and finances" and "food & drink" should be checked
 
 Scenario: Chalkler can change their email streams
   Given I am logged in as a registered chalkler
   And "Royal Society Wellington Branch" is an email stream
   When I visit the "Email Settings" page
   And I select "Royal Society Wellington Branch" as my email stream
-  Then my stream should be saved
+  And I click on the button "Save Email Preferences"
+  Then my stream should be "Royal Society Wellington Branch"
 
 Scenario: Form load with chalkler's existing streams
-  Given I am logged in as a registered chalkler
-  And "Royal Society Wellington Branch" is an email stream
+  Given "Royal Society Wellington Branch" is an email stream
+  Given I am logged in as a registered chalkler  
   And I had set my stream to "Royal Society Wellington Branch"
   When I visit the "Email Settings" page
   Then the email stream "Royal Society Wellington Branch" should be checked
