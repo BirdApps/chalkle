@@ -19,13 +19,12 @@ Then /^I should see the confirmation message$/ do
 end
 
 When /^I type in my email as "(.*?)"$/ do |address|
-  @email = address
   fill_in "chalkler_preferences_email", :with => address
 end
 
-Then /^my email should be saved$/ do
+Then /^my email should be "(.*?)"$/ do |address|
   @chalkler.reload
-  @chalkler.email.should == @email
+  @chalkler.email.should == address
 end
 
 Given /^my registered email is "(.*?)"$/ do |address|

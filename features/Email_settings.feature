@@ -18,7 +18,7 @@ Scenario: Chalkler can change their email address
   When I visit the "Email Settings" page
   And I type in my email as "new@chalkle.com"
   And I click on the button "Save Email Preferences"
-  And my email should be saved
+  Then my email should be "new@chalkle.com"
 
 Scenario: Form load with chalkler's existing email address
   Given I am logged in as a registered chalkler
@@ -55,8 +55,8 @@ Scenario: Form load with chalkler's existing categories
   Then the email categories "businesses and finances" and "food & drink" should be checked
 
 Scenario: Chalkler can change their email streams
-  Given I am logged in as a registered chalkler
-  And "Royal Society Wellington Branch" is an email stream
+  Given "Royal Society Wellington Branch" is an email stream
+  And I am logged in as a registered chalkler  
   When I visit the "Email Settings" page
   And I select "Royal Society Wellington Branch" as my email stream
   And I click on the button "Save Email Preferences"
@@ -64,9 +64,7 @@ Scenario: Chalkler can change their email streams
 
 Scenario: Form load with chalkler's existing streams
   Given "Royal Society Wellington Branch" is an email stream
-  Given I am logged in as a registered chalkler  
+  And I am logged in as a registered chalkler  
   And I had set my stream to "Royal Society Wellington Branch"
   When I visit the "Email Settings" page
   Then the email stream "Royal Society Wellington Branch" should be checked
-
-
