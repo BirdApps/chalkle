@@ -1,0 +1,37 @@
+Hello #{@chalkler.name.split[0]},
+
+Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.today()}.
+
+-if @new_lessons.any?
+  New chalkle Classes, Tailored For You:
+  %table
+    %thead
+      %tr
+        %th Title
+        %th Date of class
+        %th What will we do
+    %tbody
+      -@new_lessons.each do |lesson|
+        %tr
+          %td= link_to lesson.name, lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com"
+          %td= lesson.start_at
+          %td= lesson.do_during_class
+
+-if @open_lessons.any?
+  There is still time to sign up for these chalkles:
+  %table
+    %thead
+      %tr
+        %th Title
+        %th Date of class
+        %th
+    %tbody
+      -@open_lessons.each do |lesson|
+        %tr
+          %td= lesson.name
+          %td= lesson.start_at
+          %td= link_to "Join" + lesson.attendance.to_s + " other chalklers", lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com"
+#{link_to 'See More',"http://www.meetup.com/" + ( @chalkler.groups.present? ? @chalkler.groups.collect{|g| g.url_name}.first : "sixdegrees" ) + "/events/calendar/?scroll=true"} chalkles?
+
+Thank you for supporting chalkle and we look forward to seeing you soon!
+chalkle&deg;
