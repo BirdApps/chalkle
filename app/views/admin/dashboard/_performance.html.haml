@@ -17,8 +17,8 @@
     %tbody
       -last_day = Date.today().end_of_week(start_day= :wednesday)
       -financials = c.performance_financials(last_day, num_weeks)
-      -revenues = financials[0]
-      -revenues_change = financials[1]
+      -turnover = financials[0]
+      -turnover_change = financials[1]
       -costs = financials[2]
       -costs_change = financials[3]
       -profits = financials[4]
@@ -28,19 +28,19 @@
           -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
           -end_date = (Date.today() - last_day.weeks_ago(i-1) ).to_i
           %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")} #{ "(projected)" if end_date < 0}
-          %td #{number_to_currency revenues[i-1]}
-          %td #{number_to_percentage( revenues_change[i-1], :precision => 0)}
+          %td #{number_to_currency turnover[i-1]}
+          %td #{number_to_percentage( turnover_change[i-1], :precision => 0)}
           %td #{number_to_currency costs[i-1]}
           %td #{number_to_percentage( costs_change[i-1], :precision => 0)}
           %td #{number_to_currency profits[i-1]}
           %td #{number_to_percentage( profits_change[i-1], :precision => 0)}
       %tr
-        -revenues_change.reject! {|x| x.nil?}
+        -turnover_change.reject! {|x| x.nil?}
         -costs_change.reject! {|x| x.nil?}
         -profits_change.reject! {|x| x.nil?}
         %td <b> Average of #{num_weeks} weeks </b>
-        %td <b> #{number_to_currency(revenues.sum / revenues.length)} </b>
-        %td <b> #{number_to_percentage( revenues_change.length > 0 ? revenues_change.sum / revenues_change.length : nil, :precision => 0)} </b>
+        %td <b> #{number_to_currency(turnover.sum / turnover.length)} </b>
+        %td <b> #{number_to_percentage( turnover_change.length > 0 ? turnover_change.sum / turnover_change.length : nil, :precision => 0)} </b>
         %td <b> #{number_to_currency(costs.sum / costs.length )} </b>
         %td <b> #{number_to_percentage( costs_change.length > 0 ? costs_change.sum / costs_change.length : nil, :precision => 0)} </b>
         %td <b> #{number_to_currency(profits.sum / profits.length)} </b>
