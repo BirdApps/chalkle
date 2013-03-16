@@ -38,7 +38,7 @@ class Channel < ActiveRecord::Base
     channel.map { |c| [c.name, c.id] }
   end
 
-  # channel chalkler performance calculation methods
+  # channel performance calculation methods, section : chalklers
   def self.new_chalklers(start_days_ago, end_days_ago, channel_id)
     Channel.find(channel_id).chalklers.where("created_at > current_date - #{start_days_ago} and created_at <= current_date - #{end_days_ago}").count
   end
@@ -55,10 +55,10 @@ class Channel < ActiveRecord::Base
     end
   end
 
-  # channel class performance calculation methods
+  # channel performance calculation methods, section : classes
   def self.total_revenue(start_days_ago,end_days_ago,channel_id)
     l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
-    total = 0
+    total = 0.0
     l.each do |lesson|
       total = lesson.collected_revenue + total
     end
@@ -67,7 +67,7 @@ class Channel < ActiveRecord::Base
 
   def self.total_cost(start_days_ago,end_days_ago,channel_id)
     l = Channel.lesson_ran(start_days_ago,end_days_ago,channel_id)
-    total = 0
+    total = 0.0
     l.each do |lesson|
       if lesson.teacher_payment.present?
         total = total + lesson.teacher_payment + (lesson.venue_cost.present? ? lesson.venue_cost : 0) + (lesson.material_cost.present? ? lesson.material_cost : 0)
@@ -104,7 +104,7 @@ class Channel < ActiveRecord::Base
         free = free + 1
       end
     end
-    return [l.length - free, free]
+    return l.length - free
   end
 
   def self.attendee(start_days_ago,end_days_ago,channel_id)
