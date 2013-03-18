@@ -24,7 +24,7 @@ describe ChalklerDigest do
       lesson = FactoryGirl.create(:lesson, created_at: 1.day.ago, status: 'Approved')
       lesson.categories << category
       digest = ChalklerDigest.new(chalkler)
-      digest.new_lessons.should be_empty
+      digest.instance_eval{ new_lessons }.should be_empty
     end
 
     it "loads a lesson that a chalkler is interested in" do
@@ -32,7 +32,7 @@ describe ChalklerDigest do
       lesson.categories << category
       FactoryGirl.create(:lesson, created_at: 1.day.ago, status: 'Published')
       digest = ChalklerDigest.new(chalkler)
-      digest.new_lessons.count.should == 1
+      digest.instance_eval{ new_lessons }.count.should == 1
     end
   end
 

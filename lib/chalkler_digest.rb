@@ -11,11 +11,11 @@ class ChalklerDigest
     new = default_new_lessons if new.empty?
     open = open_lessons
     open = default_open_lessons if open.empty?
-    ChalklerMailer.delay.digest(@chalkler, new, open)
+    ChalklerMailer.digest(@chalkler, new, open)
   end
 
-  def self.load_chalklers(frequency)
-    Chalkler.where("email IS NOT NULL AND email_frequency = ?", frequency)
+  def self.load_chalklers(freq)
+    Chalkler.where("email IS NOT NULL AND email_frequency = ?", freq)
   end
 
   private
@@ -30,11 +30,9 @@ class ChalklerDigest
   end
 
   def default_new_lessons
-    Lesson.where("created_at > CURRENT_DATE - ? AND
-                 created_at <= CURRENT_DATE AND
-                 status = 'Published' AND
-                 visible = true",
-                 @date_offset).limit(@limit)
+    Lesson.visible.published.where("created_at > CURRENT_DATE - ? AND
+                                   created_at <= CURRENT_DATE",
+                                   @date_offset).limit(@limit)
   end
 
   def open_lessons
@@ -48,12 +46,10 @@ class ChalklerDigest
   end
 
   def default_open_lessons
-    Lesson.where("start_at > CURRENT_DATE + 1 AND
-                  start_at <= CURRENT_DATE + ? AND
-                  created_at <= CURRENT_DATE - ? AND
-                  status = 'Published' AND
-                  visible = true",
-                  @date_offset + 1, @date_offset).limit(@limit)
+    Lesson.visible.published.where("start_at > CURRENT_DATE + 1 AND
+                                   start_at <= CURRENT_DATE + ? AND
+                                   created_at <= CURRENT_DATE - ?",
+                                   @date_offset + 1, @date_offset).limit(@limit)
   end
 
 end
