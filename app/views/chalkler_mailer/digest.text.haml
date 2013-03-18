@@ -8,7 +8,7 @@
     Here is your chalkle #{@frequency.to_s} digest for #{Date.today()}
     
     -if @new_lessons.count > 0
-      New chalkle Classes, Tailored For You:
+      New chalkle Classes:
       %table
         %thead
           %tr
@@ -37,7 +37,7 @@
               %td= lesson.start_at
               %td= link_to "Join" + lesson.attendance.to_s + " other chalklers", lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com"
     %p
-      #{link_to 'See More',"http://www.meetup.com/" + ( @chalkler.groups.present? ? @chalkler.groups.collect{|g| g.url_name}.first : "sixdegrees" ) + "/events/calendar/?scroll=true"} chalkles?
+      #{link_to 'See More',"http://www.meetup.com/" + ( @chalkler.channels.present? ? @chalkler.channels.collect{|c| c.url_name}.first : "sixdegrees" ) + "/events/calendar/?scroll=true"} chalkles?
 
     %p
       Thank you for supporting chalkle and we look forward to seeing you soon!

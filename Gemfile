@@ -63,6 +63,9 @@ group :development do
   gem 'quiet_assets',       '~> 1.0.1'
   gem 'better_errors',      '~> 0.3.2'
   gem 'binding_of_caller',  '~> 0.6.8'
+  
+  #mucking round with the db
+  gem 'forgery'
 end
 
 group :development, :test do
@@ -107,4 +110,7 @@ group :test do
 
   # Test coverage
   gem 'simplecov',  '~> 0.7.1'
+
+  #mucking round with the db
+  gem 'forgery'
 end
