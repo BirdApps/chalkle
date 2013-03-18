@@ -51,7 +51,7 @@ class Lesson < ActiveRecord::Base
   scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
   scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
   scope :unpublished, where("(status = '" + STATUS_3 + "' ) OR (status = '" + STATUS_2 + "' )")
-  scope :published, where("status = '" + STATUS_1 + "'")
+  scope :published, where(status: STATUS_1)
 
   before_create :set_from_meetup_data
   before_create :set_metadata

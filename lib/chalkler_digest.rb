@@ -22,34 +22,34 @@ class ChalklerDigest
   private
 
   def new_lessons
-    Lesson.joins(:categories).where("lessons.created_at > CURRENT_DATE - ? AND
-                                    lessons.created_at <= CURRENT_DATE AND
-                                    lessons.status = 'Published' AND
-                                    lessons.visible = true AND
-                                    lesson_categories.category_id IN (?)",
-                                    @date_offset, @chalkler.email_categories)
+    Lesson.visible.published.joins(:categories, :channels).where("lessons.created_at > CURRENT_DATE - ? AND
+                                                                  lessons.created_at <= CURRENT_DATE AND
+                                                                  lesson_categories.category_id IN (?) AND
+                                                                  channel_lessons.channel_id IN (?)",
+                                                                  @date_offset, @chalkler.email_categories, @chalkler.channels)
   end
 
   def default_new_lessons
-    Lesson.visible.published.where("created_at > CURRENT_DATE - ? AND
-                                   created_at <= CURRENT_DATE",
-                                   @date_offset).limit(@limit)
+    Lesson.visible.published.joins(:channels).where("created_at > CURRENT_DATE - ? AND
+                                                    created_at <= CURRENT_DATE AND
+                                                    channel_lessons.channel_id IN (?)",
+                                                    @date_offset, @chalkler.channels).limit(@limit)
   end
 
   def open_lessons
-    Lesson.joins(:categories).where("lessons.start_at > CURRENT_DATE + 1 AND
-                                    lessons.start_at <= CURRENT_DATE + ? AND
-                                    lessons.created_at <= CURRENT_DATE - ? AND
-                                    lessons.status = 'Published' AND
-                                    lessons.visible = true AND
-                                    lesson_categories.category_id IN (?)",
-                                    @date_offset + 1, @date_offset, @chalkler.email_categories)
+    Lesson.visible.published.joins(:categories, :channels).where("lessons.start_at > CURRENT_DATE + 1 AND
+                                                                 lessons.start_at <= CURRENT_DATE + ? AND
+                                                                 lessons.created_at <= CURRENT_DATE - ? AND
+                                                                 lesson_categories.category_id IN (?) AND
+                                                                 channel_lessons.channel_id IN (?)",
+                                                                 @date_offset + 1, @date_offset, @chalkler.email_categories)
   end
 
   def default_open_lessons
     Lesson.visible.published.where("start_at > CURRENT_DATE + 1 AND
                                    start_at <= CURRENT_DATE + ? AND
-                                   created_at <= CURRENT_DATE - ?",
+                                   created_at <= CURRENT_DATE - ? AND
+                                   channel_lessons.channel_id IN (?)",
                                    @date_offset + 1, @date_offset).limit(@limit)
   end
 
