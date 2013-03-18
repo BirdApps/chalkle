@@ -11,8 +11,8 @@ class ChalklerDigest
     new = default_new_lessons if new.empty?
     open = open_lessons
     open = default_open_lessons if open.empty?
-    ChalklerMailer.delay.digest(@chalkler, new, open)
-    # ChalklerMailer.digest(@chalkler, new, open).deliver!
+    # TODO move this to delayed job asap
+    ChalklerMailer.digest(@chalkler, new, open).deliver!
   end
 
   def self.load_chalklers(freq)
