@@ -2,24 +2,15 @@
 @import "bourbon";
 
 @font-face {
-  font-family: "Eraser";
-  src: url("/assets/erasdust-webfont.eot");
-  src: url("/assets/erasdust-webfont.eot?#iefix") format("embedded-opentype");
-  src: url("/assets/erasdust-webfont.woff") format("woff");
-  src: url("/assets/erasdust-webfont.ttf") format("truetype");
-  src: url("/assets/erasdust-webfont.svg#EraserDustRegular") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
+    font-family: 'MrChalk';
+    src: url('/assets/MrChalkOpti/mrchalkopti-webfont.eot');
+    src: url('/assets/MrChalkOpti/mrchalkopti-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/MrChalkOpti/mrchalkopti-webfont.woff') format('woff'),
+         url('/assets/MrChalkOpti/mrchalkopti-webfont.ttf') format('truetype'),
+         url('/assets/MrChalkOpti/mrchalkopti-webfont.svg#mrchalkuploaded_file') format('svg');
+    font-weight: normal;
+    font-style: normal;
 
-@font-face {
-  font-family: 'MrChalk';
-  src: url('/assets/25FE67_0_0.eot');
-  src: url('/assets/25FE67_0_0.eot?#iefix') format('embedded-opentype'), 
-  url('/assets/25FE67_0_0.woff') format('woff'), 
-  url('/assets/25FE67_0_0.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
 }
 
 $font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
