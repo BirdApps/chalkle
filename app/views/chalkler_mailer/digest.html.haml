@@ -1,4 +1,5 @@
-%p Hello #{@chalkler.name.split[0]}, Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.today.strftime("%A %B #{Date.today.day.ordinalize}")}.
+%p Hello #{@chalkler.name.split[0]},
+%p Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.today.strftime("%A %B #{Date.today.day.ordinalize}")}.
 
 -if @new_lessons.any?
   %h3 New chalkles:
@@ -6,9 +7,9 @@
     -@new_lessons.each do |lesson|
       %tr{style: "border-bottom: solid 4px #fff;"}
         %td{style: "padding: 10px; background: #ececec; width: 100%;"}
-          %strong= link_to lesson.name, lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com", {style: "color: #cd4063; text-decoration: underline; font-size: 16px;"}
+          %strong= link_to lesson.name, lesson.meetup_data["event_url"], {style: "color: #cd4063; text-decoration: underline; font-size: 16px;"}
           %span{style: "color: #777;"}= lesson.start_at.strftime("%a %b %d") if lesson.start_at
-          %p= truncate(lesson.do_during_class, length: 250)
+          %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
 
 -if @open_lessons.any?
   %h3 There is still time to sign up for these classes:
@@ -18,12 +19,9 @@
         %td{style: "padding: 10px; background: #ececec; width: 100%;"}
           %strong= link_to lesson.name, lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com", {style: "color:#24714c; text-decoration: underline; font-size: 16px;"}
           %span{style: "color: #777;"}= lesson.start_at.strftime("%a %b %d") if lesson.start_at
-          %p
-            = truncate(lesson.do_during_class, length: 250)
-            %br/
-            = link_to "Join #{lesson.attendance} other chalklers", lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com", {style: "color: #24714c; text-decoration: underline;"}
+          %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
+          %p= link_to "Join #{lesson.attendance} other chalklers", lesson.meetup_data["event_url"], {style: "color: #24714c; text-decoration: underline;"}
 
--# %p
 -# %p= link_to 'See more chalkles...',"http://www.meetup.com/" + ( @chalkler.channels.present? ? @chalkler.channels.collect{|c| c.url_name}.first : "sixdegrees" ) + "/events/calendar/?scroll=true",{style: "color: #cd4063; text-decoration: underline; font-size: 16px;"}
 
 %p Thank you for supporting chalkle&deg; and we look forward to seeing you soon!
