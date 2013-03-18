@@ -1,8 +1,7 @@
-%p Hello #{@chalkler.name.split[0]},
-%p Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.today.strftime("%A %B #{Date.today.day.ordinalize}")}.
+%p Hello #{@chalkler.name.split[0]}, Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.today.strftime("%A %B #{Date.today.day.ordinalize}")}.
 
 -if @new_lessons.any?
-  %h3 New chalkle&deg; classes:
+  %h3 New chalkles:
   %table{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0", style: "border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; width: 100%;"}
     -@new_lessons.each do |lesson|
       %tr{style: "border-bottom: solid 4px #fff;"}
@@ -28,5 +27,3 @@
 -# %p= link_to 'See more chalkles...',"http://www.meetup.com/" + ( @chalkler.channels.present? ? @chalkler.channels.collect{|c| c.url_name}.first : "sixdegrees" ) + "/events/calendar/?scroll=true",{style: "color: #cd4063; text-decoration: underline; font-size: 16px;"}
 
 %p Thank you for supporting chalkle&deg; and we look forward to seeing you soon!
-
--# %span{style: "color: #777;"} What do you think of this email? #{link_to 'Let us know!',"mailto:learn@chalkle.com", {style: "color: #cd4063; text-decoration: underline;"}}
