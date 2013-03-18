@@ -7,6 +7,6 @@ class ChalklerMailer < ActionMailer::Base
   	@new_lessons = new_lessons
   	@open_lessons = open_lessons
   	mail(to: chalkler.email,
-         subject: "chalkle° - #{chalkler.email_frequency.titlize} class digest for #{Date.today.to_formatted_s(:long)}")
+         subject: "chalkle° - #{chalkler.email_frequency.titleize} class digest for #{Date.today.to_formatted_s(:long)}")
   end
 end
