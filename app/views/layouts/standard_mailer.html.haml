@@ -23,11 +23,15 @@
               %td{:style => "padding: 20px; color:#444444; border-left: solid 1px #ececec; border-right: solid 1px #ececec;", :valign => "top", :width => "600"}
                 =yield
             %tr
-              %td{:valign =>"top", :style => "background-color: #ececec; padding: 15px 0; text-align: center;", :width => "600"}
+              %td{:valign =>"top", :style => "background-color: #ececec; border-right: solid 1px #ececec; border-left: solid 1px #ececec; padding: 15px 0; text-align: center;", :width => "600"}
                 %a{:href => "#{chalklers_preferences_url}", :style => "color: #cd4063; text-decoration: none;", :target => "_blank", :title => "Change email settings"} Change your email settings
                 %span{:style => "color:#cccccc;"} &nbsp;|&nbsp;
                 %a{:href => "#{root_url}", :style => "color: #cd4063; text-decoration: none;", :target => "_blank", :title => "Visit my.chalkle.com"} Visit my.chalkle.com
+                %span{:style => "color:#cccccc;"} &nbsp;|&nbsp;
+                %a{:href => "http://facebook.com/Chalkle", :style => "color: #cd4063; text-decoration: none;", :target => "_blank", :title => "Join chalkle on facebook"} Facebook
+                %span{:style => "color:#cccccc;"} &nbsp;|&nbsp;
+                %a{:href => "http://twitter.com/ChalkleNZ/", :style => "color: #cd4063; text-decoration: none;", :target => "_blank", :title => "Join chalkle on twitter"} Twitter
             %tr
               %td{:valign =>"top", :style => "background-color: #ffffff; padding: 15px 0; text-align: center;", :width => "600"}
-                %p{:style => "font-size: 12px, color: #777777"}
+                %p{:style => "margin: 5px 0 5px 0; font-size: 10px; color: #777777"}
                   What do you think of this email? <a style="color: #cd4063; text-decoration: none;" href="mailto:learn@chalkle.com>">Let us know!</a>

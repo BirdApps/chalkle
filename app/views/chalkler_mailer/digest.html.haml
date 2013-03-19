@@ -7,9 +7,10 @@
     -@new_lessons.each do |lesson|
       %tr{style: "border-bottom: solid 4px #fff;"}
         %td{style: "padding: 10px; background: #ececec; width: 100%;"}
-          %strong= link_to lesson.name, lesson.meetup_data["event_url"], {style: "color: #cd4063; text-decoration: underline; font-size: 16px;"}
-          %span{style: "color: #777;"}= lesson.start_at.strftime("%a %b %d") if lesson.start_at
-          %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
+          %strong= link_to "#{lesson.channels.first.name}: #{lesson.name}", lesson.meetup_data["event_url"], {style: "color: #cd4063; text-decoration: underline; font-size: 16px;"}
+          %br/
+          %p{style: "color: #777; margin: 3px 0 0 0;"}= lesson.start_at.strftime("%a %b %d, %l:%M %p") if lesson.start_at
+          %p{style: "line-height: 15px;"}= truncate(lesson.do_during_class, length: 250, separator: ' ')
 
 -if @open_lessons.any?
   %h3 There is still time to sign up for these classes:
@@ -17,11 +18,21 @@
     -@open_lessons.each do |lesson|
       %tr{style: "border-bottom: solid 4px #fff;"}
         %td{style: "padding: 10px; background: #ececec; width: 100%;"}
-          %strong= link_to lesson.name, lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : "http://www.chalkle.com", {style: "color:#24714c; text-decoration: underline; font-size: 16px;"}
-          %span{style: "color: #777;"}= lesson.start_at.strftime("%a %b %d") if lesson.start_at
-          %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
+          %strong= link_to "#{lesson.channels.first.name}: #{lesson.name}", lesson.meetup_data["event_url"], {style: "color:#24714c; text-decoration: underline; font-size: 16px;"}
+          %br/
+          %p{style: "color: #777; margin: 3px 0 0 0;"}= lesson.start_at.strftime("%a %b %d, %l:%M %p") if lesson.start_at
+          %p{style: "line-height: 15px;"}= truncate(lesson.do_during_class, length: 250, separator: ' ')
           %p= link_to "Join #{lesson.attendance} other chalklers", lesson.meetup_data["event_url"], {style: "color: #24714c; text-decoration: underline;"}
 
--# %p= link_to 'See more chalkles...',"http://www.meetup.com/" + ( @chalkler.channels.present? ? @chalkler.channels.collect{|c| c.url_name}.first : "sixdegrees" ) + "/events/calendar/?scroll=true",{style: "color: #cd4063; text-decoration: underline; font-size: 16px;"}
+-if @chalkler.channels.size > 1
+  %p{style: "font-size: 16px; color: #777;"}
+    See more chalkles from: 
+    -@chalkler.channels.each_with_index do |c, i|
+      = link_to "#{c.name}", "http://www.meetup.com/" + c.url_name + "/events/calendar/?scroll=true",{style: "color: #cd4062; text-decoration: underline; font-size: 16px;"}
+      - unless i == @chalkler.channels.size - 1
+        %span="#{" | "}"
+  -else
+    %p
+      = link_to 'See more chalkles...',"http://www.meetup.com/" + ( @chalkler.channels.present? ? @chalkler.channels.first.url_name : "sixdegrees" ) + "/events/calendar/?scroll=true",{style: "color: #cd4063; text-decoration: underline; font-size: 16px;"}
 
-%p Thank you for supporting chalkle&deg; and we look forward to seeing you soon!
+%p{style: "color: #777; margin-bottom: 0px;"} Thank you for supporting chalkle&deg; and we look forward to seeing you soon!
