@@ -2,10 +2,6 @@ class Chalklers::OmniauthCallbacksController < Devise::OmniauthCallbacksControll
   def meetup
     @chalkler = Chalkler.find_for_meetup_oauth(request.env["omniauth.auth"], current_chalkler)
 
-    if @chalkler.last_sign_in_at.nil?
-      redirect_to update_email_path
-    end
-
     if @chalkler.persisted?
       sign_in_and_redirect @chalkler, :event => :authentication #this will throw if @user is not activated
       set_flash_message(:notice, :success, :kind => "Meetup") if is_navigational_format?
