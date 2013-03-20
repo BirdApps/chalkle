@@ -30,6 +30,6 @@
   %p{style: "font-size: 16px; color: #777;"}
     See more chalkles from:
     -# Move to decorator
-    =@chalkler.channels.collect { |c| link_to c.name, "http://www.meetup.com/#{c.url_name}/events/calendar/?scroll=true", {style: "color: #cd4062; text-decoration: underline; font-size: 16px;"}.join(' | ')
+    =@chalkler.channels.collect { |c| link_to(c.name, "http://www.meetup.com/#{c.url_name}/events/calendar/?scroll=true", {style: "color: #cd4062; text-decoration: underline; font-size: 16px;"}) }.join(' | ')
 
 %p{style: "color: #777; margin-bottom: 0px;"} Thank you for supporting chalkle&deg; and we look forward to seeing you soon!
