@@ -21,5 +21,3 @@ Feature: Login
     When I click on the link
     Then I should be able to change my passwords
     Then I should be logged in
-
-

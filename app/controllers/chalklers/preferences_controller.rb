@@ -14,4 +14,8 @@ class Chalklers::PreferencesController < Chalklers::BaseController
 
     render template: 'chalklers/dashboard/settings'
   end
+
+  def update_email
+    render template: 'chalklers/update_email'
+  end
 end
