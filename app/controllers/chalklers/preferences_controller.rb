@@ -16,6 +16,15 @@ class Chalklers::PreferencesController < Chalklers::BaseController
   end
 
   def update_email
-    render template: 'chalklers/update_email'
+    @chalkler = current_chalkler
+    if params[:chalkler].blank?
+      render template: 'chalklers/update_email'
+    else
+      if @chalkler.update_attributes(params[:chalkler])
+        redirect_to root_url, notice: 'Your preferences have been saved.'
+      else
+        render template: 'chalklers/update_email'
+      end
+    end
   end
 end

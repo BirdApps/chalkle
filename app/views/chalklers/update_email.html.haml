@@ -1,2 +1,14 @@
-We've noticed you don't have an email in our sytem yet.
-=link_to "Skip this step", chalklers_root_path
+.row
+  .span6.offset3
+    %p
+      We've noticed you don't have an email in our sytem yet.  You can 
+      =link_to "Skip this step", chalklers_root_path
+      or enter your email below to recieve important updates relating to your classes.
+%br/
+.text-center
+  = simple_form_for(@chalkler, url: chalklers_update_email_url, html: { method: :put, class: 'form-inline' }) do |f|
+    .row
+      .span6.offset3
+        =f.error_notification
+        =f.input :email
+        =f.submit "Update email"
