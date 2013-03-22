@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :channel do
-    name "Wellington"
-    url_name "wellington"
+    name 'Wellington'
+    url_name 'wellington'
+    email 'wellington@chalkle.com'
   end
 end
