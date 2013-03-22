@@ -6,19 +6,19 @@ class Chalklers::TeachingsController < Chalklers::BaseController
   def create
   	@chalkler_teaching = Teaching.new(current_chalkler)
   	if @chalkler_teaching.submit(params[:teaching])
-  	 redirect_to success_chalklers_teachings_url, notice: 'Your class has been saved.'
+      session[:teachings_channel_email] = Channel.find(params[:teaching][:channel_id]).email
+  	  redirect_to success_chalklers_teachings_url(request.parameters), notice: 'Your class has been saved.'
   	else
       render 'new'
   	end
   end
 
   def success
-    @curator_email = current_chalkler.channels.first.email
+    @channel_email = session[:teachings_channel_email]
+    session[:teachings_channel_email] = nil
   end
 
   def show
-
   end
-
 
 end

@@ -3,8 +3,8 @@
 
   .row
     .hero-unit
-      %h2 At chalkle&deg, anyone can be a teacher
-      %p So tell us about your idea and take the first step towards being a chalkle&deg teacher
+      %h2 At chalkle&deg;, anyone can be a teacher
+      %p So tell us about your idea and take the first step towards being a chalkle&deg; teacher
 
   .row
     .form-inputs
@@ -16,6 +16,8 @@
       = f.input :category_primary_id, :label => "What is the primary category of this class?", :collection => Category.select_options
       -if @chalkler_teaching.channels.length > 1
         = f.input :channel_id, :label => "Which channel would you like to hold this class in?", :collection => Channel.select_options(@chalkler_teaching.channels), include_blank: false
+      -else
+        = f.hidden_field :channel_id, value: @chalkler_teaching.channels.first.id
       = f.input :lesson_skill, :label => "What is the skill level of this class?", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }
       = f.input :bio, :label => "Why are you a great teacher for this class?", :as => :text, :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :input_html => { :rows => 2, :class => "span12" }
 
