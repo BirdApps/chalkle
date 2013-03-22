@@ -1,20 +1,20 @@
 Given /^I am logged in as a registered chalkler$/ do
-  @chalkler = Chalkler.create(email: "test@chalkle.com", password: 'password')
+  @chalkler = Chalkler.create(email: 'test@chalkle.com', password: 'password')
   visit '/chalklers/sign_in'
-  fill_in "chalkler_email", :with => "test@chalkle.com"
-  fill_in "chalkler_password", :with => "password"
-  click_button "Sign in"
+  fill_in 'chalkler_email', :with => 'test@chalkle.com'
+  fill_in 'chalkler_password', :with => 'password'
+  click_button 'Sign in'
 end
 
-Then /^I should see the email setting form$/ do
+Then /^I should see the email settings form$/ do
   page.should have_content("Set Your Email Preferences")
 end
 
 When /^I click on the button "(.*?)"$/ do |name|
-  click_button "Save Email Preferences"
+  click_button name
 end
 
-Then /^I should see the confirmation message$/ do
+Then /^I should see the email settings confirmation message$/ do
   page.should have_content("Your preferences have been saved")
 end
 
@@ -74,7 +74,7 @@ Given /^I had set my email categories to "(.*?)" and "(.*?)"$/ do |category1, ca
   @chalkler.save
 end
 
-Then /^the email categories "(.*?)" and "(.*?)" should be checked$/ do |category1, category2|  
+Then /^the email categories "(.*?)" and "(.*?)" should be checked$/ do |category1, category2|
   find("#chalkler_preferences_email_categories_#{Category.find_by_name(category1).id}").should be_checked
   find("#chalkler_preferences_email_categories_#{Category.find_by_name(category2).id}").should be_checked
 end
