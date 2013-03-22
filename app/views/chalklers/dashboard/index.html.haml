@@ -1,6 +1,6 @@
 -title "Dashboard"
 
 .chalkle_image
-  %h2 Welcome #{current_chalkler.name.split[0]}! We have built this portal to help you manage all your chalkle&deg activities
+  %h2 Welcome #{current_chalkler.name.present? ? current_chalkler.name.split[0] : nil}! We have built this portal to help you manage all your chalkle&deg activities
   
 
