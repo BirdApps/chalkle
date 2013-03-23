@@ -5,7 +5,8 @@ class Lesson < ActiveRecord::Base
     :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
     :availabilities, :prerequisites, :additional_comments, :donation,
     :lesson_skill, :venue, :published_at, :category_ids, :channel_ids,
-    :lesson_image_attributes, :channel_percentage_override, :chalkle_percentage_override, :material_cost, :suggested_audience
+    :lesson_image_attributes, :channel_percentage_override,
+    :chalkle_percentage_override, :material_cost, :suggested_audience
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -50,7 +51,7 @@ class Lesson < ActiveRecord::Base
   scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
   scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
   scope :unpublished, where("(status = '" + STATUS_3 + "' ) OR (status = '" + STATUS_2 + "' )")
-  scope :published, where("status = '" + STATUS_1 + "'")
+  scope :published, where(status: STATUS_1)
 
   before_create :set_from_meetup_data
   before_create :set_metadata
@@ -59,9 +60,9 @@ class Lesson < ActiveRecord::Base
   def revenue_split_validation
     return unless (channel_percentage_override.present? || chalkle_percentage_override.present?) and teacher_cost.present? and cost.present?
     if ( ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) > 0.05) || ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) < -0.5))
-      errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
-      errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
-      errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle") 
+      errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle")
+      errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle")
+      errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle")
     end
   end
 
@@ -74,8 +75,8 @@ class Lesson < ActiveRecord::Base
     return unless teacher_cost and cost
     if (teacher_cost > cost)
       errors.add(:teacher_cost, "Payment to teacher must be less than advertised price")
-      errors.add(:cost, "Payment to teacher must be less than advertised price") 
-    end 
+      errors.add(:cost, "Payment to teacher must be less than advertised price")
+    end
   end
 
   def default_chalkle_percentage

@@ -60,4 +60,5 @@ describe Chalkler do
       chalkler.created_at.to_time.to_i.should == 1346658337
     end
   end
+
 end

@@ -39,12 +39,15 @@ Chalkle::Application.configure do
   #ActionMailer::Base.delivery_method = :file
   #ActionMailer::Base.file_settings = { location: Rails.root.join("tmp/mail") }
 
+  #config.action_mailer.delivery_method = :smtp
+  #config.action_mailer.smtp_settings = { :address => "localhost", :port => 1024 }
+
   ActionMailer::Base.delivery_method = :smtp
-	ActionMailer::Base.smtp_settings = {
-	  :user_name => 'chalkle-24b10ef389f7e02b',
-	  :password => '05a8b4efeb8d5955',
-	  :address => 'mailtrap.io',
-	  :port => '2525',
-	  :authentication => :plain,
-	}
+  ActionMailer::Base.smtp_settings = {
+    :user_name => 'chalkle-24b10ef389f7e02b',
+    :password => '05a8b4efeb8d5955',
+    :address => 'mailtrap.io',
+    :port => '2525',
+    :authentication => :plain,
+  }
 end

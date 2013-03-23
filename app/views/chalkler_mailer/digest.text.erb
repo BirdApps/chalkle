@@ -1,0 +1,33 @@
+<%#-*- coding: UTF-8 -*-%>
+Hello <%= @chalkler.name.split[0] %>,
+
+Here is your chalkle° <%= @chalkler.email_frequency %> digest for <%= Date.today.strftime("%A %B #{Date.today.day.ordinalize}") %>.
+
+<% if @new_lessons.any? %>
+New chalkles:
+
+  <% @new_lessons.each do |lesson| %>
+<%= "#{lesson.channels.first.name}: #{lesson.name} - #{lesson.start_at.strftime("%a %b %d, %l:%M %p") if lesson.start_at}" %>
+
+<%= truncate(lesson.do_during_class, length: 250, separator: ' ') %>
+
+Join class: <%= lesson.meetup_data["event_url"] %>
+  <% end %>
+<% end %>
+
+<% if @open_lessons.any? %>
+There is still time to sign up for these chalkles:
+
+  <% @open_lessons.each do |lesson| %>
+<%= "#{lesson.channels.first.name}: #{lesson.name} - #{lesson.start_at.strftime("%a %b %d, %l:%M %p") if lesson.start_at}" %>
+
+<%= truncate(lesson.do_during_class, length: 250, separator: ' ') %>
+
+Join <%= lesson.attendance %> other chalklers: <%= lesson.meetup_data["event_url"] %>
+  <% end %>
+<% end %>
+
+<%# Move to decorator %>
+See more chalkles from: <%= @chalkler.channels.collect { |c| link_to(c.name, "http://www.meetup.com/#{c.url_name}/events/calendar/?scroll=true", {style: "color: #cd4062; text-decoration: underline; font-size: 16px;"}) }.join(' | ') %>
+
+Thank you for supporting chalkle° and we look forward to seeing you soon!

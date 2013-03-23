@@ -8,6 +8,5 @@ FactoryGirl.define do
     bio "All about me!!"
     gst "234 78 990"
     password "password"
-    password_confirmation "password"
   end
 end
