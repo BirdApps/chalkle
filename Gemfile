@@ -28,7 +28,9 @@ gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml-rails',    '~> 0.3.5'
 gem 'simple_form',   '~> 2.0.4'
-gem 'rdiscount',     '~> 2.0.7.1'
+# won't compile on beta
+# gem 'rdiscount',     '~> 2.0.7.1'
+gem 'maruku',        '~> 0.6.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
