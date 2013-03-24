@@ -1,0 +1,33 @@
+%h1
+  Welcome to chalkle&deg;!
+
+:markdown
+  Thanks for joining chalkle&deg;! Isn’t it exciting to see a community
+  grow around a wish to learn, teach and share skills from each other.
+
+  <p>Your Channel Curator has created an account for you on
+  <a href="http://my.chalkle.com" style="color:#cd4063;text-decoration:none;">my.chalkle.com</a>.
+  You can use this to submit class details. To activate your account simply
+  create a password by clicking on the link below:</p>
+
+%p= link_to nil, "#{edit_chalkler_password_url}?initial=true&reset_password_token=#{@chalkler.reset_password_token}", { style: 'color: #cd4063;text-decoration:none;' }
+
+:markdown
+  We hope to be able to help connect you with people who can share skills and
+  knowledge. If you have things you can teach then we can enable that to
+  happen. We can help you advertise (find great people), sort all the money
+  practicalities, help you find a location, and give suggestions on what makes
+  a great chalkle&deg; class.
+
+  <p>Do like us on <a href="http://www.facebook.com/chalkle" style="color:
+  #cd4063;text-decoration:none;">Facebook</a> and follow us on
+  <a href="https://twitter.com/ChalkleNZ" style="color: #cd4063;text-decoration:none;">Twitter</a>.</p>
+
+  As this is a new initiative, we are still experimenting and playing, so please
+  do get in touch if you have any feedback or ideas - in that way we can create
+  chalkle&deg; to really meet your needs and those of the community.
+
+%p
+  Cheers,
+  %br/
+  The chalkle&deg; team
