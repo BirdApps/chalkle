@@ -28,6 +28,7 @@ gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml-rails',    '~> 0.3.5'
 gem 'simple_form',   '~> 2.0.4'
+gem 'rdiscount',     '~> 2.0.7.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -63,9 +64,6 @@ group :development do
   gem 'quiet_assets',       '~> 1.0.1'
   gem 'better_errors',      '~> 0.3.2'
   gem 'binding_of_caller',  '~> 0.6.8'
-  
-  #mucking round with the db
-  gem 'forgery'
 end
 
 group :development, :test do
@@ -76,7 +74,6 @@ group :development, :test do
   gem 'guard-rspec',       '~> 2.3.3'
   gem 'guard-sass',        '~> 1.0.1', :require => false
   gem 'guard-livereload',  '~> 1.1.3'
-# gem 'rb-fsevent',        '~> 0.9.3' if RUBY_PLATFORM.downcase.include?('darwin')
 
   # Placed here so generators work
   gem 'rspec-rails',  '~> 2.12.2'
@@ -91,6 +88,9 @@ group :development, :test do
   # Debugging Tools
   gem 'pry-rails',     '~> 0.2.2'
   gem 'pry-coolline',  '~> 0.2.1'
+
+  #mucking round with the db
+  gem 'forgery'
 end
 
 group :test do
@@ -110,7 +110,4 @@ group :test do
 
   # Test coverage
   gem 'simplecov',  '~> 0.7.1'
-
-  #mucking round with the db
-  gem 'forgery'
 end
