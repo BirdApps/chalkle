@@ -1,5 +1,7 @@
 Given /^I am logged in as a registered chalkler$/ do
-  @chalkler = Chalkler.create(email: 'test@chalkle.com', password: 'password')
+  @chalkler = FactoryGirl.create(:chalkler, email: 'test@chalkle.com')
+  @chalkler.password = 'password'
+  @chalkler.save
   visit '/chalklers/sign_in'
   fill_in 'chalkler_email', :with => 'test@chalkle.com'
   fill_in 'chalkler_password', :with => 'password'

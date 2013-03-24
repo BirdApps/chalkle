@@ -11,7 +11,6 @@ Given /^I belong to the "(.*?)" channel$/ do |name|
   channel = Channel.find_by_name(name)
   @chalkler.channels << channel
   @chalkler.reload.channels == [channel]
-  puts
 end
 
 Then /^I should see the New Class form$/ do
