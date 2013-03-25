@@ -11,7 +11,7 @@ class ChalklerMailer < ActionMailer::Base
   end
 
   def digest(chalkler, new_lessons, open_lessons)
-  	@chalkler = chalkler
+    @chalkler = ChalklerDecorator.decorate(chalkler)
   	@new_lessons = new_lessons
   	@open_lessons = open_lessons
   	mail(to: @chalkler.email,
