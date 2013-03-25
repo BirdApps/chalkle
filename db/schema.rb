@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308102928) do
+ActiveRecord::Schema.define(:version => 20130325013112) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -203,6 +203,7 @@ ActiveRecord::Schema.define(:version => 20130308102928) do
     t.decimal  "chalkle_percentage_override", :precision => 8, :scale => 2
     t.decimal  "material_cost",               :precision => 8, :scale => 2, :default => 0.0
     t.text     "suggested_audience"
+    t.string   "event_url"
   end
 
   create_table "payments", :force => true do |t|
