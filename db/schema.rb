@@ -203,7 +203,7 @@ ActiveRecord::Schema.define(:version => 20130325013112) do
     t.decimal  "chalkle_percentage_override", :precision => 8, :scale => 2
     t.decimal  "material_cost",               :precision => 8, :scale => 2, :default => 0.0
     t.text     "suggested_audience"
-    t.string   "event_url"
+    t.string   "meetup_url"
   end
 
   create_table "payments", :force => true do |t|
