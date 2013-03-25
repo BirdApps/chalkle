@@ -1,11 +1,11 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost,
-    :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
-    :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
-    :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
-    :availabilities, :prerequisites, :additional_comments, :donation,
-    :lesson_skill, :venue, :published_at, :category_ids, :channel_ids,
-    :lesson_image_attributes, :channel_percentage_override,
+  attr_accessible :name, :meetup_id, :meetup_url, :category_id, :teacher_id,
+    :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration,
+    :meetup_data, :description, :visible, :teacher_payment, :lesson_type,
+    :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee,
+    :min_attendee, :availabilities, :prerequisites, :additional_comments,
+    :donation, :lesson_skill, :venue, :published_at, :category_ids,
+    :channel_ids, :lesson_image_attributes, :channel_percentage_override,
     :chalkle_percentage_override, :material_cost, :suggested_audience
 
   has_many :channel_lessons
@@ -196,6 +196,7 @@ class Lesson < ActiveRecord::Base
     l.status = STATUS_1
     l.name = l.set_name result.name
     l.meetup_id = result.id
+    l.meetup_url = result.event_url
     l.description = result.description
     l.meetup_data = result.to_json
     l.max_attendee = result.rsvp_limit
