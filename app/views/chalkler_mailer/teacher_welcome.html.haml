@@ -10,7 +10,7 @@
   You can use this to submit class details. To activate your account simply
   create a password by clicking on the link below:</p>
 
-%p= link_to 'Create account password', "#{edit_chalkler_password_url}?initial=true&reset_password_token=#{@chalkler.reset_password_token}", { style: 'color: #cd4063;text-decoration:none;' }
+%p!= link_to 'Create account password', "#{edit_chalkler_password_url}?initial=true&reset_password_token=#{@chalkler.reset_password_token}", { style: 'color: #cd4063;text-decoration:none;' }
 
 :markdown
   We hope to be able to help connect you with people who can share skills and
