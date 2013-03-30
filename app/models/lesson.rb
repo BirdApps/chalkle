@@ -113,6 +113,11 @@ class Lesson < ActiveRecord::Base
     lesson_image.image rescue nil
   end
 
+  # this should be a scope
+  def bookable?
+    bookings.count < max_attendee.to_i
+  end
+
   def published?
     status == STATUS_1
   end
