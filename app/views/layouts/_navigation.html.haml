@@ -5,7 +5,6 @@
       .nav-collapse.collapse
         %ul.nav.span10
           -if chalkler_signed_in?
-            -#%li= link_to 'Learn', 'http://www.chalkle.com'
             %li= link_to 'Teach', new_chalklers_teaching_path
             %li= link_to 'Email Settings', chalklers_preferences_path, method: 'get'
             %li.fl-right.no-right-margin= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'

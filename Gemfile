@@ -18,6 +18,8 @@ gem 'jquery-rails',  '~> 2.1.4'
 gem 'chronic',       '~> 0.9.0'
 gem 'active_attr',   '~> 0.7.0'
 gem 'dragonfly',     '~> 0.9.14'
+gem 'delayed_job_active_record'
+gem 'squeel',        '~> 1.0.18'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
@@ -27,6 +29,8 @@ gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml-rails',    '~> 0.3.5'
 gem 'simple_form',   '~> 2.0.4'
+gem 'maruku',        '~> 0.6.1'
+gem 'draper',        '~> 1.0'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -72,7 +76,6 @@ group :development, :test do
   gem 'guard-rspec',       '~> 2.3.3'
   gem 'guard-sass',        '~> 1.0.1', :require => false
   gem 'guard-livereload',  '~> 1.1.3'
-# gem 'rb-fsevent',        '~> 0.9.3' if RUBY_PLATFORM.downcase.include?('darwin')
 
   # Placed here so generators work
   gem 'rspec-rails',  '~> 2.12.2'
@@ -87,6 +90,9 @@ group :development, :test do
   # Debugging Tools
   gem 'pry-rails',     '~> 0.2.2'
   gem 'pry-coolline',  '~> 0.2.1'
+
+  #mucking round with the db
+  gem 'forgery'
 end
 
 group :test do

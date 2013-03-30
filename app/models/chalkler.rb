@@ -20,9 +20,11 @@ class Chalkler < ActiveRecord::Base
   serialize :email_categories
   serialize :email_streams
 
-  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly monthly almost-never)
+  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly)
 
   before_create :set_from_meetup_data
+  before_create :set_reset_password_token
+  after_create  :send_teacher_welcome_mail
 
   #TODO: Move into a presenter class like Draper sometime
   def self.email_frequency_select_options
@@ -47,11 +49,6 @@ class Chalkler < ActiveRecord::Base
     end
   end
 
-  def set_from_meetup_data
-    return if meetup_data.empty?
-    self.created_at = Time.at(meetup_data["joined"] / 1000)
-  end
-
   def self.create_from_meetup_hash(result, channel)
     c = Chalkler.find_or_initialize_by_meetup_id(result.id)
     c.name = result.name
@@ -68,15 +65,36 @@ class Chalkler < ActiveRecord::Base
   def self.find_for_meetup_oauth(auth, signed_in_resource=nil)
     chalkler = Chalkler.where(:provider => auth.provider, :uid => auth.uid.to_s).first
       unless chalkler
-        chalkler = Chalkler.create(name:auth.extra.raw_info.name,
-                             provider:auth.provider,
-                             uid:auth.uid.to_s,
-                             meetup_id: auth.uid,
-                             email:auth.info.email,
-                             password:Devise.friendly_token[0,20]
-                             )
+        chalkler = Chalkler.create(name: auth.extra.raw_info.name,
+                                   provider: auth.provider,
+                                   uid: auth.uid.to_s,
+                                   meetup_id: auth.uid,
+                                   email: auth.info.email,
+                                   password: Devise.friendly_token[0,20])
       end
     chalkler
+  end
+
+  private
+
+  def set_from_meetup_data
+    return unless meetup_data?
+    self.created_at = Time.at(meetup_data["joined"] / 1000)
+  end
+
+  # for Chalklers created outside of meetup
+  def set_reset_password_token
+    return if meetup_data?
+    self.password = Chalkler.reset_password_token
+    self.reset_password_token = Chalkler.reset_password_token
+  end
+
+  # for Chalklers created outside of meetup
+  def send_teacher_welcome_mail
+    return if (meetup_data? || self.reset_password_token.blank? || self.email.blank?)
+    ChalklerMailer.teacher_welcome(self).deliver!
+    self.reset_password_sent_at = Time.now.utc
+    self.save
   end
 
 end

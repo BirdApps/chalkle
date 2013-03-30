@@ -11,6 +11,7 @@ module MeetupApiStub
 
   def self.lesson_response
     RMeetup::Type::Event.new({
+      "status" => "upcoming",
       "id" => 12345678,
       "name" => "music and dance: awesome class",
       "description" => "all about the class",
