@@ -20,6 +20,17 @@ describe ChalklerDigest do
   end
 
   describe "lesson selection" do
+    # this lesson should always be excluded from a set
+    let(:lesson1) {
+      FactoryGirl.create(:lesson,
+                         created_at: 1.day.ago,
+                         start_at: 1.day.from_now,
+                         status: 'Published',
+                         do_during_class: 'x',
+                         meetup_url: 'http://meetup.com',
+                         max_attendee: 10)
+    }
+
     before do
       @category = FactoryGirl.create(:category)
       @chalkler = FactoryGirl.create(:chalkler, email_categories: [@category.id], email_frequency: 'daily')
@@ -30,20 +41,21 @@ describe ChalklerDigest do
                                    created_at: 1.day.ago,
                                    start_at: 3.days.from_now,
                                    status: 'Published',
-                                   do_during_class: 'x')
+                                   do_during_class: 'x',
+                                   meetup_url: 'http://meetup.com',
+                                   max_attendee: 15)
       @lesson.categories << @category
       @lesson.channels << @channel
     end
 
     describe "#new_lessons" do
       it "loads a lesson that a chalkler is interested in" do
-        lesson1 = FactoryGirl.create(:lesson, created_at: 1.day.ago, status: 'Published', do_during_class: 'x')
+        lesson1.categories << FactoryGirl.create(:category)
         lesson1.channels << @channel
         @digest.instance_eval{ new_lessons }.should == [@lesson]
       end
 
       it "loads a lessons from channels that chalkler belongs to" do
-        lesson1 = FactoryGirl.create(:lesson, created_at: 1.day.ago, status: 'Published', do_during_class: 'x')
         lesson1.categories << @category
         lesson1.channels << FactoryGirl.create(:channel)
         @digest.instance_eval{ new_lessons }.should == [@lesson]
@@ -63,16 +75,10 @@ describe ChalklerDigest do
         @lesson.update_attribute :created_at, 2.days.ago
         @digest.instance_eval{ new_lessons }.should be_empty
       end
-
-      it "won't load a lesson that was created today" do
-        @lesson.update_attribute :created_at, Time.now
-        @digest.instance_eval{ new_lessons }.should be_empty
-      end
     end
 
     describe "#default_new_lessons" do
       it "loads a lessons from channels that chalkler belongs to" do
-        lesson1 = FactoryGirl.create(:lesson, created_at: 1.day.ago, status: 'Published', do_during_class: 'x')
         lesson1.channels << FactoryGirl.create(:channel)
         @digest.instance_eval{ default_new_lessons }.should == [@lesson]
       end
@@ -91,28 +97,26 @@ describe ChalklerDigest do
         @lesson.update_attribute :created_at, 2.days.ago
         @digest.instance_eval{ default_new_lessons }.should be_empty
       end
-
-      it "won't load a lesson that was created today" do
-        @lesson.update_attribute :created_at, Time.now
-        @digest.instance_eval{ default_new_lessons }.should be_empty
-      end
     end
 
     describe "#open_lessons" do
-      pending "loads a lesson that a chalkler is interested in" do
-        lesson1 = FactoryGirl.create(:lesson, created_at: 1.day.ago, status: 'Published', do_during_class: 'x')
+      it "loads a lesson that a chalkler is interested in" do
+        lesson1.categories << FactoryGirl.create(:category)
         lesson1.channels << @channel
         @digest.instance_eval{ open_lessons }.should == [@lesson]
       end
 
-      pending "loads a lessons from channels that chalkler belongs to" do
-        lesson1 = FactoryGirl.create(:lesson, created_at: 1.day.ago, status: 'Published', do_during_class: 'x')
+      it "loads a lessons from channels that chalkler belongs to" do
         lesson1.categories << @category
         lesson1.channels << FactoryGirl.create(:channel)
         @digest.instance_eval{ open_lessons }.should == [@lesson]
       end
 
-      pending "only loads lessons with open rsvps" do
+      it "won't load a full lesson" do
+        @lesson.update_attribute :max_attendee, 10
+        @lesson.bookings = []
+        10.times { FactoryGirl.create(:booking, lesson: @lesson) }
+        @digest.instance_eval{ open_lessons }.should be_empty
       end
 
       it "won't load a lesson without meetup_url" do
@@ -125,25 +129,29 @@ describe ChalklerDigest do
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 
-      it "won't load a lesson that is more than 1 day old" do
-        @lesson.update_attribute :created_at, 2.days.ago
+      it "won't load a lesson that has already taken place" do
+        @lesson.update_attribute :start_at, 2.days.ago
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 
-      it "won't load a lesson that was created today" do
-        @lesson.update_attribute :created_at, Time.now
+      it "won't choke on an empty set" do
+        @lesson.destroy
         @digest.instance_eval{ open_lessons }.should be_empty
       end
     end
 
     describe "#default_open_lessons" do
-      pending "loads a lessons from channels that chalkler belongs to" do
-        lesson1 =  FactoryGirl.create(:lesson, created_at: 1.day.ago, status: 'Published', do_during_class: 'x')
+      it "loads a lesson from channels that chalkler belongs to" do
+        lesson1.categories << @category
         lesson1.channels << FactoryGirl.create(:channel)
         @digest.instance_eval{ default_open_lessons }.should == [@lesson]
       end
 
-      pending "only loads lessons with open rsvps" do
+      it "won't load a full lesson" do
+        @lesson.update_attribute :max_attendee, 10
+        @lesson.bookings = []
+        10.times { FactoryGirl.create(:booking, lesson: @lesson) }
+        @digest.instance_eval{ open_lessons }.should be_empty
       end
 
       it "won't load a lesson without meetup_url" do
@@ -156,10 +164,14 @@ describe ChalklerDigest do
         @digest.instance_eval{ default_open_lessons }.should be_empty
       end
 
-      pending "won't load a lesson that is X old" do
+      it "won't load a lesson that has already taken place" do
+        @lesson.update_attribute :start_at, 2.days.ago
+        @digest.instance_eval{ open_lessons }.should be_empty
       end
 
-      pending "won't load a lesson that is X new" do
+      it "won't choke on an empty set" do
+        @lesson.destroy
+        @digest.instance_eval{ open_lessons }.should be_empty
       end
     end
   end

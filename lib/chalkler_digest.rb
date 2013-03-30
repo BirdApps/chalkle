@@ -23,7 +23,6 @@ class ChalklerDigest
 
   def new_lessons
     Lesson.visible.published.joins(:categories, :channels).where("lessons.created_at > CURRENT_DATE - ? AND
-                                                                  lessons.created_at <= CURRENT_DATE AND
                                                                   lessons.meetup_url IS NOT NULL AND
                                                                   lessons.do_during_class IS NOT NULL AND
                                                                   lesson_categories.category_id IN (?) AND
@@ -34,7 +33,6 @@ class ChalklerDigest
 
   def default_new_lessons
     Lesson.visible.published.joins(:channels).where("lessons.created_at > CURRENT_DATE - ? AND
-                                                     lessons.created_at <= CURRENT_DATE AND
                                                      lessons.meetup_url IS NOT NULL AND
                                                      lessons.do_during_class IS NOT NULL AND
                                                      channel_lessons.channel_id IN (?)",
@@ -42,27 +40,25 @@ class ChalklerDigest
   end
 
   def open_lessons
-    Lesson.visible.published.joins(:categories, :channels).where("lessons.start_at > CURRENT_DATE + 1 AND
-                                                                  lessons.start_at <= CURRENT_DATE + ? AND
-                                                                  lessons.created_at <= CURRENT_DATE - ? AND
-                                                                  lessons.meetup_url IS NOT NULL AND
-                                                                  lessons.do_during_class IS NOT NULL AND
-                                                                  lesson_categories.category_id IN (?) AND
-                                                                  channel_lessons.channel_id IN (?)",
-                                                                  @date_offset + 1, @date_offset,
-                                                                  @chalkler.email_categories,
-                                                                  @chalkler.channels).limit(@limit)
+    lessons = Lesson.visible.published.joins(:categories, :channels).where("lessons.start_at >= CURRENT_DATE AND
+                                                                            lessons.meetup_url IS NOT NULL AND
+                                                                            lessons.do_during_class IS NOT NULL AND
+                                                                            lesson_categories.category_id IN (?) AND
+                                                                            channel_lessons.channel_id IN (?)",
+                                                                            @chalkler.email_categories,
+                                                                            @chalkler.channels).limit(@limit)
+    lessons.delete_if { |l| l.bookable? == false  }
+    lessons
   end
 
   def default_open_lessons
-    Lesson.visible.published.joins(:channels).where("lessons.start_at > CURRENT_DATE + 1 AND
-                                                     lessons.start_at <= CURRENT_DATE + ? AND
-                                                     lessons.created_at <= CURRENT_DATE - ? AND
+    lessons = Lesson.visible.published.joins(:channels).where("lessons.start_at >= CURRENT_DATE AND
                                                      lessons.meetup_url IS NOT NULL AND
                                                      lessons.do_during_class IS NOT NULL AND
                                                      channel_lessons.channel_id IN (?)",
-                                                     @date_offset + 1, @date_offset,
                                                      @chalkler.channels).limit(@limit)
+    lessons.delete_if { |l| l.bookable? == false  }
+    lessons
   end
 
 end
