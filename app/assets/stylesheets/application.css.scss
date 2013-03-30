@@ -68,9 +68,10 @@ body {
 
 .hero-unit {
   font-family: $font_family_chalk;
-  @include radial-gradient($blackboard, darken($blackboard, 9%));
+  background: #222222 asset-url("chalkboard-repeat-smaller.jpg", image) left top repeat;
   color: white;
   padding: 20px 60px;
+  border: solid 2px #222;
 }
 
 @import "image";
