@@ -5,8 +5,21 @@ describe "Teachings" do
   let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.1, teacher_percentage: 0.5) }
   let(:channel2) { FactoryGirl.create(:channel, channel_percentage: 0.6, teacher_percentage: 0.1) }
   let(:category) { FactoryGirl.create(:category, name: "music and dance") }
-  let(:params) { { title: 'My new class', lesson_skill: '', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '',
-  free_lesson: '0', teacher_cost: '', max_attendee: '', min_attendee: '', availabilities: '' , additional_comments: '', category_primary_id: category.id} }
+  let(:params) { {
+    title: 'My new class',
+    lesson_skill: '',
+    do_during_class: 'We will play with Wii',
+    learning_outcomes: 'and become experts at tennis',
+    duration: '',
+    free_lesson: '0',
+    teacher_cost: '',
+    max_attendee: '',
+    min_attendee: '',
+    availabilities: '' ,
+    additional_comments: '',
+    category_primary_id: category.id,
+    channel_id: channel.id
+  } }
 
   before do
     chalkler.channels << channel

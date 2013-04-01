@@ -7,15 +7,15 @@ describe Lesson do
   it { should validate_uniqueness_of :meetup_id }
   it { should accept_nested_attributes_for :lesson_image }
 
+  specify { FactoryGirl.create(:lesson).should be_valid }
+
   let(:lesson) { FactoryGirl.create(:lesson) }
 
   describe "column validations" do
-
     it "should not allow non valid status" do
       lesson.status = "resres"
       lesson.should_not be_valid
     end
-
   end
 
   describe ".visible" do
@@ -92,6 +92,21 @@ describe Lesson do
       lesson.published_at.to_time.to_i.should == 1351297791
     end
 
+    it "update published date for a lesson already created" do
+      lesson = FactoryGirl.create(:lesson, meetup_id: 12345678, start_at: Date.today)
+      Lesson.create_from_meetup_hash(result, channel)
+      lesson.reload.published_at.to_time.to_i.should == 1351297791
+    end
+
+    it "update start_at time" do
+      Lesson.create_from_meetup_hash(result, channel)
+      lesson = Lesson.find_by_meetup_id 12345678
+      lesson.start_at = Date.today()
+      lesson.save
+      Lesson.create_from_meetup_hash(result, channel)
+      lesson.reload.start_at.to_time.to_i.should == 1351297791
+    end
+
   end
 
   describe "#set_from_meetup_data" do
@@ -130,18 +145,32 @@ describe Lesson do
     end
   end
 
+  describe "material cost validation" do
+    before do
+      @lesson = FactoryGirl.create(:lesson)
+    end
+    it "assigns default material cost" do
+      @lesson.material_cost.should == 0
+    end
+
+    it "does not allow non numerical costs" do
+      @lesson.material_cost = "rewrew"
+      @lesson.should_not be_valid
+    end
+  end
+
   describe "lesson costs" do
 
     let(:result) { MeetupApiStub::lesson_response }
     let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.2, teacher_percentage: 0.5) }
-    
+
     before do
       Lesson.create_from_meetup_hash(result, channel)
       @lesson = Lesson.find_by_meetup_id 12345678
       @lesson.cost = 20
       @lesson.save
     end
-    
+
     describe "cost validations" do
       it "should not allow non numercial teacher cost" do
         @lesson.teacher_cost = "resres"
@@ -265,7 +294,7 @@ describe Lesson do
       end
 
     end
-  
+
   end
 
 end

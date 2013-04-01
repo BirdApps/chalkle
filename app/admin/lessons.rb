@@ -24,6 +24,7 @@ ActiveAdmin.register Lesson  do
     helper BookingHelper
 
     def update
+      params[:lesson][:duration] = (params[:lesson][:duration].to_d*60*60).to_i if !params[:lesson][:duration].blank?
       params[:lesson][:chalkle_percentage_override] = (params[:lesson][:chalkle_percentage_override].to_d/100).to_s unless params[:lesson][:chalkle_percentage_override].blank?
       params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].blank?     
       update!
@@ -64,6 +65,9 @@ ActiveAdmin.register Lesson  do
       row :categories do |lesson|
         lesson.categories.collect{ |c| c.name}.join(", ")
       end
+      row :channels do |lesson|
+        lesson.channels.collect{ |c| c.name}.join(", ")
+      end
       row :start_at
       if !lesson.published?
         row "Availability of the teacher" do
@@ -89,6 +93,9 @@ ActiveAdmin.register Lesson  do
         end
         row "What to bring" do
           simple_format lesson.prerequisites
+        end
+        row "What type of audience is it appropriate for" do 
+          simple_format lesson.suggested_audience
         end
         row :additional_comments do
           simple_format lesson.additional_comments
@@ -119,8 +126,11 @@ ActiveAdmin.register Lesson  do
       row :venue_cost do
         number_to_currency lesson.venue_cost
       end
+      row :material_cost do
+        number_to_currency lesson.material_cost
+      end
       row :duration do
-        "#{lesson.duration / 60 / 60} hours" if lesson.duration?
+        pluralize(lesson.duration / 60 / 60, "hour") if lesson.duration?
       end
       row :max_attendee
       row :min_attendee
@@ -141,7 +151,7 @@ ActiveAdmin.register Lesson  do
           end
         end
         row :rsvp_list do
-          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, channel_url: lesson.channels.collect{|c| c.url_name}, bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, channel_url: (lesson.channels.present? ? lesson.channels.collect{|c| c.url_name} : Channel.find(1).url_name), bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
         row :description do
           simple_format lesson.description

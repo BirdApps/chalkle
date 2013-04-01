@@ -1,6 +1,6 @@
 Feature: Login
-  In order to use the site
-  Admins must be able to login
+  In order to use the admin area
+  Admins must be able to log in
 
   Scenario: Channel admin login
     Given "test@chalkle.com" is a channel admin
@@ -21,5 +21,3 @@ Feature: Login
     When I click on the link
     Then I should be able to change my passwords
     Then I should be logged in
-
-

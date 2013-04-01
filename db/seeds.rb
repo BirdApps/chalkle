@@ -6,7 +6,17 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-AdminUser.create(email: 'joshua@enspiral.com', password: 'password', role: 'super')
-Chalkler.create(email: 'chalkler@example.com', password: 'password', name: 'Julie User')
-Channel.create(name: 'Wellington', url_name: 'sixdegrees')
-Channel.create(name: 'Wellington Whaanau', url_name: 'whanau')
+wellington = Channel.create(name: 'Wellington', url_name: 'sixdegrees', email: 'wellington@chalkle.com')
+whanau = Channel.create(name: 'Wellington Whānau', url_name: 'whanau', email: 'whanau@chalkle.com')
+
+chalkler = Chalkler.create(email: 'chalkler@example.com', password: 'password', name: 'Julie User')
+super_admin = AdminUser.create(email: 'super_admin@enspiral.com', password: 'password', role: 'super')
+channel_admin = AdminUser.create(email: 'channel_admin@enspiral.com', password: 'password', role: 'channel admin')
+
+Category.create([{name: 'one'}, {name: 'two'}, {name: 'three'}])
+lessons = Lesson.create([{name: 'Lesson 1'}, {name: 'Lesson2'}, {name: 'Lesson3'}])
+
+lessons.each do |l|
+  l.categories << Category.first
+end
+channel_admin.channels << wellington
