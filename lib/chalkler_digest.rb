@@ -28,7 +28,7 @@ class ChalklerDigest
                                                                   lesson_categories.category_id IN (?) AND
                                                                   channel_lessons.channel_id IN (?)",
                                                                   @date_offset, @chalkler.email_categories,
-                                                                  @chalkler.channels).limit(@limit)
+                                                                  @chalkler.channels).order("start_at").limit(@limit)
   end
 
   def default_new_lessons
@@ -36,7 +36,7 @@ class ChalklerDigest
                                                      lessons.meetup_url IS NOT NULL AND
                                                      lessons.do_during_class IS NOT NULL AND
                                                      channel_lessons.channel_id IN (?)",
-                                                     @date_offset, @chalkler.channels).limit(@limit)
+                                                     @date_offset, @chalkler.channels).order("start_at").limit(@limit)
   end
 
   def open_lessons
@@ -46,19 +46,19 @@ class ChalklerDigest
                                                                             lesson_categories.category_id IN (?) AND
                                                                             channel_lessons.channel_id IN (?)",
                                                                             @chalkler.email_categories,
-                                                                            @chalkler.channels).limit(@limit)
+                                                                            @chalkler.channels).order("start_at")
     lessons.delete_if { |l| l.bookable? == false  }
-    lessons
+    lessons.shift @limit
   end
 
   def default_open_lessons
     lessons = Lesson.visible.published.joins(:channels).where("lessons.start_at >= CURRENT_DATE AND
-                                                     lessons.meetup_url IS NOT NULL AND
-                                                     lessons.do_during_class IS NOT NULL AND
-                                                     channel_lessons.channel_id IN (?)",
-                                                     @chalkler.channels).limit(@limit)
+                                                               lessons.meetup_url IS NOT NULL AND
+                                                               lessons.do_during_class IS NOT NULL AND
+                                                               channel_lessons.channel_id IN (?)",
+                                                               @chalkler.channels).order("start_at")
     lessons.delete_if { |l| l.bookable? == false  }
-    lessons
+    lessons.shift @limit
   end
 
 end
