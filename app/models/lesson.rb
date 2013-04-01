@@ -47,10 +47,10 @@ class Lesson < ActiveRecord::Base
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
-  scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
-  scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
-  scope :unpublished, where("(status = '" + STATUS_3 + "' ) OR (status = '" + STATUS_2 + "' )")
+  scope :recent, where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
+  scope :upcoming, where("start_at >= current_date AND start_at < current_date + #{WEEK}")
+  scope :last_week, where("start_at > current_date - #{WEEK} AND start_at < current_date")
+  scope :unpublished, where("(status = '#{STATUS_3}' ) OR (status = '#{STATUS_2}' )")
   scope :published, where(status: STATUS_1)
 
   before_create :set_from_meetup_data
