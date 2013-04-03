@@ -10,8 +10,8 @@ Given /^there is an unreconciled payment with no details$/ do
   @payment = Payment.create(xero_id: "abc", total: 10)
 end
 
-When /^I visit the "(.*?)" page$/ do |page|
-  click_link page
+When /^I visit the "(.*?)" page$/ do |link|
+  click_link link
 end
 
 Then /^I should see this payment$/ do

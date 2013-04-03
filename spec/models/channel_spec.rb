@@ -12,6 +12,8 @@ describe Channel do
   it { should validate_presence_of :teacher_percentage }
   it { should validate_presence_of :channel_percentage }
 
+  specify { FactoryGirl.build(:channel).should be_valid }
+
   let(:channel) { FactoryGirl.create(:channel) }
 
   describe "default values" do
@@ -31,7 +33,7 @@ describe Channel do
   end
 
   describe "validation" do
-  	
+
   	it "should not allow teacher percentage greater than 1" do
   		channel.teacher_percentage = 1.2
   		channel.should_not be_valid
@@ -60,7 +62,7 @@ describe Channel do
       chalkler.channels << channel2
     end
 
-  	it "should provdie an array of options that can be used in dropdowns" do
+  	it "should provide an array of options that can be used in dropdowns" do
   		required_array = [['channel1', channel1.id],['channel2', channel2.id]]
   		Channel.select_options(chalkler.channels).should eq(required_array)
   	end

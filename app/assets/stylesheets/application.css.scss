@@ -2,17 +2,6 @@
 @import "bourbon";
 
 @font-face {
-  font-family: "Eraser";
-  src: url("/assets/erasdust-webfont.eot");
-  src: url("/assets/erasdust-webfont.eot?#iefix") format("embedded-opentype");
-  src: url("/assets/erasdust-webfont.woff") format("woff");
-  src: url("/assets/erasdust-webfont.ttf") format("truetype");
-  src: url("/assets/erasdust-webfont.svg#EraserDustRegular") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
   font-family: 'MrChalk';
   src: url('/assets/25FE67_0_0.eot');
   src: url('/assets/25FE67_0_0.eot?#iefix') format('embedded-opentype'), 
@@ -79,9 +68,10 @@ body {
 
 .hero-unit {
   font-family: $font_family_chalk;
-  @include radial-gradient($blackboard, darken($blackboard, 9%));
+  background: #222222 asset-url("chalkboard-repeat-smaller.jpg", image) left top repeat;
   color: white;
   padding: 20px 60px;
+  border: solid 2px #222;
 }
 
 @import "image";

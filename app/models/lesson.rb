@@ -1,11 +1,12 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :category_id, :teacher_id, :status, :cost,
-    :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
-    :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
-    :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
-    :availabilities, :prerequisites, :additional_comments, :donation,
-    :lesson_skill, :venue, :published_at, :category_ids, :channel_ids,
-    :lesson_image_attributes, :channel_percentage_override, :chalkle_percentage_override, :material_cost, :suggested_audience
+  attr_accessible :name, :meetup_id, :meetup_url, :category_id, :teacher_id,
+    :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration,
+    :meetup_data, :description, :visible, :teacher_payment, :lesson_type,
+    :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee,
+    :min_attendee, :availabilities, :prerequisites, :additional_comments,
+    :donation, :lesson_skill, :venue, :published_at, :category_ids,
+    :channel_ids, :lesson_image_attributes, :channel_percentage_override,
+    :chalkle_percentage_override, :material_cost, :suggested_audience
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -46,11 +47,11 @@ class Lesson < ActiveRecord::Base
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :recent, where("start_at > current_date - " + PAST.to_s + " AND start_at < current_date + " + IMMEDIATE_FUTURE.to_s)
-  scope :upcoming, where("start_at >= current_date AND start_at < current_date + " + WEEK.to_s)
-  scope :last_week, where("start_at > current_date - " + WEEK.to_s + " AND start_at < current_date ")
-  scope :unpublished, where("(status = '" + STATUS_3 + "' ) OR (status = '" + STATUS_2 + "' )")
-  scope :published, where("status = '" + STATUS_1 + "'")
+  scope :recent, where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
+  scope :upcoming, where("start_at >= current_date AND start_at < current_date + #{WEEK}")
+  scope :last_week, where("start_at > current_date - #{WEEK} AND start_at < current_date")
+  scope :unpublished, where("(status = '#{STATUS_3}' ) OR (status = '#{STATUS_2}' )")
+  scope :published, where(status: STATUS_1)
 
   before_create :set_from_meetup_data
   before_create :set_metadata
@@ -59,9 +60,9 @@ class Lesson < ActiveRecord::Base
   def revenue_split_validation
     return unless (channel_percentage_override.present? || chalkle_percentage_override.present?) and teacher_cost.present? and cost.present?
     if ( ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) > 0.05) || ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) < -0.5))
-      errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
-      errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle") 
-      errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle") 
+      errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle")
+      errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle")
+      errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle")
     end
   end
 
@@ -74,8 +75,8 @@ class Lesson < ActiveRecord::Base
     return unless teacher_cost and cost
     if (teacher_cost > cost)
       errors.add(:teacher_cost, "Payment to teacher must be less than advertised price")
-      errors.add(:cost, "Payment to teacher must be less than advertised price") 
-    end 
+      errors.add(:cost, "Payment to teacher must be less than advertised price")
+    end
   end
 
   def default_chalkle_percentage
@@ -110,6 +111,11 @@ class Lesson < ActiveRecord::Base
 
   def image
     lesson_image.image rescue nil
+  end
+
+  # this should be a scope
+  def bookable?
+    bookings.count < max_attendee.to_i
   end
 
   def published?
@@ -195,6 +201,7 @@ class Lesson < ActiveRecord::Base
     l.status = STATUS_1
     l.name = l.set_name result.name
     l.meetup_id = result.id
+    l.meetup_url = result.event_url
     l.description = result.description
     l.meetup_data = result.to_json
     l.max_attendee = result.rsvp_limit
