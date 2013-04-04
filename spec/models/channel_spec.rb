@@ -115,9 +115,11 @@ describe Channel do
         FactoryGirl.create(:payment, booking_id: booking.id, total: i*10*1.15, reconciled: true)
       end
     end
+
     it "calculates total revenue" do
       @channel.total_revenue(3,0).should == 150        
     end
+
     it "calculates total cost from lessons" do
       @channel.total_cost(3,0).should == 75  
     end

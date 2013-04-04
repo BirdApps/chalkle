@@ -191,17 +191,22 @@ class Channel < ActiveRecord::Base
     return [lessons, lessons_change, pay_lessons, pay_lessons_change, cancellations, cancellations_change]
   end
 
-  private
-
-  def lesson_ran(start_days_ago,end_days_ago)
-    lessons.visible.published.where("start_at > current_date - #{start_days_ago} and start_at <= current_date - #{end_days_ago}")
+  #check timezone setting in database
+  def lesson_ran(begin_date,end_date)
+#    start_date = (Date.today() - start_days_ago.days).to_s
+#    end_date = (Date.today() - end_days_ago.days).to_s
+    lessons.visible.published.where{(start_at.gt begin_date) & (start_at.lteq end_date)}
   end
 
   def cancel_classes(start_days_ago,end_days_ago)
-    lessons.hidden.published.where("start_at > current_date - #{start_days_ago} and start_at <= current_date - #{end_days_ago}")
+    start_date = (Date.today() - start_days_ago.days).to_s
+    end_date = (Date.today() - end_days_ago.days).to_s
+    lessons.hidden.published.where{(start_at.gt start_date) & (start_at.lteq end_date)}
   end
 
   def past_classes(start_days_ago)
+    start_date = (Date.today() - start_days_ago.days).to_s
+    lessons.visible.published.where{start_at.lt start_date}
     lessons.visible.published.where("start_at < current_date - #{start_days_ago}")
   end
 
