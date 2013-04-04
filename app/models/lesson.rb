@@ -26,13 +26,12 @@ class Lesson < ActiveRecord::Base
   WEEK = 7
 
   #Lesson statuses
-  STATUS_6 = "Info needed"
-  STATUS_5 = "Emailed"
+  STATUS_5 = "Processing"
   STATUS_4 = "Approved"
   STATUS_3 = "Unreviewed"
   STATUS_2 = "On-hold"
   STATUS_1 = "Published"
-  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5, STATUS_6]
+  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
 
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
@@ -55,7 +54,7 @@ class Lesson < ActiveRecord::Base
   scope :unreviewed, where(status: STATUS_3)
   scope :on_hold, where(status: STATUS_2)
   scope :approved, where(status: STATUS_4)
-  scope :processed, where("(status = '#{STATUS_5}' ) OR (status = '#{STATUS_6}' )")
+  scope :processing, where(status: STATUS_5)
   scope :unpublished, where("status <> #{STATUS_1}")
   scope :published, where(status: STATUS_1)
 

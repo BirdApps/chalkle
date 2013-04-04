@@ -13,18 +13,11 @@ ActiveAdmin.register_page "Dashboard" do
       column do
 
         panel "Unreviewed classes" do
-          table_for Lesson.accessible_by(current_ability).visible.unreviewed.order("updated_at asc") do
-            column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-            column("Teacher") { |lesson| lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher" }
-            column :categories do |lesson|
-              lesson.categories.collect{ |c| c.name }.join(", ")
-            end
-            column :channels do |lesson|
-              lesson.channels.collect{ |c| c.name}.join(", ")
-            end
-            column("Comments") { |lesson| (comment = ActiveAdmin::Comment.where{(resource_type.eq "Lesson") & (resource_id.eq lesson.id.to_s)}.order("created_at").last).nil? ? nil : comment.body }
-            column("Price (incl GST)") { |lesson| number_to_currency lesson.gst_price }
-          end
+          render partial: "/admin/dashboard/lesson_panel", locals: {lessons: Lesson.accessible_by(current_ability).visible.unreviewed.order("updated_at asc")}
+        end
+
+        panel "Classes being processed" do
+          render partial: "/admin/dashboard/lesson_panel", locals: {lessons: Lesson.accessible_by(current_ability).visible.processing.order("updated_at asc")}
         end
 
         panel "On-hold classes" do
@@ -36,7 +29,7 @@ ActiveAdmin.register_page "Dashboard" do
         end
         
 
-        panel "Upcoming classes" do
+        panel "Coming up this week" do
           table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
             column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
             column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
