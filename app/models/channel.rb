@@ -38,12 +38,15 @@ class Channel < ActiveRecord::Base
     channel.map { |c| [c.name, c.id] }
   end
 
-  #Channel performance methods
-  def financial_stats(start,period)    
+  #Channel performances
+  def financial_stats(start, period)    
     Financial_stats.new(start,period,self)
   end
 
-  # channel performance calculation methods, section : chalklers
+  def chalkler_stats(start, period)
+    Chalkler_stats.new(start,period,self)
+  end
+
   def new_chalklers(start_days_ago, end_days_ago)
     chalklers.where("created_at > current_date - #{start_days_ago} and created_at <= current_date - #{end_days_ago}").count
   end
@@ -82,6 +85,16 @@ class Channel < ActiveRecord::Base
     return [attendees, attendees_change, new_members, new_members_change, active_members]
   end
 
+  def attendee(start_days_ago,end_days_ago)
+    l = lesson_ran(start_days_ago,end_days_ago)
+    total = 0
+    l.each do |lesson|
+      total = total + lesson.attendance
+    end
+    return total
+  end
+
+
   def classes_run(start_days_ago,end_days_ago)
     new_repeat_class(lesson_ran(start_days_ago,end_days_ago),past_classes(start_days_ago))
   end
@@ -101,14 +114,6 @@ class Channel < ActiveRecord::Base
     return l.length - free
   end
 
-  def attendee(start_days_ago,end_days_ago)
-    l = lesson_ran(start_days_ago,end_days_ago)
-    total = 0
-    l.each do |lesson|
-      total = total + lesson.attendance
-    end
-    return total
-  end
 
   def fill_fraction(start_days_ago,end_days_ago)
     l = lesson_ran(start_days_ago,end_days_ago)
@@ -147,6 +152,10 @@ class Channel < ActiveRecord::Base
     pay_lessons.pop
     cancellations.pop
     return [lessons, lessons_change, pay_lessons, pay_lessons_change, cancellations, cancellations_change]
+  end
+
+  def new_chalklers2(start_date,end_date)
+    chalklers.where{(created_at.gt start_date.utc) & (created_at.lteq end_date.utc)}
   end
 
   def lesson_ran2(start_date,end_date)
