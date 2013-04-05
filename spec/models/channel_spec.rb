@@ -112,16 +112,27 @@ describe Channel do
         lesson = FactoryGirl.create(:lesson, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, start_at: 2.days.ago, status: "Published", max_attendee: 10)
         lesson.channels << @channel
         booking = FactoryGirl.create(:booking, lesson_id: lesson.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
-        FactoryGirl.create(:payment, booking_id: booking.id, total: i*10*1.15, reconciled: true)
-      end
+        if (i == 5)
+          FactoryGirl.create(:payment, booking_id: booking.id, total: i*10*1.15, reconciled: true, cash_payment: true)
+        else
+          FactoryGirl.create(:payment, booking_id: booking.id, total: i*10*1.15, reconciled: true, cash_payment: false)
+        end
     end
 
     it "calculates total revenue" do
       @channel.total_revenue(3,0).should == 150        
     end
 
+    it "calculates total turnover" do
+      @channel.financial_stats(6.days.ago.to_date,7.days).turnover.should == 150
+    end
+
     it "calculates total cost from lessons" do
-      @channel.total_cost(3,0).should == 75  
+      @channel.total_cost(3,0).should == 125  
+    end
+
+    it "calculates total cost" do
+      @channel.financial_stats(6.days.ago.to_date,7.days).cost.should == 125
     end
 
     it "calculates new and repeat lessons from classes run" do
