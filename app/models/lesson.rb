@@ -154,6 +154,10 @@ class Lesson < ActiveRecord::Base
     payments.sum(:total)/1.15
   end
 
+  def cash_payment
+    payments.cash.sum(:total)/1.15
+  end
+
   def uncollected_revenue
     expected_revenue - collected_revenue
   end
