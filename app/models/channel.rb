@@ -47,54 +47,6 @@ class Channel < ActiveRecord::Base
     Chalkler_stats.new(start,period,self)
   end
 
-  def new_chalklers(start_days_ago, end_days_ago)
-    chalklers.where("created_at > current_date - #{start_days_ago} and created_at <= current_date - #{end_days_ago}").count
-  end
-
-  def active_chalklers(end_days_ago)
-    chalklers.joins("LEFT OUTER JOIN bookings ON bookings.chalkler_id=chalklers.id").where("bookings.created_at > current_date - #{end_days_ago} - INTERVAL '3 MONTHS' OR chalklers.created_at > current_date - #{end_days_ago} - INTERVAL '3 MONTHS'").select("DISTINCT(chalklers.id)").count
-  end
-
-  def percent_active(end_days_ago)
-    if chalklers.empty?
-      return 0
-    else
-      return (100.0*active_chalklers(end_days_ago) / chalklers.count)
-    end
-  end
-
-  def performance_chalklers(last_day, num_weeks)
-    attendees = []
-    attendees[0] = attendee((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
-    attendees_change = []
-    new_members = []
-    new_members[0] = new_chalklers((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
-    new_members_change = []
-    active_members = []
-    active_members[0] = percent_active(Date.today() - last_day)
-    (1..num_weeks).each do |i|
-      attendees[i] = attendee((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
-      attendees_change[i-1] = (attendees[i] > 0) ? (attendees[i-1].to_d/attendees[i] - 1.0)*100.0 : nil
-      new_members[i] = new_chalklers((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
-      new_members_change[i-1] = (new_members[i] > 0) ? (new_members[i-1].to_d/new_members[i] - 1.0)*100.0 : nil
-      active_members[i] = percent_active((Date.today() - last_day.weeks_ago(i)).to_i)
-    end
-    attendees.pop
-    new_members.pop
-    active_members.pop
-    return [attendees, attendees_change, new_members, new_members_change, active_members]
-  end
-
-  def attendee(start_days_ago,end_days_ago)
-    l = lesson_ran(start_days_ago,end_days_ago)
-    total = 0
-    l.each do |lesson|
-      total = total + lesson.attendance
-    end
-    return total
-  end
-
-
   def classes_run(start_days_ago,end_days_ago)
     new_repeat_class(lesson_ran(start_days_ago,end_days_ago),past_classes(start_days_ago))
   end
@@ -154,8 +106,12 @@ class Channel < ActiveRecord::Base
     return [lessons, lessons_change, pay_lessons, pay_lessons_change, cancellations, cancellations_change]
   end
 
-  def new_chalklers2(start_date,end_date)
+  def new_chalklers(start_date,end_date)
     chalklers.where{(created_at.gt start_date.utc) & (created_at.lteq end_date.utc)}
+  end
+
+  def all_chalklers(date)
+    chalklers.where{created_at.lteq date.utc}
   end
 
   def lesson_ran2(start_date,end_date)

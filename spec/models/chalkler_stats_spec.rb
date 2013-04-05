@@ -48,7 +48,7 @@ describe "Chalkler_stats" do
     end
 
     it "calculates fill fraction" do
-      @channel.fill_fraction(3.days.ago,3.days).should == 30
+      @channel.chalkler_stats(3.days.ago,3.days).fill_fraction.should == 30
     end
   end
 end

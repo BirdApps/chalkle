@@ -14,14 +14,14 @@ class Chalkler_stats
   end
 
   def new_chalklers
-    channel.new_chalklers2(start,end_time).count
+    channel.new_chalklers(start,end_time).count
   end
 
   def percent_active
     if channel.chalklers.empty?
       return 0
     else
-      return (100.0*active_chalklers / channel.chalklers.count)
+      return (100.0*active_chalklers / channel.all_chalklers(end_time).count)
     end
   end
 
