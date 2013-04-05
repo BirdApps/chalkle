@@ -82,53 +82,6 @@ class Channel < ActiveRecord::Base
     return [attendees, attendees_change, new_members, new_members_change, active_members]
   end
 
-  # channel performance calculation methods, section : classes
-  def total_revenue(start_days_ago,end_days_ago)
-    l = lesson_ran(start_days_ago,end_days_ago)
-    total = 0.0
-    l.each do |lesson|
-      total = lesson.collected_revenue + total
-    end
-    return total
-  end
-
-  def total_cost(start_days_ago,end_days_ago)
-    l = lesson_ran(start_days_ago,end_days_ago)
-    total = 0.0
-    l.each do |lesson|
-      if lesson.teacher_payment.present?
-        total = total + lesson.teacher_payment + (lesson.venue_cost.present? ? lesson.venue_cost : 0) + (lesson.material_cost.present? ? lesson.material_cost : 0) + lesson.cash_payment
-      else
-        total = total + lesson.attendance*(lesson.teacher_cost.present? ? lesson.teacher_cost : 0)
-      end
-    end
-    return total
-  end
-
-  def performance_financials(last_day, num_weeks)
-    turnover = []
-    turnover_change = []
-    costs = []
-    costs_change = []
-    profits = []
-    profits_change = []
-    turnover[0] = total_revenue((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
-    costs[0] = total_cost((Date.today() - last_day.weeks_ago(1)).to_i,(Date.today() - last_day).to_i)
-    profits[0] = turnover[0] - costs[0]
-    (1..num_weeks).each do |i|
-      turnover[i] = total_revenue((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
-      turnover_change[i-1] = (turnover[i] > 0) ? (turnover[i-1]/turnover[i] - 1.0)*100.0 : nil
-      costs[i] = total_cost((Date.today() - last_day.weeks_ago(i+1)).to_i,(Date.today() - last_day.weeks_ago(i)).to_i)
-      costs_change[i-1] = (costs[i] > 0) ? (costs[i-1]/costs[i] - 1.0)*100.0 : nil
-      profits[i] = turnover[i] - costs[i]
-      profits_change[i-1] = (profits[i] > 0) ? (profits[i-1]/profits[i] - 1.0)*100.0 : nil
-    end
-    turnover.pop
-    costs.pop
-    profits.pop
-    return [turnover, turnover_change, costs, costs_change, profits, profits_change]
-  end
-
   def classes_run(start_days_ago,end_days_ago)
     new_repeat_class(lesson_ran(start_days_ago,end_days_ago),past_classes(start_days_ago))
   end
