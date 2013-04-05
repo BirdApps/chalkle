@@ -14,7 +14,7 @@ class Financial_stats
   end
 
   def turnover
-    l = channel.lesson_ran2(start,end_time)
+    l = channel.lesson_ran(start,end_time)
     total = 0.0
     l.each do |lesson|
       total = lesson.collected_revenue + total
@@ -23,7 +23,7 @@ class Financial_stats
   end
 
   def cost
-    l = channel.lesson_ran2(start,end_time)
+    l = channel.lesson_ran(start,end_time)
     total = 0.0
     l.each do |lesson|
       if lesson.teacher_payment.present?

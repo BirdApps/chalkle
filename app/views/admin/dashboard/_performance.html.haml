@@ -42,52 +42,42 @@
   %p
     *Cost includes teacher, venue and material cost
 
-  / %h4 
-  /   Classes
-  / %table
-  /   %thead
-  /     %tr
-  /       %th Week
-  /       %th Classes ran
-  /       %th % Change Classes
-  /       %th Paid classes ran
-  /       %th % Change paid classes
-  /       %th Cancellations
-  /       %th % Change cancellations
+  %h4 
+    Classes
+  %table
+    %thead
+      %tr
+        %th Week
+        %th Classes ran
+        %th % Change Classes
+        %th Paid classes ran
+        %th % Change paid classes
+        %th Cancellations
+        %th % Change cancellations
 
-  /   %tbody
-  /     -performance_lessons = c.performance_lessons(last_day, num_weeks)
-  /     -lessons = performance_lessons[0]
-  /     -lessons_change = performance_lessons[1]
-  /     -pay_lessons = performance_lessons[2]
-  /     -pay_lessons_change = performance_lessons[3]
-  /     -cancellations = performance_lessons[4]
-  /     -cancellations_change = performance_lessons[5]
-  /     -(1..num_weeks).each do |i|
-  /       %tr
-  /         -previous_week = (Date.today() - last_day.weeks_ago(i + 1) ).to_i
-  /         -start_date = (Date.today() - last_day.weeks_ago(i) ).to_i
-  /         -end_date = (Date.today() - last_day.weeks_ago(i-1) ).to_i
-  /         %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")} #{ "(projected)" if end_date < 0}
-  /         %td #{lessons[i-1].sum()} ( #{lessons[i-1].first} new / #{lessons[i-1].last} repeat )
-  /         %td #{number_to_percentage( lessons_change[i-1], :precision => 0)}
-  /         %td #{pay_lessons[i-1]} paid classes ( #{lessons[i-1].sum() - pay_lessons[i-1]} free classes )
-  /         %td #{number_to_percentage( pay_lessons_change[i-1], :precision => 0)}
-  /         %td #{cancellations[i-1].sum()} ( #{cancellations[i-1].first} new / #{cancellations[i-1].last} repeat )
-  /         %td #{number_to_percentage( cancellations_change[i-1], :precision => 0)}
-  /         -lessons[i-1] = lessons[i-1].sum()
-  /         -cancellations[i-1] = cancellations[i-1].sum()
-  /     %tr
-  /       -lessons_change.reject! {|x| x.nil?}
-  /       -cancellations_change.reject! {|x| x.nil?}
-  /       -pay_lessons_change.reject! {|x| x.nil?}
-  /       %td <b> Average of #{num_weeks} weeks </b>
-  /       %td <b> #{number_to_human lessons.sum.to_d / lessons.length} classes </b>
-  /       %td <b> #{number_to_percentage( lessons_change.length > 0 ? lessons_change.sum / lessons_change.length : nil, :precision => 0)} </b>
-  /       %td <b> #{number_to_human pay_lessons.sum.to_d / pay_lessons.length} classes </b>
-  /       %td <b> #{number_to_percentage( pay_lessons_change.length > 0 ? pay_lessons_change.sum.to_d / pay_lessons_change.length : nil, :precision => 0)} </b>
-  /       %td <b> #{number_to_human cancellations.sum.to_d / cancellations.length} classes </b>
-  /       %td <b> #{number_to_percentage( cancellations_change.length > 0 ? cancellations_change.sum / cancellations_change.length : nil, :precision => 0)} </b>
+    %tbody
+      -lessons = Stats_math.new(@channel.lessons_ran_table(last_day, 1.week, num_weeks + 1))
+      -new_lessons = Stats_math.new(@channel.new_lessons_ran_table(last_day, 1.week, num_weeks + 1))
+      -pay_lessons = Stats_math.new(@channel.paid_lessons_table(last_day, 1.week, num_weeks + 1))
+      -cancellations = Stats_math.new(@channel.cancelled_lessons_table(last_day, 1.week, num_weeks + 1))
+      -new_cancellations = Stats_math.new(@channel.new_cancelled_lessons_table(last_day, 1.week, num_weeks + 1))
+      -(1..num_weeks).each do |i|
+        %tr
+          %td #{last_day.weeks_ago(i).strftime("%d %b")} - #{last_day.weeks_ago(i-1).strftime("%d %b")} #{ "(projected)" if Time.now < last_day.weeks_ago(i-1)}
+          %td #{lessons.values[i-1]} ( #{new_lessons.values[i-1]} new / #{lessons.values[i-1] - new_lessons.values[i-1]} repeat )
+          %td #{number_to_percentage( lessons.percent_change[i-1], :precision => 0)}
+          %td #{pay_lessons.values[i-1]} paid classes ( #{lessons.values[i-1] - pay_lessons.values[i-1]} free classes )
+          %td #{number_to_percentage( pay_lessons.percent_change[i-1], :precision => 0)}
+          %td #{cancellations.values[i-1]} ( #{new_cancellations.values[i-1]} new / #{cancellations.values[i-1]- new_cancellations.values[i-1]} repeat )
+          %td #{number_to_percentage( cancellations.percent_change[i-1], :precision => 0)}
+      %tr
+        %td <b> Average of #{num_weeks} weeks </b>
+        %td <b> #{number_to_human lessons.average(num_weeks)} classes </b>
+        %td <b> #{number_to_percentage( lessons.percent_average(num_weeks), :precision => 0)} </b>
+        %td <b> #{number_to_human pay_lessons.average(num_weeks)} classes </b>
+        %td <b> #{number_to_percentage( pay_lessons.percent_average(num_weeks), :precision => 0)} </b>
+        %td <b> #{number_to_human cancellations.average(num_weeks)} classes </b>
+        %td <b> #{number_to_percentage( cancellations.percent_average(num_weeks), :precision => 0)} </b>
 
   %h4 
     Chalklers
