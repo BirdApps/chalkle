@@ -14,16 +14,16 @@ class Financial_stats
   end
 
   def turnover
-    l = channel.lesson_ran(offset_start,offset_end)
+    l = channel.lesson_ran2(start,end_time)
     total = 0.0
     l.each do |lesson|
       total = lesson.collected_revenue + total
     end
-    return total
+    total
   end
 
   def cost
-    l = channel.lesson_ran(offset_start,offset_end)
+    l = channel.lesson_ran2(start,end_time)
     total = 0.0
     l.each do |lesson|
       if lesson.teacher_payment.present?
@@ -32,16 +32,13 @@ class Financial_stats
         total = total + lesson.attendance*(lesson.teacher_cost.present? ? lesson.teacher_cost : 0)
       end
     end
-    return total
+    total
   end
 
   private
-  def offset_start
-    (Date.today() - start).to_i
-  end
 
-  def offset_end
-    (Date.today() - (start + period)).to_i
+  def end_time
+    start + period
   end
 
 end

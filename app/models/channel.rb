@@ -196,9 +196,14 @@ class Channel < ActiveRecord::Base
     return [lessons, lessons_change, pay_lessons, pay_lessons_change, cancellations, cancellations_change]
   end
 
-  #check timezone setting in database
+  def lesson_ran2(start_date,end_date)
+    lessons.visible.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+  end
+
   def lesson_ran(start_days_ago,end_days_ago)
-    lessons.visible.published.where{(start_at.gt `CURRENT_DATE` - start_days_ago) & (start_at.lteq `CURRENT_DATE` - end_days_ago)}
+    start_date = (Date.today() - start_days_ago.days).to_s
+    end_date = (Date.today() - end_days_ago.days).to_s
+    lessons.visible.published.where{(start_at.gt start_date) & (start_at.lteq end_date)}
   end
 
   def cancel_classes(start_days_ago,end_days_ago)
