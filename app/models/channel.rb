@@ -38,6 +38,11 @@ class Channel < ActiveRecord::Base
     channel.map { |c| [c.name, c.id] }
   end
 
+  #Channel performance methods
+  def financial_stats(start,period)    
+    Financial_stats.new(start,period,self)
+  end
+
   # channel performance calculation methods, section : chalklers
   def new_chalklers(start_days_ago, end_days_ago)
     chalklers.where("created_at > current_date - #{start_days_ago} and created_at <= current_date - #{end_days_ago}").count
@@ -92,7 +97,7 @@ class Channel < ActiveRecord::Base
     total = 0.0
     l.each do |lesson|
       if lesson.teacher_payment.present?
-        total = total + lesson.teacher_payment + (lesson.venue_cost.present? ? lesson.venue_cost : 0) + (lesson.material_cost.present? ? lesson.material_cost : 0)
+        total = total + lesson.teacher_payment + (lesson.venue_cost.present? ? lesson.venue_cost : 0) + (lesson.material_cost.present? ? lesson.material_cost : 0) + lesson.cash_payment
       else
         total = total + lesson.attendance*(lesson.teacher_cost.present? ? lesson.teacher_cost : 0)
       end
@@ -192,10 +197,8 @@ class Channel < ActiveRecord::Base
   end
 
   #check timezone setting in database
-  def lesson_ran(begin_date,end_date)
-#    start_date = (Date.today() - start_days_ago.days).to_s
-#    end_date = (Date.today() - end_days_ago.days).to_s
-    lessons.visible.published.where{(start_at.gt begin_date) & (start_at.lteq end_date)}
+  def lesson_ran(start_days_ago,end_days_ago)
+    lessons.visible.published.where{(start_at.gt `CURRENT_DATE` - start_days_ago) & (start_at.lteq `CURRENT_DATE` - end_days_ago)}
   end
 
   def cancel_classes(start_days_ago,end_days_ago)
