@@ -1,0 +1,19 @@
+%table
+  %thead
+    %tr
+      %th Name
+      %th Teacher
+      %th Category
+      %th Channel
+      %th Comments
+      %th Price (incl.GST)
+
+  %tbody
+    -lessons.each do |lesson|
+      %tr
+        %td #{link_to(lesson.name, admin_lesson_path(lesson))}
+        %td #{lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher"}
+        %td #{lesson.categories.collect{ |c| c.name }.join(", ")}
+        %td #{lesson.channels.collect{ |c| c.name}.join(", ")}
+        %td #{(comment = ActiveAdmin::Comment.where{(resource_type.eq "Lesson") & (resource_id.eq lesson.id.to_s)}.order("created_at").last).nil? ? nil : comment.body}
+        %td #{number_to_currency lesson.gst_price}

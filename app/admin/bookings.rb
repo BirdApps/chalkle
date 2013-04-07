@@ -118,7 +118,7 @@ ActiveAdmin.register Booking do
     payment.total = booking.cost*1.15
     payment.visible = true
     if booking.save! && payment.save!
-      flash[:notice] = "Cash payment of $#{booking.cost*1.15} was paid by #{booking.chalkler.name}"
+      flash[:notice] = "Cash payment of $#{(booking.cost*1.15).round(2)} was paid by #{booking.chalkler.name}"
     else
       flash[:warn] = "Cash payment could not be recorded"
     end
