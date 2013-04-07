@@ -6,13 +6,16 @@ ActiveAdmin.register Chalkler do
     authorize_resource
 
     def create
+      # if(params[:chalkler][:channel_ids].is_a?(String) && params[:chalkler][:channel_ids].empty?) ||
+        # (params[:chalkler][:channel_ids].is_a?(Array) && params[:chalkler][:channel_ids].reject(&:empty?).empty?)
+        # flash[:error] = "Chalkler must belong to a channel"
+        # redirect_to :back
+        # return
+      # end
       @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst],
         meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name])
       if @chalkler.save
         update!
-        # if !@chalkler.channels.any?
-          # @chalkler.channels << current_admin_user.channels.first
-        # end
       else
         redirect_to :back
       end
