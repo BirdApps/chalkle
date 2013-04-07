@@ -1,18 +1,4 @@
 # encoding: UTF-8
-Given /^the "(.*?)" channel exists$/ do |name|
-  FactoryGirl.create(:channel, name: name, email: "#{name.downcase}@chalkle.com")
-end
-
-Given /^the "(.*?)" category exists$/ do |category|
-  FactoryGirl.create(:category, name: category)
-end
-
-Given /^I belong to the "(.*?)" channel$/ do |name|
-  channel = Channel.find_by_name(name)
-  @chalkler.channels << channel
-  @chalkler.reload.channels == [channel]
-end
-
 Then /^I should see the New Class form$/ do
   page.should have_content('At chalkle°, anyone can be a teacher')
 end

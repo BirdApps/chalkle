@@ -1,55 +1,28 @@
-Given /^I am logged in as a registered chalkler$/ do
-  @chalkler = FactoryGirl.create(:chalkler, email: 'test@chalkle.com')
-  @chalkler.password = 'password'
-  @chalkler.save
-  visit '/chalklers/sign_in'
-  fill_in 'chalkler_email', :with => 'test@chalkle.com'
-  fill_in 'chalkler_password', :with => 'password'
-  click_button 'Sign in'
+When /^they visit the Email Settings page$/ do
+  visit '/chalklers/preferences'
+  page.has_content? "Set Your Email Preferences"
 end
 
-Then /^I should see the email settings form$/ do
-  page.should have_content("Set Your Email Preferences")
+When /^they enter a new email address$/ do
+  fill_in 'chalkler_preferences_email', with: 'new@chalkle.com'
+  click_button 'Save Email Preferences'
 end
 
-When /^I click on the button "(.*?)"$/ do |name|
-  click_button name
-end
-
-Then /^I should see the email settings confirmation message$/ do
-  page.should have_content("Your preferences have been saved")
-end
-
-When /^I type in my email as "(.*?)"$/ do |address|
-  fill_in "chalkler_preferences_email", :with => address
-end
-
-Then /^my email should be "(.*?)"$/ do |address|
-  @chalkler.reload
-  @chalkler.email.should == address
-end
-
-Given /^my registered email is "(.*?)"$/ do |address|
-  @chalkler.email = address
-  @chalkler.save
+Then /^the chalkler "(.*?)" should have a new email address$/ do |name|
+  Chalkler.find_by_name(name).email.should == 'new@chalkle.com'
 end
 
 Then /^the email "(.*?)" should be displayed$/ do |address|
-  find_field('chalkler_preferences_email').value.should eq address
+  find_field('chalkler_preferences_email').value.should == address
 end
 
-And /^I select "(.*?)" as my email frequency$/ do |frequency|
-  page.select(frequency, :from => "chalkler_preferences_email_frequency")
+When /^they change their email frequency to "(.*?)"$/ do |frequency|
+  page.has_content? "Set Your Email Preferences"
+  select frequency, from: 'chalkler_preferences[email_frequency]'
 end
 
-Then /^my email frequency should be "(.*?)"$/ do |frequency|
-  @chalkler.reload
-  @chalkler.email_frequency.should == frequency
-end
-
-Given /^I had selected "(.*?)" as my email frequency$/ do |frequency|
-  @chalkler.email_frequency = frequency
-  @chalkler.save
+Then /^the chalkler "(.*?)" should have a "(.*?)" email frequency$/ do |name, frequency|
+  Chalkler.find_by_name(name).email_frequency.should == frequency
 end
 
 Then /^the email frequency "(.*?)" should be displayed$/ do |frequency|
