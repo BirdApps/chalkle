@@ -17,7 +17,7 @@
     %tbody
       -@channel = c.decorate
       -first_day = StatsPolicy.new(Date.today().weeks_ago(num_weeks)).stats_begin_date
-      -dates = @channel.dates_table(first_day,1.week,num_weeks)
+      -dates = @channel.dates_table(first_day,period,num_weeks)
       -financial_table = @channel.financial_table(first_day,1.week,num_weeks)
 
       -(1..num_weeks).each do |i|
