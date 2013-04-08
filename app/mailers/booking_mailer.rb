@@ -1,8 +1,8 @@
 class BookingMailer < ActionMailer::Base
-  layout 'generic_mailer'
+  layout 'standard_mailer'
   default from: "accounts@chalkle.com"
 
-  def first_reminder_to_pay(chalkler,lesson) 
+  def first_reminder_to_pay(chalkler,lesson)
   	#this email is sent both when a new confirmed booking is made, unless it is made less than 3 days from start of class
   	@chalkler = chalkler
   	@lesson = lesson
