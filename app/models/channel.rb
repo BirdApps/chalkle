@@ -39,16 +39,8 @@ class Channel < ActiveRecord::Base
   end
 
   #Channel performances
-  def financial_stats(start, period)    
-    FinancialStats.new(start,period,self)
-  end
-
-  def chalkler_stats(start, period)
-    ChalklerStats.new(start,period,self)
-  end
-
-  def lesson_stats(start, period)
-    LessonStats.new(start,period,self)
+  def channel_stats(start,period)
+    ChannelStats.new(start,period,self)
   end
 
   def new_chalklers(start_date,end_date)

@@ -19,11 +19,11 @@ describe "Chalkler_stats" do
     it "calculates the number of new members" do
       chalkler2 = FactoryGirl.create(:chalkler, meetup_id: 1234565, email: "test@gmail.com", created_at: 1.day.ago)
       chalkler2.channels << @channel
-      @channel.chalkler_stats(7.days.ago,7.days).new_chalklers.should == 1
+      @channel.channel_stats(7.days.ago,7.days).chalkler_stats.new_chalklers.should == 1
     end
 
     it "calculates the number of active members" do
-      @channel.chalkler_stats(7.days.ago,7.days).percent_active.should == 60
+      @channel.channel_stats(7.days.ago,7.days).chalkler_stats.percent_active.should == 60
     end 
   end
 

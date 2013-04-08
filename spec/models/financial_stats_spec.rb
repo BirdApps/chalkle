@@ -17,7 +17,7 @@ describe "Financial_stats" do
           FactoryGirl.create(:payment, booking_id: booking.id, total: i*10*1.15, reconciled: true, cash_payment: false)
         end
       end
-      @financial_stats = @channel.financial_stats(6.days.ago, 7.days)
+      @financial_stats = @channel.channel_stats(6.days.ago, 7.days).financial_stats
     end
 
     it "should calculate turnover" do

@@ -19,28 +19,28 @@ describe "Chalkler_stats" do
     end
 
     it "calculates number of classes ran" do
-      @channel.lesson_stats(3.days.ago,3.days).lessons_ran.should == 5
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.lessons_ran.should == 5
     end
 
     it "calculates total attendee" do
-      @channel.lesson_stats(3.days.ago,3.days).attendee.should == 15
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.attendee.should == 15
     end
 
     it "calculates fill fraction" do
-      @channel.lesson_stats(3.days.ago,3.days).fill_fraction.should == 30
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.fill_fraction.should == 30
     end
 
     it "calculates number of new classes ran" do
       lesson2 = FactoryGirl.create(:lesson, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 50.days.ago)
       lesson2.channels << @channel
-      @channel.lesson_stats(3.days.ago,3.days).new_lessons_ran.should == 4
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.new_lessons_ran.should == 4
       lesson2.destroy  
     end
 
     it "calculates number of paid classes" do
       lesson2 = FactoryGirl.create(:lesson, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 2.days.ago, cost: 0)
       lesson2.channels << @channel
-      @channel.lesson_stats(3.days.ago,3.days).paid_lessons.should == 5
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.paid_lessons.should == 5
     end
   
   end

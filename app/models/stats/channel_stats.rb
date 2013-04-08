@@ -13,6 +13,18 @@ class ChannelStats
     @channel = channel
   end
 
+  def financial_stats
+    FinancialStats.new(start,period,channel)
+  end
+
+  def lesson_stats
+    LessonStats.new(start,period,channel)
+  end
+
+  def chalkler_stats
+    ChalklerStats.new(start,period,channel)
+  end
+
   private
 
   def end_time
