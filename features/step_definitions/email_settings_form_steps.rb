@@ -1,77 +1,38 @@
-When /^they visit the Email Settings page$/ do
-  visit '/chalklers/preferences'
-  page.has_content? "Set Your Email Preferences"
-end
-
-When /^they enter a new email address$/ do
-  fill_in 'chalkler_preferences_email', with: 'new@chalkle.com'
+When /^they enter new email settings$/ do
+  page.fill_in 'chalkler_preferences_email', with: 'new@chalkle.com'
+  page.select 'Daily', from: 'chalkler_preferences_email_frequency'
   click_button 'Save Email Preferences'
 end
 
-Then /^the chalkler "(.*?)" should have a new email address$/ do |name|
-  Chalkler.find_by_name(name).email.should == 'new@chalkle.com'
-end
-
-Then /^the email "(.*?)" should be displayed$/ do |address|
-  find_field('chalkler_preferences_email').value.should == address
-end
-
-When /^they change their email frequency to "(.*?)"$/ do |frequency|
-  page.has_content? "Set Your Email Preferences"
-  select frequency, from: 'chalkler_preferences[email_frequency]'
-end
-
-Then /^the chalkler "(.*?)" should have a "(.*?)" email frequency$/ do |name, frequency|
-  Chalkler.find_by_name(name).email_frequency.should == frequency
-end
-
-Then /^the email frequency "(.*?)" should be displayed$/ do |frequency|
-  find_field('chalkler_preferences_email_frequency').value.should eq frequency
+Then /^the chalkler "(.*?)" should have new email settings$/ do |name|
+  chalkler = Chalkler.find_by_name(name)
+  chalkler.email.should == 'new@chalkle.com'
+  chalkler.email_frequency.should == 'daily'
 end
 
 Given /^"(.*?)" and "(.*?)" are email categories$/ do |category1, category2|
   Category.create(name: category1)
   Category.create(name: category2)
+  visit current_path
 end
 
-When /^I select "(.*?)" and "(.*?)" as my email categories$/ do |category1, category2|
-  page.check(category1)
-  page.check(category2)
+Given /^"(.*?)" is an email stream$/ do |stream|
+  Stream.create(name: stream)
+  visit current_path
 end
 
-Then /^my email categories should be "(.*?)" and "(.*?)"$/ do |category1, category2|
-  @chalkler.reload
-  @chalkler.email_categories.should == [Category.find_by_name(category1).id, Category.find_by_name(category2).id]
+When /^they select new email categories and streams$/ do
+  check 'business & finance'
+  check 'food & drink'
+  check 'Royal Society Wellington Branch'
+  click_button 'Save Email Preferences'
 end
 
-Given /^I had set my email categories to "(.*?)" and "(.*?)"$/ do |category1, category2|
-  @chalkler.email_categories = [Category.find_by_name(category1).id, Category.find_by_name(category2).id]
-  @chalkler.save
-end
-
-Then /^the email categories "(.*?)" and "(.*?)" should be checked$/ do |category1, category2|
-  find("#chalkler_preferences_email_categories_#{Category.find_by_name(category1).id}").should be_checked
-  find("#chalkler_preferences_email_categories_#{Category.find_by_name(category2).id}").should be_checked
-end
-
-Given /^"(.*?)" is an email stream$/ do |stream1|
-  Stream.create(name: stream1)
-end
-
-When /^I select "(.*?)" as my email stream$/ do |stream1|
-  page.check(stream1)
-end
-
-Then /^my stream should be "(.*?)"$/ do |stream1|
-  @chalkler.reload
-  @chalkler.email_streams.should == [Stream.find_by_name(stream1).id]
-end
-
-Given /^I had set my stream to "(.*?)"$/ do |stream1|
-  @chalkler.email_streams = [Stream.find_by_name(stream1).id]
-  @chalkler.save
-end
-
-Then /^the email stream "(.*?)" should be checked$/ do |stream1|
-  find("#chalkler_preferences_email_streams_#{Stream.find_by_name(stream1).id}").should be_checked
+Then /^the chalkler "(.*?)" should have new category and stream settings$/ do |name|
+  chalkler = Chalkler.find_by_name name
+  cat1 = Category.find_by_name 'business & finance'
+  cat2 = Category.find_by_name 'food & drink'
+  stream = Stream.find_by_name 'Royal Society Wellington Branch'
+  [cat1.id, cat2.id].each{ |c| chalkler.email_categories.should include(c) }
+  chalkler.email_streams.should include(stream.id)
 end
