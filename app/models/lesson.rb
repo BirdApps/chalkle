@@ -163,12 +163,16 @@ class Lesson < ActiveRecord::Base
     expected_revenue - collected_revenue
   end
 
-  def income
+  def total_cost
     if teacher_payment.present?
-      collected_revenue - ( teacher_payment.present? ? teacher_payment : 0 ) - cash_payment - ( venue_cost.present? ? venue_cost : 0 ) - ( material_cost.present? ? material_cost : 0 )
+      ( teacher_payment.present? ? teacher_payment : 0 ) + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 )
     else
-      collected_revenue - attendance*( teacher_cost.present? ? teacher_cost : 0 )
+      attendance*( teacher_cost.present? ? teacher_cost : 0 )
     end
+  end
+  
+  def income
+    collected_revenue - total_cost
   end
 
   def attendance

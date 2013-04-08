@@ -26,11 +26,7 @@ class Financial_stats
     l = channel.lesson_ran(start,end_time)
     total = 0.0
     l.each do |lesson|
-      if lesson.teacher_payment.present?
-        total = total + lesson.teacher_payment + (lesson.venue_cost.present? ? lesson.venue_cost : 0) + (lesson.material_cost.present? ? lesson.material_cost : 0) + lesson.cash_payment
-      else
-        total = total + lesson.attendance*(lesson.teacher_cost.present? ? lesson.teacher_cost : 0)
-      end
+      total = lesson.total_cost + total
     end
     total
   end

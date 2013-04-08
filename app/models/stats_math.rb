@@ -17,7 +17,7 @@ class Stats_math
   def subtract(array)
     return if (@values.length != array.length)
     output = []
-    (1..(@values.length - 1)).each do |i|
+    (1..@values.length).each do |i|
       output[i-1] = (@values[i-1].nil? || array[i-1].nil?) ? nil : (@values[i-1] - array[i-1])
     end
     output
