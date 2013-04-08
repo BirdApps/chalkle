@@ -7,12 +7,12 @@ When /^they visit the New Chalkler form$/ do
 end
 
 Then /^they should see channel checkboxes$/ do
-  page.has_selector? 'Wellington'
-  page.has_selector? 'Whanau'
+  page.should have_content 'Wellington'
+  page.should have_content 'Whanau'
 end
 
 Then /^they cannot see channel checkboxes$/ do
-  page.has_no_selector? 'Wellington'
+  page.should have_no_content 'Wellington'
 end
 
 When /^they create a chalkler with two channels$/ do
@@ -45,5 +45,5 @@ When /^they create a chalkler without a channel$/ do
 end
 
 Then /^they should see an error message$/ do
-  page.has_content? "Chalkler must belong to a channel"
+  page.should have_content "Chalkler must belong to a channel"
 end
