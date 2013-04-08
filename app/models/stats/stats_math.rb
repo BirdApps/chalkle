@@ -1,19 +1,11 @@
-class StatsMath
+class StatsMath < Array
 
-  attr_reader :values
-
-  def initialize(values)
-    @values = values
+  def select_parameter(parameter)
+    self.map { |i| eval("i." + parameter)}
   end
 
-  def average(elements = values.length)
-    output = @values.first(elements)
-    mean(output)
-  end
-
-  def percent_average(elements = values.length - 1)
-    output = percent_change.first(elements)
-    mean(output)
+  def average(parameter)
+  	mean( select_parameter(parameter) )
   end
 
   private 

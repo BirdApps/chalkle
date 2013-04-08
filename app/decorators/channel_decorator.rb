@@ -10,7 +10,7 @@ class ChannelDecorator < Draper::Decorator
   end
 
   def financial_table(first_day, period, num_rows)
-    financials = []
+    financials = StatsMath.new()
     num_rows.times do |i|
       financials[i] = financial_stats(first_day + i*period, period)
     end
@@ -18,7 +18,7 @@ class ChannelDecorator < Draper::Decorator
   end
 
   def lessons_table(first_day, period, num_rows)
-    lessons = []
+    lessons = StatsMath.new()
     num_rows.times do |i|
       lessons[i] = lesson_stats(first_day + i*period, period)
     end
@@ -26,7 +26,7 @@ class ChannelDecorator < Draper::Decorator
   end
 
   def chalkler_table(first_day, period, num_rows)
-    chalkler = []
+    chalkler = StatsMath.new()
     num_rows.times do |i|
       chalkler[i] = chalkler_stats(first_day + i*period, period)
     end

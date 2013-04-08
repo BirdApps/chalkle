@@ -29,14 +29,14 @@
           %td #{number_to_percentage( financial_table[i-1].percent_cost, :precision => 0)}
           %td #{number_to_currency financial_table[i-1].profit}
           %td #{number_to_percentage( financial_table[i-1].percent_profit, :precision => 0)}
-      / %tr
-      /   %td <b> Average of #{num_weeks} weeks </b>
-      /   %td <b> #{number_to_currency( turnover.average(num_weeks) )} </b>
-      /   %td <b> #{number_to_percentage( turnover.percent_average(num_weeks), :precision => 0 )} </b>
-      /   %td <b> #{number_to_currency( cost.average(num_weeks) )} </b>
-      /   %td <b> #{number_to_percentage( cost.percent_average(num_weeks), :precision => 0 )} </b>
-      /   %td <b> #{number_to_currency( profit.average(num_weeks) )} </b>
-      /   %td <b> #{number_to_percentage( profit.percent_average(num_weeks), :precision => 0 )} </b>
+      %tr
+        %td <b> Average of #{num_weeks} weeks </b>
+        %td <b> #{number_to_currency( financial_table.average("turnover") )} </b>
+        %td <b> #{number_to_percentage( financial_table.average("percent_turnover") , :precision => 0 )} </b>
+        %td <b> #{number_to_currency( financial_table.average("cost")  )} </b>
+        %td <b> #{number_to_percentage( financial_table.average("percent_cost") , :precision => 0 )} </b>
+        %td <b> #{number_to_currency( financial_table.average("profit")  )} </b>
+        %td <b> #{number_to_percentage( financial_table.average("percent_profit") , :precision => 0 )} </b>
 
   %p
     *Cost includes teacher, venue and material cost
@@ -65,14 +65,14 @@
           %td #{number_to_percentage( lessons_table[i-1].percent_paid_lessons, :precision => 0)}
           %td #{lessons_table[i-1].cancelled_lessons} ( #{lessons_table[i-1].new_cancelled_lessons} new / #{lessons_table[i-1].cancelled_lessons - lessons_table[i-1].new_cancelled_lessons} repeat )
           %td #{number_to_percentage( lessons_table[i-1].percent_cancelled_lessons, :precision => 0)}
-      / %tr
-      /   %td <b> Average of #{num_weeks} weeks </b>
-      /   %td <b> #{number_to_human lessons.average(num_weeks)} classes </b>
-      /   %td <b> #{number_to_percentage( lessons.percent_average(num_weeks), :precision => 0)} </b>
-      /   %td <b> #{number_to_human pay_lessons.average(num_weeks)} classes </b>
-      /   %td <b> #{number_to_percentage( pay_lessons.percent_average(num_weeks), :precision => 0)} </b>
-      /   %td <b> #{number_to_human cancellations.average(num_weeks)} classes </b>
-      /   %td <b> #{number_to_percentage( cancellations.percent_average(num_weeks), :precision => 0)} </b>
+      %tr
+        %td <b> Average of #{num_weeks} weeks </b>
+        %td <b> #{number_to_human lessons_table.average("lessons_ran")} classes </b>
+        %td <b> #{number_to_percentage( lessons_table.average("percent_lessons_ran"), :precision => 0)} </b>
+        %td <b> #{number_to_human lessons_table.average("paid_lessons")} classes </b>
+        %td <b> #{number_to_percentage( lessons_table.average("percent_paid_lessons"), :precision => 0)} </b>
+        %td <b> #{number_to_human lessons_table.average("cancelled_lessons")} classes </b>
+        %td <b> #{number_to_percentage( lessons_table.average("percent_cancelled_lessons"), :precision => 0)} </b>
 
   %h4 
     Chalklers
@@ -97,13 +97,13 @@
           %td #{number_to_percentage(chalkler_table[i-1].percent_new_chalklers, :precision => 0)}
           %td #{number_to_percentage(chalkler_table[i-1].percent_active,:precision => 0)}
 
-      / %tr
-      /   %td <b> Average of #{num_weeks} weeks </b>
-      /   %td <b> #{number_to_human attendees.average(num_weeks)} chalklers </b>
-      /   %td <b> #{number_to_percentage( attendees.percent_average(num_weeks), :precision => 0)} </b>
-      /   %td <b> #{number_to_human new_members.average(num_weeks)} chalklers </b>
-      /   %td <b> #{number_to_percentage( new_members.percent_average(num_weeks), :precision => 0)} </b>
-      /   %td <b> #{number_to_percentage( active_members.average(num_weeks), :precision => 0)} </b>
+      %tr
+        %td <b> Average of #{num_weeks} weeks </b>
+        %td <b> #{number_to_human lessons_table.average("attendee")} chalklers </b>
+        %td <b> #{number_to_percentage( lessons_table.average("percent_attendee"), :precision => 0)} </b>
+        %td <b> #{number_to_human chalkler_table.average("new_chalklers")} chalklers </b>
+        %td <b> #{number_to_percentage( chalkler_table.average("percent_new_chalklers"), :precision => 0)} </b>
+        %td <b> #{number_to_percentage( chalkler_table.average("percent_active"), :precision => 0)} </b>
 
   %p
     *A chalkler is active if he has RSVP activities within the last 3 months
