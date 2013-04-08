@@ -1,39 +1,59 @@
-.walkthrough.span12
+.walkthrough
   .row
-    %p
-      If you wish to change the meetup email settings please follow these instructions.
-    %p
-      If you are happy with your meetup settings go back to your #{ link_to "Dashboard", root_url }
-    %hr
+    .span12
+      %p
+        If you wish to change the meetup email settings please follow these instructions.
+      %p
+        If you are happy with your meetup settings go back to your #{ link_to "Dashboard", root_url }
+      %hr
+
+      %h2 Change Meetup email settings:
   .row
-    %h2 Change Meetup email settings:
-    %p
-      &#9632; Log in to your Meetup account and select “Account” -> “Email and Notifications” in the upper right hand corner of the page 
-    =image_tag 'chalklers/Meetup_Email_Setting.jpg'
-    %hr
+    .span6
+      =image_tag 'chalklers/Meetup_Email_Setting1_small.jpg', width: 430
+    .span4
+      %h3 Step 1:
+      %p
+        &#9632; Log in to your Meetup account.
+      %p
+        &#9632; Select “Account” -> “Email and Notifications” in the upper right hand corner of the page 
+    .span12
+      %hr
   .row
-    %p
-      &#9632; Find chalkle amongst your Meetup groups and click on its “Email and notification settings”
-    =image_tag 'chalklers/Meetup_Email_Setting2.jpg'
-    %hr
+    .span6
+      =image_tag 'chalklers/Meetup_Email_Setting2_small.jpg', width: 430
+    .span4
+      %h3 Step 2:
+      %p
+        &#9632; Find chalkle amongst your Meetup groups.
+      %p
+        &#9632; Click on its “Email and notification settings”
+    .span12
+      %hr
   .row
-    .span8
-      =image_tag 'chalklers/Meetup_Email_Setting3.jpg'
-    %p.span4
-      &#9632; You will be directed to a page with 
-      a list of emails that Meetup sends. 
-      Due to the large volume of emails, 
-      we recommend you uncheck every 
-      box except for the boxes “changes 
-      to the Meetup I am attending”, “a 
-      confirmation that I’ve RSVP’d for”, 
-      “Don’t send me reminders” and 
-      “Special announcements from 
-      Organizers to members”. This way, 
-      you will continue to receive 
-      reminders for classes you signed 
-      up for, but not advertisements for 
-      new classes
-      %br
-      %br
-      &#9632; Click “Save Settings” to save those settings 
+    .span6
+      =image_tag 'chalklers/Meetup_Email_Setting3_small.jpg', width: 430
+      %br/
+      %br/
+    .span4
+      %h3 Step 3:
+      %p
+        &#9632; You will be directed to a page with 
+        a list of emails that Meetup sends. 
+      %p
+        &#9632; Due to the large volume of emails, 
+        we recommend you uncheck every 
+        box except for the boxes “changes 
+        to the Meetup I am attending”, “a 
+        confirmation that I’ve RSVP’d for”, 
+        “Don’t send me reminders” and 
+        “Special announcements from 
+        Organizers to members”. 
+      %p
+        &#9632; This way, 
+        you will continue to receive 
+        reminders for classes you signed 
+        up for, but not advertisements for 
+        new classes
+      %p
+        &#9632; Click “Save Settings” to save those settings 
