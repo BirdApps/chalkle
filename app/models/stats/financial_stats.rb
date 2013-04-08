@@ -1,20 +1,9 @@
-class Financial_stats
-  include ActiveAttr::Model
+class FinancialStats < ChannelStats
 
-  attr_accessor :start, :period, :channel
-
-  validates_date :start, :allow_nil => false, :on_or_after => '2012-08-01'
-  validates_date :period, :allow_nil => false, :on_after_after => 1.day
-  validates :channel, :presence => { :message => "Must have a channel to calculate statistics on"}
-
-  def initialize(start, period, channel)
-    @start = start
-    @period = period
-    @channel = channel
-  end
+  attr_accessor :turnover, :percent_turnover, :cost, :percent_cost
 
   def turnover
-    l = channel.lesson_ran(start,end_time)
+    l = channel.lesson_ran(start, end_time)
     total = 0.0
     l.each do |lesson|
       total = lesson.collected_revenue + total
@@ -23,7 +12,7 @@ class Financial_stats
   end
 
   def cost
-    l = channel.lesson_ran(start,end_time)
+    l = channel.lesson_ran(start, end_time)
     total = 0.0
     l.each do |lesson|
       total = lesson.total_cost + total
@@ -31,10 +20,24 @@ class Financial_stats
     total
   end
 
-  private
+  def profit
+    turnover - cost
+  end
 
-  def end_time
-    start + period
+  def previous
+    FinancialStats.new(start - period, period, channel)
+  end
+
+  def percent_turnover
+    percentage_change(previous.turnover, turnover)
+  end
+
+  def percent_cost
+    percentage_change(previous.cost, cost)
+  end
+  
+  def percent_profit
+    percentage_change(previous.profit, profit)
   end
 
 end

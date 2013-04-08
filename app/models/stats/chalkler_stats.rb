@@ -1,20 +1,15 @@
-class Chalkler_stats
-  include ActiveAttr::Model
-
-  attr_accessor :start, :period, :channel
-
-  validates_date :start, :allow_nil => false, :on_or_after => '2012-08-01'
-  validates_date :period, :allow_nil => false, :on_after_after => 1.day
-  validates :channel, :presence => { :message => "Must have a channel to calculate statistics on"}
-
-  def initialize(start, period, channel)
-    @start = start
-    @period = period
-    @channel = channel
-  end
+class ChalklerStats < ChannelStats
 
   def new_chalklers
     channel.new_chalklers(start,end_time).count
+  end
+
+  def previous
+    ChalklerStats.new(start - period, period, channel)
+  end
+
+  def percent_new_chalklers
+    percentage_change(previous.new_chalklers, new_chalklers)
   end
 
   def percent_active
@@ -26,10 +21,6 @@ class Chalkler_stats
   end
 
   private
-
-  def end_time
-    start + period
-  end
 
   def active_chalklers
     end_date = (end_time - 3.months).midnight

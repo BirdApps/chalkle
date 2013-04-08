@@ -1,11 +1,11 @@
-class Stats_policy
+class StatsPolicy
 
-  def initialize(end_date)
-    @end_date = end_date
+  def initialize(start_date)
+    @start_date = start_date
   end
 
-  def stats_end_date
-    @end_date.end_of_week(start_day= :wednesday).midnight
+  def stats_begin_date
+  	@start_date.end_of_week(start_day= :wednesday).midnight
   end
 
 end

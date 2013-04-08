@@ -1,20 +1,15 @@
-class Lesson_stats
-  include ActiveAttr::Model
-
-  attr_accessor :start, :period, :channel
-
-  validates_date :start, :allow_nil => false, :on_or_after => '2012-08-01'
-  validates_date :period, :allow_nil => false, :on_after_after => 1.day
-  validates :channel, :presence => { :message => "Must have a channel to calculate statistics on"}
-
-  def initialize(start, period, channel)
-    @start = start
-    @period = period
-    @channel = channel
-  end
+class LessonStats < ChannelStats
 
   def lessons_ran
     channel.lesson_ran(start,end_time).count
+  end
+
+  def previous
+    LessonStats.new(start - period, period, channel)
+  end
+
+  def percent_lessons_ran
+    percentage_change(previous.lessons_ran, lessons_ran)
   end
 
   def new_lessons_ran
@@ -25,12 +20,20 @@ class Lesson_stats
     channel.cancel_lessons(start,end_time).count
   end
 
+  def percent_cancelled_lessons
+    percentage_change(previous.cancelled_lessons, cancelled_lessons)
+  end
+
   def new_cancelled_lessons
     new_lesson(channel.cancel_lessons(start,end_time))
   end
 
   def paid_lessons
     channel.paid_lessons(start,end_time).count
+  end
+
+  def percent_paid_lessons
+    percentage_change(previous.paid_lessons, paid_lessons)
   end
 
   def attendee
@@ -40,6 +43,10 @@ class Lesson_stats
       total = total + lesson.attendance
     end
     return total
+  end
+
+  def percent_attendee
+    percentage_change(previous.attendee, attendee)
   end
 
   def fill_fraction
@@ -58,9 +65,6 @@ class Lesson_stats
   end
 
   private
-  def end_time
-    start + period
-  end
 
   def new_lesson(lessons)
     new_lesson = 0

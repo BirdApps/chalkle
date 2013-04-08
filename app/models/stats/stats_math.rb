@@ -1,26 +1,9 @@
-class Stats_math
+class StatsMath
 
   attr_reader :values
 
   def initialize(values)
     @values = values
-  end
-
-  def percent_change
-    output = []
-    (1..(@values.length - 1)).each do |i|
-      output[i-1] = (@values[i] > 0) ? (@values[i-1].to_d / @values[i] - 1)*100.0 : nil
-    end
-    output
-  end 
-
-  def subtract(array)
-    return if (@values.length != array.length)
-    output = []
-    (1..@values.length).each do |i|
-      output[i-1] = (@values[i-1].nil? || array[i-1].nil?) ? nil : (@values[i-1] - array[i-1])
-    end
-    output
   end
 
   def average(elements = values.length)
