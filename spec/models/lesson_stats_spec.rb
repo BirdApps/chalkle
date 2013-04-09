@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Chalkler_stats" do
 
-  describe "Activity statistics" do
+  describe "Lesson activity statistics" do
     before do
       @channel = FactoryGirl.create(:channel)
       @chalkler = FactoryGirl.create(:channel, channel_percentage: 0.2, teacher_percentage: 0.5)
@@ -20,14 +20,6 @@ describe "Chalkler_stats" do
 
     it "calculates number of classes ran" do
       @channel.channel_stats(3.days.ago,3.days).lesson_stats.lessons_ran.should == 5
-    end
-
-    it "calculates total attendee" do
-      @channel.channel_stats(3.days.ago,3.days).lesson_stats.attendee.should == 15
-    end
-
-    it "calculates fill fraction" do
-      @channel.channel_stats(3.days.ago,3.days).lesson_stats.fill_fraction.should == 30
     end
 
     it "calculates number of new classes ran" do
