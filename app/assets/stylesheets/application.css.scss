@@ -12,6 +12,7 @@
 }
 
 $font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+$font_family_normal: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
 $pink: #cd4063;
 $blackboard: #2d2c29;
@@ -20,6 +21,9 @@ body {
   padding-top: 0;
 }
 
+.center {
+  text-align: center;
+}
 .navbar {
   font-weight: bold;
   font-size: 15px;
@@ -74,6 +78,8 @@ body {
   border: solid 2px #222;
 }
 
+
 @import "image";
 @import "forms";
 @import "typography";
+@import "modules/chalklers";
