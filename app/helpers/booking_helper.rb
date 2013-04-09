@@ -45,7 +45,7 @@ If we do not receive your payment within the next 24 hours, your RSVP status wil
   def send_third_email(name, reference, price, event_url)
   email_preamble(name, reference, price, event_url) + URI.escape("
 
-Your RSVP status will be moved to yes when we have received your payment.") + email_ending
+Your RSVP status will be moved to yes when we have received your payment or a notification from you about the payment.") + email_ending
   end
 
   def send_reminder_after_class(name, reference, price, event_url)

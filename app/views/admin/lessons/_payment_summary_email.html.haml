@@ -1,7 +1,7 @@
-Hi #{lesson.teacher.present? ? lesson.teacher.name : nil},
+Hi #{lesson.teacher.present? ? lesson.teacher.name.split[0] : nil},
 %br
 %br
-Here is a summary of Chalkle's payment to you (GST exclusive) for this class, #{lesson.name.present? ? lesson.name : nil} on #{(lesson.start_at.present? ? lesson.start_at : Date.yesterday()).strftime("%d %b. %Y")}:
+Here is a summary of Chalkle's payment to you (GST exclusive) for this class, <b>#{lesson.name.present? ? lesson.name : nil} on #{(lesson.start_at.present? ? lesson.start_at : Date.yesterday()).strftime("%d %b. %Y")}</b>:
 %br
 %br
 Total number of attendees = #{attendance=lesson.attendance}
@@ -11,18 +11,18 @@ Payment to you per attendee = #{number_to_currency teacher_cost=(lesson.teacher_
 Total payment for this class = #{number_to_currency teacher_cost*attendance}
 %br
 %br
-Less
+<i>Less</i>
 %br
 Cash you received = #{number_to_currency cash=lesson.payments.cash.sum(:total)}
 %br
 Venue cost = #{number_to_currency venue=(lesson.venue_cost.present? ? lesson.venue_cost : 0)}
 %br
 %br
-Total payment to be transferred to you = #{number_to_currency teacher_cost*attendance-cash-venue}
+<b>Total payment to be transferred to you = #{number_to_currency teacher_cost*attendance-cash-venue}</b>
 %br
 %br
 
-An invoice sent to #{link_to 'me',"mailto:accounts@chalkle.com"} for this amount will activate the payment to you on the last day of every month. If you are going to pay GST on this amount, please include your GST registration number in the invoice.
+An invoice sent to #{link_to 'me',"mailto:accounts@chalkle.com"} for this amount will activate the payment to you on #{Date.today().end_of_month().to_formatted_s(:long)}. If you are going to pay GST on this amount, please include your GST registration number in the invoice.
 %br
 %br
 Please do not hesitate to contact me should you have any questions.
@@ -30,5 +30,5 @@ Please do not hesitate to contact me should you have any questions.
 %br
 Regards,
 %br
-Chalkle
+Amy
 %br

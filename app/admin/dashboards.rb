@@ -12,23 +12,24 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
       column do
 
-        panel "Classes for review" do
-          table_for Lesson.accessible_by(current_ability).visible.unpublished.order("updated_at asc") do
-            column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
-            column("Teacher") { |lesson| lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher" }
-            column :categories do |lesson|
-              lesson.categories.collect{ |c| c.name }.join(", ")
-            end
-            column :channels do |lesson|
-              lesson.channels.collect{ |c| c.name}.join(", ")
-            end
-            column("Last Update") { |lesson| lesson.updated_at.to_formatted_s(:long) }
-            column("Status") { |lesson| lesson.status }
-            column("Price (incl GST)") { |lesson| number_to_currency lesson.gst_price }
-          end
+        panel "Unreviewed classes" do
+          render partial: "/admin/dashboard/lesson_panel", locals: {lessons: Lesson.accessible_by(current_ability).visible.unreviewed.order("updated_at asc")}
         end
 
-        panel "Upcoming classes" do
+        panel "Classes being processed" do
+          render partial: "/admin/dashboard/lesson_panel", locals: {lessons: Lesson.accessible_by(current_ability).visible.processing.order("updated_at asc")}
+        end
+
+        panel "On-hold classes" do
+          render partial: "/admin/dashboard/lesson_panel", locals: {lessons: Lesson.accessible_by(current_ability).visible.on_hold.order("updated_at asc")}
+        end
+
+        panel "Approved classes" do
+          render partial: "/admin/dashboard/lesson_panel", locals: {lessons: Lesson.accessible_by(current_ability).visible.approved.order("updated_at asc")}
+        end
+        
+
+        panel "Coming up this week" do
           table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
             column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
             column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
