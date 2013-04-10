@@ -55,7 +55,7 @@ class Lesson < ActiveRecord::Base
   scope :on_hold, where(status: STATUS_2)
   scope :approved, where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
-  scope :unpublished, where("status <> #{STATUS_1}")
+  scope :unpublished, where{status != STATUS_1}
   scope :published, where(status: STATUS_1)
 
   before_create :set_from_meetup_data
