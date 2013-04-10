@@ -7,7 +7,6 @@ begin
         puts "task accepts only 'weekly' or 'daily' as valid arguments"
         exit!(1)
       end
-      require 'chalkler_digest'
       chalklers = ChalklerDigest.load_chalklers(args.frequency)
       chalklers.each do |c|
         digest = ChalklerDigest.new c

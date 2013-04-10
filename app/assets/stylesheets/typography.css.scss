@@ -1,14 +1,14 @@
 body {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: $font_family_normal;
   font-size: 16px;
 }
 h2 {
-  font-family: $font_family_chalk;
+  font-family: $font_family_normal;
   font-weight: normal;
 }
 
 h3 {
-  font-family: $font_family_chalk;
+  font-family: $font_family_normal;
   font-weight: normal;
   color: $pink;
 }

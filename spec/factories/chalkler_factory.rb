@@ -1,9 +1,10 @@
 FactoryGirl.define do
   sequence(:meetup_id) { |n| "1234567#{n}" }
+  sequence(:email) { |n| "example_#{n}@example.com" }
 
   factory :chalkler do
     name "Ben Smith"
-    email "ben@hotmail.com"
+    email
     bio "All about me!!"
     gst "234 78 990"
 

@@ -6,10 +6,15 @@ ActiveAdmin.register Chalkler do
     authorize_resource
 
     def create
+      if(params[:chalkler][:channel_ids].is_a?(String) && params[:chalkler][:channel_ids].empty?) ||
+        (params[:chalkler][:channel_ids].is_a?(Array) && params[:chalkler][:channel_ids].reject(&:empty?).empty?)
+        flash[:error] = "Chalkler must belong to a channel"
+        redirect_to :back
+        return
+      end
       @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst],
         meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name])
-      if @chalkler.save && current_admin_user.channels.any?
-        @chalkler.channels << current_admin_user.channels.first
+      if @chalkler.save
         update!
       else
         redirect_to :back
@@ -53,6 +58,9 @@ ActiveAdmin.register Chalkler do
           "non-meetup"
         end
       end
+      row "Channels" do
+        chalkler.channels.collect{|c| c.name}.join(", ")
+      end
       row :email
       row :email_frequency
       row "Email categories" do
@@ -86,14 +94,5 @@ ActiveAdmin.register Chalkler do
     active_admin_comments
   end
 
-  form do |f|
-    f.inputs :details do
-      f.input :name
-      f.input :meetup_id
-      f.input :email
-      f.input :gst
-      f.input :bio
-    end
-    f.actions
-  end
+  form :partial => 'form'
 end

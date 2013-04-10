@@ -12,6 +12,7 @@
 }
 
 $font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+$font_family_normal: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
 $pink: #cd4063;
 $blackboard: #2d2c29;
@@ -20,6 +21,9 @@ body {
   padding-top: 0;
 }
 
+.center {
+  text-align: center;
+}
 .navbar {
   font-weight: bold;
   font-size: 15px;
@@ -68,11 +72,14 @@ body {
 
 .hero-unit {
   font-family: $font_family_chalk;
-  @include radial-gradient($blackboard, darken($blackboard, 9%));
+  background: #222222 asset-url("chalkboard-repeat-smaller.jpg", image) left top repeat;
   color: white;
   padding: 20px 60px;
+  border: solid 2px #222;
 }
+
 
 @import "image";
 @import "forms";
 @import "typography";
+@import "modules/chalklers";

@@ -19,6 +19,7 @@ gem 'chronic',       '~> 0.9.0'
 gem 'active_attr',   '~> 0.7.0'
 gem 'dragonfly',     '~> 0.9.14'
 gem 'delayed_job_active_record'
+gem 'squeel',        '~> 1.0.18'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
@@ -28,9 +29,8 @@ gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml-rails',    '~> 0.3.5'
 gem 'simple_form',   '~> 2.0.4'
-# won't compile on beta
-# gem 'rdiscount',     '~> 2.0.7.1'
 gem 'maruku',        '~> 0.6.1'
+gem 'draper',        '~> 1.0'
 
 # Gems used only for assets and not required
 # in production environments by default.
