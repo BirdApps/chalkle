@@ -1,7 +1,11 @@
 -title "Dashboard"
 
-.chalkle_image
-  %h2 Welcome #{current_chalkler.name.present? ? current_chalkler.name.split[0] : nil}! We have built this portal to help you manage all your chalkle&deg activities
-  =link_to "Suggest a class", new_chalklers_lesson_suggestion_path
+.row
+  .span6
+    .chalkle_image
+      %h2 Welcome #{current_chalkler.name.present? ? current_chalkler.name.split[0] : nil}! We have built this portal to help you manage all your chalkle&deg activities
+    %br/
+  .span6
+    %p=link_to "Suggest a class", new_chalklers_lesson_suggestion_path
   
 
