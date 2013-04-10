@@ -2,8 +2,9 @@ class ChalklerDigest
   def initialize(c)
     @chalkler = c
     @frequency = @chalkler.email_frequency
-    @date_offset = (@chalkler.email_frequency == 'daily') ? 1 : 7
-    @limit = (@chalkler.email_frequency == 'daily') ? 5 : 10
+    @digest_period = (@chalkler.email_frequency == 'daily') ? 1.day : 7.days
+    @date_offset = Time.now.utc - @digest_period
+    @limit = (@chalkler.email_frequency == 'daily') ? 5 : 8
   end
 
   def create!
@@ -16,13 +17,13 @@ class ChalklerDigest
   end
 
   def self.load_chalklers(freq)
-    Chalkler.where("email IS NOT NULL AND email_frequency = ?", freq)
+    Chalkler.where{(email != "") & (email_frequency == freq)}
   end
 
   private
 
   def new_lessons
-    Lesson.visible.published.joins(:categories, :channels).where("lessons.created_at > CURRENT_DATE - ? AND
+    Lesson.visible.published.joins(:categories, :channels).where("lessons.created_at > ? AND
                                                                   lessons.meetup_url IS NOT NULL AND
                                                                   lessons.do_during_class IS NOT NULL AND
                                                                   lesson_categories.category_id IN (?) AND
@@ -32,7 +33,7 @@ class ChalklerDigest
   end
 
   def default_new_lessons
-    Lesson.visible.published.joins(:channels).where("lessons.created_at > CURRENT_DATE - ? AND
+    Lesson.visible.published.joins(:channels).where("lessons.created_at > ? AND
                                                      lessons.meetup_url IS NOT NULL AND
                                                      lessons.do_during_class IS NOT NULL AND
                                                      channel_lessons.channel_id IN (?)",
