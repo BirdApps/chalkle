@@ -95,4 +95,19 @@ ActiveAdmin.register Chalkler do
   end
 
   form :partial => 'form'
+
+  action_item(:only => :show, if: proc{ can?(:send_reset_password_mail, resource) && chalkler.email? }) do
+    link_to 'Send password reset email', send_reset_password_mail_admin_chalkler_path(resource),
+      :data => { :confirm => "Are you sure you want to send password reset instructions?" }
+  end
+
+  member_action :send_reset_password_mail do
+    chalkler = Chalkler.find params[:id]
+    if can?(:send_reset_password_mail, chalkler) && chalkler.send_reset_password_instructions
+      flash[:notice] = 'Password reset instructions have been sent!'
+    else
+      flash[:warn] = 'Could not send password reset instructions!'
+    end
+    redirect_to :back
+  end
 end
