@@ -13,7 +13,7 @@ class Chalklers::OmniauthCallbacksController < Devise::OmniauthCallbacksControll
 
   def after_sign_in_path_for(resource)
     if resource.sign_in_count == 1 and resource.email.blank?
-      chalklers_update_email_path
+      chalklers_enter_email_path
     else
       super
     end

@@ -9,8 +9,8 @@ Chalkle::Application.routes.draw do
   namespace :chalklers do
     root to: "dashboard#index"
     match '/classes' => 'dashboard#classes', as: 'classes'
-    get '/email_update' => 'preferences#update_email', as: 'update_email'
-    put '/email_update' => 'preferences#update_email', as: 'update_email'
+    get '/enter_email' => 'preferences#enter_email', as: 'enter_email'
+    put '/enter_email' => 'preferences#enter_email', as: 'enter_email'
     resources :teachings do
       collection do
         get 'success'
