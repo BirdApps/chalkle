@@ -3,6 +3,16 @@ ActiveAdmin.register LessonSuggestion do
   controller do
     load_resource :except => :index
     authorize_resource
+
+    def create
+      @lesson_suggestion = LessonSuggestion.new(name: params[:lesson_suggestion][:name], description: params[:lesson_suggestion][:desctiption], category_id: params[:lesson_suggestion][:category_id])
+      if @lesson_suggestion.save
+        @lesson_suggestion.channel_ids = params[:lesson_suggestion][:channel_ids]
+        update!
+      else
+        redirect_to :back
+      end
+    end
   end
 
   filter :name
@@ -31,4 +41,6 @@ ActiveAdmin.register LessonSuggestion do
     end
     active_admin_comments
   end
+
+  form :partial => 'form'
 end

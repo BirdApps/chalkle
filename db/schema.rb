@@ -121,12 +121,12 @@ ActiveRecord::Schema.define(:version => 20130409102423) do
 
   add_index "channel_chalklers", ["channel_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
 
-  create_table "channel_lesson_suggestions", :force => true do |t|
-    t.integer  "channel_id"
-    t.integer  "lesson_suggestion_id"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+  create_table "channel_lesson_suggestions", :id => false, :force => true do |t|
+    t.integer "channel_id",           :null => false
+    t.integer "lesson_suggestion_id", :null => false
   end
+
+  add_index "channel_lesson_suggestions", ["channel_id", "lesson_suggestion_id"], :name => "cha_les_sug_index", :unique => true
 
   create_table "channel_lessons", :id => false, :force => true do |t|
     t.integer "channel_id", :null => false
