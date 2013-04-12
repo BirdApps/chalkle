@@ -3,8 +3,8 @@
 
   .row
     .hero-unit
-      %h2 At chalkle&deg, anyone can be a teacher
-      %p So tell us about your idea and take the first step towards being a chalkle&deg teacher
+      %h2 At chalkle&deg;, anyone can be a teacher
+      %p So tell us about your idea and take the first step towards being a chalkle&deg; teacher
 
   .row
     .form-inputs
@@ -13,9 +13,11 @@
       = f.input :title, :label => "What is the title of your class?", :as => :text, :input_html => { :rows => 1, :class => "span12" }, :placeholder => "A catchy title will help to attract more chalklers. For example: protect your assets - yours, mine or ours?"
       = f.input :do_during_class, :label => "What will we do during the class?", :as => :text, :placeholder => "Enter a short paragraph to give people an overview of the class. For example: An introduction to protecting personal assets. This class will cover specific protection mechanisms, trusts and touch on wills.", :input_html => { :rows => 1, :class => "span12" }
       = f.input :learning_outcomes, :label => "What will we learn from this class?", :as => :text, :placeholder => "List what people will learn. For example: Identify the various ways personal assets can be protected; Identify the most suitable asset protection for the circumstances.", :input_html => { :rows => 2, :class => "span12" }
-      = f.input :category_primary_id, :label => "What is the primary category of this class?", :collection => Category.select_options
+      = f.input :category_primary_id, :label => "What is the primary category of this class?", :collection => Category.select_options, required: true
       -if @chalkler_teaching.channels.length > 1
-        = f.input :channel_id, :label => "Which channel would you like to hold this class in?", :collection => Channel.select_options(@chalkler_teaching.channels), include_blank: false
+        = f.input :channel_id, :label => "Which channel would you like to hold this class in?", :collection => Channel.select_options(@chalkler_teaching.channels), required: true
+      -else
+        = f.hidden_field :channel_id, value: @chalkler_teaching.channels.first.id
       = f.input :lesson_skill, :label => "What is the skill level of this class?", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }
       = f.input :bio, :label => "Why are you a great teacher for this class?", :as => :text, :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :input_html => { :rows => 2, :class => "span12" }
 
