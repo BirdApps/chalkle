@@ -1,4 +1,4 @@
-Given /^A ([^"]*) meetup user$/ do |user_existence|
+Given /^"(.*?)" is a ([^"]*) meetup user$/ do |name, user_existence|
   if user_existence == "new"
     nil
   elsif user_existence == "existing"
@@ -11,14 +11,14 @@ Given /^A ([^"]*) meetup user$/ do |user_existence|
         },
         :extra => {
         :raw_info => {
-          :name => 'Test User2'
+          :name => name
           }
         }
     }
   end
 end
 
-Then /^I should have a ([^"]*) Chalkle user with details from meetup$/ do |user_existence|
+Then /^They should have a ([^"]*) Chalkle user with details from meetup$/ do |user_existence|
   if user_existence == "new"
     chalkler = Chalkler.find_by_uid("1234") 
     chalkler.sign_in_count.should == 1
