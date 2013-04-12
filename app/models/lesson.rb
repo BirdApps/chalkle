@@ -57,6 +57,7 @@ class Lesson < ActiveRecord::Base
   scope :processing, where(status: STATUS_5)
   scope :unpublished, where{status != STATUS_1}
   scope :published, where(status: STATUS_1)
+  scope :paid, where("cost > 0")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
@@ -159,12 +160,24 @@ class Lesson < ActiveRecord::Base
     payments.sum(:total)/1.15
   end
 
+  def cash_payment
+    payments.cash.sum(:total)/1.15
+  end
+
   def uncollected_revenue
     expected_revenue - collected_revenue
   end
 
+  def total_cost
+    if teacher_payment.present?
+      ( teacher_payment.present? ? teacher_payment : 0 ) + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 )
+    else
+      attendance*( teacher_cost.present? ? teacher_cost : 0 )
+    end
+  end
+  
   def income
-    collected_revenue - ( teacher_payment.present? ? teacher_payment : 0 ) - ( venue_cost.present? ? venue_cost : 0 )
+    collected_revenue - total_cost
   end
 
   def attendance
