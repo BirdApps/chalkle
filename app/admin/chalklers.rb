@@ -6,10 +6,15 @@ ActiveAdmin.register Chalkler do
     authorize_resource
 
     def create
+      if(params[:chalkler][:channel_ids].is_a?(String) && params[:chalkler][:channel_ids].empty?) ||
+        (params[:chalkler][:channel_ids].is_a?(Array) && params[:chalkler][:channel_ids].reject(&:empty?).empty?)
+        flash[:error] = "Chalkler must belong to a channel"
+        redirect_to :back
+        return
+      end
       @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst],
         meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name])
-      if @chalkler.save && current_admin_user.channels.any?
-        @chalkler.channels << current_admin_user.channels.first
+      if @chalkler.save
         update!
       else
         redirect_to :back
@@ -36,6 +41,13 @@ ActiveAdmin.register Chalkler do
         "non-meetup"
       end
     end
+    column "Last login" do |chalkler|
+      if chalkler.current_sign_in_at?
+        "#{time_ago_in_words chalkler.current_sign_in_at} ago"
+      else
+        "never"
+      end
+    end
     column :email
     column :bio
     column :created_at
@@ -53,22 +65,32 @@ ActiveAdmin.register Chalkler do
           "non-meetup"
         end
       end
+      row "Channels" do
+        chalkler.channels.collect{|c| c.name}.join(", ")
+      end
+      row "Last login" do
+        if chalkler.current_sign_in_at?
+          "#{time_ago_in_words chalkler.current_sign_in_at} ago"
+        else
+          "never"
+        end
+      end
       row :email
       row :email_frequency
-      row "Email categories" do
-        if chalkler.email_categories.present?
-          chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
-        else
-          "No email categories selected"
-        end
-      end
-      row "Email streams" do
-        if chalkler.email_streams.present?
-          chalkler.email_streams.collect{|c| Stream.find(c,:select => :name).name}.join(", ")
-        else
-          "No email streams selected"
-        end
-      end
+      # row "Email categories" do
+        # if chalkler.email_categories.present?
+          # chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
+        # else
+          # "No email categories selected"
+        # end
+      # end
+      # row "Email streams" do
+        # if chalkler.email_streams.present?
+          # chalkler.email_streams.collect{|c| Stream.find(c,:select => :name).name}.join(", ")
+        # else
+          # "No email streams selected"
+        # end
+      # end
       row :gst
       row :bio
       row :teaching do
@@ -86,14 +108,20 @@ ActiveAdmin.register Chalkler do
     active_admin_comments
   end
 
-  form do |f|
-    f.inputs :details do
-      f.input :name
-      f.input :meetup_id
-      f.input :email
-      f.input :gst
-      f.input :bio
+  form :partial => 'form'
+
+  action_item(:only => :show, if: proc{ can?(:send_reset_password_mail, resource) && chalkler.email? }) do
+    link_to 'Send password reset email', send_reset_password_mail_admin_chalkler_path(resource),
+      :data => { :confirm => "Are you sure you want to send password reset instructions?" }
+  end
+
+  member_action :send_reset_password_mail do
+    chalkler = Chalkler.find params[:id]
+    if can?(:send_reset_password_mail, chalkler) && chalkler.send_reset_password_instructions
+      flash[:notice] = 'Password reset instructions have been sent!'
+    else
+      flash[:warn] = 'Could not send password reset instructions!'
     end
-    f.actions
+    redirect_to :back
   end
 end

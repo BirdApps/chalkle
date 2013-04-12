@@ -138,6 +138,7 @@ ActiveAdmin.register Payment do
       f.input :date
       f.input :total
       f.input :reconciled
+      f.input :cash_payment
     end
 
     f.buttons
