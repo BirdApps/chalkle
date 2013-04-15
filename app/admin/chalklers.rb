@@ -76,6 +76,7 @@ ActiveAdmin.register Chalkler do
         end
       end
       row :email
+      row :phone_number
       row :email_frequency
       # row "Email categories" do
         # if chalkler.email_categories.present?
@@ -91,7 +92,6 @@ ActiveAdmin.register Chalkler do
           # "No email streams selected"
         # end
       # end
-      row :gst
       row :bio
       row :teaching do
         render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons_taught }
