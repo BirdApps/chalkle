@@ -30,3 +30,17 @@ Scenario: Admin cannot create a chalkler without a channel
   When they visit the New Chalkler form
   And they create a chalkler without a channel
   Then they should see an error message
+
+Scenario: Admin can send password reset email
+  Given "Whetu" is a chalkler
+  And the chalkler "Whetu" belongs to the "Wellington" channel
+  When the admin views "Whetu's" profile
+  And they trigger a password reset email
+  Then the chalkler "Whetu" should receive a password reset email
+
+Scenario: Password reset button is not displayed when chalkler has no email
+  Given "Whetu" is a chalkler
+  And the chalkler "Whetu" has no email address
+  And the chalkler "Whetu" belongs to the "Wellington" channel
+  When the admin views "Whetu's" profile
+  Then there should be no password reset button

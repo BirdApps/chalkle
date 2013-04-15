@@ -1,33 +1,43 @@
-%h1
+-# work out how to make this dry
+-header_style = 'color: #222'
+-paragraph_style = 'color: #222'
+-link_style = 'color: #cd4063; text-decoration:none;'
+
+%h1{ style: header_style }
   Welcome to chalkle&deg;!
 
-:markdown
+%p{ style: paragraph_style }
   Thanks for joining chalkle&deg;! Isn’t it exciting to see a community
   grow around a wish to learn, teach and share skills from each other.
 
-  <p>Your Channel Curator has created an account for you on
-  <a href="http://my.chalkle.com" style="color:#cd4063;text-decoration:none;">my.chalkle.com</a>.
+%p{ style: paragraph_style }
+  Your Channel Curator has created an account for you on
+  = link_to 'my.chalkle.com', 'http://my.chalkle.com', { style: link_style }
   You can use this to submit class details. To activate your account simply
-  create a password by clicking on the link below:</p>
+  create a password by clicking on the link below:
 
-%p= link_to 'Create account password', "#{edit_chalkler_password_url}?initial=true&reset_password_token=#{@chalkler.reset_password_token}", { style: 'color: #cd4063;text-decoration:none;' }
+%p{ style: paragraph_style }
+  != link_to 'Create account password', "#{edit_chalkler_password_url}?initial=true&reset_password_token=#{@chalkler.reset_password_token}", { style: link_style }
 
-:markdown
+%p{ style: paragraph_style }
   We hope to be able to help connect you with people who can share skills and
   knowledge. If you have things you can teach then we can enable that to
   happen. We can help you advertise (find great people), sort all the money
   practicalities, help you find a location, and give suggestions on what makes
   a great chalkle&deg; class.
 
-  <p>Do like us on <a href="http://www.facebook.com/chalkle" style="color:
-  #cd4063;text-decoration:none;">Facebook</a> and follow us on
-  <a href="https://twitter.com/ChalkleNZ" style="color: #cd4063;text-decoration:none;">Twitter</a>.</p>
+%p{ style: paragraph_style }
+  Do like us on
+  = link_to 'Facebook', 'http://www.facebook.com/chalkle', { style: link_style }
+  and follow us on
+  = link_to 'Twitter', 'https://twitter.com/ChalkleNZ', { style: link_style }
 
+%p{ style: paragraph_style }
   As this is a new initiative, we are still experimenting and playing, so please
   do get in touch if you have any feedback or ideas - in that way we can create
   chalkle&deg; to really meet your needs and those of the community.
 
-%p
+%p{ style: paragraph_style }
   Cheers,
   %br/
   The chalkle&deg; team

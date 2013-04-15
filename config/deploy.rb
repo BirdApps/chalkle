@@ -9,6 +9,8 @@ set :rake, "bundle exec rake"
 set :use_sudo,    false
 set :scm, :git
 
+set :whenever_command, "bundle exec whenever"
+
 task :staging do
   set :domain,    "my.chalkle.com"
   set :branch,    "staging"
@@ -67,7 +69,8 @@ end
 after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs"
 after "deploy:update", "deploy:cleanup"
 
-require "./config/boot"
+require './config/boot'
 load 'deploy/assets'
-require "bundler/capistrano"
+require 'bundler/capistrano'
 require 'airbrake/capistrano'
+require 'whenever/capistrano'
