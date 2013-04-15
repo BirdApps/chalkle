@@ -1,0 +1,11 @@
+=semantic_form_for [:admin, @lesson_suggestion] do |f|
+  =f.semantic_errors *f.object.errors.keys
+  =f.inputs :details do
+    =f.input :name
+    -if current_admin_user.channels.size > 1
+      =f.input :channels, :as => :check_boxes, :collection => current_admin_user.channels
+    -elsif current_admin_user.channels.size == 1
+      =f.input :channel_ids, :as => :hidden, :input_html => { :value => current_admin_user.channel_ids.first }
+    =f.input :description
+    =f.input :category
+  =f.actions
