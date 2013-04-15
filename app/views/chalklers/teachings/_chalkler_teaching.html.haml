@@ -36,8 +36,8 @@
       = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST)? Note the advertised price of this class will be higher than the amount you entered here because chalkle needs to pay for additional costs", :wrapper => :prepend do
         = f.input_field :teacher_cost, :placeholder => "0.00"
         = content_tag :span, "Per attendee", :class => "add-on"
-      =f.input :price, :label => "This class will be advertised for approximately", :input_html => { :readonly => true, :disabled => true }, :wrapper => :prepend do
-        = f.input_field :price, :placeholder => "0.00"
+      =f.input :price, :label => "This class will be advertised for approximately", :wrapper => :prepend do
+        = f.input_field :price, :disabled => true
         = content_tag :span, "Per attendee", :class => "add-on"
 
       = f.input :max_attendee, :label => "What is the maximum number of attendees for this class?", :wrapper => :append do
@@ -57,18 +57,3 @@
 
 :javascript
   var teacher_percentages=new Array("#{@chalkler_teaching.channels.map {|i| i.teacher_percentage}.join('","')}");
-
-  $('#teaching_teacher_cost').keyup(function(e) {
-    if ($('#teaching_channel_select').val() > 0) {
-      var fee = (1.0 / teacher_percentages[$('#teaching_channel_select').val() - 1] - 1.0)*e.target.value;
-      var GSTOnFee = fee*0.15;
-      var total = Math.ceil( parseFloat(e.target.value) + fee + GSTOnFee );
-      $('#teaching_price').val(total);
-    }
-    else if (e.target.value == "") {
-      $('#teaching_price').val(0);
-    }
-    else {
-    $('#teaching_price').val("Select a channel then re-enter your amount");
-    }
-  });
