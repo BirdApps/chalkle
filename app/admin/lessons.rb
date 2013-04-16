@@ -142,6 +142,9 @@ ActiveAdmin.register Lesson  do
           row :income do
             number_to_currency lesson.income
           end
+          row :collected_revenue do
+            number_to_currency lesson.collected_revenue
+          end          
           row :uncollected_revenue do
             number_to_currency lesson.uncollected_revenue
           end

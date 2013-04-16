@@ -1,0 +1,112 @@
+-channels.each do |c|
+  %h3
+    #{c.name} Channel
+  %h4 
+    Financials (excl. GST)
+  %table
+    %thead
+      %tr
+        %th Week
+        %th Turnover
+        %th % Change turnover
+        %th Cost*
+        %th % Change cost
+        %th Gross Profit
+        %th % Change profit
+
+    %tbody
+      -first_day = StatsPolicy.new(Date.today().midnight - num_weeks*period).stats_begin_date
+      -financial_table = c.financial_table(first_day,1.week,num_weeks)
+
+      -financial_table.each do |x|
+        %tr
+          %td #{x.start.strftime("%d %b")} - #{(x.start + period).strftime("%d %b")} #{ "(projected)" if Time.now < (x.start + period)}
+          %td #{number_to_currency x.turnover}
+          %td #{number_to_percentage( x.percent_turnover, :precision => 0)}
+          %td #{number_to_currency x.cost}
+          %td #{number_to_percentage( x.percent_cost, :precision => 0)}
+          %td #{number_to_currency x.profit}
+          %td #{number_to_percentage( x.percent_profit, :precision => 0)}
+      %tr
+        %td <strong> Average of #{num_weeks} weeks </strong>
+        %td <strong> #{number_to_currency( financial_table.average("turnover") )} </strong>
+        %td <strong> #{number_to_percentage( financial_table.average("percent_turnover") , :precision => 0 )} </strong>
+        %td <strong> #{number_to_currency( financial_table.average("cost")  )} </strong>
+        %td <strong> #{number_to_percentage( financial_table.average("percent_cost") , :precision => 0 )} </strong>
+        %td <strong> #{number_to_currency( financial_table.average("profit")  )} </strong>
+        %td <strong> #{number_to_percentage( financial_table.average("percent_profit") , :precision => 0 )} </strong>
+
+  %p
+    *Cost includes teacher, venue and material cost
+
+  %h4 
+    Classes
+  %table
+    %thead
+      %tr
+        %th Week
+        %th Classes ran
+        %th % Change Classes
+        %th Paid classes ran
+        %th % Change paid classes
+        %th Cancellations
+        %th % Change cancellations
+
+    %tbody
+      -lessons_table = c.lessons_table(first_day,1.week,num_weeks)
+      -lessons_table.each do |x|
+        %tr
+          %td #{x.start.strftime("%d %b")} - #{(x.start + period).strftime("%d %b")} #{ "(projected)" if Time.now < (x.start + period)}
+          %td #{x.lessons_ran} ( #{x.new_lessons_ran} new / #{x.lessons_ran - x.new_lessons_ran} repeat )
+          %td #{number_to_percentage( x.percent_lessons_ran, :precision => 0)}
+          %td #{x.paid_lessons} paid classes ( #{x.lessons_ran - x.paid_lessons} free classes )
+          %td #{number_to_percentage( x.percent_paid_lessons, :precision => 0)}
+          %td #{x.cancelled_lessons} ( #{x.new_cancelled_lessons} new / #{x.cancelled_lessons - x.new_cancelled_lessons} repeat )
+          %td #{number_to_percentage( x.percent_cancelled_lessons, :precision => 0)}
+      %tr
+        %td <strong> Average of #{num_weeks} weeks </strong>
+        %td <strong> #{number_to_human lessons_table.average("lessons_ran")} classes </strong>
+        %td <strong> #{number_to_percentage( lessons_table.average("percent_lessons_ran"), :precision => 0)} </strong>
+        %td <strong> #{number_to_human lessons_table.average("paid_lessons")} classes </strong>
+        %td <strong> #{number_to_percentage( lessons_table.average("percent_paid_lessons"), :precision => 0)} </strong>
+        %td <strong> #{number_to_human lessons_table.average("cancelled_lessons")} classes </strong>
+        %td <strong> #{number_to_percentage( lessons_table.average("percent_cancelled_lessons"), :precision => 0)} </strong>
+
+  %h4 
+    Chalklers
+  %table
+    %thead
+      %tr
+        %th Period
+        %th Attendees
+        %th % Change attendees
+        %th New members
+        %th % Change new members
+        %th Active members*
+
+    %tbody
+      -chalkler_table = c.chalkler_table(first_day,1.week,num_weeks)
+      -chalkler_table.each do |x|
+        %tr
+          %td #{x.start.strftime("%d %b")} - #{(x.start + period).strftime("%d %b")} #{ "(projected)" if Time.now < (x.start + period)}
+          %td #{x.attendee} chalklers ( The average class is #{number_to_percentage(x.fill_fraction, :precision => 0)} filled )
+          %td #{number_to_percentage(x.percent_attendee, :precision => 0)}
+          %td #{x.new_chalklers}
+          %td #{number_to_percentage(x.percent_new_chalklers, :precision => 0)}
+          %td #{number_to_percentage(x.percent_active,:precision => 0)}
+
+      %tr
+        %td <strong> Average of #{num_weeks} weeks </strong>
+        %td <strong> #{number_to_human chalkler_table.average("attendee")} chalklers </strong>
+        %td <strong> #{number_to_percentage( chalkler_table.average("percent_attendee"), :precision => 0)} </strong>
+        %td <strong> #{number_to_human chalkler_table.average("new_chalklers")} chalklers </strong>
+        %td <strong> #{number_to_percentage( chalkler_table.average("percent_new_chalklers"), :precision => 0)} </strong>
+        %td <strong> #{number_to_percentage( chalkler_table.average("percent_active"), :precision => 0)} </strong>
+
+  %p
+    *A chalkler is active if he has RSVP activities within the last 3 months
+
+
+
+
+     

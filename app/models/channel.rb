@@ -37,4 +37,59 @@ class Channel < ActiveRecord::Base
   def self.select_options(channel)
     channel.map { |c| [c.name, c.id] }
   end
+
+  #Channel performances
+  def channel_stats(start,period)
+    ChannelStats.new(start,period,self)
+  end
+
+  def financial_table(first_day, period, num_rows)
+    financials = StatsMath.new()
+    num_rows.times do |i|
+      financials[i] = channel_stats(first_day + i*period, period).financial_stats
+    end
+    financials
+  end
+
+  def lessons_table(first_day, period, num_rows)
+    lessons = StatsMath.new()
+    num_rows.times do |i|
+      lessons[i] = channel_stats(first_day + i*period, period).lesson_stats
+    end
+    lessons
+  end
+
+  def chalkler_table(first_day, period, num_rows)
+    chalkler = StatsMath.new()
+    num_rows.times do |i|
+      chalkler[i] = channel_stats(first_day + i*period, period).chalkler_stats
+    end
+    chalkler
+  end
+
+  #Properties of Channels
+  def new_chalklers(start_date,end_date)
+    chalklers.where{(created_at.gt start_date.utc) & (created_at.lteq end_date.utc)}
+  end
+
+  def all_chalklers(date)
+    chalklers.where{created_at.lteq date.utc}
+  end
+
+  def lesson_ran(start_date,end_date)
+    lessons.visible.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+  end
+
+  def cancel_lessons(start_date,end_date)
+    lessons.hidden.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+  end
+
+  def past_lessons(date)
+    lessons.visible.published.where{start_at.lt date.utc}
+  end
+
+  def paid_lessons(start_date,end_date)
+    lesson_ran(start_date,end_date).paid
+  end
+
 end

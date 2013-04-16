@@ -1,4 +1,5 @@
 -paragraph_style = 'color: #222'
+-h2_style = 'color: #222; font-size: 16px'
 -link_style = 'color: #cd4063; text-decoration: none;'
 -header_link_style = 'color: #24714C; text-decoration: none; font-weight: bold;'
 
@@ -6,28 +7,26 @@
 %p{ style: paragraph_style } Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.today.strftime("%A %B #{Date.today.day.ordinalize}")}.
 
 -if @new_lessons.any?
-  %h2{ style: paragraph_style } New chalkles:
+  %h2{ style: h2_style } New chalkles:
   %table{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0", style: "border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; width: 100%;"}
     -@new_lessons.each do |lesson|
       %tr{style: "border-bottom: solid 4px #fff;"}
         %td{style: "padding: 10px; background: #ececec; width: 100%;"}
-          %h3= link_to "#{lesson.channels.first.name}: #{lesson.name}", lesson.meetup_url, { style: header_link_style }
-          %br/
-          %p{style: "color: #777; margin: 3px 0 0 0;"}
+          %h3{style: 'margin-top: 0px; margin-bottom: 5px;'}= link_to "#{lesson.channels.first.name}: #{lesson.name}", lesson.meetup_url, { style: header_link_style }
+          %p{style: "color: #777;"}
             = lesson.category_list
             = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
           %p{ style: paragraph_style }= truncate(lesson.do_during_class, length: 250, separator: ' ')
           %p= link_to lesson.join_chalklers, lesson.meetup_url, { style: link_style }
 
 -if @open_lessons.any?
-  %h2{ style: paragraph_style } There is still time to sign up for these classes:
+  %h2{ style: h2_style } There is still time to sign up for these classes:
   %table{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0", style: "border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; width: 100%;"}
     -@open_lessons.each do |lesson|
       %tr{style: "border-bottom: solid 4px #fff;"}
         %td{style: "padding: 10px; background: #ececec; width: 100%;"}
-          %h3= link_to "#{lesson.channels.first.name}: #{lesson.name}", lesson.meetup_data["event_url"], { style: header_link_style }
-          %br/
-          %p{style: "color: #777; margin: 3px 0 0 0;"}
+          %h3{style: 'margin-top: 0px; margin-bottom: 5px;'}= link_to "#{lesson.channels.first.name}: #{lesson.name}", lesson.meetup_url, { style: header_link_style }
+          %p{style: "color: #777;"}
             = lesson.category_list
             = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
           %p{ style: paragraph_style }= truncate(lesson.do_during_class, length: 250, separator: ' ')
