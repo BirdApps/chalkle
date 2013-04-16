@@ -19,5 +19,6 @@ Chalkle::Application.routes.draw do
     put '/preferences' => 'preferences#save', as: 'preferences'
   end
 
+  get '/styleguide' => 'application#styleguide', as: 'styleguide'
   match '/image' => 'image#generate'
 end

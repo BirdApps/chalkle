@@ -1,3 +1,4 @@
+@import "_variables";
 @import "bootstrap";
 @import "bourbon";
 
@@ -33,8 +34,8 @@ body {
     padding: 0;
     margin: 0;
   }
-  .navbar-inner {
-    background: #222222 asset-url("bg_grey_fabric.png", image) left top repeat;
+  .navbatexture-gray-dark {
+    background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
     padding: 10px 0;
     border-bottom: solid 1px gray;
   }
@@ -72,13 +73,14 @@ body {
 
 .hero-unit {
   font-family: $font_family_chalk;
-  background: #222222 asset-url("chalkboard-repeat-smaller.jpg", image) left top repeat;
+  background: #222222 asset-url("texture-chalkboard.jpg", image) left top repeat;
   color: white;
   padding: 20px 60px;
   border: solid 2px #222;
 }
 
-
+@import "styleguide";
+@import "bootstrap_overrides";
 @import "image";
 @import "forms";
 @import "typography";

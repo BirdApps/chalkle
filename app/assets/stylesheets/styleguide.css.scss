@@ -1,0 +1,192 @@
+$pink: #cd4063;
+$green: #24714c;
+$blue: #1F64BF;
+$gray-dark: #333333;
+$gray-light: #777;
+
+$texture-gray-light: asset-url("texture-gray-light.png", "image") repeat;
+$texture-gray-med: asset-url("texture-gray-med.png", "image") repeat;
+$texture-gray-dark: asset-url("texture-gray-dark.png", "image") repeat;
+$texture-chalkboard: asset-url("texture-chalkboard.jpg", "image") repeat;
+
+$border-dashed: dashed 1px $gray-light;
+
+.texture-block {
+  height: 100px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.colors {
+  small {
+    margin-bottom: 10px;
+  }
+}
+.color-block {
+  height: 100px;
+  margin-bottom: 20px;
+  width: 100%;
+  p {
+    padding: 20px;
+  }
+}
+
+//extract when decided
+
+.texture-gray-light {
+  background: $texture-gray-light;
+}
+.texture-gray-med {
+  background: $texture-gray-med;
+}
+.texture-gray-dark {
+  background: $texture-gray-dark;
+}
+.texture-chalkboard {
+  background: $texture-chalkboard;
+}
+
+//Colors
+
+.color-white { 
+  color: #fff; 
+}
+
+.color-pink { 
+  color: $pink; 
+}
+
+a.color-pink:hover {
+  color: lighten($pink, 10%)
+}
+
+.color-green { 
+  color: $green; 
+}
+
+a.color-green:hover {
+  color: lighten($green, 10%)
+}
+
+.color-blue { 
+  color: $blue; 
+}
+
+a.color-blue:hover {
+  color: lighten($blue, 10%)
+}
+
+.color-gray-light { color: $gray-light; }
+
+.color-gray-dark { color: $gray-dark; }
+
+.background-color-pink {
+  background-color: $pink;
+  color: #fff;
+}
+
+.background-color-green {
+  background-color: $green;
+  color: #fff;
+}
+
+.background-color-blue {
+  background-color: $blue;
+  color: #fff;
+}
+
+.background-color-gray-light {
+  background-color: $gray-light;
+  color: #fff;
+}
+
+.background-color-gray-dark {
+  background-color: $gray-dark;
+  color: #fff;
+}
+
+//Typography
+
+blockquote {
+  border-left-color: $blue;
+}
+.font-bold {
+  font-weight: bold;
+}
+
+.dashed-underline {
+  border-bottom: dashed 1px $gray-light;
+  padding: 5px 0;
+}
+
+.heading-on-bg {
+  padding: 5px 10px;
+}
+
+h3.heading-on-bg-inline {
+  padding: 0px 10px;
+}
+
+.heading-on-bg-inline {
+  padding: 5px 10px;
+  display: inline-block;
+}
+
+#heading_option1 {
+  .font-bold {
+    font-weight: bold;
+  }
+  h1 {
+    font-weight: normal;
+  }
+  h2 {
+    font-weight: normal;
+  }
+  h3 {
+    font-weight: normal;
+  }
+  h4 {
+    font-weight: normal;
+  }
+}
+
+#heading_option2 {
+  .font-bold {
+    font-weight: bold;
+  }
+  h2 {
+    font-weight: normal;
+  }
+  h3 {
+    font-weight: normal;
+  }
+}
+
+//Forms
+.form-vertical {
+  border: $border-dashed;
+}
+
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  margin-bottom: 0;
+}
+
+.form-inputs {
+  padding: 20px;
+}
+.form-actions {
+  border-top: $border-dashed;
+  margin: 0;
+}
+.control-group {
+  margin-bottom: $baseLineHeight;
+}
+label {
+  font-weight: bold;
+  color: $gray-light;
+  &.checkbox {
+    font-weight: normal;
+    color: $gray-dark;
+  }
+}

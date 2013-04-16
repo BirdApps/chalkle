@@ -10,7 +10,6 @@ h2 {
 h3 {
   font-family: $font_family_normal;
   font-weight: normal;
-  color: $pink;
 }
 
 form {
@@ -19,4 +18,10 @@ form {
 
 legend {
   font-size: 1.6em;
+}
+
+a {color: $pink}
+a:hover, a:active, a:visited {
+  color: $pink;
+  text-decoration: underline;
 }
