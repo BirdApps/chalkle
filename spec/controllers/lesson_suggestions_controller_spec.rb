@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe LessonSuggestionsController do
+describe Chalklers::LessonSuggestionsController do
 
 end
