@@ -9,6 +9,7 @@ Chalkle::Application.routes.draw do
   namespace :chalklers do
     root to: "dashboard#index"
     match '/classes' => 'dashboard#classes', as: 'classes'
+    resources :lesson_suggestions, :only => [:new, :create]
     resources :teachings do
       collection do
         get 'success'

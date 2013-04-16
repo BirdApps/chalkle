@@ -235,7 +235,7 @@
               %span.color-gray-light sunt in culpa qui officia deserunt mollit 
               anim id est laborum.
 
-.forms.row
+.forms_examples.row
   .span12
     %h2 Forms
     %ul.nav.nav-tabs
@@ -275,6 +275,42 @@
             %p
               %strong Note:
               even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
-          .form-actions.texture-gray-dark
+          .form-actions.texture-gray-med
+            %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
+
+      #form_option1.tab-pane.fade.in.active
+        %h2 Form Title
+        %form.form-vertical.texture-gray-light
+          .form-inputs
+            .control-group.email.optional
+              %label.control-label{for: "email"} Email
+              .controls
+                %input#email.string.email.optional{ :type => "email", :size => 50}/
+            .control-group.select.optional
+              %label.control-label{for: "select"} Select
+              .controls
+                %select#select
+                  %option{:value => "daily"} Daily
+                  %option{:value => "weekly"} Weekly
+            .control-group.check_boxes.optional
+              %label.control-label{for: "select"} Checks
+              .controls
+                %label.checkbox
+                  %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "47"}>/
+                  agriculture & environment
+                %label.checkbox
+                  %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "53"}>/
+                  food & drink
+                %label.checkbox
+                  %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "55"}>/
+                  health & wellbeing
+            .control-group.text.optional
+              %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
+              .controls
+                %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+            %p
+              %strong Note:
+              even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
+          .form-actions.texture-gray-med
             %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
 

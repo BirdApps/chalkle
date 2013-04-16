@@ -163,30 +163,34 @@ h3.heading-on-bg-inline {
 }
 
 //Forms
-.form-vertical {
-  border: $border-dashed;
-}
+.forms_examples {
+  .form-vertical {
+  }
 
 
-select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-  margin-bottom: 0;
-}
+  select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    margin-bottom: 0;
+  }
 
-.form-inputs {
-  padding: 20px;
-}
-.form-actions {
-  border-top: $border-dashed;
-  margin: 0;
-}
-.control-group {
-  margin-bottom: $baseLineHeight;
-}
-label {
-  font-weight: bold;
-  color: $gray-light;
-  &.checkbox {
-    font-weight: normal;
-    color: $gray-dark;
+  .form-inputs {
+    padding: 20px;
+    border: $border-dashed;
+    border: solid 1px $grayLighter;
+    border-bottom: none;
+  }
+  .form-actions {
+    border: solid 1px #444;
+    margin: 0;
+  }
+  .control-group {
+    margin-bottom: $baseLineHeight;
+  }
+  label {
+    font-weight: bold;
+    color: $gray-light;
+    &.checkbox {
+      font-weight: normal;
+      color: $gray-dark;
+    }
   }
 }

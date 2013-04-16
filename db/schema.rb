@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130414033233) do
+=======
+ActiveRecord::Schema.define(:version => 20130409102423) do
+>>>>>>> feature-js-checkbox-toggle
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -122,6 +126,13 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
 
   add_index "channel_chalklers", ["channel_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
 
+  create_table "channel_lesson_suggestions", :id => false, :force => true do |t|
+    t.integer "channel_id",           :null => false
+    t.integer "lesson_suggestion_id", :null => false
+  end
+
+  add_index "channel_lesson_suggestions", ["channel_id", "lesson_suggestion_id"], :name => "cha_les_sug_index", :unique => true
+
   create_table "channel_lessons", :id => false, :force => true do |t|
     t.integer "channel_id", :null => false
     t.integer "lesson_id",  :null => false
@@ -169,6 +180,14 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
     t.integer  "lesson_id"
     t.string   "image_uid"
     t.string   "image_name"
+  end
+
+  create_table "lesson_suggestions", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "category_id"
   end
 
   create_table "lessons", :force => true do |t|

@@ -20,6 +20,7 @@ Price = set: (ChannelOverride, ChalkleOverride) ->
     $("#lesson_cost").val "Missing teacher income per attendee"
     $("#lesson_gst_price").val "Missing teacher income per attendee"
 
+
 $(document).keyup (e) ->
   Price.set $("#lesson_channel_percentage_override").val(), $("#lesson_chalkle_percentage_override").val()  if (e.target.id is "lesson_teacher_cost") or (e.target.id is "lesson_channel_percentage_override") or (e.target.id is "lesson_chalkle_percentage_override")
 
