@@ -45,7 +45,7 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 %br
 %b cost
 
-#{lesson.cost? ? (cost = number_with_precision(lesson.cost*1.15, :precision => 2, :significant => false)) : "free"} (incl. GST) 
+#{lesson.cost? ? (cost = number_with_precision(lesson.cost*1.15, :precision => 2, :significant => false)) + "(incl. GST, if any)" : "free"} 
 %br
 -if lesson.cost?
   %br
@@ -65,14 +65,19 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 %br
 %b note
 %br
-We require a minimum of #{lesson.min_attendee} people for this class to go ahead.
+we require a minimum of #{lesson.min_attendee} people for this class to go ahead.
 %br
 %br
-%b our cancellation policy
+disclaimer
 %br
-If you RSVP for a class and fail to show up, you will get a "no show". Three no shows means you will be removed from chalkle&deg. You may request to rejoin after six months.
+whilst every possible assistance will be offered, chalkle&deg, the Event Organisers/hosts and members cannot be held responsible for any accident, injuries or losses sustained leading up to, during, or after a class.
 %br
-If you cancel your RSVP:
+%br 
+our cancellation policy
+%br
+if you RSVP for a class and fail to show up, you will get a "no show". Three no shows means you will be removed from chalkle&deg. You may request to rejoin after six months.
+%br
+if you cancel your RSVP:
 %br
 \- less than 3 days before = no refund
 %br
@@ -83,4 +88,4 @@ If you cancel your RSVP:
 %br
 chalkle&deg connects people interested in teaching and learning from each other face-to-face -- in a fun, social environment!
 %br
-Choose from many affordable lessons up for grabs (from intros to master classes) in agriculture, art and craft, business, construction, digital media, food, languages, music and performance, science, technology and zombie survival... and many of the lessons are free!
+choose from many affordable lessons up for grabs (from intros to master classes) in agriculture, art and craft, business, construction, digital media, food, languages, music and performance, science, technology and zombie survival... and many of the lessons are free!
