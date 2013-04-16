@@ -181,9 +181,9 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
   create_table "lesson_suggestions", :force => true do |t|
     t.string   "name"
     t.text     "description"
+    t.integer  "category_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
-    t.integer  "category_id"
   end
 
   create_table "lessons", :force => true do |t|
