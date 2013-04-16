@@ -1,17 +1,13 @@
 =simple_form_for(@lesson_suggestion, url: chalklers_lesson_suggestions_path, html: {class: 'form-vertical' }) do |f|
   = f.error_notification
   .form-inputs
-    %h4 What would the class be called?
-    =f.input :name, label: false
-    %h4 Which category is the best fit for the class?
-    =f.input :category_id, as: :select, label: false, collection: Category.all
-    %h4 Please describe what you would like to happen in the class?
-    =f.input :description, label: false, :input_html => { :rows => 3, :class => "span12" }
+    =f.input :name, label: "What would the class be called?"
+    =f.input :category_id, as: :select, label: "Which category is the best fit for the class?", collection: Category.all
+    
+    =f.input :description, label: "Please describe what you would like to happen in the class?", :input_html => { :rows => 3, :class => "span12" }
     -if current_chalkler.channels.size > 1
-      %h4 Which channels would you like to suggest this class for?
-      <div class="channel-selection">
-      =f.input :channel_ids, as: :check_boxes, label: false, collection: current_chalkler.channels
-      </div>
+      %div.channel-selection
+        =f.input :channel_ids, as: :check_boxes, label: "Which channels would you like to suggest this class for?", collection: current_chalkler.channels
     -else
       =f.hidden_field :channel_ids, :value => current_chalkler.channels.first.id
   .form-actions
