@@ -17,11 +17,9 @@ Price = set: (ChannelOverride, ChalkleOverride) ->
     Channel_percent = ChannelPercentage.set(ChannelOverride)
     Teacher_percent = 1 - Chalkle_percent - Channel_percent
     Total = FinalPrice(Teacher_cost, Teacher_percent, Chalkle_percent, Channel_percent)
-    $("#lesson_cost").val (Total/1.15).toFixed 2
-    $("#lesson_gst_price").val Math.ceil(Total)
+    $("#lesson_cost").val Math.ceil(Total)
   else
     $("#lesson_cost").val "Missing teacher income per attendee"
-    $("#lesson_gst_price").val "Missing teacher income per attendee"
 
 $(document).keyup (e) ->
   Price.set $("#lesson_channel_percentage_override").val(), $("#lesson_chalkle_percentage_override").val()  if (e.target.id is "lesson_teacher_cost") or (e.target.id is "lesson_channel_percentage_override") or (e.target.id is "lesson_chalkle_percentage_override")

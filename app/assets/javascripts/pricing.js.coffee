@@ -11,4 +11,5 @@
   ChalkleFee = Fee Teacher_cost, Teacher_percentage, Chalkle_percentage
   ChannelFee = Fee Teacher_cost, Teacher_percentage, Channel_percentage
   Teacher_cost + AddGST(ChalkleFee + ChannelFee)
+
     

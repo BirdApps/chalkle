@@ -48,7 +48,7 @@ ActiveAdmin.register Lesson  do
     end
     if current_admin_user.role=="super"
       column "Unpaid Amount" do |lesson|
-        number_to_currency lesson.uncollected_revenue, sortable: false
+        number_to_currency lesson.uncollected_turnover, sortable: false
      end
     end
     column :start_at
@@ -108,19 +108,16 @@ ActiveAdmin.register Lesson  do
       #     "Not GST registered"
       #   end
       # end
-      row "Advertised price including GST" do
-        number_to_currency lesson.gst_price
-      end
-      row "Advertised price excluding GST" do
+      row "Advertised price including GST on fees" do
         number_to_currency lesson.cost
       end
-      row "Chalkle income per attendee" do
-        number_to_currency (lesson.cost.present? ? lesson.chalkle_percentage*lesson.cost : nil)
+      row "Chalkle fee per attendee (incl. GST)" do
+        number_to_currency lesson.chalkle_cost
       end
-      row "Channel income per attendee" do
-        number_to_currency (lesson.cost.present? ? lesson.channel_percentage*lesson.cost : nil)
+      row "Channel income per attendee (incl. GST)" do
+        number_to_currency lesson.channel_income
       end
-      row "Teacher income per attendee" do
+      row "Teacher fee per attendee (incl. GST if any)" do
         number_to_currency lesson.teacher_cost
       end
       row :venue_cost do
@@ -139,14 +136,17 @@ ActiveAdmin.register Lesson  do
           row :teacher_payment do
             number_to_currency lesson.teacher_payment
           end
+          row :chalkle_payment do
+            number_to_currency lesson.chalkle_payment
+          end
           row :income do
             number_to_currency lesson.income
           end
-          row :collected_revenue do
-            number_to_currency lesson.collected_revenue
+          row :collected_turnover do
+            number_to_currency lesson.collected_turnover
           end          
-          row :uncollected_revenue do
-            number_to_currency lesson.uncollected_revenue
+          row :uncollected_turnover do
+            number_to_currency lesson.uncollected_turnover
           end
           row :attendance
           row :bookings_to_collect do
