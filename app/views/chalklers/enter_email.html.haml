@@ -1,11 +1,8 @@
 .row
   .span6.offset3
-    %p
-      Almost there!
-      %br/
-      %br/
-      Please enter your email to complete the account activation process. 
-%br/
+    %h2 Almost there!
+    %p Please enter your email to complete the account activation process.
+
 = simple_form_for(@chalkler, url: chalklers_enter_email_url, html: { method: :put, class: 'form-inline' }) do |f|
   .row
     .span6.offset3
