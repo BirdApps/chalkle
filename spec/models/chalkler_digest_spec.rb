@@ -23,7 +23,7 @@ describe ChalklerDigest do
     # this lesson should always be excluded from a set
     let(:lesson1) {
       FactoryGirl.create(:lesson,
-                         created_at: 1.day.ago,
+                         published_at: 1.day.ago,
                          start_at: 1.day.from_now,
                          status: 'Published',
                          do_during_class: 'x',
@@ -38,7 +38,7 @@ describe ChalklerDigest do
       @chalkler.channels << @channel
       @digest = ChalklerDigest.new(@chalkler)
       @lesson = FactoryGirl.create(:lesson,
-                                   created_at: 1.day.ago,
+                                   published_at: 1.day.ago,
                                    start_at: 3.days.from_now,
                                    status: 'Published',
                                    do_during_class: 'x',
@@ -72,7 +72,7 @@ describe ChalklerDigest do
       end
 
       it "won't load a lesson that is more than 1 day old" do
-        @lesson.update_attribute :created_at, 2.days.ago
+        @lesson.update_attribute :published_at, 2.days.ago
         @digest.instance_eval{ new_lessons }.should be_empty
       end
     end
@@ -94,7 +94,7 @@ describe ChalklerDigest do
       end
 
       it "won't load a lesson that is more than 1 day old" do
-        @lesson.update_attribute :created_at, 2.days.ago
+        @lesson.update_attribute :published_at, 2.days.ago
         @digest.instance_eval{ default_new_lessons }.should be_empty
       end
     end
