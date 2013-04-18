@@ -38,7 +38,7 @@
         = content_tag :span, "Per attendee", :class => "add-on"
       =f.input :price, :label => "Pending confirmation from your Channel Curator, this class will be advertised for approximately", :wrapper => :prepend do
         = content_tag :span, "$", :class => "add-on"
-        = f.input_field :price, :disabled => true
+        = f.input_field :price, :readonly => true
         = content_tag :span, "Per attendee", :class => "add-on"
 
       = f.input :max_attendee, :label => "What is the maximum number of attendees for this class?", :wrapper => :append do

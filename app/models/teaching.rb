@@ -33,7 +33,7 @@ class Teaching
       "do_during_class" => @do_during_class,
       "learning_outcomes" => @learning_outcomes,
       "duration" => @duration.to_i*60*60,
-      "cost" => price_calculation(@teacher_cost, @channels[@channel_select]),
+      "cost" => @price,
       "teacher_cost" => @teacher_cost,
       "max_attendee" => @max_attendee.to_i,
       "min_attendee" => @min_attendee.to_i,
@@ -52,7 +52,7 @@ class Teaching
     if check_valid_input(params)
       @lesson = Lesson.new(lesson_args)
       if @lesson.save
-#        @lesson.channels = [@channels[@channel_select]]
+        @lesson.channels = [@channels[@channel_select]]
         @lesson.category_ids = @category_primary_id
       else
         return false
@@ -70,6 +70,7 @@ class Teaching
     @learning_outcomes = params[:learning_outcomes]
     @duration = params[:duration]
     @teacher_cost = params[:teacher_cost]
+    @price = params[:price]
     @free_lesson = params[:free_lesson]
     @max_attendee = params[:max_attendee]
     @min_attendee = params[:min_attendee]
@@ -84,10 +85,6 @@ class Teaching
   end
 
   private
-
-  def price_calculation(teacher_cost,channel)
-    (teacher_cost.blank? || channel.teacher_percentage== 0) ? 0: ( teacher_cost.to_d*1.15 / channel.teacher_percentage ).ceil / 1.15
-  end
 
   def meetup_event_name(category_primary_id,title)
     return ( Category.find(category_primary_id, :select => "name").name + ": " + title ).downcase
