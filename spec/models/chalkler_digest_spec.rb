@@ -48,6 +48,24 @@ describe ChalklerDigest do
       @lesson.channels << @channel
     end
 
+    it "only loads new/open lessons once" do
+      channel = FactoryGirl.create(:channel)
+      @lesson.channels << channel
+      @chalkler.channels << channel
+      lessons = @digest.instance_eval{ new_lessons }
+      lessons.concat @digest.instance_eval{ open_lessons }
+      lessons.should == [@lesson]
+    end
+
+    it "only loads default new/open lessons once" do
+      channel = FactoryGirl.create(:channel)
+      @lesson.channels << channel
+      @chalkler.channels << channel
+      lessons = @digest.instance_eval{ default_new_lessons }
+      lessons.concat @digest.instance_eval{ default_open_lessons }
+      lessons.should == [@lesson]
+    end
+
     describe "#new_lessons" do
       it "loads a lesson that a chalkler is interested in" do
         lesson1.categories << FactoryGirl.create(:category)
@@ -100,6 +118,11 @@ describe ChalklerDigest do
     end
 
     describe "#open_lessons" do
+      before do
+        @lesson.update_attribute :published_at, 3.days.ago
+        lesson1.update_attribute :published_at, 3.days.ago
+      end
+
       it "loads a lesson that a chalkler is interested in" do
         lesson1.categories << FactoryGirl.create(:category)
         lesson1.channels << @channel
@@ -141,6 +164,11 @@ describe ChalklerDigest do
     end
 
     describe "#default_open_lessons" do
+      before do
+        @lesson.update_attribute :published_at, 3.days.ago
+        lesson1.update_attribute :published_at, 3.days.ago
+      end
+
       it "loads a lesson from channels that chalkler belongs to" do
         lesson1.categories << @category
         lesson1.channels << FactoryGirl.create(:channel)
