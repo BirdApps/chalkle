@@ -52,7 +52,7 @@ class Teaching
     if check_valid_input(params)
       @lesson = Lesson.new(lesson_args)
       if @lesson.save
-        @lesson.channels = [@channels[@channel_select]]
+        @lesson.channels << @channels[@channel_select]
         @lesson.category_ids = @category_primary_id
       else
         return false

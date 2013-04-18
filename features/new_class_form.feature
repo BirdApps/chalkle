@@ -20,3 +20,5 @@ Scenario: Chalkler can select channel if they belong to multiple channels
   And they enter new class details with channel
   Then they should see the new class confirmation message
   And the "Whanau" channel email link will be displayed
+
+Scenario: New class form should compute advertised price based on teacher cost

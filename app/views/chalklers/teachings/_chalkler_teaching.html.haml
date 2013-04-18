@@ -15,7 +15,7 @@
       = f.input :learning_outcomes, :label => "What will we learn from this class?", :as => :text, :placeholder => "List what people will learn. For example: Identify the various ways personal assets can be protected; Identify the most suitable asset protection for the circumstances.", :input_html => { :rows => 2, :class => "span12" }
       = f.input :category_primary_id, :label => "What is the primary category of this class?", :collection => Category.select_options, required: true
       -if @chalkler_teaching.channels.length > 1
-        = f.input :channel_select, :label => "Which channel would you like to hold this class in?", :collection => @chalkler_teaching.channels, required: true
+        = f.input :channel_select, :label => "Which channel would you like to hold this class in?", :collection => @chalkler_teaching.channels, required: true, :input_html => { :multiple => false }
       -else
         = f.hidden_field :channel_select, value: 1
       = f.input :lesson_skill, :label => "What is the skill level of this class?", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }

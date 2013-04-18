@@ -47,7 +47,7 @@ class Lesson < ActiveRecord::Base
   validates :chalkle_percentage_override, allow_nil: true, :numericality => {:less_than_or_equal_to => 1, :message => "Chalkle percentage can not be greater than 100%" }
   validate :max_channel_percentage
   validate :max_teacher_cost
-#  validate :revenue_split_validation
+  validate :revenue_split_validation
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -121,8 +121,8 @@ class Lesson < ActiveRecord::Base
   #Per attendee pricings
   def channel_cost
     teacher_cost.present? ? channel_fee(teacher_cost, teacher_percentage, channel_percentage) : 0
-  end
-
+  end 
+  
   def rounding
     (teacher_cost.present? && cost.present?) ? cost - channel_cost - channel_fee(teacher_cost, teacher_percentage, chalkle_percentage) - teacher_cost : 0
   end
@@ -280,5 +280,6 @@ class Lesson < ActiveRecord::Base
   def channel_fee(teacher_price, teacher_percentage, channel_cut)
     teacher_price / teacher_percentage * channel_cut * (1 + GST)
   end
+
 
 end
