@@ -12,9 +12,10 @@
     -@new_lessons.each do |lesson|
       %tr{style: "border-bottom: solid 4px #fff;"}
         %td{style: "padding: 10px; background: #ececec; width: 100%;"}
-          %h3{style: 'margin-top: 0px; margin-bottom: 5px;'}= link_to "#{lesson.channels.first.name}: #{lesson.name}", lesson.meetup_url, { style: header_link_style }
+          %h3{style: 'margin-top: 0px; margin-bottom: 5px;'}= link_to lesson.name.titleize, lesson.meetup_url, { style: header_link_style }
           %p{style: "color: #777;"}
             = lesson.category_list
+            = "| #{lesson.channel_list}"
             = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
           %p{ style: paragraph_style }= truncate(lesson.do_during_class, length: 250, separator: ' ')
           %p= link_to lesson.join_chalklers, lesson.meetup_url, { style: link_style }
@@ -25,9 +26,10 @@
     -@open_lessons.each do |lesson|
       %tr{style: "border-bottom: solid 4px #fff;"}
         %td{style: "padding: 10px; background: #ececec; width: 100%;"}
-          %h3{style: 'margin-top: 0px; margin-bottom: 5px;'}= link_to "#{lesson.channels.first.name}: #{lesson.name}", lesson.meetup_url, { style: header_link_style }
+          %h3{style: 'margin-top: 0px; margin-bottom: 5px;'}= link_to lesson.name.titleize, lesson.meetup_url, { style: header_link_style }
           %p{style: "color: #777;"}
             = lesson.category_list
+            = "| #{lesson.channel_list}"
             = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
           %p{ style: paragraph_style }= truncate(lesson.do_during_class, length: 250, separator: ' ')
           %p= link_to lesson.join_chalklers, lesson.meetup_url, { style: link_style }
