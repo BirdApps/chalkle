@@ -118,24 +118,20 @@ class Lesson < ActiveRecord::Base
     1 - channel_percentage - chalkle_percentage
   end
 
-  #Pricing
-  def channel_income
-    cost.present? ? channel_fee(cost, teacher_percentage, channel_percentage) : 0
+  #Per attendee pricings
+  def channel_cost
+    teacher_cost.present? ? channel_fee(teacher_cost, teacher_percentage, channel_percentage) : 0
   end
 
   def rounding
-    cost.present? ? cost - channel_income - chalkle_fee(cost, teacher_percentage, chalkle_percentage) - teacher_cost : 0
+    (teacher_cost.present? && cost.present?) ? cost - channel_cost - channel_fee(teacher_cost, teacher_percentage, chalkle_percentage) - teacher_cost : 0
   end
 
   def chalkle_cost
-    cost.present? ? chalkle_fee(cost, teacher_percentage, chalkle_percentage) + rounding : 0
+    teacher_cost.present? ? channel_fee(teacher_cost, teacher_percentage, chalkle_percentage) + rounding : 0
   end
 
-  def gst_content
-    cost.present? ? (channel_income + chalkle_cost)*(1 - 1/(1 + GST)) : 0
-  end
-
-  #Class financials
+  #Class incomes
   def expected_turnover
     total = 0
     bookings.confirmed.visible.each do |b|
@@ -157,15 +153,15 @@ class Lesson < ActiveRecord::Base
   end
 
   def total_cost
-    if teacher_payment.present?
-      ( teacher_payment.present? ? teacher_payment : 0 ) + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 ) + chalkle_payment
+    if !teacher_payment.nil? && !chalkle_payment.nil?
+      teacher_payment + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 ) + chalkle_payment
     else
-      attendance*( teacher_cost.present? ? teacher_cost : 0 + chalkle_fee)
+      attendance*( (teacher_cost.present? ? teacher_cost : 0) + chalkle_cost)
     end
   end
   
   def income
-    collected_turnover - total_cost
+    excl_gst(collected_turnover - total_cost)
   end
 
   def image
@@ -277,15 +273,12 @@ class Lesson < ActiveRecord::Base
   end
 
   #price calculation methods
-  def gst_excl_price(total_price, teacher_percentage)
-    total_price/(1 + GST - GST*teacher_percentage)
+  def excl_gst(price)
+    price/(1 + GST)
   end
 
-  def channel_fee(total_price, teacher_percentage, channel_cut)
-    total_price/(1 + GST - GST*teacher_percentage)*channel_cut*GST
+  def channel_fee(teacher_price, teacher_percentage, channel_cut)
+    teacher_price / teacher_percentage * channel_cut * (1 + GST)
   end
 
-  def chalkle_fee(total_price, teacher_percentage, chalkle_cut)
-    total_price/(1 + GST - GST*teacher_percentage)*chalkle_cut*GST
-  end
 end

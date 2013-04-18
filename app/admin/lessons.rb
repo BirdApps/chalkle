@@ -108,17 +108,17 @@ ActiveAdmin.register Lesson  do
       #     "Not GST registered"
       #   end
       # end
-      row "Advertised price including GST on fees" do
+      row "Advertised price (incl GST)" do
         number_to_currency lesson.cost
+      end
+      row "Teacher fee per attendee (incl. GST if any)" do
+        number_to_currency lesson.teacher_cost
       end
       row "Chalkle fee per attendee (incl. GST)" do
         number_to_currency lesson.chalkle_cost
       end
-      row "Channel income per attendee (incl. GST)" do
-        number_to_currency lesson.channel_income
-      end
-      row "Teacher fee per attendee (incl. GST if any)" do
-        number_to_currency lesson.teacher_cost
+      row "Channel fee per attendee (incl. GST)" do
+        number_to_currency lesson.channel_cost
       end
       row :venue_cost do
         number_to_currency lesson.venue_cost
@@ -131,24 +131,25 @@ ActiveAdmin.register Lesson  do
       end
       row :max_attendee
       row :min_attendee
+
       if lesson.published?
+        row :attendance
+        row "Channel income" do
+          number_to_currency lesson.income
+        end  
         if current_admin_user.role=="super"
+          row :collected_turnover do
+            number_to_currency lesson.collected_turnover
+          end 
           row :teacher_payment do
             number_to_currency lesson.teacher_payment
           end
           row :chalkle_payment do
             number_to_currency lesson.chalkle_payment
-          end
-          row :income do
-            number_to_currency lesson.income
-          end
-          row :collected_turnover do
-            number_to_currency lesson.collected_turnover
-          end          
+          end     
           row :uncollected_turnover do
             number_to_currency lesson.uncollected_turnover
           end
-          row :attendance
           row :bookings_to_collect do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
           end

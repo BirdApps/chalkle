@@ -4,7 +4,7 @@ class AddChalklePaymentToLessons < ActiveRecord::Migration
 
   	Lesson.reset_column_information
 
-    Lesson.all.each { |l| l.update_attribute :chalkle_payment, nil }
+    Lesson.all.each { |l| l.update_attribute :chalkle_payment, 0 }
   end
 
   def down
