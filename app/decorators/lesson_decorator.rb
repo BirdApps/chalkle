@@ -3,7 +3,7 @@ class LessonDecorator < Draper::Decorator
 
   def category_list
     return if source.categories.blank?
-    "In #{source.categories.map(&:name).join(', ').titleize}" if categories.any?
+    "In #{source.categories.map(&:name).join(', ').titleize}"
   end
 
   def join_chalklers
