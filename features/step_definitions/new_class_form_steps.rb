@@ -24,3 +24,12 @@ Then /^the "(.*?)" channel email link will be displayed$/ do |channel|
   channel = Channel.find_by_name channel
   page.should have_link(channel.email)
 end
+
+When /^they enter a teacher cost$/ do 
+  fill_in 'teaching_teacher_cost', with: '20'
+end
+
+Then /^the advertised price will be displayed$/ do
+  find_field('teaching_teacher_cost').value.should eq '20'
+end
+

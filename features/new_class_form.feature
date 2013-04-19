@@ -22,3 +22,6 @@ Scenario: Chalkler can select channel if they belong to multiple channels
   And the "Whanau" channel email link will be displayed
 
 Scenario: New class form should compute advertised price based on teacher cost
+  When they visit the "Teach" page
+  And they enter a teacher cost
+  Then the advertised price will be displayed
