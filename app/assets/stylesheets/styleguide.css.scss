@@ -120,15 +120,15 @@ blockquote {
 }
 
 .heading-on-bg {
-  padding: 5px 10px;
+  padding: 5px 15px;
 }
 
 h3.heading-on-bg-inline {
-  padding: 0px 10px;
+  padding: 0px 15px;
 }
 
 .heading-on-bg-inline {
-  padding: 5px 10px;
+  padding: 5px 10px 4px 10px;
   display: inline-block;
 }
 
@@ -164,9 +164,6 @@ h3.heading-on-bg-inline {
 
 //Forms
 .forms_examples {
-  .form-vertical {
-  }
-
 
   select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     margin-bottom: 0;
@@ -175,15 +172,18 @@ h3.heading-on-bg-inline {
   .form-inputs {
     padding: 20px;
     border: $border-dashed;
-    border: solid 1px $grayLighter;
     border-bottom: none;
   }
   .form-actions {
-    border: solid 1px #444;
     margin: 0;
   }
   .control-group {
     margin-bottom: $baseLineHeight;
+    &.error {
+      .control-label { color: $gray-light; }
+      .help-inline {
+      }
+    }
   }
   label {
     font-weight: bold;
@@ -191,6 +191,42 @@ h3.heading-on-bg-inline {
     &.checkbox {
       font-weight: normal;
       color: $gray-dark;
+    }
+  }
+}
+
+#form_option2 {
+  h2 {
+    margin-bottom: 0;
+  }
+
+  p {color: #fff;}
+  .form-inputs {
+    padding: 20px;
+    border: none;
+    border: solid 1px #444;
+    border-bottom: none;
+  }
+  .form-actions {
+    border: solid 1px $grayLight;
+    margin: 0;
+  }
+  .control-group {
+    margin-bottom: $baseLineHeight;
+    &.error {
+      .control-label { color: #fff; }
+      .help-inline {
+        background: $errorBackground;
+        border: 1px solid $errorBorder;
+      }
+    }
+  }
+  label {
+    font-weight: normal;
+    color: #fff;
+    &.checkbox {
+      font-weight: normal;
+      color: #fff;
     }
   }
 }

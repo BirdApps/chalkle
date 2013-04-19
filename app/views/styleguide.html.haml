@@ -250,15 +250,17 @@
               %label.control-label{for: "email"} Email
               .controls
                 %input#email.string.email.optional{ :type => "email", :size => 50}/
-            .control-group.select.optional
+            .control-group.select.optional.error
               %label.control-label{for: "select"} Select
               .controls
                 %select#select
                   %option{:value => "daily"} Daily
                   %option{:value => "weekly"} Weekly
+                %span.help-inline Must be a something or other.
             .control-group.check_boxes.optional
               %label.control-label{for: "select"} Checks
-              .controls
+              .controls.unchecked{data: {toggle: "checkboxes"}}
+                =link_to "Select All", "#", class: "checkbox-toggle-button"
                 %label.checkbox
                   %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "47"}>/
                   agriculture & environment
@@ -278,23 +280,25 @@
           .form-actions.texture-gray-med
             %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
 
-      #form_option1.tab-pane.fade.in.active
-        %h2 Form Title
-        %form.form-vertical.texture-gray-light
+      #form_option2.tab-pane.fade
+        %h2.color-white.background-color-pink.heading-on-bg-inline Form Title
+        %form.form-vertical.texture-gray-med
           .form-inputs
             .control-group.email.optional
               %label.control-label{for: "email"} Email
               .controls
                 %input#email.string.email.optional{ :type => "email", :size => 50}/
-            .control-group.select.optional
+            .control-group.select.optional.error
               %label.control-label{for: "select"} Select
               .controls
                 %select#select
                   %option{:value => "daily"} Daily
                   %option{:value => "weekly"} Weekly
+                %span.help-inline Must be a something or other.
             .control-group.check_boxes.optional
               %label.control-label{for: "select"} Checks
-              .controls
+              .controls.unchecked{data: {toggle: "checkboxes"}}
+                =link_to "Select All", "#", class: "checkbox-toggle-button"
                 %label.checkbox
                   %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "47"}>/
                   agriculture & environment
@@ -311,6 +315,5 @@
             %p
               %strong Note:
               even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
-          .form-actions.texture-gray-med
+          .form-actions.texture-gray-light
             %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
-

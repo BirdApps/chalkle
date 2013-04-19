@@ -8,26 +8,29 @@ Utils.CheckBoxChecker.watchBoxes = ()->
   $('[data-toggle="checkboxes"] input[type=checkbox]').on 'change', ()->
     wrapper = $(@).closest('[data-toggle="checkboxes"]')
     if wrapper.find('input[type=checkbox]:checked').length
-      wrapper.find('a').text("Deselect all")
-      wrapper.attr('class', 'checked')
+      console.log "what"
+      wrapper.find('a.checkbox-toggle-button').text("Deselect all")
+      wrapper.removeClass("unchecked").addClass("checked")
     else
-      wrapper.find('a').text("Select all")
-      wrapper.attr('class', 'unchecked')
+      console.log "why"
+      wrapper.find('a.checkbox-toggle-button').text("Select all")
+      wrapper.removeClass("checked").addClass("unchecked")
   
 Utils.CheckBoxChecker.watchButtonClick = ()->
   $('[data-toggle="checkboxes"] a.checkbox-toggle-button').on 'click', (e)->
     e.preventDefault()
     wrapper = $(@).closest('[data-toggle="checkboxes"]')
-    state = wrapper.attr('class')
-    if state == "unchecked"
-      wrapper.find('input[type=checkbox]').prop('checked', true).change()
+    if wrapper.hasClass "unchecked"
+      setTimeout(()->
+        wrapper.find('input[type=checkbox]').prop('checked', true).trigger "change"
+      , 20)
 
-    if state == "checked"
+    if wrapper.hasClass "checked"
       wrapper.find('input[type=checkbox]').prop('checked', false).change()
 
 Utils.CheckBoxChecker.init = ()->
-  Utils.CheckBoxChecker.watchBoxes()
   Utils.CheckBoxChecker.watchButtonClick()
+  Utils.CheckBoxChecker.watchBoxes()
 
 
 $(document).ready ()->
