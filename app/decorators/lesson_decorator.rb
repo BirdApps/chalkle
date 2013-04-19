@@ -3,11 +3,7 @@ class LessonDecorator < Draper::Decorator
 
   def channel_list
     return if source.channels.blank?
-    if source.channels.count == 1
-      "Channel: #{source.channels.first.name.titleize}"
-    else
-      "Channels: #{source.channels.map(&:name).join(', ')}"
-    end
+    source.channels.map{ |c| c.name.capitalize }.join(', ')
   end
 
   def category_list

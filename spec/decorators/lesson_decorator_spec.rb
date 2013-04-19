@@ -10,13 +10,13 @@ describe LessonDecorator do
 
     it "formats a single channel" do
       lesson.channels << FactoryGirl.create(:channel, name: 'Wellington')
-      lesson.channel_list.should == 'Channel: Wellington'
+      lesson.channel_list.should == 'Wellington'
     end
 
     it "formats multiple channels" do
       lesson.channels << FactoryGirl.create(:channel, name: 'Wellington')
       lesson.channels << FactoryGirl.create(:channel, name: 'Whanau')
-      lesson.channel_list.should == 'Channels: Wellington, Whanau'
+      lesson.channel_list.should == 'Wellington, Whanau'
     end
   end
 
