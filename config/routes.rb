@@ -10,6 +10,10 @@ Chalkle::Application.routes.draw do
     root to: "dashboard#index"
     match '/classes' => 'dashboard#classes', as: 'classes'
     resources :lesson_suggestions, :only => [:new, :create]
+
+    get '/enter_email' => 'preferences#enter_email', as: 'enter_email'
+    put '/enter_email' => 'preferences#enter_email', as: 'enter_email'
+
     resources :teachings do
       collection do
         get 'success'

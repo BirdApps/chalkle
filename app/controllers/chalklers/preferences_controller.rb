@@ -18,4 +18,18 @@ class Chalklers::PreferencesController < Chalklers::BaseController
   def meetup_email_settings
     render 'chalklers/dashboard/meetup_email_settings'
   end
+
+  def enter_email
+    @chalkler = current_chalkler
+    if params[:chalkler].blank?
+      render template: 'chalklers/enter_email'
+    else
+      @chalkler.email = params[:chalkler][:email]
+      if @chalkler.save
+        redirect_to root_url, notice: 'Welcome to chalkle! Sign in successful.'
+      else
+        render template: 'chalklers/enter_email'
+      end
+    end
+  end
 end

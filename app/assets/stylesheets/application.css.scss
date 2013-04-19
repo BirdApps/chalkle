@@ -4,14 +4,14 @@
 @font-face {
   font-family: 'MrChalk';
   src: url('/assets/25FE67_0_0.eot');
-  src: url('/assets/25FE67_0_0.eot?#iefix') format('embedded-opentype'), 
-  url('/assets/25FE67_0_0.woff') format('woff'), 
+  src: url('/assets/25FE67_0_0.eot?#iefix') format('embedded-opentype'),
+  url('/assets/25FE67_0_0.woff') format('woff'),
   url('/assets/25FE67_0_0.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
-$font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+$font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 $font_family_normal: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
 $pink: #cd4063;
@@ -76,6 +76,9 @@ body {
   color: white;
   padding: 20px 60px;
   border: solid 2px #222;
+  h2 {
+    font-family: $font_family_chalk;
+  }
 }
 
 
