@@ -1,5 +1,5 @@
 ActiveAdmin.register Chalkler do
-  config.sort_order = "created_at"
+  config.sort_order = "created_at_desc"
 
   controller do
     load_resource :except => :index
