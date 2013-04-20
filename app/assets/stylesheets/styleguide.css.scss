@@ -11,6 +11,27 @@ $texture-chalkboard: asset-url("texture-chalkboard.jpg", "image") repeat;
 
 $border-dashed: dashed 1px $gray-light;
 
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+hr.dashed {
+  border-top: dashed 1px $grayLight;
+}
+
+.icon {
+  color: $grayLight;
+  &:hover {
+    text-decoration: none;
+    font-size: 18px;
+    @include transition(all 150ms ease);
+    @include scale(1.3);
+  }
+}
+
+.row {
+  margin-bottom: $baseLineHeight;
+}
 .texture-block {
   height: 100px;
   margin-bottom: 20px;
@@ -50,6 +71,10 @@ $border-dashed: dashed 1px $gray-light;
 
 .color-white { 
   color: #fff; 
+}
+
+.color-red { 
+  color: $red; 
 }
 
 .color-pink { 
@@ -165,10 +190,23 @@ h3.heading-on-bg-inline {
 //Forms
 .forms_examples {
 
-  select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     margin-bottom: 0;
+    height: 100%;
+    width: 250px;
   }
 
+  .checkbox-toggle-button {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    margin-top: -3px;
+  }
+
+  textarea {
+    margin-bottom: 0;
+    height: 100%;
+  }
   .form-inputs {
     padding: 20px;
     border: $border-dashed;
@@ -201,16 +239,23 @@ h3.heading-on-bg-inline {
   }
 
   p {color: #fff;}
+
   .form-inputs {
     padding: 20px;
     border: none;
     border: solid 1px #444;
     border-bottom: none;
   }
+
+  .checkbox-toggle-button {
+    color: #fff;
+  }
+
   .form-actions {
     border: solid 1px $grayLight;
     margin: 0;
   }
+
   .control-group {
     margin-bottom: $baseLineHeight;
     &.error {
@@ -228,5 +273,91 @@ h3.heading-on-bg-inline {
       font-weight: normal;
       color: #fff;
     }
+  }
+}
+
+#form_option3, #form_option4 {
+  select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    margin-bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  .form-inputs {
+    padding: 20px;
+    border: solid 1px #999;
+    border-bottom: none;
+    @include border-radius(3px 3px 0 0);
+    h2 {
+      margin-top: 0;
+      margin-bottom: $baseLineHeight;
+    }
+  }
+  .form-actions {
+    margin: 0;
+    border: solid 1px #444;
+    @include border-radius(0 0 3px 3px);
+  }
+  .control-group {
+    margin-bottom: $baseLineHeight;
+    &.error {
+      .control-label { color: $gray-dark; }
+      .help-inline {
+        margin-top: 5px;
+        display: block;
+      }
+    }
+  }
+  label {
+    font-weight: normal;
+    color: $gray-dark;
+    &.checkbox {
+      font-weight: normal;
+      color: $gray-dark;
+    }
+  }
+}
+
+.btn {
+  @include transition(all 150ms ease);
+  &:hover {
+    @include scale(1.05);
+    @include rotate(-2deg);
+  }
+}
+.btn-opt-2 {
+  .btn {
+    @include border-radius(2px);
+    &:hover {
+      @include scale(1.05);
+    }
+  }
+}
+
+//Tables
+.delete-col {
+  width: 10px;
+}
+
+table {
+  select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    height: 32px;
+    margin-bottom: 0;
+  }
+}
+
+tr.editing {
+  .icon {
+    margin-top: 4px;
+  }
+  td {
+    background: $infoBackground;
+  }
+}
+
+.search-filters {
+  input[type="text"] {
+    height: 32px;
   }
 }

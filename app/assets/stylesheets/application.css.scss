@@ -1,3 +1,6 @@
+$iconSpritePath: '';
+$iconWhiteSpritePath: '';
+@import "font-awesome";
 @import "_variables";
 @import "bootstrap";
 @import "bourbon";
@@ -63,7 +66,7 @@ body {
         &:hover {
           background: none;
           color: $pink;
-          -webkit-transform: rotate(-2deg);
+          @include rotate(-2deg);
           text-decoration: underline;
         }
       }

@@ -58,6 +58,18 @@
               %p
                 %small
                   Usage: body text.
+        .row
+          .span12
+            .alert
+              %button.close{"data-dismiss" => "alert", :type => "button"} ×
+              Alert Alert
+            .alert.alert-error
+              %button.close{"data-dismiss" => "alert", :type => "button"} ×
+              Alert Error
+            .alert.alert-success
+              %button.close{"data-dismiss" => "alert", :type => "button"} ×
+              Alert Success
+
           .span12
             %p.color-grey-dark
               Lorem ipsum dolor sit amet, consectetur 
@@ -118,6 +130,17 @@
               %p
                 %small
                   Usage: body text.
+        .row
+          .span12
+            .alert
+              %button.close{"data-dismiss" => "alert", :type => "button"} ×
+              Alert Alert
+            .alert.alert-error
+              %button.close{"data-dismiss" => "alert", :type => "button"} ×
+              Alert Error
+            .alert.alert-success
+              %button.close{"data-dismiss" => "alert", :type => "button"} ×
+              Alert Success
           .span12
             %p.color-grey-dark
               Lorem ipsum dolor sit amet, consectetur 
@@ -241,6 +264,8 @@
     %ul.nav.nav-tabs
       =tab_nav_item "Option 1", "#form_option1", class: "active"
       =tab_nav_item "Option 2", "#form_option2"
+      =tab_nav_item "Option 3", "#form_option3"
+      =tab_nav_item "Option 4", "#form_option4"
     .tab-content
       #form_option1.tab-pane.fade.in.active
         %h2 Form Title
@@ -317,3 +342,238 @@
               even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
           .form-actions.texture-gray-light
             %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
+      #form_option3.tab-pane.fade
+        %form.form-vertical.texture-gray-light
+          .form-inputs
+            %h2.dashed-underline Form Title
+            .control-group.email.optional
+              %label.control-label{for: "email"} Email
+              .controls
+                %input#email.string.email.optional{ :type => "email", :size => 50}/
+            .control-group.select.optional.error
+              %label.control-label{for: "select"} Select
+              .controls
+                %select#select
+                  %option{:value => "daily"} Daily
+                  %option{:value => "weekly"} Weekly
+                %span.help-inline Must be a something or other.
+            .control-group.check_boxes.optional
+              %label.control-label{for: "select"} Checks
+              .controls.unchecked{data: {toggle: "checkboxes"}}
+                =link_to "Select All", "#", class: "checkbox-toggle-button"
+                %label.checkbox
+                  %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "47"}>/
+                  agriculture & environment
+                %label.checkbox
+                  %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "53"}>/
+                  food & drink
+                %label.checkbox
+                  %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "55"}>/
+                  health & wellbeing
+            .control-group.text.optional
+              %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
+              .controls
+                %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+            %p
+              %strong Note:
+              even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
+          .form-actions.texture-gray-med
+            %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
+      #form_option4.tab-pane.fade
+        .row
+          .span6
+            %form.form-vertical.texture-gray-light
+              .form-inputs
+                %h2.dashed-underline Form Title
+                .control-group.email.optional
+                  %label.control-label{for: "email"} Email
+                  .controls
+                    %input#email.string.email.optional{ :type => "email", :size => 50}/
+                .control-group.select.optional.error
+                  %label.control-label{for: "select"} Select
+                  .controls
+                    %select#select
+                      %option{:value => "daily"} Daily
+                      %option{:value => "weekly"} Weekly
+                    %span.help-inline Must be a something or other.
+                .control-group.check_boxes.optional
+                  %label.control-label{for: "select"} Checks
+                  .controls.unchecked{data: {toggle: "checkboxes"}}
+                    =link_to "Select All", "#", class: "checkbox-toggle-button"
+                    %label.checkbox
+                      %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "47"}>/
+                      agriculture & environment
+                    %label.checkbox
+                      %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "53"}>/
+                      food & drink
+                    %label.checkbox
+                      %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "55"}>/
+                      health & wellbeing
+                .control-group.text.optional
+                  %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
+                  .controls
+                    %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+                %p
+                  %strong Note:
+                  even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
+              .form-actions.texture-gray-med
+                %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
+          .span6
+            %form.form-vertical.texture-gray-light
+              .form-inputs
+                %h2.dashed-underline Form Title
+                .control-group.email.optional
+                  %label.control-label{for: "email"} Email
+                  .controls
+                    %input#email.string.email.optional{ :type => "email", :size => 50}/
+                .control-group.select.optional.error
+                  %label.control-label{for: "select"} Select
+                  .controls
+                    %select#select
+                      %option{:value => "daily"} Daily
+                      %option{:value => "weekly"} Weekly
+                    %span.help-inline Must be a something or other.
+                .control-group.check_boxes.optional
+                  %label.control-label{for: "select"} Checks
+                  .controls.unchecked{data: {toggle: "checkboxes"}}
+                    =link_to "Select All", "#", class: "checkbox-toggle-button"
+                    %label.checkbox
+                      %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "47"}>/
+                      agriculture & environment
+                    %label.checkbox
+                      %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "53"}>/
+                      food & drink
+                    %label.checkbox
+                      %input.check_boxes.optional{:name => "chalkler_preferences[email_categories][]", :type => "checkbox", :value => "55"}>/
+                      health & wellbeing
+                .control-group.text.optional
+                  %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
+                  .controls
+                    %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+                %p
+                  %strong Note:
+                  even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
+              .form-actions.texture-gray-med
+                %input.btn.btn-inverse{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
+
+.buttons.row
+  .span12
+    %h2 Buttons and hr
+  .span12
+    %a.btn{href: "#"} .btn
+    %a.btn.btn-primary{href: "#"} .btn-primary
+    %a.btn.btn-info{href: "#"} .btn-info
+    %a.btn.btn-inverse{href: "#"} .btn-inverse
+  %hr.span12
+  .span12.btn-opt-2
+    %a.btn{href: "#"} .btn
+    %a.btn.btn-primary{href: "#"} .btn-primary
+    %a.btn.btn-info{href: "#"} .btn-info
+    %a.btn.btn-inverse{href: "#"} .btn-inverse
+  %hr.dashed.span12
+  .span12.btn-opt-2
+    %a.btn.btn-large{href: "#"} .btn large
+    %a.btn.btn-small.btn-primary{href: "#"} .btn-primary small
+    %a.btn.btn-mini.btn-info{href: "#"} .btn-info mini
+    %a.btn.btn-inverse{href: "#"} .btn-inverse normal
+
+.lists.row
+  -@data = [{ id: 1, name: "Sirius Snape", channel: "Chalkler", money: "$11.10"}, { id: 20, name: "Harry Potter", channel: "Sonny", money: "$10.50"}, { id: 2591, name: "Longbottom Long Name", channel: "Twice Wordly", money: "$1.50"}]
+  .span12
+    %h2 Lists
+    %ul.nav.nav-tabs
+      =tab_nav_item "Option 1", "#table_option1", class: "active"
+      =tab_nav_item "Option 2", "#table_option2"
+      =tab_nav_item "Option 3", "#table_option3"
+      =tab_nav_item "Option 4", "#table_option4"
+    .tab-content
+      #table_option1.tab-pane.fade.in.active
+        .search-filters
+          .pull-right
+            %form.form-search
+              .input-append
+                %input.span3.search-query{:type => "text"}/
+                %button.btn{:type => "submit"}
+                  %i.icon.icon-search
+        %table.table.table-striped
+          %thead
+            %tr
+              %th 
+              %th ID
+              %th Name
+              %th Channel
+              %th Money
+              %th.delete-col
+          %tbody
+            -@data.each do |d|
+              %tr
+                %td
+                  %a{href: "#"}
+                    %i.icon.icon-pencil
+                %td=d[:id]
+                %td= link_to d[:name], "#"
+                %td=d[:channel]
+                %td=d[:money]
+                %td
+                  =link_to "#", confirm: "Really delete #{d[:name]}" do
+                    %i.icon.color-red.icon-remove
+            %tr.editing
+              %td
+                %a{href: "#"}
+                  %i.icon.icon-arrow-left
+              %td
+              %td
+                %input{type: "text", value: "Aldus Dumbledore"}
+              %td
+                %input{type: "text", value: "Gryffindor"}
+              %td
+                %input{type: "number", value: 100.50}
+              %td
+                =link_to "#" do
+                  %i.icon.color-green.icon-ok
+      #table_option2.tab-pane.fade
+        .search-filters
+          .pull-right
+            %form.form-search
+              .input-append
+                %input.span3.search-query{:type => "text"}/
+                %button.btn{:type => "submit"}
+                  %i.icon.icon-search
+        %table.table.table-striped
+          %thead
+            %tr
+              %th 
+              %th ID
+              %th Name
+              %th Channel
+              %th Money
+              %th.delete-col
+          %tbody
+            -@data.each do |d|
+              %tr
+                %td
+                  %a{href: "#"}
+                    %i.icon.icon-pencil
+                %td=d[:id]
+                %td= link_to d[:name], "#"
+                %td=d[:channel]
+                %td=d[:money]
+                %td
+                  =link_to "#", confirm: "Really delete #{d[:name]}" do
+                    %i.icon.color-red.icon-remove
+            %tr.editing
+              %td
+                %a{href: "#"}
+                  %i.icon.icon-arrow-left
+              %td
+              %td
+                %input{type: "text", value: "Aldus Dumbledore"}
+              %td
+                %input{type: "text", value: "Gryffindor"}
+              %td
+                %input{type: "number", value: 100.50}
+              %td
+                =link_to "#" do
+                  %i.icon.color-green.icon-ok
+
+
