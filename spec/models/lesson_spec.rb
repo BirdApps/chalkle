@@ -236,7 +236,7 @@ describe Lesson do
       end
 
       it "should calculate dollars paid to channel per attendee" do
-        @lesson.channel_cost.round(2).should == (@lesson.teacher_cost/@lesson.teacher_percentage*@lesson.channel_cost*(1 + @GST)).round(2)
+        @lesson.channel_cost.round(2).should == (@lesson.teacher_cost/@lesson.teacher_percentage*@lesson.channel_percentage*(1 + @GST)).round(2)
       end
 
       it "should calculate rounding contribution to the pricing" do
@@ -244,11 +244,11 @@ describe Lesson do
       end
 
       it "should calculate dollars paid to chalkle per attendee" do
-        @lesson.chalkle_cost.round(2).should == @lesson.cost - @lesson.channel_cost - @lesson.teacher_cost
+        @lesson.chalkle_cost.round(2).should == (@lesson.cost - @lesson.channel_cost - @lesson.teacher_cost).round(2)
       end
 
       it "should calculate channel income excluding GST component" do
-        @lesson.income.should == @lesson.teacher_cost/@lesson.teacher_percentage*@lesson.channel_cost
+        @lesson.income.round(2).should == (-(@lesson.teacher_payment + @lesson.chalkle_payment)/(1 + @GST)).round(2)
       end
     end
 
