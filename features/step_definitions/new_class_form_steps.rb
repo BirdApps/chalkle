@@ -30,6 +30,10 @@ When /^they enter a teacher cost$/ do
 end
 
 Then /^the advertised price will be displayed$/ do
-  find_field('teaching_teacher_cost').value.should eq '20'
+#  page.has_field?('teaching_price', :text => "80")
+#  find_field('teaching_price').should have_content('80')
+  page.find("input#teaching_price").should have_content("80")
+
+#  page.has_selector?('input#teaching_price', :with => "80")
 end
 
