@@ -1,4 +1,4 @@
-$("#teaching_teacher_cost").change (e) ->
+$("#teaching_teacher_cost").keyup (e) ->
   if (parseFloat(e.target.value) > 0) && $("#teaching_channel_id").val()
     ChannelIndex = channel_index.indexOf($("#teaching_channel_id").val())
     TeacherPercent = parseFloat(teacher_percentages[ChannelIndex])

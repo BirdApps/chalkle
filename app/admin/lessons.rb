@@ -114,7 +114,7 @@ ActiveAdmin.register Lesson  do
       row "Teacher fee per attendee (incl. GST if any)" do
         number_to_currency lesson.teacher_cost
       end
-      row "Chalkle fee per attendee (incl. GST)" do
+      row "Chalkle fee per attendee (incl. GST and rounding)" do
         number_to_currency lesson.chalkle_cost
       end
       row "Channel fee per attendee (incl. GST)" do
