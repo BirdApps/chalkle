@@ -13,7 +13,7 @@ ActiveAdmin.register Chalkler do
         return
       end
       @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst],
-        meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name])
+        meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name], phone_number: params[:chalkler][:phone_number])
       if @chalkler.save
         update!
       else
@@ -76,6 +76,7 @@ ActiveAdmin.register Chalkler do
         end
       end
       row :email
+      row :phone_number
       row :email_frequency
       # row "Email categories" do
         # if chalkler.email_categories.present?
@@ -91,7 +92,6 @@ ActiveAdmin.register Chalkler do
           # "No email streams selected"
         # end
       # end
-      row :gst
       row :bio
       row :teaching do
         render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons_taught }

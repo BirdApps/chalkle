@@ -4,7 +4,7 @@ class Chalkler < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me,
-    :channel_ids, :gst, :provider, :uid, :email_frequency, :email_categories, :email_streams
+    :channel_ids, :gst, :provider, :uid, :email_frequency, :email_categories, :email_streams, :phone_number
 
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
@@ -63,15 +63,16 @@ class Chalkler < ActiveRecord::Base
   end
 
   def self.find_for_meetup_oauth(auth, signed_in_resource=nil)
-    chalkler = Chalkler.where(:provider => auth.provider, :uid => auth.uid.to_s).first
-      unless chalkler
-        chalkler = Chalkler.create(name: auth.extra.raw_info.name,
-                                   provider: auth.provider,
-                                   uid: auth.uid.to_s,
-                                   meetup_id: auth.uid,
-                                   email: auth.info.email,
-                                   password: Devise.friendly_token[0,20])
-      end
+    chalkler = Chalkler.where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
+    unless chalkler
+      chalkler = Chalkler.create(name: auth[:extra][:raw_info][:name],
+                           provider: auth[:provider],
+                           uid: auth[:uid].to_s,
+                           meetup_id: auth[:uid],
+                           email: auth[:info][:email],
+                           password: Devise.friendly_token[0,20]
+                           )
+    end
     chalkler
   end
 

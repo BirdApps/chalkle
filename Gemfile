@@ -21,6 +21,7 @@ gem 'dragonfly',     '~> 0.9.14'
 gem 'delayed_job_active_record'
 gem 'squeel',        '~> 1.0.18'
 gem 'validates_timeliness', '~> 3.0'
+gem 'whenever', :require => false
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"

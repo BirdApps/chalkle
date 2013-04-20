@@ -3,6 +3,23 @@ require 'spec_helper'
 describe LessonDecorator do
   let(:lesson) { FactoryGirl.create(:lesson).decorate }
 
+  describe ".channel_list" do
+    it "returns nil when a lesson has no channels" do
+      lesson.channel_list.should be_nil
+    end
+
+    it "formats a single channel" do
+      lesson.channels << FactoryGirl.create(:channel, name: 'Wellington')
+      lesson.channel_list.should == 'Channel: Wellington'
+    end
+
+    it "formats multiple channels" do
+      lesson.channels << FactoryGirl.create(:channel, name: 'Wellington')
+      lesson.channels << FactoryGirl.create(:channel, name: 'Whanau')
+      lesson.channel_list.should == 'Channels: Wellington, Whanau'
+    end
+  end
+
   describe ".category_list" do
     it "returns nil when a lesson has no categories" do
       lesson.category_list.should be_nil

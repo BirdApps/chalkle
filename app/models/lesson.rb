@@ -170,7 +170,7 @@ class Lesson < ActiveRecord::Base
 
   # this should be a scope
   def bookable?
-    bookings.count < max_attendee.to_i
+    attendance < max_attendee.to_i
   end
 
   def published?

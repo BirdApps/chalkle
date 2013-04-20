@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spork'
 require 'email_spec'
+require 'capybara/rspec'
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
@@ -17,6 +18,12 @@ prefork = lambda {
   RSpec.configure do |config|
     config.include(EmailSpec::Helpers)
     config.include(EmailSpec::Matchers)
+    config.include Devise::TestHelpers, :type => :controller
+    config.extend ControllerMacros, :type => :controller
+    config.include IntegrationSpecHelper, :type => :request
+    Capybara.register_driver :javascript do |app|
+      Capybara::Selenium::Driver.new(app, :browser => :chrome)
+    end
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
