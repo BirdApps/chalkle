@@ -18,7 +18,7 @@ describe "Teachings" do
     availabilities: '' ,
     additional_comments: '',
     category_primary_id: category.id,
-    channel_select: 2
+    channel_id: channel.id
   } }
 
   before do
@@ -113,7 +113,7 @@ describe "Teachings" do
   	let(:category) { FactoryGirl.create(:category, name: "music and dance") }
     let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
     free_lesson: '0', teacher_cost: '20', price: '30', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
-    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, channel_select: 1} }
+    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, channel_id: channel.id} }
 
   	it "create an unreviewed lesson with correct form" do
   		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unpublished, :count).by(1)

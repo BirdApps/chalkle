@@ -21,7 +21,10 @@ Scenario: Chalkler can select channel if they belong to multiple channels
   Then they should see the new class confirmation message
   And the "Whanau" channel email link will be displayed
 
+@javascript
 Scenario: New class form should compute advertised price based on teacher cost
+  Given the chalkler "Sina" belongs to the "Whanau" channel
   When they visit the "Teach" page
+  And they select the "Whanau" channel
   And they enter a teacher cost
-  Then the advertised price will be displayed
+  Then the advertised price for the "Whanau" channel will be displayed

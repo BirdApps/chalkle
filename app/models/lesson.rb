@@ -120,15 +120,15 @@ class Lesson < ActiveRecord::Base
 
   #Per attendee pricings
   def channel_cost
-    teacher_cost.present? ? channel_fee(teacher_cost, teacher_percentage, channel_percentage) : 0
+    teacher_cost.present? ? fee(teacher_cost, teacher_percentage, channel_percentage) : 0
   end 
   
   def rounding
-    (teacher_cost.present? && cost.present?) ? cost - channel_cost - channel_fee(teacher_cost, teacher_percentage, chalkle_percentage) - teacher_cost : 0
+    (teacher_cost.present? && cost.present?) ? cost - channel_cost - fee(teacher_cost, teacher_percentage, chalkle_percentage) - teacher_cost : 0
   end
 
   def chalkle_cost
-    teacher_cost.present? ? channel_fee(teacher_cost, teacher_percentage, chalkle_percentage) + rounding : 0
+    teacher_cost.present? ? fee(teacher_cost, teacher_percentage, chalkle_percentage) + rounding : 0
   end
 
   #Class incomes
@@ -153,7 +153,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def total_cost
-    if !teacher_payment.nil? && !chalkle_payment.nil?
+    if teacher_payment.present? && chalkle_payment.present?
       teacher_payment + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 ) + chalkle_payment
     else
       attendance*( (teacher_cost.present? ? teacher_cost : 0) + chalkle_cost)
@@ -277,9 +277,8 @@ class Lesson < ActiveRecord::Base
     price/(1 + GST)
   end
 
-  def channel_fee(teacher_price, teacher_percentage, channel_cut)
+  def fee(teacher_price, teacher_percentage, channel_cut)
     teacher_price / teacher_percentage * channel_cut * (1 + GST)
   end
-
 
 end

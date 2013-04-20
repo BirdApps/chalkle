@@ -12,7 +12,7 @@ When /^they enter new class details with channel$/ do
   fill_in 'teaching_do_during_class', with: 'learning new stuff'
   fill_in 'teaching_learning_outcomes', with: 'the new stuff'
   select 'Science', from: 'teaching_category_primary_id'
-  select 'Whanau', from: 'teaching_channel_select'
+  select 'Whanau', from: 'teaching_channel_id'
   click_button 'Submit my class'
 end
 
@@ -25,15 +25,17 @@ Then /^the "(.*?)" channel email link will be displayed$/ do |channel|
   page.should have_link(channel.email)
 end
 
-When /^they enter a teacher cost$/ do 
+When /^they select the "(.*?)" channel$/ do |channel|
+  select channel, from: 'teaching_channel_id'
+end
+
+And /^they enter a teacher cost$/ do
   fill_in 'teaching_teacher_cost', with: '20'
 end
 
-Then /^the advertised price will be displayed$/ do
-#  page.has_field?('teaching_price', :text => "80")
-#  find_field('teaching_price').should have_content('80')
-  page.find("input#teaching_price").should have_content("80")
-
-#  page.has_selector?('input#teaching_price', :with => "80")
+Then /^the advertised price for the "(.*?)" channel will be displayed$/ do |channel|
+  page.execute_script("$('teaching_teacher_cost').change()")
+  channel = Channel.find_by_name channel
+  GST = 0.15
+  find_field('teaching_price').value.should == (( 20*( (1+GST)/channel.teacher_percentage - GST) ).ceil).to_s
 end
-
