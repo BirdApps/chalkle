@@ -515,7 +515,7 @@
                 %td=d[:channel]
                 %td=d[:money]
                 %td
-                  =link_to "#", confirm: "Really delete #{d[:name]}" do
+                  =link_to "#", class: "destroy", confirm: "Really delete #{d[:name]}" do
                     %i.icon.color-red.icon-remove
             %tr.editing
               %td
@@ -529,7 +529,7 @@
               %td
                 %input{type: "number", value: 100.50}
               %td
-                =link_to "#" do
+                =link_to "#", class: "destroy" do
                   %i.icon.color-green.icon-ok
       #table_option2.tab-pane.fade
         .search-filters
@@ -575,5 +575,11 @@
               %td
                 =link_to "#" do
                   %i.icon.color-green.icon-ok
+:javascript
+  $('.destroy').on('mouseenter', function() {
+    $(this).closest('tr').addClass('table-destroy');
+  }).on('mouseleave', function(){
+    $(this).closest('tr').removeClass('table-destroy');
+  })
 
 

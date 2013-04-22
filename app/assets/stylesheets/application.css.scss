@@ -21,6 +21,9 @@ $font_family_normal: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica N
 $pink: #cd4063;
 $blackboard: #2d2c29;
 
+html {
+  overflow-y: scroll;
+}
 body {
   padding-top: 0;
 }
@@ -37,9 +40,9 @@ body {
     padding: 0;
     margin: 0;
   }
-  .navbatexture-gray-dark {
+  .navbar-texture-gray-dark {
     background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
-    padding: 10px 0;
+    padding: ($baseLineHeight / 2) 0;
     border-bottom: solid 1px gray;
   }
   .nav {
