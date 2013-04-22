@@ -34,6 +34,7 @@
       = f.input :free_lesson, :label => false, :inline_label => "Check here if you want this class to be offered for free", as: :boolean
 
       = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST)? Note the advertised price of this class will be higher than the amount you entered here because chalkle needs to pay for additional costs", :wrapper => :prepend do
+        = content_tag :span, "$", :class => "add-on"
         = f.input_field :teacher_cost, :placeholder => "0.00"
         = content_tag :span, "Per attendee", :class => "add-on"
 
