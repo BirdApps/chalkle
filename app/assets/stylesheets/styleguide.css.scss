@@ -34,9 +34,6 @@ hr.dashed {
   }
 }
 
-.row {
-  margin-bottom: $baseLineHeight;
-}
 .texture-block {
   height: 100px;
   margin-bottom: 20px;
@@ -136,6 +133,18 @@ a.color-blue:hover {
 }
 
 //Typography
+.font-chalk {
+  font-weight: normal;
+  font-family: $font_family_chalk;
+}
+
+.text-smaller {
+  font-size: 0.901em;
+  line-height: 0.901em;
+  li {
+    line-height: 0.921em;
+  }
+}
 
 blockquote {
   border-left-color: $blue;
@@ -193,6 +202,25 @@ h3.heading-on-bg-inline {
 }
 
 //Forms
+.form-search {
+  .input-append  {
+    .search-query { 
+      @include border-radius(4px 0 0 4px);
+    }
+    .btn {
+      @include border-radius(0 4px 4px 0);
+      &:hover {
+        @include rotate(0);
+      }
+    }
+    .icon {
+      &:hover {
+        @include scale(0);     
+      }
+    }
+  }
+}
+
 .forms_examples {
 
   select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
@@ -367,5 +395,35 @@ tr.editing {
 .search-filters {
   input[type="text"] {
     height: 32px;
+  }
+  .form-search {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+  .showhide {
+    .icon {
+      line-height: 16px;
+    }
+  }
+  .filters {
+    border: solid 1px darken(#f9f9f9, 8%);
+    background: #f9f9f9;
+    ul {
+      margin: 8px auto;
+      width: 33%;
+      float: left;
+    }
+    li {
+      padding: 3px 0 5px 10px;
+      &.li-header {
+        padding-bottom: 10px;
+      }
+      a {
+        color: $ch_green;
+        &.active {
+          text-decoration: underline;
+        }
+      }
+    }
   }
 }

@@ -162,12 +162,23 @@
         Someone famous 
         %cite{ title: "Source Title" } Source Title
 
+    %h3 Fonts
+    
+    %h4.font-chalk Used for some large text 
+    %p 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+
+    %h4 Used for some large text, and base font.
+    %p "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+
     %h3 Headings
 
     %ul.nav.nav-tabs
       =tab_nav_item "Option 1", "#heading_option1", class: "active"
       =tab_nav_item "Option 2", "#heading_option2"
     .tab-content
+      .row
+        .span2
+          #font-swap.btn.btn-small.btn-primary Swap font
       #heading_option1.tab-pane.fade.in.active
         .row
           .span3
@@ -488,13 +499,51 @@
       =tab_nav_item "Option 4", "#table_option4"
     .tab-content
       #table_option1.tab-pane.fade.in.active
-        .search-filters
-          .pull-right
-            %form.form-search
-              .input-append
-                %input.span3.search-query{:type => "text"}/
-                %button.btn{:type => "submit"}
-                  %i.icon.icon-search
+        .row
+          .span12
+            .search-filters
+              .row.no-bottom-margin
+                .span7
+                  #filters1.filters.hide.clearfix.text-smaller
+                    %ul.unstyled
+                      %li.li-header.color-gray-light.font-bold
+                        Order by:
+                      %li
+                        %a.active Newest
+                      %li
+                        %a Oldest
+                    %ul.unstyled
+                      %li.li-header.color-gray-light.font-bold
+                        By channel:
+                      %li
+                        %a Chalkle
+                      %li
+                        %a Whanau
+                      %li
+                        %a South Island
+                      %li
+                        %a An even longer title
+                    %ul.unstyled
+                      %li.li-header.color-gray-light.font-bold
+                        By Test:
+                      %li
+                        %a This
+                      %li
+                        %a Whanau
+                      %li
+                        %a The other
+                      %li
+                        %a An even 
+                .span5
+                  .pull-right
+                    %a.showhide.btn{href: "#filters1", data: {toggle: "showhide", active_icon_class: "icon-caret-right", inactive_icon_class: "icon-caret-left"}}
+                      %i.icon.icon-caret-left
+                      Filters
+                    %form.form-search
+                      .input-append
+                        %input.span3.search-query{:type => "text"}/
+                        %button.btn{:type => "submit"}
+                          %i.icon.icon-search
         %table.table.table-striped
           %thead
             %tr
@@ -576,10 +625,35 @@
                 =link_to "#" do
                   %i.icon.color-green.icon-ok
 :javascript
-  $('.destroy').on('mouseenter', function() {
-    $(this).closest('tr').addClass('table-destroy');
-  }).on('mouseleave', function(){
-    $(this).closest('tr').removeClass('table-destroy');
-  })
+  $(function(){
+    //Show hide elements switch icon based off a button
+    $('[data-toggle="showhide"]').on('click', function(){
+      var href = $(this).attr('href')
+      var $target = $($(this).attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, '')))
+      var $icon = $(this).find('.icon')
 
+      $target.toggleClass('hide');
+
+      if($icon.length) {
+        var inactive_icon_class = $(this).attr('data-inactive_icon_class')
+        var active_icon_class = $(this).attr('data-active_icon_class');
+        if($target.hasClass('hide')){
+          $icon.removeClass(active_icon_class).addClass(inactive_icon_class);
+        } else {
+          $icon.removeClass(inactive_icon_class).addClass(active_icon_class);
+        }
+      }
+    });
+
+    //Make form row red on hover over destroy
+    $('.destroy').on('mouseenter', function() {
+      $(this).closest('tr').addClass('table-destroy');
+    }).on('mouseleave', function(){
+      $(this).closest('tr').removeClass('table-destroy');
+    })
+
+    $('#font-swap').on('click', function() { 
+      $(this).closest('.tab-content').find('h1, h2, h3, h4').toggleClass('font-chalk');
+    });
+  });
 
