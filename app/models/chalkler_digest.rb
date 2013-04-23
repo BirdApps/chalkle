@@ -47,7 +47,7 @@ class ChalklerDigest
                                                                             lessons.do_during_class IS NOT NULL AND
                                                                             lesson_categories.category_id IN (?) AND
                                                                             channel_lessons.channel_id IN (?)",
-                                                                            Time.now.utc, @date_offset, @chalkler.email_categories,
+                                                                            Time.now.utc + 1.day, @date_offset, @chalkler.email_categories,
                                                                             @chalkler.channels).order("start_at").uniq
     lessons.delete_if { |l| l.bookable? == false  }
     lessons.shift @limit
@@ -59,7 +59,7 @@ class ChalklerDigest
                                                                lessons.meetup_url IS NOT NULL AND
                                                                lessons.do_during_class IS NOT NULL AND
                                                                channel_lessons.channel_id IN (?)",
-                                                               Time.now.utc, @date_offset, @chalkler.channels).order("start_at").uniq
+                                                               Time.now.utc + 1.day, @date_offset, @chalkler.channels).order("start_at").uniq
     lessons.delete_if { |l| l.bookable? == false  }
     lessons.shift @limit
   end

@@ -152,8 +152,8 @@ describe ChalklerDigest do
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 
-      it "won't load a lesson that has already taken place" do
-        @lesson.update_attribute :start_at, 2.days.ago
+      it "won't load a lesson that begins less than one day from now" do
+        @lesson.update_attribute :start_at, Time.now.utc + 23.hours
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 
@@ -192,8 +192,8 @@ describe ChalklerDigest do
         @digest.instance_eval{ default_open_lessons }.should be_empty
       end
 
-      it "won't load a lesson that has already taken place" do
-        @lesson.update_attribute :start_at, 2.days.ago
+      it "won't load a lesson that begins less than one day from now" do
+        @lesson.update_attribute :start_at, Time.now.utc + 23.hours
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 
