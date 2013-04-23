@@ -20,7 +20,7 @@ class ChalklerDigest
     Chalkler.where{(email != "") & (email_frequency == freq)}
   end
 
-  # private
+  private
 
   def new_lessons
     Lesson.visible.published.joins(:categories, :channels).where("lessons.published_at > ? AND
