@@ -1,15 +1,15 @@
-@Fee = (Teacher_cost, Teacher_percentage, Chalkle_percentage) ->
-  if Teacher_percentage > 0
-    Teacher_cost / Teacher_percentage * Chalkle_percentage
+@fee = (teacherCost, teacherPercentage, chalklePercentage) ->
+  if teacherPercentage > 0
+    teacherCost / teacherPercentage * chalklePercentage
   else
     0
 
-@AddGST = (Amount) ->
-	Amount*1.15
+@addGST = (amount) ->
+	amount*1.15
 
-@FinalPrice = (Teacher_cost, Teacher_percentage, Chalkle_percentage, Channel_percentage) ->
-  ChalkleFee = Fee Teacher_cost, Teacher_percentage, Chalkle_percentage
-  ChannelFee = Fee Teacher_cost, Teacher_percentage, Channel_percentage
-  Teacher_cost + AddGST(ChalkleFee + ChannelFee)
+@finalPrice = (teacherCost, teacherPercentage, chalklePercentage, channelPercentage) ->
+  chalkleFee = fee(teacherCost, teacherPercentage, chalklePercentage)
+  channelFee = fee(teacherCost, teacherPercentage, channelPercentage)
+  teacherCost + addGST(chalkleFee + channelFee)
 
     

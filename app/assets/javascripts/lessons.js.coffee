@@ -1,22 +1,22 @@
-ChannelPercentage = set: (override) ->
+channelPercentage = set: (override) ->
   if override
     parseFloat(override) / 100
   else
     parseFloat default_channel_percentage
 
-ChalklePercentage = set: (override) ->
+chalklePercentage = set: (override) ->
   if override
     parseFloat(override) / 100
   else
     parseFloat default_chalkle_percentage
 
-Price = set: (ChannelOverride, ChalkleOverride) ->
+Price = set: (channelOverride, chalkleOverride) ->
   if $("#lesson_teacher_cost").val()
-    Teacher_cost = parseFloat( $("#lesson_teacher_cost").val() )
-    Chalkle_percent = ChalklePercentage.set(ChalkleOverride)
-    Channel_percent = ChannelPercentage.set(ChannelOverride)
-    Teacher_percent = 1 - Chalkle_percent - Channel_percent
-    Total = FinalPrice(Teacher_cost, Teacher_percent, Chalkle_percent, Channel_percent)
+    teacherCost = parseFloat( $("#lesson_teacher_cost").val() )
+    chalklePercent = chalklePercentage.set(chalkleOverride)
+    channelPercent = channelPercentage.set(channelOverride)
+    teacherPercent = 1 - chalklePercent - channelPercent
+    Total = finalPrice(teacherCost, teacherPercent, chalklePercent, channelPercent)
     $("#lesson_cost").val Math.ceil(Total)
   else
     $("#lesson_cost").val "Missing teacher income per attendee"
