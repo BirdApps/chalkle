@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :authenticate, only: [:styleguide]
+  #before_filter :authenticate, only: [:styleguide]
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to admin_dashboard_path, :alert => exception.message

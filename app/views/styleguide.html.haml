@@ -170,6 +170,12 @@
     %h4 Used for some large text, and base font.
     %p "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
+    %h3 Misc
+    .well
+      I am a well .well
+    .hero-unit
+      I am a hero unit .hero-unit
+
     %h3 Headings
 
     %ul.nav.nav-tabs
@@ -495,10 +501,8 @@
     %ul.nav.nav-tabs
       =tab_nav_item "Option 1", "#table_option1", class: "active"
       =tab_nav_item "Option 2", "#table_option2"
-      =tab_nav_item "Option 3", "#table_option3"
-      =tab_nav_item "Option 4", "#table_option4"
     .tab-content
-      #table_option1.tab-pane.fade.in.active
+      #table_option1.tab-pane.fade
         .row
           .span12
             .search-filters
@@ -580,50 +584,96 @@
               %td
                 =link_to "#", class: "destroy" do
                   %i.icon.color-green.icon-ok
-      #table_option2.tab-pane.fade
-        .search-filters
-          .pull-right
-            %form.form-search
-              .input-append
-                %input.span3.search-query{:type => "text"}/
-                %button.btn{:type => "submit"}
-                  %i.icon.icon-search
-        %table.table.table-striped
-          %thead
-            %tr
-              %th 
-              %th ID
-              %th Name
-              %th Channel
-              %th Money
-              %th.delete-col
-          %tbody
-            -@data.each do |d|
-              %tr
-                %td
-                  %a{href: "#"}
-                    %i.icon.icon-pencil
-                %td=d[:id]
-                %td= link_to d[:name], "#"
-                %td=d[:channel]
-                %td=d[:money]
-                %td
-                  =link_to "#", confirm: "Really delete #{d[:name]}" do
-                    %i.icon.color-red.icon-remove
-            %tr.editing
-              %td
-                %a{href: "#"}
-                  %i.icon.icon-arrow-left
-              %td
-              %td
-                %input{type: "text", value: "Aldus Dumbledore"}
-              %td
-                %input{type: "text", value: "Gryffindor"}
-              %td
-                %input{type: "number", value: 100.50}
-              %td
-                =link_to "#" do
-                  %i.icon.color-green.icon-ok
+      #table_option2.tab-pane.fade.in.active
+        .row
+          .span12
+            .search-filters
+              .row.no-bottom-margin
+                .span7
+                  #filters1.filters.hide.clearfix.text-smaller
+                    %ul.unstyled
+                      %li.li-header.color-gray-light.font-bold
+                        Order by:
+                      %li
+                        %a.active Newest
+                      %li
+                        %a Oldest
+                    %ul.unstyled
+                      %li.li-header.color-gray-light.font-bold
+                        By channel:
+                      %li
+                        %a Chalkle
+                      %li
+                        %a Whanau
+                      %li
+                        %a South Island
+                      %li
+                        %a An even longer title
+                    %ul.unstyled
+                      %li.li-header.color-gray-light.font-bold
+                        By Test:
+                      %li
+                        %a This
+                      %li
+                        %a Whanau
+                      %li
+                        %a The other
+                      %li
+                        %a An even 
+                .span5
+                  .pull-right
+                    %a.showhide.btn{href: "#filters1", data: {toggle: "showhide", active_icon_class: "icon-caret-right", inactive_icon_class: "icon-caret-left"}}
+                      %i.icon.icon-caret-left
+                      Filters
+                    %form.form-search
+                      .input-append
+                        %input.span3.search-query{:type => "text"}/
+                        %button.btn{:type => "submit"}
+                          %i.icon.icon-search
+
+        -@lessons = Lesson.where('do_during_class IS NOT NULL').order('created_at desc').limit(5).decorate
+        -@lessons << Lesson.where('start_at is NULL').order('created_at desc').first.decorate
+        -@lessons.last.suggested_audience = "YOUNG PEOPLE"
+        -@lessons.shuffle!
+        %p Should these just show title, and expand on clicking info icon?
+        %section.box-list
+          -@lessons.each_with_index do |ls, i|
+            %article.box-item{class: "#{'box-highlighted' if i == 2} #{('lesson-'+ls.status).downcase}"}
+              .row
+                .span12.box-top
+                  .clearfix
+                    %h5=ls.name
+                    .tags
+                      .tag.tag-blue
+                        Chalkle
+                      .tag.tag-green
+                        Longer Words
+                    .pull-right
+                      %span= ls.attendance.to_s + " / " + ls.min_attendee.to_s
+                      .icon.icon-user
+              .row
+                .span12.box-mid.text-smaller
+                  .box-mid-left.full-width-mobile
+                    %p=truncate( ls.do_during_class, length: 300, separator: " ").gsub(/\n/, '<br />').html_safe
+                    - if ls.suggested_audience
+                      %p Suggested for:
+                      %p=ls.suggested_audience.gsub(/\n/, '<br />').html_safe
+                  .box-mid-right.full-width-mobile
+                    %ul.unstyled
+                      - if ls.start_at
+                        %li.light-gray-box=l ls.start_at, format: :short
+                      - elsif ls.availabilities
+                        %li= ls.availabilities
+                      %li= ls.venue
+                      %li= "#{"Cost: " + number_to_currency(ls.gst_price)} (incl GST)"
+                      %li= "#{"Materials: " + number_to_currency(ls.material_cost)}"
+                      %li= "#{"Teacher: " + ls.teacher.name}"
+              .row
+                .span12.box-bottom
+                  .pull-right
+                    .btn.btn-primary=ls.join_chalklers
+
+
 :javascript
   $(function(){
     //Show hide elements switch icon based off a button
