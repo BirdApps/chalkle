@@ -11,7 +11,7 @@ ActiveAdmin.register Booking do
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :lesson, as: :select, collection: proc{ Lesson.accessible_by(current_ability).order("LOWER(name) ASC").visible }
-  filter :chalkler, as: :select, collection: proc{ Chalkler.order("name ASC").all }
+  filter :chalkler, as: :select, collection: proc{ Chalkler.order("LOWER(name) ASC").all }
   filter :cost
   filter :paid
   filter :guests
