@@ -26,6 +26,9 @@ ActiveAdmin.register Payment do
     column :total do |payment|
       number_to_currency payment.total
     end
+    column "Comments" do |payment|
+      (comment = ActiveAdmin::Comment.where{(resource_type.eq "Payment") & (resource_id.eq payment.id.to_s)}.order("created_at").last).nil? ? nil : comment.body
+    end
     default_actions
   end
 
