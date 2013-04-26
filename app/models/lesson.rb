@@ -6,7 +6,7 @@ class Lesson < ActiveRecord::Base
     :min_attendee, :availabilities, :prerequisites, :additional_comments,
     :donation, :lesson_skill, :venue, :published_at, :category_ids,
     :channel_ids, :lesson_image_attributes, :channel_percentage_override,
-    :chalkle_percentage_override, :material_cost, :suggested_audience
+    :chalkle_percentage_override, :material_cost, :suggested_audience, :chalkle_payment
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -32,6 +32,9 @@ class Lesson < ActiveRecord::Base
   STATUS_2 = "On-hold"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
+
+  #GST for NZ
+  GST = 0.15
 
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
@@ -65,7 +68,7 @@ class Lesson < ActiveRecord::Base
   #allow for mismatch due to rounding
   def revenue_split_validation
     return unless (channel_percentage_override.present? || chalkle_percentage_override.present?) and teacher_cost.present? and cost.present?
-    if ( ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) > 0.05) || ((channel_percentage*cost + chalkle_percentage*cost + teacher_cost - cost) < -0.5))
+    if ( (rounding > 1) || (rounding < 0))
       errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle")
       errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle")
       errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle")
@@ -111,8 +114,54 @@ class Lesson < ActiveRecord::Base
     default_channel_percentage
   end
 
-  def gst_price
-    cost.present? ? (cost*1.15).round(1) : nil
+  def teacher_percentage
+    1 - channel_percentage - chalkle_percentage
+  end
+
+  #Per attendee pricings
+  def channel_cost
+    teacher_cost.present? ? fee(teacher_cost, teacher_percentage, channel_percentage) : 0
+  end 
+  
+  def rounding
+    (teacher_cost.present? && cost.present?) ? cost - channel_cost - fee(teacher_cost, teacher_percentage, chalkle_percentage) - teacher_cost : 0
+  end
+
+  def chalkle_cost
+    teacher_cost.present? ? fee(teacher_cost, teacher_percentage, chalkle_percentage) + rounding : 0
+  end
+
+  #Class incomes
+  def expected_turnover
+    total = 0
+    bookings.confirmed.visible.each do |b|
+      total = total + (b.cost.present? ? b.cost : 0)
+    end
+    return total
+  end
+
+  def collected_turnover
+    payments.sum(:total)
+  end
+
+  def cash_payment
+    payments.cash.sum(:total)
+  end
+
+  def uncollected_turnover
+    expected_turnover - collected_turnover
+  end
+
+  def total_cost
+    if teacher_payment.present? && chalkle_payment.present?
+      teacher_payment + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 ) + chalkle_payment
+    else
+      attendance*( (teacher_cost.present? ? teacher_cost : 0) + chalkle_cost)
+    end
+  end
+  
+  def income
+    excl_gst(collected_turnover - total_cost)
   end
 
   def image
@@ -148,38 +197,6 @@ class Lesson < ActiveRecord::Base
     class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
   end
 
-  def expected_revenue
-    total = 0
-    bookings.confirmed.visible.each do |b|
-      total = total + (b.cost.present? ? b.cost : 0)
-    end
-    return total
-  end
-
-  def collected_revenue
-    payments.sum(:total)/1.15
-  end
-
-  def cash_payment
-    payments.cash.sum(:total)/1.15
-  end
-
-  def uncollected_revenue
-    expected_revenue - collected_revenue
-  end
-
-  def total_cost
-    if teacher_payment.present?
-      ( teacher_payment.present? ? teacher_payment : 0 ) + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 )
-    else
-      attendance*( teacher_cost.present? ? teacher_cost : 0 )
-    end
-  end
-  
-  def income
-    collected_revenue - total_cost
-  end
-
   def attendance
     bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
   end
@@ -198,10 +215,6 @@ class Lesson < ActiveRecord::Base
 
   def todo_payment_summary
     return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
-  end
-
-  def gst_price
-    cost.present? ? (cost*1.15).round(1) : nil
   end
 
   def meetup_data
@@ -257,6 +270,15 @@ class Lesson < ActiveRecord::Base
 
   def set_metadata
     self.visible = true
+  end
+
+  #price calculation methods
+  def excl_gst(price)
+    price/(1 + GST)
+  end
+
+  def fee(teacher_price, teacher_percentage, channel_cut)
+    teacher_price / teacher_percentage * channel_cut * (1 + GST)
   end
 
 end

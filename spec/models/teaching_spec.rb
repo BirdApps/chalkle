@@ -112,7 +112,7 @@ describe "Teachings" do
 
   	let(:category) { FactoryGirl.create(:category, name: "music and dance") }
     let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
-    free_lesson: '0', teacher_cost: '20', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
+    free_lesson: '0', teacher_cost: '20', price: '30', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
     prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, channel_id: channel.id} }
 
   	it "create an unreviewed lesson with correct form" do
@@ -161,10 +161,6 @@ describe "Teachings" do
   	    it "has the correct duration" do
   	    	@lesson.duration.should == params2[:duration].to_i*60*60
   	    end
-
-        it "has the correct price" do
-          @lesson.cost.should == (20/0.5).to_d
-        end
 
         pending "has the correct donation setting" do
           @lesson.donation.should be_false

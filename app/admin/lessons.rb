@@ -48,7 +48,7 @@ ActiveAdmin.register Lesson  do
     end
     if current_admin_user.role=="super"
       column "Unpaid Amount" do |lesson|
-        number_to_currency lesson.uncollected_revenue, sortable: false
+        number_to_currency lesson.uncollected_turnover, sortable: false
      end
     end
     column :start_at
@@ -108,20 +108,17 @@ ActiveAdmin.register Lesson  do
       #     "Not GST registered"
       #   end
       # end
-      row "Advertised price including GST" do
-        number_to_currency lesson.gst_price
-      end
-      row "Advertised price excluding GST" do
+      row "Advertised price (incl GST)" do
         number_to_currency lesson.cost
       end
-      row "Chalkle income per attendee" do
-        number_to_currency (lesson.cost.present? ? lesson.chalkle_percentage*lesson.cost : nil)
-      end
-      row "Channel income per attendee" do
-        number_to_currency (lesson.cost.present? ? lesson.channel_percentage*lesson.cost : nil)
-      end
-      row "Teacher income per attendee" do
+      row "Teacher fee per attendee (incl. GST if any)" do
         number_to_currency lesson.teacher_cost
+      end
+      row "Chalkle fee per attendee (incl. GST and rounding)" do
+        number_to_currency lesson.chalkle_cost
+      end
+      row "Channel fee per attendee (incl. GST)" do
+        number_to_currency lesson.channel_cost
       end
       row :venue_cost do
         number_to_currency lesson.venue_cost
@@ -134,21 +131,25 @@ ActiveAdmin.register Lesson  do
       end
       row :max_attendee
       row :min_attendee
+
       if lesson.published?
+        row :attendance
+        row "Channel income" do
+          number_to_currency lesson.income
+        end  
         if current_admin_user.role=="super"
+          row :collected_turnover do
+            number_to_currency lesson.collected_turnover
+          end 
           row :teacher_payment do
             number_to_currency lesson.teacher_payment
           end
-          row :income do
-            number_to_currency lesson.income
+          row :chalkle_payment do
+            number_to_currency lesson.chalkle_payment
+          end     
+          row :uncollected_turnover do
+            number_to_currency lesson.uncollected_turnover
           end
-          row :collected_revenue do
-            number_to_currency lesson.collected_revenue
-          end          
-          row :uncollected_revenue do
-            number_to_currency lesson.uncollected_revenue
-          end
-          row :attendance
           row :bookings_to_collect do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
           end

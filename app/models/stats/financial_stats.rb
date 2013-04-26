@@ -6,7 +6,7 @@ class FinancialStats < ChannelStats
     l = channel.lesson_ran(start, end_time)
     total = 0.0
     l.each do |lesson|
-      total = lesson.collected_revenue + total
+      total = lesson.collected_turnover + total
     end
     total
   end
@@ -21,7 +21,12 @@ class FinancialStats < ChannelStats
   end
 
   def profit
-    turnover - cost
+    l = channel.lesson_ran(start, end_time)
+    total = 0.0
+    l.each do |lesson|
+      total = lesson.income + total
+    end
+    total
   end
 
   def previous
