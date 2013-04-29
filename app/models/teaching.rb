@@ -2,7 +2,7 @@ class Teaching
   include ActiveAttr::Model
 
   attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_skill, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee,
-  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience
+  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :price
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
@@ -37,7 +37,7 @@ class Teaching
       "do_during_class" => @do_during_class,
       "learning_outcomes" => @learning_outcomes,
       "duration" => @duration.to_i*60*60,
-      "cost" => price_calculation(@teacher_cost, Channel.find(@channel_id)),
+      "cost" => @price,
       "teacher_cost" => @teacher_cost,
       "max_attendee" => @max_attendee.to_i,
       "min_attendee" => @min_attendee.to_i,
@@ -56,7 +56,7 @@ class Teaching
     if check_valid_input(params)
       @lesson = Lesson.new(lesson_args)
       if @lesson.save
-        @lesson.channels = [Channel.find(@channel_id)]
+        @lesson.channels << Channel.find(@channel_id)
         @lesson.category_ids = @category_primary_id
       else
         return false
@@ -74,6 +74,7 @@ class Teaching
     @learning_outcomes = params[:learning_outcomes]
     @duration = params[:duration]
     @teacher_cost = params[:teacher_cost]
+    @price = params[:price]
     @free_lesson = params[:free_lesson]
     @max_attendee = params[:max_attendee]
     @min_attendee = params[:min_attendee]
@@ -92,10 +93,6 @@ class Teaching
   end
 
   private
-
-  def price_calculation(teacher_cost,channel)
-    (teacher_cost.blank? || channel.teacher_percentage== 0) ? 0: ( teacher_cost.to_d*1.15 / channel.teacher_percentage ).ceil / 1.15
-  end
 
   def meetup_event_name(category_primary_id,title)
     return ( Category.find(category_primary_id, :select => "name").name + ": " + title ).downcase

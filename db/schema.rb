@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(:version => 20130426045935) do
     t.decimal  "material_cost",               :precision => 8, :scale => 2, :default => 0.0
     t.text     "suggested_audience"
     t.string   "meetup_url"
+    t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
   end
 
   create_table "payments", :force => true do |t|

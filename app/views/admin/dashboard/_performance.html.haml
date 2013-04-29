@@ -2,16 +2,16 @@
   %h3
     #{c.name} Channel
   %h4 
-    Financials (excl. GST)
+    Financials
   %table
     %thead
       %tr
         %th Week
-        %th Turnover
+        %th Turnover (total collected from classes)
         %th % Change turnover
         %th Cost*
         %th % Change cost
-        %th Gross Profit
+        %th Gross Profit after paying GST
         %th % Change profit
 
     %tbody
@@ -45,10 +45,10 @@
     %thead
       %tr
         %th Week
+        %th Classes announced
+        %th % Change Classes announced
         %th Classes ran
-        %th % Change Classes
-        %th Paid classes ran
-        %th % Change paid classes
+        %th % Change classes ran
         %th Cancellations
         %th % Change cancellations
 
@@ -57,18 +57,18 @@
       -lessons_table.each do |x|
         %tr
           %td #{x.start.strftime("%d %b")} - #{(x.start + period).strftime("%d %b")} #{ "(projected)" if Time.now < (x.start + period)}
-          %td #{x.lessons_ran} ( #{x.new_lessons_ran} new / #{x.lessons_ran - x.new_lessons_ran} repeat )
+          %td #{x.lessons_announced} ( #{x.new_lessons_announced} new / #{x.lessons_announced - x.new_lessons_announced} repeat )
+          %td #{number_to_percentage( x.percent_lessons_announced, :precision => 0)}
+          %td #{x.lessons_ran} ( #{x.paid_lessons} paid classes / #{x.lessons_ran - x.paid_lessons} free classes )
           %td #{number_to_percentage( x.percent_lessons_ran, :precision => 0)}
-          %td #{x.paid_lessons} paid classes ( #{x.lessons_ran - x.paid_lessons} free classes )
-          %td #{number_to_percentage( x.percent_paid_lessons, :precision => 0)}
           %td #{x.cancelled_lessons} ( #{x.new_cancelled_lessons} new / #{x.cancelled_lessons - x.new_cancelled_lessons} repeat )
           %td #{number_to_percentage( x.percent_cancelled_lessons, :precision => 0)}
       %tr
         %td <strong> Average of #{num_weeks} weeks </strong>
+        %td <strong> #{number_to_human lessons_table.average("lessons_announced")} classes </strong>
+        %td <strong> #{number_to_percentage( lessons_table.average("percent_lessons_announced"), :precision => 0)} </strong>
         %td <strong> #{number_to_human lessons_table.average("lessons_ran")} classes </strong>
         %td <strong> #{number_to_percentage( lessons_table.average("percent_lessons_ran"), :precision => 0)} </strong>
-        %td <strong> #{number_to_human lessons_table.average("paid_lessons")} classes </strong>
-        %td <strong> #{number_to_percentage( lessons_table.average("percent_paid_lessons"), :precision => 0)} </strong>
         %td <strong> #{number_to_human lessons_table.average("cancelled_lessons")} classes </strong>
         %td <strong> #{number_to_percentage( lessons_table.average("percent_cancelled_lessons"), :precision => 0)} </strong>
 

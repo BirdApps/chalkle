@@ -44,7 +44,9 @@ ActiveAdmin.register Chalkler do
       end
     end
     column :email
-    column :bio
+    column "Comments" do |chalkler|
+      (comment = ActiveAdmin::Comment.where{(resource_type.eq "Chalkler") & (resource_id.eq chalkler.id.to_s)}.order("created_at").last).nil? ? nil : comment.body
+    end
     column :created_at
     default_actions
   end
