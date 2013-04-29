@@ -19,3 +19,8 @@ Scenario: Chalkler logging in via Meetup is updated from Meetup data
   Given "John" is an existing Meetup user
   When they log in via Meetup
   Then the chalkler "John" should be updated
+
+Scenario: Chalkler with no channels will be blocked
+  Given "Mohammed" is a chalkler
+  And the chalkler "Mohammed" is authenticated
+  Then they will be redirected to an error page
