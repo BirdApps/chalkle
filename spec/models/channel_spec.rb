@@ -50,6 +50,16 @@ describe Channel do
   		channel.should_not be_valid
   	end
 
+    it "should not allow bank account number not in the correct format" do
+      channel.account = '12312-12'
+      channel.should_not be_valid
+    end
+
+    it "should not allow bank account number containing letters" do
+      channel.account = '12-1231-43243Arewr-34'
+      channel.should_not be_valid
+    end
+
   end
 
   describe ".select_options" do

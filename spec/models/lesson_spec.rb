@@ -18,6 +18,14 @@ describe Lesson do
     end
   end
 
+  describe "account number" do
+    it "should retrieve the correct account number" do
+      channel = FactoryGirl.create(:channel, account: "12-1234-1234567-00")
+      lesson.channels << channel
+      lesson.account.should == channel.account
+    end
+  end
+
   describe ".visible" do
     it { Lesson.visible.should include(lesson) }
 
