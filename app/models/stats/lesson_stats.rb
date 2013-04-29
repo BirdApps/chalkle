@@ -1,11 +1,23 @@
 class LessonStats < ChannelStats
 
-  def lessons_ran
-    channel.lesson_ran(start,end_time).count
-  end
-
   def previous
     LessonStats.new(start - period, period, channel)
+  end
+
+  def lessons_announced
+    channel.lesson_announced(start,end_time).count
+  end
+
+  def percent_lessons_announced
+    percentage_change(previous.lessons_announced, lessons_announced)
+  end
+
+  def new_lessons_announced
+    new_lesson(channel.lesson_announced(start,end_time))
+  end
+
+  def lessons_ran
+    channel.lesson_ran(start,end_time).count
   end
 
   def percent_lessons_ran

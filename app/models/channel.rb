@@ -76,6 +76,10 @@ class Channel < ActiveRecord::Base
     chalklers.where{created_at.lteq date.utc}
   end
 
+  def lesson_announced(start_date,end_date)
+    lessons.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+  end
+
   def lesson_ran(start_date,end_date)
     lessons.visible.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
   end

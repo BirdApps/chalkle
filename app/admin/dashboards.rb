@@ -38,7 +38,7 @@ ActiveAdmin.register_page "Dashboard" do
               column("Teacher cost") { |lesson| number_to_currency lesson.teacher_cost }
               column("Venue cost") { |lesson| number_to_currency lesson.venue_cost }
             else
-              column("Advertised Price") { |lesson| number_to_currency (lesson.cost.present? ? lesson.cost*1.15 : nil) }
+              column("Advertised Price") { |lesson| number_to_currency (lesson.cost.present? ? lesson.cost : nil) }
               column("Attendee") { |lesson| lesson.attendance}
               column("Min Attendee") { |lesson| lesson.min_attendee }
             end
