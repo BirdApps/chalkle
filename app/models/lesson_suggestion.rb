@@ -1,5 +1,6 @@
 class LessonSuggestion < ActiveRecord::Base
-  attr_accessible :description, :name, :category_id, :channel_ids, :join_channels
+  attr_accessible :description, :name, :category_id, :join_channels
+  attr_accessible :description, :name, :category_id, :join_channels, :chalkler_id, :channel_ids, :as => :admin
   attr_accessor :join_channels
 
   belongs_to :chalkler
@@ -7,9 +8,9 @@ class LessonSuggestion < ActiveRecord::Base
   has_many :channel_lesson_suggestions
   has_many :channels, :through => :channel_lesson_suggestions
 
-  accepts_nested_attributes_for :channel_lesson_suggestions
-
-  validates :chalkler, :name, :description, :join_channels, :presence => true
+  validates_presence_of :name, :description
+  validates_presence_of :join_channels, :on => :create
+  validates_presence_of :channel_ids, :on => :update
 
   after_create :create_channel_associations
 

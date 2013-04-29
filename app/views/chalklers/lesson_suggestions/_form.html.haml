@@ -8,7 +8,5 @@
     -if current_chalkler.channels.size > 1
       %div.channel-selection
         =f.input :join_channels, as: :check_boxes, label: "Which channels would you like to suggest this class for?", collection: current_chalkler.channels
-    -else
-      =f.hidden_field :channel_ids, :value => current_chalkler.channels.first.id
   .form-actions
     = f.button :submit, 'Suggest class', class: 'btn-primary'
