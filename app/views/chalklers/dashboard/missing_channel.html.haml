@@ -6,4 +6,8 @@
   - If you have been given a password but signed in via Meetup, try using your password to log in.
   - If you have just joined chalkle&deg; through Meetup, please wait an hour and then sign in again.
 
-  If you still cannot log in, please contact your Channel Admin.
+  If you still cannot log in, contact your Channel Admin or join one of our Channels on Meetup:
+
+%ul
+  -@channels.each do |c|
+    %li= link_to c.name, "http://meetup.com/#{c.url_name}"

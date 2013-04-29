@@ -7,5 +7,6 @@ class Chalklers::DashboardController < Chalklers::BaseController
   end
 
   def missing_channel
+    @channels = Channel.where{ :urlname != nil }
   end
 end
