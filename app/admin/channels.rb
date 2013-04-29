@@ -9,6 +9,7 @@ ActiveAdmin.register Channel do
   index do
     column :id
     column :name
+    column :url_name
     column :channel_percentage do |channel|
       number_to_percentage(channel.channel_percentage*100, :precision => 2)
     end

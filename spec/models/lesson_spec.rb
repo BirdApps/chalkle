@@ -24,6 +24,12 @@ describe Lesson do
       lesson.channels << channel
       lesson.account.should == channel.account
     end
+
+    it "should retrieve the default account number when no bank account number exists" do
+      channel = FactoryGirl.create(:channel)
+      lesson.channels << channel
+      lesson.account.should == "38-9012-0815531-00"
+    end
   end
 
   describe ".visible" do
