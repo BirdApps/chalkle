@@ -60,6 +60,15 @@ describe Channel do
       channel.should_not be_valid
     end
 
+    describe "email" do
+      it "should not allow email without @" do
+        FactoryGirl.build(:channel, email: "abs123").should_not be_valid
+      end
+
+      it "should not allow with @ but no ." do
+        FactoryGirl.build(:channel, email: "abs123").should_not be_valid
+      end
+    end
   end
 
   describe ".select_options" do
@@ -76,18 +85,6 @@ describe Channel do
   		required_array = [['channel1', channel1.id],['channel2', channel2.id]]
   		Channel.select_options(chalkler.channels).should eq(required_array)
   	end
-  end
-
-  describe "email validations" do
-    it "should not allow email without @" do
-    	channel = Channel.create(name: "test", email: "abs123")
-    	channel.should_not be_valid
-    end
-
-    it "should not allow with @ but no ." do
-    	channel = Channel.create(name: "test", email: "abs@123")
-    	channel.should_not be_valid
-    end
   end
 
 end
