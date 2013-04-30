@@ -39,6 +39,15 @@ describe Chalkler do
         end
       end
 
+      describe ".fetch_chalkler" do
+        it "will search Horowhenua chalklers by name" do
+          horowhenua = FactoryGirl.create(:channel, url_name: 'horowhenua')
+          chalkler = FactoryGirl.create(:chalkler, name: "Caitlin Oscars")
+          chalkler.channels << horowhenua
+          Chalkler.fetch_chalkler(result, channel).should == [chalkler]
+        end
+      end
+
       describe "#create_from_meetup" do
         let(:chalkler) { Chalkler.new }
 

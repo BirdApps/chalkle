@@ -87,7 +87,8 @@ class Chalkler < ActiveRecord::Base
 
   def self.fetch_chalkler(result, channel)
     if channel.url_name == 'horowhenua'
-      Chalkler.where{(meetup_id == result.id) | (name == result.name)}.first
+      puts "hi there!!"
+      Chalkler.joins{channels}.where{(channels.url_name == 'horowhenua') & ((chalklers.meetup_id == result.id) | (chalklers.name == result.name))}.first
     else
       Chalkler.find_by_meetup_id(result.id)
     end
