@@ -25,10 +25,10 @@ describe Lesson do
       lesson.account.should == channel.account
     end
 
-    it "should retrieve the default account number when no bank account number exists" do
+    it "should retrieve the default message when no bank account number exists" do
       channel = FactoryGirl.create(:channel)
       lesson.channels << channel
-      lesson.account.should == "38-9012-0815531-00"
+      lesson.account.should == "Please email accounts@chalkle.com for payment instructions"
     end
   end
 
