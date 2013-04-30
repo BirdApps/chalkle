@@ -86,11 +86,11 @@ class Chalkler < ActiveRecord::Base
   end
 
   def self.fetch_chalkler(result, channel)
-    if channel.url_name == 'horowhenua'
-      Chalkler.joins{channels}.where{(channels.url_name == 'horowhenua') & ((chalklers.meetup_id == result.id) | (chalklers.name == result.name))}.first
-    else
-      Chalkler.find_by_meetup_id(result.id)
+    chalkler = Chalkler.find_by_meetup_id(result.id)
+    if chalkler.nil? and channel.url_name == 'horowhenua'
+      chalkler = Chalkler.joins{channels}.where{(channels.url_name == 'horowhenua') & (chalklers.name == result.name)}.first
     end
+    chalkler
   end
 
   def create_from_meetup(result, channel)
@@ -101,14 +101,14 @@ class Chalkler < ActiveRecord::Base
     self.bio = result.bio
     self.meetup_data = result.to_json
     self.join_channels = [ channel.id ]
-    self.save
+    self.save!
   end
 
   def update_from_meetup(result)
     self.name = result.name unless name?
     self.bio = result.bio unless bio?
     self.meetup_data = result.to_json
-    self.save
+    self.save!
   end
 
   private
