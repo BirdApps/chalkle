@@ -44,8 +44,7 @@ describe Chalkler do
           horowhenua = FactoryGirl.create(:channel, url_name: 'horowhenua')
           chalkler = FactoryGirl.create(:chalkler, name: result.name)
           chalkler.channels << horowhenua
-          chalkler.save!
-          Chalkler.fetch_chalkler(result, channel).should == [chalkler]
+          Chalkler.fetch_chalkler(result, horowhenua).should == chalkler
         end
       end
 
