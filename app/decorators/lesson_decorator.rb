@@ -18,9 +18,13 @@ class LessonDecorator < Draper::Decorator
       "Join this chalkle"
     end
   end
-  
+
   def account
-    channels.first.account? ? channels.first.account : "Please email accounts@chalkle.com for payment instructions"
+    if source.channels.first.account?
+      source.channels.first.account
+    else
+      "Please email accounts@chalkle.com for payment instructions"
+    end
   end
 
 end
