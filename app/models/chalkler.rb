@@ -74,7 +74,8 @@ class Chalkler < ActiveRecord::Base
   end
 
   def self.import_from_meetup(result, channel)
-    chalkler = Chalkler.fetch_chalkler(result, channel)
+    # chalkler = Chalkler.fetch_chalkler(result, channel)
+    chalkler = Chalkler.find_by_meetup_id(result.id)
     if chalkler.nil?
       chalkler = Chalkler.new
       chalkler.create_from_meetup(result, channel)
