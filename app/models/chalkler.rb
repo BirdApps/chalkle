@@ -105,8 +105,10 @@ class Chalkler < ActiveRecord::Base
   end
 
   def update_from_meetup(result)
-    self.name = result.name unless name?
-    self.bio = result.bio unless bio?
+    self.name = result.name unless self.name?
+    self.bio = result.bio unless self.bio?
+    self.meetup_id = result.id unless self.meetup_id?
+    self.uid = result.id unless self.uid?
     self.meetup_data = result.to_json
     self.save!
   end
