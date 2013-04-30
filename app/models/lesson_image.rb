@@ -1,5 +1,5 @@
 class LessonImage < ActiveRecord::Base
-  attr_accessible :title, :lesson_id
+  attr_accessible :title, :lesson_id, :as => :admin
 
   belongs_to :lesson, :inverse_of => :lesson_image
 

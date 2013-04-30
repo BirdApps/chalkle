@@ -7,6 +7,15 @@ class Lesson < ActiveRecord::Base
     :donation, :lesson_skill, :venue, :published_at, :category_ids,
     :channel_ids, :lesson_image_attributes, :channel_percentage_override,
     :chalkle_percentage_override, :material_cost, :suggested_audience, :chalkle_payment
+  attr_accessible :name, :meetup_id, :meetup_url, :category_id, :teacher_id,
+    :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration,
+    :meetup_data, :description, :visible, :teacher_payment, :lesson_type,
+    :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee,
+    :min_attendee, :availabilities, :prerequisites, :additional_comments,
+    :donation, :lesson_skill, :venue, :published_at, :category_ids,
+    :channel_ids, :lesson_image_attributes, :channel_percentage_override,
+    :chalkle_percentage_override, :material_cost, :suggested_audience, :chalkle_payment,
+    :as => :admin
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -48,7 +57,7 @@ class Lesson < ActiveRecord::Base
   validate :max_channel_percentage
   validate :max_teacher_cost
   validate :revenue_split_validation
-  validate :min_teacher_percentage 
+  validate :min_teacher_percentage
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -90,10 +99,10 @@ class Lesson < ActiveRecord::Base
   end
 
   def min_teacher_percentage
-    return unless (channel_percentage_override? || chalkle_percentage_override?) and teacher_cost.present? 
+    return unless (channel_percentage_override? || chalkle_percentage_override?) and teacher_cost.present?
     errors.add(:channel_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
     errors.add(:chalkle_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
-  end 
+  end
 
   def default_chalkle_percentage
     if channels.present?
@@ -128,8 +137,8 @@ class Lesson < ActiveRecord::Base
   #Per attendee pricings
   def channel_cost
     teacher_cost.present? ? fee(teacher_cost, teacher_percentage, channel_percentage) : 0
-  end 
-  
+  end
+
   def rounding
     (teacher_cost.present? && cost.present?) ? cost - channel_cost - fee(teacher_cost, teacher_percentage, chalkle_percentage) - teacher_cost : 0
   end
@@ -166,7 +175,7 @@ class Lesson < ActiveRecord::Base
       attendance*( (teacher_cost.present? ? teacher_cost : 0) + chalkle_cost)
     end
   end
-  
+
   def income
     excl_gst(collected_turnover - total_cost)
   end
