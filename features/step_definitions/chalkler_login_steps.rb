@@ -62,3 +62,7 @@ Then /^the chalkler "(.*?)" has an updated email$/ do |name|
   chalkler = Chalkler.find_by_name name
   chalkler.email.should == 'jill@chalkle.com'
 end
+
+Then /^they will be redirected to an error page$/ do
+  page.should have_content('Oops!')
+end
