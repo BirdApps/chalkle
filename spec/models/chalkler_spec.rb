@@ -42,8 +42,9 @@ describe Chalkler do
       describe ".fetch_chalkler" do
         it "will search Horowhenua chalklers by name" do
           horowhenua = FactoryGirl.create(:channel, url_name: 'horowhenua')
-          chalkler = FactoryGirl.create(:chalkler, name: "Caitlin Oscars")
+          chalkler = FactoryGirl.create(:chalkler, name: result.name)
           chalkler.channels << horowhenua
+          chalkler.save!
           Chalkler.fetch_chalkler(result, channel).should == [chalkler]
         end
       end
