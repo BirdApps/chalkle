@@ -6,7 +6,10 @@ ActiveAdmin.register AdminUser do
     authorize_resource
 
     def create
-      @admin_user = AdminUser.new(email: params[:admin_user][:email], role: params[:admin_user][:role], name: params[:admin_user][:name])
+      @admin_user = AdminUser.new
+      @admin_user.email = params[:admin_user][:email]
+      @admin_user.role = params[:admin_user][:role]
+      @admin_user.name = params[:admin_user][:name]
       if @admin_user.save
         update!
       else

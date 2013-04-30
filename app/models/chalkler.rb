@@ -64,25 +64,33 @@ class Chalkler < ActiveRecord::Base
     chalkler = Chalkler.where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
     unless chalkler
       chalkler = Chalkler.create(name: auth[:extra][:raw_info][:name],
-                           provider: auth[:provider],
-                           uid: auth[:uid].to_s,
-                           meetup_id: auth[:uid],
-                           email: auth[:info][:email],
-                           password: Devise.friendly_token[0,20]
-                           )
+                                 provider: auth[:provider],
+                                 uid: auth[:uid].to_s,
+                                 meetup_id: auth[:uid],
+                                 email: auth[:info][:email],
+                                 password: Devise.friendly_token[0,20])
     end
     chalkler
   end
 
   def self.import_from_meetup(result, channel)
-    if chalkler = Chalkler.find_by_meetup_id(result.id)
-      chalkler.update_from_meetup(result)
-      chalkler.channels << channel unless chalkler.channels.exists? channel
-    else
+    chalkler = Chalkler.fetch_chalkler(result, channel)
+    if chalkler.nil?
       chalkler = Chalkler.new
       chalkler.create_from_meetup(result, channel)
+    else
+      chalkler.update_from_meetup(result)
+      chalkler.channels << channel unless chalkler.channels.exists? channel
     end
     chalkler
+  end
+
+  def self.fetch_chalkler(result, channel)
+    if channel.url_name == 'horowhenua'
+      Chalkler.where{(meetup_id == result.id) | (name == result.name)}.first
+    else
+      Chalkler.find_by_meetup_id(result.id)
+    end
   end
 
   def create_from_meetup(result, channel)
