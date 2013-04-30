@@ -60,21 +60,6 @@ class Chalkler < ActiveRecord::Base
     end
   end
 
-  def self.create_from_meetup_hash(result, channel)
-    c = Chalkler.find_or_initialize_by_meetup_id(result.id)
-    c.name = result.name
-    c.meetup_id = result.id
-    c.provider = "meetup"
-    c.uid = result.id
-    c.bio = result.bio
-    c.meetup_data = result.to_json
-    # set this up proper..
-    c.join_channels = 'skip'
-    c.save
-    c.channels << channel unless c.channels.exists? channel
-    c.valid?
-  end
-
   def self.find_for_meetup_oauth(auth, signed_in_resource=nil)
     chalkler = Chalkler.where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
     unless chalkler
@@ -87,6 +72,35 @@ class Chalkler < ActiveRecord::Base
                            )
     end
     chalkler
+  end
+
+  def self.import_from_meetup(result, channel)
+    if chalkler = Chalkler.find_by_meetup_id(result.id)
+      chalkler.update_from_meetup(result)
+      chalkler.channels << channel unless chalkler.channels.exists? channel
+    else
+      chalkler = Chalkler.new
+      chalkler.create_from_meetup(result, channel)
+    end
+    chalkler
+  end
+
+  def create_from_meetup(result, channel)
+    self.name = result.name
+    self.meetup_id = result.id
+    self.provider = 'meetup'
+    self.uid = result.id
+    self.bio = result.bio
+    self.meetup_data = result.to_json
+    self.join_channels = [ channel.id ]
+    self.save
+  end
+
+  def update_from_meetup(result)
+    self.name = result.name unless name?
+    self.bio = result.bio unless bio?
+    self.meetup_data = result.to_json
+    self.save
   end
 
   private
@@ -112,9 +126,9 @@ class Chalkler < ActiveRecord::Base
     self.save
   end
 
+  # move to observer
   def create_channel_associations
-    return if join_channels == 'skip'
-    join_channels.reject!(&:empty?)
+    return unless join_channels.is_a?(Array)
     join_channels.each do |channel_id|
       self.channels << Channel.find(channel_id)
     end
