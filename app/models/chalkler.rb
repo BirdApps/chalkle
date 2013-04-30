@@ -105,10 +105,6 @@ class Chalkler < ActiveRecord::Base
   end
 
   def update_from_meetup(result)
-    if result.name == 'Kiesia Croucher'
-      puts result.inspect
-      puts self.inspect
-    end
     self.name = result.name unless self.name?
     self.bio = result.bio unless self.bio?
     self.meetup_id = result.id
