@@ -205,10 +205,6 @@ class Lesson < ActiveRecord::Base
     (cost.present? ? cost : 0) > 0
   end
 
-  def account
-    channels.first.account? ? channels.first.account : "Please email accounts@chalkle.com for payment instructions"
-  end
-
   def todo_attendee_list
     return (start_at > DateTime.now()) && (start_at <= DateTime.tomorrow() + 1) && pay_involved
   end
