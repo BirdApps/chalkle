@@ -137,6 +137,6 @@ module ActiveAdmin
 
   # cancan integration
   class Comment
-    attr_accessible :resource_type, :resource_id, :body
+    attr_accessible :resource_type, :resource_id, :body, :as => :admin
   end
 end
