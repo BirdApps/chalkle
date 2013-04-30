@@ -90,9 +90,9 @@ class Lesson < ActiveRecord::Base
   end
 
   def min_teacher_percentage
-    return unless channel_percentage_override? || chalkle_percentage_override?
-    errors.add(:channel_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless (teacher_percentage > 0)
-    errors.add(:chalkle_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless (teacher_percentage > 0)
+    return unless (channel_percentage_override? || chalkle_percentage_override?) and teacher_cost.present? 
+    errors.add(:channel_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
+    errors.add(:chalkle_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
   end 
 
   def default_chalkle_percentage
@@ -285,6 +285,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def fee(teacher_price, teacher_percentage, channel_cut)
+    return 0 unless teacher_percentage > 0
     teacher_price / teacher_percentage * channel_cut * (1 + GST)
   end
 
