@@ -134,10 +134,9 @@ ActiveRecord::Schema.define(:version => 20130429032136) do
     t.datetime "created_at",                                                          :null => false
     t.datetime "updated_at",                                                          :null => false
     t.string   "url_name"
-    t.string   "email"
     t.decimal  "channel_percentage", :precision => 8, :scale => 2, :default => 0.125
     t.decimal  "teacher_percentage", :precision => 8, :scale => 2, :default => 0.75
-    t.string   "account"
+    t.string   "email"
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -207,7 +206,6 @@ ActiveRecord::Schema.define(:version => 20130429032136) do
     t.text     "suggested_audience"
     t.string   "meetup_url"
     t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
-    t.integer  "stream_id"
   end
 
   create_table "payments", :force => true do |t|
@@ -243,7 +241,6 @@ ActiveRecord::Schema.define(:version => 20130429032136) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "channel_id"
   end
 
 end

@@ -206,7 +206,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def account
-    channels.first.account? ? channels.first.account : "38-9012-0815531-00"
+    channels.first.account? ? channels.first.account : "Please email accounts@chalkle.com for payment instructions"
   end
 
   def todo_attendee_list
