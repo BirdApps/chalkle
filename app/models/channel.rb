@@ -1,5 +1,5 @@
 class Channel < ActiveRecord::Base
-  attr_accessible :name, :url_name, :channel_percentage, :teacher_percentage, :email, :account
+  attr_accessible :name, :url_name, :channel_percentage, :teacher_percentage, :email, :account, :as => :admin
 
   validates :name, :presence => true
   validates :url_name, :presence => true

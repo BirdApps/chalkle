@@ -129,9 +129,14 @@ ActiveAdmin.setup do |config|
 end
 
 #work around for mass assignment error
-module ActiveAdmin 
-  class Comment 
-    attr_accessible :resource_type, :resource_id, :body 
-  end 
-end 
+module ActiveAdmin
+  # attr_accessible support
+  ResourceController.class_eval do
+    with_role :admin
+  end
 
+  # cancan integration
+  class Comment
+    attr_accessible :resource_type, :resource_id, :body, :as => :admin
+  end
+end

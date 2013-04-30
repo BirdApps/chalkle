@@ -48,6 +48,7 @@ class Lesson < ActiveRecord::Base
   validate :max_channel_percentage
   validate :max_teacher_cost
   validate :revenue_split_validation
+  validate :min_teacher_percentage 
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -87,6 +88,12 @@ class Lesson < ActiveRecord::Base
       errors.add(:cost, "Payment to teacher must be less than advertised price")
     end
   end
+
+  def min_teacher_percentage
+    return unless (channel_percentage_override? || chalkle_percentage_override?) and teacher_cost.present? 
+    errors.add(:channel_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
+    errors.add(:chalkle_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
+  end 
 
   def default_chalkle_percentage
     if channels.present?
@@ -278,6 +285,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def fee(teacher_price, teacher_percentage, channel_cut)
+    return 0 unless teacher_percentage > 0
     teacher_price / teacher_percentage * channel_cut * (1 + GST)
   end
 

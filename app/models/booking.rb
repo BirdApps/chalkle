@@ -1,5 +1,6 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :cost_override, :paid, :visible
+  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests,
+    :meetup_id, :cost_override, :paid, :visible, :as => :admin
 
   belongs_to :lesson
   belongs_to :chalkler
@@ -21,7 +22,6 @@ class Booking < ActiveRecord::Base
 
   before_create :set_from_meetup_data
   before_create :set_metadata
-  # after_create :send_first_email
 
   def name
     if lesson.present? && chalkler.present?
@@ -84,7 +84,7 @@ class Booking < ActiveRecord::Base
   end
 
   def first_email_condition
-    self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up 
+    self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up
   end
 
   def second_email_condition

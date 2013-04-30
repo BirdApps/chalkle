@@ -1,5 +1,5 @@
 class Category < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :as => :admin
 
   has_many :channel_categories
   has_many :channels, :through => :channel_categories
