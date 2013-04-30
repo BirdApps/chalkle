@@ -19,4 +19,12 @@ class LessonDecorator < Draper::Decorator
     end
   end
 
+  def account
+    if source.channels.first.account?
+      source.channels.first.account
+    else
+      "Please email accounts@chalkle.com for payment instructions"
+    end
+  end
+
 end

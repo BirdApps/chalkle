@@ -4,8 +4,8 @@ Feature: Teacher new class form
 
 Background:
   Given "Sina" is a chalkler
-  And the chalkler "Sina" is authenticated
   And the chalkler "Sina" belongs to the "Wellington" channel
+  And the chalkler "Sina" is authenticated
   And the "Science" category exists
 
 Scenario: Chalkler can submit a new class

@@ -1,5 +1,5 @@
 class Stream < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :as => :admin
 
   has_many :lessons
 

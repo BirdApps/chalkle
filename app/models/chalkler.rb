@@ -3,12 +3,22 @@ class Chalkler < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password, :password_confirmation, :remember_me,
-    :channel_ids, :gst, :provider, :uid, :email_frequency, :email_categories, :email_streams, :phone_number
+  attr_accessible :bio, :email, :meetup_id, :name, :password,
+    :password_confirmation, :remember_me, :gst, :email_frequency,
+    :email_categories, :email_streams, :phone_number
+  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password,
+    :password_confirmation, :remember_me, :channel_ids, :gst, :provider, :uid,
+    :email_frequency, :email_categories, :email_streams, :phone_number,
+    :join_channels, :as => :admin
 
+  attr_accessor :join_channels
+
+  validates_presence_of :name
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
   validates_format_of :gst, allow_blank: true, with: /\A[\d -]+\z/
+  validates_presence_of :join_channels, :on => :create
+  validates_presence_of :channel_ids, :on => :update
 
   has_many :channel_chalklers
   has_many :channels, :through => :channel_chalklers
@@ -25,6 +35,7 @@ class Chalkler < ActiveRecord::Base
   before_create :set_from_meetup_data
   before_create :set_reset_password_token
   after_create  :send_teacher_welcome_mail
+  after_create  :create_channel_associations
 
   #TODO: Move into a presenter class like Draper sometime
   def self.email_frequency_select_options
@@ -49,31 +60,55 @@ class Chalkler < ActiveRecord::Base
     end
   end
 
-  def self.create_from_meetup_hash(result, channel)
-    c = Chalkler.find_or_initialize_by_meetup_id(result.id)
-    c.name = result.name
-    c.meetup_id = result.id
-    c.provider = "meetup"
-    c.uid = result.id
-    c.bio = result.bio
-    c.meetup_data = result.to_json
-    c.save
-    c.channels << channel unless c.channels.exists? channel
-    c.valid?
-  end
-
   def self.find_for_meetup_oauth(auth, signed_in_resource=nil)
     chalkler = Chalkler.where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
     unless chalkler
       chalkler = Chalkler.create(name: auth[:extra][:raw_info][:name],
-                           provider: auth[:provider],
-                           uid: auth[:uid].to_s,
-                           meetup_id: auth[:uid],
-                           email: auth[:info][:email],
-                           password: Devise.friendly_token[0,20]
-                           )
+                                 provider: auth[:provider],
+                                 uid: auth[:uid].to_s,
+                                 meetup_id: auth[:uid],
+                                 email: auth[:info][:email],
+                                 password: Devise.friendly_token[0,20])
     end
     chalkler
+  end
+
+  def self.import_from_meetup(result, channel)
+    chalkler = Chalkler.fetch_chalkler(result, channel)
+    if chalkler.nil?
+      chalkler = Chalkler.new
+      chalkler.create_from_meetup(result, channel)
+    else
+      chalkler.update_from_meetup(result)
+      chalkler.channels << channel unless chalkler.channels.exists? channel
+    end
+    chalkler
+  end
+
+  def self.fetch_chalkler(result, channel)
+    if channel.url_name == 'horowhenua'
+      Chalkler.where{(meetup_id == result.id) | (name == result.name)}.first
+    else
+      Chalkler.find_by_meetup_id(result.id)
+    end
+  end
+
+  def create_from_meetup(result, channel)
+    self.name = result.name
+    self.meetup_id = result.id
+    self.provider = 'meetup'
+    self.uid = result.id
+    self.bio = result.bio
+    self.meetup_data = result.to_json
+    self.join_channels = [ channel.id ]
+    self.save
+  end
+
+  def update_from_meetup(result)
+    self.name = result.name unless name?
+    self.bio = result.bio unless bio?
+    self.meetup_data = result.to_json
+    self.save
   end
 
   private
@@ -91,11 +126,21 @@ class Chalkler < ActiveRecord::Base
   end
 
   # for Chalklers created outside of meetup
+  # move to observer
   def send_teacher_welcome_mail
     return if (meetup_data? || self.reset_password_token.blank? || self.email.blank?)
     ChalklerMailer.teacher_welcome(self).deliver!
     self.reset_password_sent_at = Time.now.utc
     self.save
+  end
+
+  # move to observer
+  def create_channel_associations
+    return unless join_channels.is_a?(Array)
+    join_channels.each do |channel_id|
+      self.channels << Channel.find(channel_id)
+    end
+    save!
   end
 
 end

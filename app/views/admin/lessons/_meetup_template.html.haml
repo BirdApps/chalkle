@@ -57,7 +57,7 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
   %br
   deposit #{cost} into chalkle's Kiwibank account:
   %br
-  \#38-9012-0815531-00
+  \# #{lesson.account}
   %br
   Reference: #{lesson.meetup_id.present? ? lesson.meetup_id : "Event Meetup ID"} - Your name
 
