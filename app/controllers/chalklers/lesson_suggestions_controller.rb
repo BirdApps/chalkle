@@ -4,6 +4,9 @@ class Chalklers::LessonSuggestionsController < Chalklers::BaseController
   end
 
   def create
+    if params[:lesson_suggestion][:join_channels]
+      params[:lesson_suggestion][:join_channels].reject!(&:empty?)
+    end
     @lesson_suggestion = LessonSuggestion.new(params[:lesson_suggestion])
     @lesson_suggestion.chalkler = current_chalkler
     if current_chalkler.channels.count == 1

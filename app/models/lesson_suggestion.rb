@@ -13,6 +13,8 @@ class LessonSuggestion < ActiveRecord::Base
   validates_presence_of :join_channels, :on => :create
   validates_presence_of :channel_ids, :on => :update
 
+  after_create :create_channel_associations
+
   private
 
   def create_channel_associations
