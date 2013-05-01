@@ -27,27 +27,23 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 #{lesson.lesson_type.downcase if lesson.lesson_type?}
 
 %br
-%br
 %b skill required
 #{lesson.lesson_skill.downcase if lesson.lesson_skill?}
 
-%br
 %br
 %b your chalkler will be
 %br
 #{simple_format lesson.teacher_bio}
 
 %br
-%br
 %b what to bring
 %br
-#{lesson.prerequisites.blank? ? "None" : (simple_format lesson.prerequisites)}
+#{lesson.prerequisites.blank? ? (simple_format "None") : (simple_format lesson.prerequisites)}
 
-%br
 %br
 %b appropriate audience
 %br
-#{lesson.suggested_audience.blank? ? "Everyone" : (simple_format lesson.suggested_audience)}
+#{lesson.suggested_audience.blank? ? (simple_format "Everyone") : (simple_format lesson.suggested_audience)}
 
 %br
 %b cost
