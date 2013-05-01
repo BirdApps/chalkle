@@ -38,13 +38,20 @@ Location: #{lesson.venue.present? ? lesson.venue : nil}
 #{simple_format lesson.teacher_bio}
 
 %br
+%br
 %b what to bring
 %br
 #{lesson.prerequisites.blank? ? "None" : (simple_format lesson.prerequisites)}
 
 %br
+%br
+%b appropriate audience
+%br
+#{lesson.suggested_audience.blank? ? "Everyone" : (simple_format lesson.suggested_audience)}
+
+%br
 %b cost
-#{lesson.cost? ? (cost = number_with_precision(lesson.cost, :precision => 2, :significant => false)) + "(incl. GST, if any)" : "free"} 
+#{lesson.cost? ? (cost = number_with_precision(lesson.cost, :precision => 2, :significant => false)) + " (incl. GST, if any)" : "free"} 
 %br
 -if lesson.cost?
   %br
