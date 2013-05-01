@@ -1,0 +1,28 @@
+-# work out how to make this dry
+-header_style = 'color: #222'
+-paragraph_style = 'color: #222'
+-link_style = 'color: #cd4063; text-decoration:none;'
+
+%h1{ style: header_style }
+  chalkle&deg; Horowhenua is live!
+
+%p{ style: paragraph_style }
+  != "You'll find us at #{link_to('http://meetup.com/horowhenua', 'http://meetup.com/horowhenua', { style: link_style }) }"
+
+%p{ style: paragraph_style }
+  != "It's time to create an account on #{link_to('Meetup', 'http://meetup.com', { style: link_style }) }."
+  != "To do so, go to the #{link_to('Horowhenua page', 'http://www.meetup.com/horowhenua/', { style: link_style }) } and click 'Join us!'"
+
+%p{ style: paragraph_style }
+  You will be prompted to create an account. Under 'Your real name', enter:
+
+%p{ style: paragraph_style }
+  != "<strong>#{@chalkler.name}</strong>"
+
+%p{ style: paragraph_style }
+  != "This will ensure that your #{link_to('Meetup', 'http://meetup.com', { style: link_style }) } user will be synced with your user on #{link_to('my.chalkle.com', 'http://my.chalkle.com', { style: link_style })  }."
+
+%p{ style: paragraph_style }
+  Best of luck with your classes!
+  %br/
+  The chalkle&deg; team
