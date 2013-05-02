@@ -63,12 +63,13 @@ class Chalkler < ActiveRecord::Base
   def self.find_for_meetup_oauth(auth, signed_in_resource=nil)
     chalkler = Chalkler.where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
     unless chalkler
-      chalkler = Chalkler.create(name: auth[:extra][:raw_info][:name],
-                                 provider: auth[:provider],
-                                 uid: auth[:uid].to_s,
-                                 meetup_id: auth[:uid],
-                                 email: auth[:info][:email],
-                                 password: Devise.friendly_token[0,20])
+      chalkler = Chalkler.new
+      chalkler.name = auth[:extra][:raw_info][:name]
+      chalkler.provider = auth[:provider]
+      chalkler.uid = auth[:uid].to_s
+      chalkler.meetup_id = auth[:uid]
+      chalkler.email = auth[:info][:email]
+      chalkler.password = Devise.friendly_token[0,20]
     end
     chalkler
   end
