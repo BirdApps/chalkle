@@ -44,7 +44,7 @@ class Payment < ActiveRecord::Base
       payment.xero_contact_id = t.contact.id
       payment.xero_contact_name = t.contact.name
       payment.date = t.date
-      payment.save!
+      payment.save
     end
   end
 
