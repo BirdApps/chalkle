@@ -19,3 +19,6 @@
 .DS_Store
 .rspec
 .rvmrc
+
+#rubymine config
+.idea
