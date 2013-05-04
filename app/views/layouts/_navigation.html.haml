@@ -1,7 +1,8 @@
-.navbar.navbar-inverse.navbar-static-top
+%header.navbar.navbar-inverse.navbar-static-top
   .navbar-inner.navbar-texture-gray-dark
     .container
-      = link_to (image_tag 'chalkle_logo_strapline_stacked.png', {width: 125}), root_path, class: 'brand span2'
+      %h1
+        = link_to (image_tag 'chalkle_logo_strapline_stacked.png', {width: 125, alt: 'chalkle° - six degrees of separation'}), root_path, class: 'logo span2'
       .nav-collapse.collapse
         %ul.nav.span10
           -if chalkler_signed_in?
