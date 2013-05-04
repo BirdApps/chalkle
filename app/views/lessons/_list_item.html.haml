@@ -1,0 +1,29 @@
+%section.box-item{class: "#{('lesson-'+lesson.status).downcase}"}
+  .row
+    .span12.box-top
+      .clearfix
+        %h3= lesson.name
+        .pull-right
+          %span= "#{lesson.attendance} / #{lesson.min_attendee}"
+          .icon.icon-user
+  .row
+    .span12.box-mid.text-smaller
+      .box-mid-left.full-width-mobile
+        %p= simple_format truncate( lesson.do_during_class, length: 300, separator: " ")
+        - if lesson.suggested_audience
+          %h4 Suggested for:
+          %p= simple_format lesson.suggested_audience
+      .box-mid-right.full-width-mobile
+        %ul.unstyled
+          - if lesson.start_at
+            %li.light-gray-box= l lesson.start_at, format: :short
+          - elsif lesson.availabilities
+            %li= lesson.availabilities
+          %li= lesson.venue
+          -# %li= "#{"Cost: " + number_to_currency(lesson.price)} (incl GST)"
+          %li= "Materials: #{number_to_currency(lesson.material_cost)}"
+          %li= "Teacher: #{lesson.teacher.name}"
+  .row
+    .span12.box-bottom
+      .pull-right
+        .btn.btn-primary=lesson.join_chalklers

@@ -1,0 +1,4 @@
+%h2 Horowhenua
+.classes
+  - @lessons.each do |lesson|
+    = render :partial => "lessons/list_item", :locals => { :lesson => lesson }
