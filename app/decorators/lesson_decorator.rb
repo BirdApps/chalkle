@@ -1,9 +1,14 @@
 class LessonDecorator < Draper::Decorator
   delegate_all
 
+  def channel_list
+    return if source.channels.blank?
+    source.channels.map{ |c| c.name.capitalize }.join(', ')
+  end
+
   def category_list
     return if source.categories.blank?
-    "In #{source.categories.map(&:name).join(', ').titleize}" if categories.any?
+    "In #{source.categories.map(&:name).join(', ').titleize}"
   end
 
   def join_chalklers
@@ -11,6 +16,14 @@ class LessonDecorator < Draper::Decorator
       "Join #{source.attendance} other chalklers"
     else
       "Join this chalkle"
+    end
+  end
+
+  def account
+    if source.channels.first.account?
+      source.channels.first.account
+    else
+      "Please email accounts@chalkle.com for payment instructions"
     end
   end
 

@@ -11,7 +11,7 @@ ActiveAdmin.register Booking do
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :lesson, as: :select, collection: proc{ Lesson.accessible_by(current_ability).order("LOWER(name) ASC").visible }
-  filter :chalkler, as: :select, collection: proc{ Chalkler.order("name ASC").all }
+  filter :chalkler, as: :select, collection: proc{ Chalkler.order("LOWER(name) ASC").all }
   filter :cost
   filter :paid
   filter :guests
@@ -115,10 +115,10 @@ ActiveAdmin.register Booking do
     payment.reconciled = true
     payment.complete_record_downloaded = true
     payment.cash_payment = true
-    payment.total = booking.cost*1.15
+    payment.total = booking.cost
     payment.visible = true
     if booking.save! && payment.save!
-      flash[:notice] = "Cash payment of $#{(booking.cost*1.15).round(2)} was paid by #{booking.chalkler.name}"
+      flash[:notice] = "Cash payment of $#{(booking.cost).round(2)} was paid by #{booking.chalkler.name}"
     else
       flash[:warn] = "Cash payment could not be recorded"
     end

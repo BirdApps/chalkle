@@ -45,7 +45,7 @@ When /^they create a chalkler without a channel$/ do
 end
 
 Then /^they should see an error message$/ do
-  page.should have_content "Chalkler must belong to a channel"
+  page.should have_content "can't be blank"
 end
 
 When /^the admin views "(.*?)'s" profile$/ do |name|
@@ -62,12 +62,11 @@ Then /^the chalkler "(.*?)" should receive a password reset email$/ do |name|
   ActionMailer::Base.deliveries.length.should == 1
 end
 
-Then /^there should be no password reset button$/ do
-  page.should have_no_content('Send password reset email')
-end
-
 Given /^the chalkler "(.*?)" has no email address$/ do |name|
   chalkler = Chalkler.find_by_name name
-  chalkler.email = nil
-  chalkler.save
+  chalkler.update_attribute :email, nil
+end
+
+Then /^there should be no password reset button$/ do
+  page.should have_no_content('Send password reset email')
 end

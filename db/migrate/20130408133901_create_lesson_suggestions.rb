@@ -3,7 +3,7 @@ class CreateLessonSuggestions < ActiveRecord::Migration
     create_table :lesson_suggestions do |t|
       t.string :name
       t.text :description
-
+      t.references :category
       t.timestamps
     end
   end

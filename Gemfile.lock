@@ -515,6 +515,7 @@ DEPENDENCIES
   pry-rails (~> 0.2.2)
   quiet_assets (~> 1.0.1)
   rMeetup!
+  rack-cache
   rails (= 3.2.12)
   rb-inotify (~> 0.8.8)
   rb-readline

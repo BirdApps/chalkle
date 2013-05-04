@@ -1,5 +1,7 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible, :cash_payment
+  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name,
+    :date, :complete_record_downloaded, :total, :reconciled, :reference,
+    :visible, :cash_payment, :as => :admin
 
   belongs_to :booking
   has_one :chalkler, through: :booking
@@ -36,13 +38,13 @@ class Payment < ActiveRecord::Base
   def self.load_all_from_xero
     transactions = Payment.xero.BankTransaction.all(where: {type: 'RECEIVE', is_reconciled: true})
     transactions.each do |t|
-      Payment.create(
-        xero_id: t.bank_transaction_id,
-        reference: t.reference,
-        xero_contact_id: t.contact.id,
-        xero_contact_name: t.contact.name,
-        date: t.date
-      )
+      payment = Payment.new
+      payment.xero_id = t.bank_transaction_id
+      payment.reference = t.reference
+      payment.xero_contact_id = t.contact.id
+      payment.xero_contact_name = t.contact.name
+      payment.date = t.date
+      payment.save
     end
   end
 

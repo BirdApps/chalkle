@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130414033233) do
+ActiveRecord::Schema.define(:version => 20130430033930) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -141,9 +141,10 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
     t.datetime "created_at",                                                          :null => false
     t.datetime "updated_at",                                                          :null => false
     t.string   "url_name"
+    t.string   "email"
     t.decimal  "channel_percentage", :precision => 8, :scale => 2, :default => 0.125
     t.decimal  "teacher_percentage", :precision => 8, :scale => 2, :default => 0.75
-    t.string   "email"
+    t.string   "account"
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -181,9 +182,10 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
   create_table "lesson_suggestions", :force => true do |t|
     t.string   "name"
     t.text     "description"
+    t.integer  "category_id"
+    t.integer  "chalkler_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
-    t.integer  "category_id"
   end
 
   create_table "lessons", :force => true do |t|
@@ -220,6 +222,7 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
     t.decimal  "material_cost",               :precision => 8, :scale => 2, :default => 0.0
     t.text     "suggested_audience"
     t.string   "meetup_url"
+    t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
   end
 
   create_table "payments", :force => true do |t|

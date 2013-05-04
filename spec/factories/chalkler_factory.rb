@@ -7,6 +7,7 @@ FactoryGirl.define do
     email
     bio "All about me!!"
     gst "234 78 990"
+    join_channels 'skip'
 
     factory :meetup_chalkler do
       meetup_id

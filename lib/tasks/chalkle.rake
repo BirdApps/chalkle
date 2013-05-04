@@ -30,7 +30,7 @@ begin
         for i in 0...total_pages do
           results = RMeetup::Client.fetch(:members, { group_urlname: c.url_name, offset: i })
           results.each do |r|
-            Chalkler.create_from_meetup_hash(r,c)
+            Chalkler.import_from_meetup(r,c)
           end
         end
       end

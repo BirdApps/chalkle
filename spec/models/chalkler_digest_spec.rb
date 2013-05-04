@@ -23,7 +23,7 @@ describe ChalklerDigest do
     # this lesson should always be excluded from a set
     let(:lesson1) {
       FactoryGirl.create(:lesson,
-                         created_at: 1.day.ago,
+                         published_at: 1.day.ago,
                          start_at: 1.day.from_now,
                          status: 'Published',
                          do_during_class: 'x',
@@ -38,7 +38,7 @@ describe ChalklerDigest do
       @chalkler.channels << @channel
       @digest = ChalklerDigest.new(@chalkler)
       @lesson = FactoryGirl.create(:lesson,
-                                   created_at: 1.day.ago,
+                                   published_at: 1.day.ago,
                                    start_at: 3.days.from_now,
                                    status: 'Published',
                                    do_during_class: 'x',
@@ -46,6 +46,24 @@ describe ChalklerDigest do
                                    max_attendee: 15)
       @lesson.categories << @category
       @lesson.channels << @channel
+    end
+
+    it "only loads new/open lessons once" do
+      channel = FactoryGirl.create(:channel)
+      @lesson.channels << channel
+      @chalkler.channels << channel
+      lessons = @digest.instance_eval{ new_lessons }
+      lessons.concat @digest.instance_eval{ open_lessons }
+      lessons.should == [@lesson]
+    end
+
+    it "only loads default new/open lessons once" do
+      channel = FactoryGirl.create(:channel)
+      @lesson.channels << channel
+      @chalkler.channels << channel
+      lessons = @digest.instance_eval{ default_new_lessons }
+      lessons.concat @digest.instance_eval{ default_open_lessons }
+      lessons.should == [@lesson]
     end
 
     describe "#new_lessons" do
@@ -72,7 +90,7 @@ describe ChalklerDigest do
       end
 
       it "won't load a lesson that is more than 1 day old" do
-        @lesson.update_attribute :created_at, 2.days.ago
+        @lesson.update_attribute :published_at, 2.days.ago
         @digest.instance_eval{ new_lessons }.should be_empty
       end
     end
@@ -94,12 +112,17 @@ describe ChalklerDigest do
       end
 
       it "won't load a lesson that is more than 1 day old" do
-        @lesson.update_attribute :created_at, 2.days.ago
+        @lesson.update_attribute :published_at, 2.days.ago
         @digest.instance_eval{ default_new_lessons }.should be_empty
       end
     end
 
     describe "#open_lessons" do
+      before do
+        @lesson.update_attribute :published_at, 3.days.ago
+        lesson1.update_attribute :published_at, 3.days.ago
+      end
+
       it "loads a lesson that a chalkler is interested in" do
         lesson1.categories << FactoryGirl.create(:category)
         lesson1.channels << @channel
@@ -129,8 +152,8 @@ describe ChalklerDigest do
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 
-      it "won't load a lesson that has already taken place" do
-        @lesson.update_attribute :start_at, 2.days.ago
+      it "won't load a lesson that begins less than one day from now" do
+        @lesson.update_attribute :start_at, Time.now.utc + 23.hours
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 
@@ -141,6 +164,11 @@ describe ChalklerDigest do
     end
 
     describe "#default_open_lessons" do
+      before do
+        @lesson.update_attribute :published_at, 3.days.ago
+        lesson1.update_attribute :published_at, 3.days.ago
+      end
+
       it "loads a lesson from channels that chalkler belongs to" do
         lesson1.categories << @category
         lesson1.channels << FactoryGirl.create(:channel)
@@ -164,8 +192,8 @@ describe ChalklerDigest do
         @digest.instance_eval{ default_open_lessons }.should be_empty
       end
 
-      it "won't load a lesson that has already taken place" do
-        @lesson.update_attribute :start_at, 2.days.ago
+      it "won't load a lesson that begins less than one day from now" do
+        @lesson.update_attribute :start_at, Time.now.utc + 23.hours
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 

@@ -11,13 +11,13 @@ Then /^the chalkler "(.*?)" should have new email settings$/ do |name|
 end
 
 Given /^"(.*?)" and "(.*?)" are email categories$/ do |category1, category2|
-  Category.create(name: category1)
-  Category.create(name: category2)
+  FactoryGirl.create(:category, name: category1)
+  FactoryGirl.create(:category, name: category2)
   visit current_path
 end
 
 Given /^"(.*?)" is an email stream$/ do |stream|
-  Stream.create(name: stream)
+  FactoryGirl.create(:stream, name: stream)
   visit current_path
 end
 

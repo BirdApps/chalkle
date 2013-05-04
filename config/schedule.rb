@@ -6,6 +6,10 @@ every :hour, :at => 15 do
   rake "chalkle:load_all"
 end
 
+every 30.minutes do
+  rake "chalkle:load_chalklers"
+end
+
 every :hour, :at => 30 do
   rake "chalkle:load_payments"
 end

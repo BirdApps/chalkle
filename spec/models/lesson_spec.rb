@@ -221,6 +221,37 @@ describe Lesson do
 
     end
 
+    describe "pricing and profit calculations" do
+      before do
+        @lesson.teacher_cost = 10
+        @lesson.cost = 23
+        @lesson.teacher_payment = 10
+        @lesson.chalkle_payment = -20
+        @lesson.save
+        @GST = 0.15
+      end
+
+      it "should calculate teacher percentage" do
+        @lesson.teacher_percentage.should == channel.teacher_percentage 
+      end
+
+      it "should calculate dollars paid to channel per attendee" do
+        @lesson.channel_cost.round(2).should == (@lesson.teacher_cost/@lesson.teacher_percentage*@lesson.channel_percentage*(1 + @GST)).round(2)
+      end
+
+      it "should calculate rounding contribution to the pricing" do
+        @lesson.rounding.round(2).should == (@lesson.cost - @lesson.teacher_cost*((1 + @GST)/@lesson.teacher_percentage - @GST)).round(2)
+      end
+
+      it "should calculate dollars paid to chalkle per attendee" do
+        @lesson.chalkle_cost.round(2).should == (@lesson.cost - @lesson.channel_cost - @lesson.teacher_cost).round(2)
+      end
+
+      it "should calculate channel income excluding GST component" do
+        @lesson.income.round(2).should == (-(@lesson.teacher_payment + @lesson.chalkle_payment)/(1 + @GST)).round(2)
+      end
+    end
+
     describe "override exists" do
 
       it "should override the default channel percentage" do
@@ -262,35 +293,39 @@ describe Lesson do
       end
 
       it "should not allow sum of teacher cost, channel cost and chalkle cost that differs from cost by more than 50 cents" do
-        @lesson.cost = 20;
-        @lesson.teacher_cost = 10;
+        @lesson.cost = 20
+        @lesson.teacher_cost = 10
         @lesson.chalkle_percentage_override = 0.2
         @lesson.channel_percentage_override = 0.6
         @lesson.should_not be_valid
       end
 
       it "should allow sum of teacher cost, channel cost and chalkle cost that differs from cost by less than 50 cents" do
-        @lesson.cost = 24;
-        @lesson.teacher_cost = 11.76;
+        @lesson.cost = 24
+        @lesson.teacher_cost = 11
         @lesson.chalkle_percentage_override = 0.2
         @lesson.channel_percentage_override = 0.3
         @lesson.should be_valid
       end
 
-      it "when teacher cost is 0, should not allow sum of chalkle and channel percentage not equal 1" do
-        @lesson.cost = 20;
-        @lesson.teacher_cost = 0;
-        @lesson.chalkle_percentage_override = 0.2
-        @lesson.channel_percentage_override = 0.3
-        @lesson.should_not be_valid
+      it "when teacher cost is 0, should calculate channel cost as 0" do
+        @lesson.cost = 0
+        @lesson.teacher_cost = 0
+        @lesson.channel_cost.should == 0
       end
 
-      it "when teacher cost is 0, should allow sum of chalkle and channel percentage equal 1" do
-        @lesson.cost = 20;
-        @lesson.teacher_cost = 0;
+      it "when teacher cost is 0, should calculate chalkle cost as 0" do
+        @lesson.cost = 0
+        @lesson.teacher_cost = 0
+        @lesson.chalkle_cost == 0
+      end
+
+      it "when teacher cost is greater than 0 should not allow percentage overrides to cause teacher percentage to be 0" do
+        @lesson.cost = 20
+        @lesson.teacher_cost = 10
         @lesson.chalkle_percentage_override = 0.7
         @lesson.channel_percentage_override = 0.3
-        @lesson.should be_valid
+        @lesson.should_not be_valid
       end
 
     end

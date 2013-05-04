@@ -4,15 +4,15 @@ class Chalklers::LessonSuggestionsController < Chalklers::BaseController
   end
 
   def create
-    @lesson_suggestion = LessonSuggestion.new
-    #To get around join table error when creating join with no saved record
-    @params = params[:lesson_suggestion]
-    @lesson_suggestion.name = @params[:name]
-    @lesson_suggestion.description = @params[:description]
-    @lesson_suggestion.category_id = @params[:category_id]
-
+    if params[:lesson_suggestion][:join_channels]
+      params[:lesson_suggestion][:join_channels].reject!(&:empty?)
+    end
+    @lesson_suggestion = LessonSuggestion.new(params[:lesson_suggestion])
+    @lesson_suggestion.chalkler = current_chalkler
+    if current_chalkler.channels.count == 1
+      @lesson_suggestion.join_channels = [ current_chalkler.channel_ids ]
+    end
     if @lesson_suggestion.save
-      @lesson_suggestion.channel_ids = params[:lesson_suggestion][:channel_ids]
       redirect_to root_url, notice: 'Thank you for your suggestion!'
     else
       render :action => "new"
