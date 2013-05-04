@@ -1,5 +1,5 @@
 Given /^there is an unreconciled payment with no details$/ do
-  Payment.create([xero_id: "abc", total: 10], :as => :admin)
+  Payment.create!([xero_id: "abc", total: 10], :as => :admin)
 end
 
 Then /^they should see this payment$/ do
@@ -7,7 +7,7 @@ Then /^they should see this payment$/ do
 end
 
 Given /^there is a lesson with no details$/ do
-  Lesson.create([name: "Test Class"], :as => :admin)
+  Lesson.create!([name: "Test Class"], :as => :admin)
 end
 
 Then /^they should see this lesson$/ do
@@ -15,7 +15,7 @@ Then /^they should see this lesson$/ do
 end
 
 Given /^there is a channel with no details$/ do
-  Channel.create([name: "Test Channel", url_name: "test_channel"], :as => :admin)
+  Channel.create!([name: "Test Channel", url_name: "test_channel"], :as => :admin)
 end
 
 Then /^they should see this channel$/ do
@@ -24,7 +24,8 @@ Then /^they should see this channel$/ do
 end
 
 Given /^there is a chalkler with no details$/ do
-  Chalkler.create([name: "Test Chalkler"], :as => :admin)
+  channel = FactoryGirl.create(:channel)
+  Chalkler.create!([name: "Test Chalkler", :join_channels => [channel.id]], :as => :admin)
 end
 
 Then /^they should see this chalkler$/ do
@@ -32,7 +33,7 @@ Then /^they should see this chalkler$/ do
 end
 
 Given /^there is a category with no details$/ do
-  Category.create([name: "Test Category"], :as => :admin)
+  Category.create!([name: "Test Category"], :as => :admin)
 end
 
 Then /^they should see this category$/ do
@@ -40,9 +41,9 @@ Then /^they should see this category$/ do
 end
 
 Given /^there is a booking with no details$/ do
-  lesson = Lesson.create([name: "Test Class"], :as => :admin)
+  lesson = FactoryGirl.create(:lesson, name: "Test Class")
   chalkler = FactoryGirl.create(:chalkler)
-  Booking.create(lesson_id: lesson.id, chalkler_id: chalkler.id)
+  Booking.create!([lesson_id: lesson.id, chalkler_id: chalkler.id], :as => :admin)
 end
 
 Then /^they should see this booking$/ do
@@ -50,7 +51,7 @@ Then /^they should see this booking$/ do
 end
 
 Given /^there is an admin user with no details$/ do
-  AdminUser.create([email: "test@chalkle.com"], :as => :admin)
+  AdminUser.create!([name: "Test Admin", email: "test@chalkle.com", role: "super"], :as => :admin)
 end
 
 Then /^they should see this admin user$/ do

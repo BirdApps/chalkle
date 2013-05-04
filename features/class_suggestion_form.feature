@@ -5,7 +5,6 @@ Feature: Teacher new class form
 Background:
   Given "Sina" is a chalkler
   And the chalkler "Sina" is authenticated
-  And the chalkler "Sina" belongs to the "TestWellington" channel
   And the "Science" category exists
 
 Scenario: Chalkler can submit a new class suggestion
@@ -14,7 +13,6 @@ Scenario: Chalkler can submit a new class suggestion
   Then they should see the new class suggestion confirmation message
 
 Scenario: Chalkler can select channel if they belong to multiple channels
-  Given the "Whanau" channel exists
   Given the chalkler "Sina" belongs to the "Whanau" channel
   When they visit the "Suggest a class" page
   And they enter new class suggestion details with channel

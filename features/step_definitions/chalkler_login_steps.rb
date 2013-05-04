@@ -34,9 +34,9 @@ When /^they log in via Meetup$/ do
   click_link 'Sign in with Meetup'
 end
 
-Then /^a new chalkler "(.*?)" is created with details from Meetup$/ do |name|
-  Chalkler.find_by_name(name).should be_valid
-end
+# Then /^a new chalkler "(.*?)" is created with details from Meetup$/ do |name|
+  # Chalkler.find_by_name(name).should be_valid
+# end
 
 Then /^they should see the Submit Email form$/ do
   page.should have_content('Almost there!')
@@ -61,6 +61,11 @@ end
 Then /^the chalkler "(.*?)" has an updated email$/ do |name|
   chalkler = Chalkler.find_by_name name
   chalkler.email.should == 'jill@chalkle.com'
+end
+
+Given /^the chalkler "(.*?)" doesn't belong to a channel$/ do |name|
+  chalkler = Chalkler.find_by_name name
+  chalkler.channel_ids = []
 end
 
 Then /^they will be redirected to an error page$/ do

@@ -10,7 +10,7 @@ When /^they enter new class suggestion details with channel$/ do
   fill_in 'lesson_suggestion_name', with: 'new class suggestion'
   fill_in 'lesson_suggestion_description', with: 'I suggest learning new stuff'
   select 'Science', from: 'lesson_suggestion_category_id'
-  find(:css, "#lesson_suggestion_channel_ids_#{Channel.last.id}").set(true)
+  check 'Whanau'
   click_button 'Suggest class'
 end
 

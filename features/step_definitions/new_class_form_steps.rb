@@ -22,7 +22,7 @@ end
 
 Then /^the "(.*?)" channel email link will be displayed$/ do |channel|
   channel = Channel.find_by_name channel
-  page.should have_link(channel.email)
+  page.should have_content(channel.email)
 end
 
 When /^they select the "(.*?)" channel$/ do |channel|
