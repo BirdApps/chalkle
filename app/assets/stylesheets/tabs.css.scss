@@ -1,5 +1,5 @@
 .nav-tabs {
-  border-bottom: 1px dashed $gray-light;
+  border-bottom: 1px dashed $grayLight;
 }
 // Make the list-items overlay the bottom border
 .nav-tabs > li {
@@ -14,7 +14,7 @@
   @include border-radius(0);
   &:hover,
   &:focus {
-    border-color: $gray-light $gray-light transparent $gray-light;
+    border-color: $grayLight $grayLight transparent $grayLight;
     background-color: #fff;
   }
 }
@@ -22,10 +22,9 @@
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover,
 .nav-tabs > .active > a:focus {
-  color: $gray-dark;
+  color: $grayDark;
   background-color: #fff;
-  border: 1px dashed $gray-light;
+  border: 1px dashed $grayLight;
   border-bottom-color: transparent;
   cursor: default;
 }
-

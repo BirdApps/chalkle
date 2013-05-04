@@ -1,8 +1,6 @@
 $pink: #cd4063;
 $green: #24714c;
 $blue: #1F64BF;
-$gray-dark: #333333;
-$gray-light: #777;
 
 $texture-gray-light: asset-url("texture-gray-light.png", "image") repeat;
 $texture-gray-med: asset-url("texture-gray-med.png", "image") repeat;
@@ -72,32 +70,32 @@ hr.dashed {
 
 //Colors
 
-.color-white { 
-  color: #fff; 
+.color-white {
+  color: #fff;
 }
 
-.color-red { 
-  color: $red; 
+.color-red {
+  color: $red;
 }
 
-.color-pink { 
-  color: $pink; 
+.color-pink {
+  color: $pink;
 }
 
 a.color-pink:hover {
   color: lighten($pink, 10%);
 }
 
-.color-green { 
-  color: $green; 
+.color-green {
+  color: $green;
 }
 
 a.color-green:hover {
   color: lighten($green, 10%);
 }
 
-.color-blue { 
-  color: $blue; 
+.color-blue {
+  color: $blue;
 }
 
 a.color-blue:hover {
@@ -205,18 +203,18 @@ h3.heading-on-bg-inline {
 //Forms
 .form-search {
   .input-append  {
-    .search-query { 
+    .search-query {
       @include border-radius(4px 0 0 4px);
     }
     .btn {
       @include border-radius(0 4px 4px 0);
       &:hover {
-        @include rotate(0);
+        /* @include rotate(0); */
       }
     }
     .icon {
       &:hover {
-        @include scale(0);     
+        @include scale(0);
       }
     }
   }
@@ -505,7 +503,7 @@ tr.editing {
 }
 
 .box-highlighted {
-  
+
 }
 
 

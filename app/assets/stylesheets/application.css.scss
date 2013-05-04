@@ -1,32 +1,11 @@
-$iconSpritePath: '';
-$iconWhiteSpritePath: '';
-@import "font-awesome";
 @import "_variables";
+@import "font-awesome";
 @import "bootstrap";
-@import "bourbon";
-
-@font-face {
-  font-family: 'MrChalk';
-  src: url('/assets/25FE67_0_0.eot');
-  src: url('/assets/25FE67_0_0.eot?#iefix') format('embedded-opentype'),
-  url('/assets/25FE67_0_0.woff') format('woff'),
-  url('/assets/25FE67_0_0.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-$font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-$font_family_normal: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-
-$pink: #cd4063;
-$blackboard: #2d2c29;
-
-html {
-  overflow-y: scroll;
-}
-body {
-  padding-top: 0;
-}
+@import "layout";
+@import "typography";
+@import "forms";
+@import "tabs";
+@import "modules/chalklers";
 
 .center {
   text-align: center;
@@ -35,70 +14,7 @@ body {
 .row {
   margin-bottom: $baseLineHeight;
 }
+
 .no-bottom-margin {
   margin-bottom: 0;
 }
-
-.navbar {
-  font-weight: bold;
-  font-size: 15px;
-  line-height: 1em;
-  margin-bottom: 30px;
-  .brand {
-    padding: 0;
-    margin: 0;
-  }
-  .navbar-texture-gray-dark {
-    background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
-    padding: ($baseLineHeight / 2) 0;
-    border-bottom: solid 1px gray;
-  }
-  .nav {
-    margin-top: 7px;
-    float: right;
-    li {
-      margin-left: 15px;
-      &.fl-right {float: right;}
-      &.no-right-margin {margin: 0 0 0 15px;}
-      a {
-        -webkit-transition: all 0.5s;
-        position: relative;
-        color: white;
-        display: block;
-        padding: 7px 10px;
-        line-height: 18px;
-        text-decoration: none;
-        border-radius: 2px;
-        -moz-border-radius: 2px;
-        -webkit-border-radius: 2px;
-        border: dashed 1px #999999;
-        &.no-border { border: none; font-weight: normal;}
-        text-shadow: 0px 1px 0px black;
-        &:hover {
-          background: none;
-          color: $pink;
-          @include rotate(-2deg);
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-}
-
-.hero-unit {
-  font-family: $font_family_chalk;
-  background: #222222 asset-url("texture-chalkboard.jpg", image) left top repeat;
-  color: white;
-  padding: 20px 60px;
-  border: solid 2px #222;
-  h2 {
-    font-family: $font_family_chalk;
-  }
-}
-
-@import "styleguide";
-@import "bootstrap_overrides";
-@import "image";
-@import "forms";
-@import "typography";
-@import "modules/chalklers";

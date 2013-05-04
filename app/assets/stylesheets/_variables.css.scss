@@ -13,7 +13,7 @@ $black:                 #000 !default;
 $grayDarker:            #222 !default;
 $grayDark:              #333 !default;
 $gray:                  #555 !default;
-$grayLight:             #999 !default;
+$grayLight:             #777 !default;
 $grayLighter:           #eee !default;
 $white:                 #fff !default;
 
@@ -307,3 +307,15 @@ $fluidGridGutterWidth1200:     percentage($gridGutterWidth1200/$gridRowWidth1200
 // 768px-979px
 $fluidGridColumnWidth768:      percentage($gridColumnWidth768/$gridRowWidth768) !default;
 $fluidGridGutterWidth768:      percentage($gridGutterWidth768/$gridRowWidth768) !default;
+
+// Custom chalkle variables (merge this in above where possible)
+
+$font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$font_family_normal: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+
+$pink: #cd4063;
+$blackboard: #2d2c29;
+
+// for font-awesome
+$iconSpritePath: '';
+$iconWhiteSpritePath: '';
