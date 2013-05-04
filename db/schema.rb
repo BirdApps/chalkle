@@ -183,9 +183,9 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.string   "name"
     t.text     "description"
     t.integer  "category_id"
-    t.integer  "chalkler_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "chalkler_id"
   end
 
   create_table "lessons", :force => true do |t|
