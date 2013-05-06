@@ -1,0 +1,15 @@
+.lesson-details
+  %ul.unstyled
+    %li.lesson-start-time= l lesson.start_at, :format => :long
+    %li
+      %strong Location:
+      = lesson.venue
+    %li
+      %strong Cost:
+      -if lesson.cost?
+        = "#{number_to_currency(lesson.cost)} (incl GST)"
+      -else
+        Free
+    %li
+      %strong Teacher:
+      = lesson.teacher.name
