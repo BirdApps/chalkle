@@ -10,16 +10,16 @@
 
 h2 {
   font-family: $font_family_normal;
-  font-weight: normal;
 }
 
 h3 {
   font-family: $font_family_normal;
-  font-weight: normal;
 }
 
 form {
-  h3 { border-bottom: solid 1px $grayLighter;}
+  h3 {
+    border-bottom: solid 1px $grayLighter;
+  }
 }
 
 legend {

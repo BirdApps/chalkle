@@ -65,3 +65,42 @@ body {
     font-family: $font_family_chalk;
   }
 }
+
+.lesson-item {
+  background: #f9f9f9;
+  @include border-radius(4px);
+  border: solid 1px darken(#f9f9f9, 8%);
+  margin: 0 0 2em 0;
+
+  .lesson-header {
+    border-bottom: solid 1px darken(#f9f9f9, 8%);
+    background: darken(#f9f9f9, 4%);
+    h3 {
+      font-size: 1.2em;
+      margin: 0;
+      padding-left: 0.5em;
+      float: left;
+    }
+    .lesson-attendance {
+      margin: 0.75em;
+    }
+  }
+
+  .row {
+    margin-bottom: 0;
+  }
+
+  .lesson-summary {
+    padding: 0 0.5em;
+  }
+
+  .lesson-details {
+    font-size: $fontSizeSmall;
+  }
+
+  .lesson-actions {
+    padding: 1em;
+    border-top: solid 1px darken(#f9f9f9, 8%);
+    background: darken(#f9f9f9, 4%);
+  }
+}
