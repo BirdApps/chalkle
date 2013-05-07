@@ -12,4 +12,10 @@ class ApplicationController < ActionController::Base
   def styleguide
     render "/styleguide"
   end
+
+  protected
+
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
+  end
 end
