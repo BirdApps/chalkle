@@ -1,0 +1,23 @@
+- title 'Sign Up'
+
+.row
+  .span12
+    :markdown
+      ## Sign Up
+      We are currently only accepting registrations for users in the Horowhenua region.
+
+      If you live in Wellington, please join either the [Wellington](http://www.meetup.com/sixdegrees/)
+      or [Whānau](http://www.meetup.com/whanau/) Meetup groups.
+
+    = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+      %h3 Enter your details:
+      = f.error_notification
+
+      .form-inputs
+        = f.input :name, :autofocus => true
+        = f.input :email, :required => true
+        = f.input :password, :required => true
+        = f.input :password_confirmation, :required => true
+
+      .form-actions
+        = f.button :submit, "Sign up"
