@@ -1,25 +1,63 @@
 class LoadNewCategories < ActiveRecord::Migration
   def up
     Category.delete_all
-    Category.create(:name  =>  "Agriculture & Environment")
-    Category.create(:name  =>  "Art & Handcrafts")
-    Category.create(:name  =>  "Business & Finances")
-    Category.create(:name  =>  "Computers & Technology")
-    Category.create(:name  =>  "Fashion & Beauty")
-    Category.create(:name  =>  "Film & Photography")
-    Category.create(:name  =>  "Food & Drink")
-    Category.create(:name  =>  "Maker & DIY")
-    Category.create(:name  =>  "Health & Wellbeing")
-    Category.create(:name  =>  "Language & Culture")
-    Category.create(:name  =>  "Life Skills")
-    Category.create(:name  =>  "Music & Performance")
-    Category.create(:name  =>  "Societies")
-    Category.create(:name  =>  "Science")
-    Category.create(:name  =>  "Sports & Outdoors")
-    Category.create(:name  =>  "What is Trending")
-    Category.create(:name  =>  "WTF is that")
-    Category.create(:name  =>  "Professional development")
-    Category.create(:name  =>  "Entrepreneurship")
+    c = Category.new
+    c.name  =  "Agriculture & Environment"
+    c.save
+    Category.new
+    c.name  =  "Art & Handcrafts"
+    c.save
+    Category.new
+    c.name  =  "Business & Finances"
+    c.save
+    Category.new
+    c.name  =  "Computers & Technology"
+    c.save
+    Category.new
+    c.name  =  "Fashion & Beauty"
+    c.save
+    Category.new
+    c.name  =  "Film & Photography"
+    c.save
+    Category.new
+    c.name  =  "Food & Drink"
+    c.save
+    Category.new
+    c.name  =  "Maker & DIY"
+    c.save
+    Category.new
+    c.name  =  "Health & Wellbeing"
+    c.save
+    Category.new
+    c.name  =  "Language & Culture"
+    c.save
+    Category.new
+    c.name  =  "Life Skills"
+    c.save
+    Category.new
+    c.name  =  "Music & Performance"
+    c.save
+    Category.new
+    c.name  =  "Societies"
+    c.save
+    Category.new
+    c.name  =  "Science"
+    c.save
+    Category.new
+    c.name  =  "Sports & Outdoors"
+    c.save
+    Category.new
+    c.name  =  "What is Trending"
+    c.save
+    Category.new
+    c.name  =  "WTF is that"
+    c.save
+    Category.new
+    c.name  =  "Professional development"
+    c.save
+    Category.new
+    c.name  =  "Entrepreneurship"
+    c.save
   end
 
   def down

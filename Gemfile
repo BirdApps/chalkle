@@ -74,7 +74,7 @@ end
 
 group :development, :test do
   # Automatic testing
-  gem 'rb-inotify',        '~> 0.8.8'
+  #gem 'rb-inotify',        '~> 0.8.8'
   gem 'guard',             '~> 1.6.2'
   gem 'guard-spork',       '~> 1.4.1'
   gem 'guard-rspec',       '~> 2.3.3'
