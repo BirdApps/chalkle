@@ -12,7 +12,7 @@ Chalkle::Application.routes.draw do
 
   namespace :chalklers do
     root to: "dashboard#index"
-    resources :lesson_suggestions, :only => [:new, :create]
+    resources :lesson_suggestions, :only => [:new, :create], :path => 'class_suggestions'
 
     get '/enter_email' => 'preferences#enter_email', as: 'enter_email'
     put '/enter_email' => 'preferences#enter_email', as: 'enter_email'
