@@ -6,10 +6,8 @@ Chalkle::Application.routes.draw do
 
   root to: "chalklers/dashboard#index"
 
-  match "channels/horowhenua" => "channels#horowhenua"
-
-  resources :channels do
-    resources :lessons
+  resources :channels, :only => :show do
+    resources :lessons, :only => :show, :path => 'classes'
   end
 
   namespace :chalklers do
