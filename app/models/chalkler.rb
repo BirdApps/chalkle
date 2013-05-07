@@ -1,7 +1,6 @@
 class Chalkler < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable,
+    :validatable, :omniauthable, :registerable
 
   attr_accessible :bio, :email, :meetup_id, :name, :password,
     :password_confirmation, :remember_me, :gst, :email_frequency,
