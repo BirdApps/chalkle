@@ -11,5 +11,15 @@
       -else
         Free
     %li
-      %strong Teacher:
+      %strong Chalkler:
       = lesson.teacher.name
+    -if lesson.lesson_skill?
+      %li
+        %strong Skill level:
+        = lesson.lesson_skill
+    %li
+      %strong Suitable for:
+      -if lesson.suggested_audience?
+        = lesson.suggested_audience
+      -else
+        Everyone

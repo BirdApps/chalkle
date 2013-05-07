@@ -1,0 +1,14 @@
+- title @lesson.name
+
+%h2= @lesson.name
+
+.row
+  .span8
+    .lesson-description
+      %h3 What we are doing
+      = simple_format @lesson.do_during_class
+      %h3 What you will learn
+      = simple_format @lesson.learning_outcomes
+  .span4
+    =render :partial => 'lessons/lesson_details', :locals => { :lesson => @lesson }
+    =render :partial => 'chalklers/teacher_details', :locals => { :teacher => @lesson.teacher }

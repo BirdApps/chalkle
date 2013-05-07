@@ -1,4 +1,7 @@
-%h2 Horowhenua: Upcoming Classes
+- content_for :title, "Upcoming Classes - #{@channel.name}"
+
+%h2= "#{@channel.name}: Upcoming Classes"
+
 .classes
   - @lessons.each do |lesson|
     = render :partial => "lessons/list_item", :locals => { :lesson => lesson }
