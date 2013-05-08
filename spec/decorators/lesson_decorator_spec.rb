@@ -45,7 +45,7 @@ describe LessonDecorator do
     end
   end
 
-  describe "account number" do
+  describe ".account" do
     it "should retrieve the correct account number" do
       channel = FactoryGirl.create(:channel, account: "12-1234-1234567-00")
       lesson.channels << channel
@@ -59,5 +59,16 @@ describe LessonDecorator do
     end
   end
 
+  describe ".formatted_price" do
+    it "displays 'Free' when the lesson has no cost" do
+      lesson.cost = 0
+      lesson.formatted_price.should == 'Free'
+    end
+
+    it "formats price when the lesson is not free" do
+      lesson.cost = 5.0
+      lesson.formatted_price.should == '$5.00'
+    end
+  end
 
 end
