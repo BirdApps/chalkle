@@ -2,7 +2,7 @@ Chalkle::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   devise_for :admin_users, ActiveAdmin::Devise.config
-  devise_for :chalklers, :controllers => { :omniauth_callbacks => "chalklers/omniauth_callbacks" }
+  devise_for :chalklers, :controllers => { :omniauth_callbacks => "chalklers/omniauth_callbacks", :registrations => "chalklers/registrations" }
 
   root to: "chalklers/dashboard#index"
 
