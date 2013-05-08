@@ -1,7 +1,8 @@
 class LessonsController < ApplicationController
+  before_filter :horowhenua?
+
   def show
     @channel = Channel.find params[:channel_id]
-    @channel.name == 'Horowhenua' || not_found
-    @lesson = @channel.lessons.find params[:id]
+    @lesson = @channel.lessons.find(params[:id]).decorate
   end
 end
