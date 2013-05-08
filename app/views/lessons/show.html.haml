@@ -10,5 +10,7 @@
       %h3 What you will learn
       = simple_format @lesson.learning_outcomes
   .span4
+    .booking
+      = link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson)
     =render :partial => 'lessons/lesson_details', :locals => { :lesson => @lesson }
     =render :partial => 'chalklers/teacher_details', :locals => { :teacher => @lesson.teacher }

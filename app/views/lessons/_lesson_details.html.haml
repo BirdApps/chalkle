@@ -6,13 +6,7 @@
       = lesson.venue
     %li
       %strong Cost:
-      -if lesson.cost?
-        = "#{number_to_currency(lesson.cost)} (incl GST)"
-      -else
-        Free
-    %li
-      %strong Chalkler:
-      = lesson.teacher.name
+      = lesson.formatted_price
     -if lesson.lesson_skill?
       %li
         %strong Skill level:
