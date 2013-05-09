@@ -6,6 +6,9 @@ ActiveAdmin.register Lesson  do
     authorize_resource
   end
 
+  scope :published
+  scope :unpublished
+
   filter :channels_name, :as => :select, :label => "Channel",
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id

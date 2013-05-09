@@ -38,6 +38,16 @@ describe Lesson do
     it { Lesson.hidden.should_not include(lesson) }
   end
 
+  describe ".published" do
+    it "should include published lessons" do
+      lesson.status = "Published"
+      lesson.save
+      Lesson.published.should include(lesson)
+    end
+
+    it { Lesson.published.should_not include(lesson) }
+  end
+
   describe "cancellation email" do
     let(:lesson2) { FactoryGirl.create(:lesson, start_at: Date.today, min_attendee: 3) }
 
