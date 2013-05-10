@@ -8,7 +8,7 @@ Chalkle::Application.routes.draw do
 
   resources :channels, :only => :show do
     resources :lessons, :only => :show, :path => 'classes' do
-      resources :bookings, :only => [:new, :create]
+      resources :bookings, :only => [:new, :create, :show]
     end
   end
 

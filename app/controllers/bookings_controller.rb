@@ -12,10 +12,14 @@ class BookingsController < ApplicationController
     @booking.chalkler = current_chalkler
     @booking.status = 'yes'
     if @booking.save
-      redirect_to root_url
+      redirect_to action: 'show'
     else
       @lesson = Lesson.find(params[:lesson_id]).decorate
       render action: 'new'
     end
+  end
+
+  def show
+    @booking = Booking.find params[:booking_id]
   end
 end
