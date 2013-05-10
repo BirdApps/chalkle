@@ -124,6 +124,7 @@ GEM
       execjs
     coffee-script-source (1.4.0)
     colored (1.2)
+    columnize (0.3.6)
     coolline (0.4.0)
     cucumber (1.2.1)
       builder (>= 2.1.2)
@@ -136,6 +137,15 @@ GEM
       nokogiri (>= 1.5.0)
     daemons (1.1.9)
     database_cleaner (0.9.1)
+    debugger (1.5.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.0)
+    debugger-linecache (1.2.0)
+    debugger-pry (0.1.1)
+      debugger (~> 1)
+      pry (>= 0.9.9)
+    debugger-ruby_core_source (1.2.0)
     delayed_job (3.0.5)
       activesupport (~> 3.0)
     delayed_job_active_record (0.4.1)
@@ -482,6 +492,8 @@ DEPENDENCIES
   coffee-rails (~> 3.2.2)
   cucumber-rails
   database_cleaner (~> 0.9.1)
+  debugger
+  debugger-pry
   delayed_job_active_record
   devise (~> 2.2.3)
   dragonfly (~> 0.9.14)

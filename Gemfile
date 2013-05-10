@@ -94,6 +94,8 @@ group :development, :test do
   # Debugging Tools
   gem 'pry-rails',     '~> 0.2.2'
   gem 'pry-coolline',  '~> 0.2.1'
+  gem 'debugger'
+  gem 'debugger-pry'
 
   #mucking round with the db
   gem 'forgery'
