@@ -5,18 +5,69 @@
 .row
   .span12
     %section.booking
-      .lesson-summary
-        %h3 Booking summary
-        %ul
-          %li
-            %strong Class:
-            = @lesson.name
-          %li
-            %strong Time:
-            = @lesson.start_at
-          %li
-            %strong Cost:
-            = @lesson.formatted_price
+      .row
+        .span6
+          .lesson-summary
+            %h3 Booking summary
+            %ul
+              %li
+                %strong Class:
+                = @lesson.name
+              %li
+                %strong Time:
+                = @lesson.start_at
+              %li
+                %strong Price:
+                %span#lessonPrice= @lesson.formatted_price
+                #lessonBasePrice.hide= @lesson.cost
+            %div.payment-descriptions
+              .payment-cash.hide
+                %h4 Cash payment
+                %p Simply pay the teacher at the door
+              .payment-bank.hide
+                %h4 Bank Transfer
+                %p Deposit the payment into chalkle's Kiwibank account:
+                %ul
+                  %li
+                    %strong Account number:
+                    38-9012-0815531-00
+                  %li
+                    %strong Reference:
+                    = "#{@lesson.id} - #{current_chalkler.name}"
 
-      %h3 Enter booking details
-      = render partial: 'form'
+        .span6
+          = render partial: 'form'
+          :coffeescript
+            $('#booking_payment_method').change (e) ->
+              $('.payment-descriptions').children().hide()
+              $('.payment-descriptions .payment-' + $(this).val()).show()
+
+            unless $('#lessonPrice').text() == 'Free'
+              $('#booking_guests').change (e) ->
+                basePrice = Number $('#lessonBasePrice').text()
+                guests = Number $(this).val()
+                $('#lessonPrice').text '$' + (basePrice * (guests + 1)).toFixed 2
+
+#termsModal.modal.hide.fade{ :'tabindex' => '-1', :'role' => 'dialog', :'aria-labelled-by' => 'Terms and Conditions', :'aria-hidden' => true }
+  .modal-header
+    %button.close{:type => 'button', :'data-dismiss' => 'modal', :'aria-hidden' => 'true'} &times;
+    %h3 Booking Terms and Conditions
+  .modal-body
+    %h4 Disclaimer
+    %p
+      Whilst every possible assistance will be offered, chalkle&deg;, the Event
+      Organisers/Hosts and members cannot be held responsible for any accident,
+      injuries or losses sustained leading up to, during, or after a class.
+
+    %h4 Cancellation policy
+    %p
+      If you RSVP for a class and fail to show up, you will get a "no show".
+      Three no shows means you will be removed from chalkle&deg;. You may request to
+      rejoin after six months.
+    %p
+      If you cancel your booking:
+      %ul
+        %li less than 3 days before: no refund
+        %li after 7pm the night before: no refund and a "no show" will be recorded
+  .modal-footer
+    %button.btn{ :'data-dismiss' => 'modal', :'aria-hidden' => 'true' } Close

@@ -16,5 +16,6 @@
 //= require bootstrap-transition
 //= require bootstrap-tooltip
 //= require bootstrap-popover
+//= require bootstrap-modal
 //= require underscore
 //= require utils
