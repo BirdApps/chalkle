@@ -11,6 +11,21 @@
       = simple_format @lesson.learning_outcomes
   .span4
     .booking
-      = link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson)
-    =render :partial => 'lessons/lesson_details', :locals => { :lesson => @lesson }
-    =render :partial => 'chalklers/teacher_details', :locals => { :teacher => @lesson.teacher }
+      = link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
+      :coffeescript
+        signedIn = () ->
+          if _.isString(_.find(document.cookie.split(';'), (a)-> return a == ' signed_in=1')) then true else false
+
+        $('#join-lesson').click (e)->
+          unless signedIn()
+            e.preventDefault()
+
+        unless signedIn()
+          $('#join-lesson').popover
+            placement: 'top'
+            html: true
+            title: 'Sign in to join a class'
+            content: 'Please <a href="/chalklers/sign_in">sign in</a> or <a href="/chalklers/sign_up">create an account</a> to make a booking.'
+
+    = render :partial => 'lessons/lesson_details', :locals => { :lesson => @lesson }
+    = render :partial => 'chalklers/teacher_details', :locals => { :teacher => @lesson.teacher }

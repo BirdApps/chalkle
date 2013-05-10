@@ -13,6 +13,14 @@ class ApplicationController < ActionController::Base
     render "/styleguide"
   end
 
+  def after_sign_in_path_for(resource)
+    session[:previous_url] || root_url
+  end
+
+  def after_register_path_for(resource)
+    session[:previous_url] || root_url
+  end
+
   protected
 
   def not_found
@@ -24,5 +32,9 @@ class ApplicationController < ActionController::Base
   def horowhenua?
     channel = Channel.find params[:channel_id]
     channel.name == 'Horowhenua' || not_found
+  end
+
+  def store_location
+    session[:previous_url] = request.fullpath unless request=~ /\/chalklers/
   end
 end

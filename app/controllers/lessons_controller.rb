@@ -1,5 +1,6 @@
 class LessonsController < ApplicationController
   before_filter :horowhenua?
+  after_filter :store_location
 
   def show
     @channel = Channel.find params[:channel_id]
