@@ -52,6 +52,7 @@ end
 
 group :development do
   gem 'rb-readline'
+
   # Better documentation
   gem 'tomdoc',  '~> 0.2.5',  :require => false
 
@@ -74,7 +75,6 @@ end
 
 group :development, :test do
   # Automatic testing
-  #gem 'rb-inotify',        '~> 0.8.8'
   gem 'guard',             '~> 1.6.2'
   gem 'guard-spork',       '~> 1.4.1'
   gem 'guard-rspec',       '~> 2.3.3'
@@ -96,9 +96,6 @@ group :development, :test do
   gem 'pry-coolline',  '~> 0.2.1'
   gem 'debugger'
   gem 'debugger-pry'
-
-  #mucking round with the db
-  gem 'forgery'
 end
 
 group :test do
