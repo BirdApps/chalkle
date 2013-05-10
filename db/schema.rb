@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430033930) do
+ActiveRecord::Schema.define(:version => 20130509042351) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
     t.string   "name"
     t.string   "role"
   end
@@ -56,10 +56,11 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.integer  "guests"
     t.boolean  "paid"
     t.text     "meetup_data"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
     t.boolean  "visible"
-    t.decimal  "cost_override", :precision => 8, :scale => 2
+    t.decimal  "cost_override",  :precision => 8, :scale => 2
+    t.string   "payment_method"
   end
 
   create_table "categories", :force => true do |t|
@@ -157,8 +158,8 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -183,8 +184,8 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.string   "name"
     t.text     "description"
     t.integer  "category_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "chalkler_id"
   end
 
@@ -198,8 +199,8 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.datetime "start_at"
     t.integer  "duration"
     t.text     "meetup_data"
-    t.datetime "created_at",                                                                          :null => false
-    t.datetime "updated_at",                                                                          :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.decimal  "teacher_cost",                :precision => 8, :scale => 2
     t.decimal  "venue_cost",                  :precision => 8, :scale => 2
     t.boolean  "visible"
@@ -234,8 +235,8 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.boolean  "complete_record_downloaded"
     t.decimal  "total",                      :precision => 8, :scale => 2, :default => 0.0
     t.boolean  "reconciled"
-    t.datetime "created_at",                                                                :null => false
-    t.datetime "updated_at",                                                                :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "reference"
     t.boolean  "visible"
     t.boolean  "cash_payment"
@@ -248,8 +249,8 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.string   "table"
     t.integer  "month",      :limit => 2
     t.integer  "year",       :limit => 8
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
