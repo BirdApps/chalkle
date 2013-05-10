@@ -4,6 +4,7 @@ FactoryGirl.define do
     status "yes"
     guests 3
     paid false
+    payment_method 'meetup'
     chalkler
     lesson
   end
