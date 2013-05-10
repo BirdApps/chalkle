@@ -1,11 +1,21 @@
 class BookingsController < ApplicationController
   before_filter :horowhenua?
+  before_filter :authenticate_chalkler!
 
   def new
     @booking = Booking.new
-    @booking.lesson = Lesson.find(params[:lesson_id]).decorate
+    @lesson = Lesson.find(params[:lesson_id]).decorate
   end
 
   def create
+    @booking = Booking.new params[:booking]
+    @booking.chalkler = current_chalkler
+    @booking.status = 'yes'
+    if @booking.save
+      redirect_to root_url
+    else
+      @lesson = Lesson.find(params[:lesson_id]).decorate
+      render action: 'new'
+    end
   end
 end

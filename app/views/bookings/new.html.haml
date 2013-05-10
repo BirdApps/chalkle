@@ -1,18 +1,22 @@
-- title "Booking: #{@booking.lesson.name}"
+- title "Booking: #{@lesson.name}"
 
 %h2 New Booking
 
 .row
   .span12
-    %section.booking-lesson-summary
-      %h3 Booking summary
-      %ul
-        %li
-          %strong Class:
-          = @booking.lesson.name
-        %li
-          %strong Time:
-          = @booking.lesson.start_at
-        %li
-          %strong Cost:
-          = @booking.lesson.formatted_price
+    %section.booking
+      .lesson-summary
+        %h3 Booking summary
+        %ul
+          %li
+            %strong Class:
+            = @lesson.name
+          %li
+            %strong Time:
+            = @lesson.start_at
+          %li
+            %strong Cost:
+            = @lesson.formatted_price
+
+      %h3 Enter booking details
+      = render partial: 'form'

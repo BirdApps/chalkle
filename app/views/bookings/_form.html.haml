@@ -1,0 +1,10 @@
+= simple_form_for(@booking, url: channel_lesson_bookings_path, html: { class: 'form-horizontal' }) do |f|
+  = f.error_notification
+  .form-inputs
+    - if @lesson.cost > 0
+      = f.input :payment_method, :type => :select, collection: [['Cash', 'cash'], ['Bank Transfer', 'bank']]
+    = f.input :guests, :type => :select, collection: 1..5
+    = f.input :lesson_id, :as => :hidden, :input_html => { :value => @lesson.id }
+  .form-actions
+    = f.button :submit, 'Confirm booking', class: 'btn-primary'
+
