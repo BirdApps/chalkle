@@ -6,6 +6,9 @@ ActiveAdmin.register Lesson  do
     authorize_resource
   end
 
+  scope :published
+  scope :unpublished
+
   filter :channels_name, :as => :select, :label => "Channel",
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
@@ -24,9 +27,9 @@ ActiveAdmin.register Lesson  do
     helper BookingHelper
 
     def update
-      params[:lesson][:duration] = (params[:lesson][:duration].to_d*60*60).to_i if !params[:lesson][:duration].blank?
+      params[:lesson][:duration] = (params[:lesson][:duration].to_d*60*60).to_i unless params[:lesson][:duration].blank?
       params[:lesson][:chalkle_percentage_override] = (params[:lesson][:chalkle_percentage_override].to_d/100).to_s unless params[:lesson][:chalkle_percentage_override].blank?
-      params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].blank?     
+      params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].blank?
       update!
     end
 
@@ -94,7 +97,7 @@ ActiveAdmin.register Lesson  do
         row "What to bring" do
           simple_format lesson.prerequisites
         end
-        row "What type of audience is it appropriate for" do 
+        row "What type of audience is it appropriate for" do
           simple_format lesson.suggested_audience
         end
         row :additional_comments do
@@ -136,17 +139,17 @@ ActiveAdmin.register Lesson  do
         row :attendance
         row "Channel income" do
           number_to_currency lesson.income
-        end  
+        end
         if current_admin_user.role=="super"
           row :collected_turnover do
             number_to_currency lesson.collected_turnover
-          end 
+          end
           row :teacher_payment do
             number_to_currency lesson.teacher_payment
           end
           row :chalkle_payment do
             number_to_currency lesson.chalkle_payment
-          end     
+          end
           row :uncollected_turnover do
             number_to_currency lesson.uncollected_turnover
           end
