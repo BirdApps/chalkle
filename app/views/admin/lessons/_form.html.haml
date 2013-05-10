@@ -4,12 +4,12 @@
     =f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
     =f.input :categories
     =f.input :start_at
+    =f.input :venue, :input_html => { :rows => 1 }
+    =f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
     -if !@lesson.published?
       =f.input :channels, :as => :check_boxes, :collection => Channel.accessible_by(current_ability)
       =f.input :availabilities, :label => "Availability of the teacher", :input_html => { :rows => 1 }
-      =f.input :venue, :input_html => { :rows => 1 }
       =f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
-      =f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
       =f.input :learning_outcomes, :label => "What you will learn", :input_html => { :rows => 6 }
       =f.input :lesson_type, :as => :select, :label => "Type of class", :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
       =f.input :lesson_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
@@ -36,7 +36,6 @@
     -if @lesson.published?
       =f.input :teacher_payment, :label => "Payment to teacher (leave blank if not paid)"
       =f.input :chalkle_payment, :label => "Payment to Chalkle (leave blank if not paid)"
-      =f.input :description
     =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Approved", "Unreviewed", "Processing"], :input_html => { :multiple => false }, include_blank: false 
 
   =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
