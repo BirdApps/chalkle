@@ -11,18 +11,18 @@
     = f.input :email, :label => false
     %h4
       How often do you want to hear from us?
-    = f.input :email_frequency, :label => false, :collection => Chalkler.email_frequency_select_options, include_blank: false 
+    = f.input :email_frequency, :label => false, :collection => Chalkler.email_frequency_select_options, include_blank: false
     %h4
       Send me emails about classes in the following categories
-    %div{ :"data-toggle" => "checkboxes", class:"unchecked"}
-      =link_to "Select All", "#",  class: "checkbox-toggle-button"
+    %div{ :"data-toggle" => "checkboxes", class: "unchecked" }
+      = link_to "Select All", "#",  class: "checkbox-toggle-button"
       = f.input :email_categories, :label => false, as: :check_boxes, collection: Category.select_options, include_blank: false
     %h4
       Send me emails about classes run by the following organisations
     = f.input :email_streams, :label => false, as: :check_boxes, :collection => Stream.select_options, include_blank: false
     %br/
-    %b Note: 
-    even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account. 
+    %b Note:
+    even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
 
   .form-actions
     = f.button :submit, 'Save Email Preferences', class: 'btn-primary'
