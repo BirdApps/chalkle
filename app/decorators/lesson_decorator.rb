@@ -15,7 +15,7 @@ class LessonDecorator < Draper::Decorator
     if source.attendance > 1
       "Join #{source.attendance} other chalklers"
     else
-      "Join this chalkle"
+      "Join this class"
     end
   end
 
