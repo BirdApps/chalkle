@@ -1,6 +1,6 @@
-.lesson-details
+.details
   %ul.unstyled
-    %li.lesson-start-time= l lesson.start_at, :format => :long
+    %li.start-time= l lesson.start_at, :format => :long_without_year
     %li
       %strong Location:
       = lesson.venue

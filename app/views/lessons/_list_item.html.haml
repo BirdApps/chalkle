@@ -1,18 +1,18 @@
 %section.lesson-item{class: "span12 lesson-#{lesson.status.downcase}"}
   .row
-    .lesson-header.span12
+    .header.span12
       %h3= lesson.name
       .lesson-attendance.pull-right
         = "#{lesson.attendance} / #{lesson.max_attendee}"
         .icon.icon-user
   .row
     .span8
-      .lesson-summary
+      .summary
         %p= simple_format lesson.do_during_class
     .span4
       = render :partial => 'lessons/lesson_details', :locals => { :lesson => lesson }
   .row
     .span12
-      .lesson-actions
+      .actions
         .btn.btn-primary= lesson.join_chalklers
         .btn.btn-primary= link_to 'View class', channel_lesson_path(@channel, lesson)

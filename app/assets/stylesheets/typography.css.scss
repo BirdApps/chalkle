@@ -10,6 +10,7 @@
 
 h2 {
   font-family: $font_family_normal;
+  margin-bottom: 1em;
 }
 
 h3 {
@@ -33,4 +34,12 @@ ul, ol {
 
 li {
   margin-bottom: 0.75em;
+}
+
+.btn a {
+  color: $white;
+  &:hover {
+    color: $white;
+    text-decoration: none;
+  }
 }
