@@ -18,4 +18,5 @@
 //= require bootstrap-popover
 //= require bootstrap-modal
 //= require underscore
+//= require modernizr
 //= require utils
