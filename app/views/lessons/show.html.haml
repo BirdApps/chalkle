@@ -1,17 +1,17 @@
 - title @lesson.name
 
-%h2= @lesson.name
+%h2= @lesson.name.capitalize
 
 .row
-  .span8
+  .span8.content-left
     .lesson-description
       %h3 What we are doing
       = simple_format @lesson.do_during_class
       %h3 What you will learn
       = simple_format @lesson.learning_outcomes
-  .span4
-    .booking
-      = link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
+  .span4.content-right
+    .booking-actions
+      .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
       :coffeescript
         signedIn = () ->
           if _.isString(_.find(document.cookie.split(';'), (a)-> return a == ' signed_in=1')) then true else false

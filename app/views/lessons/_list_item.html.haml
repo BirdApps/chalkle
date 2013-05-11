@@ -1,7 +1,7 @@
 %section.lesson-item{class: "span12 lesson-#{lesson.status.downcase}"}
   .row
     .header.span12
-      %h3= lesson.name
+      %h3= lesson.name.capitalize
       .lesson-attendance.pull-right
         = "#{lesson.attendance} / #{lesson.max_attendee}"
         .icon.icon-user
@@ -14,5 +14,6 @@
   .row
     .span12
       .actions
-        .btn.btn-primary= lesson.join_chalklers
+        - if lesson.bookable?
+          .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)
         .btn.btn-primary= link_to 'View class', channel_lesson_path(@channel, lesson)

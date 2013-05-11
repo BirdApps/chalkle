@@ -6,6 +6,8 @@
       = f.input :payment_method, :type => :select, collection: [['Cash', 'cash'], ['Bank Transfer', 'bank']]
     = f.input :guests, :type => :select, collection: 1..5
     = f.input :lesson_id, :as => :hidden, :input_html => { :value => @lesson.id }
-    = "I agree with the #{link_to 'Booking Terms and Conditions', '#termsModal', :'data-toggle' => 'modal'}".html_safe
+    %label.checkbox.terms-and-conditions
+      = f.check_box :terms_and_conditions, :as => :boolean, :required => true
+      = "I agree with the #{link_to 'Terms and Conditions', '#termsModal', :'data-toggle' => 'modal'}".html_safe
   .form-actions
     = f.button :submit, 'Confirm booking', class: 'btn-primary'
