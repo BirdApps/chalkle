@@ -1,7 +1,9 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :lesson_id, :guests, :payment_method
+  attr_accessible :lesson_id, :guests, :payment_method, :terms_and_conditions
   attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests,
     :meetup_id, :cost_override, :paid, :visible, :as => :admin
+
+  attr_accessor :terms_and_conditions
 
   belongs_to :lesson
   belongs_to :chalkler
