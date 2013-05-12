@@ -88,7 +88,10 @@ body {
   .summary {
     padding: 0 0.5em;
   }
-  .details {
+  .box.details {
+    .header {
+      @include hide-text();
+    }
     font-size: $fontSizeSmall;
     border: 1px solid $grayLighter;
     @include border-radius(4px);
@@ -115,7 +118,21 @@ body {
 .lessons-show {
   .booking-actions {
     .btn {
+      /* Causing inheritance issues */
       font-size: 1.25em;
+      font-weight: bold;
+    }
+    .popover {
+      font-size: 16px;
+      color: $textColor;
+      text-shadow: none;
+      font-weight: normal;
+      a {
+        color: $linkColor;
+        &:hover {
+          color: $linkColorHover;
+        }
+      }
     }
   }
 }
@@ -124,5 +141,34 @@ body {
   form .checkbox.terms-and-conditions {
     font-size: 0.75em;
     margin-left: 180px;
+  }
+}
+
+.content-right .box {
+  font-size: $fontSizeSmall;
+  border: 1px solid darken($grayLighter, 4%);
+  @include border-radius(4px);
+  margin: 0.5em 0;
+  .start-time {
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+  .header {
+    padding: 0.25em 0.5em;
+    background-color: $grayLighter;
+    border-bottom: 1px solid darken($grayLighter, 4%);
+    h3 {
+      font-size: 1em;
+      color: $grayLight;
+      line-height: 1em;
+      margin: 0;
+      padding: 0;
+    }
+  }
+  .content {
+    padding: 0 0.5em;
+    h4 {
+      font-size: 1em;
+    }
   }
 }

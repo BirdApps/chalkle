@@ -1,4 +1,6 @@
-.teacher-details
-  %h3= "Teacher: #{teacher.name}"
-  .teacher-bio
-    =simple_format teacher.bio
+.box.teacher-details
+  .header
+    %h3 Teacher
+  .content.teacher-bio
+    %h4= teacher.name
+    = simple_format teacher.bio
