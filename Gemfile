@@ -31,6 +31,7 @@ gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml-rails',    '~> 0.3.5'
+gem 'coffee-filter', '~> 0.1.3'
 gem 'simple_form',   '~> 2.0.4'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
@@ -39,10 +40,9 @@ gem 'draper',        '~> 1.0'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',          '~> 3.2.6'
+  gem 'coffee-rails',        '~> 3.2.2'
   gem 'bootstrap-sass',      '~> 2.3.1.0'
   gem 'font-awesome-sass-rails'
-  gem 'coffee-rails',        '~> 3.2.2'
-  gem 'coffee-filter',       '~> 0.1.3'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.9.1'
   gem 'haml_assets',         '~> 0.2.1'
