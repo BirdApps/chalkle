@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_filter :horowhenua?
+  before_filter :horowhenua?, :except => [:show]
   before_filter :authenticate_chalkler!
 
   def new
@@ -12,7 +12,7 @@ class BookingsController < ApplicationController
     @booking.chalkler = current_chalkler
     @booking.status = 'yes'
     if @booking.save
-      redirect_to action: 'show'
+      redirect_to booking_path @booking
     else
       @lesson = Lesson.find(params[:lesson_id]).decorate
       render action: 'new'
