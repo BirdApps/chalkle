@@ -36,7 +36,7 @@ describe LessonDecorator do
   describe ".join_chalklers" do
     it "returns generic text when attendence is less than 2" do
       FactoryGirl.create(:booking, status: 'yes', guests: 0, lesson: lesson)
-      lesson.join_chalklers.should == 'Join this chalkle'
+      lesson.join_chalklers.should == 'Join this class'
     end
 
     it "formats text when attendence is more than 1" do
