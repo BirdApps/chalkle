@@ -8,9 +8,11 @@ Chalkle::Application.routes.draw do
 
   resources :channels, :only => :show do
     resources :lessons, :only => :show, :path => 'classes' do
-      resources :bookings, :only => [:new, :create, :show]
+      resources :bookings, :only => [:new, :create]
     end
   end
+
+  resources :bookings, :only => :show
 
   namespace :chalklers do
     root to: 'dashboard#index'
