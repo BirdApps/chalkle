@@ -71,6 +71,49 @@ class Booking < ActiveRecord::Base
     b.save
   end
 
+
+  # Refactor all of this:
+
+  def emailable
+    self.status=='yes' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true)
+  end
+
+  def first_email_condition
+    self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up
+  end
+
+  def second_email_condition
+    self.emailable && self.lesson.class_coming_up
+  end
+
+  def third_email_condition
+    self.status=='waitlist' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true) && self.lesson.class_coming_up
+  end
+
+  def reminder_after_class_condition
+    self.emailable && !self.lesson.class_not_done
+  end
+
+  def no_show_email_condition
+    self.status=='no-show' && !self.is_teacher && (self.paid!=true) && !self.lesson.class_not_done
+  end
+
+  def reminder_email_choice
+    if first_email_condition
+      return 1
+    elsif second_email_condition
+      return 2
+    elsif third_email_condition
+      return 3
+    elsif reminder_after_class_condition
+      return 4
+    elsif no_show_email_condition
+      return "no-show"
+    else
+      return false
+    end
+  end
+
   private
 
   def set_from_meetup_data
@@ -90,46 +133,4 @@ class Booking < ActiveRecord::Base
       self.paid = true
     end
   end
-
-  # Refactor all of this:
-
-  # def emailable
-    # self.status=='yes' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true)
-  # end
-
-  # def first_email_condition
-    # self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up
-  # end
-
-  # def second_email_condition
-    # self.emailable && self.lesson.class_coming_up
-  # end
-
-  # def third_email_condition
-    # self.status=='waitlist' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true) && self.lesson.class_coming_up
-  # end
-
-  # def reminder_after_class_condition
-    # self.emailable && !self.lesson.class_not_done
-  # end
-
-  # def no_show_email_condition
-    # self.status=='no-show' && !self.is_teacher && (self.paid!=true) && !self.lesson.class_not_done
-  # end
-
-  # def reminder_email_choice
-    # if first_email_condition
-      # return 1
-    # elsif second_email_condition
-      # return 2
-    # elsif third_email_condition
-      # return 3
-    # elsif reminder_after_class_condition
-      # return 4
-    # elsif no_show_email_condition
-      # return "no-show"
-    # else
-      # return false
-    # end
-  # end
 end
