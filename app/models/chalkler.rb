@@ -32,8 +32,8 @@ class Chalkler < ActiveRecord::Base
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_from_meetup_data
-  before_create :set_reset_password_token
-  after_create  :send_teacher_welcome_mail
+  # before_create :set_reset_password_token
+  # after_create  :send_teacher_welcome_mail
   after_create  :create_channel_associations
 
   #TODO: Move into a presenter class like Draper sometime
