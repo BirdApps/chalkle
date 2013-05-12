@@ -20,6 +20,10 @@ class BookingsController < ApplicationController
   end
 
   def show
-    @booking = Booking.find params[:booking_id]
+    @booking = Booking.find(params[:id]).decorate
+    if @booking.chalkler.id != current_chalkler.id
+      flash[:warning] = 'You are unauthorized to access this page.'
+      redirect_to root_url
+    end
   end
 end
