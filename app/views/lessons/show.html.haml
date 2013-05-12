@@ -14,7 +14,7 @@
       .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
       :coffeescript
         signedIn = () ->
-          if _.isString(_.find(document.cookie.split(';'), (a)-> return a == ' signed_in=1')) then true else false
+          if _.isString(_.find(document.cookie.split(';'), (a)-> return a == 'signed_in=1')) then true else false
 
         $('#join-lesson').click (e)->
           unless signedIn()

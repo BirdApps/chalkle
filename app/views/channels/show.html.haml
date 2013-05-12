@@ -8,7 +8,7 @@
 
 :coffeescript
   signedIn = () ->
-    if _.isString(_.find(document.cookie.split(';'), (a)-> return a == ' signed_in=1')) then true else false
+    if _.isString(_.find(document.cookie.split(';'), (a)-> return a == 'signed_in=1')) then true else false
 
   $('.join-lesson.btn').click (e)->
     unless signedIn()
