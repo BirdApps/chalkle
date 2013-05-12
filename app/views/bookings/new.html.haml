@@ -33,7 +33,7 @@
                 %ul
                   %li
                     %strong Account number:
-                    = @lesson.channel.first.account
+                    = @lesson.channels.first.account
                   %li
                     %strong Reference:
                     = "#{@lesson.id} - #{current_chalkler.name}"
