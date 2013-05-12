@@ -1,6 +1,9 @@
 class Booking < ActiveRecord::Base
+  attr_accessible :lesson_id, :guests, :payment_method, :terms_and_conditions
   attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests,
     :meetup_id, :cost_override, :paid, :visible, :as => :admin
+
+  attr_accessor :terms_and_conditions
 
   belongs_to :lesson
   belongs_to :chalkler
@@ -17,11 +20,9 @@ class Booking < ActiveRecord::Base
   scope :status_no, where("bookings.status='no'")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
-  validates_presence_of :lesson_id
-  validates_presence_of :chalkler_id
+  validates_presence_of :lesson_id, :chalkler_id, :payment_method
 
-  before_create :set_from_meetup_data
-  before_create :set_metadata
+  before_create :set_from_meetup_data, :set_metadata, :set_free_lesson_attributes
 
   def name
     if lesson.present? && chalkler.present?
@@ -52,6 +53,26 @@ class Booking < ActiveRecord::Base
     meetup_data["answers"]
   end
 
+  def is_teacher
+    self.lesson.teacher_id.present? ? (self.chalkler_id == self.lesson.teacher_id) : true
+  end
+
+  def self.create_from_meetup_hash result
+    b = Booking.find_or_initialize_by_meetup_id result.rsvp_id
+    b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
+    b.lesson = Lesson.find_by_meetup_id result.event["id"]
+    b.meetup_id = result.rsvp_id
+    b.payment_method = 'meetup'
+    if b.lesson.class_not_done
+      b.guests = result.guests
+      b.status = result.response
+    end
+    b.meetup_data = result.to_json
+    b.save
+  end
+
+  private
+
   def set_from_meetup_data
     return if meetup_data.empty?
     self.created_at = Time.at(meetup_data["created"] / 1000)
@@ -62,60 +83,53 @@ class Booking < ActiveRecord::Base
     self.visible = true
   end
 
-  def self.create_from_meetup_hash result
-    b = Booking.find_or_initialize_by_meetup_id result.rsvp_id
-    b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
-    b.lesson = Lesson.find_by_meetup_id result.event["id"]
-    b.meetup_id = result.rsvp_id
-    if b.lesson.class_not_done
-      b.guests = result.guests
-      b.status = result.response
-    end
-    b.meetup_data = result.to_json
-    b.save
-  end
-
-  def is_teacher
-    self.lesson.teacher_id.present? ? (self.chalkler_id == self.lesson.teacher_id) : true
-  end
-
-  def emailable
-    self.status=='yes' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true)
-  end
-
-  def first_email_condition
-    self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up
-  end
-
-  def second_email_condition
-    self.emailable && self.lesson.class_coming_up
-  end
-
-  def third_email_condition
-    self.status=='waitlist' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true) && self.lesson.class_coming_up
-  end
-
-  def reminder_after_class_condition
-    self.emailable && !self.lesson.class_not_done
-  end
-
-  def no_show_email_condition
-    self.status=='no-show' && !self.is_teacher && (self.paid!=true) && !self.lesson.class_not_done
-  end
-
-  def reminder_email_choice
-    if first_email_condition
-      return 1
-    elsif second_email_condition
-      return 2
-    elsif third_email_condition
-      return 3
-    elsif reminder_after_class_condition
-      return 4
-    elsif no_show_email_condition
-      return "no-show"
-    else
-      return false
+  def set_free_lesson_attributes
+    return if meetup_data?
+    if self.lesson.cost == 0
+      self.payment_method = 'free'
+      self.paid = true
     end
   end
+
+  # Refactor all of this:
+
+  # def emailable
+    # self.status=='yes' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true)
+  # end
+
+  # def first_email_condition
+    # self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up
+  # end
+
+  # def second_email_condition
+    # self.emailable && self.lesson.class_coming_up
+  # end
+
+  # def third_email_condition
+    # self.status=='waitlist' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true) && self.lesson.class_coming_up
+  # end
+
+  # def reminder_after_class_condition
+    # self.emailable && !self.lesson.class_not_done
+  # end
+
+  # def no_show_email_condition
+    # self.status=='no-show' && !self.is_teacher && (self.paid!=true) && !self.lesson.class_not_done
+  # end
+
+  # def reminder_email_choice
+    # if first_email_condition
+      # return 1
+    # elsif second_email_condition
+      # return 2
+    # elsif third_email_condition
+      # return 3
+    # elsif reminder_after_class_condition
+      # return 4
+    # elsif no_show_email_condition
+      # return "no-show"
+    # else
+      # return false
+    # end
+  # end
 end

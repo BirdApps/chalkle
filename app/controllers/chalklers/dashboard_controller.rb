@@ -1,4 +1,7 @@
 class Chalklers::DashboardController < Chalklers::BaseController
+  before_filter :authenticate_chalkler!, :except => [:index]
+  before_filter :has_channel_membership?, :except => [:index]
+
   def index
   end
 

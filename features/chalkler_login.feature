@@ -1,6 +1,10 @@
 @omniauth_test
 Feature: Chalkler Login
-  In order to use my.chalkle.com chalklers must be able to log in.
+  In order to use my.chalkle.com chalklers must be able to create an account
+  and log in.
+
+Background:
+  Given the "Horowhenua" channel exists
 
 # Scenario: New chalkler logging in via Meetup will be created
   # Given "Amrit" is a new Meetup user
@@ -14,6 +18,11 @@ Feature: Chalkler Login
   # When they submit the Submit Email form
   # Then they should see the Dashboard
   # And the chalkler "Jill" has an updated email
+
+Scenario: New chalkler can create an account
+  When a new chalkler goes to the sign up page
+  And they enter their details
+  Then a new chalkler will be created
 
 Scenario: Chalkler logging in via Meetup is updated from Meetup data
   Given "John" is an existing Meetup user

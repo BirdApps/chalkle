@@ -2,17 +2,19 @@ Chalkle::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   devise_for :admin_users, ActiveAdmin::Devise.config
-  devise_for :chalklers, :controllers => { :omniauth_callbacks => "chalklers/omniauth_callbacks" }
+  devise_for :chalklers, :controllers => { :omniauth_callbacks => 'chalklers/omniauth_callbacks', :registrations => 'chalklers/registrations' }
 
-  root to: "chalklers/dashboard#index"
+  root to: 'chalklers/dashboard#index'
 
   resources :channels, :only => :show do
-    resources :lessons, :only => :show, :path => 'classes'
+    resources :lessons, :only => :show, :path => 'classes' do
+      resources :bookings, :only => [:new, :create, :show]
+    end
   end
 
   namespace :chalklers do
-    root to: "dashboard#index"
-    resources :lesson_suggestions, :only => [:new, :create]
+    root to: 'dashboard#index'
+    resources :lesson_suggestions, :only => [:new, :create], :path => 'class_suggestions'
 
     get '/enter_email' => 'preferences#enter_email', as: 'enter_email'
     put '/enter_email' => 'preferences#enter_email', as: 'enter_email'

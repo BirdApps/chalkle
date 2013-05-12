@@ -15,7 +15,7 @@ class LessonDecorator < Draper::Decorator
     if source.attendance > 1
       "Join #{source.attendance} other chalklers"
     else
-      "Join this chalkle"
+      "Join this class"
     end
   end
 
@@ -24,6 +24,14 @@ class LessonDecorator < Draper::Decorator
       source.channels.first.account
     else
       "Please email accounts@chalkle.com for payment instructions"
+    end
+  end
+
+  def formatted_price
+    if source.cost == 0 || source.cost.nil?
+      'Free'
+    else
+      h.number_to_currency source.cost
     end
   end
 

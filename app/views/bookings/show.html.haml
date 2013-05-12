@@ -1,0 +1,47 @@
+- title "Booking: #{@booking.lesson.name.capitalize}"
+
+%h2= "Booking: #{@booking.lesson.name.capitalize}"
+
+.row
+  .span12
+    %section.booking
+      .row
+        .span6
+          .lesson-summary
+            %h3 Summary
+            %ul.unstyled
+              %li
+                %strong Class:
+                = link_to @booking.lesson.name.capitalize, channel_lesson_path(@booking.lesson.channels.first, @booking.lesson)
+              %li
+                %strong Time:
+                = l @booking.lesson.start_at, :format => :long_without_year
+              %li
+                %strong Where:
+                = @booking.lesson.venue
+              %li
+                %strong Price:
+                = @booking.formatted_price
+              - if @booking.guests?
+                %li
+                  %strong Guests:
+                  = @booking.guests
+        .span6
+          .payment-summary
+            %h3 How to pay
+            - if @booking.payment_method == 'cash'
+              %h4 Cash payment
+              %p Simply pay the teacher at the door.
+            - elsif @booking.payment_method == 'bank'
+              %h4 Bank Transfer
+              - if @booking.paid?
+                %p Payment received, thanks!
+              - else
+                %p Deposit the payment into chalkle's Kiwibank account:
+                %ul.unstyled
+                  %li
+                    %strong Account number:
+                    38-9012-0815531-00
+                  %li
+                    %strong Reference:
+                    = "#{@booking.lesson.id} - #{current_chalkler.name}"

@@ -8,6 +8,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 wellington = Channel.create(name: 'Wellington', url_name: 'sixdegrees', email: 'wellington@chalkle.com')
 whanau = Channel.create(name: 'Wellington Whānau', url_name: 'whanau', email: 'whanau@chalkle.com')
+horowhenua = Channel.create(name: 'Horowhenua', url_name: 'horowhenua', email: 'horowhenua@chalkle.com')
 
 chalkler = Chalkler.create(email: 'chalkler@example.com', password: 'password', name: 'Julie User')
 super_admin = AdminUser.create(email: 'super_admin@enspiral.com', password: 'password', role: 'super')

@@ -9,5 +9,5 @@
   If you still cannot log in, contact your Channel Admin or join one of our Channels on Meetup:
 
 %ul
-  -@channels.each do |c|
+  - @channels.each do |c|
     %li= link_to c.name, "http://meetup.com/#{c.url_name}"

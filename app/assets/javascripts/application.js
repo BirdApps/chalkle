@@ -14,4 +14,9 @@
 //= require jquery_ujs
 //= require bootstrap-tab
 //= require bootstrap-transition
+//= require bootstrap-tooltip
+//= require bootstrap-popover
+//= require bootstrap-modal
+//= require underscore
+//= require modernizr
 //= require utils

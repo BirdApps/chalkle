@@ -1,3 +1,25 @@
+# encoding: utf-8
+
+When /^a new chalkler goes to the sign up page$/ do
+  visit root_url
+  click_link 'Join chalkle°'
+end
+
+When /^they enter their details$/ do
+  fill_in 'Name', with: 'Mary Sue'
+  fill_in 'Email', with: 'mary@example.com'
+  fill_in 'chalkler_password', with: 'password'
+  fill_in 'Password confirmation', with: 'password'
+  click_button 'Sign up'
+end
+
+Then /^a new chalkler will be created$/ do
+  chalkler = Chalkler.find_by_name 'Mary Sue'
+  chalkler.channels.should == [ Channel.find_by_name('Horowhenua') ]
+  chalkler.email.should == 'mary@example.com'
+end
+
+
 Given /^"(.*?)" is a new Meetup user$/ do |name|
   OmniAuth.config.mock_auth[:meetup] = {
       :provider => 'meetup',

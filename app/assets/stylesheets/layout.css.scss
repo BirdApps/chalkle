@@ -12,14 +12,14 @@ body {
   font-weight: bold;
   font-size: 15px;
   line-height: 1em;
-  margin-bottom: 30px;
+  margin-bottom: 2em;
   .logo {
     padding: 0;
     margin: 0;
   }
   .navbar-texture-gray-dark {
     background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
-    padding: ($baseLineHeight / 2) 0;
+    padding: 3px 0;
     border-bottom: solid 1px gray;
   }
   .nav {
@@ -60,6 +60,7 @@ body {
   border: solid 2px #222;
   h2 {
     font-family: $font_family_chalk;
+    font-weight: normal;
   }
 }
 
@@ -68,7 +69,7 @@ body {
   @include border-radius(4px);
   border: solid 1px darken(#f9f9f9, 8%);
   margin: 0 0 2em 0;
-  .lesson-header {
+  .header {
     border-bottom: solid 1px darken(#f9f9f9, 8%);
     background: darken(#f9f9f9, 4%);
     h3 {
@@ -84,13 +85,25 @@ body {
   .row {
     margin-bottom: 0;
   }
-  .lesson-summary {
+  .summary {
     padding: 0 0.5em;
   }
-  .lesson-details {
+  .box.details {
+    .header {
+      @include hide-text();
+    }
     font-size: $fontSizeSmall;
+    border: 1px solid $grayLighter;
+    @include border-radius(4px);
+    margin: 0.5em;
+    padding: 0 0.5em;
+    background-color: $white;
+    .start-time {
+      font-size: 1.3em;
+      font-weight: bold;
+    }
   }
-  .lesson-actions {
+  .actions {
     padding: 0.5em;
     border-top: solid 1px darken(#f9f9f9, 8%);
     background: darken(#f9f9f9, 4%);
@@ -98,6 +111,64 @@ body {
     .btn {
       float: right;
       margin-left: 0.5em;
+    }
+  }
+}
+
+.lessons-show {
+  .booking-actions {
+    .btn {
+      /* Causing inheritance issues */
+      font-size: 1.25em;
+      font-weight: bold;
+    }
+    .popover {
+      font-size: 16px;
+      color: $textColor;
+      text-shadow: none;
+      font-weight: normal;
+      a {
+        color: $linkColor;
+        &:hover {
+          color: $linkColorHover;
+        }
+      }
+    }
+  }
+}
+
+.bookings-new {
+  form .checkbox.terms-and-conditions {
+    font-size: 0.75em;
+    margin-left: 180px;
+  }
+}
+
+.content-right .box {
+  font-size: $fontSizeSmall;
+  border: 1px solid darken($grayLighter, 4%);
+  @include border-radius(4px);
+  margin: 0.5em 0;
+  .start-time {
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+  .header {
+    padding: 0.25em 0.5em;
+    background-color: $grayLighter;
+    border-bottom: 1px solid darken($grayLighter, 4%);
+    h3 {
+      font-size: 1em;
+      color: $grayLight;
+      line-height: 1em;
+      margin: 0;
+      padding: 0;
+    }
+  }
+  .content {
+    padding: 0 0.5em;
+    h4 {
+      font-size: 1em;
     }
   }
 }

@@ -1,7 +1,6 @@
 class Chalkler < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable,
+    :validatable, :omniauthable, :registerable
 
   attr_accessible :bio, :email, :meetup_id, :name, :password,
     :password_confirmation, :remember_me, :gst, :email_frequency,
@@ -30,7 +29,7 @@ class Chalkler < ActiveRecord::Base
   serialize :email_categories
   serialize :email_streams
 
-  EMAIL_FREQUENCY_OPTIONS = %w(daily weekly)
+  EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_from_meetup_data
   before_create :set_reset_password_token

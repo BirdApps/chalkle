@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430033930) do
+ActiveRecord::Schema.define(:version => 20130509042351) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,10 +56,11 @@ ActiveRecord::Schema.define(:version => 20130430033930) do
     t.integer  "guests"
     t.boolean  "paid"
     t.text     "meetup_data"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
     t.boolean  "visible"
-    t.decimal  "cost_override", :precision => 8, :scale => 2
+    t.decimal  "cost_override",  :precision => 8, :scale => 2
+    t.string   "payment_method"
   end
 
   create_table "categories", :force => true do |t|

@@ -39,7 +39,7 @@ gem 'draper',        '~> 1.0'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',          '~> 3.2.6'
-  gem 'bootstrap-sass',      '~> 2.3.0.0'
+  gem 'bootstrap-sass',      '~> 2.3.1.0'
   gem 'font-awesome-sass-rails'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'coffee-filter',       '~> 0.1.3'
@@ -52,6 +52,7 @@ end
 
 group :development do
   gem 'rb-readline'
+
   # Better documentation
   gem 'tomdoc',  '~> 0.2.5',  :require => false
 
@@ -74,7 +75,6 @@ end
 
 group :development, :test do
   # Automatic testing
-  #gem 'rb-inotify',        '~> 0.8.8'
   gem 'guard',             '~> 1.6.2'
   gem 'guard-spork',       '~> 1.4.1'
   gem 'guard-rspec',       '~> 2.3.3'
@@ -94,9 +94,8 @@ group :development, :test do
   # Debugging Tools
   gem 'pry-rails',     '~> 0.2.2'
   gem 'pry-coolline',  '~> 0.2.1'
-
-  #mucking round with the db
-  gem 'forgery'
+  gem 'debugger'
+  gem 'debugger-pry'
 end
 
 group :test do
