@@ -41,7 +41,7 @@
                 %ul.unstyled
                   %li
                     %strong Account number:
-                    38-9012-0815531-00
+                    = @booking.lesson.channel.first.account
                   %li
                     %strong Reference:
                     = "#{@booking.lesson.id} - #{current_chalkler.name}"
