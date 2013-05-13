@@ -3,6 +3,10 @@ class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!
 
   def new
+    if current_chalkler.lessons.exists? params[:lesson_id]
+      flash[:notice] = 'You have already attending this class'
+      redirect_to :back
+    end
     @booking = Booking.new
     @lesson = Lesson.find(params[:lesson_id]).decorate
   end

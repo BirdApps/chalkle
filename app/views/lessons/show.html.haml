@@ -11,21 +11,25 @@
       = simple_format @lesson.learning_outcomes
   .span4.content-right
     .booking-actions
-      .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
-      :coffeescript
-        signedIn = () ->
-          if _.isString(_.find(document.cookie.split('; '), (a)-> return a == 'signed_in=1')) then true else false
+      - if current_chalkler.lessons.exists? @lesson
+        %p.text-success
+          %strong You are attending
+      -elsif @lesson.bookable?
+        .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
+        :coffeescript
+          signedIn = () ->
+            if _.isString(_.find(document.cookie.split('; '), (a)-> return a == 'signed_in=1')) then true else false
 
-        $('#join-lesson').click (e)->
+          $('#join-lesson').click (e)->
+            unless signedIn()
+              e.preventDefault()
+
           unless signedIn()
-            e.preventDefault()
-
-        unless signedIn()
-          $('#join-lesson').popover
-            placement: 'top'
-            html: true
-            title: 'Sign in to join a class'
-            content: 'Please <a href="/chalklers/sign_in">sign in</a> or <a href="/chalklers/sign_up">create an account</a> to make a booking.'
+            $('#join-lesson').popover
+              placement: 'top'
+              html: true
+              title: 'Sign in to join a class'
+              content: 'Please <a href="/chalklers/sign_in">sign in</a> or <a href="/chalklers/sign_up">create an account</a> to make a booking.'
 
     = render :partial => 'lessons/lesson_details', :locals => { :lesson => @lesson }
     = render :partial => 'chalklers/teacher_details', :locals => { :teacher => @lesson.teacher }
