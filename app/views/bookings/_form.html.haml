@@ -4,7 +4,7 @@
   .form-inputs
     - if @lesson.cost? && @lesson.cost > 0
       = f.input :payment_method, :type => :select, collection: [['Cash', 'cash'], ['Bank Transfer', 'bank']]
-    = f.input :guests, :type => :select, collection: 1..5
+    = f.input :guests, :type => :select, collection: 1..5, label: 'Additional guests'
     = f.input :lesson_id, :as => :hidden, :input_html => { :value => @lesson.id }
     %label.checkbox.terms-and-conditions
       = f.check_box :terms_and_conditions, :as => :boolean, :required => true
