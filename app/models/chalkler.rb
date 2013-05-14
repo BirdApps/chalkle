@@ -2,9 +2,9 @@ class Chalkler < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
     :validatable, :omniauthable, :registerable
 
-  attr_accessible :bio, :email, :meetup_id, :name, :password,
-    :password_confirmation, :remember_me, :gst, :email_frequency,
-    :email_categories, :email_streams, :phone_number
+  attr_accessible :bio, :email, :name, :password, :password_confirmation,
+    :remember_me, :gst, :email_frequency, :email_categories, :email_streams,
+    :phone_number
   attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password,
     :password_confirmation, :remember_me, :channel_ids, :gst, :provider, :uid,
     :email_frequency, :email_categories, :email_streams, :phone_number,
