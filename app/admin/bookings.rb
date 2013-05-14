@@ -105,6 +105,7 @@ ActiveAdmin.register Booking do
   member_action :record_cash_payment do
     booking = Booking.find(params[:id])
     booking.paid = true
+    booking.payment_method = 'free'
     desired_xero_id = "CASH-Class#{booking.lesson_id}-Chalkler#{booking.chalkler_id}"
     payment = Payment.find_or_initialize_by_xero_id desired_xero_id
     payment.reference = booking.lesson.meetup_id.present? ? "#{booking.lesson.meetup_id} #{booking.chalkler.name}" : "LessonID#{booking.lesson_id} #{booking.chalkler.name}"
@@ -127,10 +128,11 @@ ActiveAdmin.register Booking do
 
   form do |f|
     f.inputs :details do
-      f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).visible.order("LOWER(name) ASC")
-      f.input :chalkler, as: :select, collection: Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
+      f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).visible.order("LOWER(name) ASC"), :required => true
+      f.input :chalkler, as: :select, collection: Chalkler.accessible_by(current_ability).order("LOWER(name) ASC"), :required => true
       f.input :guests
-      f.input :cost_override, label: "cost override (Leave empty for no override)"
+      f.input :payment_method, :as => :select, :collection => [['Bank', 'bank'],['Cash', 'cash']], :hint => 'Leave blank on free classes'
+      f.input :cost_override, label: "Cost override", :hint => "Leave blank for no override"
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
     end
