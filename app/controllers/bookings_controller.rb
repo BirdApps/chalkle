@@ -13,6 +13,7 @@ class BookingsController < ApplicationController
 
   def create
     @booking = Booking.new params[:booking]
+    @booking.enforce_terms_and_conditions = true
     @booking.chalkler = current_chalkler
     @booking.status = 'yes'
     if @booking.save
