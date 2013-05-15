@@ -1,8 +1,7 @@
 class Venue < ActiveRecord::Base
-  attr_accessible :meetup_id, :name, :address_1, :city, :lat, :lon, :as => :admin
+  attr_accessible :meetup_id, :name, :address_1, :city_id, :lat, :lon, :as => :admin
 
-  has_many :cities
-  has_many :channels, :through => :cities
+  belongs_to :city
 
-  validates_presence_of :name, :address_1, :city
+  validates_presence_of :name, :address_1, :city_id
 end
