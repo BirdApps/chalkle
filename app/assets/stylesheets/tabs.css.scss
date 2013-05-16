@@ -1,0 +1,30 @@
+.nav-tabs {
+  border-bottom: 1px dashed $grayLight;
+}
+// Make the list-items overlay the bottom border
+.nav-tabs > li {
+  margin-bottom: -1px;
+}
+// Actual tabs (as links)
+.nav-tabs > li > a {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  line-height: $baseLineHeight;
+  border: 1px dashed transparent;
+  @include border-radius(0);
+  &:hover,
+  &:focus {
+    border-color: $grayLight $grayLight transparent $grayLight;
+    background-color: #fff;
+  }
+}
+// Active state, and it's :hover/:focus to override normal :hover/:focus
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus {
+  color: $grayDark;
+  background-color: #fff;
+  border: 1px dashed $grayLight;
+  border-bottom-color: transparent;
+  cursor: default;
+}

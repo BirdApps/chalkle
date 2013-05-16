@@ -10,6 +10,14 @@ class ChalklerMailer < ActionMailer::Base
     end
   end
 
+  def horowhenua_welcome(chalkler)
+    @chalkler = chalkler
+    mail(to: @chalkler.email, subject: "chalkle° Horowhenua is live!") do |format|
+      format.text
+      format.html { render :layout => 'standard_mailer' }
+    end
+  end
+
   def digest(chalkler, new_lessons, open_lessons)
     @chalkler = ChalklerDecorator.decorate(chalkler)
   	@new_lessons = LessonDecorator.decorate_collection(new_lessons)

@@ -1,0 +1,22 @@
+- title "Upcoming Classes - #{@channel.name}"
+
+%h2= "#{@channel.name}: Upcoming Classes"
+
+.lesson-list
+  - @lessons.each do |lesson|
+    = render :partial => "lessons/list_item", :locals => { :lesson => lesson }
+
+:coffeescript
+  signedIn = () ->
+    if _.isString(_.find(document.cookie.split('; '), (a)-> return a == 'signed_in=1')) then true else false
+
+  $('.join-lesson.btn').click (e)->
+    unless signedIn()
+      e.preventDefault()
+
+  unless signedIn()
+    $('.join-lesson.btn').popover
+      placement: 'top'
+      html: true
+      title: 'Sign in to join a class'
+      content: 'Please <a href="/chalklers/sign_in">sign in</a> or <a href="/chalklers/sign_up">create an account</a> to make a booking.'

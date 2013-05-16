@@ -4,33 +4,29 @@
     =f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
     =f.input :categories
     =f.input :start_at
+    =f.input :venue, :input_html => { :rows => 1 }
+    =f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
     -if !@lesson.published?
       =f.input :channels, :as => :check_boxes, :collection => Channel.accessible_by(current_ability)
       =f.input :availabilities, :label => "Availability of the teacher", :input_html => { :rows => 1 }
-      =f.input :venue, :input_html => { :rows => 1 }
       =f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
-      =f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
-      =f.input :learning_outcomes, :label => "What you will learn", :input_html => { :rows => 6 }
-      =f.input :lesson_type, :as => :select, :label => "Type of class", :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
-      =f.input :lesson_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
-      =f.input :teacher_bio, :label => "Your chalkler will be", :input_html => { :rows => 2 }
-      =f.input :prerequisites, :label => "What to bring", :input_html => { :rows => 1 }
-      =f.input :suggested_audience, :label => "Appropriate audience", :input_html => { :rows => 1 }
-      =f.input :additional_comments, :input_html => { :rows => 2 }
-    =f.input :gst_price, :label => "Advertised price including GST", :input_html => { :disabled => true }, :hint => "To change this, alter the Teacher Income Per Attendee or Advertised price excluding GST"
-    -if @lesson.teacher_cost == 0
-      =f.input :cost, :label => "Advertised price excluding GST"
-    -else
-      =f.input :cost, :label => "Advertised price excluding GST", :input_html => { :readonly => true }, :hint => "To change this, alter Teacher Income Per Attendee. If the Teacher has no income, come back and edit this directly by first setting Teacher Income Per Attendee to 0 and save"
+    =f.input :learning_outcomes, :label => "What you will learn", :input_html => { :rows => 6 }
+    =f.input :lesson_type, :as => :select, :label => "Type of class", :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+    =f.input :lesson_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
+    =f.input :teacher_bio, :label => "Your chalkler will be", :input_html => { :rows => 2 }
+    =f.input :prerequisites, :label => "What to bring", :input_html => { :rows => 1 }
+    =f.input :suggested_audience, :label => "Appropriate audience", :input_html => { :rows => 1 }
+    =f.input :additional_comments, :input_html => { :rows => 2 }
+    =f.input :cost, :label => "Advertised price", :input_html => { :readonly => true }, :hint => "This is calculated based on the teacher cost"
     -(@lesson.chalkle_percentage_override = @lesson.chalkle_percentage_override*100) if @lesson.chalkle_percentage_override?
     -if current_admin_user.role=="super"
-      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%. Enter 20 for 20%"
+      =f.input :chalkle_percentage_override, :label => "Override default % of revenue paid chalkle", :hint => "Default is #{@lesson.default_chalkle_percentage*100}%. Enter 20 for 20%."
     -(@lesson.channel_percentage_override = @lesson.channel_percentage_override*100) if @lesson.channel_percentage_override?
     -if current_admin_user.role=="super"
-      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%. Enter 20 for 20%"
+      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default is #{@lesson.default_channel_percentage*100}%. Enter 20 for 20%."
     -else
-      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default channel percentage is #{@lesson.default_channel_percentage*100}%, default chalkle percentage is #{@lesson.default_chalkle_percentage*100}%. For example, enter 20 for 20%"
-    =f.input :teacher_cost, :label => "Teacher income per attendee"
+      =f.input :channel_percentage_override, :label => "Override default % of revenue paid channel", :hint => "Default channel percentage is #{@lesson.default_channel_percentage*100}%, default chalkle percentage is #{@lesson.default_chalkle_percentage*100}%. For example, enter 20 for 20%. Enter 100 if all money will be donated to the Channel."
+    =f.input :teacher_cost, :label => "Teacher fee per attendee", :hint => "This cannot be 0 for a class with an entry price. If Channel or Chalkle is the teacher, adjust percentage overrides accordingly then enter amount here to get desired final price"
     =f.input :venue_cost
     =f.input :material_cost
     =f.input :max_attendee
@@ -38,8 +34,8 @@
     -@lesson.duration = @lesson.duration/60/60 if !@lesson.duration.nil?
     =f.input :duration, :label => "Duration in hours"
     -if @lesson.published?
-      =f.input :teacher_payment, :label => "Teacher Payment (leave blank if not paid)"
-      =f.input :description
+      =f.input :teacher_payment, :label => "Payment to teacher (leave blank if not paid)"
+      =f.input :chalkle_payment, :label => "Payment to Chalkle (leave blank if not paid)"
     =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Approved", "Unreviewed", "Processing"], :input_html => { :multiple => false }, include_blank: false 
 
   =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|

@@ -1,5 +1,10 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests, :meetup_id, :cost_override, :paid, :visible
+  attr_accessible :lesson_id, :guests, :payment_method, :terms_and_conditions
+  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests,
+    :meetup_id, :cost_override, :paid, :payment_method, :visible, :as => :admin
+
+  attr_accessor :terms_and_conditions
+  attr_accessor :enforce_terms_and_conditions
 
   belongs_to :lesson
   belongs_to :chalkler
@@ -16,12 +21,10 @@ class Booking < ActiveRecord::Base
   scope :status_no, where("bookings.status='no'")
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
-  validates_presence_of :lesson_id
-  validates_presence_of :chalkler_id
+  validates_presence_of :lesson_id, :chalkler_id, :payment_method, :status
+  validates_acceptance_of :terms_and_conditions, :on => :create, :message => 'please read and agree', :if => :enforce_terms_and_conditions
 
-  before_create :set_from_meetup_data
-  before_create :set_metadata
-  # after_create :send_first_email
+  before_create :set_from_meetup_data, :set_metadata, :set_free_lesson_attributes
 
   def name
     if lesson.present? && chalkler.present?
@@ -52,14 +55,8 @@ class Booking < ActiveRecord::Base
     meetup_data["answers"]
   end
 
-  def set_from_meetup_data
-    return if meetup_data.empty?
-    self.created_at = Time.at(meetup_data["created"] / 1000)
-    self.updated_at = Time.at(meetup_data["mtime"] / 1000)
-  end
-
-  def set_metadata
-    self.visible = true
+  def is_teacher
+    self.lesson.teacher_id.present? ? (self.chalkler_id == self.lesson.teacher_id) : true
   end
 
   def self.create_from_meetup_hash result
@@ -67,6 +64,7 @@ class Booking < ActiveRecord::Base
     b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
     b.lesson = Lesson.find_by_meetup_id result.event["id"]
     b.meetup_id = result.rsvp_id
+    b.payment_method = 'meetup'
     if b.lesson.class_not_done
       b.guests = result.guests
       b.status = result.response
@@ -75,16 +73,15 @@ class Booking < ActiveRecord::Base
     b.save
   end
 
-  def is_teacher
-    self.lesson.teacher_id.present? ? (self.chalkler_id == self.lesson.teacher_id) : true
-  end
+
+  # Refactor all of this:
 
   def emailable
     self.status=='yes' && (self.cost.present? ? self.cost : 0) > 0 && !self.is_teacher && (self.paid!=true)
   end
 
   def first_email_condition
-    self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up 
+    self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up
   end
 
   def second_email_condition
@@ -116,6 +113,26 @@ class Booking < ActiveRecord::Base
       return "no-show"
     else
       return false
+    end
+  end
+
+  private
+
+  def set_from_meetup_data
+    return if meetup_data.empty?
+    self.created_at = Time.at(meetup_data["created"] / 1000)
+    self.updated_at = Time.at(meetup_data["mtime"] / 1000)
+  end
+
+  def set_metadata
+    self.visible = true
+  end
+
+  def set_free_lesson_attributes
+    return if meetup_data?
+    if self.lesson.cost == 0
+      self.payment_method = 'free'
+      self.paid = true
     end
   end
 end

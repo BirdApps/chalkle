@@ -1,11 +1,19 @@
-.navbar.navbar-inverse.navbar-static-top
-  .navbar-inner
+%header.navbar.navbar-inverse.navbar-static-top
+  .navbar-inner.navbar-texture-gray-dark
     .container
-      = link_to (image_tag 'chalkle_logo_small_alpha.png', {width: 115}), root_path, class: 'brand span2'
+      %h1
+        = link_to (image_tag 'chalkle_logo_strapline_stacked.png', {width: 125, alt: 'chalkle° - six degrees of separation'}), root_path, class: 'logo span2'
       .nav-collapse.collapse
         %ul.nav.span10
-          -if chalkler_signed_in?
+          - if chalkler_signed_in?
+            - if current_chalkler.channels.exists? name: 'Horowhenua'
+              %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
             %li= link_to 'Teach', new_chalklers_teaching_path
+            %li= link_to "Suggest a class", new_chalklers_lesson_suggestion_path
             %li= link_to 'Email Settings', chalklers_preferences_path
             %li.fl-right.no-right-margin= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
             %li.fl-right= link_to "#{current_chalkler.name}", chalklers_preferences_path, class: 'no-border'
+          -else
+            %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
+            %li.fl-right.no-right-margin= link_to 'Sign in', new_chalkler_session_path
+            %li.fl-right= link_to 'Join chalkle&deg;'.html_safe, new_chalkler_registration_path

@@ -1,20 +1,27 @@
-body {
-  font-family: $font_family_normal;
-  font-size: 16px;
+@font-face {
+  font-family: 'MrChalk';
+  src: url('/assets/25FE67_0_0.eot');
+  src: url('/assets/25FE67_0_0.eot?#iefix') format('embedded-opentype'),
+  url('/assets/25FE67_0_0.woff') format('woff'),
+  url('/assets/25FE67_0_0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
+
 h2 {
   font-family: $font_family_normal;
-  font-weight: normal;
+  margin-bottom: 1em;
 }
 
 h3 {
   font-family: $font_family_normal;
-  font-weight: normal;
-  color: $pink;
+  border-bottom: 1px solid $grayLighter
 }
 
 form {
-  h3 { border-bottom: solid 1px $grayLighter;}
+  h3 {
+    border-bottom: 1px solid $grayLighter;
+  }
 }
 
 legend {
@@ -28,4 +35,12 @@ ul, ol {
 
 li {
   margin-bottom: 0.75em;
+}
+
+.btn a {
+  color: $white;
+  &:hover {
+    color: $white;
+    text-decoration: none;
+  }
 }

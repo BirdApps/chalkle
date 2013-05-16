@@ -6,6 +6,9 @@ ActiveAdmin.register Lesson  do
     authorize_resource
   end
 
+  scope :published
+  scope :unpublished
+
   filter :channels_name, :as => :select, :label => "Channel",
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
@@ -24,9 +27,9 @@ ActiveAdmin.register Lesson  do
     helper BookingHelper
 
     def update
-      params[:lesson][:duration] = (params[:lesson][:duration].to_d*60*60).to_i if !params[:lesson][:duration].blank?
+      params[:lesson][:duration] = (params[:lesson][:duration].to_d*60*60).to_i unless params[:lesson][:duration].blank?
       params[:lesson][:chalkle_percentage_override] = (params[:lesson][:chalkle_percentage_override].to_d/100).to_s unless params[:lesson][:chalkle_percentage_override].blank?
-      params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].blank?     
+      params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].blank?
       update!
     end
 
@@ -48,7 +51,7 @@ ActiveAdmin.register Lesson  do
     end
     if current_admin_user.role=="super"
       column "Unpaid Amount" do |lesson|
-        number_to_currency lesson.uncollected_revenue, sortable: false
+        number_to_currency lesson.uncollected_turnover, sortable: false
      end
     end
     column :start_at
@@ -69,37 +72,35 @@ ActiveAdmin.register Lesson  do
         lesson.channels.collect{ |c| c.name}.join(", ")
       end
       row :start_at
-      if !lesson.published?
-        row "Availability of the teacher" do
-          lesson.availabilities
-        end
-        row "venue for this class" do
-          lesson.venue
-        end
-        row "What we are doing" do
-          simple_format lesson.do_during_class
-        end
-        row "What you will learn" do
-          simple_format lesson.learning_outcomes
-        end
-        row "type of class" do
-          lesson.lesson_type
-        end
-        row "skill required" do
-          lesson.lesson_skill
-        end
-        row "your chalkler will be" do
-          simple_format lesson.teacher_bio
-        end
-        row "What to bring" do
-          simple_format lesson.prerequisites
-        end
-        row "What type of audience is it appropriate for" do 
-          simple_format lesson.suggested_audience
-        end
-        row :additional_comments do
-          simple_format lesson.additional_comments
-        end
+      row "Availability of the teacher" do
+        lesson.availabilities
+      end
+      row "venue for this class" do
+        lesson.venue
+      end
+      row "What we are doing" do
+        simple_format lesson.do_during_class
+      end
+      row "What you will learn" do
+        simple_format lesson.learning_outcomes
+      end
+      row "type of class" do
+        lesson.lesson_type
+      end
+      row "skill required" do
+        lesson.lesson_skill
+      end
+      row "your chalkler will be" do
+        simple_format lesson.teacher_bio
+      end
+      row "What to bring" do
+        simple_format lesson.prerequisites
+      end
+      row "What type of audience is it appropriate for" do
+        simple_format lesson.suggested_audience
+      end
+      row :additional_comments do
+        simple_format lesson.additional_comments
       end
       # row :teacher_gst_number do
       #   if lesson.teacher && lesson.teacher.gst?
@@ -108,20 +109,17 @@ ActiveAdmin.register Lesson  do
       #     "Not GST registered"
       #   end
       # end
-      row "Advertised price including GST" do
-        number_to_currency lesson.gst_price
-      end
-      row "Advertised price excluding GST" do
+      row "Advertised price (incl GST)" do
         number_to_currency lesson.cost
       end
-      row "Chalkle income per attendee" do
-        number_to_currency (lesson.cost.present? ? lesson.chalkle_percentage*lesson.cost : nil)
-      end
-      row "Channel income per attendee" do
-        number_to_currency (lesson.cost.present? ? lesson.channel_percentage*lesson.cost : nil)
-      end
-      row "Teacher income per attendee" do
+      row "Teacher fee per attendee (incl. GST if any)" do
         number_to_currency lesson.teacher_cost
+      end
+      row "Chalkle fee per attendee (incl. GST and rounding)" do
+        number_to_currency lesson.chalkle_cost
+      end
+      row "Channel fee per attendee (incl. GST)" do
+        number_to_currency lesson.channel_cost
       end
       row :venue_cost do
         number_to_currency lesson.venue_cost
@@ -134,27 +132,31 @@ ActiveAdmin.register Lesson  do
       end
       row :max_attendee
       row :min_attendee
+
       if lesson.published?
+        row :attendance
+        row "Channel income" do
+          number_to_currency lesson.income
+        end
         if current_admin_user.role=="super"
+          row :collected_turnover do
+            number_to_currency lesson.collected_turnover
+          end
           row :teacher_payment do
             number_to_currency lesson.teacher_payment
           end
-          row :income do
-            number_to_currency lesson.income
+          row :chalkle_payment do
+            number_to_currency lesson.chalkle_payment
           end
-          row :collected_revenue do
-            number_to_currency lesson.collected_revenue
-          end          
-          row :uncollected_revenue do
-            number_to_currency lesson.uncollected_revenue
+          row :uncollected_turnover do
+            number_to_currency lesson.uncollected_turnover
           end
-          row :attendance
           row :bookings_to_collect do
           "There are #{lesson.bookings.confirmed.visible.count - lesson.bookings.confirmed.visible.paid.count} more bookings to collect."
           end
         end
         row :rsvp_list do
-          render partial: "/admin/lessons/rsvp_list", locals: { lesson: lesson, channel_url: (lesson.channels.present? ? lesson.channels.collect{|c| c.url_name} : Channel.find(1).url_name), bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+          render partial: "/admin/lessons/rsvp_list", locals: { lesson: LessonDecorator.decorate(lesson), channel_url: (lesson.channels.present? ? lesson.channels.collect{|c| c.url_name} : Channel.find(1).url_name), bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
         row :description do
           simple_format lesson.description
@@ -236,7 +238,7 @@ ActiveAdmin.register Lesson  do
 
   member_action :meetup_template do
     lesson = Lesson.find(params[:id])
-    render partial: "/admin/lessons/meetup_template", locals: { lesson: lesson }
+    render partial: "/admin/lessons/meetup_template", locals: { lesson: LessonDecorator.decorate(lesson) }
   end
 
   form :partial => 'form'

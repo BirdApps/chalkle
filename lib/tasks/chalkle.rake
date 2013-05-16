@@ -12,6 +12,7 @@ begin
       Rake::Task["chalkle:load_chalklers"].execute
       Rake::Task["chalkle:load_classes"].execute
       Rake::Task["chalkle:load_bookings"].execute
+      Rake::Task["chalkle:load_venues"].execute
     end
 
     desc "Reprocess all meetup data"
@@ -30,7 +31,7 @@ begin
         for i in 0...total_pages do
           results = RMeetup::Client.fetch(:members, { group_urlname: c.url_name, offset: i })
           results.each do |r|
-            Chalkler.create_from_meetup_hash(r,c)
+            Chalkler.import_from_meetup(r,c)
           end
         end
       end
@@ -59,6 +60,15 @@ begin
         result.each do |r|
           Booking.create_from_meetup_hash(r)
         end
+      end
+    end
+
+    desc "Pull venues from meetup"
+    task "load_venues" => :environment do
+      channels = Channel.where{(url_name == 'sixdegrees') | (url_name == 'whanau')}
+      channels.each do |channel|
+        puts "Importing venues for #{channel.name}"
+        VenueImporter.import channel
       end
     end
 

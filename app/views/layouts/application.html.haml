@@ -1,5 +1,4 @@
 !!! 5
-
 %html
   %head
     %meta{ charset: 'utf-8' }
@@ -9,9 +8,10 @@
     = stylesheet_link_tag    "application", media: "all"
     = javascript_include_tag "application"
 
-  %body
+  %body{ class: body_class }
     = render 'layouts/navigation'
 
     .container
       = render 'layouts/messages'
       = yield
+      %footer.row

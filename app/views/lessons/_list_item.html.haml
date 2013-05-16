@@ -1,0 +1,22 @@
+%section.lesson-item{class: "span12 lesson-#{lesson.status.downcase}"}
+  .row
+    .header.span12
+      %h3= lesson.name.capitalize
+      .lesson-attendance.pull-right
+        = "#{lesson.attendance} / #{lesson.max_attendee}"
+        .icon.icon-user
+  .row
+    .span8
+      .summary
+        %p= simple_format lesson.do_during_class
+    .span4
+      = render :partial => 'lessons/lesson_details', :locals => { :lesson => lesson }
+  .row
+    .span12
+      .actions
+        - if chalkler_signed_in?
+          - if lesson.bookable? and !current_chalkler.lessons.exists? lesson
+            .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)
+        - elsif lesson.bookable?
+          .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)
+        .btn.btn-primary= link_to 'View class', channel_lesson_path(@channel, lesson)

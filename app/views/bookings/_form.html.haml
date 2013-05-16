@@ -1,0 +1,13 @@
+= simple_form_for(@booking, url: channel_lesson_bookings_path, html: { class: 'form-horizontal' }) do |f|
+  %h3 Enter booking details
+  = f.error_notification
+  .form-inputs
+    - if @lesson.cost? && @lesson.cost > 0
+      = f.input :payment_method, :type => :select, collection: [['Cash', 'cash'], ['Bank Transfer', 'bank']]
+    = f.input :guests, :type => :select, collection: 1..5, label: 'Additional guests'
+    = f.input :lesson_id, :as => :hidden, :input_html => { :value => @lesson.id }
+    .booking-terms-and-conditions
+      = f.input :terms_and_conditions, :as => :boolean , :label => false, :required => true,
+        :inline_label => "<abbr title=\"required\">*</abbr> I agree with the #{link_to 'Terms and Conditions', '#termsModal', :'data-toggle' => 'modal'}".html_safe
+  .form-actions
+    = f.button :submit, 'Confirm booking', class: 'btn-primary'

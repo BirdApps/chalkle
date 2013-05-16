@@ -14,5 +14,13 @@ begin
       end
     end
 
+    desc "Send Horowhenua welcome"
+    task "horowhenua_welcome" => :environment do
+      chalklers = Chalkler.joins(:channels).where("channels.url_name = 'horowhenua' AND chalklers.meetup_id IS NULL")
+      chalklers.each do |c|
+        ChalklerMailer.horowhenua_welcome(c).deliver
+      end
+    end
+
   end
 end

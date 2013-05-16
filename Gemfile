@@ -18,6 +18,7 @@ gem 'jquery-rails',  '~> 2.1.4'
 gem 'chronic',       '~> 0.9.0'
 gem 'active_attr',   '~> 0.7.0'
 gem 'dragonfly',     '~> 0.9.14'
+gem 'rack-cache', :require => 'rack/cache'
 gem 'delayed_job_active_record'
 gem 'squeel',        '~> 1.0.18'
 gem 'validates_timeliness', '~> 3.0'
@@ -30,6 +31,7 @@ gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml-rails',    '~> 0.3.5'
+gem 'coffee-filter', '~> 0.1.3'
 gem 'simple_form',   '~> 2.0.4'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
@@ -38,9 +40,9 @@ gem 'draper',        '~> 1.0'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',          '~> 3.2.6'
-  gem 'bootstrap-sass',      '~> 2.3.0.0'
   gem 'coffee-rails',        '~> 3.2.2'
-  gem 'coffee-filter',       '~> 0.1.3'
+  gem 'bootstrap-sass',      '~> 2.3.1.0'
+  gem 'font-awesome-sass-rails'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.9.1'
   gem 'haml_assets',         '~> 0.2.1'
@@ -50,6 +52,7 @@ end
 
 group :development do
   gem 'rb-readline'
+
   # Better documentation
   gem 'tomdoc',  '~> 0.2.5',  :require => false
 
@@ -72,7 +75,6 @@ end
 
 group :development, :test do
   # Automatic testing
-  gem 'rb-inotify',        '~> 0.8.8'
   gem 'guard',             '~> 1.6.2'
   gem 'guard-spork',       '~> 1.4.1'
   gem 'guard-rspec',       '~> 2.3.3'
@@ -92,9 +94,8 @@ group :development, :test do
   # Debugging Tools
   gem 'pry-rails',     '~> 0.2.2'
   gem 'pry-coolline',  '~> 0.2.1'
-
-  #mucking round with the db
-  gem 'forgery'
+  gem 'debugger'
+  gem 'debugger-pry'
 end
 
 group :test do
@@ -109,7 +110,7 @@ group :test do
   gem 'steak',               '~> 2.0.0'
   gem 'webrat',              '~> 0.7.3'
   gem 'email_spec',          '~> 1.4.0'
-  gem 'factory_girl_rails',  '~> 4.1.0'
+  gem 'factory_girl_rails',  '~> 4.2.1'
   gem 'shoulda',             '~> 3.3.2'
 
   # Test coverage

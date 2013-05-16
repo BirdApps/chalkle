@@ -4,7 +4,10 @@ class AdminUser < ActiveRecord::Base
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessible :name, :role, :email, :password, :password_confirmation, :remember_me, :channel_ids
+  attr_accessible :name, :role, :email, :password, :password_confirmation,
+    :remember_me, :channel_ids, :as => :admin
+
+  validates_presence_of :name, :role
 
   has_many :channel_admins
   has_many :channels, :through => :channel_admins

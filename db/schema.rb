@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130414033233) do
+ActiveRecord::Schema.define(:version => 20130516030055) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,10 +56,11 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
     t.integer  "guests"
     t.boolean  "paid"
     t.text     "meetup_data"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
     t.boolean  "visible"
-    t.decimal  "cost_override", :precision => 8, :scale => 2
+    t.decimal  "cost_override",  :precision => 8, :scale => 2
+    t.string   "payment_method"
   end
 
   create_table "categories", :force => true do |t|
@@ -122,6 +123,13 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
 
   add_index "channel_chalklers", ["channel_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
 
+  create_table "channel_lesson_suggestions", :id => false, :force => true do |t|
+    t.integer "channel_id",           :null => false
+    t.integer "lesson_suggestion_id", :null => false
+  end
+
+  add_index "channel_lesson_suggestions", ["channel_id", "lesson_suggestion_id"], :name => "cha_les_sug_index", :unique => true
+
   create_table "channel_lessons", :id => false, :force => true do |t|
     t.integer "channel_id", :null => false
     t.integer "lesson_id",  :null => false
@@ -134,9 +142,16 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
     t.datetime "created_at",                                                          :null => false
     t.datetime "updated_at",                                                          :null => false
     t.string   "url_name"
+    t.string   "email"
     t.decimal  "channel_percentage", :precision => 8, :scale => 2, :default => 0.125
     t.decimal  "teacher_percentage", :precision => 8, :scale => 2, :default => 0.75
-    t.string   "email"
+    t.string   "account"
+  end
+
+  create_table "cities", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -169,6 +184,15 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
     t.integer  "lesson_id"
     t.string   "image_uid"
     t.string   "image_name"
+  end
+
+  create_table "lesson_suggestions", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "category_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "chalkler_id"
   end
 
   create_table "lessons", :force => true do |t|
@@ -205,6 +229,7 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
     t.decimal  "material_cost",               :precision => 8, :scale => 2, :default => 0.0
     t.text     "suggested_audience"
     t.string   "meetup_url"
+    t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
   end
 
   create_table "payments", :force => true do |t|
@@ -238,6 +263,18 @@ ActiveRecord::Schema.define(:version => 20130414033233) do
 
   create_table "streams", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "venues", :force => true do |t|
+    t.string   "name",       :null => false
+    t.integer  "meetup_id"
+    t.string   "address_1",  :null => false
+    t.string   "address_2"
+    t.float    "lat"
+    t.float    "lon"
+    t.integer  "city_id",    :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

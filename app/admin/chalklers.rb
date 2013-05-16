@@ -6,19 +6,14 @@ ActiveAdmin.register Chalkler do
     authorize_resource
 
     def create
-      if(params[:chalkler][:channel_ids].is_a?(String) && params[:chalkler][:channel_ids].empty?) ||
-        (params[:chalkler][:channel_ids].is_a?(Array) && params[:chalkler][:channel_ids].reject(&:empty?).empty?)
-        flash[:error] = "Chalkler must belong to a channel"
-        redirect_to :back
-        return
+      if params[:chalkler][:join_channels]
+        params[:chalkler][:join_channels].reject!(&:empty?)
       end
-      @chalkler = Chalkler.new(bio: params[:chalkler][:bio], email: params[:chalkler][:email], gst: params[:chalkler][:gst],
-        meetup_id: params[:chalkler][:meetup_id], name: params[:chalkler][:name], phone_number: params[:chalkler][:phone_number])
-      if @chalkler.save
-        update!
-      else
-        redirect_to :back
+      @chalkler = Chalkler.new(params[:chalkler], :as => :admin)
+      if current_admin_user.channels.count == 1
+        @chalkler.join_channels = [ current_admin_user.channel_ids ]
       end
+      create!
     end
   end
 
@@ -110,8 +105,6 @@ ActiveAdmin.register Chalkler do
     active_admin_comments
   end
 
-  form :partial => 'form'
-
   action_item(:only => :show, if: proc{ can?(:send_reset_password_mail, resource) && chalkler.email? }) do
     link_to 'Send password reset email', send_reset_password_mail_admin_chalkler_path(resource),
       :data => { :confirm => "Are you sure you want to send password reset instructions?" }
@@ -119,11 +112,34 @@ ActiveAdmin.register Chalkler do
 
   member_action :send_reset_password_mail do
     chalkler = Chalkler.find params[:id]
-    if can?(:send_reset_password_mail, chalkler) && chalkler.send_reset_password_instructions
+    if chalkler.send_reset_password_instructions
       flash[:notice] = 'Password reset instructions have been sent!'
     else
       flash[:warn] = 'Could not send password reset instructions!'
     end
     redirect_to :back
   end
+
+  form do |f|
+    f.inputs :details do
+      f.input :name
+      if current_admin_user.channels.size > 1
+        if f.object.new_record?
+          f.input :join_channels, :label => 'Channels', :as => :check_boxes, :collection => current_admin_user.channels
+        else
+          f.input :channels, :as => :check_boxes, :label => 'Channels'
+        end
+      end
+      f.input :meetup_id
+      if f.object.new_record?
+        f.input :email, :hint => "User will receive password reset email if entered"
+      else
+        f.input :email
+      end
+      f.input :phone_number
+      f.input :bio
+    end
+    f.actions
+  end
+
 end

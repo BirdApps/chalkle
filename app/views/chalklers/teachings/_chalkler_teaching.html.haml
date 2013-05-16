@@ -33,9 +33,13 @@
 
       = f.input :free_lesson, :label => false, :inline_label => "Check here if you want this class to be offered for free", as: :boolean
 
-      = f.input :teacher_cost, :label => "How much money do you need to run this class (excl. GST)? Note the advertised price of this class will be higher than the amount you entered here because chalkle needs to pay for additional costs", :wrapper => :prepend do
+      = f.input :teacher_cost, :label => "How much money do you need to run this class? Note this must include any GST or materials you may need to purchase for this class. Chalkle&deg will add its fee and any applicable taxes to this to calculate the advertised price for the class.", :wrapper => :prepend do
         = content_tag :span, "$", :class => "add-on"
         = f.input_field :teacher_cost, :placeholder => "0.00"
+        = content_tag :span, "Per attendee", :class => "add-on"
+      =f.input :price, :label => "Pending confirmation from your Channel Curator, this class will be advertised for approximately", :wrapper => :prepend do
+        = content_tag :span, "$", :class => "add-on"
+        = f.input_field :price, :readonly => true
         = content_tag :span, "Per attendee", :class => "add-on"
 
       = f.input :max_attendee, :label => "What is the maximum number of attendees for this class?", :wrapper => :append do
@@ -52,3 +56,8 @@
 
     .form-actions
       = f.button :submit, 'Submit my class', class: 'btn-primary'
+
+:javascript
+  var channel_Index=new Array("#{@chalkler_teaching.channels.map {|i| i.id}.join('","')}");
+  var teacher_Percentages=new Array("#{@chalkler_teaching.channels.map {|i| i.teacher_percentage}.join('","')}");
+  var channel_Percentages=new Array("#{@chalkler_teaching.channels.map {|i| i.channel_percentage}.join('","')}");

@@ -1,0 +1,25 @@
+.row
+  .span6
+    = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f|
+      %legend Sign in
+      %p If you already have a password, you can sign in using your email address.
+      = f.input :email, :required => false, :autofocus => true
+      = f.input :password, :required => false
+      .control-group
+        .controls
+          %label.checkbox
+            = f.check_box :remember_me, :as => (:boolean if devise_mapping.rememberable?)
+            Remember me?
+      .sign-in-buttons
+        = f.button :submit, "Sign in"
+        = render "devise/shared/links"
+
+  .span4.offset2.sign-in-meetup
+    .content
+      %legend Sign in using Meetup
+      %p Use your Meetup account to sign in.
+      - if devise_mapping.omniauthable?
+        - resource_class.omniauth_providers.each do |provider|
+          .text-center
+            = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
+            %br
