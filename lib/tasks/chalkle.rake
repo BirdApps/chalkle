@@ -12,6 +12,7 @@ begin
       Rake::Task["chalkle:load_chalklers"].execute
       Rake::Task["chalkle:load_classes"].execute
       Rake::Task["chalkle:load_bookings"].execute
+      Rake::Task["chalkle:load_venues"].execute
     end
 
     desc "Reprocess all meetup data"
