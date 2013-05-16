@@ -62,5 +62,14 @@ begin
       end
     end
 
+    desc "Pull venues from meetup"
+    task "load_venues" => :environment do
+      channels = Channel.where{(url_name == 'sixdegrees') | (url_name == 'whanau')}
+      channels.each do |channel|
+        puts "Importing venues for #{channel.name}"
+        VenueImporter.import channel
+      end
+    end
+
   end
 end
