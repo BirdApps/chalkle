@@ -78,46 +78,6 @@ describe Chalkler do
       end
 
     end
-
-    context "created by admin" do
-      let(:chalkler) { FactoryGirl.create(:chalkler, meetup_id: nil) }
-      let(:meetup_chalkler) { FactoryGirl.create(:meetup_chalkler) }
-
-      describe "#set_reset_password_token" do
-        it "should create reset_password_token" do
-          chalkler.reset_password_token.should be_present
-        end
-
-        it "won't set a token for a meetup user" do
-          meetup_chalkler.reset_password_token.should be_nil
-        end
-      end
-
-      describe "#send_teacher_welcome_email" do
-        before do
-          ActionMailer::Base.deliveries = []
-        end
-
-        it "should create reset_password_sent_at" do
-          chalkler.reset_password_sent_at.should be_present
-        end
-
-        it "should send a mail to the new user" do
-          chalkler
-          ActionMailer::Base.deliveries.length.should == 1
-        end
-
-        it "won't email a meetup user" do
-          meetup_chalkler
-          ActionMailer::Base.deliveries.should be_empty
-        end
-
-        it "won't email a user with no email" do
-          FactoryGirl.create(:chalkler, email: nil)
-          ActionMailer::Base.deliveries.should be_empty
-        end
-      end
-    end
   end
 
   describe '.email_frequency_select_options' do
