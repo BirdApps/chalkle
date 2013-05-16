@@ -1,4 +1,5 @@
 module MeetupApiStub
+
   def self.chalkler_response
     RMeetup::Type::Member.new({
       "id" => 12345678,
@@ -34,4 +35,16 @@ module MeetupApiStub
       "mtime" => 1351297791000
     })
   end
+
+  def self.venue_response
+    RMeetup::Type::Venue.new({
+      "id" => 123456578,
+      "name" => "Venue",
+      "address_1" => "100 Example Lane",
+      "city" => "Wellington",
+      "lon" => 174.77327,
+      "lat" => -41.333698,
+    })
+  end
+
 end

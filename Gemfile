@@ -110,7 +110,7 @@ group :test do
   gem 'steak',               '~> 2.0.0'
   gem 'webrat',              '~> 0.7.3'
   gem 'email_spec',          '~> 1.4.0'
-  gem 'factory_girl_rails',  '~> 4.1.0'
+  gem 'factory_girl_rails',  '~> 4.2.1'
   gem 'shoulda',             '~> 3.3.2'
 
   # Test coverage

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130509042351) do
+ActiveRecord::Schema.define(:version => 20130514035403) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -148,6 +148,12 @@ ActiveRecord::Schema.define(:version => 20130509042351) do
     t.string   "account"
   end
 
+  create_table "cities", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -257,6 +263,17 @@ ActiveRecord::Schema.define(:version => 20130509042351) do
 
   create_table "streams", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "venues", :force => true do |t|
+    t.string   "name",       :null => false
+    t.integer  "meetup_id"
+    t.string   "address_1",  :null => false
+    t.float    "lat"
+    t.float    "lon"
+    t.integer  "city_id",    :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
