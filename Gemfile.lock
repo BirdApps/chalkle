@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/kiesia/rmeetup.git
-  revision: 51e2056712745a4da1c0351282a9a80103d1011c
+  revision: eedaafcfe87c9aa952c05cc67b4cd9799abc9bd7
   specs:
     rMeetup (1.0)
 
