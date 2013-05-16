@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'chalkler_digest'
 
 describe ChalklerDigest do
   describe "#initialize" do
