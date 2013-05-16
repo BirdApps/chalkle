@@ -10,13 +10,13 @@
       =f.input :channels, :as => :check_boxes, :collection => Channel.accessible_by(current_ability)
       =f.input :availabilities, :label => "Availability of the teacher", :input_html => { :rows => 1 }
       =f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
-      =f.input :learning_outcomes, :label => "What you will learn", :input_html => { :rows => 6 }
-      =f.input :lesson_type, :as => :select, :label => "Type of class", :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
-      =f.input :lesson_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
-      =f.input :teacher_bio, :label => "Your chalkler will be", :input_html => { :rows => 2 }
-      =f.input :prerequisites, :label => "What to bring", :input_html => { :rows => 1 }
-      =f.input :suggested_audience, :label => "Appropriate audience", :input_html => { :rows => 1 }
-      =f.input :additional_comments, :input_html => { :rows => 2 }
+    =f.input :learning_outcomes, :label => "What you will learn", :input_html => { :rows => 6 }
+    =f.input :lesson_type, :as => :select, :label => "Type of class", :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+    =f.input :lesson_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
+    =f.input :teacher_bio, :label => "Your chalkler will be", :input_html => { :rows => 2 }
+    =f.input :prerequisites, :label => "What to bring", :input_html => { :rows => 1 }
+    =f.input :suggested_audience, :label => "Appropriate audience", :input_html => { :rows => 1 }
+    =f.input :additional_comments, :input_html => { :rows => 2 }
     =f.input :cost, :label => "Advertised price", :input_html => { :readonly => true }, :hint => "This is calculated based on the teacher cost"
     -(@lesson.chalkle_percentage_override = @lesson.chalkle_percentage_override*100) if @lesson.chalkle_percentage_override?
     -if current_admin_user.role=="super"

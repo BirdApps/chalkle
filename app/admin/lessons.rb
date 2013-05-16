@@ -72,37 +72,35 @@ ActiveAdmin.register Lesson  do
         lesson.channels.collect{ |c| c.name}.join(", ")
       end
       row :start_at
-      if !lesson.published?
-        row "Availability of the teacher" do
-          lesson.availabilities
-        end
-        row "venue for this class" do
-          lesson.venue
-        end
-        row "What we are doing" do
-          simple_format lesson.do_during_class
-        end
-        row "What you will learn" do
-          simple_format lesson.learning_outcomes
-        end
-        row "type of class" do
-          lesson.lesson_type
-        end
-        row "skill required" do
-          lesson.lesson_skill
-        end
-        row "your chalkler will be" do
-          simple_format lesson.teacher_bio
-        end
-        row "What to bring" do
-          simple_format lesson.prerequisites
-        end
-        row "What type of audience is it appropriate for" do
-          simple_format lesson.suggested_audience
-        end
-        row :additional_comments do
-          simple_format lesson.additional_comments
-        end
+      row "Availability of the teacher" do
+        lesson.availabilities
+      end
+      row "venue for this class" do
+        lesson.venue
+      end
+      row "What we are doing" do
+        simple_format lesson.do_during_class
+      end
+      row "What you will learn" do
+        simple_format lesson.learning_outcomes
+      end
+      row "type of class" do
+        lesson.lesson_type
+      end
+      row "skill required" do
+        lesson.lesson_skill
+      end
+      row "your chalkler will be" do
+        simple_format lesson.teacher_bio
+      end
+      row "What to bring" do
+        simple_format lesson.prerequisites
+      end
+      row "What type of audience is it appropriate for" do
+        simple_format lesson.suggested_audience
+      end
+      row :additional_comments do
+        simple_format lesson.additional_comments
       end
       # row :teacher_gst_number do
       #   if lesson.teacher && lesson.teacher.gst?
