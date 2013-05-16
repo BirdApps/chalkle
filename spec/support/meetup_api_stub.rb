@@ -41,6 +41,7 @@ module MeetupApiStub
       "id" => 123456578,
       "name" => "Venue",
       "address_1" => "100 Example Lane",
+      "address_2" => "Newtown",
       "city" => "Wellington",
       "lon" => 174.77327,
       "lat" => -41.333698,

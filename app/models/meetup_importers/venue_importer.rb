@@ -23,6 +23,7 @@ class VenueImporter
       v.meetup_id = result.id
       v.name = result.name
       v.address_1 = result.address_1
+      v.address_2 = result.address_2
       v.lon = result.lon
       v.lat = result.lat
       v.city = City.where{ name == result.city.capitalize }.first_or_create
