@@ -71,4 +71,21 @@ describe LessonDecorator do
     end
   end
 
+  describe ".url" do
+    before do
+      @lesson = FactoryGirl.create(:lesson, meetup_url: 'http://meetup.com')
+    end
+
+    it "returns meetup link when channel on meetup" do
+      @lesson.channels << FactoryGirl.create(:channel, url_name: 'sixdegrees')
+      @lesson.decorate.url.should == 'http://meetup.com'
+    end
+
+    it "returns rails path when channel is local" do
+      channel = FactoryGirl.create(:channel, url_name: '')
+      @lesson.channels << channel
+      @lesson.decorate.url.should == "http://test.host/channels/#{channel.id}/classes/#{@lesson.id}"
+    end
+  end
+
 end

@@ -39,4 +39,12 @@ class LessonDecorator < Draper::Decorator
     [['Just me', 0], [2, 1], [3, 2], [4, 3], [5, 4]]
   end
 
+  def url
+    if source.channels.first.url_name?
+      source.meetup_url
+    else
+      h.channel_lesson_url(source.channels.first, source)
+    end
+  end
+
 end
