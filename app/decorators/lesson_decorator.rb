@@ -35,4 +35,8 @@ class LessonDecorator < Draper::Decorator
     end
   end
 
+  def guest_values
+    [['Just me', 0], [2, 1], [3, 2], [4, 3], [5, 4]]
+  end
+
 end

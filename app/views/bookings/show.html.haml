@@ -24,20 +24,20 @@
                 = @booking.formatted_price
               - if @booking.guests?
                 %li
-                  %strong Guests:
-                  = @booking.guests
+                  %strong Attendees:
+                  = "You and #{@booking.guests} guests"
         .span6
           .payment-summary
             %h3 How to pay
             - if @booking.payment_method == 'cash'
               %h4 Cash payment
-              %p Simply pay the teacher at the door.
+              %p Cash Payment at Te Takere service desk prior to course.
             - elsif @booking.payment_method == 'bank'
               %h4 Bank Transfer
               - if @booking.paid?
                 %p Payment received, thanks!
               - else
-                %p Deposit the payment into chalkle's Kiwibank account:
+                %p Deposit the payment into the following account:
                 %ul.unstyled
                   %li
                     %strong Account number:
@@ -45,3 +45,4 @@
                   %li
                     %strong Reference:
                     = "#{@booking.lesson.id} - #{current_chalkler.name}"
+                %p Please ensure payment before your class begins.
