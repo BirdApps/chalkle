@@ -9,6 +9,7 @@ ActiveAdmin.register Channel do
   index do
     column :id
     column :name
+    column :visible
     column :url_name
     column :channel_percentage do |channel|
       number_to_percentage(channel.channel_percentage*100, :precision => 2)
@@ -22,6 +23,7 @@ ActiveAdmin.register Channel do
   show title: :name do |channel|
     attributes_table do
       row :name
+      row :visible
       row :url_name
       row "Percentage of revenue going to channel" do |channel|
         number_to_percentage(channel.channel_percentage*100, :precision => 2)
@@ -39,6 +41,7 @@ ActiveAdmin.register Channel do
   form do |f|
     f.inputs :details do
       f.input :name
+      f.input :visible
       f.input :url_name
       f.input :channel_percentage, label: "Percentage of revenue going to channel"
       f.input :teacher_percentage, label: "Percentage of revenue going to teacher"
