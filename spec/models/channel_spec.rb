@@ -1,18 +1,11 @@
 require 'spec_helper'
 
 describe Channel do
-  it { should have_many(:admin_users).through(:channel_admins) }
-  it { should have_many(:chalklers).through(:channel_chalklers) }
-  it { should have_many(:lessons).through(:channel_lessons) }
-  it { should have_many(:bookings).through(:lessons) }
-  it { should have_many(:categories).through(:channel_categories) }
+  specify { FactoryGirl.build(:channel).should be_valid }
 
   it { should validate_presence_of :name }
-  it { should validate_presence_of :url_name }
   it { should validate_presence_of :teacher_percentage }
   it { should validate_presence_of :channel_percentage }
-
-  specify { FactoryGirl.build(:channel).should be_valid }
 
   let(:channel) { FactoryGirl.create(:channel) }
 
@@ -29,6 +22,10 @@ describe Channel do
   	it "should set default chalkle percentage" do
   		channel.chalkle_percentage.should == 0.125
   	end
+
+    it "hides channel by default" do
+      channel.visible.should be_false
+    end
 
   end
 
@@ -67,6 +64,32 @@ describe Channel do
 
       it "should not allow with @ but no ." do
         FactoryGirl.build(:channel, email: "abs123").should_not be_valid
+      end
+    end
+  end
+
+  describe "scopes" do
+    describe ".visible" do
+      it "returns visible records" do
+        FactoryGirl.create(:channel, visible: true)
+        Channel.visible.exists?.should be_true
+      end
+
+      it "ignores invisible records" do
+        FactoryGirl.create(:channel)
+        Channel.visible.exists?.should be_false
+      end
+    end
+
+    describe ".hidden" do
+      it "returns invisible records" do
+        FactoryGirl.create(:channel)
+        Channel.hidden.exists?.should be_true
+      end
+
+      it "ignores visible records" do
+        FactoryGirl.create(:channel, visible: true)
+        Channel.hidden.exists?.should be_false
       end
     end
   end

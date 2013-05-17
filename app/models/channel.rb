@@ -1,10 +1,9 @@
 class Channel < ActiveRecord::Base
   attr_accessible :name, :url_name, :channel_percentage, :teacher_percentage, :email, :account, :visible, :as => :admin
 
-  validates :name, :presence => true
-  validates :url_name, :presence => true
-  validates :channel_percentage, :presence => true, :allow_blank => false, :numericality => { :less_than_or_equal_to => 1, :message => "Channel percentage of revenue must be less than or equal to 1"}
-  validates :teacher_percentage, :presence => true, :allow_blank => false, :numericality => { :less_than_or_equal_to => 1, :message => "Teacher percentage of revenue must be less than or equal to 1"}
+  validates_presence_of :name
+  validates :channel_percentage, :presence => true, :numericality => { :less_than_or_equal_to => 1, :message => "Channel percentage of revenue must be less than or equal to 1"}
+  validates :teacher_percentage, :presence => true, :numericality => { :less_than_or_equal_to => 1, :message => "Teacher percentage of revenue must be less than or equal to 1"}
   validate :percentage_sum_validation
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, :message => "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
@@ -19,6 +18,9 @@ class Channel < ActiveRecord::Base
   has_many :payments, :through => :bookings
   has_many :channel_categories
   has_many :categories, :through => :channel_categories
+
+  scope :hidden, where(visible: false)
+  scope :visible, where(visible: true)
 
   #absolute minimum percentage of revenue paid to chalkle
   CHALKLE_PERCENTAGE = 0.125
@@ -40,8 +42,8 @@ class Channel < ActiveRecord::Base
   end
 
   #Channel performances
-  def channel_stats(start,period)
-    ChannelStats.new(start,period,self)
+  def channel_stats(start, period)
+    ChannelStats.new(start, period, self)
   end
 
   def financial_table(first_day, period, num_rows)
@@ -69,7 +71,7 @@ class Channel < ActiveRecord::Base
   end
 
   #Properties of Channels
-  def new_chalklers(start_date,end_date)
+  def new_chalklers(start_date, end_date)
     chalklers.where{(created_at.gt start_date.utc) & (created_at.lteq end_date.utc)}
   end
 
