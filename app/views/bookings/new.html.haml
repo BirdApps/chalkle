@@ -26,10 +26,10 @@
             %div.payment-descriptions
               .payment-cash.hide
                 %h4 Cash payment
-                %p Simply pay the teacher at the door
+                %p Cash Payment at Te Takere service desk prior to course.
               .payment-bank.hide
                 %h4 Bank Transfer
-                %p Deposit the payment into chalkle's Kiwibank account:
+                %p Deposit the payment into the following account:
                 %ul
                   %li
                     %strong Account number:
@@ -37,6 +37,7 @@
                   %li
                     %strong Reference:
                     = "#{@lesson.id} - #{current_chalkler.name}"
+                %p Please ensure payment before your class begins.
 
         .span6
           = render partial: 'form'

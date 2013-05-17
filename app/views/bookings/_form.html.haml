@@ -4,7 +4,7 @@
   .form-inputs
     - if @lesson.cost? && @lesson.cost > 0
       = f.input :payment_method, :type => :select, collection: [['Cash', 'cash'], ['Bank Transfer', 'bank']]
-    = f.input :guests, :type => :select, collection: 1..5, label: 'Additional guests'
+    = f.input :guests, :type => :select, collection: @lesson.guest_values, :label => 'Attendees', :selected => 0
     = f.input :lesson_id, :as => :hidden, :input_html => { :value => @lesson.id }
     .booking-terms-and-conditions
       = f.input :terms_and_conditions, :as => :boolean , :label => false, :required => true,
