@@ -1,6 +1,6 @@
 Feature: Chalklers
   In order to administer chalkle
-  Super Admins must be able to create, modify and query all the chalkle members (aka chalklers)
+  Super Admins must be able to understand chalkle members (aka chalklers) through their activities on the chalkle platform
 
 Background:
   Given "Jill" is a super admin

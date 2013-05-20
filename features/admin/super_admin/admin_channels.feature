@@ -1,6 +1,6 @@
 Feature: Channels
   In order to administer chalkle
-  Admin must be able to create, modify and query all channels on the chalkle platform
+  Admin must be able to manage all the channels that use the chalkle platform
 
 Background:
   Given "Jill" is a super admin

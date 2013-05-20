@@ -1,6 +1,6 @@
 Feature: Payments
   In order to administer chalkle
-  Admin must be able to track payments made for chalkle classes
+  Super Admin must be able to track the financial performance of chalkle channels
 
 Background:
   Given "Jill" is a super admin

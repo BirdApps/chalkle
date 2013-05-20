@@ -1,6 +1,6 @@
 Feature: Bookings
   In order to administer chalkle
-  Admin must be able to create, modify and query bookings made by chalkle members
+  Super Admin must be able to create, modify and query bookings made by all chalkle members
 
 Background:
   Given "Jill" is a super admin

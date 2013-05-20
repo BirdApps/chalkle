@@ -1,6 +1,6 @@
 Feature: Categories
-  In order to administer chalkle
-  Admin must be able to create, modify and query different ways to categorise classes
+  In order to manage chalkle
+  Super Admin must be able to cluster all the different classes into a manageable number of categories
 
 Background:
   Given "Jill" is a super admin

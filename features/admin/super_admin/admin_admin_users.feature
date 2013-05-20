@@ -1,6 +1,6 @@
 Feature: Admin Users
   In order to administer chalkle
-  Admin must be able to control who has access to what on the chalkle system
+  Super admins must be able to control who has access to what on the chalkle system
 
 Background:
   Given "Jill" is a super admin

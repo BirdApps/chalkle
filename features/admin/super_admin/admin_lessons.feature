@@ -1,6 +1,6 @@
 Feature: Lessons
   In order to administer chalkle
-  Admin must be able to modify and query all the classes
+  Super Admin must be able to bring to life all different classes that chalklers want
 
 Background:
   Given "Jill" is a super admin
