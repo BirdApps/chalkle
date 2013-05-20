@@ -2,7 +2,7 @@ When /^They are on the login page$/ do
   visit "/"
 end
 
-When /^They click "(.*?)"$/ do |button|
+When /^they click on the "(.*?)" button$/ do |button|
   click_link_or_button button
 end
 
@@ -12,5 +12,4 @@ end
 When /^They fill in "(.*?)" with "(.*?)"$/ do |input_selector, desired_input|
   fill_in input_selector, :with => desired_input
 end
-
 

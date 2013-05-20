@@ -1,9 +1,10 @@
 Feature: Chalklers
   In order to administer chalkle
-  Admin must be able to create, modify and query all the chalkle members (aka chalklers)
+  Super Admins must be able to create, modify and query all the chalkle members (aka chalklers)
 
 Background:
   Given "Jill" is a super admin
+  And the admin "Jill" belongs to the "Wellington" channel
   And the admin "Jill" is authenticated
 
 Scenario: A chalkler with no details should render correctly
@@ -11,4 +12,28 @@ Scenario: A chalkler with no details should render correctly
   When they visit the "Chalklers" page
   Then they should see this chalkler
 
+Scenario: Super Admin can access the new chalkler form
+  When they visit the Chalklers index page
+  Then they should see the "New Chalkler" button
+  When they click on the "New Chalkler" button
+  Then they should see the New Chalkler form
 
+Scenario: Super Admin cannot create a chalkler without a channel
+  Given the admin "Jill" belongs to the "Whanau" channel
+  When they visit the New Chalkler form
+  And they create a chalkler without a channel
+  Then they should see an error message
+
+Scenario: Super Admin can send password reset email
+  Given "Whetu" is a chalkler
+  And the chalkler "Whetu" belongs to the "Wellington" channel
+  When the admin views "Whetu's" profile
+  And they trigger a password reset email
+  Then the chalkler "Whetu" should receive a password reset email
+
+Scenario: Password reset button is not displayed when chalkler has no email
+  Given "Whetu" is a chalkler
+  And the chalkler "Whetu" has no email address
+  And the chalkler "Whetu" belongs to the "Wellington" channel
+  When the admin views "Whetu's" profile
+  Then there should be no password reset button

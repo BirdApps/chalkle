@@ -1,11 +1,3 @@
-When /^they visit the Chalklers index page$/ do
-  visit admin_chalklers_path
-end
-
-When /^they visit the New Chalkler form$/ do
-  visit new_admin_chalkler_path
-end
-
 Then /^they should see channel checkboxes$/ do
   page.should have_content 'Wellington'
   page.should have_content 'Whanau'
@@ -37,20 +29,6 @@ end
 Then /^a new chalkler is created with one channel$/ do
   chalkler = Chalkler.find_by_name 'Jill'
   chalkler.channels includes(Channel.find_by_name 'Wellington')
-end
-
-When /^they create a chalkler without a channel$/ do
-  fill_in 'chalkler_name', with: 'Jill'
-  click_button 'Create Chalkler'
-end
-
-Then /^they should see an error message$/ do
-  page.should have_content "can't be blank"
-end
-
-When /^the admin views "(.*?)'s" profile$/ do |name|
-  chalkler = Chalkler.find_by_name name
-  visit "/admin/chalklers/#{chalkler.id}"
 end
 
 When /^they trigger a password reset email$/ do

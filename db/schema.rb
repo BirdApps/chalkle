@@ -142,9 +142,9 @@ ActiveRecord::Schema.define(:version => 20130517042036) do
     t.datetime "created_at",                                                          :null => false
     t.datetime "updated_at",                                                          :null => false
     t.string   "url_name"
-    t.string   "email"
     t.decimal  "channel_percentage", :precision => 8, :scale => 2, :default => 0.125
     t.decimal  "teacher_percentage", :precision => 8, :scale => 2, :default => 0.75
+    t.string   "email"
     t.string   "account"
     t.boolean  "visible",                                          :default => false
   end
