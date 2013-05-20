@@ -52,7 +52,7 @@ Given /^"(.*?)" is an existing Meetup user$/ do |name|
 end
 
 When /^they log in via Meetup$/ do
-  visit root_path
+  visit new_chalkler_session_path
   click_link 'Sign in with Meetup'
 end
 
