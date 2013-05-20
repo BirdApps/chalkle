@@ -2,17 +2,9 @@
 class ChalklerMailer < ActionMailer::Base
   default from: '"chalkle°" <noreply@chalkle.com>'
 
-  def teacher_welcome(chalkler)
+  def welcome(chalkler)
     @chalkler = chalkler
     mail(to: @chalkler.email, subject: "Welcome to chalkle°!") do |format|
-      format.text
-      format.html { render :layout => 'standard_mailer' }
-    end
-  end
-
-  def horowhenua_welcome(chalkler)
-    @chalkler = chalkler
-    mail(to: @chalkler.email, subject: "chalkle° Horowhenua is live!") do |format|
       format.text
       format.html { render :layout => 'standard_mailer' }
     end

@@ -1,9 +1,9 @@
 When /^they visit the Chalklers index page$/ do
-  visit '/admin/chalklers'
+  visit admin_chalklers_path
 end
 
 When /^they visit the New Chalkler form$/ do
-  visit '/admin/chalklers/new'
+  visit new_admin_chalkler_path
 end
 
 Then /^they should see channel checkboxes$/ do

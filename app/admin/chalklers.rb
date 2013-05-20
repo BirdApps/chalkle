@@ -6,12 +6,11 @@ ActiveAdmin.register Chalkler do
     authorize_resource
 
     def create
-      if params[:chalkler][:join_channels]
-        params[:chalkler][:join_channels].reject!(&:empty?)
-      end
+      params[:chalkler][:join_channels].reject!(&:empty?) if params[:chalkler][:join_channels]
       @chalkler = Chalkler.new(params[:chalkler], :as => :admin)
+      @chalkler.set_password_token = true
       if current_admin_user.channels.count == 1
-        @chalkler.join_channels = [ current_admin_user.channel_ids ]
+        @chalkler.join_channels = [current_admin_user.channel_ids]
       end
       create!
     end
@@ -132,7 +131,7 @@ ActiveAdmin.register Chalkler do
       end
       f.input :meetup_id
       if f.object.new_record?
-        f.input :email, :hint => "User will receive password reset email if entered"
+        f.input :email, :hint => 'User will receive password reset email if entered'
       else
         f.input :email
       end
