@@ -23,6 +23,7 @@ gem 'delayed_job_active_record'
 gem 'squeel',        '~> 1.0.18'
 gem 'validates_timeliness', '~> 3.0'
 gem 'whenever', :require => false
+gem 'premailer-rails', '~> 1.4.0'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
