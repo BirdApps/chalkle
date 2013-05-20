@@ -1,8 +1,6 @@
 Given /^"(.*?)" is a chalkler$/ do |name|
-  chalkler = FactoryGirl.create(:chalkler, name: name, email: "#{name.downcase}@chalkle.com")
-  chalkler.password = 'password'
+  chalkler = FactoryGirl.create(:chalkler, name: name, email: "#{name.downcase}@chalkle.com", password: 'password')
   chalkler.channels << FactoryGirl.create(:channel, name: 'Wellington')
-  chalkler.save!
 end
 
 Given /^"(.*?)" is a channel admin$/ do |name|
