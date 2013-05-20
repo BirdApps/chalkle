@@ -14,6 +14,7 @@
             %li.fl-right.no-right-margin= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
             %li.fl-right= link_to "#{current_chalkler.name}", chalklers_preferences_path, class: 'no-border'
           -else
-            %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
+            - if Channel.exists? name: 'Horowhenua'
+              %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
             %li.fl-right.no-right-margin= link_to 'Sign in', new_chalkler_session_path
             %li.fl-right= link_to 'Join chalkle&deg;'.html_safe, new_chalkler_registration_path
