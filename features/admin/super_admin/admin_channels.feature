@@ -1,0 +1,14 @@
+Feature: Channels
+  In order to administer chalkle
+  Admin must be able to create, modify and query all channels on the chalkle platform
+
+Background:
+  Given "Jill" is a super admin
+  And the admin "Jill" is authenticated
+
+Scenario: A channel with no details should render correctly
+  Given there is a channel with no details
+  When they visit the "Channels" page
+  Then they should see this channel
+
+

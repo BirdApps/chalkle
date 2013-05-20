@@ -1,3 +1,7 @@
+Given /^"(.*?)" is a super admin$/ do |name|
+  FactoryGirl.create(:admin_user, name: name, email: "#{name.downcase}@chalkle.com", password: 'password', role: 'super')
+end
+
 When /^the admin "(.*?)" logs in$/ do |name|
   admin_user = AdminUser.find_by_name name
   visit '/admin/login'

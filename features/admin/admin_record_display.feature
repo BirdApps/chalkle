@@ -16,28 +16,3 @@ Scenario: A lesson with no details should render correctly
   When they visit the "Lessons" page
   Then they should see this lesson
 
-Scenario: A channel with no details should render correctly
-  Given there is a channel with no details
-  When they visit the "Channels" page
-  Then they should see this channel
-
-Scenario: A chalkler with no details should render correctly
-  Given there is a chalkler with no details
-  When they visit the "Chalklers" page
-  Then they should see this chalkler
-
-Scenario: A categories with no details should render correctly
-  Given there is a category with no details
-  When they visit the "Categories" page
-  Then they should see this category
-
-Scenario: A booking with no details should render correctly
-  Given there is a booking with no details
-  When they visit the "Bookings" page
-  Then they should see this booking
-
-Scenario: An admin user with no details should render correctly
-  Given there is an admin user with no details
-  When they visit the "Admin Users" page
-  Then they should see this admin user
-
