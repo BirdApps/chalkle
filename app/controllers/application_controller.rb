@@ -1,10 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to admin_dashboard_path, :alert => exception.message
-  end
-
   def current_ability
     @current_ability ||= Ability.new(current_admin_user)
   end
@@ -14,11 +10,16 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    session[:previous_url] || root_url
+    return admin_root_path if resource.is_a? AdminUser
+    session[:previous_url] || root_path
   end
 
   def after_register_path_for(resource)
-    session[:previous_url] || root_url
+    session[:previous_url] || root_path
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to admin_dashboard_path, :alert => exception.message
   end
 
   protected

@@ -131,7 +131,7 @@ ActiveAdmin.register Booking do
       f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).visible.order("LOWER(name) ASC"), :required => true
       f.input :chalkler, as: :select, collection: Chalkler.accessible_by(current_ability).order("LOWER(name) ASC"), :required => true
       f.input :guests
-      f.input :payment_method, :as => :select, :collection => [['Bank', 'bank'],['Cash', 'cash']], :hint => 'Leave blank on free classes'
+      f.input :payment_method, :as => :select, :collection => [['Bank', 'bank'],['Cash', 'cash'],['Meetup', 'meetup']], :hint => 'Leave blank on free classes'
       f.input :cost_override, label: "Cost override", :hint => "Leave blank for no override"
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
       f.input :paid
