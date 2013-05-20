@@ -66,7 +66,7 @@ namespace :dragonfly do
   end
 end
 
-after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs"
+after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs", "deploy:migrate"
 after "deploy:update", "deploy:cleanup"
 
 require './config/boot'
