@@ -9,11 +9,11 @@ describe ChalklerDecorator do
     end
 
     it "creates a linked list of channels" do
-      @chalkler.decorate.channel_links.should == "<a href=\"http://www.meetup.com/xyz/events/calendar/?scroll=true\" style=\"\">xyz</a> | <a href=\"http://test.host/channels/#{@channel.id}\" style=\"\">xyz</a>"
+      @chalkler.decorate.channel_links.should == "<a href=\"http://www.meetup.com/xyz/events/calendar/?scroll=true\" style=\"\">xyz</a> | <a href=\"http://localhost:3000/channels/#{@channel.id}\" style=\"\">xyz</a>"
     end
 
     it 'adds custom css' do
-      @chalkler.decorate.channel_links('color: #000;').should == "<a href=\"http://www.meetup.com/xyz/events/calendar/?scroll=true\" style=\"color: #000;\">xyz</a> | <a href=\"http://test.host/channels/#{@channel.id}\" style=\"color: #000;\">xyz</a>"
+      @chalkler.decorate.channel_links('color: #000;').should == "<a href=\"http://www.meetup.com/xyz/events/calendar/?scroll=true\" style=\"color: #000;\">xyz</a> | <a href=\"http://localhost:3000/channels/#{@channel.id}\" style=\"color: #000;\">xyz</a>"
     end
 
   end
