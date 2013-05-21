@@ -273,6 +273,17 @@ class Lesson < ActiveRecord::Base
     parts[1].strip
   end
 
+  def copy_lesson
+    except ||= %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment}
+    copy_attributes = self.attributes.reject { |attr| except.include?(attr) }
+    new_lesson = Lesson.create!(copy_attributes)
+    if new_lesson
+      new_lesson.channels = self.channels
+      new_lesson.categories = self.categories
+    end
+    return new_lesson
+  end
+
   private
 
   def set_from_meetup_data
