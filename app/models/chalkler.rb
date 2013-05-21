@@ -26,6 +26,8 @@ class Chalkler < ActiveRecord::Base
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
 
+  scope :teachers, joins(:lessons_taught).uniq
+  
   serialize :email_categories
   serialize :email_streams
 
