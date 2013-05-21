@@ -274,7 +274,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def copy_lesson
-    except ||= %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment}
+    except = %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment}
     copy_attributes = self.attributes.reject { |attr| except.include?(attr) }
     new_lesson = Lesson.create!(copy_attributes)
     if new_lesson

@@ -248,7 +248,7 @@ ActiveAdmin.register Lesson  do
   member_action :copy_lesson do
     lesson = Lesson.find(params[:id])
     if new_lesson = lesson.copy_lesson
-      flash[:notice] = "New copy of #{lesson.name}"
+      flash[:notice] = "Copy of #{lesson.name.titleize}"
       redirect_to admin_lesson_path(new_lesson)
     else
       flash[:warn] = 'This lesson cannot be copied'
