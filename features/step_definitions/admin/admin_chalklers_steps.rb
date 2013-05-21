@@ -1,6 +1,11 @@
 Given /^there is a chalkler with no details$/ do
   chalkler = FactoryGirl.create(:chalkler, name: "Test Chalkler")
-  chalkler.channels << FactoryGirl.create(:channel)
+end
+
+Given /^there is a chalkler with no details in the "(.*?)" channel$/ do |channel_name|
+  channel = Channel.where(name: channel_name).first_or_create!([name: channel_name, url_name: channel_name.downcase, email: "#{channel_name.downcase}@chalkle.com"], :as => :admin)
+  chalkler = FactoryGirl.create(:chalkler, name: "Test Chalkler")
+  chalkler.channels << channel
 end
 
 Then /^they should see this chalkler$/ do

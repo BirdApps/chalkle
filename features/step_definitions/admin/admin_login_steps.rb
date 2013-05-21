@@ -1,3 +1,7 @@
+Given /^"(.*?)" is a super admin$/ do |name|
+  FactoryGirl.create(:admin_user, name: name, email: "#{name.downcase}@chalkle.com", password: 'password', role: 'super')
+end
+
 Given /^"(.*?)" is a channel admin$/ do |name|
   FactoryGirl.create(:admin_user, name: name, email: "#{name.downcase}@chalkle.com", password: 'password', role: 'channel admin')
 end

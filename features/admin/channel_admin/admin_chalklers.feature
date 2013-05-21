@@ -1,46 +1,47 @@
 Feature: Chalklers
-  In order to administer chalkle
-  Super Admins must be able to understand chalkle members (aka chalklers) through their activities on the chalkle platform
+  In order to administer a chalkle channel
+  Channel Admins must be able to contact members of their channels about the classes they are teaching or attending
 
 Background:
-  Given "Jill" is a super admin
-  And the admin "Jill" belongs to the "Wellington" channel
-  And the admin "Jill" is authenticated
+  Given "Joy" is a channel admin
+  And the admin "Joy" belongs to the "Wellington" channel
+  And the admin "Joy" is authenticated
 
 Scenario: A chalkler with no details should render correctly
-  Given there is a chalkler with no details
+  Given there is a chalkler with no details in the "Wellington" channel
   When they visit the "Chalklers" page
   Then they should see this chalkler
 
-Scenario: Super Admin can access the new chalkler form
+Scenario: Channel Admin not in Horowhenua can access the new chalkler form
   When they visit the Chalklers index page
   Then they should see the "New Chalkler" button
   When they click on the "New Chalkler" button
   Then they should see the New Chalkler form
 
-Scenario: Super Admin cannot create a chalkler without a channel
-  Given the admin "Jill" belongs to the "Whanau" channel
+Scenario: Channel Admin cannot create a chalkler without a channel
+  Given the admin "Joy" belongs to the "Whanau" channel
   When they visit the New Chalkler form
   And they create a chalkler without a channel
   Then they should see an error message
 
-Scenario: Super Admin with single channel can create a new chalkler in that channel
-When they visit the New Chalkler form
+Scenario: Channel Admin with single channel can create a new chalkler in that channel
+  When they visit the New Chalkler form
   Then they cannot see channel checkboxes
   When they create a chalkler
   Then a new chalkler is created with one channel
   And the new chalkler will receive a password reset email
 
-Scenario: Super Admin with two channels can create a chalkler with two channels
-  Given the admin "Jill" belongs to the "Whanau" channel
+Scenario: Channel Admin with two channels can create a chalkler with two channels
+  Given the admin "Joy" belongs to the "Whanau" channel
   When they visit the New Chalkler form
   Then they should see channel checkboxes
   When they create a chalkler with two channels
   Then a new chalkler is created with two channels
   And the new chalkler will receive a password reset email
 
-Scenario: Super Admin can send password reset email for all chalklers
-Given "Whetu" is a chalkler
+Scenario: Channel Admin can send password reset email for chalklers in their channel
+  Given "Whetu" is a chalkler
+  And the chalkler "Whetu" belongs to the "Wellington" channel
   When the admin views "Whetu's" profile
   And they trigger a password reset email
   Then the chalkler "Whetu" should receive a password reset email

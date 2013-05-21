@@ -1,6 +1,6 @@
 Feature: Login
   In order to use the admin area
-  Admins must be able to log in
+  Channel admins must be able to log in
 
   Background:
     Given "Jill" is a channel admin
