@@ -3,10 +3,6 @@ Given /^"(.*?)" is a chalkler$/ do |name|
   chalkler.channels << FactoryGirl.create(:channel, name: 'Wellington')
 end
 
-Given /^"(.*?)" is a channel admin$/ do |name|
-  FactoryGirl.create(:admin_user, name: name, email: "#{name.downcase}@chalkle.com", password: 'password', role: 'channel admin')
-end
-
 Given /^the admin "(.*?)" belongs to the "(.*?)" channel$/ do |admin_name, channel_name|
   channel = Channel.where(name: channel_name).first_or_create!([name: channel_name, url_name: channel_name.downcase, email: "#{channel_name.downcase}@chalkle.com"], :as => :admin)
   admin_user = AdminUser.find_by_name admin_name
