@@ -10,11 +10,6 @@ describe Chalkler do
     it { should validate_uniqueness_of :meetup_id }
     it { should validate_uniqueness_of :email }
 
-    it "should validate GST numbers" do
-      FactoryGirl.build(:chalkler, gst: "ash 8765").should_not be_valid
-      FactoryGirl.build(:chalkler, gst: "23-345 8765").should be_valid
-    end
-
     it "validates join_channels on create" do
       FactoryGirl.build(:chalkler, join_channels: nil).should_not be_valid
     end
@@ -23,6 +18,17 @@ describe Chalkler do
       chalkler = FactoryGirl.create(:chalkler)
       chalkler.channel_ids = []
       chalkler.should_not be_valid
+    end
+
+    context "non-meetup" do
+      subject { Chalkler.new }
+      before { subject.stub(:meetup_id) { nil } }
+      it { should validate_presence_of :email }
+
+      it "should validate GST numbers" do
+        FactoryGirl.build(:chalkler, gst: "ash 8765").should_not be_valid
+        FactoryGirl.build(:chalkler, gst: "23-345 8765").should be_valid
+      end
     end
   end
 
