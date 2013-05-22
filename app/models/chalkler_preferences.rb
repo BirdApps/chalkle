@@ -3,7 +3,7 @@ class ChalklerPreferences
 
   attr_accessor :chalkler, :email, :email_frequency, :email_categories, :email_streams
 
-  validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, :message => "Email must be in the correct format"}
+  validates :email, allow_blank: false, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, :message => "Email must be in the correct format"}
 
   def initialize(chalkler)
     @chalkler         = chalkler
