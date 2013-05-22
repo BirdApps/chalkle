@@ -18,6 +18,7 @@ class Chalkler < ActiveRecord::Base
   validates_format_of :gst, allow_blank: true, with: /\A[\d -]+\z/
   validates_presence_of :join_channels, :on => :create
   validates_presence_of :channel_ids, :on => :update
+  validates_presence_of :email, :unless => :meetup_id?
 
   has_many :channel_chalklers
   has_many :channels, :through => :channel_chalklers
