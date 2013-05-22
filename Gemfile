@@ -37,6 +37,9 @@ gem 'simple_form',   '~> 2.0.4'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 
+#google analytics
+gem 'google-analytics-rails'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
