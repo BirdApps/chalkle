@@ -10,5 +10,7 @@ Scenario: A categories with no details should render correctly
   Given there is a category with no details
   When they visit the "Categories" tab
   Then they should see this category
+  And they visit the "View" page
+  Then they should see this category
 
 

@@ -10,3 +10,5 @@ Scenario: A payment with no details should render correctly
   Given there is an unreconciled payment with no details
   When they visit the "Payments" tab
   Then they should see this payment
+  And they visit the "View" page
+  Then they should see this payment

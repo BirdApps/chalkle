@@ -10,5 +10,7 @@ Scenario: A lesson with no details should render correctly
   Given there is a lesson with no details
   When they visit the "Lessons" tab
   Then they should see this lesson
+  And they visit the "View" page
+  Then they should see this lesson
 
 

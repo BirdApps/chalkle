@@ -11,6 +11,8 @@ Scenario: A chalkler with no details should render correctly
   Given there is a chalkler with no details
   When they visit the "Chalklers" page
   Then they should see this chalkler
+  And they visit the "View" page
+  Then they should see this chalkler
 
 Scenario: Super Admin can access the new chalkler form
   When they visit the "Chalklers" tab
