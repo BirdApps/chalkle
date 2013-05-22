@@ -11,6 +11,8 @@ Scenario: A chalkler with no details should render correctly
   Given there is a chalkler with no details in the "Wellington" channel
   When they visit the "Chalklers" tab
   Then they should see this chalkler in the "Wellington" channel
+  And they visit the "View" page
+  Then they should see this chalkler in the "Wellington" channel
 
 Scenario: Channel Admin can access the new chalkler form
   When they visit the "Chalklers" tab
