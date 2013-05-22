@@ -6,14 +6,11 @@ describe Chalkler do
   specify { FactoryGirl.build(:meetup_chalkler).should be_valid }
 
   describe "validation" do
+    subject { Chalkler.new }
+
     it { should validate_presence_of :name }
     it { should validate_uniqueness_of :meetup_id }
     it { should validate_uniqueness_of :email }
-
-    it "should validate GST numbers" do
-      FactoryGirl.build(:chalkler, gst: "ash 8765").should_not be_valid
-      FactoryGirl.build(:chalkler, gst: "23-345 8765").should be_valid
-    end
 
     it "validates join_channels on create" do
       FactoryGirl.build(:chalkler, join_channels: nil).should_not be_valid
@@ -24,20 +21,22 @@ describe Chalkler do
       chalkler.channel_ids = []
       chalkler.should_not be_valid
     end
+
+    context "non-meetup" do
+      before { subject.stub(:meetup_id) { nil } }
+      it { should validate_presence_of :email }
+
+      it "should validate GST numbers" do
+        FactoryGirl.build(:chalkler, gst: "ash 8765").should_not be_valid
+        FactoryGirl.build(:chalkler, gst: "23-345 8765").should be_valid
+      end
+    end
   end
 
   describe "record creation" do
     context "imported from Meetup" do
       let(:result) { MeetupApiStub::chalkler_response }
       let(:channel) { FactoryGirl.create(:channel) }
-
-      describe ".import_from_meetup" do
-        it "assigns a channel to a new user" do
-          chalkler = FactoryGirl.create(:chalkler, meetup_id: 12345678)
-          Chalkler.import_from_meetup(result, channel)
-          chalkler.reload.channels.should include(channel)
-        end
-      end
 
       describe "#create_from_meetup" do
         let(:chalkler) { Chalkler.new }
@@ -77,6 +76,21 @@ describe Chalkler do
 
       required_array = [%w(Yes yes), %w(No no)]
       Chalkler.email_frequency_select_options.should eq(required_array)
+    end
+  end
+
+  describe '.teachers' do
+    it "includes chalklers who are teachers" do
+      chalkler = FactoryGirl.create(:chalkler, name: "Teacher")
+      lesson = FactoryGirl.create(:lesson, name: "New Class", teacher_id: chalkler.id)
+      Chalkler.teachers.should include(chalkler)
+    end
+
+    it "excludes chalklers who are not teachers" do
+      chalkler = FactoryGirl.create(:chalkler, name: "Teacher")
+      lesson = FactoryGirl.create(:lesson, name: "New Class")
+      booking = FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: chalkler.id)
+      Chalkler.teachers.should_not include(chalkler)
     end
   end
 

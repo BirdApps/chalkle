@@ -31,8 +31,8 @@ Then /^they cannot see channel checkboxes$/ do
 end
 
 When /^they create a chalkler$/ do
-  admin_user = AdminUser.find_by_name 'Jill'
   fill_in 'chalkler_name', with: 'Toby'
+  fill_in 'chalkler_email', with: 'abc@test.com'
   ActionMailer::Base.deliveries = []
   click_button 'Create Chalkler'
 end
@@ -53,6 +53,7 @@ end
 
 When /^they create a chalkler with two channels$/ do
   fill_in 'chalkler_name', with: 'Jill'
+  fill_in 'chalkler_email', with: 'abc@test.com'
   page.check 'Whanau'
   page.check 'Wellington'
   ActionMailer::Base.deliveries = []

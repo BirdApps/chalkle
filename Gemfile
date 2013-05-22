@@ -23,6 +23,7 @@ gem 'delayed_job_active_record'
 gem 'squeel',        '~> 1.0.18'
 gem 'validates_timeliness', '~> 3.0'
 gem 'whenever', :require => false
+gem 'premailer-rails', '~> 1.4.0'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
@@ -35,6 +36,9 @@ gem 'coffee-filter', '~> 0.1.3'
 gem 'simple_form',   '~> 2.0.4'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
+
+#google analytics
+gem 'google-analytics-rails'
 
 # Gems used only for assets and not required
 # in production environments by default.
