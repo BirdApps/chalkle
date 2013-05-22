@@ -66,7 +66,7 @@ describe Lesson do
     let(:channel) { FactoryGirl.create(:channel) }
     let(:category1) { FactoryGirl.create(:category, name: "Category1") }
     let(:category2) { FactoryGirl.create(:category, name: "Category2") }
-    let(:lesson_original) { FactoryGirl.create(:lesson, name: "Original Lesson", teacher_id: chalkler.id, status: "Published", teacher_payment: 10) }
+    let(:lesson_original) { FactoryGirl.create(:lesson, name: "Original Lesson", teacher_id: chalkler.id, status: "Published", teacher_payment: 10, visible: false) }
     before do
       lesson_original.channels << channel
       lesson_original.categories << category1
@@ -96,6 +96,10 @@ describe Lesson do
 
     it "should have status Unreviewed" do
       @new_lesson.status.should == "Unreviewed"
+    end
+
+    it "should be visible" do
+      @new_lesson.visible.should == true
     end
   end
 
