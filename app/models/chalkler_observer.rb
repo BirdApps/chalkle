@@ -5,6 +5,7 @@ class ChalklerObserver < ActiveRecord::Observer
   end
 
   def send_welcome_mail(chalkler)
+    return unless chalkler.email?
     ChalklerMailer.welcome(chalkler).deliver!
     if chalkler.reset_password_token?
       chalkler.reset_password_sent_at = Time.now.utc
