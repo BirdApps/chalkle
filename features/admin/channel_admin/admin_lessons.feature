@@ -9,7 +9,7 @@ Background:
 
 Scenario: A lesson with no details should render correctly
   Given there is a lesson with no details in the "Wellington" channel
-  When they visit the "Lessons" page
+  When they visit the "Lessons" tab
   Then they should see this lesson in the "Wellington" channel
 
 

@@ -8,6 +8,6 @@ Background:
 
 Scenario: An admin user with no details should render correctly
   Given there is an admin user with no details
-  When they visit the "Admin Users" page
+  When they visit the "Admin Users" tab
   Then they should see this admin user
 

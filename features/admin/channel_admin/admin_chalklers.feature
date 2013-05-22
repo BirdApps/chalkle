@@ -9,14 +9,14 @@ Background:
 
 Scenario: A chalkler with no details should render correctly
   Given there is a chalkler with no details in the "Wellington" channel
-  When they visit the "Chalklers" page
-  Then they should see this chalkler
+  When they visit the "Chalklers" tab
+  Then they should see this chalkler in the "Wellington" channel
 
-Scenario: Channel Admin not in Horowhenua can access the new chalkler form
-  When they visit the Chalklers index page
+Scenario: Channel Admin can access the new chalkler form
+  When they visit the "Chalklers" tab
   Then they should see the "New Chalkler" button
   When they click on the "New Chalkler" button
-  Then they should see the New Chalkler form
+  Then they should see the New Chalkler form for this channel
 
 Scenario: Channel Admin cannot create a chalkler without a channel
   Given the admin "Joy" belongs to the "Whanau" channel
@@ -28,7 +28,7 @@ Scenario: Channel Admin with single channel can create a new chalkler in that ch
   When they visit the New Chalkler form
   Then they cannot see channel checkboxes
   When they create a chalkler
-  Then a new chalkler is created with one channel
+  Then a new chalkler is created in the "Wellington" channel
   And the new chalkler will receive a password reset email
 
 Scenario: Channel Admin with two channels can create a chalkler with two channels
@@ -42,12 +42,13 @@ Scenario: Channel Admin with two channels can create a chalkler with two channel
 Scenario: Channel Admin can send password reset email for chalklers in their channel
   Given "Whetu" is a chalkler
   And the chalkler "Whetu" belongs to the "Wellington" channel
-  When the admin views "Whetu's" profile
-  And they trigger a password reset email
-  Then the chalkler "Whetu" should receive a password reset email
+  When the channel admin views "Whetu's" profile
+  And they press the "Send password reset email" button
+  Then the chalkler "Whetu" in this channel should receive a password reset email
 
 Scenario: Password reset button is not displayed when chalkler has no email
   Given "Whetu" is a chalkler
+  And the chalkler "Whetu" belongs to the "Wellington" channel
   And the chalkler "Whetu" has no email address
-  When the admin views "Whetu's" profile
-  Then there should be no password reset button
+  When the channel admin views "Whetu's" profile
+  Then channel admin should not see a password reset button

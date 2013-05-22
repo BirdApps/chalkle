@@ -8,7 +8,7 @@ Background:
 
 Scenario: A channel with no details should render correctly
   Given there is a channel with no details
-  When they visit the "Channels" page
+  When they visit the "Channels" tab
   Then they should see this channel
 
 

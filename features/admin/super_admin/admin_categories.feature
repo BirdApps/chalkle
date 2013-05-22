@@ -8,7 +8,7 @@ Background:
 
 Scenario: A categories with no details should render correctly
   Given there is a category with no details
-  When they visit the "Categories" page
+  When they visit the "Categories" tab
   Then they should see this category
 
 

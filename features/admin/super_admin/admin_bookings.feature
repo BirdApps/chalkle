@@ -8,6 +8,6 @@ Background:
 
 Scenario: A booking with no details should render correctly
   Given there is a booking with no details
-  When they visit the "Bookings" page
+  When they visit the "Bookings" tab
   Then they should see this booking
 

@@ -13,40 +13,19 @@ Scenario: A chalkler with no details should render correctly
   Then they should see this chalkler
 
 Scenario: Super Admin can access the new chalkler form
-  When they visit the Chalklers index page
+  When they visit the "Chalklers" tab
   Then they should see the "New Chalkler" button
   When they click on the "New Chalkler" button
   Then they should see the New Chalkler form
 
-Scenario: Super Admin cannot create a chalkler without a channel
-  Given the admin "Jill" belongs to the "Whanau" channel
-  When they visit the New Chalkler form
-  And they create a chalkler without a channel
-  Then they should see an error message
-
-Scenario: Super Admin with single channel can create a new chalkler in that channel
-When they visit the New Chalkler form
-  Then they cannot see channel checkboxes
-  When they create a chalkler
-  Then a new chalkler is created with one channel
-  And the new chalkler will receive a password reset email
-
-Scenario: Super Admin with two channels can create a chalkler with two channels
-  Given the admin "Jill" belongs to the "Whanau" channel
-  When they visit the New Chalkler form
-  Then they should see channel checkboxes
-  When they create a chalkler with two channels
-  Then a new chalkler is created with two channels
-  And the new chalkler will receive a password reset email
-
 Scenario: Super Admin can send password reset email for all chalklers
-Given "Whetu" is a chalkler
-  When the admin views "Whetu's" profile
-  And they trigger a password reset email
+  Given "Whetu" is a chalkler
+  When the super admin views "Whetu's" profile
+  And they press the "Send password reset email" button
   Then the chalkler "Whetu" should receive a password reset email
 
 Scenario: Password reset button is not displayed when chalkler has no email
   Given "Whetu" is a chalkler
   And the chalkler "Whetu" has no email address
-  When the admin views "Whetu's" profile
-  Then there should be no password reset button
+  When the super admin views "Whetu's" profile
+  Then super admin should not see a password reset button
