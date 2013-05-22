@@ -6,6 +6,8 @@ describe Chalkler do
   specify { FactoryGirl.build(:meetup_chalkler).should be_valid }
 
   describe "validation" do
+    subject { Chalkler.new }
+
     it { should validate_presence_of :name }
     it { should validate_uniqueness_of :meetup_id }
     it { should validate_uniqueness_of :email }
@@ -21,7 +23,6 @@ describe Chalkler do
     end
 
     context "non-meetup" do
-      subject { Chalkler.new }
       before { subject.stub(:meetup_id) { nil } }
       it { should validate_presence_of :email }
 
@@ -36,14 +37,6 @@ describe Chalkler do
     context "imported from Meetup" do
       let(:result) { MeetupApiStub::chalkler_response }
       let(:channel) { FactoryGirl.create(:channel) }
-
-      describe ".import_from_meetup" do
-        it "assigns a channel to a new user" do
-          chalkler = FactoryGirl.create(:chalkler, meetup_id: 12345678)
-          Chalkler.import_from_meetup(result, channel)
-          chalkler.reload.channels.should include(channel)
-        end
-      end
 
       describe "#create_from_meetup" do
         let(:chalkler) { Chalkler.new }

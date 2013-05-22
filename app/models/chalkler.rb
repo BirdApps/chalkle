@@ -33,7 +33,6 @@ class Chalkler < ActiveRecord::Base
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_from_meetup_data, :set_reset_password_token
-  after_create  :create_channel_associations
 
   #TODO: Move into a presenter class like Draper sometime
   def self.email_frequency_select_options
@@ -115,14 +114,6 @@ class Chalkler < ActiveRecord::Base
     self.password = Chalkler.reset_password_token
     self.reset_password_token = Chalkler.reset_password_token
     self.reset_password_sent_at = Time.now.utc
-  end
-
-  def create_channel_associations
-    return unless join_channels.is_a?(Array)
-    join_channels.each do |channel_id|
-      self.channels << Channel.find(channel_id)
-    end
-    save!
   end
 
 end
