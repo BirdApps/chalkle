@@ -2,11 +2,7 @@ Given /^"(.*?)" is a super admin$/ do |name|
   FactoryGirl.create(:admin_user, name: name, email: "#{name.downcase}@chalkle.com", password: 'password', role: 'super')
 end
 
-Given /^"(.*?)" is a channel admin$/ do |name|
-  FactoryGirl.create(:admin_user, name: name, email: "#{name.downcase}@chalkle.com", password: 'password', role: 'channel admin')
-end
-
-When /^the admin "(.*?)" logs in$/ do |name|
+When /^the super admin "(.*?)" logs in$/ do |name|
   admin_user = AdminUser.find_by_name name
   visit '/admin/login'
   fill_in 'admin_user_email', :with => admin_user.email
@@ -14,11 +10,12 @@ When /^the admin "(.*?)" logs in$/ do |name|
   click_button "Login"
 end
 
-Then /^they should be logged in$/ do
+Then /^they should be logged in as super admin$/ do
   page.should have_selector('h2', :text => 'Dashboard')
+  page.should have_link('Admin User')
 end
 
-When /^the admin "(.*?)" logs in with an incorrect password$/ do |name|
+When /^the super admin "(.*?)" logs in with an incorrect password$/ do |name|
   admin_user = AdminUser.find_by_name name
   visit '/admin/login'
   fill_in 'admin_user_email', :with => admin_user.email
@@ -26,6 +23,7 @@ When /^the admin "(.*?)" logs in with an incorrect password$/ do |name|
   click_button "Login"
 end
 
-Then /^they should not be logged in$/ do
+Then /^they should not be logged in as super admin$/ do
   page.should have_no_selector('h2', :text => 'Dashboard')
+  page.should have_no_link('Admin User')
 end
