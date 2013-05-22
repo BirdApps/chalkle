@@ -25,7 +25,7 @@ end
 
 Given /^there is a chalkler with no details$/ do
   channel = FactoryGirl.create(:channel)
-  Chalkler.create!([name: "Test Chalkler", :join_channels => [channel.id]], :as => :admin)
+  Chalkler.create!([name: "Test Chalkler", email: "tests@abc.com", :join_channels => [channel.id]], :as => :admin)
 end
 
 Then /^they should see this chalkler$/ do

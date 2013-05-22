@@ -37,7 +37,7 @@ describe ChalklerPreferences do
 
       it 'returns false for invalid params' do
         params.delete(:email)
-        @email_prefs.update_attributes(params).should be_true
+        @email_prefs.update_attributes(params).should be_false
       end
     end
 
