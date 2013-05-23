@@ -18,18 +18,25 @@ Scenario: Admin with two channels can create a chalkler with two channels
   Then they should see channel checkboxes
   When they create a chalkler with two channels
   Then a new chalkler is created with two channels
+  And the new chalkler will receive a welcome email
 
 Scenario: Admin with single channel can create a new chalkler
   When they visit the New Chalkler form
   Then they cannot see channel checkboxes
   When they create a chalkler
   Then a new chalkler is created with one channel
+  And the new chalkler will receive a welcome email
 
 Scenario: Admin cannot create a chalkler without a channel
   Given the admin "John" belongs to the "Whanau" channel
   When they visit the New Chalkler form
   And they create a chalkler without a channel
   Then they should see an error message
+
+Scenario: Admin can create a chalkler without an email, as long as they have a Meetup id
+  When they visit the New Chalkler form
+  And they create a chalkler with a Meetup id
+  Then a new chalkler is created with one channel
 
 Scenario: Admin can send password reset email
   Given "Whetu" is a chalkler

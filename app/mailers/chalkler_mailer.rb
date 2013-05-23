@@ -2,17 +2,9 @@
 class ChalklerMailer < ActionMailer::Base
   default from: '"chalkle°" <noreply@chalkle.com>'
 
-  def teacher_welcome(chalkler)
+  def welcome(chalkler)
     @chalkler = chalkler
     mail(to: @chalkler.email, subject: "Welcome to chalkle°!") do |format|
-      format.text
-      format.html { render :layout => 'standard_mailer' }
-    end
-  end
-
-  def horowhenua_welcome(chalkler)
-    @chalkler = chalkler
-    mail(to: @chalkler.email, subject: "chalkle° Horowhenua is live!") do |format|
       format.text
       format.html { render :layout => 'standard_mailer' }
     end
@@ -22,10 +14,10 @@ class ChalklerMailer < ActionMailer::Base
     @chalkler = ChalklerDecorator.decorate(chalkler)
   	@new_lessons = LessonDecorator.decorate_collection(new_lessons)
   	@open_lessons = LessonDecorator.decorate_collection(open_lessons)
-  	mail(to: @chalkler.email,
-         subject: "chalkle° - #{@chalkler.email_frequency.titleize} digest for #{Date.today.to_formatted_s(:long)}") do |format|
-           format.text
-           format.html { render :layout => 'standard_mailer' }
-         end
+    subject = "chalkle° - #{@chalkler.email_frequency.titleize} digest for #{Date.today.to_formatted_s(:long)}"
+  	mail(to: @chalkler.email, subject: subject) do |format|
+      format.text
+      format.html { render :layout => 'standard_mailer' }
+    end
   end
 end

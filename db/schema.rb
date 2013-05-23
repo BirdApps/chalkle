@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130517042036) do
+ActiveRecord::Schema.define(:version => 20130523023953) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -93,7 +93,6 @@ ActiveRecord::Schema.define(:version => 20130517042036) do
     t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.string   "gst"
     t.string   "provider"
     t.string   "uid"
     t.string   "email_frequency"
@@ -143,8 +142,8 @@ ActiveRecord::Schema.define(:version => 20130517042036) do
     t.datetime "updated_at",                                                          :null => false
     t.string   "url_name"
     t.string   "email"
-    t.decimal  "channel_percentage", :precision => 8, :scale => 2, :default => 0.125
-    t.decimal  "teacher_percentage", :precision => 8, :scale => 2, :default => 0.75
+    t.decimal  "channel_percentage", :precision => 8, :scale => 4, :default => 0.125
+    t.decimal  "teacher_percentage", :precision => 8, :scale => 4, :default => 0.75
     t.string   "account"
     t.boolean  "visible",                                          :default => false
   end
