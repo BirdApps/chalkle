@@ -276,13 +276,13 @@ class Lesson < ActiveRecord::Base
   def copy_lesson
     except = %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment visible}
     copy_attributes = self.attributes.reject { |attr| except.include?(attr) }
-    new_lesson = Lesson.create!(copy_attributes)
+    new_lesson = Lesson.create(copy_attributes)
     if new_lesson
       new_lesson.channels = self.channels
       new_lesson.categories = self.categories
       new_lesson.visible = true
     end
-    return new_lesson
+    new_lesson
   end
 
   private
