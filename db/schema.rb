@@ -141,9 +141,9 @@ ActiveRecord::Schema.define(:version => 20130523023953) do
     t.datetime "created_at",                                                          :null => false
     t.datetime "updated_at",                                                          :null => false
     t.string   "url_name"
+    t.string   "email"
     t.decimal  "channel_percentage", :precision => 8, :scale => 4, :default => 0.125
     t.decimal  "teacher_percentage", :precision => 8, :scale => 4, :default => 0.75
-    t.string   "email"
     t.string   "account"
     t.boolean  "visible",                                          :default => false
   end
@@ -265,13 +265,6 @@ ActiveRecord::Schema.define(:version => 20130523023953) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "teachers", :force => true do |t|
-    t.string   "name"
-    t.text     "qualification"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
   end
 
   create_table "venues", :force => true do |t|
