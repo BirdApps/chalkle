@@ -3,10 +3,10 @@ class Chalkler < ActiveRecord::Base
     :validatable, :omniauthable, :registerable
 
   attr_accessible :bio, :email, :name, :password, :password_confirmation,
-    :remember_me, :gst, :email_frequency, :email_categories, :email_streams,
+    :remember_me, :email_frequency, :email_categories, :email_streams,
     :phone_number
   attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password,
-    :password_confirmation, :remember_me, :channel_ids, :gst, :provider, :uid,
+    :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
     :email_frequency, :email_categories, :email_streams, :phone_number,
     :join_channels, :as => :admin
 
@@ -15,9 +15,9 @@ class Chalkler < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
-  validates_format_of :gst, allow_blank: true, with: /\A[\d -]+\z/
   validates_presence_of :join_channels, :on => :create
   validates_presence_of :channel_ids, :on => :update
+  validates_presence_of :email, :unless => :meetup_id?
 
   has_many :channel_chalklers
   has_many :channels, :through => :channel_chalklers
@@ -26,13 +26,14 @@ class Chalkler < ActiveRecord::Base
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
 
+  scope :teachers, joins(:lessons_taught).uniq
+
   serialize :email_categories
   serialize :email_streams
 
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_from_meetup_data, :set_reset_password_token
-  after_create  :create_channel_associations
 
   #TODO: Move into a presenter class like Draper sometime
   def self.email_frequency_select_options
@@ -114,14 +115,6 @@ class Chalkler < ActiveRecord::Base
     self.password = Chalkler.reset_password_token
     self.reset_password_token = Chalkler.reset_password_token
     self.reset_password_sent_at = Time.now.utc
-  end
-
-  def create_channel_associations
-    return unless join_channels.is_a?(Array)
-    join_channels.each do |channel_id|
-      self.channels << Channel.find(channel_id)
-    end
-    save!
   end
 
 end

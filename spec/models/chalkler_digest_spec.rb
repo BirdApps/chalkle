@@ -205,7 +205,7 @@ describe ChalklerDigest do
 
   describe ".load_chalklers" do
     it "won't return a chalkler without an email address" do
-      FactoryGirl.create(:chalkler, email: nil, email_frequency: 'weekly')
+      FactoryGirl.create(:chalkler, email: nil, email_frequency: 'weekly', meetup_id: 12345678)
       ChalklerDigest.load_chalklers('weekly').should be_empty
     end
 

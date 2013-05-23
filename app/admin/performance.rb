@@ -8,8 +8,7 @@ ActiveAdmin.register_page "Performance" do
 
   content do
     panel "Channel performance" do
-      num_weeks = 5
-      render partial: "/admin/performance/performance", locals: {channels: Channel.accessible_by(current_ability).where("url_name <> ''"), num_weeks: num_weeks, period: 1.week}
+      render partial: "/admin/performance/performance", locals: { channels: Channel.visible.accessible_by(current_ability), num_weeks: 5, period: 1.week }
     end
   end
 
