@@ -1,13 +1,10 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :meetup_url, :category_id, :teacher_id,
-    :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration,
-    :meetup_data, :description, :visible, :teacher_payment, :lesson_type,
+  attr_accessible :name, :teacher_id, :status, :cost, :teacher_cost, :duration,:lesson_type,
     :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee,
     :min_attendee, :availabilities, :prerequisites, :additional_comments,
-    :donation, :lesson_skill, :venue, :published_at, :category_ids,
-    :channel_ids, :lesson_image_attributes, :channel_percentage_override,
-    :chalkle_percentage_override, :material_cost, :suggested_audience, :chalkle_payment
-  attr_accessible :name, :meetup_id, :meetup_url, :category_id, :teacher_id,
+    :donation, :lesson_skill, :venue, :category_ids, :channel_ids, :channel_percentage_override,
+    :chalkle_percentage_override, :suggested_audience
+  attr_accessible :name, :meetup_id, :meetup_url, :teacher_id,
     :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration,
     :meetup_data, :description, :visible, :teacher_payment, :lesson_type,
     :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee,
