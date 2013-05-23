@@ -2,15 +2,12 @@ ActiveAdmin.register_page "Trash" do
   menu label: "Trash"
 
   controller do
-    def index
-
-    end
   end
 
   content do
     @lessons = Lesson.accessible_by(current_ability).find_all_by_visible false
-    @bookings = Booking.accessible_by(current_ability).find_all_by_visible false
-    @payments = Payment.accessible_by(current_ability).find_all_by_visible false
+    @bookings = Booking.find_all_by_visible false
+    @payments = Payment.find_all_by_visible false
 
     panel "Deleted Lessons" do
       table_for @lessons do
