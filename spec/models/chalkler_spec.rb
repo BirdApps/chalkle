@@ -81,15 +81,13 @@ describe Chalkler do
 
   describe '.teachers' do
     it "includes chalklers who are teachers" do
-      chalkler = FactoryGirl.create(:chalkler, name: "Teacher")
+      chalkler = FactoryGirl.create(:chalkler)
       lesson = FactoryGirl.create(:lesson, name: "New Class", teacher_id: chalkler.id)
       Chalkler.teachers.should include(chalkler)
     end
 
     it "excludes chalklers who are not teachers" do
-      chalkler = FactoryGirl.create(:chalkler, name: "Teacher")
-      lesson = FactoryGirl.create(:lesson, name: "New Class")
-      booking = FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: chalkler.id)
+      chalkler = FactoryGirl.create(:chalkler)
       Chalkler.teachers.should_not include(chalkler)
     end
   end
