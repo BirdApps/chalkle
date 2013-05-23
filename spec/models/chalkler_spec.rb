@@ -25,11 +25,6 @@ describe Chalkler do
     context "non-meetup" do
       before { subject.stub(:meetup_id) { nil } }
       it { should validate_presence_of :email }
-
-      it "should validate GST numbers" do
-        FactoryGirl.build(:chalkler, gst: "ash 8765").should_not be_valid
-        FactoryGirl.build(:chalkler, gst: "23-345 8765").should be_valid
-      end
     end
   end
 
