@@ -45,9 +45,6 @@ class Teaching
       "prerequisites" => @prerequisites,
       "additional_comments" => @additional_comments,
       "venue" => @venue,
-      "status" => "Unreviewed",
-      "channel_percentage_override" => nil,
-      "chalkle_percentage_override" => nil,
       "suggested_audience" => @suggested_audience
     }
   end
@@ -55,6 +52,7 @@ class Teaching
   def submit(params)
     if check_valid_input(params)
       @lesson = Lesson.new(lesson_args)
+      @lesson.status = "Unreviewed"
       if @lesson.save
         @lesson.channels << Channel.find(@channel_id)
         @lesson.category_ids = @category_primary_id

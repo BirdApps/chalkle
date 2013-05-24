@@ -4,6 +4,7 @@ Feature: Chalkler email setting form
 
 Background:
   Given "Zac" is a chalkler
+  And the chalkler "Zac" belongs to the "Wellington" channel
   And the chalkler "Zac" is authenticated
   When they visit the "Email Settings" page
 
