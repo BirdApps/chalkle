@@ -3,10 +3,10 @@ class Chalkler < ActiveRecord::Base
     :validatable, :omniauthable, :registerable
 
   attr_accessible :bio, :email, :name, :password, :password_confirmation,
-    :remember_me, :gst, :email_frequency, :email_categories, :email_streams,
+    :remember_me, :email_frequency, :email_categories, :email_streams,
     :phone_number
   attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password,
-    :password_confirmation, :remember_me, :channel_ids, :gst, :provider, :uid,
+    :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
     :email_frequency, :email_categories, :email_streams, :phone_number,
     :join_channels, :as => :admin
 
@@ -15,7 +15,6 @@ class Chalkler < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
-  validates_format_of :gst, allow_blank: true, with: /\A[\d -]+\z/
   validates_presence_of :join_channels, :on => :create
   validates_presence_of :channel_ids, :on => :update
   validates_presence_of :email, :unless => :meetup_id?
@@ -28,7 +27,7 @@ class Chalkler < ActiveRecord::Base
   has_many :payments
 
   scope :teachers, joins(:lessons_taught).uniq
-  
+
   serialize :email_categories
   serialize :email_streams
 
