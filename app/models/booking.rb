@@ -130,7 +130,7 @@ class Booking < ActiveRecord::Base
   end
 
   def set_free_lesson_attributes
-    return if meetup_data?
+    return if meetup_data? || self.lesson.nil?
     if self.lesson.cost == 0
       self.payment_method = 'free'
       self.paid = true
