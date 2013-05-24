@@ -1,5 +1,5 @@
-When /^They are on the login page$/ do
-  visit root_path
+When /^They are on the login page$/ do 
+  visit "/"
 end
 
 When /^they click on the "(.*?)" button$/ do |button|
