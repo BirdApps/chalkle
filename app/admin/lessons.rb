@@ -3,7 +3,7 @@ ActiveAdmin.register Lesson  do
     column :id
     column :name
     column("Price") { |lesson| number_to_currency lesson.cost }
-    column :start_at
+    column("Class Date") { |lesson| lesson.start_at.strftime("%B %d, %Y %l:%M%p") if lesson.start_at.present? }
   end
   config.sort_order = "start_at_desc"
 
