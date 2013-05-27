@@ -6,7 +6,7 @@ When /^they click on the "(.*?)" button$/ do |button|
   click_link_or_button button
 end
 
-Then /^They should see "(.*?)"$/ do |string|
+Then /^they should see "(.*?)"$/ do |string|
   page.should have_content string
 end
 
