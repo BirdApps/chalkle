@@ -13,4 +13,8 @@ Scenario: A categories with no details should render correctly
   And they visit the "View" page
   Then they should see this category
 
-
+Scenario: A categories with no details should be editable
+  Given there is a category with no details
+  When they visit the "Categories" tab
+  And they visit the "Edit" page
+  Then they should see "Edit Category"

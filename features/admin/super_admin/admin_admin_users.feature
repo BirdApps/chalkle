@@ -13,3 +13,9 @@ Scenario: An admin user with no details should render correctly
   And they visit the "View" page of this admin user
   Then they should see this admin user
 
+Scenario: An admin user with no details should be editable
+  Given there is an admin user with no details
+  When they visit the "Admin Users" tab
+  And they visit the "Edit" page of this admin user
+  Then they should see "Edit Admin User"
+
