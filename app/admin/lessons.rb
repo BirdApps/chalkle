@@ -1,4 +1,10 @@
 ActiveAdmin.register Lesson  do
+  csv do
+    column :id
+    column :name
+    column("Price") { |lesson| number_to_currency lesson.cost }
+    column :start_at
+  end
   config.sort_order = "start_at_desc"
 
   controller do
