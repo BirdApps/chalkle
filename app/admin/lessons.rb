@@ -1,4 +1,10 @@
 ActiveAdmin.register Lesson  do
+  csv do
+    column :id
+    column :name
+    column("Price") { |lesson| number_to_currency lesson.cost }
+    column("Class Date") { |lesson| lesson.start_at.strftime("%B %d, %Y %l:%M%p") if lesson.start_at.present? }
+  end
   config.sort_order = "start_at_desc"
 
   controller do
@@ -201,6 +207,10 @@ ActiveAdmin.register Lesson  do
     link_to 'Meetup Template', meetup_template_admin_lesson_path(resource)
   end
 
+  action_item(only: :show, if: proc{ can?(:copy_lesson, resource) }) do
+    link_to 'Copy Lesson', copy_lesson_admin_lesson_path(resource)
+  end
+
   member_action :hide do
     lesson = Lesson.find(params[:id])
     lesson.visible = false
@@ -239,6 +249,17 @@ ActiveAdmin.register Lesson  do
   member_action :meetup_template do
     lesson = Lesson.find(params[:id])
     render partial: "/admin/lessons/meetup_template", locals: { lesson: LessonDecorator.decorate(lesson) }
+  end
+
+  member_action :copy_lesson do
+    lesson = Lesson.find(params[:id])
+    if new_lesson = lesson.copy_lesson
+      flash[:notice] = "Copy of #{lesson.name.titleize}"
+      redirect_to admin_lesson_path(new_lesson)
+    else
+      flash[:warn] = 'This lesson cannot be copied'
+      redirect_to :back
+    end
   end
 
   form :partial => 'form'

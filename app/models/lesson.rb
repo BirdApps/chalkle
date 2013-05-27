@@ -1,13 +1,9 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :meetup_id, :meetup_url, :category_id, :teacher_id,
-    :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration,
-    :meetup_data, :description, :visible, :teacher_payment, :lesson_type,
-    :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee,
-    :min_attendee, :availabilities, :prerequisites, :additional_comments,
-    :donation, :lesson_skill, :venue, :published_at, :category_ids,
-    :channel_ids, :lesson_image_attributes, :channel_percentage_override,
-    :chalkle_percentage_override, :material_cost, :suggested_audience, :chalkle_payment
-  attr_accessible :name, :meetup_id, :meetup_url, :category_id, :teacher_id,
+  attr_accessible :name, :teacher_id, :status, :cost, :teacher_cost, :venue_cost,
+    :duration,:lesson_type, :teacher_bio, :do_during_class, :learning_outcomes,
+    :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments,
+    :donation, :lesson_skill, :venue, :category_ids, :channel_ids, :suggested_audience
+  attr_accessible :name, :meetup_id, :meetup_url, :teacher_id,
     :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration,
     :meetup_data, :description, :visible, :teacher_payment, :lesson_type,
     :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee,
@@ -271,6 +267,18 @@ class Lesson < ActiveRecord::Base
     return name.strip unless name.include?(':')
     parts = name.split(':')
     parts[1].strip
+  end
+
+  def copy_lesson
+    except = %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment visible}
+    copy_attributes = self.attributes.reject { |attr| except.include?(attr) }
+    new_lesson = Lesson.create(copy_attributes, :as => :admin)
+    if new_lesson
+      new_lesson.channels = self.channels
+      new_lesson.categories = self.categories
+      new_lesson.visible = true
+    end
+    new_lesson
   end
 
   private

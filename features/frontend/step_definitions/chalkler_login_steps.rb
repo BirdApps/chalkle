@@ -52,7 +52,7 @@ Given /^"(.*?)" is an existing Meetup user$/ do |name|
 end
 
 When /^they log in via Meetup$/ do
-  visit root_path
+  visit new_chalkler_session_path
   click_link 'Sign in with Meetup'
 end
 
@@ -86,6 +86,7 @@ Then /^the chalkler "(.*?)" has an updated email$/ do |name|
 end
 
 Given /^the chalkler "(.*?)" doesn't belong to a channel$/ do |name|
+  pending # chalkler must belong to a channel
   chalkler = Chalkler.find_by_name name
   chalkler.channel_ids = []
 end

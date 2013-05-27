@@ -3,21 +3,21 @@ class Chalkler < ActiveRecord::Base
     :validatable, :omniauthable, :registerable
 
   attr_accessible :bio, :email, :name, :password, :password_confirmation,
-    :remember_me, :gst, :email_frequency, :email_categories, :email_streams,
+    :remember_me, :email_frequency, :email_categories, :email_streams,
     :phone_number
   attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password,
-    :password_confirmation, :remember_me, :channel_ids, :gst, :provider, :uid,
+    :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
     :email_frequency, :email_categories, :email_streams, :phone_number,
     :join_channels, :as => :admin
 
-  attr_accessor :join_channels
+  attr_accessor :join_channels, :set_password_token
 
   validates_presence_of :name
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
-  validates_format_of :gst, allow_blank: true, with: /\A[\d -]+\z/
   validates_presence_of :join_channels, :on => :create
   validates_presence_of :channel_ids, :on => :update
+  validates_presence_of :email, :unless => :meetup_id?
 
   has_many :channel_chalklers
   has_many :channels, :through => :channel_chalklers
@@ -26,15 +26,14 @@ class Chalkler < ActiveRecord::Base
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
 
+  scope :teachers, joins(:lessons_taught).uniq
+
   serialize :email_categories
   serialize :email_streams
 
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
-  before_create :set_from_meetup_data
-  # before_create :set_reset_password_token
-  # after_create  :send_teacher_welcome_mail
-  after_create  :create_channel_associations
+  before_create :set_from_meetup_data, :set_reset_password_token
 
   #TODO: Move into a presenter class like Draper sometime
   def self.email_frequency_select_options
@@ -74,21 +73,13 @@ class Chalkler < ActiveRecord::Base
   end
 
   def self.import_from_meetup(result, channel)
-    chalkler = Chalkler.fetch_chalkler(result, channel)
+    chalkler = Chalkler.find_by_meetup_id(result.id)
     if chalkler.nil?
       chalkler = Chalkler.new
       chalkler.create_from_meetup(result, channel)
     else
       chalkler.update_from_meetup(result)
       chalkler.channels << channel unless chalkler.channels.exists? channel
-    end
-    chalkler
-  end
-
-  def self.fetch_chalkler(result, channel)
-    chalkler = Chalkler.find_by_meetup_id(result.id)
-    if chalkler.nil? and channel.url_name == 'horowhenua'
-      chalkler = Chalkler.includes(:channels).where("channels.url_name = 'horowhenua' AND chalklers.name ILIKE ?", result.name).first
     end
     chalkler
   end
@@ -105,10 +96,8 @@ class Chalkler < ActiveRecord::Base
   end
 
   def update_from_meetup(result)
-    self.name = result.name unless self.name?
-    self.bio = result.bio unless self.bio?
-    self.meetup_id = result.id
-    self.uid = result.id
+    self.name = result.name
+    self.bio = result.bio
     self.meetup_data = result.to_json
     self.save
   end
@@ -122,27 +111,10 @@ class Chalkler < ActiveRecord::Base
 
   # for Chalklers created outside of meetup
   def set_reset_password_token
-    return if meetup_data?
+    return unless self.set_password_token
     self.password = Chalkler.reset_password_token
     self.reset_password_token = Chalkler.reset_password_token
-  end
-
-  # for Chalklers created outside of meetup
-  # move to observer
-  def send_teacher_welcome_mail
-    return if (meetup_data? || self.reset_password_token.blank? || self.email.blank?)
-    ChalklerMailer.teacher_welcome(self).deliver!
     self.reset_password_sent_at = Time.now.utc
-    self.save
-  end
-
-  # move to observer
-  def create_channel_associations
-    return unless join_channels.is_a?(Array)
-    join_channels.each do |channel_id|
-      self.channels << Channel.find(channel_id)
-    end
-    save!
   end
 
 end

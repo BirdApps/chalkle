@@ -1,17 +1,11 @@
 ActiveAdmin.register_page "Trash" do
-  menu label: "Trash", :if => proc{ current_admin_user.role == "super" }
+  menu label: "Trash"
 
   controller do
-    def index
-      if current_admin_user.role != "super"
-        flash[:warn] = "Viewing deleted records not authorised!"
-        redirect_to admin_dashboard_path
-      end
-    end
   end
 
   content do
-    @lessons = Lesson.find_all_by_visible false
+    @lessons = Lesson.accessible_by(current_ability).find_all_by_visible false
     @bookings = Booking.find_all_by_visible false
     @payments = Payment.find_all_by_visible false
 
@@ -35,41 +29,43 @@ ActiveAdmin.register_page "Trash" do
       end
     end
 
-    panel "Deleted Bookings" do
-      table_for @bookings do
-        column :id
-        column :lesson
-        column :chalkler
-        column :meetup_id
-        column :created_at
-        column :actions do |booking|
-          links = "".html_safe
-          if can?(:read, booking)
-            links += link_to "View", admin_booking_path(booking), :class => "member_link"
+    if current_admin_user.role == "super"
+      panel "Deleted Bookings" do
+        table_for @bookings do
+          column :id
+          column :lesson
+          column :chalkler
+          column :meetup_id
+          column :created_at
+          column :actions do |booking|
+            links = "".html_safe
+            if can?(:read, booking)
+              links += link_to "View", admin_booking_path(booking), :class => "member_link"
+            end
+            if can?(:unhide, booking)
+              links += link_to "Restore", unhide_admin_booking_path(booking), :class => "member_link"
+            end
+            links
           end
-          if can?(:unhide, booking)
-            links += link_to "Restore", unhide_admin_booking_path(booking), :class => "member_link"
-          end
-          links
         end
       end
-    end
 
-    panel "Deleted Payments" do
-      table_for @payments do
-        column :id
-        column :reference
-        column :xero_contact_name
-        column :date
-        column :actions do |payment|
-          links = "".html_safe
-          if can?(:read, payment)
-            links += link_to "View", admin_payment_path(payment), :class => "member_link"
+      panel "Deleted Payments" do
+        table_for @payments do
+          column :id
+          column :reference
+          column :xero_contact_name
+          column :date
+          column :actions do |payment|
+            links = "".html_safe
+            if can?(:read, payment)
+              links += link_to "View", admin_payment_path(payment), :class => "member_link"
+            end
+            if can?(:unhide, payment)
+              links += link_to "Restore", unhide_admin_payment_path(payment), :class => "member_link"
+            end
+            links
           end
-          if can?(:unhide, payment)
-            links += link_to "Restore", unhide_admin_payment_path(payment), :class => "member_link"
-          end
-          links
         end
       end
     end

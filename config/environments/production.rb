@@ -66,4 +66,7 @@ Chalkle::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.action_mailer.default_url_options = { host: "my.chalkle.com" }
+
+  # Google analytics tracking code
+  GA.tracker = "UA-37364156-3"
 end

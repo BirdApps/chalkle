@@ -61,6 +61,48 @@ describe Lesson do
     end
   end
 
+  describe ".copy_lesson" do
+    let(:chalkler) {FactoryGirl.create(:chalkler, name: "Teacher")}
+    let(:channel) { FactoryGirl.create(:channel) }
+    let(:category1) { FactoryGirl.create(:category, name: "Category1") }
+    let(:category2) { FactoryGirl.create(:category, name: "Category2") }
+    let(:lesson_original) { FactoryGirl.create(:lesson, name: "Original Lesson", teacher_id: chalkler.id, status: "Published", teacher_payment: 10, visible: false) }
+    before do
+      lesson_original.channels << channel
+      lesson_original.categories << category1
+      lesson_original.categories << category2
+      @new_lesson = lesson_original.copy_lesson
+    end
+
+    it "should make a new copy with the same lesson name" do
+      @new_lesson.name.should == lesson_original.name
+    end
+
+    it "should make a new copy with the same teacher" do
+      @new_lesson.teacher_id.should == lesson_original.teacher_id
+    end
+
+    it "should make a new copy with the same channel" do
+      @new_lesson.channels.should == lesson_original.channels
+    end
+
+    it "should make a new copy with the same categories" do
+      @new_lesson.categories.should == lesson_original.categories
+    end
+
+    it "should not copy teacher payment" do
+      @new_lesson.teacher_payment.should == nil
+    end
+
+    it "should have status Unreviewed" do
+      @new_lesson.status.should == "Unreviewed"
+    end
+
+    it "should be visible" do
+      @new_lesson.visible.should == true
+    end
+  end
+
   describe ".create_from_meetup_hash" do
     let(:result) { MeetupApiStub.lesson_response }
     let(:channel) { FactoryGirl.create(:channel) }
