@@ -8,3 +8,8 @@ Then /^they should see this lesson in the "(.*?)" channel$/ do |channel_name|
   page.should have_content("Test Class")
   page.should have_content(channel_name)
 end
+
+Then /^they should not see this lesson$/ do
+  page.should_not have_content("Test Class")
+end
+
