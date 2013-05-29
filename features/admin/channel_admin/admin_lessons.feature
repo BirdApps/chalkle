@@ -14,7 +14,16 @@ Scenario: A lesson with no details should render correctly
   And they visit the "View" page
   Then they should see this lesson in the "Wellington" channel
 
+<<<<<<< HEAD
 Scenario: Channel admin can not see a lesson from another channel
   Given there is a lesson with no details in the "Dunedin" channel
   When they visit the "Lessons" tab
   Then they should not see this lesson 
+=======
+Scenario: A lesson with no details should be editable
+  Given there is a lesson with no details in the "Wellington" channel
+  When they visit the "Lessons" tab
+  And they visit the "Edit" page
+  Then they should see "Edit Lesson"
+
+>>>>>>> master

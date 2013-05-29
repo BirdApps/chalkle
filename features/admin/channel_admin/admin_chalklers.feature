@@ -19,6 +19,12 @@ Scenario: Channel admin can not see a chalkler in another channel
   When they visit the "Chalklers" tab
   Then they should not see this chalkler
 
+Scenario: A chalkler with no details should be editable
+  Given there is a chalkler with no details in the "Wellington" channel
+  When they visit the "Chalklers" tab
+  And they visit the "Edit" page
+  Then they should see "Edit Chalkler"
+
 Scenario: Channel Admin can access the new chalkler form
   When they visit the "Chalklers" tab
   Then they should see the "New Chalkler" button

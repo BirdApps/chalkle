@@ -12,3 +12,9 @@ Scenario: A payment with no details should render correctly
   Then they should see this payment
   And they visit the "View" page
   Then they should see this payment
+
+Scenario: A payment with no details should be editable
+  Given there is an unreconciled payment with no details
+  When they visit the "Payments" tab
+  And they visit the "Edit" page
+  Then they should see "Edit Payment"
