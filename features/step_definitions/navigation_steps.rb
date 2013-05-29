@@ -17,4 +17,3 @@ end
 When /^they press the "(.*?)" button$/ do |button_name|
   click_link button_name
 end
-
