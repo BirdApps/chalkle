@@ -11,7 +11,7 @@ Then /^they should see this payment$/ do
 end
 
 Then /^this payment should be deleted$/ do
-  payment = Payment.last
+  payment = Payment.find_by_xero_id("abc")
   page.should have_content("Payment #{payment.id} deleted!")
   payment.visible.should be_false
 end

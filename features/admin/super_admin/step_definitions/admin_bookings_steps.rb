@@ -9,7 +9,8 @@ Then /^they should see this booking$/ do
 end
 
 Then /^this booking should be deleted$/ do
-  booking = Booking.last
+  lesson = Lesson.find_by_name("Test Class")
+  booking = Booking.find_by_lesson_id(lesson.id)
   page.should have_content("Booking #{booking.id} deleted!")
   booking.visible.should be_false
 end
