@@ -24,3 +24,10 @@ Scenario: A lesson with no details should be editable
   When they visit the "Lessons" tab
   And they visit the "Edit" page
   Then they should see "Edit Lesson"
+
+Scenario: Channel admins can copy a lesson in their own channel
+  Given there is a lesson with no details in the "Wellington" channel
+  When they visit the "Lessons" tab
+  And they visit the "View" page
+  And they click on the "Copy Lesson" button
+  Then they should see a copy of this lesson in the "Wellington" channel

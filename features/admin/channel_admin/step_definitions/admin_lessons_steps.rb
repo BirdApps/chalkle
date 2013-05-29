@@ -13,3 +13,12 @@ Then /^they should not see this lesson$/ do
   page.should_not have_content("Test Class")
 end
 
+Then /^they should see a copy of this lesson in the "(.*?)" channel$/ do |channel_name|
+  page.should have_content("Copy of Test Class")
+  page.should have_content("Test Class")
+  channel = Channel.find_by_name(channel_name)
+  Lesson.last.name.should == "Test Class"
+  Lesson.last.channels.should == [channel]
+end
+
+
