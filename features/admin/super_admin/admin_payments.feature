@@ -19,7 +19,7 @@ Scenario: A payment with no details should be editable
   And they visit the "Edit" page
   Then they should see "Edit Payment"
 
-Scenario: Super admins can delete unreconciled payments from any channel
+Scenario: Super admins can delete an unreconciled payment from any channel
   Given there is an unreconciled payment with no details
   When they visit the "Payments" tab
   And they visit the "View" page

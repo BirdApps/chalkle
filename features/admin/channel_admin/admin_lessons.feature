@@ -25,7 +25,7 @@ Scenario: A lesson with no details should be editable
   And they visit the "Edit" page
   Then they should see "Edit Lesson"
 
-Scenario: Channel admins can delete lessons from their channel
+Scenario: Channel admins can delete a lesson from their own channel
   Given there is a lesson with no details in the "Wellington" channel
   When they visit the "Lessons" tab
   And they visit the "View" page
