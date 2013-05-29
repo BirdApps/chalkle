@@ -13,4 +13,9 @@ Then /^this booking should be deleted$/ do
   booking = Booking.find_by_lesson_id(lesson.id)
   page.should have_content("Booking #{booking.id} deleted!")
   booking.visible.should be_false
+
+Given /^there is a paid booking$/ do
+  lesson = FactoryGirl.create(:lesson, name: "Test Class")
+  chalkler = FactoryGirl.create(:chalkler)
+  FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: chalkler.id, payment_method: 'free', status: 'yes', paid: true)
 end
