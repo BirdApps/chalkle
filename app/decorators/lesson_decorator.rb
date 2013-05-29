@@ -1,4 +1,4 @@
-class LessonDecorator < Draper::Decorator
+class LessonDecorator < ApplicationDecorator
   delegate_all
 
   def channel_list

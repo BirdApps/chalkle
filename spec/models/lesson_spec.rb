@@ -48,6 +48,23 @@ describe Lesson do
     it { Lesson.published.should_not include(lesson) }
   end
 
+  describe ".upcoming" do
+    before do
+      { 'old' => 1.day.ago, 'soon' => 1.day.from_now, 'later' => 5.days.from_now }.each do |name, start_at|
+        FactoryGirl.create(:lesson, visible: true, status: 'Published', name: name, start_at: start_at)
+      end
+    end
+
+    it "should include published lessons in the future" do
+      Lesson.upcoming.should include(Lesson.find_by_name('soon'), Lesson.find_by_name('later'))
+      Lesson.upcoming.should_not include(Lesson.find_by_name('old'))
+    end
+
+    it "should limit lessons if limit is present" do
+      Lesson.upcoming(1.day.from_now).should_not include(Lesson.find_by_name('later'))
+    end
+  end
+
   describe "cancellation email" do
     let(:lesson2) { FactoryGirl.create(:lesson, start_at: Date.today, min_attendee: 3) }
 
@@ -284,7 +301,7 @@ describe Lesson do
       end
 
       it "should calculate teacher percentage" do
-        @lesson.teacher_percentage.should == channel.teacher_percentage 
+        @lesson.teacher_percentage.should == channel.teacher_percentage
       end
 
       it "should calculate dollars paid to channel per attendee" do

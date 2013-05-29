@@ -27,10 +27,10 @@ ActiveAdmin.register_page "Dashboard" do
         panel "Approved classes" do
           render partial: "/admin/dashboard/lesson_panel", locals: {lessons: Lesson.accessible_by(current_ability).visible.approved.order("updated_at asc")}
         end
-        
+
 
         panel "Coming up this week" do
-          table_for Lesson.accessible_by(current_ability).visible.upcoming.order("start_at asc") do
+          table_for Lesson.accessible_by(current_ability).upcoming(7.days.from_now).order("start_at asc") do
             column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
             column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
             if current_admin_user.role == "super"
