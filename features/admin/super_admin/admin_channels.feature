@@ -13,4 +13,11 @@ Scenario: A channel with no details should render correctly
   And they visit the "View" page
   Then they should see this channel
 
+Scenario: A channel with no details should be editable
+  Given there is a channel with no details
+  When they visit the "Channels" tab
+  Then they should see this channel
+  And they visit the "View" page
+  Then they should see this channel
+
 
