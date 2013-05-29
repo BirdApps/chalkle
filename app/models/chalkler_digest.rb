@@ -20,14 +20,15 @@ class ChalklerDigest
     Chalkler.where{(email != "") & (email_frequency == freq)}
   end
 
-  private
+  # private
 
   def new_lessons
     Lesson.visible.published.joins(:categories, :channels).where("lessons.published_at > ? AND
                                                                   lessons.meetup_url IS NOT NULL AND
                                                                   lessons.do_during_class IS NOT NULL AND
                                                                   lesson_categories.category_id IN (?) AND
-                                                                  channel_lessons.channel_id IN (?)",
+                                                                  channel_lessons.channel_id IN (?) AND
+                                                                  channels.visible IS TRUE",
                                                                   @date_offset, @chalkler.email_categories,
                                                                   @chalkler.channels).order("start_at").limit(@limit).uniq
   end
@@ -36,7 +37,8 @@ class ChalklerDigest
     Lesson.visible.published.joins(:channels).where("lessons.published_at > ? AND
                                                      lessons.meetup_url IS NOT NULL AND
                                                      lessons.do_during_class IS NOT NULL AND
-                                                     channel_lessons.channel_id IN (?)",
+                                                     channel_lessons.channel_id IN (?),
+                                                     channels.visible IS TRUE",
                                                      @date_offset, @chalkler.channels).order("start_at").limit(@limit).uniq
   end
 
@@ -46,7 +48,8 @@ class ChalklerDigest
                                                                             lessons.meetup_url IS NOT NULL AND
                                                                             lessons.do_during_class IS NOT NULL AND
                                                                             lesson_categories.category_id IN (?) AND
-                                                                            channel_lessons.channel_id IN (?)",
+                                                                            channel_lessons.channel_id IN (?),
+                                                                            channels.visible IS TRUE",
                                                                             Time.now.utc + 1.day, @date_offset, @chalkler.email_categories,
                                                                             @chalkler.channels).order("start_at").uniq
     lessons.delete_if { |l| l.bookable? == false  }
@@ -58,7 +61,8 @@ class ChalklerDigest
                                                                lessons.published_at <= ? AND
                                                                lessons.meetup_url IS NOT NULL AND
                                                                lessons.do_during_class IS NOT NULL AND
-                                                               channel_lessons.channel_id IN (?)",
+                                                               channel_lessons.channel_id IN (?),
+                                                               channels.visible IS TRUE",
                                                                Time.now.utc + 1.day, @date_offset, @chalkler.channels).order("start_at").uniq
     lessons.delete_if { |l| l.bookable? == false  }
     lessons.shift @limit
