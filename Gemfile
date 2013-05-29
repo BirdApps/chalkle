@@ -25,6 +25,7 @@ gem 'validates_timeliness', '~> 3.0'
 gem 'whenever', :require => false
 gem 'premailer-rails', '~> 1.4.0'
 gem 'google-analytics-rails'
+gem 'will_paginate', '~> 3.0'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
