@@ -20,6 +20,12 @@ Then /^they should produce a copy of this lesson$/ do
   Lesson.find_all_by_name("Test Class").count.should == 2
 end
 
+Then /^this lesson should be deleted$/ do
+  lesson = Lesson.find_by_name("Test Class")
+  page.should have_content("Lesson #{lesson.id} deleted!")
+  lesson.visible.should be_false
+end
+
 Given /^the "(.*?)" channel has a teacher percentage of "(.*?)" percent$/ do |channel_name, teacher_percentage|
   channel = Channel.find_by_name(channel_name)
   channel.teacher_percentage = teacher_percentage.to_d/100.0
@@ -40,5 +46,4 @@ Then /^they should see an advertised price of "(.*?)"$/ do |price|
   page.execute_script("$('lesson_teacher_cost').keyup()")
   find_field('Advertised price').value.should eq price
 end
-
 

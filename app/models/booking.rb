@@ -24,7 +24,8 @@ class Booking < ActiveRecord::Base
   validates_presence_of :lesson_id, :chalkler_id, :payment_method, :status
   validates_acceptance_of :terms_and_conditions, :on => :create, :message => 'please read and agree', :if => :enforce_terms_and_conditions
 
-  before_create :set_from_meetup_data, :set_metadata, :set_free_lesson_attributes
+  before_create :set_from_meetup_data, :set_metadata
+  before_validation :set_free_lesson_attributes
 
   def name
     if lesson.present? && chalkler.present?
@@ -129,7 +130,7 @@ class Booking < ActiveRecord::Base
   end
 
   def set_free_lesson_attributes
-    return if meetup_data?
+    return if meetup_data? || self.lesson.nil?
     if self.lesson.cost == 0
       self.payment_method = 'free'
       self.paid = true

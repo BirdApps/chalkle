@@ -46,3 +46,8 @@
                     %strong Reference:
                     = "#{@booking.lesson.id} - #{current_chalkler.name}"
                 %p Please ensure payment before your class begins.
+            - elsif @booking.payment_method == 'free'
+              %h4 Free Booking
+              %p
+                This class is free. If you cannot attend this class, please
+                contact your channel curator so that other's may take part.

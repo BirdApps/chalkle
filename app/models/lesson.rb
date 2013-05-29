@@ -1,17 +1,18 @@
 class Lesson < ActiveRecord::Base
-  attr_accessible :name, :teacher_id, :status, :cost, :teacher_cost, :venue_cost,
+  attr_accessible :name, :teacher_id, :status, :cost, :teacher_cost,
     :duration,:lesson_type, :teacher_bio, :do_during_class, :learning_outcomes,
-    :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments,
-    :donation, :lesson_skill, :venue, :category_ids, :channel_ids, :suggested_audience
-  attr_accessible :name, :meetup_id, :meetup_url, :teacher_id,
-    :status, :cost, :teacher_cost, :venue_cost, :start_at, :duration,
-    :meetup_data, :description, :visible, :teacher_payment, :lesson_type,
-    :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee,
-    :min_attendee, :availabilities, :prerequisites, :additional_comments,
-    :donation, :lesson_skill, :venue, :published_at, :category_ids,
-    :channel_ids, :lesson_image_attributes, :channel_percentage_override,
-    :chalkle_percentage_override, :material_cost, :suggested_audience, :chalkle_payment,
-    :as => :admin
+    :max_attendee, :min_attendee, :availabilities, :prerequisites,
+    :additional_comments, :donation, :lesson_skill, :venue, :category_ids,
+    :channel_ids, :suggested_audience
+  attr_accessible :name, :meetup_id, :meetup_url, :teacher_id, :status, :cost,
+    :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
+    :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
+    :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
+    :availabilities, :prerequisites, :additional_comments, :donation,
+    :lesson_skill, :venue, :published_at, :category_ids, :channel_ids,
+    :lesson_image_attributes, :channel_percentage_override,
+    :chalkle_percentage_override, :material_cost, :suggested_audience,
+    :chalkle_payment, :as => :admin
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -58,18 +59,25 @@ class Lesson < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :recent, where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
-  scope :upcoming, where("start_at >= current_date AND start_at < current_date + #{WEEK}")
   scope :last_week, where("start_at > current_date - #{WEEK} AND start_at < current_date")
   scope :unreviewed, where(status: STATUS_3)
   scope :on_hold, where(status: STATUS_2)
   scope :approved, where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
-  scope :unpublished, where{status != STATUS_1}
+  scope :unpublished, where{ status != STATUS_1 }
   scope :published, where(status: STATUS_1)
   scope :paid, where("cost > 0")
 
   before_create :set_from_meetup_data
   before_create :set_metadata
+
+  def self.upcoming(limit = nil)
+    return where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)} if limit.nil?
+    where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc) & (start_at < limit)}
+  end
+
+  # kaminari
+  paginates_per 10
 
   #allow for mismatch due to rounding
   def revenue_split_validation
