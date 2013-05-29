@@ -5,6 +5,7 @@
 .lesson-list
   - @lessons.each do |lesson|
     = render :partial => "lessons/list_item", :locals => { :lesson => lesson }
+  = will_paginate @lessons
 
 :coffeescript
   signedIn = () ->
