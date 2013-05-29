@@ -9,6 +9,10 @@ Then /^they should see this chalkler in the "(.*?)" channel$/ do |channel_name|
   page.should have_content(channel_name)
 end
 
+Then /^they should not see this chalkler$/ do
+  page.should_not have_content("Test Chalkler")
+end
+
 Then /^they should see the New Chalkler form for this channel$/ do
   page.should have_content "New Chalkler"
 end
