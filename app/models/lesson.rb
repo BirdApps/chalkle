@@ -58,22 +58,25 @@ class Lesson < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :recent, where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
-  # scope :upcoming, where("start_at >= current_date AND start_at < current_date + #{WEEK}")
   scope :last_week, where("start_at > current_date - #{WEEK} AND start_at < current_date")
   scope :unreviewed, where(status: STATUS_3)
   scope :on_hold, where(status: STATUS_2)
   scope :approved, where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
-  scope :unpublished, where{status != STATUS_1}
+  scope :unpublished, where{ status != STATUS_1 }
   scope :published, where(status: STATUS_1)
   scope :paid, where("cost > 0")
 
-  def self.upcoming
-    where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)}
-  end
-
   before_create :set_from_meetup_data
   before_create :set_metadata
+
+  def self.upcoming(limit = nil)
+    return where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)} if limit.nil?
+    where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc) & (start_at < limit)}
+  end
+
+  # kaminari
+  paginates_per 10
 
   #allow for mismatch due to rounding
   def revenue_split_validation

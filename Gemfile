@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '3.2.13'
 gem 'pg', '~> 0.14.1'
 
 # Authentication
@@ -25,7 +25,7 @@ gem 'validates_timeliness', '~> 3.0'
 gem 'whenever', :require => false
 gem 'premailer-rails', '~> 1.4.0'
 gem 'google-analytics-rails'
-gem 'will_paginate', '~> 3.0'
+gem 'kaminari'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
@@ -103,7 +103,7 @@ end
 
 group :test do
   # Core Testing
-  gem 'cucumber-rails', :require => false
+  gem 'cucumber-rails',   '~> 1.3.0', :require => false
   gem 'capybara',         '~> 2.0.2'
   gem 'capybara-webkit',  '~> 0.14.0'
 
