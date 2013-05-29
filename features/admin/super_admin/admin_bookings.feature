@@ -19,3 +19,15 @@ Scenario: A booking with no details should be editable
   And they visit the "Edit" page
   Then they should see "Edit Booking"
 
+Scenario: A booking with no details should be editable
+  Given there is a booking with no details
+  When they visit the "Bookings" tab
+  And they visit the "Edit" page
+  Then they should see "Edit Booking"
+
+Scenario: Super admins can not delete a paid booking from any channel
+  Given there is a paid booking
+  When they visit the "Bookings" tab
+  And they visit the "View" page
+  Then they should not see the "Delete Bookings" button
+
