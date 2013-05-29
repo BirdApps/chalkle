@@ -13,3 +13,9 @@ Scenario: A booking with no details should render correctly
   And they visit the "View" page
   Then they should see this booking
 
+Scenario: A booking with no details should be editable
+  Given there is a booking with no details
+  When they visit the "Bookings" tab
+  And they visit the "Edit" page
+  Then they should see "Edit Booking"
+
