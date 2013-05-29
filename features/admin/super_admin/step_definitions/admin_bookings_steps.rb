@@ -7,3 +7,9 @@ end
 Then /^they should see this booking$/ do
   page.should have_content("Test Class")
 end
+
+Then /^this booking should be deleted$/ do
+  booking = Booking.last
+  page.should have_content("Booking #{booking.id} deleted!")
+  booking.visible.should be_false
+end

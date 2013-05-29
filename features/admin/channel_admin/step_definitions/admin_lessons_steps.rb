@@ -13,3 +13,8 @@ Then /^they should not see this lesson$/ do
   page.should_not have_content("Test Class")
 end
 
+Then /^this lesson should be deleted$/ do
+  lesson = Lesson.last
+  page.should have_content("Lesson #{lesson.id} deleted!")
+  lesson.visible.should be_false
+end

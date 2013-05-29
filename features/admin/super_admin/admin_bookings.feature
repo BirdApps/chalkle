@@ -19,3 +19,10 @@ Scenario: A booking with no details should be editable
   And they visit the "Edit" page
   Then they should see "Edit Booking"
 
+Scenario: Super admins can delete bookings from any channel
+  Given there is a booking with no details
+  When they visit the "Bookings" tab
+  And they visit the "View" page
+  And they press the "Delete Booking" button
+  Then this booking should be deleted
+
