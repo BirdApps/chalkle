@@ -19,6 +19,10 @@
               %li
                 %strong Where:
                 = @booking.lesson.venue
+              - if @booking.lesson.prerequisites?
+                %li
+                  %strong What to bring:
+                  = simple_format @booking.lesson.prerequisites
               %li
                 %strong Price:
                 = @booking.formatted_price
