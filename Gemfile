@@ -26,6 +26,7 @@ gem 'whenever', :require => false
 gem 'premailer-rails', '~> 1.4.0'
 gem 'google-analytics-rails'
 gem 'kaminari'
+gem 'json',           '~> 1.7.7'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
@@ -117,5 +118,5 @@ group :test do
   gem 'shoulda',             '~> 3.3.2'
 
   # Test coverage
-  gem 'simplecov',  '~> 0.7.1'
+  gem 'simplecov',  '~> 0.7.1', :require => false
 end
