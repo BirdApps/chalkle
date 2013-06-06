@@ -45,7 +45,7 @@ group :assets do
   gem 'sass-rails',          '~> 3.2.6'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'bootstrap-sass',      '~> 2.3.1.0'
-  gem 'font-awesome-sass-rails'
+  gem 'font-awesome-rails'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.9.1'
   gem 'haml_assets',         '~> 0.2.1'
