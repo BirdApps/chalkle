@@ -102,7 +102,7 @@ describe Booking do
 
   describe ".paid" do
     it "excludes unpaid bookings" do
-      booking = FactoryGirl.create(:booking, paid: nil)
+      booking = FactoryGirl.create(:booking)
       Booking.paid.should_not include(booking)
     end
 
@@ -119,7 +119,7 @@ describe Booking do
     end
 
     it "includes unpaid bookings" do
-      booking = FactoryGirl.create(:booking, paid: nil)
+      booking = FactoryGirl.create(:booking)
       Booking.unpaid.should include(booking)
     end
   end
@@ -191,21 +191,39 @@ describe Booking do
   describe ".visible" do
     it {Booking.visible.should include(booking)}
 
-    it "should not include invisible booking" do
-      booking.visible = false
-      booking.save
+    it "should not include a hidden booking" do
+      booking.update_attribute :visible, false
       Booking.visible.should_not include(booking)
     end
   end
 
   describe ".hidden" do
     it "includes hidden bookings" do
-      booking.visible = false
-      booking.save
+      booking.update_attribute :visible, false
       Booking.hidden.should include(booking)
     end
 
     it {Booking.hidden.should_not include(booking)}
+  end
+
+  describe ".teacher?" do
+    it "returns false when lesson has no teacher" do
+      lesson = FactoryGirl.create(:lesson, teacher_id: nil)
+      FactoryGirl.build(:booking, lesson: lesson).teacher?.should be_false
+    end
+
+    it "returns true when chalkler is teacher" do
+      chalkler = FactoryGirl.create(:chalkler)
+      lesson = FactoryGirl.create(:lesson, teacher: chalkler)
+      FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_true
+    end
+
+    it "returns false when chalkler isn't a teacher" do
+      chalkler = FactoryGirl.create(:chalkler)
+      teacher = FactoryGirl.create(:chalkler)
+      lesson = FactoryGirl.create(:lesson, teacher: teacher)
+      FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_false
+    end
   end
 
   # describe "reminder to pay emails" do
