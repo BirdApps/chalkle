@@ -1,0 +1,10 @@
+%li
+  %h4
+    = link_to booking.lesson_name.capitalize, booking_path(booking)
+  %p
+    = "#{l booking.lesson_start_at, :format => :long_without_year} | #{booking.lesson_venue}"
+    - unless booking.paid?
+      %br
+      %i.icon-shopping-cart
+      = "#{booking.formatted_price} Payment outstanding"
+      = link_to 'Payment instructions', booking_path(booking)

@@ -1,0 +1,12 @@
+%h2 Bookings
+
+- if @unpaid_bookings.any?
+  %h3 Payment required
+  %p Payments can take 2 working days to process.
+  %ul
+    = render partial: 'details', collection: @unpaid_bookings, :as => :booking
+
+- if @upcoming_bookings.any?
+  %h3 Confirmed classes
+  %ul
+    = render partial: 'details', collection: @upcoming_bookings, :as => :booking
