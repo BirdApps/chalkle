@@ -9,10 +9,11 @@
             - if current_chalkler.channels.exists? name: 'Horowhenua'
               %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
             %li= link_to 'Teach', new_chalklers_teaching_path
-            %li= link_to "Suggest a class", new_chalklers_lesson_suggestion_path
-            %li= link_to 'Email Settings', chalklers_preferences_path
+            %li= link_to 'Request class', new_chalklers_lesson_suggestion_path
+            %li= link_to 'Bookings', bookings_path
             %li.fl-right.no-right-margin= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
-            %li.fl-right= link_to "#{current_chalkler.name}", chalklers_preferences_path, class: 'no-border'
+            %li.fl-right= link_to 'Settings', chalklers_preferences_path
+            -# %li.fl-right= link_to "#{current_chalkler.name}", chalklers_preferences_path, class: 'no-border'
           -else
             - if Channel.exists? name: 'Horowhenua'
               %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
