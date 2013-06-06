@@ -52,7 +52,10 @@
 
       %h3
         Anything else?
-      = f.input :additional_comments, :label => "Is there anything else you would like to tell us about this class?", as: :text, :input_html => { :rows => 2, :class => "span12" }
+      -if @chalkler_teaching.channels.length == 1 && @chalkler_teaching.channels.first.name == "Horowhenua"
+        = f.input :additional_comments, :label => "Is there anything else you would like to tell us about this class?", as: :text, :placeholder => "For example, if you would like to donate earnings from this class to Te Takere Trust", :input_html => { :rows => 2, :class => "span12" }
+      -else
+        = f.input :additional_comments, :label => "Is there anything else you would like to tell us about this class?", as: :text, :input_html => { :rows => 2, :class => "span12" }
 
     .form-actions
       = f.button :submit, 'Submit my class', class: 'btn-primary'
