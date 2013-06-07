@@ -49,4 +49,3 @@ Scenario: Given a teacher cost, channel admins can see the advertised price for 
   And they fill in a teacher fee of "20"
   Then they should see an advertised price of "30"
 
-
