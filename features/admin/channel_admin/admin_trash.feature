@@ -1,4 +1,4 @@
-Feature: Lessons
+Feature: Trash
   In order to administer a chalkle channel
   Channel Admin must be able to correct deletion mistakes without outside assistance
 
