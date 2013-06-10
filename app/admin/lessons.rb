@@ -239,7 +239,7 @@ ActiveAdmin.register Lesson  do
     render partial: "/admin/lessons/lesson_email_template", locals: { bookings: lesson.bookings.visible.confirmed,
       teachers: lesson.teacher.present? ? lesson.teacher.name.split[0].titleize : nil,
       title: lesson.name.present? ? lesson.name : "that is coming up", price: lesson.cost.present? ? lesson.cost : 0,
-      reference: lesson.meetup_id.present? ? lesson.meetup_id : "Your Name" }
+      reference: lesson.meetup_id.present? ? lesson.meetup_id : lesson.id, start_time: lesson.start_at, venue: lesson.venue }
   end
 
   member_action :payment_summary_email do
