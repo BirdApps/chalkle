@@ -206,7 +206,7 @@ describe Booking do
     it {Booking.hidden.should_not include(booking)}
   end
 
-  describe ".teacher?" do
+  describe "#teacher?" do
     it "returns false when lesson has no teacher" do
       lesson = FactoryGirl.create(:lesson, teacher_id: nil)
       FactoryGirl.build(:booking, lesson: lesson).teacher?.should be_false
