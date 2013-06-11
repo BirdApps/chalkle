@@ -3,8 +3,8 @@ class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!
 
   def index
-    @unpaid_bookings = current_chalkler.bookings.unpaid.decorate
-    @upcoming_bookings = current_chalkler.bookings.upcoming.order('lessons.start_at').decorate
+    @unpaid_bookings = current_chalkler.bookings.visible.unpaid.decorate
+    @upcoming_bookings = current_chalkler.bookings.visible.upcoming.paid.order('lessons.start_at').decorate
   end
 
   def new
