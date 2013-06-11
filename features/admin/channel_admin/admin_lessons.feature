@@ -50,3 +50,15 @@ Scenario: Given a teacher cost, channel admins can see the advertised price for 
   And they fill in a teacher fee of "20"
   Then they should see an advertised price of "30"
 
+Scenario: Channel admin can see attendee list for each lesson
+  Given there is a lesson with no details in the "Wellington" channel
+  And this lesson has one paid booking by a chalkler named "Bob"
+  When they view this lesson
+  Then they should see a paid booking by "Bob"
+
+Scenario: Channel admin can record cash payment for attendees
+  Given there is a lesson with no details in the "Wellington" channel
+  And this lesson has one paid booking by a chalkler named "Bob"
+  When they view this lesson
+  And they press the "Pay $10.00" button
+  Then this booking should be paid

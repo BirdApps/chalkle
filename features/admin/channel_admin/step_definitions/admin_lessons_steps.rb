@@ -46,3 +46,24 @@ Then /^they should see an advertised price of "(.*?)"$/ do |price|
   find_field('Advertised price').value.should eq price
 end
 
+Given /^this lesson has one paid booking by a chalkler named "(.*?)"$/ do |name|
+  lesson = Lesson.find_by_name("Test Class")
+  lesson.update_attributes(:status => "Published", :cost => 10)
+  chalkler = FactoryGirl.create(:chalkler, name: name)
+  FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, paid: false, status: 'yes', cost_override: 20)
+end
+
+When /^they view this lesson$/ do
+  click_link "Lessons"
+  click_link "View"
+end
+
+Then /^they should see a paid booking by "(.*?)"$/ do |name|
+  page.should have_content(name)
+  page.should have_content("yes")
+end
+
+Then /^this booking should be paid$/ do
+  lesson = Lesson.find_by_name("Test Class")
+  booking = lesson.bookings.first
+end
