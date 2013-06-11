@@ -48,22 +48,60 @@ describe Booking do
       end
     end
 
-    describe "#set_from_meetup_data" do
-      let(:result) { MeetupApiStub::rsvp_response }
+    describe "callbacks" do
 
-      before do
-        FactoryGirl.create(:chalkler, meetup_id: 12345678)
-        FactoryGirl.create(:lesson, meetup_id: 12345678)
-        Booking.create_from_meetup_hash result
-        @booking = Booking.find_by_meetup_id 12345678
+      describe "#set_free_lesson_attributes" do
+        context "free lesson" do
+          let(:lesson) { FactoryGirl.create(:lesson, cost: 0) }
+          let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
+
+          it "sets payment method to free" do
+            booking.payment_method.should == 'free'
+          end
+
+          it "sets paid to true" do
+            booking.paid.should be_true
+          end
+        end
+
+        context "paid lesson" do
+          let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
+          let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
+
+          it "leaves booking untouched" do
+            booking.payment_method.should_not == 'free'
+            booking.paid.should be_false
+          end
+        end
+
+        context "lesson with no price" do
+          let(:lesson) { FactoryGirl.create(:lesson, cost: nil) }
+          let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
+
+          it "leaves booking untouched" do
+            booking.payment_method.should_not == 'free'
+            booking.paid.should be_false
+          end
+        end
       end
 
-      it "saves correct created_at value" do
-        @booking.created_at.to_time.to_i.should == 1351297791
-      end
+      describe "#set_from_meetup_data" do
+        let(:result) { MeetupApiStub::rsvp_response }
 
-      it "saves correct updated_at value" do
-        @booking.updated_at.to_time.to_i.should == 1351297791
+        before do
+          FactoryGirl.create(:chalkler, meetup_id: 12345678)
+          FactoryGirl.create(:lesson, meetup_id: 12345678)
+          Booking.create_from_meetup_hash result
+          @booking = Booking.find_by_meetup_id 12345678
+        end
+
+        it "saves correct created_at value" do
+          @booking.created_at.to_time.to_i.should == 1351297791
+        end
+
+        it "saves correct updated_at value" do
+          @booking.updated_at.to_time.to_i.should == 1351297791
+        end
       end
     end
   end
@@ -225,6 +263,7 @@ describe Booking do
       FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_false
     end
   end
+
 
   # describe "reminder to pay emails" do
     # pending "never email teachers" do
