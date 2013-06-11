@@ -14,8 +14,10 @@ Scenario: A deleted lesson with no details should render correctly
   And they visit the "View" page
   Then they should see this lesson
 
-Scenario: Channel admin can not see a deleted lesson from another channel
-  Given there is a deleted lesson with no details in the "Dunedin" channel
+Scenario: "Wellington" channel admin can not see a deleted lesson from another channel
+  Given "Bob" is a channel admin
+  And the admin "Bob" belongs to the "Dunedin" channel
+  And there is a deleted lesson with no details in the "Dunedin" channel
   When they visit the "Trash" tab
   Then they should not see this lesson 
 
