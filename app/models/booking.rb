@@ -83,7 +83,7 @@ class Booking < ActiveRecord::Base
   # Refactor all of this:
 
   def emailable
-    status == 'yes' && (cost? ? cost : 0) > 0 && !teacher? && (paid != true) && lesson_teacher_id.present?
+    status == 'yes' && (cost ? cost : 0) > 0 && !teacher? && (paid != true) && lesson_teacher_id.present?
   end
 
   def first_email_condition
