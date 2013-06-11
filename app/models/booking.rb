@@ -11,7 +11,7 @@ class Booking < ActiveRecord::Base
   has_one :payment
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
-  validates_presence_of :lesson_id, :chalkler_id, :payment_method, :status, :visible, :paid
+  validates_presence_of :lesson_id, :chalkler_id, :payment_method, :status
   validates_acceptance_of :terms_and_conditions, :on => :create, :message => 'please read and agree', :if => :enforce_terms_and_conditions
 
   scope :paid, where(paid: true)
