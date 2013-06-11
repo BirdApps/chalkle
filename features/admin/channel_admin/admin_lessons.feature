@@ -15,7 +15,8 @@ Scenario: A lesson with no details should render correctly
   Then they should see this lesson in the "Wellington" channel
 
 Scenario: Channel admin can not see a lesson from another channel
-  Given there is a lesson with no details in the "Dunedin" channel
+  Given the "Dunedin" channel exists
+  And there is a lesson with no details in the "Dunedin" channel
   When they visit the "Lessons" tab
   Then they should not see this lesson 
 
