@@ -6,7 +6,7 @@ Background:
   Given "Zac" is a chalkler
   And the chalkler "Zac" belongs to the "Wellington" channel
   And the chalkler "Zac" is authenticated
-  When they visit the "Email Settings" page
+  When they visit the "Settings" page
 
 Scenario: Chalkler can change their email settings
   When they enter new email settings
