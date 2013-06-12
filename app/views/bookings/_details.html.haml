@@ -3,7 +3,7 @@
   .booking-details
     = "#{l booking.lesson_start_at, :format => :long_without_year} | #{booking.lesson_venue}"
   - unless booking.paid?
-    .booking-actions
+    .payment-actions
       %strong
         = "#{booking.formatted_price} Payment outstanding"
         != "| #{link_to 'How to pay', booking_path(booking)}"
