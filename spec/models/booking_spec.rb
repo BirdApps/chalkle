@@ -48,22 +48,60 @@ describe Booking do
       end
     end
 
-    describe "#set_from_meetup_data" do
-      let(:result) { MeetupApiStub::rsvp_response }
+    describe "callbacks" do
 
-      before do
-        FactoryGirl.create(:chalkler, meetup_id: 12345678)
-        FactoryGirl.create(:lesson, meetup_id: 12345678)
-        Booking.create_from_meetup_hash result
-        @booking = Booking.find_by_meetup_id 12345678
+      describe "#set_free_lesson_attributes" do
+        context "free lesson" do
+          let(:lesson) { FactoryGirl.create(:lesson, cost: 0) }
+          let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
+
+          it "sets payment method to free" do
+            booking.payment_method.should == 'free'
+          end
+
+          it "sets paid to true" do
+            booking.paid.should be_true
+          end
+        end
+
+        context "paid lesson" do
+          let(:lesson) { FactoryGirl.create(:lesson, cost: 10) }
+          let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
+
+          it "leaves booking untouched" do
+            booking.payment_method.should_not == 'free'
+            booking.paid.should be_false
+          end
+        end
+
+        context "lesson with no price" do
+          let(:lesson) { FactoryGirl.create(:lesson, cost: nil) }
+          let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
+
+          it "leaves booking untouched" do
+            booking.payment_method.should_not == 'free'
+            booking.paid.should be_false
+          end
+        end
       end
 
-      it "saves correct created_at value" do
-        @booking.created_at.to_time.to_i.should == 1351297791
-      end
+      describe "#set_from_meetup_data" do
+        let(:result) { MeetupApiStub::rsvp_response }
 
-      it "saves correct updated_at value" do
-        @booking.updated_at.to_time.to_i.should == 1351297791
+        before do
+          FactoryGirl.create(:chalkler, meetup_id: 12345678)
+          FactoryGirl.create(:lesson, meetup_id: 12345678)
+          Booking.create_from_meetup_hash result
+          @booking = Booking.find_by_meetup_id 12345678
+        end
+
+        it "saves correct created_at value" do
+          @booking.created_at.to_time.to_i.should == 1351297791
+        end
+
+        it "saves correct updated_at value" do
+          @booking.updated_at.to_time.to_i.should == 1351297791
+        end
       end
     end
   end
@@ -102,7 +140,7 @@ describe Booking do
 
   describe ".paid" do
     it "excludes unpaid bookings" do
-      booking = FactoryGirl.create(:booking, paid: nil)
+      booking = FactoryGirl.create(:booking)
       Booking.paid.should_not include(booking)
     end
 
@@ -119,7 +157,7 @@ describe Booking do
     end
 
     it "includes unpaid bookings" do
-      booking = FactoryGirl.create(:booking, paid: nil)
+      booking = FactoryGirl.create(:booking)
       Booking.unpaid.should include(booking)
     end
   end
@@ -191,22 +229,41 @@ describe Booking do
   describe ".visible" do
     it {Booking.visible.should include(booking)}
 
-    it "should not include invisible booking" do
-      booking.visible = false
-      booking.save
+    it "should not include a hidden booking" do
+      booking.update_attribute :visible, false
       Booking.visible.should_not include(booking)
     end
   end
 
   describe ".hidden" do
     it "includes hidden bookings" do
-      booking.visible = false
-      booking.save
+      booking.update_attribute :visible, false
       Booking.hidden.should include(booking)
     end
 
     it {Booking.hidden.should_not include(booking)}
   end
+
+  describe "#teacher?" do
+    it "returns false when lesson has no teacher" do
+      lesson = FactoryGirl.create(:lesson, teacher_id: nil)
+      FactoryGirl.build(:booking, lesson: lesson).teacher?.should be_false
+    end
+
+    it "returns true when chalkler is teacher" do
+      chalkler = FactoryGirl.create(:chalkler)
+      lesson = FactoryGirl.create(:lesson, teacher: chalkler)
+      FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_true
+    end
+
+    it "returns false when chalkler isn't a teacher" do
+      chalkler = FactoryGirl.create(:chalkler)
+      teacher = FactoryGirl.create(:chalkler)
+      lesson = FactoryGirl.create(:lesson, teacher: teacher)
+      FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_false
+    end
+  end
+
 
   # describe "reminder to pay emails" do
     # pending "never email teachers" do

@@ -17,6 +17,7 @@
 //= require bootstrap-tooltip
 //= require bootstrap-popover
 //= require bootstrap-modal
+//= require bootstrap-dropdown
 //= require underscore
 //= require modernizr
 //= require utils

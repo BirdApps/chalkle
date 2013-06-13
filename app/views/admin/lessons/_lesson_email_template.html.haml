@@ -8,7 +8,7 @@ Hi #{teachers},
   %tbody
     -bookings.each do |b|
       %tr
-        -if !b.guests
+        -if b.guests.nil? || b.guests == 0
           %td= "#{b.chalkler.name}"
         -else
           %td= "#{b.chalkler.name} + #{b.guests} guests"         
@@ -19,10 +19,8 @@ Hi #{teachers},
             %td= ""
         %td= render "/admin/bookings/answers", :answers => b.answers if b.answers
         
--if price > 0
-  %p You can expect to receive cash payment of #{number_to_currency price} per person from those who were not able to pay electronically.
-  %p Please reply to this email after the class if actual class attendance differs from this list.
-  %p Have a great class and I shall follow up with you subsequent to the class.
+%p Please reply to this email after the class if actual class attendance differs from this list.
+%p Have a great class and I shall follow up with you subsequent to the class.
 %p Chalkle
 
 %hr
@@ -49,3 +47,13 @@ Hi #{teachers},
   %p You can view further details about this class, and sign up for more chalkle&deg classes by visiting chalkle's #{link_to 'Horowhenua website',"http://my.chalkle.com/channels/3"}.
   %p Thank you for supporting chalkle&deg and we look forward to seeing you soon!
   %p Chalkle&deg
+
+%hr
+
+%p Hi,
+
+%p The upcoming chalkle class #{title}, has been cancelled due to insufficient sign-ups. If you require a refund for this class, please contact accounts@chalkle.com with your bank account number. 
+
+%p Thank you for supporting chalkle&deg and we look forward to seeing you in another chalkle&deg class.
+
+%p Your Chalkle Administrator

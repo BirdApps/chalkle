@@ -14,9 +14,13 @@
         %li
           %strong Skill level:
           = lesson.lesson_skill
+      - if lesson.prerequisites?
+        %li
+          %strong What to bring:
+          = simple_format lesson.prerequisites
       %li
         %strong Suitable for:
         -if lesson.suggested_audience?
           = lesson.suggested_audience
         -else
-          Everyone
+          Everyone!
