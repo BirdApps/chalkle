@@ -60,5 +60,5 @@ Scenario: Channel admin can record cash payment for attendees
   Given there is a lesson with no details in the "Wellington" channel
   And this lesson has one paid booking by a chalkler named "Bob"
   When they view this lesson
-  And they press the "Pay $10.00" button
+  And they press the "Pay $20.00" button
   Then this booking should be paid
