@@ -50,3 +50,9 @@ end
 Then(/^their booking should not be displayed$/) do
   page.should have_no_content('Cool class!')
 end
+
+Given(/^the chalkler "(.*?)" has changed her status to "(.*?)"$/) do |name, status|
+  chalkler = Chalkler.find_by_name name
+  booking = Booking.find_by_chalkler_id chalkler.id
+  booking.update_attribute :status, status
+end
