@@ -29,9 +29,10 @@ $orange:                #f89406 !default;
 $pink:                  #c3325f !default;
 $purple:                #7a43b6 !default;
 
-$ch_pink: #cd4063;
-$ch_green: #24714c;
-$ch_blue: #1F64BF;
+$chalklePink: #cd4063;
+$chalkleGreen: #428575;
+$chalkleGray: #6d6e70;
+$chalkleBlue: #1F64BF;
 
 // Scaffolding
 // -------------------------
@@ -41,7 +42,7 @@ $textColor:             $grayDark !default;
 
 // Links
 // -------------------------
-$linkColor:             $ch_pink !default;
+$linkColor:             $chalklePink !default;
 $linkColorHover:        darken($linkColor, 15%) !default;
 
 
@@ -91,14 +92,14 @@ $btnBackground:                     $white !default;
 $btnBackgroundHighlight:            darken($white, 10%) !default;
 $btnBorder:                         #ccc !default;
 
-$btnPrimaryBackground:              $ch_pink !default;
+$btnPrimaryBackground:              $chalklePink !default;
 $btnPrimaryBackgroundHighlight:     lighten($btnPrimaryBackground, 10%) !default;
 
 /*$btnInfoBackground:                 #5bc0de !default;*/
 /*$btnInfoBackgroundHighlight:        #2f96b4 !default;*/
 
-$btnInfoBackground:                 $ch_green !default;
-$btnInfoBackgroundHighlight:        $ch_green !default;
+$btnInfoBackground:                 $chalkleGreen !default;
+$btnInfoBackgroundHighlight:        $chalkleGreen !default;
 
 $btnSuccessBackground:              #62c462 !default;
 $btnSuccessBackgroundHighlight:     #51a351 !default;
@@ -112,7 +113,7 @@ $btnDangerBackgroundHighlight:      #bd362f !default;
 /*$btnInverseBackground:              #444 !default;*/
 /*$btnInverseBackgroundHighlight:     $grayDarker !default;*/
 
-$btnInverseBackground:              $ch_blue !default;
+$btnInverseBackground:              $chalkleBlue !default;
 $btnInverseBackgroundHighlight:     adjust-hue($btnInverseBackground, 20%) !default;
 
 // Forms

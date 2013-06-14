@@ -26,6 +26,7 @@ gem 'whenever', :require => false
 gem 'premailer-rails', '~> 1.4.0'
 gem 'google-analytics-rails'
 gem 'kaminari'
+gem 'json',           '~> 1.7.7'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
@@ -45,7 +46,7 @@ group :assets do
   gem 'sass-rails',          '~> 3.2.6'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'bootstrap-sass',      '~> 2.3.1.0'
-  gem 'font-awesome-sass-rails'
+  gem 'font-awesome-rails'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.9.1'
   gem 'haml_assets',         '~> 0.2.1'
@@ -117,5 +118,5 @@ group :test do
   gem 'shoulda',             '~> 3.3.2'
 
   # Test coverage
-  gem 'simplecov',  '~> 0.7.1'
+  gem 'simplecov',  '~> 0.7.1', :require => false
 end
