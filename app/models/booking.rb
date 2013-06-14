@@ -14,7 +14,7 @@ class Booking < ActiveRecord::Base
   validates_presence_of :lesson_id, :chalkler_id, :payment_method, :status
   validates_acceptance_of :terms_and_conditions, :on => :create, :message => 'please read and agree', :if => :enforce_terms_and_conditions
 
-  scope :paid, where(paid: true)
+  scope :paid, where{ paid == true }
   scope :unpaid, where{ paid == false }
   scope :confirmed, where(status: 'yes')
   scope :waitlist, where(status: 'waitlist')

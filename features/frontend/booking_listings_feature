@@ -24,3 +24,8 @@ Scenario: Old paid bookings will be hidden from listings
   Given the chalkler "Said" has been to a class already
   When they visit the bookings page
   Then their booking should not be displayed
+
+Scenario: Bookings with status not equal to "yes" will be hidden from listings
+  Given the chalkler "Said" has changed her status to "no"
+  When they visit the bookings page
+  Then their booking should not be displayed
