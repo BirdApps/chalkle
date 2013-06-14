@@ -209,7 +209,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def class_coming_up
-    class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 4)
+    class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 7)
   end
 
   def class_may_cancel

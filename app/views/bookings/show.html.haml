@@ -1,6 +1,6 @@
-- title "Booking: #{@booking.lesson.name.capitalize}"
+- title "Booking: #{@booking.lesson_name.capitalize}"
 
-%h2= "Booking: #{@booking.lesson.name.capitalize}"
+%h2= "Booking: #{@booking.lesson_name.capitalize}"
 
 .row
   .span12
@@ -12,13 +12,17 @@
             %ul.unstyled
               %li
                 %strong Class:
-                = link_to @booking.lesson.name.capitalize, channel_lesson_path(@booking.lesson.channels.first, @booking.lesson)
+                = link_to @booking.lesson_name.capitalize, channel_lesson_path(@booking.lesson.channels.first, @booking.lesson)
               %li
                 %strong Time:
-                = l @booking.lesson.start_at, :format => :long_without_year
+                = l @booking.lesson_start_at, :format => :long_without_year
               %li
                 %strong Where:
-                = @booking.lesson.venue
+                = @booking.lesson_venue
+              - if @booking.lesson_prerequisites
+                %li
+                  %strong What to bring:
+                  = simple_format @booking.lesson_prerequisites
               %li
                 %strong Price:
                 = @booking.formatted_price

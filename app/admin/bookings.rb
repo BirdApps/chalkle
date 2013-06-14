@@ -115,13 +115,13 @@ ActiveAdmin.register Booking do
     payment.booking_id = booking.id
     payment.reconciled = true
     payment.complete_record_downloaded = true
-    payment.cash_payment = true
+    payment.cash_payment = false
     payment.total = booking.cost
     payment.visible = true
     if booking.save! && payment.save!
-      flash[:notice] = "Cash payment of $#{(booking.cost).round(2)} was paid by #{booking.chalkler.name}"
+      flash[:notice] = "Service desk payment of $#{(booking.cost).round(2)} was paid by #{booking.chalkler.name}"
     else
-      flash[:warn] = "Cash payment could not be recorded"
+      flash[:warn] = "Service desk payment could not be recorded"
     end
     redirect_to :back
   end
