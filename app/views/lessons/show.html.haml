@@ -9,6 +9,8 @@
       = simple_format @lesson.do_during_class
       %h3 What you will learn
       = simple_format @lesson.learning_outcomes
+      %h6 Note
+      = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
   .span4.content-right
     .booking-actions
       - if chalkler_signed_in?
