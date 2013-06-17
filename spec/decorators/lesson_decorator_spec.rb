@@ -84,7 +84,7 @@ describe LessonDecorator do
     it "returns rails path when channel is local" do
       channel = FactoryGirl.create(:channel, url_name: '')
       @lesson.channels << channel
-      @lesson.decorate.url.should == "http://test.host/channels/#{channel.id}/classes/#{@lesson.id}"
+      @lesson.decorate.url.should include("/channels/#{channel.id}/classes/#{@lesson.id}")
     end
   end
 
