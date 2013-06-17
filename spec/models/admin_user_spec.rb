@@ -75,13 +75,13 @@ describe AdminUser do
         ability.should_not be_able_to(:destroy, admin_user_2)
       end
 
-      it "should not be able to administrate bookings" do
+      it "should be able to administrate bookings" do
         lesson = FactoryGirl.create(:lesson)
         booking = FactoryGirl.create(:booking, lesson: lesson)
         lesson.channels << @channel
         ability = Ability.new @admin_user
-        ability.should_not be_able_to(:view, booking)
-        ability.should_not be_able_to(:update, booking)
+        ability.should be_able_to(:read, booking)
+        ability.should be_able_to(:update, booking)
         ability.should_not be_able_to(:destroy, booking)
       end
 
