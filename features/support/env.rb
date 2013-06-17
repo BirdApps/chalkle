@@ -5,8 +5,6 @@
 # files.
 
 require 'simplecov'
-SimpleCov.start 'rails'
-
 require 'cucumber/rails'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In

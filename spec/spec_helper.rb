@@ -1,6 +1,4 @@
 require 'simplecov'
-SimpleCov.start 'rails'
-
 require 'rubygems'
 require 'spork'
 require 'email_spec'
