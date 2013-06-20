@@ -67,3 +67,14 @@ Then /^this booking should be paid$/ do
   lesson = Lesson.find_by_name("Test Class")
   booking = lesson.bookings.first
 end
+
+Given(/^there is an unreviewed lesson with no details in the "(.*?)" channel$/) do |name|
+  channel = Channel.find_by_name(name)
+  lesson = FactoryGirl.create(:lesson, name: "Test Class", status: "Unreviewed")
+  lesson.channels << channel
+end
+
+When(/^they fill in the lessons comments with "(.*?)"$/) do |comments|
+  fill_in 'active_admin_comment_body', with: comments
+  click_button 'Add Comment'
+end
