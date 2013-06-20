@@ -65,3 +65,10 @@ Scenario: Password reset button is not displayed when chalkler has no email
   And the chalkler "Whetu" has no email address
   When the channel admin views "Whetu's" profile
   Then channel admin should not see a password reset button
+
+Scenario: Comments on chalklers are displayed on the index page
+  Given there is a chalkler with no details in the "Wellington" channel
+  When they view this chalkler
+  And they fill in the chalkler comments with "This is a comment"
+  When they return to the chalkler index page
+  Then they should see "This is a comment"
