@@ -61,6 +61,10 @@ class Booking < ActiveRecord::Base
     meetup_data["answers"]
   end
 
+  def refundable?
+    (lesson_start_at.to_datetime - Date.today()) > 3
+  end
+
   def teacher?
     return false unless lesson_teacher_id
     chalkler_id == lesson_teacher_id

@@ -15,10 +15,16 @@
     %h3 Cancel this booking
   .modal-body
     :markdown
-      Are you sure you want to cancel your booking for:
+      Are you sure you want to cancel your booking for the class:
 
       #{booking.lesson_name.capitalize}
 
+    -if booking.paid?
+      -if booking.refundable?
+        Please email #{link_to 'Amy', 'mailto:accounts@chalkle.com'} at chalkle&deg accounts with your bank account number for refund
+      -else
+        Because you are choosing to cancel less than 3 days before the class, you will not be eligible for a refund
+
   .modal-footer
     %button.btn{ :'data-dismiss' => 'modal', :'aria-hidden' => 'true' } No
-    %button.btn{ :'data-dismiss' => 'modal', :'aria-hidden' => 'true' } Yes
+    %button.btn{ :'data-confirm' => 'modal', :'aria-hidden' => 'true' } Yes
