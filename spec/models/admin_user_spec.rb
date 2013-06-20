@@ -116,6 +116,7 @@ describe AdminUser do
         booking = FactoryGirl.create(:booking, lesson: lesson)
         lesson.channels << channel
         subject.should be_able_to(:read, booking)
+        subject.should be_able_to(:create, booking)
         subject.should be_able_to(:update, booking)
         subject.should be_able_to(:record_cash_payment, booking)
       end
