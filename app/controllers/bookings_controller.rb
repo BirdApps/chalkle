@@ -17,21 +17,22 @@ class BookingsController < ApplicationController
   end
 
   def create
-    if current_chalkler.lessons.exists? params[:lesson_id]
-      id = params[:lesson_id].to_i
-      @booking = current_chalkler.bookings.where{bookings.lesson_id.eq id}.first
-      @booking.attributes = params[:booking]
-    else
-      @booking = Booking.new params[:booking]
-      @booking.chalkler = current_chalkler          
-    end    
+    @booking = Booking.new params[:booking]
+    @booking.chalkler = current_chalkler           
     @booking.enforce_terms_and_conditions = true    
     @booking.status = 'yes'
     if @booking.save
       redirect_to booking_path @booking
     else
-      @lesson = Lesson.find(params[:lesson_id]).decorate
-      render action: 'new'
+      if @booking.errors.full_messages == ["Chalkler has already been taken"]
+        id = params[:lesson_id].to_i
+        @booking = current_chalkler.bookings.where{bookings.lesson_id.eq id}.first
+        @booking.update_attributes(:status => 'yes', :guests => params[:booking][:guests])
+        redirect_to booking_path @booking
+      else
+        @lesson = Lesson.find(params[:lesson_id]).decorate
+        render action: 'new'
+      end
     end
   end
 
