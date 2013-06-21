@@ -8,7 +8,7 @@ class BookingsController < ApplicationController
   end
 
   def new
-    if current_chalkler.lessons.exists? params[:lesson_id]
+    if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? params[:lesson_id]
       flash[:notice] = 'You have already attending this class'
       redirect_to :back
     end
@@ -17,9 +17,15 @@ class BookingsController < ApplicationController
   end
 
   def create
-    @booking = Booking.new params[:booking]
-    @booking.enforce_terms_and_conditions = true
-    @booking.chalkler = current_chalkler
+    if current_chalkler.lessons.exists? params[:lesson_id]
+      id = params[:lesson_id].to_i
+      @booking = current_chalkler.bookings.where{bookings.lesson_id.eq id}.first
+      @booking.attributes = params[:booking]
+    else
+      @booking = Booking.new params[:booking]
+      @booking.chalkler = current_chalkler          
+    end    
+    @booking.enforce_terms_and_conditions = true    
     @booking.status = 'yes'
     if @booking.save
       redirect_to booking_path @booking

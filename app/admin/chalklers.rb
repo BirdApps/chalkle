@@ -77,11 +77,11 @@ ActiveAdmin.register Chalkler do
       row :phone_number
       row :email_frequency
       # row "Email categories" do
-        # if chalkler.email_categories.present?
-          # chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
-        # else
-          # "No email categories selected"
-        # end
+      #   if chalkler.email_categories.present?
+      #     chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
+      #   else
+      #     "No email categories selected"
+      #   end
       # end
       # row "Email streams" do
         # if chalkler.email_streams.present?

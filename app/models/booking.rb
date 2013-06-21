@@ -1,5 +1,5 @@
 class Booking < ActiveRecord::Base
-  attr_accessible :lesson_id, :guests, :payment_method, :terms_and_conditions
+  attr_accessible :lesson_id, :guests, :payment_method, :terms_and_conditions, :status
   attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests,
     :meetup_id, :cost_override, :paid, :payment_method, :visible, :as => :admin
 
@@ -12,7 +12,7 @@ class Booking < ActiveRecord::Base
 
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
   validates_presence_of :lesson_id, :chalkler_id, :payment_method, :status
-  validates_acceptance_of :terms_and_conditions, :on => :create, :message => 'please read and agree', :if => :enforce_terms_and_conditions
+  validates_acceptance_of :terms_and_conditions, :message => 'please read and agree', :if => :enforce_terms_and_conditions
 
   scope :paid, where{ paid == true }
   scope :unpaid, where{ paid == false }
