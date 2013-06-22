@@ -33,7 +33,7 @@
         .span6
           .payment-summary
             - if @booking.paid?
-              %p Payment received, thanks!
+              %h3 Payment received, thanks!
             -else
               %h3 How to pay
               - if @booking.payment_method == 'cash'
