@@ -83,3 +83,31 @@ end
 Then /^channel admin should not see a password reset button$/ do
   page.should have_no_link('Send password reset email')
 end
+
+Given(/^"(.*?)" is the teacher for the lesson "(.*?)"$/) do |teacher_name, lesson_name|
+  teacher = Chalkler.find_by_name teacher_name
+  lesson = FactoryGirl.create(:lesson, name: lesson_name, teacher_id: teacher.id)
+  lesson.channels = teacher.channels
+end
+
+Then(/^they should see the lesson "(.*?)"$/) do |name|
+  page.should have_content(name)
+end
+
+Given(/^"(.*?)" attended the lesson "(.*?)"$/) do |student_name, lesson_name|
+  student = Chalkler.find_by_name student_name
+  lesson = FactoryGirl.create(:lesson, name: lesson_name)
+  lesson.channels = student.channels
+  FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: student.id, status: 'yes')
+end
+
+Given(/^"(.*?)" did not attend the lesson "(.*?)"$/) do |student_name, lesson_name|
+  student = Chalkler.find_by_name student_name
+  lesson = FactoryGirl.create(:lesson, name: lesson_name)
+  lesson.channels = student.channels
+  FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: student.id, status: 'no')
+end
+
+Then(/^they should not see the lesson "(.*?)"$/) do |name|
+  page.should_not have_content(name)
+end
