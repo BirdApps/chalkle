@@ -38,8 +38,9 @@ Scenario: Super admins can not delete a paid booking from any channel
   And they visit the "View" page
   Then they should not see the "Delete Bookings" button
 
-Scenario: Super admins can not delete a paid booking by the teacher of the class
+Scenario: Super admins can delete a paid booking by the teacher of the class
   Given there is a paid booking by the teacher of the class
   When they visit the "Bookings" tab
   And they visit the "View" page
-  Then they should see the "Delete Bookings" button
+  And they press the "Delete Booking" button
+  Then this booking should be deleted
