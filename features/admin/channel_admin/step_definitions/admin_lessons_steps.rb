@@ -78,3 +78,14 @@ When(/^they fill in the lessons comments with "(.*?)"$/) do |comments|
   fill_in 'active_admin_comment_body', with: comments
   click_button 'Add Comment'
 end
+
+Given(/^"(.*?)" is teaching a lesson$/) do |name|
+  teacher = Chalkler.find_by_name name
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id)
+  lesson.channels = teacher.channels
+end
+
+Given(/^the chalkler "(.*?)" has no email$/) do |name|
+  chalkler = Chalkler.find_by_name name
+  chalkler.update_attributes({:meetup_id => 1234567, :email => nil}, :as => :admin)
+end
