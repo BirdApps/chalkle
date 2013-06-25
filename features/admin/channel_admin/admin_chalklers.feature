@@ -86,3 +86,10 @@ Scenario: Channel Admin cannot see lessons not attended by chalkler
   And "Whetu" did not attend the lesson "How to braid your hair 2"
   When the channel admin views "Whetu's" profile
   Then they should not see the lesson "How to braid your hair 2"
+
+Scenario: Comments on chalklers are displayed on the index page
+  Given there is a chalkler with no details in the "Wellington" channel
+  When they view this chalkler
+  And they fill in the chalkler comments with "This is a comment"
+  When they return to the chalkler index page
+  Then they should see "This is a comment"

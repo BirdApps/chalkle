@@ -38,9 +38,4 @@ class ChannelStats
     (initial > 0) ? (final / initial.to_d - 1)*100.0 : nil
   end
 
-  def mean(input)
-    input.compact!
-    input.length > 0 ? input.sum / input.length : nil
-  end
-
 end

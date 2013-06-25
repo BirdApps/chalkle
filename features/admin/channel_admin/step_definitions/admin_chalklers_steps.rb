@@ -111,3 +111,18 @@ end
 Then(/^they should not see the lesson "(.*?)"$/) do |name|
   page.should_not have_content(name)
 end
+
+When(/^they view this chalkler$/) do
+  click_link "Chalklers"
+  click_link "View"
+end
+
+When(/^they fill in the chalkler comments with "(.*?)"$/) do |comments|
+  fill_in 'active_admin_comment_body', with: comments
+  click_button 'Add Comment'
+end
+
+When(/^they return to the chalkler index page$/) do
+  visit admin_chalklers_path
+end
+
