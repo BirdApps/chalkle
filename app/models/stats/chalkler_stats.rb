@@ -51,7 +51,7 @@ class ChalklerStats < ChannelStats
   private
 
   def active_chalklers
-    end_date = (end_time - 3.months).midnight
+    end_date = (end_time - 2.months).midnight
     channel.chalklers.joins{bookings.outer}.where{(bookings.created_at.gt end_date.utc) | (chalklers.created_at.gt end_date.utc)}.select("chalklers.id").count
   end
 
