@@ -77,7 +77,7 @@ ActiveAdmin.register Lesson  do
           if Chalkler.find(lesson.teacher_id).email?
             Chalkler.find(lesson.teacher_id).email
           else
-            status_tag( "Please click on teacher above and enter his/her email", :error )
+            status_tag( "Please click on teacher above and enter their email", :error )
           end
         else
           status_tag("Please select a teacher and make sure there is an email contact", :error)

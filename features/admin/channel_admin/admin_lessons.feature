@@ -88,4 +88,4 @@ Scenario: Channel admin can see warning when teacher has no email
   And the chalkler "Alice" has no email
   And "Alice" is teaching a lesson
   When they view this lesson
-  Then they should see "Please Click On Teacher Above And Enter His/Her Email"
+  Then they should see "Please Click On Teacher Above And Enter Their Email"
