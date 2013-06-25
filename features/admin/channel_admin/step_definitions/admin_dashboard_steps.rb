@@ -57,3 +57,13 @@ Given(/^the number of RSVPs is "(.*?)"$/) do |bookings_count|
 	FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, guests: bookings_count.to_i-1)
 end
 
+Given(/^there is lesson in the "(.*?)" channel coming up this week with no teacher cost$/) do |name|
+  channel = Channel.find_by_name(name)
+  teacher = FactoryGirl.create(:chalkler, name: "Teacher")
+  chalkler = FactoryGirl.create(:channel, name: "Student")
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, status: "Published", cost: 10)
+  FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, guests: 10, status: 'yes')
+  lesson.channels << channel
+end
+
+

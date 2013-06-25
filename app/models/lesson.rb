@@ -12,7 +12,7 @@ class Lesson < ActiveRecord::Base
     :lesson_skill, :venue, :published_at, :category_ids, :channel_ids,
     :lesson_image_attributes, :channel_percentage_override,
     :chalkle_percentage_override, :material_cost, :suggested_audience,
-    :chalkle_payment, :as => :admin
+    :chalkle_payment, :attendance_last_sent_at, :as => :admin
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -212,8 +212,22 @@ class Lesson < ActiveRecord::Base
     class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 7)
   end
 
+  def complete_details?
+    teacher_id.present? && start_at.present? && channels.any? && do_during_class.present? && teacher_cost.present? && venue_cost.present?
+  end
+
   def class_may_cancel
     class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
+  end
+
+  def flag_warning
+    if class_may_cancel
+      return "May cancel"
+    elsif !complete_details?
+      return "Missing details"
+    else
+      return false
+    end
   end
 
   def attendance
