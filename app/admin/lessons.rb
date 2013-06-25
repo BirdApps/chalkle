@@ -142,7 +142,7 @@ ActiveAdmin.register Lesson  do
 
       if lesson.published?
         row :attendance
-        row "Channel income subtracting GST" do
+        row "Channel income after paying GST" do
           number_to_currency lesson.income
         end
         if current_admin_user.role=="super"
