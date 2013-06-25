@@ -72,6 +72,17 @@ ActiveAdmin.register Lesson  do
         link_to lesson.meetup_id, lesson.meetup_data["event_url"] if lesson.meetup_data.present?
       end
       row :teacher
+      row "Teacher's email" do |lesson|
+        if lesson.teacher_id.present?
+          if Chalkler.find(lesson.teacher_id).email?
+            Chalkler.find(lesson.teacher_id).email
+          else
+            status_tag( "Please click on teacher above and enter his/her email", :error )
+          end
+        else
+          status_tag("Please select a teacher and make sure there is an email contact", :error)
+        end
+      end
       row :categories do |lesson|
         lesson.categories.collect{ |c| c.name}.join(", ")
       end
