@@ -69,7 +69,6 @@ class Lesson < ActiveRecord::Base
   scope :paid, where("cost > 0")
 
   before_create :set_from_meetup_data
-  before_create :set_metadata
 
   def self.upcoming(limit = nil)
     return where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)} if limit.nil?
@@ -298,10 +297,6 @@ class Lesson < ActiveRecord::Base
     self.updated_at = Time.at(meetup_data["updated"] / 1000)
     self.start_at = Time.at(meetup_data["time"] / 1000) if meetup_data["time"]
     self.duration = meetup_data["duration"] / 1000 if meetup_data["duration"]
-  end
-
-  def set_metadata
-    self.visible = true
   end
 
   #price calculation methods
