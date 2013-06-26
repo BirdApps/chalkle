@@ -1,5 +1,5 @@
 Given(/^the chalkler "(.*?)" has booked a class$/) do |name|
-  lesson = FactoryGirl.create(:lesson, cost: 10, start_at: 3.days.from_now, name: 'Cool class!')
+  lesson = FactoryGirl.create(:lesson, cost: 10, start_at: 2.days.from_now, name: 'Cool class!')
   chalkler = Chalkler.find_by_name name
   FactoryGirl.create(:booking, chalkler: chalkler, lesson: lesson)
 end
@@ -51,8 +51,16 @@ Then(/^their booking should not be displayed$/) do
   page.should have_no_content('Cool class!')
 end
 
-Given(/^the chalkler "(.*?)" has changed her status to "(.*?)"$/) do |name, status|
+Given(/^the chalkler "(.*?)" has cancelled their booking$/) do |name|
   chalkler = Chalkler.find_by_name name
   booking = Booking.find_by_chalkler_id chalkler.id
   booking.update_attribute :status, status
+end
+
+Given(/^the chalkler "(.*?)" has paid their booking for a class next week$/) do |name|
+  chalkler = Chalkler.find_by_name name
+  booking = Booking.find_by_chalkler_id chalkler.id
+  lesson = Lesson.find(booking.lesson_id)
+  booking.update_attribute :paid, true
+  lesson.update_attribute :start_at, 7.days.from_now
 end

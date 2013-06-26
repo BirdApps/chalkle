@@ -244,6 +244,18 @@ describe Booking do
     it {Booking.hidden.should_not include(booking)}
   end
 
+  describe "#refundable?" do
+    it "returns false when lesson is less than 3 days away" do
+      lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now)
+      FactoryGirl.build(:booking, lesson: lesson).refundable?.should be_false
+    end
+
+    it "returns true when lesson is more than 3 days away" do
+      lesson = FactoryGirl.create(:lesson, start_at: 4.days.from_now)
+      FactoryGirl.build(:booking, lesson: lesson).refundable?.should be_true
+    end
+  end
+
   describe "#teacher?" do
     it "returns false when lesson has no teacher" do
       lesson = FactoryGirl.create(:lesson, teacher_id: nil)

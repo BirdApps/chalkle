@@ -76,13 +76,13 @@ ActiveAdmin.register Chalkler do
       row :email
       row :phone_number
       row :email_frequency
-      # row "Email categories" do
-      #   if chalkler.email_categories.present?
-      #     chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
-      #   else
-      #     "No email categories selected"
-      #   end
-      # end
+      row "Email categories" do
+        if chalkler.email_categories.present?
+          chalkler.email_categories.collect{|c| Category.find(c,:select => :name).name}.join(", ")
+        else
+          "No email categories selected"
+        end
+      end
       # row "Email streams" do
         # if chalkler.email_streams.present?
           # chalkler.email_streams.collect{|c| Stream.find(c,:select => :name).name}.join(", ")
@@ -95,7 +95,7 @@ ActiveAdmin.register Chalkler do
         render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons_taught }
       end
       row :lessons do
-        render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons }
+        render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons.where{bookings.status.eq 'yes'} }
       end
       if current_admin_user.role=="super"
         row :meetup_data

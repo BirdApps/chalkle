@@ -62,3 +62,30 @@ Scenario: Channel admin can record cash payment for attendees
   When they view this lesson
   And they press the "Pay $20.00" button
   Then this booking should be paid
+
+Scenario: Comments on unreviewed lessons are displayed on the dashboard
+  Given there is an unreviewed lesson with no details in the "Wellington" channel
+  When they view this lesson
+  And they fill in the lessons comments with "This is a comment"
+  When they visit the "Dashboard" tab
+  Then they should see "This is a comment"
+
+Scenario: Channel admin can see warning when the teacher is not assigned
+  Given there is a lesson with no details in the "Wellington" channel
+  When they view this lesson
+  Then they should see "Please Select A Teacher"
+
+Scenario: Channel admin can see the teacher's email
+  Given "Alice" is a chalkler
+  And the chalkler "Alice" belongs to the "Wellington" channel
+  And "Alice" is teaching a lesson
+  When they view this lesson
+  Then they should see "alice@chalkle.com"
+
+Scenario: Channel admin can see warning when teacher has no email
+  Given "Alice" is a chalkler
+  And the chalkler "Alice" belongs to the "Wellington" channel
+  And the chalkler "Alice" has no email
+  And "Alice" is teaching a lesson
+  When they view this lesson
+  Then they should see "Please Click On Teacher Above And Enter Their Email"
