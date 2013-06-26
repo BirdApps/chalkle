@@ -40,7 +40,7 @@ class BookingsController < ApplicationController
       flash[:notice] = 'Your booking is cancelled'
       redirect_to bookings_path
     else
-      flash[:notice] = 'Your booking cannot be cancelled. Please contact your Channel Curator for further information'
+      flash[:alert] = 'Your booking cannot be cancelled. Please contact your Channel Curator for further information'
       redirect_to :back
     end
   end
