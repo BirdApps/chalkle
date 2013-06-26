@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_filter :horowhenua?, :except => [:show, :index]
+  before_filter :horowhenua?, :except => [:show, :index, :cancel]
   before_filter :authenticate_chalkler!
 
   def index
@@ -9,7 +9,7 @@ class BookingsController < ApplicationController
 
   def new
     if current_chalkler.lessons.exists? params[:lesson_id]
-      flash[:notice] = 'You have already attending this class'
+      flash[:notice] = 'You are already attending this class'
       redirect_to :back
     end
     @booking = Booking.new
@@ -31,5 +31,17 @@ class BookingsController < ApplicationController
 
   def show
     @booking = current_chalkler.bookings.find(params[:id]).decorate
+  end
+
+  def cancel
+    @booking = current_chalkler.bookings.find(params[:id])
+    @booking.status = 'no'
+    if @booking.save
+      flash[:notice] = 'Your booking is cancelled'
+      redirect_to bookings_path
+    else
+      flash[:notice] = 'Your booking cannot be cancelled. Please contact your Channel Curator for further information'
+      redirect_to :back
+    end
   end
 end

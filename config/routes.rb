@@ -12,7 +12,12 @@ Chalkle::Application.routes.draw do
     end
   end
 
-  resources :bookings, :only => [:index, :show]
+  resources :bookings, :only => [:index, :show] do
+    member do
+      put 'cancel'
+    end
+  end
+
 
   namespace :chalklers do
     root to: 'dashboard#index'
