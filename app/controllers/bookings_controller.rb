@@ -8,8 +8,8 @@ class BookingsController < ApplicationController
   end
 
   def new
-    if current_chalkler.lessons.where{ bookings.status == 'yes' }.exists? params[:lesson_id]
-      flash[:notice] = 'You have already attending this class'
+    if current_chalkler.lessons.where{ bookings.status.eq 'yes' }.exists? params[:lesson_id]
+      flash[:notice] = 'You are already attending this class'
       redirect_to :back
     end
     @booking = Booking.new
