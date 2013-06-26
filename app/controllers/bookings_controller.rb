@@ -26,7 +26,7 @@ class BookingsController < ApplicationController
     else
       if @booking.errors.full_messages == ["Chalkler has already been taken"]
         id = params[:lesson_id].to_i
-        @booking = current_chalkler.bookings.where{bookings.lesson_id.eq id}.first
+        @booking = current_chalkler.bookings.where{ bookings.lesson_id.eq id }.first
         @booking.update_attributes(:status => 'yes', :guests => params[:booking][:guests])
         redirect_to booking_path @booking
       else
