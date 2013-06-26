@@ -62,7 +62,7 @@ class Booking < ActiveRecord::Base
   end
 
   def refundable?
-    (lesson_start_at.to_datetime - Date.today()) >= 3
+    lesson_start_at > (Time.now + 3.days)
   end
 
   def teacher?
