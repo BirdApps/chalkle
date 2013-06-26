@@ -213,7 +213,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def complete_details?
-    teacher_id.present? && start_at.present? && channels.any? && do_during_class.present? && teacher_cost.present? && venue_cost.present?
+    teacher_id.present? && start_at.present? && channels.any? && do_during_class.present? && teacher_cost.present? && venue_cost.present? && venue.present?
   end
 
   def class_may_cancel

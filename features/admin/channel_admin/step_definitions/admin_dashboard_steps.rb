@@ -46,7 +46,8 @@ end
 Given /^there is lesson in the "(.*?)" channel coming up this week with minimum attendee of "(.*?)"$/ do |channel_name, min_attendee|
   channel = Channel.where(name: channel_name).first_or_create!([name: channel_name, url_name: channel_name.downcase, email: "#{channel_name.downcase}@chalkle.com"], :as => :admin)
   Lesson.where(:name => "Test Class").destroy_all
-  lesson = FactoryGirl.create(:lesson, name: "Test Class", status: "Published", start_at: 2.days.from_now, min_attendee: min_attendee)
+  teacher = FactoryGirl.create(:chalkler, name: "Teacher")
+  lesson = FactoryGirl.create(:lesson, name: "Test Class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, status: "Published", cost: 10, venue: "Town Hall", min_attendee: min_attendee)
   lesson.channels << channel
 end
 
@@ -61,7 +62,7 @@ Given(/^there is lesson in the "(.*?)" channel coming up this week with no teach
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler, name: "Teacher")
   chalkler = FactoryGirl.create(:channel, name: "Student")
-  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, status: "Published", cost: 10)
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, status: "Published", cost: 10, venue: "Town Hall")
   FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, guests: 10, status: 'yes')
   lesson.channels << channel
 end
