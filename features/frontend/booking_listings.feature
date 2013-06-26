@@ -26,7 +26,7 @@ Scenario: Old paid bookings will be hidden from listings
   Then their booking should not be displayed
 
 Scenario: Bookings with status not equal to "yes" will be hidden from listings
-  Given the chalkler "Said" has changed her status to "no"
+  Given the chalkler "Said" has cancelled their booking
   When they visit the bookings page
   Then their booking should not be displayed
 
@@ -37,18 +37,14 @@ Scenario: Chalkler can cancel an unpaid booking
   When they press the "Yes" button
   Then they should see "Your booking is cancelled"
 
-Scenario: Chalkler can cancel a paid booking for a class more than 3 days away and receive refund instructions
+Scenario: A paid booking for a class more than 3 days away is refundable
   Given the chalkler "Said" has paid their booking for a class next week
   When they visit the bookings page
   And they press the "Cancel booking" button
-  Then they should see "Please email Accounts"
-  When they press the "Yes" button
-  Then they should see "Your booking is cancelled"
+  Then they should see "This booking is refundable."
 
-Scenario: Chalkler can cancel a paid booking for a class less than 3 days away and is told there will be no refund
+Scenario: A paid booking for a class less than 3 days away is non-refundable
   Given the chalkler "Said" has paid their booking
   When they visit the bookings page
   And they press the "Cancel booking" button
-  Then they should see "you will not be eligible for a refund"
-  When they press the "Yes" button
-  Then they should see "Your booking is cancelled"
+  Then they should see "This booking is non-refundable."
