@@ -15,7 +15,7 @@
     .span12
       .actions
         - if chalkler_signed_in?
-          - if lesson.bookable? and !current_chalkler.lessons.exists? lesson
+          - if lesson.bookable? and !current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? lesson
             .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)
         - elsif lesson.bookable?
           .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)
