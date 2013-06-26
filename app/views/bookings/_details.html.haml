@@ -7,9 +7,9 @@
       - unless booking.paid?
         = "#{booking.formatted_price} Payment outstanding |"
         != "#{link_to 'How to pay', booking_path(booking)} |"
-      != "#{link_to 'Cancel booking', '#cancelModal', :'data-toggle' => 'modal'}"
+      != "#{link_to 'Cancel booking', "#cancelModal#{booking.id}", :'data-toggle' => 'modal'}"
 
-#cancelModal.modal.hide.fade{ :'tabindex' => '-1', :'role' => 'dialog', :'aria-labelled-by' => 'Cancel booking', :'aria-hidden' => true }
+%div.modal.hide.fade{ :tabindex => '-1', :role => 'dialog', 'aria-labelled-by' => 'Cancel booking', 'aria-hidden' => true, :id => "cancelModal#{booking.id}" }
   .modal-header
     %button.close{:type => 'button', :'data-dismiss' => 'modal', :'aria-hidden' => 'true'} &times;
     %h3 Cancel this booking
