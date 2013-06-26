@@ -33,7 +33,7 @@ describe ChalklerDigest do
     before do
       @category = FactoryGirl.create(:category)
       @chalkler = FactoryGirl.create(:chalkler, email_categories: [@category.id], email_frequency: 'daily')
-      @channel = FactoryGirl.create(:channel)
+      @channel = FactoryGirl.create(:channel, visible: true)
       @chalkler.channels << @channel
       @digest = ChalklerDigest.new(@chalkler)
       @lesson = FactoryGirl.create(:lesson,
@@ -92,6 +92,11 @@ describe ChalklerDigest do
         @lesson.update_attribute :published_at, 2.days.ago
         @digest.instance_eval{ new_lessons }.should be_empty
       end
+
+      it "won't load a lesson from a hidden channel" do
+        @channel.update_attribute :visible, false
+        @digest.instance_eval{ new_lessons }.should be_empty
+      end
     end
 
     describe "#default_new_lessons" do
@@ -112,6 +117,11 @@ describe ChalklerDigest do
 
       it "won't load a lesson that is more than 1 day old" do
         @lesson.update_attribute :published_at, 2.days.ago
+        @digest.instance_eval{ default_new_lessons }.should be_empty
+      end
+
+      it "won't load a lesson from a hidden channel" do
+        @channel.update_attribute :visible, false
         @digest.instance_eval{ default_new_lessons }.should be_empty
       end
     end
@@ -160,6 +170,11 @@ describe ChalklerDigest do
         @lesson.destroy
         @digest.instance_eval{ open_lessons }.should be_empty
       end
+
+      it "won't load a lesson from a hidden channel" do
+        @channel.update_attribute :visible, false
+        @digest.instance_eval{ open_lessons }.should be_empty
+      end
     end
 
     describe "#default_open_lessons" do
@@ -198,6 +213,11 @@ describe ChalklerDigest do
 
       it "won't choke on an empty set" do
         @lesson.destroy
+        @digest.instance_eval{ open_lessons }.should be_empty
+      end
+
+      it "won't load a lesson from a hidden channel" do
+        @channel.update_attribute :visible, false
         @digest.instance_eval{ open_lessons }.should be_empty
       end
     end
