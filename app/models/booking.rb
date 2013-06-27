@@ -28,7 +28,7 @@ class Booking < ActiveRecord::Base
   before_create :set_from_meetup_data
   before_validation :set_free_lesson_attributes
 
-  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cost, :to => :lesson, prefix: true
+  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cost, :meetup_url, :to => :lesson, prefix: true
 
   BOOKING_STATUSES = %w(yes waitlist no pending no-show)
 

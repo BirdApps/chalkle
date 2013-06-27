@@ -1,0 +1,45 @@
+%p Hello #{@chalkler.name.split[0]},
+%p Thank you for signing up to the upcoming chalkle&deg; classes. This is a reminder that payment for classes should be made prior to their start dates. Your reservation is not confirmed until payment has been made.
+
+- if @bookings.any?
+  %h2 Your have #{pluralize(@bookings.count, "unpaid class")}:
+  %table.class-list{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0"}
+    - @bookings.each do |b|
+      %tr
+        %td
+          %h3= link_to b.lesson_name.capitalize, "http://my.chalkle.com/#{booking_path(b)}"
+          %p.details
+            = l b.lesson_start_at, :format => :long_without_year if b.lesson_start_at.present?
+            = "| #{b.lesson_venue ? b.lesson_venue : "TBD"}"
+          %ul.unstyled
+            %li
+              %strong Price:
+              = b.formatted_price
+            %li
+              %strong How to pay:
+              - if b.payment_method == 'cash'
+                = "Pay #{b.formatted_price} cash at Te Takere service desk prior to course."
+              - elsif b.payment_method == 'bank'
+                = "Deposit #{b.formatted_price} into the following account:"
+                %ul.unstyled
+                  %li
+                    %strong Account number:
+                    = b.lesson.channels.first.account
+                  %li
+                    %strong Reference:
+                    = "#{b.lesson.id} - #{@chalkler.name}"
+              - elsif b.payment_method == 'meetup'
+                Make payment using the #{link_to 'Meeup Event site',b.lesson_meetup_url.to_s}
+            - if b.lesson_prerequisites
+              %li
+                %strong What to bring:
+                = "#{b.lesson_prerequisites.empty? ? "Nothing" : b.lesson_prerequisites}"
+            - if b.guests?
+              %li
+                %strong Attendees:
+                = "You and #{pluralize(b.guests,"guest")} "
+
+- if @chalkler.channels.any?
+  %p= "See more classes from: #{@chalkler.channel_links}".html_safe
+
+%p#signoff Thank you for supporting chalkle&deg; and we look forward to seeing you soon!

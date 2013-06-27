@@ -1,6 +1,6 @@
+# encoding: UTF-8
 class BookingMailer < ActionMailer::Base
-  layout 'standard_mailer'
-  default from: "accounts@chalkle.com"
+  default from: '"chalkle°" <noreply@chalkle.com>' 
 
   def first_reminder_to_pay(chalkler,lesson)
   	#this email is sent both when a new confirmed booking is made, unless it is made less than 3 days from start of class
@@ -9,19 +9,14 @@ class BookingMailer < ActionMailer::Base
   	mail(to: chalkler.email, subject: chalkler.name + " - " + lesson.name)
   end
 
-  def second_reminder_to_pay(chalkler,lesson)
-  	#this tells them they will be moved to waitlist if they don't pay, sent 3 days before class
-    @chalkler = chalkler
-    @lesson = lesson
-    mail(to: chalkler.email, subject: chalkler.name + " - " + lesson.name)
-  end
-
-  def third_reminder_to_pay(chalkler,lesson)
-  	#this tells them they will be moved to yes if they pay, sent 2 days before class
-  	#DO NOT automate this until push to meetup has been achieved
-    @chalkler = chalkler
-    @lesson = lesson
-    mail(to: chalkler.email, subject: chalkler.name + " - " + lesson.name)
+  def pay_reminder(chalkler,bookings)
+    #this email is sent 5 days before the class as a reminder to anyone who hasn't paid and again at 3 days ahead of the class
+    @bookings = BookingDecorator.decorate_collection(bookings)
+    @chalkler = ChalklerDecorator.decorate(chalkler)
+    mail(to: @chalkler.email, subject: @chalkler.name + " - " + "your upcoming 'chalkle°' classes") do |format|
+      format.text
+      format.html { render :layout => 'standard_mailer' }
+    end
   end
 
   def reminder_after_class(chalkler,lesson)
