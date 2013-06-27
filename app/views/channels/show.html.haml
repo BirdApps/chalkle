@@ -1,6 +1,15 @@
 - title "Upcoming Classes - #{@channel.name}"
 
-%h2= "#{@channel.name}: Upcoming Classes"
+%h2= "Welcome to chalkle° in #{@channel.name}"
+
+%h4= "Discover a class you are interested in"
+%p= "Browse our buffet of upcoming classes below"
+%h4= "Sign up today and learn with your fellow chalklers"
+%p= "Click on “Join” to make a booking and sign up to your favourite class today!"
+%h4= "Change your reservation?"
+%p=  "Just click on “Bookings” above and scroll down to the booking you want to change"
+%h4= "Pay for your class"
+%p= "If you haven’t paid for your booking, click on “Bookings” above and follow the payment instructions shown. Your spot in the class is not guaranteed until you have paid!"
 
 .lesson-list
   - @lessons.each do |lesson|
