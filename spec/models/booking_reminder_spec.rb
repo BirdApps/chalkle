@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe BookingReminder do
   describe "#initialize" do
-    let(:chalkler){ FactoryGirl.create(:chalkler) }
+    let(:chalkler){ FactoryGirl.build(:chalkler) }
     let(:reminder) { BookingReminder.new(chalkler, 3.days) }
 
     it "sets @chalkler" do
@@ -103,6 +103,17 @@ describe BookingReminder do
       @reminder.instance_eval{ remind_now }.should == [booking, @booking]
     end
   
+  end
+
+  describe ".log_times" do
+    it "record current time in reminder email sent" do
+      chalkler = FactoryGirl.create(:chalkler)
+      lesson = FactoryGirl.create(:lesson)
+      booking = FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler)
+      reminder = BookingReminder.new(chalkler, 3.days)
+      reminder.instance_eval {log_times([booking])}
+      booking.reminder_last_sent_at.to_i.should == Time.now.to_time.to_i
+    end
   end
     
   describe ".load_chalklers" do

@@ -6,7 +6,10 @@ class BookingReminder
 
   def create!
     bookings = remind_now
-    BookingMailer.pay_reminder(@chalkler, bookings).deliver! if bookings.any?
+    if bookings.any?
+      BookingMailer.pay_reminder(@chalkler, bookings).deliver!
+      log_times(bookings)
+    end
   end
 
   def self.load_chalklers
@@ -27,6 +30,12 @@ class BookingReminder
       return bookings.sort_by{|b| b[:lesson_start_at]}.reverse
     else
       return []
+    end
+  end
+
+  def log_times(bookings)
+    bookings.each do |b|
+      b.update_attributes!({:reminder_last_sent_at => Time.now.utc.to_datetime}, :as => :admin)
     end
   end
 
