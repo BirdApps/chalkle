@@ -95,7 +95,7 @@ class Booking < ActiveRecord::Base
   end
 
   def second_email_condition
-    self.emailable && self.lesson.class_coming_up
+    self.emailable && self.lesson.class_coming_up && (self.chalkler.email.nil? || self.chalkler.email == "")
   end
 
   def third_email_condition
