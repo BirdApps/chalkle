@@ -215,6 +215,26 @@ describe Booking do
     end
   end
 
+  describe ".upcoming" do
+    it "includes booking for lessons in the future" do
+      lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, visible: true)
+      booking = FactoryGirl.create(:booking, lesson: lesson)
+      Booking.upcoming.should include(booking)
+    end
+
+    it "excludes bookings for lessons in the past" do
+      lesson = FactoryGirl.create(:lesson, start_at: 2.days.ago, visible: true)
+      booking = FactoryGirl.create(:booking, lesson: lesson)
+      Booking.upcoming.should_not include(booking)
+    end
+
+    it "excludes bookings for cancelled lessons" do
+      lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, visible: false)
+      booking = FactoryGirl.create(:booking, lesson: lesson)
+      Booking.upcoming.should_not include(booking)
+    end
+  end
+
   describe "#name" do
     it "creates name when lesson and chalkler present" do
       lesson = FactoryGirl.create(:lesson, name: "lesson_name", meetup_id: 12345678)
@@ -275,7 +295,7 @@ describe Booking do
       FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_false
     end
   end
-
+end
 
   # describe "reminder to pay emails" do
     # pending "never email teachers" do
@@ -398,5 +418,5 @@ describe Booking do
       # booking.no_show_email_condition.should be_false
     # end
   # end
+# end
 
-end

@@ -1,71 +1,31 @@
 class BookingReminder
-  def initialize(c)
+  def initialize(c, lesson_start_in)
     @chalkler = c
-    @frequency = @chalkler.email_frequency
-    @digest_period = (@chalkler.email_frequency == 'daily') ? 1.day : 7.days
-    @date_offset = Time.now.utc - @digest_period
-    @limit = (@chalkler.email_frequency == 'daily') ? 5 : 8
+    @lesson_start_in = lesson_start_in
   end
 
   def create!
-    new = new_lessons
-    new = default_new_lessons if new.empty?
-    open = open_lessons
-    open = default_open_lessons if open.empty?
-    # TODO move this to delayed job
-    ChalklerMailer.digest(@chalkler, new, open).deliver! if (new.any? || open.any?)
+    bookings = remind_now
+    BookingMailer.pay_reminder(@chalkler, bookings).deliver! if bookings.any?
   end
 
-  def self.load_chalklers(freq)
-    Chalkler.where{(email != "") & (email_frequency == freq)}
+  def self.load_chalklers
+    chalklers = Booking.visible.confirmed.billable.unpaid.upcoming.select("DISTINCT chalkler_id").map{ |b| Chalkler.find(b.chalkler_id)}
+    chalklers.delete_if { |c| (c.email == nil || c.email == "") }
   end
 
-  private
-
-  def new_lessons
-    Lesson.visible.published.joins(:categories, :channels).where("lessons.published_at > ? AND
-                                                                  lessons.meetup_url IS NOT NULL AND
-                                                                  lessons.do_during_class IS NOT NULL AND
-                                                                  lesson_categories.category_id IN (?) AND
-                                                                  channel_lessons.channel_id IN (?) AND
-                                                                  channels.visible=true",
-                                                                  @date_offset, @chalkler.email_categories,
-                                                                  @chalkler.channels).order("start_at").limit(@limit).uniq
+  def remindable
+    bookings = @chalkler.bookings.visible.confirmed.billable.unpaid.upcoming
+    bookings.delete_if { |b| (b.teacher? == true || b.lesson.channels.any? == false || b.lesson_start_at.present? == false) }
   end
 
-  def default_new_lessons
-    Lesson.visible.published.joins(:channels).where("lessons.published_at > ? AND
-                                                     lessons.meetup_url IS NOT NULL AND
-                                                     lessons.do_during_class IS NOT NULL AND
-                                                     channel_lessons.channel_id IN (?) AND
-                                                     channels.visible=true",
-                                                     @date_offset, @chalkler.channels).order("start_at").limit(@limit).uniq
-  end
-
-  def open_lessons
-    lessons = Lesson.visible.published.joins(:categories, :channels).where("lessons.start_at > ? AND
-                                                                            lessons.published_at <= ? AND
-                                                                            lessons.meetup_url IS NOT NULL AND
-                                                                            lessons.do_during_class IS NOT NULL AND
-                                                                            lesson_categories.category_id IN (?) AND
-                                                                            channel_lessons.channel_id IN (?) AND
-                                                                            channels.visible=true",
-                                                                            Time.now.utc + 1.day, @date_offset, @chalkler.email_categories,
-                                                                            @chalkler.channels).order("start_at").uniq
-    lessons.delete_if { |l| l.bookable? == false  }
-    lessons.shift @limit
-  end
-
-  def default_open_lessons
-    lessons = Lesson.visible.published.joins(:channels).where("lessons.start_at > ? AND
-                                                               lessons.published_at <= ? AND
-                                                               lessons.meetup_url IS NOT NULL AND
-                                                               lessons.do_during_class IS NOT NULL AND
-                                                               channel_lessons.channel_id IN (?) AND
-                                                               channels.visible=true",
-                                                               Time.now.utc + 1.day, @date_offset, @chalkler.channels).order("start_at").uniq
-    lessons.delete_if { |l| l.bookable? == false  }
-    lessons.shift @limit
+  def remind_now
+    if remindable.any?
+      bookings = remindable.keep_if {|b| (b.lesson_start_at <= (Time.now.utc + @lesson_start_in)) & (b.lesson_start_at > (Time.now.utc + @lesson_start_in - 1.day)) }
+      return bookings.sort_by{|b| b[:lesson_start_at]}
+    else
+      return []
+    end
   end
 
 end

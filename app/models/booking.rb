@@ -23,7 +23,7 @@ class Booking < ActiveRecord::Base
   scope :billable, joins(:lesson).where{ (lessons.cost > 0) & (status == 'yes') & ((chalkler_id != lessons.teacher_id) | (guests > 0)) }
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :upcoming, lambda{ joins{ :lesson }.where{ lessons.start_at > Time.now.utc } }
+  scope :upcoming, lambda{ joins{ :lesson }.where{ (lessons.start_at > Time.now.utc) & lessons.visible } }
 
   before_create :set_from_meetup_data
   before_validation :set_free_lesson_attributes

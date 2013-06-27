@@ -22,5 +22,23 @@ begin
       end
     end
 
+    desc "Send 5 day reminder to pay emails"
+    task "five_day_reminder" => :environment do
+      chalklers = BookingReminder.load_chalklers
+      chalklers.each do |c|
+        reminder = BookingReminder.new(c, 5.days)
+        reminder.create!
+      end
+    end
+
+    desc "Send 3 day reminder to pay emails"
+    task "three_day_reminder" => :environment do
+      chalklers = BookingReminder.load_chalklers
+      chalklers.each do |c|
+        reminder = BookingReminder.new(c, 3.days)
+        reminder.create!
+      end
+    end
+
   end
 end
