@@ -11,13 +11,6 @@ describe Lesson do
 
   let(:lesson) { FactoryGirl.create(:lesson) }
 
-  describe "Class image upload" do
-    it "is does not allow files with invalid extension" do
-      lesson.lesson_upload_image = File.new("#{Rails.root}/app/models/ability.rb")
-      lesson.should_not be_valid
-    end
-  end
-
   describe "column validations" do
     it "should not allow non valid status" do
       lesson.status = "resres"

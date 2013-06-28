@@ -99,3 +99,8 @@ Then(/^they should see this image$/) do
   page.should have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
   FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
 end
+
+When(/^they visit the "(.*?)" channel class listing$/) do |name|
+  channel = Channel.find_by_name name
+  visit channel_path(channel)
+end

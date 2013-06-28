@@ -97,3 +97,5 @@ Scenario: Upload an image for the class
   When they edit this lesson
   And they attach an image to the lesson
   Then they should see this image
+  When they visit the "Wellington" channel class listing
+  Then they should see this image
