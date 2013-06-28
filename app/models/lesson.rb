@@ -12,7 +12,7 @@ class Lesson < ActiveRecord::Base
     :lesson_skill, :venue, :published_at, :category_ids, :channel_ids,
     :lesson_image_attributes, :channel_percentage_override,
     :chalkle_percentage_override, :material_cost, :suggested_audience,
-    :chalkle_payment, :as => :admin
+    :chalkle_payment, :lesson_upload_image, :remove_lesson_upload_image, :as => :admin
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -23,6 +23,7 @@ class Lesson < ActiveRecord::Base
   has_many :payments, :through => :bookings
   belongs_to :teacher, class_name: "Chalkler"
   has_one :lesson_image, :dependent => :destroy, :inverse_of => :lesson
+  mount_uploader :lesson_upload_image, LessonUploadImageUploader
 
   accepts_nested_attributes_for :lesson_image
 
@@ -55,6 +56,7 @@ class Lesson < ActiveRecord::Base
   validate :max_teacher_cost
   validate :revenue_split_validation
   validate :min_teacher_percentage
+  validate :image_size
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -105,6 +107,12 @@ class Lesson < ActiveRecord::Base
     return unless (channel_percentage_override? || chalkle_percentage_override?) and teacher_cost.present?
     errors.add(:channel_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
     errors.add(:chalkle_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
+  end
+
+  def image_size
+    if lesson_upload_image.file.size.to_f/(1000*1000) > 4.to_f
+      errors.add(:lesson_upload_image, "You cannot upload an image greater than 4 MB")
+    end
   end
 
   def default_chalkle_percentage

@@ -1,4 +1,4 @@
-=semantic_form_for [:admin, @lesson] do |f|
+=semantic_form_for [:admin, @lesson], :html => {:multipart => true}  do |f|
   =f.inputs :details do
     =f.input :name
     =f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
@@ -38,8 +38,13 @@
       =f.input :teacher_payment, :label => "Payment to teacher (leave blank if not paid)"
       =f.input :chalkle_payment, :label => "Payment to Chalkle (leave blank if not paid)"
     =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Approved", "Unreviewed", "Processing"], :input_html => { :multiple => false }, include_blank: false
+    -if @lesson.lesson_upload_image.present?
+      =f.input :lesson_upload_image, :as => :file, :label => "Image to show on class listing", :hint => f.template.image_tag(f.object.lesson_upload_image.url(:thumb), alt: File.basename(@lesson.lesson_upload_image.path))
+      =f.input :remove_lesson_upload_image, as: :boolean, :label => "Check here to remove the current image"
+    -else
+      =f.input :lesson_upload_image, :as => :file, :label => "Image to show on class listing", :hint => "Allowed types are jpg, jpeg, gif, png"
 
-  =f.inputs "Lesson Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
+  =f.inputs "Chalkboard Image", :for => [:lesson_image, f.object.lesson_image || LessonImage.new ] do |fi|
     -title = (@lesson.lesson_image.try(:title)) ? @lesson.lesson_image.title : @lesson.name
     =fi.input :title, :as => :text, :hint => "Image will be created based on title formatting. Linebreaks will be preserved. Break title into multiple lines to make the text bigger",  :input_html => { :rows => 5, :value => title }
   =f.actions
