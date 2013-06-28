@@ -401,6 +401,4 @@ describe Lesson do
 
   end
 
-
-
 end
