@@ -96,6 +96,6 @@ Scenario: Upload an image for the class
   Given there is a lesson with no details in the "Wellington" channel
   When they edit this lesson
   And they attach an image to the lesson
-  Then they should see this image
+  Then this image should be saved
   When they visit the "Wellington" channel class listing
-  Then they should see this image
+  Then they should see this image on the class listing

@@ -95,12 +95,17 @@ When(/^they attach an image to the lesson$/) do
   click_button 'Update Lesson'
 end
 
-Then(/^they should see this image$/) do
-  page.should have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
-  FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
+Then(/^this image should be saved$/) do
+  lesson = Lesson.find_by_name "Test Class"
+  File.exist?("#{Rails.root}/public/uploads/test/lesson/lesson_upload_image/#{lesson.id}/chalkle_logo_strapline_stacked.png")
 end
 
 When(/^they visit the "(.*?)" channel class listing$/) do |name|
   channel = Channel.find_by_name name
   visit channel_path(channel)
+end
+
+Then(/^they should see this image on the class listing$/) do
+  page.should have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
+  FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
 end
