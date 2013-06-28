@@ -9,7 +9,7 @@
         %th Week
         %th Turnover (total collected from classes)
         %th % Change turnover
-        %th Cost*
+        %th Costs*
         %th % Change cost
         %th Gross Profit after paying GST
         %th % Change profit
@@ -37,7 +37,7 @@
         %td <strong> #{number_to_percentage( financial_table.average("percent_profit") , :precision => 0 )} </strong>
 
   %p
-    *Cost includes teacher, venue and material cost
+    *Costs include teacher, venue and material costs
 
   %h4 
     Classes
@@ -104,7 +104,7 @@
         %td <strong> #{number_to_percentage( chalkler_table.average("percent_active"), :precision => 0)} </strong>
 
   %p
-    *A chalkler is active if he has RSVP activities within the last 3 months
+    *A chalkler is active if he has RSVP activities within the last 2 months
 
 
 
