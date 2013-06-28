@@ -89,3 +89,13 @@ Given(/^the chalkler "(.*?)" has no email$/) do |name|
   chalkler = Chalkler.find_by_name name
   chalkler.update_attributes({:meetup_id => 1234567, :email => nil}, :as => :admin)
 end
+
+When(/^they attach an image to the lesson$/) do
+  attach_file('lesson_lesson_upload_image', "#{Rails.root}/app/assets/images/chalkle_logo_strapline_stacked.png")
+  click_button 'Update Lesson'
+end
+
+Then(/^they should see this image$/) do
+  page.should have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
+  FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
+end

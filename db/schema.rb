@@ -53,15 +53,14 @@ ActiveRecord::Schema.define(:version => 20130627210444) do
     t.integer  "lesson_id"
     t.integer  "chalkler_id"
     t.string   "status"
-    t.integer  "guests",                                              :default => 0
-    t.boolean  "paid",                                                :default => false
+    t.integer  "guests",                                       :default => 0
+    t.boolean  "paid",                                         :default => false
     t.text     "meetup_data"
-    t.datetime "created_at",                                                             :null => false
-    t.datetime "updated_at",                                                             :null => false
-    t.boolean  "visible",                                             :default => true
-    t.decimal  "cost_override",         :precision => 8, :scale => 2
+    t.datetime "created_at",                                                      :null => false
+    t.datetime "updated_at",                                                      :null => false
+    t.boolean  "visible",                                      :default => true
+    t.decimal  "cost_override",  :precision => 8, :scale => 2
     t.string   "payment_method"
-    t.datetime "reminder_last_sent_at"
   end
 
   create_table "categories", :force => true do |t|
@@ -231,7 +230,6 @@ ActiveRecord::Schema.define(:version => 20130627210444) do
     t.text     "suggested_audience"
     t.string   "meetup_url"
     t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
-    t.datetime "attendance_last_sent_at"
     t.string   "lesson_upload_image"
   end
 

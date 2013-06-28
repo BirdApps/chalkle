@@ -110,6 +110,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def image_size
+    return unless lesson_upload_image.present?
     if lesson_upload_image.file.size.to_f/(1000*1000) > 4.to_f
       errors.add(:lesson_upload_image, "You cannot upload an image greater than 4 MB")
     end
