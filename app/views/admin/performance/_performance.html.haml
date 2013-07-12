@@ -1,7 +1,7 @@
 -channels.each do |c|
   %h3
     #{c.name} Channel
-  %h4 
+  %h4
     Financials
   %table
     %thead
@@ -39,7 +39,7 @@
   %p
     *Costs include teacher, venue and material costs
 
-  %h4 
+  %h4
     Classes
   %table
     %thead
@@ -72,7 +72,7 @@
         %td <strong> #{number_to_human lessons_table.average("cancelled_lessons")} classes </strong>
         %td <strong> #{number_to_percentage( lessons_table.average("percent_cancelled_lessons"), :precision => 0)} </strong>
 
-  %h4 
+  %h4
     Chalklers
   %table
     %thead
@@ -104,9 +104,9 @@
         %td <strong> #{number_to_percentage( chalkler_table.average("percent_active"), :precision => 0)} </strong>
 
   %p
-    *A chalkler is active if he has RSVP activities within the last 2 months
+    * A chalkler is active if they have RSVP activities within the last 2 months
 
 
 
 
-     
+
