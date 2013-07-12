@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem 'pg', '~> 0.14.1'
+gem 'pg', '~> 0.15.1'
 
 # Authentication
 gem 'devise',           '~> 2.2.3'
