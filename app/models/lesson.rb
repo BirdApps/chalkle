@@ -26,6 +26,8 @@ class Lesson < ActiveRecord::Base
 
   accepts_nested_attributes_for :lesson_image
 
+  delegate :name, :to => :teacher, :prefix => true
+
   #Time span for classes requiring attention
   PAST = 3
   IMMEDIATE_FUTURE= 5

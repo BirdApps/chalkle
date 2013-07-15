@@ -22,8 +22,8 @@
       - elsif @lesson.bookable?
         .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
 
-    = render :partial => 'lessons/lesson_details', :locals => { :lesson => @lesson }
-    = render :partial => 'chalklers/teacher_details', :locals => { :teacher => @lesson.teacher }
+    = render :partial => 'lesson_details', :locals => { :lesson => @lesson }
+    = render :partial => 'teacher_details', :locals => { :lesson => @lesson }
 
 :coffeescript
   signedIn = () ->
