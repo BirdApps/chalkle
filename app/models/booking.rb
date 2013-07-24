@@ -70,6 +70,10 @@ class Booking < ActiveRecord::Base
     chalkler_id == lesson_teacher_id
   end
 
+  def cancelled?
+    (status == 'no') ? true : false
+  end
+
   def self.create_from_meetup_hash result
     b = Booking.find_or_initialize_by_meetup_id result.rsvp_id
     b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
