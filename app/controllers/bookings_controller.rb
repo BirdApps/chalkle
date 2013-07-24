@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_filter :horowhenua?, :except => [:show, :index, :cancel]
+  before_filter :horowhenua?, :except => [:show, :index, :cancel, :edit, :update]
   before_filter :authenticate_chalkler!
 
   def index
@@ -31,6 +31,21 @@ class BookingsController < ApplicationController
 
   def show
     @booking = current_chalkler.bookings.find(params[:id]).decorate
+  end
+
+  def edit
+    @booking = Booking.find(params[:id]).decorate
+    @lesson = @booking.lesson.decorate
+  end
+
+  def update
+    @booking = Booking.new params[:booking]
+    if @booking.save
+      redirect_to booking_path @booking
+    else
+      @lesson = @booking.lesson.decorate
+      render action: 'edit'
+    end
   end
 
   def cancel
