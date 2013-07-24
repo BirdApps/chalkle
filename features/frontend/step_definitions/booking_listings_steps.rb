@@ -64,3 +64,17 @@ Given(/^the chalkler "(.*?)" has paid their booking for a class next week$/) do 
   booking.update_attribute :paid, true
   lesson.update_attribute :start_at, 7.days.from_now
 end
+
+Given(/^the chalkler "(.*?)" has cancelled a booking$/) do |name|
+  chalkler = Chalkler.find_by_name name
+  lesson = Lesson.find_by_name 'Test class'
+  FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, status: 'no', payment_method: 'cash')
+end
+
+When(/^they fill out the booking form$/) do
+    pending # express the regexp above with the code you wish you had
+end
+
+Then(/^their booking should be updated$/) do
+    pending # express the regexp above with the code you wish you had
+end

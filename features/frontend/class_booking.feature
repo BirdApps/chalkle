@@ -1,5 +1,6 @@
 Feature: Class bookings
-  In order to participate in chalkle activites, chalkler must be able to view and sign up to classes
+  In order to participate in chalkle activites, chalkler must be able to view
+  and sign up to classes
 
 Background:
   Given "Said" is a chalkler
@@ -48,3 +49,12 @@ Scenario: Booking confirmation shows paid when rebooking a paid class
   And they agree with the terms and conditions
   And they press the "Confirm booking" button
   Then they should see "Payment received, thanks!"
+
+Scenario: A cancelled booking can be rebooked
+  Given the chalkler "Said" has cancelled a booking
+  When they visit the class listings
+  Then they should see "Join this class"
+  And they press the "Join this class" button
+  And they fill out the booking form
+  Then they should see "Payment received, thanks!"
+  And their booking should be updated
