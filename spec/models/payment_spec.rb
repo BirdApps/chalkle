@@ -11,17 +11,6 @@ describe Payment do
     FactoryGirl.build(:payment).should be_valid
   end
 
-  describe ".unreconcile" do
-    it "unreconciles a payment" do
-      booking = FactoryGirl.create(:booking)
-      payment = FactoryGirl.create(:payment, booking: booking, reconciled: true)
-      payment.unreconcile
-      payment.reload.reconciled?.should be_false
-      payment.reload.booking.should be_nil
-    end
-  end
-
-
   describe "scopes" do
     let(:payment) { FactoryGirl.create(:payment) }
 
