@@ -1,6 +1,7 @@
 class BookingsController < ApplicationController
-  before_filter :horowhenua?, :except => [:show, :index, :cancel, :edit, :update]
   before_filter :authenticate_chalkler!
+  before_filter :horowhenua?, :except => [:show, :index, :cancel, :edit, :update]
+  before_filter :redirect_on_paid, :only => [:edit, :update]
 
   def index
     @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
@@ -20,7 +21,9 @@ class BookingsController < ApplicationController
     @booking = Booking.new params[:booking]
     @booking.chalkler = current_chalkler
     @booking.enforce_terms_and_conditions = true
-    if @booking.save
+    if @booking.valid?
+      destroy_if_cancelled
+      @booking.save
       redirect_to booking_path @booking
     else
       @lesson = Lesson.find(params[:lesson_id]).decorate
@@ -40,7 +43,6 @@ class BookingsController < ApplicationController
 
   def update
     @booking = current_chalkler.bookings.find(params[:id])
-    redirect_edit_on_paid(@booking) if @booking.paid?
     @booking.update_attributes params[:booking]
     if @booking.save
       redirect_to booking_path @booking
@@ -64,8 +66,15 @@ class BookingsController < ApplicationController
 
   private
 
-  def redirect_edit_on_paid(booking)
-    flash[:alert] = 'You cannot edit a paid booking'
-    redirect_to booking_path @booking
+  def redirect_on_paid
+    booking = Booking.find(params[:id])
+    if booking.paid?
+      flash[:alert] = 'You cannot edit a paid booking'
+      redirect_to booking_path booking
+    end
+  end
+
+  def destroy_if_cancelled
+    current_chalkler.bookings.where{ (lesson_id == my{params[:lesson_id]}) & (status == 'no') }.destroy_all
   end
 end
