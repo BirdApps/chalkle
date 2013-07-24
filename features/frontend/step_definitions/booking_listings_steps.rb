@@ -2,7 +2,7 @@ Given(/^the chalkler "(.*?)" has booked a class$/) do |name|
   lesson = FactoryGirl.create(:lesson, cost: 10, start_at: 2.days.from_now, name: 'Cool class!')
   lesson.channels << FactoryGirl.create(:channel)
   chalkler = Chalkler.find_by_name name
-  FactoryGirl.create(:booking, chalkler: chalkler, lesson: lesson)
+  FactoryGirl.create(:booking, chalkler: chalkler, lesson: lesson, payment_method: 'cash')
 end
 
 When(/^they visit the bookings page$/) do
@@ -79,10 +79,26 @@ Then(/^they should see the Edit Booking form$/) do
 end
 
 When(/^they edit their booking$/) do
-  select '5', from: 'Attendees'
+  page.select 'Just me', from: 'Attendees'
   click_button 'Confirm booking'
 end
 
 Then(/^their booking should be updated$/) do
-    pending # express the regexp above with the code you wish you had
+  chalkler = Chalkler.find_by_name 'Said'
+  booking = Booking.find_by_chalkler_id chalkler
+  booking.guests.should == 0
+end
+
+Then(/^they should not see the "(.*?)" link$/) do |arg1|
+  page.should_not have_content 'Edit'
+end
+
+When(/^they manually try to edit a paid booking$/) do
+  chalkler = Chalkler.find_by_name 'Said'
+  booking = Booking.find_by_chalkler_id chalkler
+  visit edit_booking_path booking
+end
+
+Then(/^they should be redirected back to the single booking page$/) do
+  page.should have_content 'You cannot edit a paid booking'
 end

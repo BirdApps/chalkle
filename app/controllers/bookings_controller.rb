@@ -20,19 +20,11 @@ class BookingsController < ApplicationController
     @booking = Booking.new params[:booking]
     @booking.chalkler = current_chalkler
     @booking.enforce_terms_and_conditions = true
-    @booking.status = 'yes'
     if @booking.save
       redirect_to booking_path @booking
     else
-      if @booking.errors.full_messages == ["Chalkler has already been taken"]
-        id = params[:lesson_id].to_i
-        @booking = current_chalkler.bookings.where{ bookings.lesson_id.eq id }.first
-        @booking.update_attributes(:status => 'yes', :guests => params[:booking][:guests])
-        redirect_to booking_path @booking
-      else
-        @lesson = Lesson.find(params[:lesson_id]).decorate
-        render action: 'new'
-      end
+      @lesson = Lesson.find(params[:lesson_id]).decorate
+      render action: 'new'
     end
   end
 
@@ -41,12 +33,15 @@ class BookingsController < ApplicationController
   end
 
   def edit
-    @booking = Booking.find(params[:id]).decorate
+    @booking = current_chalkler.bookings.find(params[:id]).decorate
+    redirect_edit_on_paid(@booking) if @booking.paid?
     @lesson = @booking.lesson.decorate
   end
 
   def update
-    @booking = Booking.new params[:booking]
+    @booking = current_chalkler.bookings.find(params[:id])
+    redirect_edit_on_paid(@booking) if @booking.paid?
+    @booking.update_attributes params[:booking]
     if @booking.save
       redirect_to booking_path @booking
     else
@@ -65,5 +60,12 @@ class BookingsController < ApplicationController
       flash[:alert] = 'Your booking cannot be cancelled. Please contact your Channel Curator for further information'
       redirect_to :back
     end
+  end
+
+  private
+
+  def redirect_edit_on_paid(booking)
+    flash[:alert] = 'You cannot edit a paid booking'
+    redirect_to booking_path @booking
   end
 end
