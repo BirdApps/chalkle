@@ -1,12 +1,14 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem 'pg', '~> 0.14.1'
+gem 'pg', '~> 0.15.1'
 
 # Authentication
 gem 'devise',           '~> 2.2.3'
 gem 'omniauth',         '~> 1.1.1'
-gem 'omniauth-meetup',  '~> 0.0.6'
+# temporarily broken
+# gem 'omniauth-meetup',  '~> 0.0.6'
+gem 'omniauth-meetup',  :git => "git://github.com/kiesia/omniauth-meetup.git"
 
 # Authorisation
 gem 'cancan',  '~> 1.6.8'

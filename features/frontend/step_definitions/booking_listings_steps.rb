@@ -1,5 +1,6 @@
 Given(/^the chalkler "(.*?)" has booked a class$/) do |name|
   lesson = FactoryGirl.create(:lesson, cost: 10, start_at: 2.days.from_now, name: 'Cool class!')
+  lesson.channels << FactoryGirl.create(:channel)
   chalkler = Chalkler.find_by_name name
   FactoryGirl.create(:booking, chalkler: chalkler, lesson: lesson)
 end
@@ -65,14 +66,21 @@ Given(/^the chalkler "(.*?)" has paid their booking for a class next week$/) do 
   lesson.update_attribute :start_at, 7.days.from_now
 end
 
-Given(/^the chalkler "(.*?)" has cancelled a booking$/) do |name|
-  chalkler = Chalkler.find_by_name name
-  lesson = Lesson.find_by_name 'Test class'
-  FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler, status: 'no', payment_method: 'cash')
+Then(/^they their booking should be editable$/) do
+  page.should have_content 'Edit'
 end
 
-When(/^they fill out the booking form$/) do
-    pending # express the regexp above with the code you wish you had
+When(/^they click the "Edit" link$/) do
+  click_link 'Edit'
+end
+
+Then(/^they should see the Edit Booking form$/) do
+  page.should have_content 'Edit Booking'
+end
+
+When(/^they edit their booking$/) do
+  select '5', from: 'Attendees'
+  click_button 'Confirm booking'
 end
 
 Then(/^their booking should be updated$/) do

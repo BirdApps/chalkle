@@ -12,7 +12,7 @@ Chalkle::Application.routes.draw do
     end
   end
 
-  resources :bookings, :only => [:index, :show] do
+  resources :bookings, :only => [:index, :show, :edit, :update] do
     member do
       put 'cancel'
     end

@@ -16,7 +16,13 @@ Then /^this booking should be deleted$/ do
 end
 
 Given /^there is a paid booking$/ do
-  lesson = FactoryGirl.create(:lesson, name: "Test Class")
+  lesson = FactoryGirl.create(:lesson, name: "Test Class", cost: 10)
   chalkler = FactoryGirl.create(:chalkler)
-  FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: chalkler.id, payment_method: 'free', status: 'yes', paid: true)
+  FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: chalkler.id, status: 'yes', payment_method: 'Cash', paid: true)
+end
+
+Given(/^there is a paid booking by the teacher of the class$/) do
+  chalkler = FactoryGirl.create(:chalkler)
+  lesson = FactoryGirl.create(:lesson, name: "Test Class", teacher_id: chalkler.id, cost: 0)
+  FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: chalkler.id, status: 'yes')
 end

@@ -1,6 +1,6 @@
-- title "Booking: #{@lesson.name}"
+- title "Edit Booking: #{@lesson.name}"
 
-%h2 New Booking
+%h2 Edit Booking
 
 .row
   .span12
@@ -40,9 +40,9 @@
                 %p Please ensure payment before your class begins.
 
         .span6
-          = simple_form_for(@booking, url: channel_lesson_bookings_path, html: { class: 'form-horizontal' }) do |f|
-            %h3 Enter booking details
-            = render partial: 'form'
+          = simple_form_for(@booking, url: booking_path, html: { class: 'form-horizontal' }) do |f|
+            %h3 Update booking details
+            = render partial: 'form', locals: { f: f }
             :coffeescript
               $('#booking_payment_method').change (e) ->
                 $('.payment-descriptions').children().hide()

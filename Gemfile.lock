@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/kiesia/omniauth-meetup.git
+  revision: 9234cd8c02bb216f11659a32b09f5435026bfdaa
+  specs:
+    omniauth-meetup (0.0.6)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+
+GIT
   remote: git://github.com/kiesia/rmeetup.git
   revision: eedaafcfe87c9aa952c05cc67b4cd9799abc9bd7
   specs:
@@ -182,7 +190,7 @@ GEM
     factory_girl_rails (4.2.1)
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
-    faraday (0.8.4)
+    faraday (0.8.7)
       multipart-post (~> 1.1)
     fastercsv (1.5.5)
     ffi (1.8.1)
@@ -255,8 +263,8 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.0)
-    jwt (0.1.5)
-      multi_json (>= 1.0)
+    jwt (0.1.8)
+      multi_json (>= 1.5)
     kalendae_assets (0.2.1)
       rails (~> 3.1)
     kaminari (0.14.1)
@@ -294,7 +302,7 @@ GEM
     mocha (0.10.5)
       metaclass (~> 0.0.1)
     multi_json (1.7.4)
-    multipart-post (1.1.5)
+    multipart-post (1.2.0)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -305,7 +313,7 @@ GEM
     nifty-generators (0.4.6)
     nokogiri (1.5.9)
     oauth (0.4.5)
-    oauth2 (0.8.0)
+    oauth2 (0.8.1)
       faraday (~> 0.8)
       httpauth (~> 0.1)
       jwt (~> 0.1.4)
@@ -314,14 +322,11 @@ GEM
     omniauth (1.1.1)
       hashie (~> 1.2)
       rack
-    omniauth-meetup (0.0.6)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.0)
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
     orm_adapter (0.4.0)
-    pg (0.14.1)
+    pg (0.15.1)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -528,8 +533,8 @@ DEPENDENCIES
   meta_request (~> 0.2.1)
   nifty-generators (~> 0.4.6)
   omniauth (~> 1.1.1)
-  omniauth-meetup (~> 0.0.6)
-  pg (~> 0.14.1)
+  omniauth-meetup!
+  pg (~> 0.15.1)
   premailer-rails (~> 1.4.0)
   pry-coolline (~> 0.2.1)
   pry-rails (~> 0.2.2)
