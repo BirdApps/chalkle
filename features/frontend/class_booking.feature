@@ -27,5 +27,5 @@ Scenario: A cancelled booking can be rebooked
   Then they should see "Join this class"
   When they press the "Join this class" button
   And they fill out the booking form
-  Then they should see "Payment received, thanks!"
+  Then they should see "Booking created!"
   And their booking should be updated

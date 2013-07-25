@@ -1,13 +1,10 @@
 Given(/^there is a class "(.*?)" open to sign\-up$/) do |name|
   lesson = FactoryGirl.create(:lesson,
-                              name: name,
-                              status: "Published",
+                              name: 'Test class',
+                              status: 'Published',
                               start_at: 3.days.from_now,
                               cost: 10,
-                              max_attendee: 10,
-                              do_during_class: "Simple things",
-                              learning_outcomes: "Nothing",
-                              venue: "Town Hall")
+                              max_attendee: 10)
   channel = Channel.find_by_name "Horowhenua"
   lesson.channels << channel
 end
@@ -41,7 +38,7 @@ Given(/^the chalkler has cancelled an unpaid booking$/) do
 end
 
 Given(/^the chalkler "(.*?)" has cancelled a booking$/) do |name|
-  lesson = Lesson.find_by_status 'Published'
+  lesson = Lesson.find_by_name 'Test class'
   chalkler = Chalkler.find_by_name name
   FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, status: 'no')
 end
@@ -53,7 +50,7 @@ When(/^they visit an open class$/) do
 end
 
 When(/^they fill out the booking form$/) do
-  page.select 'bank', :from => 'booking_payment_method'
+  page.select 'Bank Transfer', :from => 'booking_payment_method'
   page.select('Just me', :from => 'booking_guests')
   page.check('booking_terms_and_conditions')
   click_button 'Confirm booking'

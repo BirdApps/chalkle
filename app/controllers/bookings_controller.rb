@@ -21,9 +21,10 @@ class BookingsController < ApplicationController
     @booking = Booking.new params[:booking]
     @booking.chalkler = current_chalkler
     @booking.enforce_terms_and_conditions = true
-    if @booking.valid?
-      destroy_if_cancelled
-      @booking.save
+    # this should handle invalid @bookings before doing anything
+    destroy_cancelled_booking
+    if @booking.save
+      flash[:notice] = 'Booking created!'
       redirect_to booking_path @booking
     else
       @lesson = Lesson.find(params[:lesson_id]).decorate
@@ -74,7 +75,7 @@ class BookingsController < ApplicationController
     end
   end
 
-  def destroy_if_cancelled
+  def destroy_cancelled_booking
     current_chalkler.bookings.where{ (lesson_id == my{params[:lesson_id]}) & (status == 'no') }.destroy_all
   end
 end
