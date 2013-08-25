@@ -13,6 +13,7 @@ class BookingsController < ApplicationController
       flash[:notice] = 'You are already attending this class'
       redirect_to :back
     end
+    delete_any_unpaid_credit_card_booking
     @booking = Booking.new
     @lesson = Lesson.find(params[:lesson_id]).decorate
   end
@@ -21,29 +22,59 @@ class BookingsController < ApplicationController
     @booking = Booking.new params[:booking]
     @booking.chalkler = current_chalkler
     @booking.enforce_terms_and_conditions = true
+
     # this should handle invalid @bookings before doing anything
     destroy_cancelled_booking
+
     if @booking.save
-      flash[:notice] = 'Booking created!'
-      redirect_to booking_path @booking
+      if @booking.payment_method == 'credit_card'
+        @booking.update_attribute(:status, 'pending')
+        wrapper = SwipeWrapper.new
+        identifier = wrapper.create_tx_identifier_for(booking: @booking,
+                                                      amount: @booking.cost,
+                                                      return_url: channel_lesson_booking_payment_callback_url(params[:channel_id], @booking.lesson_id, @booking.id),
+                                                      description: @booking.name)
+        redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
+      else
+        flash[:notice] = 'Booking created!'
+        redirect_to booking_path @booking
+      end
     else
+      delete_any_unpaid_credit_card_booking
       @lesson = Lesson.find(params[:lesson_id]).decorate
       render action: 'new'
     end
   end
 
+  def payment_callback
+    load_booking
+    payment_successful = (params[:result] =~ /accepted/i)
+    if payment_successful
+      #should I set it to yes?
+      payment = @booking.build_payment
+      payment.total = @booking.lesson.cost
+      payment.save
+      @booking.update_attribute(:status, 'yes')
+      flash[:notice] = "Payment successful. Thank you very much!"
+      redirect_to channel_lesson_path(params[:channel_id], params[:lesson_id])
+    else
+      flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
+      redirect_to new_channel_lesson_booking_url(params[:channel_id], params[:lesson_id], params[:booking_id])
+    end
+  end
+
   def show
-    @booking = current_chalkler.bookings.find(params[:id]).decorate
+    load_booking
   end
 
   def edit
-    @booking = current_chalkler.bookings.find(params[:id]).decorate
+    load_booking
     redirect_edit_on_paid(@booking) if @booking.paid?
     @lesson = @booking.lesson.decorate
   end
 
   def update
-    @booking = current_chalkler.bookings.find(params[:id])
+    load_booking
     @booking.update_attributes params[:booking]
     if @booking.save
       redirect_to booking_path @booking
@@ -54,7 +85,7 @@ class BookingsController < ApplicationController
   end
 
   def cancel
-    @booking = current_chalkler.bookings.find(params[:id])
+    load_booking
     @booking.status = 'no'
     if @booking.save
       flash[:notice] = 'Your booking is cancelled'
@@ -66,6 +97,9 @@ class BookingsController < ApplicationController
   end
 
   private
+  def load_booking
+    @booking = current_chalkler.bookings.find(params[:booking_id] || params[:id]).decorate
+  end
 
   def redirect_on_paid
     booking = Booking.find(params[:id])
@@ -77,5 +111,13 @@ class BookingsController < ApplicationController
 
   def destroy_cancelled_booking
     current_chalkler.bookings.where{ (lesson_id == my{params[:lesson_id]}) & (status == 'no') }.destroy_all
+  end
+
+  def delete_any_unpaid_credit_card_booking
+    if booking = current_chalkler.bookings.where(lesson_id: params[:lesson_id], payment_method: 'credit_card').first
+      if booking.payment.nil?
+        booking.destroy
+      end
+    end
   end
 end

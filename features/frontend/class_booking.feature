@@ -21,6 +21,15 @@ Scenario: Chalkler can sign up to a class
   And they press the "Confirm booking" button
   Then they should see a summary of this booking
 
+Scenario: Chalkler can sign up to a class via online payment
+  When they visit the class listings
+  And they press the "Join this class" button
+  And they select the payment method "Credit Card"
+  And they select the number of attendees "2"
+  And they agree with the terms and conditions
+  And they press the "Confirm booking" button
+  Then they should see the online payment form
+
 Scenario: A cancelled booking can be rebooked
   Given the chalkler "Said" has cancelled a booking
   When they visit an open class

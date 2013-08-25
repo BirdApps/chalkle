@@ -1,4 +1,5 @@
 class Booking < ActiveRecord::Base
+  PAYMENT_METHODS = [['Te Takere Service Desk', 'cash'], ['Bank Transfer', 'bank'], ['Credit Card', 'credit_card']]
   attr_accessible :lesson_id, :guests, :payment_method, :terms_and_conditions
   attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests,
     :meetup_id, :cost_override, :paid, :payment_method, :visible, :as => :admin

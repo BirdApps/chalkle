@@ -28,6 +28,7 @@ gem 'whenever', :require => false
 gem 'premailer-rails', '~> 1.4.0'
 gem 'google-analytics-rails'
 gem 'kaminari'
+gem 'httparty'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
