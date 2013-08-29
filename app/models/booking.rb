@@ -35,7 +35,11 @@ class Booking < ActiveRecord::Base
 
   def name
     if lesson.present? && chalkler.present?
-      "#{lesson.name} (#{lesson.meetup_id}) - #{chalkler.name}"
+      if lesson.meetup_id.present?
+        "#{lesson.name} (#{lesson.meetup_id}) - #{chalkler.name}"
+      else
+        "#{lesson.name} - #{chalkler.name}"
+      end
     else
       id
     end

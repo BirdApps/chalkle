@@ -30,7 +30,7 @@ class BookingsController < ApplicationController
       if @booking.payment_method == 'credit_card'
         @booking.update_attribute(:status, 'pending')
         wrapper = SwipeWrapper.new
-        identifier = wrapper.create_tx_identifier_for(booking: @booking,
+        identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
                                                       amount: @booking.cost,
                                                       return_url: channel_lesson_booking_payment_callback_url(params[:channel_id], @booking.lesson_id, @booking.id),
                                                       description: @booking.name)
