@@ -88,7 +88,7 @@ class BookingsController < ApplicationController
     load_booking
     @booking.status = 'no'
     if @booking.save
-      flash[:notice] = 'Your booking is cancelled'
+      flash[:notice] = "Your booking is cancelled. Please contact accounts@chalkle.com quote booking id #{@booking.id} if you require a refund."
       redirect_to bookings_path
     else
       flash[:alert] = 'Your booking cannot be cancelled. Please contact your Channel Curator for further information'
