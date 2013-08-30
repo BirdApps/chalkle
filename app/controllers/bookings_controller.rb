@@ -48,13 +48,13 @@ class BookingsController < ApplicationController
 
   def payment_callback
     load_booking
-    payment_successful = (params[:result] =~ /accepted/i)
+    payment_successful = (params[:result] =~ /accepted/i) && !(params[:result] =~ /test/i)
     if payment_successful
       #should I set it to yes?
       payment = @booking.build_payment
       payment.total = @booking.lesson.cost
       payment.save
-      @booking.update_attribute(:status, 'yes')
+      @booking.update_attributes(status: 'yes', paid: true)
       flash[:notice] = "Payment successful. Thank you very much!"
       redirect_to channel_lesson_path(params[:channel_id], params[:lesson_id])
     else
