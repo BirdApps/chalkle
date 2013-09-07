@@ -10,7 +10,7 @@
 /config/database.yml
 /vendor/bundle
 /public/system
-/public/upload
+/public/uploads
 /bin
 /coverage
 
