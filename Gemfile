@@ -1,12 +1,14 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
-gem 'pg', '~> 0.14.1'
+gem 'rails', '3.2.14'
+gem 'pg', '~> 0.15.1'
 
 # Authentication
 gem 'devise',           '~> 2.2.3'
 gem 'omniauth',         '~> 1.1.1'
-gem 'omniauth-meetup',  '~> 0.0.6'
+# temporarily broken
+# gem 'omniauth-meetup',  '~> 0.0.6'
+gem 'omniauth-meetup',  :git => "git://github.com/kiesia/omniauth-meetup.git"
 
 # Authorisation
 gem 'cancan',  '~> 1.6.8'
@@ -26,6 +28,7 @@ gem 'whenever', :require => false
 gem 'premailer-rails', '~> 1.4.0'
 gem 'google-analytics-rails'
 gem 'kaminari'
+gem 'httparty'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"

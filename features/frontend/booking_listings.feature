@@ -48,3 +48,18 @@ Scenario: A paid booking for a class less than 3 days away is non-refundable
   When they visit the bookings page
   And they press the "Cancel booking" button
   Then they should see "This booking is non-refundable."
+
+Scenario: Chalkler can edit their unpaid booking
+  When they visit the bookings page
+  Then they their booking should be editable
+  When they click the "Edit" link
+  Then they should see the Edit Booking form
+  When they edit their booking
+  Then their booking should be updated
+
+Scenario: Paid bookings cannot be edited
+  Given the chalkler "Said" has paid their booking for a class next week
+  When they visit the bookings page
+  Then they should not see the "Edit" link
+  When they manually try to edit a paid booking
+  Then they should be redirected back to the single booking page
