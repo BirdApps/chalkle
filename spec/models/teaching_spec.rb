@@ -86,12 +86,6 @@ describe "Teachings" do
   		@chalkler_teaching.check_valid_input(params).should be_false
   	end
 
-    pending "returns false when teacher cost is nonzero and donation box is checked" do
-      params[:donation] = '1'
-      params[:teacher_cost] = '10'
-      @chalkler_teaching.check_valid_input(params).should be_false
-    end
-
     it "returns false when min number of attendee is not an integer" do
       params[:min_attendee] = '1.3'
       @chalkler_teaching.check_valid_input(params).should be_false
@@ -161,10 +155,6 @@ describe "Teachings" do
   	    it "has the correct duration" do
   	    	@lesson.duration.should == params2[:duration].to_i*60*60
   	    end
-
-        pending "has the correct donation setting" do
-          @lesson.donation.should be_false
-        end
 
   	    it "has the correct teacher cost" do
   	    	@lesson.teacher_cost.should == 20

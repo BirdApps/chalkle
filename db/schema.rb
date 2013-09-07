@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20130628015108) do
     t.text     "suggested_audience"
     t.string   "meetup_url"
     t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
+    t.string   "lesson_upload_image"
   end
 
   create_table "payments", :force => true do |t|

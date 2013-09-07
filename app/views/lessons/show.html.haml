@@ -5,6 +5,12 @@
 .row
   .span8.content-left
     .lesson-description
+      .meetup_image{ :style => 'margin: 1em 0;' }
+        -if @lesson.lesson_upload_image.url.present?
+          .center
+          =image_tag @lesson.lesson_upload_image.url(:feature).to_s, alt: @lesson.name
+        -elsif @lesson.image
+          =image_tag @lesson.image.url.to_s
       %h3 What we are doing
       = simple_format @lesson.do_during_class
       %h3 What you will learn
