@@ -8,7 +8,7 @@
       .meetup_image{ :style => 'margin: 1em 0;' }
         -if @lesson.lesson_upload_image.url.present?
           .center
-          =image_tag @lesson.lesson_upload_image.url(:thumb).to_s, alt: @lesson.name
+          =image_tag @lesson.lesson_upload_image.url(:feature).to_s, alt: @lesson.name
         -elsif @lesson.image
           =image_tag @lesson.image.url.to_s
       %h3 What we are doing
