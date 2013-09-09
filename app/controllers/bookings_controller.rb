@@ -52,6 +52,7 @@ class BookingsController < ApplicationController
     if payment_successful
       #should I set it to yes?
       payment = @booking.build_payment
+      payment.booking = @booking
       payment.total = @booking.lesson.cost
       payment.reconciled = true
       payment.save
