@@ -55,7 +55,10 @@ class BookingsController < ApplicationController
       payment.total = @booking.lesson.cost
       payment.reconciled = true
       payment.save
-      @booking.update_attributes(status: 'yes', paid: true, visible: true)
+      @booking.status = 'yes'
+      @booking.paid = true
+      @booking.visible = true
+      @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
       redirect_to channel_lesson_path(params[:channel_id], params[:lesson_id])
     else
