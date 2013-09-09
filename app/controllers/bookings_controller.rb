@@ -53,8 +53,9 @@ class BookingsController < ApplicationController
       #should I set it to yes?
       payment = @booking.build_payment
       payment.total = @booking.lesson.cost
+      payment.reconciled = true
       payment.save
-      @booking.update_attributes(status: 'yes', paid: true)
+      @booking.update_attributes(status: 'yes', paid: true, visible: true)
       flash[:notice] = "Payment successful. Thank you very much!"
       redirect_to channel_lesson_path(params[:channel_id], params[:lesson_id])
     else
