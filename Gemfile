@@ -64,17 +64,17 @@ group :development do
   gem 'rb-readline'
 
   # Better documentation
-  gem 'tomdoc',  '~> 0.2.5',  :require => false
+  gem 'tomdoc',  '~> 0.2.5',  require: false
 
   # Testing emails
-  gem 'mailcatcher',  '~> 0.5.10',  :require => false
+  gem 'mailcatcher',  '~> 0.5.10',  require: false
 
   # Deployment
-  gem 'capistrano',      '~> 2.14.1',  :require => false
-  gem 'capistrano-ext',  '~> 1.2.1',   :require => false
+  gem 'capistrano',      '~> 2.14.1',  require: false
+  gem 'capistrano-ext',  '~> 1.2.1',   require: false
 
   # Helpful Rails Generators
-  gem 'nifty-generators',  '~> 0.4.6',  :require => false
+  gem 'nifty-generators',  '~> 0.4.6',  require: false
 
   # Better error reports and logs
   gem 'meta_request',       '~> 0.2.1'
@@ -86,7 +86,7 @@ group :development do
   gem 'guard',             '~> 1.6.2'
   gem 'guard-spork',       '~> 1.4.1'
   gem 'guard-rspec',       '~> 2.3.3'
-  gem 'guard-sass',        '~> 1.0.1', :require => false
+  gem 'guard-sass',        '~> 1.0.1', require: false
   gem 'guard-livereload',  '~> 1.1.3'
 
   # Opening webpages during tests
@@ -100,7 +100,9 @@ group :development do
 end
 
 group :test do
+  gem 'shoulda', '>= 3.5.0'
   gem 'spork'
+  gem 'mocha', '>= 0.14.0', require: false
 
   # Placed here so generators work
   gem 'rspec-rails',  '~> 2.12.2'
@@ -110,7 +112,7 @@ group :test do
   gem 'jasmine-headless-webkit', '~> 0.8.4'
 
   # Core Testing
-  gem 'cucumber-rails',   '~> 1.3.0', :require => false
+  gem 'cucumber-rails',   '~> 1.3.0', require: false
   gem 'capybara',         '~> 2.0.2'
   gem 'capybara-webkit',  '~> 0.14.0'
 
@@ -121,8 +123,7 @@ group :test do
   gem 'webrat',              '~> 0.7.3'
   gem 'email_spec',          '~> 1.4.0'
   gem 'factory_girl_rails',  '~> 4.2.1'
-  gem 'shoulda',             '~> 3.3.2'
 
   # Test coverage
-  gem 'simplecov',  '~> 0.7.1', :require => false
+  gem 'simplecov',  '~> 0.7.1', require: false
 end
