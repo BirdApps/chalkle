@@ -81,9 +81,7 @@ group :development do
   gem 'quiet_assets',       '~> 1.0.1'
   gem 'better_errors',      '~> 0.3.2'
   gem 'binding_of_caller',  '~> 0.6.8'
-end
 
-group :development, :test do
   # Automatic testing
   gem 'guard',             '~> 1.6.2'
   gem 'guard-spork',       '~> 1.4.1'
@@ -91,15 +89,8 @@ group :development, :test do
   gem 'guard-sass',        '~> 1.0.1', :require => false
   gem 'guard-livereload',  '~> 1.1.3'
 
-  # Placed here so generators work
-  gem 'rspec-rails',  '~> 2.12.2'
-
   # Opening webpages during tests
   gem 'launchy', '~> 2.1.2'
-
-  # Testing Javascript
-  gem 'jasmine',  '~> 1.1.2'
-  gem 'jasmine-headless-webkit', '~> 0.8.4'
 
   # Debugging Tools
   gem 'pry-rails',     '~> 0.2.2'
@@ -109,6 +100,13 @@ group :development, :test do
 end
 
 group :test do
+  # Placed here so generators work
+  gem 'rspec-rails',  '~> 2.12.2'
+
+  # Testing Javascript
+  gem 'jasmine',  '~> 1.1.2'
+  gem 'jasmine-headless-webkit', '~> 0.8.4'
+
   # Core Testing
   gem 'cucumber-rails',   '~> 1.3.0', :require => false
   gem 'capybara',         '~> 2.0.2'
