@@ -559,6 +559,7 @@ DEPENDENCIES
   shoulda (~> 3.3.2)
   simple_form (~> 2.0.4)
   simplecov (~> 0.7.1)
+  spork
   squeel (~> 1.0.18)
   steak (~> 2.0.0)
   timecop (~> 0.5.9)

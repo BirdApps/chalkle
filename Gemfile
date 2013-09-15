@@ -100,6 +100,8 @@ group :development do
 end
 
 group :test do
+  gem 'spork'
+
   # Placed here so generators work
   gem 'rspec-rails',  '~> 2.12.2'
 
