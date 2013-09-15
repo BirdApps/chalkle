@@ -20,7 +20,7 @@ class LessonUploadImageUploader < CarrierWave::Uploader::Base
     if Rails.env.test? or Rails.env.cucumber?
       "uploads/test/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
     else
-      "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+      "system/uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
     end
   end
 
