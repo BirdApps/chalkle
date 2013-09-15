@@ -73,6 +73,13 @@ body {
   }
 }
 
+.lesson-details {
+  img.uploaded-lesson-image {
+    //float: right;
+    //margin: 0 0 1em 1em;
+  }
+}
+
 .lesson-item {
   background: #f9f9f9;
   @include border-radius(4px);
@@ -81,7 +88,7 @@ body {
 
   img.uploaded-lesson-image {
     float: left;
-    margin: 0 1em 1em 1em;
+    margin: 1em;
   }
 
   .header {

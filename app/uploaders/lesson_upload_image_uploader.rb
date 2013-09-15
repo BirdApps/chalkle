@@ -43,8 +43,8 @@ class LessonUploadImageUploader < CarrierWave::Uploader::Base
   version :thumb do
     process :resize_to_limit => [250, 250]
   end
-  version :feature do
-    process :resize_to_limit => [620, nil]
+  version :sidebar do
+    process :resize_to_limit => [300, nil]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

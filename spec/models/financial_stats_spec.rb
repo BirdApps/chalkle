@@ -47,7 +47,7 @@ describe "Financial_stats" do
     end
 
     it "should calculate percentage change in turnover" do
-      @financial_stats.percent_turnover.should == -(60.0/210.0*100.0)
+      @financial_stats.percent_turnover.to_f.should == -(60.0/210.0*100.0)
     end
 
     it "calculates total cost from previous period" do

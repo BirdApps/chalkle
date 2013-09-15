@@ -7,11 +7,9 @@
         %i.icon-user
   .row
     .span8
-      .meetup_image{ :style => 'margin: 1em 0;' }
+      .meetup_image
         -if lesson.lesson_upload_image.url.present?
           =image_tag lesson.lesson_upload_image.url(:thumb).to_s, alt: lesson.name, class: 'lesson-image uploaded-lesson-image'
-        -elsif lesson.image
-          =image_tag lesson.image.url.to_s
       .summary
         %p= simple_format lesson.do_during_class
     .span4

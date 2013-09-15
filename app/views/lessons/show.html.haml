@@ -2,15 +2,9 @@
 
 %h2= @lesson.name.capitalize
 
-.row
+.row.lesson-details
   .span8.content-left
     .lesson-description
-      .meetup_image{ :style => 'margin: 1em 0;' }
-        -if @lesson.lesson_upload_image.url.present?
-          .center
-          =image_tag @lesson.lesson_upload_image.url(:feature).to_s, alt: @lesson.name
-        -elsif @lesson.image
-          =image_tag @lesson.image.url.to_s
       %h3 What we are doing
       = simple_format @lesson.do_during_class
       %h3 What you will learn
@@ -30,6 +24,9 @@
 
     = render :partial => 'lesson_details', :locals => { :lesson => @lesson }
     = render :partial => 'teacher_details', :locals => { :lesson => @lesson }
+    .meetup_image
+      -if @lesson.lesson_upload_image.url.present?
+        =image_tag @lesson.lesson_upload_image.url(:sidebar).to_s, alt: @lesson.name, class: 'lesson-image uploaded-lesson-image'
 
 :coffeescript
   signedIn = () ->
