@@ -80,7 +80,8 @@ describe "Chalkler_stats" do
     end
 
     it "calculates percentage change in number of attendees" do
-      @channel.channel_stats(3.days.ago,3.days).chalkler_stats.percent_attendee.to_f.should == -(6.0/21.0*100.0)
+      expected = -(6.0/21.0*100.0)
+      @channel.channel_stats(3.days.ago,3.days).chalkler_stats.percent_attendee.to_f.should be_within(0.0001).of(expected)
     end
 
     it "calculates fill fraction" do

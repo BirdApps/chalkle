@@ -55,7 +55,7 @@ describe "Chalkler_stats" do
     end
 
     it "calculates percentage change in number of classes ran" do
-      @channel.channel_stats(3.days.ago,3.days).lesson_stats.percent_lessons_ran.to_f.should == (2.0/3.0*100.0)
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.percent_lessons_ran.to_f.should be_within(0.00001).of(2.0/3.0*100.0)
     end
 
     it "calculates number of new classes ran" do
@@ -93,7 +93,7 @@ describe "Chalkler_stats" do
     end
 
     it "calculates percentage change in paid lessons ran" do
-      @channel.channel_stats(3.days.ago,3.days).lesson_stats.percent_paid_lessons.to_f.should == (2.0/3.0*100.0)
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.percent_paid_lessons.to_f.should be_within(0.00001).of(2.0/3.0*100.0)
     end
   
   end
