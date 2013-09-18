@@ -5,11 +5,10 @@ rvm:
   - 1.9.3
 bundler_args: --without development
 before_script:
-before_install:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
   - cp config/database.yml.travis config/database.yml
   - bundle exec rake db:setup
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 notifications:
   email:
     recipients:
