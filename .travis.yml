@@ -13,3 +13,4 @@ notifications:
   email:
     recipients:
       - craig@enspiral.com
+  hipchat: 3d318fc3e1f401238a50171784b534@Craftworks General
