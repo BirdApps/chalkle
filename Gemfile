@@ -100,6 +100,7 @@ group :development do
 end
 
 group :test do
+  gem "codeclimate-test-reporter", require: nil
   gem 'shoulda', '>= 3.5.0'
   gem 'spork'
   gem 'mocha', '>= 0.14.0', require: false

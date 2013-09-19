@@ -9,6 +9,9 @@ before_script:
   - bundle exec rake db:setup
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+addons:
+  code_climate:
+    repo_token: 8628d4262a6292baebd033304722eed7ca05cfceeeafaca1b2efb5c5df59c620
 notifications:
   email:
     recipients:
