@@ -66,6 +66,7 @@ ActiveAdmin.register Booking do
       row :meetup_data
       row :created_at
       row :updated_at
+      row :reminder_last_sent_at
     end
     active_admin_comments
   end

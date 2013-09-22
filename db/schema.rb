@@ -52,15 +52,16 @@ ActiveRecord::Schema.define(:version => 20130628015108) do
     t.integer  "meetup_id"
     t.integer  "lesson_id"
     t.integer  "chalkler_id"
-    t.string   "status",                                       :default => "yes"
-    t.integer  "guests",                                       :default => 0
-    t.boolean  "paid",                                         :default => false
+    t.string   "status",                                              :default => "yes"
+    t.integer  "guests",                                              :default => 0
+    t.boolean  "paid",                                                :default => false
     t.text     "meetup_data"
-    t.datetime "created_at",                                                      :null => false
-    t.datetime "updated_at",                                                      :null => false
-    t.boolean  "visible",                                      :default => true
-    t.decimal  "cost_override",  :precision => 8, :scale => 2
+    t.datetime "created_at",                                                             :null => false
+    t.datetime "updated_at",                                                             :null => false
+    t.boolean  "visible",                                             :default => true
+    t.decimal  "cost_override",         :precision => 8, :scale => 2
     t.string   "payment_method"
+    t.datetime "reminder_last_sent_at"
   end
 
   create_table "categories", :force => true do |t|

@@ -2,7 +2,7 @@ class Booking < ActiveRecord::Base
   PAYMENT_METHODS = [['Te Takere Service Desk', 'cash'], ['Bank Transfer', 'bank'], ['Credit Card', 'credit_card']]
   attr_accessible :lesson_id, :guests, :payment_method, :terms_and_conditions
   attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests,
-    :meetup_id, :cost_override, :paid, :payment_method, :visible, :as => :admin
+    :meetup_id, :cost_override, :paid, :payment_method, :visible, :reminder_last_sent_at, :as => :admin
 
   attr_accessor :terms_and_conditions
   attr_accessor :enforce_terms_and_conditions
@@ -24,12 +24,12 @@ class Booking < ActiveRecord::Base
   scope :billable, joins(:lesson).where{ (lessons.cost > 0) & (status == 'yes') & ((chalkler_id != lessons.teacher_id) | (guests > 0)) }
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :upcoming, lambda{ joins{ :lesson }.where{ lessons.start_at > Time.now.utc } }
+  scope :upcoming, lambda{ joins{ :lesson }.where{ (lessons.start_at > Time.now.utc) & lessons.visible } }
 
   before_create :set_from_meetup_data
   before_validation :set_free_lesson_attributes
 
-  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cost, :to => :lesson, prefix: true
+  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cost, :meetup_url, :to => :lesson, prefix: true
 
   BOOKING_STATUSES = %w(yes waitlist no pending no-show)
 
@@ -104,7 +104,7 @@ class Booking < ActiveRecord::Base
   end
 
   def second_email_condition
-    self.emailable && self.lesson.class_coming_up
+    self.emailable && self.lesson.class_coming_up && (self.chalkler.email.nil? || self.chalkler.email == "")
   end
 
   def third_email_condition
