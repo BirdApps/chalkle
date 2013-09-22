@@ -295,6 +295,16 @@ describe Booking do
       FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_false
     end
   end
+
+  describe "#cancelled?" do
+    it "reurns true if booking is cancelled" do
+      FactoryGirl.build(:booking, status: 'no').cancelled?.should be_true
+    end
+
+    it "returns false if booking is not cancelled" do
+      FactoryGirl.build(:booking, status: 'yes').cancelled?.should be_false
+    end
+  end
 end
 
   # describe "reminder to pay emails" do

@@ -32,15 +32,15 @@
                   = "You and #{@booking.guests} guests"
         .span6
           .payment-summary
-            %h3 How to pay
-            - if @booking.payment_method == 'cash'
-              %h4 Cash payment
-              %p Cash Payment at Te Takere service desk prior to course.
-            - elsif @booking.payment_method == 'bank'
-              %h4 Bank Transfer
-              - if @booking.paid?
-                %p Payment received, thanks!
-              - else
+            - if @booking.paid?
+              %h3 Payment received, thanks!
+            -else
+              %h3 How to pay
+              - if @booking.payment_method == 'cash'
+                %h4 Cash payment
+                %p Cash Payment at Te Takere service desk prior to course.
+              - elsif @booking.payment_method == 'bank'
+                %h4 Bank Transfer
                 %p Deposit the payment into the following account:
                 %ul.unstyled
                   %li
@@ -50,8 +50,8 @@
                     %strong Reference:
                     = "#{@booking.lesson.id} - #{current_chalkler.name}"
                 %p Please ensure payment before your class begins.
-            - elsif @booking.payment_method == 'free'
-              %h4 Free Booking
-              %p
-                This class is free. If you cannot attend this class, please
-                contact your channel curator so that other's may take part.
+              - elsif @booking.payment_method == 'free'
+                %h4 Free Booking
+                %p
+                  This class is free. If you cannot attend this class, please
+                  contact your channel curator so that other's may take part.

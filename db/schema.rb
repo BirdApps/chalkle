@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627110600) do
+ActiveRecord::Schema.define(:version => 20130628015108) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(:version => 20130627110600) do
     t.integer  "meetup_id"
     t.integer  "lesson_id"
     t.integer  "chalkler_id"
-    t.string   "status"
+    t.string   "status",                                              :default => "yes"
     t.integer  "guests",                                              :default => 0
     t.boolean  "paid",                                                :default => false
     t.text     "meetup_data"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(:version => 20130627110600) do
     t.text     "suggested_audience"
     t.string   "meetup_url"
     t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
-    t.datetime "attendance_last_sent_at"
+    t.string   "lesson_upload_image"
   end
 
   create_table "payments", :force => true do |t|

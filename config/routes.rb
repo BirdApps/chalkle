@@ -8,11 +8,13 @@ Chalkle::Application.routes.draw do
 
   resources :channels, :only => :show do
     resources :lessons, :only => :show, :path => 'classes' do
-      resources :bookings, :only => [:new, :create]
+      resources :bookings, :only => [:new, :create] do
+        get :payment_callback
+      end
     end
   end
 
-  resources :bookings, :only => [:index, :show] do
+  resources :bookings, :only => [:index, :show, :edit, :update] do
     member do
       put 'cancel'
     end
