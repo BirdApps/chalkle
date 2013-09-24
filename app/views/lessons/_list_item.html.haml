@@ -4,9 +4,12 @@
       %h3= lesson.name.capitalize
       .lesson-attendance.pull-right
         = "#{lesson.attendance} / #{lesson.max_attendee}"
-        .icon.icon-user
+        %i.icon-user
   .row
     .span8
+      .meetup_image
+        -if lesson.lesson_upload_image.url.present?
+          =image_tag lesson.lesson_upload_image.url(:thumb).to_s, alt: lesson.name, class: 'lesson-image uploaded-lesson-image'
       .summary
         %p= simple_format lesson.do_during_class
     .span4
@@ -15,7 +18,7 @@
     .span12
       .actions
         - if chalkler_signed_in?
-          - if lesson.bookable? and !current_chalkler.lessons.exists? lesson
+          - if lesson.bookable? and !current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? lesson
             .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)
         - elsif lesson.bookable?
           .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)

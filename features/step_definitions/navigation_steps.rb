@@ -15,5 +15,5 @@ When /^they visit the "(.*?)" tab$/ do |link|
 end
 
 When /^they press the "(.*?)" button$/ do |button_name|
-  click_link button_name
+  click_link_or_button button_name
 end

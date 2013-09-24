@@ -24,13 +24,13 @@ Scenario: New chalkler can create an account
   And they enter their details
   Then a new chalkler will be created
 
-Scenario: Chalkler logging in via Meetup is updated from Meetup data
-  Given "John" is an existing Meetup user
-  When they log in via Meetup
-  Then the chalkler "John" should be updated
-
-Scenario: Chalkler with no channels will be blocked
-  Given "Mohammed" is a chalkler
-  And the chalkler "Mohammed" doesn't belong to a channel
-  And the chalkler "Mohammed" is authenticated
-  Then they will be redirected to an error page
+#Scenario: Chalkler logging in via Meetup is updated from Meetup data
+#  Given "John" is an existing Meetup user
+#  When they log in via Meetup
+#  Then the chalkler "John" should be updated
+#
+#Scenario: Chalkler with no channels will be blocked
+#  Given "Mohammed" is a chalkler
+#  And the chalkler "Mohammed" doesn't belong to a channel
+#  And the chalkler "Mohammed" is authenticated
+#  Then they will be redirected to an error page

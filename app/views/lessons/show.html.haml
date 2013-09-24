@@ -2,7 +2,7 @@
 
 %h2= @lesson.name.capitalize
 
-.row
+.row.lesson-details
   .span8.content-left
     .lesson-description
       %h3 What we are doing
@@ -14,7 +14,7 @@
   .span4.content-right
     .booking-actions
       - if chalkler_signed_in?
-        - if current_chalkler.lessons.exists? @lesson
+        - if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? @lesson
           %p.text-success
             %strong You are attending
         - elsif @lesson.bookable?
@@ -22,8 +22,11 @@
       - elsif @lesson.bookable?
         .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
 
-    = render :partial => 'lessons/lesson_details', :locals => { :lesson => @lesson }
-    = render :partial => 'chalklers/teacher_details', :locals => { :teacher => @lesson.teacher }
+    = render :partial => 'lesson_details', :locals => { :lesson => @lesson }
+    = render :partial => 'teacher_details', :locals => { :lesson => @lesson }
+    .meetup_image
+      -if @lesson.lesson_upload_image.url.present?
+        =image_tag @lesson.lesson_upload_image.url(:sidebar).to_s, alt: @lesson.name, class: 'lesson-image uploaded-lesson-image'
 
 :coffeescript
   signedIn = () ->

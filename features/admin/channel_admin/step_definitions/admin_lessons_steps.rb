@@ -126,3 +126,23 @@ Given(/^there is a lesson in the "(.*?)" channel with RSVP numbers below the min
   FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, guests: 2, status: 'yes')
   lesson.channels << channel
 end
+
+When(/^they attach an image to the lesson$/) do
+  attach_file('lesson_lesson_upload_image', "#{Rails.root}/app/assets/images/chalkle_logo_strapline_stacked.png")
+  click_button 'Update Lesson'
+end
+
+Then(/^this image should be saved$/) do
+  lesson = Lesson.find_by_name "Test Class"
+  File.exist?("#{Rails.root}/public/uploads/test/lesson/lesson_upload_image/#{lesson.id}/chalkle_logo_strapline_stacked.png")
+end
+
+When(/^they visit the "(.*?)" channel class listing$/) do |name|
+  channel = Channel.find_by_name name
+  visit channel_path(channel)
+end
+
+Then(/^they should see this image on the class listing$/) do
+  page.should have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
+  FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
+end

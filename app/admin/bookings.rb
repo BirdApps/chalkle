@@ -70,7 +70,7 @@ ActiveAdmin.register Booking do
     active_admin_comments
   end
 
-  action_item(only: :show, if: proc { can?(:hide, resource) && booking.visible && !booking.paid }) do
+  action_item(only: :show, if: proc { can?(:hide, resource) && booking.visible && (!booking.paid || booking.teacher?)}) do
     link_to 'Delete Booking',
       hide_admin_booking_path(resource),
       :data => { :confirm => "Are you sure you wish to delete this Booking?" }
@@ -108,7 +108,7 @@ ActiveAdmin.register Booking do
     booking.payment_method = 'free'
     desired_xero_id = "CASH-Class#{booking.lesson_id}-Chalkler#{booking.chalkler_id}"
     payment = Payment.find_or_initialize_by_xero_id desired_xero_id
-    payment.reference = booking.lesson.meetup_id.present? ? "#{booking.lesson.meetup_id} #{booking.chalkler.name}" : "LessonID#{booking.lesson_id} #{booking.chalkler.name}"
+    payment.reference = booking.lesson.meetup_id? ? "#{booking.lesson.meetup_id} #{booking.chalkler.name}" : "LessonID#{booking.lesson_id} #{booking.chalkler.name}"
     payment.xero_contact_id = booking.chalkler.name
     payment.xero_contact_name = booking.chalkler.name
     payment.date = Date.today()
@@ -128,7 +128,7 @@ ActiveAdmin.register Booking do
 
   form do |f|
     f.inputs :details do
-      f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).visible.order("LOWER(name) ASC").map{|l| ["#{l.name} - #{l.start_at.present? ? l.start_at.to_formatted_s(:short): "no date"}",l.id]}, :required => true
+      f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).visible.order("LOWER(name) ASC").map{|l| ["#{l.name} - #{l.start_at? ? l.start_at.to_formatted_s(:short): "no date"}",l.id]}, :required => true
       f.input :chalkler, as: :select, collection: Chalkler.accessible_by(current_ability).order("LOWER(name) ASC"), :required => true
       f.input :guests
       f.input :payment_method, :as => :select, :collection => [['Bank', 'bank'],['Cash', 'cash'],['Meetup', 'meetup']], :hint => 'Leave blank on free classes'

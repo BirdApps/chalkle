@@ -18,10 +18,19 @@ h3 {
   border-bottom: 1px solid $grayLighter
 }
 
+p.big {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
 form {
   h3 {
     border-bottom: 1px solid $grayLighter;
   }
+}
+
+.modal-header h3 {
+  border-bottom: none;
 }
 
 legend {
