@@ -37,8 +37,13 @@ Scenario: Channel admins can see lessons coming up next week
   When they visit the "Dashboard" tab
   Then they should see this lesson under the "Coming up this week" panel
 
-Scenario: Channel admins can see Email Me link when a class doesn't reach its maximum
+Scenario: Channel admins can see May Cancel alert when a class doesn't reach its minimum
   Given there is lesson in the "Wellington" channel coming up this week with minimum attendee of "10"
   And the number of RSVPs is "2"
   When they visit the "Dashboard" tab
-  Then they should see an "Email them" link
+  Then they should see "May Cancel"
+
+Scenario: Channel admins can see Missing Details alert when a class has missing details
+  Given there is lesson in the "Wellington" channel coming up this week with no teacher cost
+  When they visit the "Dashboard" tab
+  Then they should see "Missing Details"

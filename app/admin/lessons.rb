@@ -89,15 +89,29 @@ ActiveAdmin.register Lesson  do
       row :channels do |lesson|
         lesson.channels.collect{ |c| c.name}.join(", ")
       end
-      row :start_at
+      row "Class Date" do |lesson|
+        if lesson.start_at.present?
+          lesson.start_at
+        else
+          status_tag("This class must have a date and time", :error)
+        end
+      end    
       row "Availability of the teacher" do
         lesson.availabilities
       end
       row "venue for this class" do
-        lesson.venue
+        if lesson.venue.present?
+          lesson.venue_cost
+        else
+          status_tag("This class must have a venue", :error)
+        end
       end
       row "What we are doing" do
-        simple_format lesson.do_during_class
+        if lesson.do_during_class.present?
+          simple_format lesson.do_during_class
+        else
+          status_tag("This class must have a what we will do during the class", :error)
+        end
       end
       row "What you will learn" do
         simple_format lesson.learning_outcomes
@@ -120,18 +134,15 @@ ActiveAdmin.register Lesson  do
       row :additional_comments do
         simple_format lesson.additional_comments
       end
-      # row :teacher_gst_number do
-      #   if lesson.teacher && lesson.teacher.gst?
-      #     lesson.teacher.gst
-      #   else
-      #     "Not GST registered"
-      #   end
-      # end
       row "Advertised price (incl GST)" do
         number_to_currency lesson.cost
       end
       row "Teacher fee per attendee (incl. GST if any)" do
-        number_to_currency lesson.teacher_cost
+        if lesson.teacher_cost.present?
+          number_to_currency lesson.teacher_cost
+        else
+          status_tag("This class must have a teacher cost. Insert 0 if the teacher is not being paid", :error)
+        end
       end
       row "Chalkle fee per attendee (incl. GST and rounding)" do
         number_to_currency lesson.chalkle_cost
@@ -140,7 +151,11 @@ ActiveAdmin.register Lesson  do
         number_to_currency lesson.channel_cost
       end
       row :venue_cost do
-        number_to_currency lesson.venue_cost
+        if lesson.venue_cost.present?
+          number_to_currency lesson.venue_cost
+        else
+          status_tag("This class must have a venue cost. Insert 0 if the venue is free", :error)
+        end
       end
       row :material_cost do
         number_to_currency lesson.material_cost
@@ -149,8 +164,13 @@ ActiveAdmin.register Lesson  do
         pluralize(lesson.duration / 60 / 60, "hour") if lesson.duration?
       end
       row :max_attendee
-      row :min_attendee
-
+      row "Minimum Attendee" do
+        if lesson.class_may_cancel
+          status_tag("#{lesson.min_attendee} people required for this class. Lower this number if the class is still going ahead", :error)
+        else
+          lesson.min_attendee
+        end
+      end
       if lesson.published?
         row :attendance
         row "Channel income after paying GST" do
