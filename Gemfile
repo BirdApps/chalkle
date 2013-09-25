@@ -6,9 +6,7 @@ gem 'pg', '~> 0.15.1'
 # Authentication
 gem 'devise',           '~> 2.2.3'
 gem 'omniauth',         '~> 1.1.1'
-# temporarily broken
-# gem 'omniauth-meetup',  '~> 0.0.6'
-gem 'omniauth-meetup',  :git => "git://github.com/kiesia/omniauth-meetup.git"
+gem 'omniauth-meetup',  '~> 0.0.7'
 
 # Authorisation
 gem 'cancan',  '~> 1.6.8'
