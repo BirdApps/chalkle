@@ -28,44 +28,6 @@ describe Chalkler do
     end
   end
 
-  # these tests make no sense, refactor
-  describe "record creation" do
-    context "imported from Meetup" do
-      let(:result) { MeetupApiStub::chalkler_response }
-      let(:channel) { FactoryGirl.create(:channel) }
-
-      describe "#create_from_meetup" do
-        let(:chalkler) { Chalkler.new }
-
-        before do
-          chalkler.create_from_meetup(result, channel)
-        end
-
-        pending "saves valid chalkler" do
-          chalkler.reload.should be_valid
-        end
-
-        it "saves valid #meetup_data" do
-          chalkler.meetup_data["id"].should == 12345678
-          chalkler.meetup_data["name"].should == "Caitlin Oscars"
-        end
-
-        it "saves correct created_at value" do
-          chalkler.created_at.to_time.to_i.should == 1346658337
-        end
-      end
-
-      describe "#update_from_meetup" do
-        it "updates an existing chalkler" do
-          chalkler = FactoryGirl.create(:chalkler, meetup_id: 12345678, name: "Jim Smith")
-          chalkler.update_from_meetup(result)
-          chalkler.reload.bio.should_not be_nil
-        end
-      end
-
-    end
-  end
-
   describe '.email_frequency_select_options' do
     it "provides an array of options that can be used in select dropdowns" do
       stub_const("Chalkler::EMAIL_FREQUENCY_OPTIONS", %w(yes no))

@@ -24,14 +24,16 @@ begin
 
     desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
-      Channel.all.each do |c|
-        next unless c.url_name?
-        puts "Importing chalklers for channel #{c.name}"
-        total_pages = RMeetup::Client.fetch(:members, { group_urlname: c.url_name }).total_pages
+      importer = ChalkleMeetup::ChalklerImporter.new
+
+      Channel.all.each do |channel|
+        next unless channel.url_name?
+        puts "Importing chalklers for channel #{channel.name}"
+        total_pages = RMeetup::Client.fetch(:members, { group_urlname: channel.url_name }).total_pages
         for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:members, { group_urlname: c.url_name, offset: i })
-          results.each do |r|
-            Chalkler.import_from_meetup(r,c)
+          results = RMeetup::Client.fetch(:members, { group_urlname: channel.url_name, offset: i })
+          results.each do |result|
+            importer.import(result, channel)
           end
         end
       end

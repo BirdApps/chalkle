@@ -72,36 +72,6 @@ class Chalkler < ActiveRecord::Base
     chalkler
   end
 
-  def self.import_from_meetup(result, channel)
-    chalkler = Chalkler.find_by_meetup_id(result.id)
-    if chalkler.nil?
-      chalkler = Chalkler.new
-      chalkler.create_from_meetup(result, channel)
-    else
-      chalkler.update_from_meetup(result)
-      chalkler.channels << channel unless chalkler.channels.exists? channel
-    end
-    chalkler
-  end
-
-  def create_from_meetup(result, channel)
-    self.name = result.name
-    self.meetup_id = result.id
-    self.provider = 'meetup'
-    self.uid = result.id
-    self.bio = result.bio
-    self.meetup_data = result.to_json
-    self.join_channels = [ channel.id ]
-    self.save!
-  end
-
-  def update_from_meetup(result)
-    self.name = result.name
-    self.bio = result.bio
-    self.meetup_data = result.to_json
-    self.save
-  end
-
   private
 
   def set_from_meetup_data
