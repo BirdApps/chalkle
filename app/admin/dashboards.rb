@@ -30,19 +30,13 @@ ActiveAdmin.register_page "Dashboard" do
 
 
         panel "Coming up this week" do
-          table_for Lesson.accessible_by(current_ability).upcoming(7.days.from_now).order("start_at asc") do
+          table_for Lesson.accessible_by(current_ability).upcoming(10.days.from_now).order("start_at asc") do
+            column("Attention") { |lesson| status_tag( (lesson.flag_warning ? lesson.flag_warning : "OK"), (lesson.flag_warning ? :error : :ok)  ) }
             column("Name") { |lesson| link_to(lesson.name, admin_lesson_path(lesson)) }
             column("Date") { |lesson| lesson.start_at.to_formatted_s(:long) }
-            if current_admin_user.role == "super"
-              column("Price") { |lesson| number_to_currency lesson.cost }
-              column("Teacher cost") { |lesson| number_to_currency lesson.teacher_cost }
-              column("Venue cost") { |lesson| number_to_currency lesson.venue_cost }
-            else
-              column("Advertised Price") { |lesson| number_to_currency (lesson.cost.present? ? lesson.cost : nil) }
-              column("Attendee") { |lesson| lesson.attendance}
-              column("Min Attendee") { |lesson| lesson.min_attendee }
-            end
-            column("May Cancel") { |lesson| link_to("Email them", admin_lesson_path(lesson)) if lesson.class_may_cancel }
+            column("Advertised Price") { |lesson| number_to_currency (lesson.cost.present? ? lesson.cost : nil) }
+            column("RSVPs") { |lesson| lesson.attendance}
+            column("Min Attendee") { |lesson| lesson.min_attendee }
           end
         end
 

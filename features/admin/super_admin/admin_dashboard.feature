@@ -21,9 +21,3 @@ Scenario: Super admin can see links to email teacher with payment summary
   Given there was a paid class yesterday
   When they visit the "Dashboard" tab
   Then they should see the link "Email teacher"
-
-Scenario: Super admin can see links to email students about classes that will be cancelled
-  Given there is a paid class coming up
-  And the number of bookings have not reached the minimum required
-  When they visit the "Dashboard" tab
-  Then they should see the link "Email them"

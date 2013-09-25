@@ -66,11 +66,12 @@ ActiveAdmin.register Booking do
       row :meetup_data
       row :created_at
       row :updated_at
+      row :reminder_last_sent_at
     end
     active_admin_comments
   end
 
-  action_item(only: :show, if: proc { can?(:hide, resource) && booking.visible && !booking.paid }) do
+  action_item(only: :show, if: proc { can?(:hide, resource) && booking.visible && (!booking.paid || booking.teacher?)}) do
     link_to 'Delete Booking',
       hide_admin_booking_path(resource),
       :data => { :confirm => "Are you sure you wish to delete this Booking?" }

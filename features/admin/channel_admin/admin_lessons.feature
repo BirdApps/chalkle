@@ -25,6 +25,8 @@ Scenario: A lesson with no details should be editable
   When they visit the "Lessons" tab
   And they visit the "Edit" page
   Then they should see "Edit Lesson"
+  When they click on the "Update Lesson" button
+  Then they should see "Lesson was successfully updated"
 
 Scenario: Channel admins can copy a lesson in their own channel
   Given there is a lesson with no details in the "Wellington" channel
@@ -89,3 +91,36 @@ Scenario: Channel admin can see warning when teacher has no email
   And "Alice" is teaching a lesson
   When they view this lesson
   Then they should see "Please Click On Teacher Above And Enter Their Email"
+
+Scenario: Channel admin can see warning when lesson has no date/time
+  Given there is a lesson with no date in the "Wellington" channel
+  When they view this lesson
+  Then they should see "This Class Must Have A Date And Time"
+
+Scenario: Channel admin can see warning when lesson has no synopsis
+  Given there is a lesson with no what we will do text in the "Wellington" channel
+  When they view this lesson
+  Then they should see "This Class Must Have A What We Will Do During The Class"
+
+Scenario: Channel admin can see warning when lesson has no teacher cost
+  Given there is a lesson with no teacher cost in the "Wellington" channel
+  When they view this lesson
+  Then they should see "This Class Must Have A Teacher Cost"
+
+Scenario: Channel admin can see warning when lesson has no venue cost
+  Given there is a lesson with no venue cost in the "Wellington" channel
+  When they view this lesson
+  Then they should see "This Class Must Have A Venue Cost"
+
+Scenario: Channel admin can see warning when RSVP number is below minimum attendees required
+  Given there is a lesson in the "Wellington" channel with RSVP numbers below the minimum number of attendees
+  When they view this lesson
+  Then they should see "Lower This Number If The Class Is Still Going Ahead"
+
+Scenario: Upload an image for the class
+  Given there is a lesson with no details in the "Wellington" channel
+  When they edit this lesson
+  And they attach an image to the lesson
+  Then this image should be saved
+  When they visit the "Wellington" channel class listing
+  Then they should see this image on the class listing

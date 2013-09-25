@@ -46,4 +46,71 @@ describe BookingMailer do
 
     end
   end
+
+    describe "Payment reminder email" do
+      
+      before do
+        teacher = FactoryGirl.create(:chalkler, name: "Britany Spears", email: "britany@spears.com")
+        @chalkler = FactoryGirl.create(:chalkler, name: "Michael Jackson", email: "michael@jackson.com")
+        channel = FactoryGirl.create(:channel, name: "Music", account: "11-1111-1234567-00", url_name: 'sixdegrees')
+        @lesson = FactoryGirl.create(:lesson, name: "Chalkle Class 5", start_at: 2.days.from_now, cost: 10, teacher_id: teacher.id, venue: "Town Hall", prerequisites: "White shoes")
+        @lesson.channels << channel
+        @booking = FactoryGirl.create(:booking, chalkler_id: @chalkler.id, lesson_id: @lesson.id, payment_method: "cash", guests: 2)
+        @email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
+      end
+
+      it "should deliver to the right person" do
+        @email.should deliver_to("michael@jackson.com")
+      end
+
+      it "should have the right salutation" do
+        @email.should have_body_text("Hello Michael")
+      end
+
+      it "should have the class name" do
+        @email.should have_body_text("Chalkle class 5")
+      end
+
+      it "should tell chalklers what to bring to the class" do
+        @email.should have_body_text("White shoes")
+      end
+
+      it "should display the number of guests" do
+        @email.should have_body_text("You and 2 guests")
+      end
+
+      it "should display the total price" do
+        @email.should have_body_text("$30.00")
+      end
+
+      it "should display how to pay" do
+        @email.should have_body_text("Pay $30.00 cash at Te Takere service desk")
+      end
+
+      it "should display how to pay for bank transfer" do
+        @booking.update_attributes({:payment_method => "bank"}, :as => :admin)
+        email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
+        email.should have_body_text("Deposit $30.00 into the following account:")
+      end
+
+      it "should display how to pay for people who booked using Meetup" do
+        @booking.update_attributes({:payment_method => "meetup"}, :as => :admin)
+        @lesson.update_attributes({:meetup_url =>'http://meetup.com'}, :as => :admin)
+        email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
+        email.should have_body_text(/#{@lesson.meetup_url}/)
+      end
+
+      it "should should not show guests when there aren't any" do
+        @booking.update_attributes({:guests => 0}, :as => :admin)
+        email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
+        email.should_not have_body_text("You and 2 guests")
+      end
+
+      it "should should say TBD when venue is absent" do
+        @lesson.update_attributes({:venue => nil}, :as => :admin)
+        email = BookingMailer.pay_reminder(@chalkler, [@booking.reload]).deliver
+        email.should have_body_text("TBD")
+      end
+    end
+
 end

@@ -1,0 +1,40 @@
+<%#-*- coding: UTF-8 -*-%>
+Hello <%= @chalkler.name.split[0] %>,
+
+Thank you for signing up to the upcoming chalkle° classes. This is a reminder that payment for classes should be made prior to their start dates. Your reservation is not confirmed until payment has been made.
+
+<% if @bookings.any? %>
+Your have <%= "#{pluralize(@bookings.count, "unpaid class")}" %>
+
+  <% @bookings.each do |b| %>
+<%= "#{link_to b.lesson_name.capitalize, "http://my.chalkle.com/#{booking_path(b)}"}" %>
+<%= l b.lesson_start_at, :format => :long_without_year %> | <%= b.lesson_venue ? b.lesson_venue : "TBD" %>
+
+  Price : <%= b.formatted_price %>
+		<% if b.payment_method == 'cash' %>
+  How to pay : <%= "Pay #{b.formatted_price} cash at Te Takere service desk prior to the course" %>
+		<% elsif b.payment_method == 'bank' %>
+  How to pay : <%= "Deposit #{b.formatted_price} into the following account:" %>
+    Account number : <%= "#{b.lesson.channels.first.account}" %>
+    Reference : <%= "#{b.lesson.id} - #{@chalkler.name}" %>
+		<% elsif b.payment_method == 'meetup' %>
+  How to pay : <%= "Make payment using the #{link_to 'Meeup Event site', b.lesson_meetup_url}" %>
+		<% end %>
+		<% if b.lesson_prerequisites %>
+  What to bring : <%= b.lesson_prerequisites.empty? ? "Nothing" : b.lesson_prerequisites %>
+		<% end %>
+		<% if b.guests? %>
+  Attendees : <%= "You and #{pluralize(b.guests,"guest")}" %>
+		<% end %>
+
+	<% end %>
+<% end %>
+
+--
+
+See more chalkles from:
+<% @chalkler.channels.collect do |c| %>
+<%= c.name %>: <%= "http://www.meetup.com/#{c.url_name}/events/calendar/?scroll=true" %>
+<% end %>
+
+Thank you for supporting chalkle° and we look forward to seeing you soon!

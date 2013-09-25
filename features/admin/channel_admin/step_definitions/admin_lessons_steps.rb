@@ -89,3 +89,60 @@ Given(/^the chalkler "(.*?)" has no email$/) do |name|
   chalkler = Chalkler.find_by_name name
   chalkler.update_attributes({:meetup_id => 1234567, :email => nil}, :as => :admin)
 end
+
+Given(/^there is a lesson with no date in the "(.*?)" channel$/) do |name|
+  channel = Channel.find_by_name(name)
+  teacher = FactoryGirl.create(:chalkler)
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 10)
+  lesson.channels << channel
+end
+
+Given(/^there is a lesson with no what we will do text in the "(.*?)" channel$/) do |name|
+  channel = Channel.find_by_name(name)
+  teacher = FactoryGirl.create(:chalkler)
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: nil, teacher_cost: 10, venue_cost: 10)
+  lesson.channels << channel
+end
+
+Given(/^there is a lesson with no teacher cost in the "(.*?)" channel$/) do |name|
+  channel = Channel.find_by_name(name)
+  teacher = FactoryGirl.create(:chalkler)
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10)
+  lesson.channels << channel
+end
+
+Given(/^there is a lesson with no venue cost in the "(.*?)" channel$/) do |name|
+  channel = Channel.find_by_name(name)
+  teacher = FactoryGirl.create(:chalkler)
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: nil)
+  lesson.channels << channel
+end
+
+Given(/^there is a lesson in the "(.*?)" channel with RSVP numbers below the minimum number of attendees$/) do |name|
+  channel = Channel.find_by_name(name)
+  teacher = FactoryGirl.create(:chalkler, name: "Teacher")
+  chalkler = FactoryGirl.create(:channel, name: "Chalkler")
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 10)
+  FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, guests: 2, status: 'yes')
+  lesson.channels << channel
+end
+
+When(/^they attach an image to the lesson$/) do
+  attach_file('lesson_lesson_upload_image', "#{Rails.root}/app/assets/images/chalkle_logo_strapline_stacked.png")
+  click_button 'Update Lesson'
+end
+
+Then(/^this image should be saved$/) do
+  lesson = Lesson.find_by_name "Test Class"
+  File.exist?("#{Rails.root}/public/uploads/test/lesson/lesson_upload_image/#{lesson.id}/chalkle_logo_strapline_stacked.png")
+end
+
+When(/^they visit the "(.*?)" channel class listing$/) do |name|
+  channel = Channel.find_by_name name
+  visit channel_path(channel)
+end
+
+Then(/^they should see this image on the class listing$/) do
+  page.should have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
+  FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
+end

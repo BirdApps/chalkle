@@ -78,6 +78,51 @@ describe Lesson do
     end
   end
 
+  describe "warning flag on lessons" do
+    before do
+      @teacher = FactoryGirl.create(:chalkler, name: "Teacher")
+      chalkler = FactoryGirl.create(:chalkler, name: "Chalkler")
+      @channel = FactoryGirl.create(:channel)
+      @lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: @teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 2, venue: "Town Hall")
+      FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson: @lesson, status: 'yes', guests: 5)
+    end
+
+    it "should raise warning flag when no channel is assigned" do
+      @lesson.flag_warning.should == "Missing details"
+      @lesson.channels << @channel
+    end
+
+    it "should raise warning flag when no teacher is assigned" do
+      @lesson.update_attributes({:teacher_id => nil}, :as => :admin)
+      @lesson.flag_warning.should == "Missing details"
+      @lesson.update_attributes({:teacher_id => @teacher.id}, :as => :admin)
+    end
+
+    it "should raise warning flag when no date is assigned" do
+      @lesson.update_attributes({:start_at => nil}, :as => :admin)
+      @lesson.flag_warning.should == "Missing details"
+      @lesson.update_attributes({:start_at => 2.days.from_now}, :as => :admin)
+    end
+
+    it "should raise warning flag when no venue cost is assigned" do
+      @lesson.update_attributes({:venue_cost => nil}, :as => :admin)
+      @lesson.flag_warning.should == "Missing details"
+      @lesson.update_attributes({:venue_cost => 10}, :as => :admin)
+    end
+
+    it "should raise warning flag when no venue is assigned" do
+      @lesson.update_attributes({:venue => nil}, :as => :admin)
+      @lesson.flag_warning.should == "Missing details"
+      @lesson.update_attributes({:venue => "Town Hall"}, :as => :admin)
+    end
+
+    it "should raise warning flag when minimum number of attendees is not reached" do
+      @lesson.update_attributes({:min_attendee => 10}, :as => :admin)
+      @lesson.flag_warning.should == "May cancel"
+      @lesson.update_attributes({:min_attendee => 2}, :as => :admin)
+    end
+  end
+
   describe ".copy_lesson" do
     let(:chalkler) {FactoryGirl.create(:chalkler, name: "Teacher")}
     let(:channel) { FactoryGirl.create(:channel) }

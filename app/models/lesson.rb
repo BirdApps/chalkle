@@ -12,7 +12,8 @@ class Lesson < ActiveRecord::Base
     :lesson_skill, :venue, :published_at, :category_ids, :channel_ids,
     :lesson_image_attributes, :channel_percentage_override,
     :chalkle_percentage_override, :material_cost, :suggested_audience,
-    :chalkle_payment, :as => :admin
+    :chalkle_payment, :attendance_last_sent_at, :lesson_upload_image,
+    :remove_lesson_upload_image, :as => :admin
 
   has_many :channel_lessons
   has_many :channels, :through => :channel_lessons
@@ -23,8 +24,11 @@ class Lesson < ActiveRecord::Base
   has_many :payments, :through => :bookings
   belongs_to :teacher, class_name: "Chalkler"
   has_one :lesson_image, :dependent => :destroy, :inverse_of => :lesson
+  mount_uploader :lesson_upload_image, LessonUploadImageUploader
 
   accepts_nested_attributes_for :lesson_image
+
+  delegate :name, :to => :teacher, :prefix => true, :allow_nil => true
 
   #Time span for classes requiring attention
   PAST = 3
@@ -55,6 +59,7 @@ class Lesson < ActiveRecord::Base
   validate :max_teacher_cost
   validate :revenue_split_validation
   validate :min_teacher_percentage
+  validate :image_size
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -105,6 +110,13 @@ class Lesson < ActiveRecord::Base
     return unless (channel_percentage_override? || chalkle_percentage_override?) and teacher_cost.present?
     errors.add(:channel_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
     errors.add(:chalkle_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
+  end
+
+  def image_size
+    return unless lesson_upload_image.present?
+    if lesson_upload_image.file.size.to_f/(1000*1000) > 4.to_f
+      errors.add(:lesson_upload_image, "You cannot upload an image greater than 4 MB")
+    end
   end
 
   def default_chalkle_percentage
@@ -212,8 +224,22 @@ class Lesson < ActiveRecord::Base
     class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 7)
   end
 
+  def complete_details?
+    teacher_id.present? && start_at.present? && channels.any? && do_during_class.present? && teacher_cost.present? && venue_cost.present? && venue.present?
+  end
+
   def class_may_cancel
     class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
+  end
+
+  def flag_warning
+    if class_may_cancel
+      return "May cancel"
+    elsif !complete_details?
+      return "Missing details"
+    else
+      return false
+    end
   end
 
   def attendance

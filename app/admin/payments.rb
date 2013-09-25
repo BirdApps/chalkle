@@ -19,6 +19,7 @@ ActiveAdmin.register Payment do
 
   index do
     column :id
+    column :booking
     column :reference
     column :date
     column :xero_contact_name

@@ -40,17 +40,19 @@
                 %p Please ensure payment before your class begins.
 
         .span6
-          = render partial: 'form'
-          :coffeescript
-            $('#booking_payment_method').change (e) ->
-              $('.payment-descriptions').children().hide()
-              $('.payment-descriptions .payment-' + $(this).val()).show()
+          = simple_form_for(@booking, url: channel_lesson_bookings_path, html: { class: 'form-horizontal' }) do |f|
+            %h3 Enter booking details
+            = render partial: 'form', locals: { f: f }
+            :coffeescript
+              $('#booking_payment_method').change (e) ->
+                $('.payment-descriptions').children().hide()
+                $('.payment-descriptions .payment-' + $(this).val()).show()
 
-            unless $('#lessonPrice').text() == 'Free'
-              $('#booking_guests').change (e) ->
-                basePrice = Number $('#lessonBasePrice').text()
-                guests = Number $(this).val()
-                $('#lessonPrice').text '$' + (basePrice * (guests + 1)).toFixed 2
+              unless $('#lessonPrice').text() == 'Free'
+                $('#booking_guests').change (e) ->
+                  basePrice = Number $('#lessonBasePrice').text()
+                  guests = Number $(this).val()
+                  $('#lessonPrice').text '$' + (basePrice * (guests + 1)).toFixed 2
 
 #termsModal.modal.hide.fade{ :'tabindex' => '-1', :'role' => 'dialog', :'aria-labelled-by' => 'Terms and Conditions', :'aria-hidden' => true }
   .modal-header
