@@ -15,39 +15,6 @@ describe Booking do
       FactoryGirl.build(:booking, chalkler: chalkler, lesson: lesson).should_not be_valid
     end
 
-    describe ".create_from_meetup_hash" do
-      let(:result) { MeetupApiStub::rsvp_response }
-      let!(:chalkler) { FactoryGirl.create(:chalkler, meetup_id: 12345678) }
-      let!(:lesson) { FactoryGirl.create(:lesson, meetup_id: 12345678) }
-      let(:return_value) { Booking.create_from_meetup_hash result }
-
-      it "creates a valid Booking" do
-        return_value.should be_true
-        Booking.find_by_meetup_id(12345678).should be_valid
-      end
-
-      it "updates existing booking" do
-        booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
-        Booking.create_from_meetup_hash result
-        booking.reload.guests.should == 1
-      end
-
-      it "saves valid meetup_data" do
-        Booking.create_from_meetup_hash result
-        booking = Booking.find_by_meetup_id 12345678
-        booking.meetup_data["rsvp_id"].should == 12345678
-        booking.meetup_data["member"]["member_id"].should == 12345678
-      end
-
-      it "won't update past classes" do
-        booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
-        lesson.start_at = Chronic.parse("a year ago")
-        lesson.save
-        Booking.create_from_meetup_hash result
-        booking.reload.guests.should == 20
-      end
-    end
-
     describe "callbacks" do
 
       describe "#set_free_lesson_attributes" do
@@ -82,25 +49,6 @@ describe Booking do
             booking.payment_method.should_not == 'free'
             booking.paid.should be_false
           end
-        end
-      end
-
-      describe "#set_from_meetup_data" do
-        let(:result) { MeetupApiStub::rsvp_response }
-
-        before do
-          FactoryGirl.create(:chalkler, meetup_id: 12345678)
-          FactoryGirl.create(:lesson, meetup_id: 12345678)
-          Booking.create_from_meetup_hash result
-          @booking = Booking.find_by_meetup_id 12345678
-        end
-
-        it "saves correct created_at value" do
-          @booking.created_at.to_time.to_i.should == 1351297791
-        end
-
-        it "saves correct updated_at value" do
-          @booking.updated_at.to_time.to_i.should == 1351297791
         end
       end
     end

@@ -26,7 +26,6 @@ class Booking < ActiveRecord::Base
   scope :visible, where(visible: true)
   scope :upcoming, lambda{ joins{ :lesson }.where{ (lessons.start_at > Time.now.utc) & lessons.visible } }
 
-  before_create :set_from_meetup_data
   before_validation :set_free_lesson_attributes
 
   delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cost, :meetup_url, :to => :lesson, prefix: true
@@ -79,20 +78,6 @@ class Booking < ActiveRecord::Base
     (status == 'no') ? true : false
   end
 
-  def self.create_from_meetup_hash result
-    b = Booking.find_or_initialize_by_meetup_id result.rsvp_id
-    b.chalkler = Chalkler.find_by_meetup_id result.member["member_id"]
-    b.lesson = Lesson.find_by_meetup_id result.event["id"]
-    b.meetup_id = result.rsvp_id
-    b.payment_method = 'meetup'
-    if b.lesson.class_not_done
-      b.guests = result.guests
-      b.status = result.response
-    end
-    b.meetup_data = result.to_json
-    b.save
-  end
-
   # Refactor all of this:
 
   def emailable
@@ -136,12 +121,6 @@ class Booking < ActiveRecord::Base
   end
 
   private
-
-  def set_from_meetup_data
-    return if meetup_data.empty?
-    self.created_at = Time.at(meetup_data["created"] / 1000)
-    self.updated_at = Time.at(meetup_data["mtime"] / 1000)
-  end
 
   def set_free_lesson_attributes
     return if self.lesson.nil?

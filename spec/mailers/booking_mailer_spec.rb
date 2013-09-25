@@ -13,7 +13,7 @@ describe BookingMailer do
         result = MeetupApiStub::rsvp_response
         lesson = Lesson.create(name: "ABC", meetup_id: 12345678, cost: 10, start_at: Date.tomorrow)
         chalkler = FactoryGirl.create(:chalkler, meetup_id: 12345678)
-        Booking.create_from_meetup_hash result
+        #Booking.create_from_meetup_hash result
         BookingMailer.should_receive(:first_reminder_to_pay).with(chalkler, lesson).and_return(booking_mailer)
       end
     end

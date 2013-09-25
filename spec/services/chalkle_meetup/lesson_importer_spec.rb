@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'chalkle_meetup/lesson_importer'
 
 describe ChalkleMeetup::LessonImporter do
-  describe ".create_from_meetup_hash" do
+  describe ".import" do
     let(:result) { MeetupApiStub.lesson_response }
     let(:channel) { FactoryGirl.create(:channel) }
 

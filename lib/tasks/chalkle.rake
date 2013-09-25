@@ -32,8 +32,8 @@ begin
         total_pages = RMeetup::Client.fetch(:members, { group_urlname: channel.url_name }).total_pages
         for i in 0...total_pages do
           results = RMeetup::Client.fetch(:members, { group_urlname: channel.url_name, offset: i })
-          results.each do |result|
-            importer.import(result, channel)
+          results.each do |data|
+            importer.import(data, channel)
           end
         end
       end
@@ -49,8 +49,8 @@ begin
         total_pages = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
         for i in 0...total_pages do
           results = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
-          results.each do |result|
-            lesson_importer.import(result,channel)
+          results.each do |data|
+            lesson_importer.import(data, channel)
           end
         end
       end
@@ -58,11 +58,13 @@ begin
 
     desc "Pull rsvps from meetup"
     task "load_bookings" => :environment do
+      booking_importer = ChalkleMeetup::BookingImporter.new
+
       l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(10).to_a
       l.each do |event_id|
         result = RMeetup::Client.fetch(:rsvps, { event_id: event_id.join(','),  fields: 'host' })
-        result.each do |r|
-          Booking.create_from_meetup_hash(r)
+        result.each do |data|
+          booking_importer.import(data)
         end
       end
     end
