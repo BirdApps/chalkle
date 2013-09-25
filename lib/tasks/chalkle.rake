@@ -41,14 +41,16 @@ begin
 
     desc "Pull events from meetup"
     task "load_classes" => :environment do
-      Channel.all.each do |c|
-        next unless c.url_name?
-        puts "Importing classes for channel #{c.name}"
-        total_pages = RMeetup::Client.fetch(:events, { group_urlname: c.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
+      lesson_importer = ChalkleMeetup::LessonImporter.new
+
+      Channel.all.each do |channel|
+        next unless channel.url_name?
+        puts "Importing classes for channel #{channel.name}"
+        total_pages = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
         for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:events, { group_urlname: c.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
-          results.each do |r|
-            Lesson.create_from_meetup_hash(r,c)
+          results = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
+          results.each do |result|
+            lesson_importer.import(result,channel)
           end
         end
       end

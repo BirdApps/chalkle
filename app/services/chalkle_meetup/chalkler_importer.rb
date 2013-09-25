@@ -1,11 +1,11 @@
 module ChalkleMeetup
   class ChalklerImporter
-    def import(result, channel)
-      chalkler = Chalkler.find_by_meetup_id(result.id)
+    def import(data, channel)
+      chalkler = Chalkler.find_by_meetup_id(data.id)
       if chalkler.nil?
-        chalkler = create_chalkler(result, channel)
+        chalkler = create_chalkler(data, channel)
       else
-        update_chalkler_from_meetup(chalkler, result)
+        update_chalkler_from_meetup(chalkler, data)
         chalkler.channels << channel unless chalkler.channels.exists? channel
       end
       chalkler
@@ -13,27 +13,25 @@ module ChalkleMeetup
 
     private
 
-      def create_chalkler(result, channel)
+      def create_chalkler(data, channel)
         chalkler = Chalkler.new
-        chalkler.name = result.name
-        chalkler.meetup_id = result.id
+        chalkler.name = data.name
+        chalkler.meetup_id = data.id
         chalkler.provider = 'meetup'
-        chalkler.uid = result.id
-        chalkler.bio = result.bio
-        chalkler.meetup_data = result.to_json
+        chalkler.uid = data.id
+        chalkler.bio = data.bio
+        chalkler.meetup_data = data.to_json
         chalkler.join_channels = [ channel.id ]
+        chalkler.created_at = Time.at(data.joined / 1000)
         chalkler.save!
         chalkler
       end
 
-      def update_chalkler_from_meetup(chalkler, result)
-        chalkler.name = result.name
-        chalkler.bio = result.bio
-        chalkler.meetup_data = result.to_json
+      def update_chalkler_from_meetup(chalkler, data)
+        chalkler.name = data.name
+        chalkler.bio = data.bio
+        chalkler.meetup_data = data.to_json
         chalkler.save
       end
-
-
-
   end
 end

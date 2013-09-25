@@ -73,8 +73,6 @@ class Lesson < ActiveRecord::Base
   scope :published, where(status: STATUS_1)
   scope :paid, where("cost > 0")
 
-  before_create :set_from_meetup_data
-
   def self.upcoming(limit = nil)
     return where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)} if limit.nil?
     where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc) & (start_at < limit)}
@@ -272,23 +270,6 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  def self.create_from_meetup_hash(result, channel)
-    l = Lesson.find_or_initialize_by_meetup_id result.id
-    l.status = STATUS_1
-    l.name = l.set_name result.name
-    l.meetup_id = result.id
-    l.meetup_url = result.event_url
-    l.description = result.description
-    l.meetup_data = result.to_json
-    l.max_attendee = result.rsvp_limit
-    l.start_at = result.time if (result.status == "upcoming" && result.time.present?)
-    l.published_at = Time.at(result.created / 1000) if (result.status == "upcoming" && result.created.present?)
-    l.save
-    l.set_category result.name
-    l.channels << channel unless l.channels.exists? channel
-    l.valid?
-  end
-
   def set_category(name)
     return unless name.include?(':')
     parts = name.split(':')
@@ -315,15 +296,6 @@ class Lesson < ActiveRecord::Base
   end
 
   private
-
-  def set_from_meetup_data
-    return if meetup_data.empty?
-    self.created_at = Time.at(meetup_data["created"] / 1000)
-    self.published_at = Time.at(meetup_data["created"] / 1000)
-    self.updated_at = Time.at(meetup_data["updated"] / 1000)
-    self.start_at = Time.at(meetup_data["time"] / 1000) if meetup_data["time"]
-    self.duration = meetup_data["duration"] / 1000 if meetup_data["duration"]
-  end
 
   #price calculation methods
   def excl_gst(price)

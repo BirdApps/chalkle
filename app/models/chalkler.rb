@@ -33,7 +33,7 @@ class Chalkler < ActiveRecord::Base
 
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
-  before_create :set_from_meetup_data, :set_reset_password_token
+  before_create :set_reset_password_token
 
   #TODO: Move into a presenter class like Draper sometime
   def self.email_frequency_select_options
@@ -73,11 +73,6 @@ class Chalkler < ActiveRecord::Base
   end
 
   private
-
-  def set_from_meetup_data
-    return unless meetup_data?
-    self.created_at = Time.at(meetup_data["joined"] / 1000)
-  end
 
   # for Chalklers created outside of meetup
   def set_reset_password_token
