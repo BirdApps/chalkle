@@ -24,35 +24,19 @@ begin
 
     desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
-      importer = ChalkleMeetup::ChalklerImporter.new
+      channel_importer = ChalkleMeetup::ChannelImporter.new
 
-      Channel.all.each do |channel|
-        next unless channel.url_name?
-        puts "Importing chalklers for channel #{channel.name}"
-        total_pages = RMeetup::Client.fetch(:members, { group_urlname: channel.url_name }).total_pages
-        for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:members, { group_urlname: channel.url_name, offset: i })
-          results.each do |data|
-            importer.import(data, channel)
-          end
-        end
+      Channel.where("url_name IS NOT NULL").all.each do |channel|
+        channel_importer.import_chalklers(channel)
       end
     end
 
     desc "Pull events from meetup"
     task "load_classes" => :environment do
-      lesson_importer = ChalkleMeetup::LessonImporter.new
+      channel_importer = ChalkleMeetup::ChannelImporter.new
 
-      Channel.all.each do |channel|
-        next unless channel.url_name?
-        puts "Importing classes for channel #{channel.name}"
-        total_pages = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
-        for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
-          results.each do |data|
-            lesson_importer.import(data, channel)
-          end
-        end
+      Channel.where("url_name IS NOT NULL").all.each do |channel|
+        channel_importer.import_lessons(channel)
       end
     end
 
