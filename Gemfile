@@ -4,7 +4,7 @@ gem 'rails', '3.2.14'
 gem 'pg', '~> 0.15.1'
 
 # Authentication
-gem 'devise',           '~> 2.2.3'
+gem 'devise',           '~> 2.2.4'
 gem 'omniauth',         '~> 1.1.1'
 gem 'omniauth-meetup',  '~> 0.0.7'
 
