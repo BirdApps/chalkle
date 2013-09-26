@@ -5,7 +5,7 @@ gem 'pg', '~> 0.15.1'
 
 # Authentication
 gem 'devise',           '~> 2.2.4'
-gem 'omniauth',         '~> 1.1.1'
+gem 'omniauth',         '~> 1.1.4'
 gem 'omniauth-meetup',  '~> 0.0.7'
 
 # Authorisation
