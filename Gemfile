@@ -60,7 +60,7 @@ end
 
 group :development do
   # EXPERIMENTAL
-  # gem 'omni_avatar', path: '/Users/craig/development/enspiral/omni_avatar'
+  gem 'omni_avatar', path: '/Users/craig/development/enspiral/omni_avatar'
 
   gem 'rb-readline'
 

@@ -19,6 +19,13 @@ GIT
       oauth (= 0.4.5)
       oauth (>= 0.3.6)
 
+PATH
+  remote: /Users/craig/development/enspiral/omni_avatar
+  specs:
+    omni_avatar (0.0.1)
+      carrierwave (~> 0.9)
+      rails (~> 3.2.14)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -539,6 +546,7 @@ DEPENDENCIES
   meta_request (~> 0.2.1)
   mocha (>= 0.14.0)
   nifty-generators (~> 0.4.6)
+  omni_avatar!
   omniauth (~> 1.1.4)
   omniauth-meetup (~> 0.0.7)
   pg (~> 0.15.1)
