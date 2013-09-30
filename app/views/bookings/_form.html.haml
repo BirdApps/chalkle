@@ -1,5 +1,4 @@
 = f.error_notification
-= f.object.errors.to_a
 - if @lesson.cost? && @lesson.cost > 0
   = f.input :payment_method, :type => :select, collection: Booking::PAYMENT_METHODS
 = f.input :guests, :type => :select, collection: @lesson.guest_values, :label => 'Attendees', :selected => 0
