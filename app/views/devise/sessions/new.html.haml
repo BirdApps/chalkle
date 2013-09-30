@@ -1,5 +1,5 @@
 .row
-  .span6
+  .col-md-6
     = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f|
       %legend Sign in
       %p If you already have a password, you can sign in using your email address.
@@ -14,7 +14,7 @@
         = f.button :submit, "Sign in"
         = render "devise/shared/links"
 
-  .span4.offset2.sign-in-meetup
+  .col-md-4.sign-in-meetup.pull-right
     .content
       %legend Sign in using Meetup
       %p Use your Meetup account to sign in.
