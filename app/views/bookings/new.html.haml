@@ -3,10 +3,10 @@
 %h2 New Booking
 
 .row
-  .span12
+  .col-md-12
     %section.booking
       .row
-        .span6
+        .col-md-6
           .lesson-summary
             %h3 Booking summary
             %ul.unstyled
@@ -39,7 +39,7 @@
                     = "#{@lesson.id} - #{current_chalkler.name}"
                 %p Please ensure payment before your class begins.
 
-        .span6
+        .col-md-6
           = simple_form_for(@booking, url: channel_lesson_bookings_path, html: { class: 'form-horizontal' }) do |f|
             %h3 Enter booking details
             = render partial: 'form', locals: { f: f }

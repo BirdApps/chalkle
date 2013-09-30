@@ -3,7 +3,7 @@
 %h2= @lesson.name.capitalize
 
 .row.lesson-details
-  .span8.content-left
+  .col-md-8.content-left
     .lesson-description
       %h3 What we are doing
       = simple_format @lesson.do_during_class
@@ -11,7 +11,7 @@
       = simple_format @lesson.learning_outcomes
       %h6 Note
       = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
-  .span4.content-right
+  .col-md-4.content-right
     .booking-actions
       - if chalkler_signed_in?
         - if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? @lesson

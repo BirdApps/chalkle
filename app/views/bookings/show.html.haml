@@ -3,10 +3,10 @@
 %h2= "Booking: #{@booking.lesson_name.capitalize}"
 
 .row
-  .span12
+  .col-md-12
     %section.booking
       .row
-        .span6
+        .col-md-6
           .lesson-summary
             %h3 Summary
             %ul.unstyled
@@ -30,7 +30,7 @@
                 %li
                   %strong Attendees:
                   = "You and #{@booking.guests} guests"
-        .span6
+        .col-md-6
           .payment-summary
             - if @booking.paid?
               %h3 Payment received, thanks!

@@ -27,7 +27,7 @@
 
 
       -#.navbar-nav
-        -#%ul.nav.span10
+        -#%ul.nav.col-md-10
         -#  - if chalkler_signed_in?
         -#    - if current_chalkler.channels.exists? name: 'Horowhenua'
         -#      %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)

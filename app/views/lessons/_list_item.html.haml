@@ -1,21 +1,21 @@
 %section.lesson-item{class: "span12 lesson-#{lesson.status.downcase}"}
   .row
-    .header.span12
+    .header.col-md-12
       %h3= lesson.name.capitalize
       .lesson-attendance.pull-right
         = "#{lesson.attendance} / #{lesson.max_attendee}"
         %i.icon-user
   .row
-    .span8
+    .col-md-8
       .meetup_image
         -if lesson.lesson_upload_image.url.present?
           =image_tag lesson.lesson_upload_image.url(:thumb).to_s, alt: lesson.name, class: 'lesson-image uploaded-lesson-image'
       .summary
         %p= simple_format lesson.do_during_class
-    .span4
+    .col-md-4
       = render :partial => 'lessons/lesson_details', :locals => { :lesson => lesson }
   .row
-    .span12
+    .col-md-12
       .actions
         - if chalkler_signed_in?
           - if lesson.bookable? and !current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? lesson
