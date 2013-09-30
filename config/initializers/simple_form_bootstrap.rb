@@ -3,18 +3,18 @@ SimpleForm.setup do |config|
   # Need latest simple form and rails 4 to do this
   #config.input_class = "form-control"
 
-  config.wrappers :bootstrap, :tag => 'div', :class => 'form-group', :error_class => 'error' do |b|
+  config.wrappers :bootstrap, :tag => 'div', :class => 'form-group', :error_class => 'has-error' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label
-    b.wrapper :tag => 'div', :class => 'controls' do |ba|
-      ba.use :input
-      ba.use :error, :wrap_with => { :tag => 'span', :class => 'help-inline' }
-      ba.use :hint,  :wrap_with => { :tag => 'p', :class => 'help-block' }
-    end
+    #b.wrapper :tag => 'div', :class => 'controls' do |ba|
+    b.use :input
+    b.use :error, :wrap_with => { :tag => 'span', :class => 'help-inline' }
+    b.use :hint,  :wrap_with => { :tag => 'p', :class => 'help-block text-danger' }
+    #end
   end
 
-  config.wrappers :prepend, :tag => 'div', :class => "form-group", :error_class => 'error' do |b|
+  config.wrappers :prepend, :tag => 'div', :class => "form-group", :error_class => 'has-error' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label
@@ -27,7 +27,7 @@ SimpleForm.setup do |config|
     end
   end
 
-  config.wrappers :append, :tag => 'div', :class => "form-group", :error_class => 'error' do |b|
+  config.wrappers :append, :tag => 'div', :class => "form-group", :error_class => 'has-error' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label
