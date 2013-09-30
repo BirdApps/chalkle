@@ -36,7 +36,8 @@ gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml-rails',    '~> 0.3.5'
 gem 'coffee-filter', '~> 0.1.3'
-gem 'simple_form'
+#gem 'simple_form'
+gem 'simple_form', github: 'zlx/simple_form_bootstrap3', branch: 'rails_3'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 

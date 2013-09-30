@@ -27,6 +27,15 @@ GIT
       oauth (= 0.4.5)
       oauth (>= 0.3.6)
 
+GIT
+  remote: git://github.com/zlx/simple_form_bootstrap3.git
+  revision: 64d9e31c8b0d3fdc9e1ffd82883d00ea455b55ab
+  branch: rails_3
+  specs:
+    simple_form (2.1.0)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -426,9 +435,6 @@ GEM
     shoulda-context (1.1.5)
     shoulda-matchers (2.3.0)
       activesupport (>= 3.0.0)
-    simple_form (2.1.0)
-      actionpack (~> 3.0)
-      activemodel (~> 3.0)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
@@ -560,7 +566,7 @@ DEPENDENCIES
   rspec-rails (~> 2.12.2)
   sass-rails (~> 3.2.6)
   shoulda (>= 3.5.0)
-  simple_form
+  simple_form!
   simplecov (~> 0.7.1)
   spork
   squeel (~> 1.0.18)
