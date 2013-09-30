@@ -426,7 +426,7 @@ GEM
     shoulda-context (1.1.5)
     shoulda-matchers (2.3.0)
       activesupport (>= 3.0.0)
-    simple_form (2.0.4)
+    simple_form (2.1.0)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     simplecov (0.7.1)
@@ -560,7 +560,7 @@ DEPENDENCIES
   rspec-rails (~> 2.12.2)
   sass-rails (~> 3.2.6)
   shoulda (>= 3.5.0)
-  simple_form (~> 2.0.4)
+  simple_form
   simplecov (~> 0.7.1)
   spork
   squeel (~> 1.0.18)
