@@ -11,7 +11,7 @@
   padding-bottom: 8px;
   line-height: $baseLineHeight;
   border: 1px dashed transparent;
-  //@include border-radius(0);
+  @include border-radius(0);
   &:hover,
   &:focus {
     border-color: $grayLight $grayLight transparent $grayLight;

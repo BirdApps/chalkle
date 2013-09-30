@@ -1,10 +1,11 @@
 %section.lesson-item{class: "span12 lesson-#{lesson.status.downcase}"}
   .row
     .header.col-md-12
-      %h3= lesson.name.capitalize
-      .lesson-attendance.pull-right
-        = "#{lesson.attendance} / #{lesson.max_attendee}"
-        %i.icon-user
+      .header_contents
+        .lesson-attendance.pull-right
+          = "#{lesson.attendance} / #{lesson.max_attendee}"
+          %i.icon-user
+        %h3= lesson.name.capitalize
   .row
     .col-md-8
       .meetup_image
