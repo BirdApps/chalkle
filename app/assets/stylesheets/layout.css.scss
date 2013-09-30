@@ -35,7 +35,7 @@ body {
         padding: 7px 10px;
         line-height: 18px;
         text-decoration: none;
-        @include border-radius(2px);
+        //@include border-radius(2px);
         border: dashed 1px #999999;
         &.no-border {
           border: none;
@@ -82,7 +82,7 @@ body {
 
 .lesson-item {
   background: #f9f9f9;
-  @include border-radius(4px);
+  //@include border-radius(4px);
   border: solid 1px darken(#f9f9f9, 8%);
   margin: 0 0 2em 0;
 
@@ -116,7 +116,7 @@ body {
     }
     font-size: $fontSizeSmall;
     border: 1px solid $grayLighter;
-    @include border-radius(4px);
+    //@include border-radius(4px);
     margin: 0.5em;
     padding: 0 0.5em;
     background-color: $white;
@@ -167,7 +167,7 @@ form .booking-terms-and-conditions label {
 .content-right .box {
   font-size: $fontSizeSmall;
   border: 1px solid darken($grayLighter, 4%);
-  @include border-radius(4px);
+  //@include border-radius(4px);
   margin: 0.5em 0;
   .start-time {
     font-size: 1.3em;

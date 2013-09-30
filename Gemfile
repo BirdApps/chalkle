@@ -49,7 +49,7 @@ gem "rmagick"
 group :assets do
   gem 'sass-rails',          '~> 3.2.6'
   gem 'coffee-rails',        '~> 3.2.2'
-  gem 'bootstrap-sass',      '~> 2.3.1.0'
+  gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
   gem 'font-awesome-rails'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.9.1'

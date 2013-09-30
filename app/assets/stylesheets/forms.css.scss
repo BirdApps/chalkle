@@ -23,7 +23,7 @@ form div.control-group.hidden {
   .content {
     background: #ececec;
     padding: 10px 20px 20px 20px;
-    @include border-radius(4px);
+    //@include border-radius(4px);
   }
   legend {
     color: $pink;

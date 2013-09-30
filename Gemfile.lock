@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/anjlab/bootstrap-rails.git
+  revision: 583659441aa843e47f8002c562c2911500b2fd3e
+  specs:
+    anjlab-bootstrap-rails (3.0.0.3)
+      railties (>= 3.0)
+      sass (>= 3.2)
+
+GIT
   remote: git://github.com/kiesia/rmeetup.git
   revision: eedaafcfe87c9aa952c05cc67b4cd9799abc9bd7
   specs:
@@ -78,8 +86,6 @@ GEM
       coderay (>= 1.0.0)
       erubis (>= 2.7.0)
     binding_of_caller (0.6.8)
-    bootstrap-sass (2.3.1.0)
-      sass (~> 3.2)
     bourbon (3.0.1)
       sass (>= 3.2.0)
       thor
@@ -492,9 +498,9 @@ DEPENDENCIES
   activeadmin (~> 0.5.1)
   airbrake (~> 3.1.6)
   analytical (~> 3.0.12)
+  anjlab-bootstrap-rails!
   better_errors (~> 0.3.2)
   binding_of_caller (~> 0.6.8)
-  bootstrap-sass (~> 2.3.1.0)
   cancan (~> 1.6.8)
   capistrano (~> 2.14.1)
   capistrano-ext (~> 1.2.1)
