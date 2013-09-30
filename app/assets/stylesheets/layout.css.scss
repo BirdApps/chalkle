@@ -58,7 +58,7 @@ body {
   }
 }
 
-.hero-unit {
+.jumbotron {
   font-family: $font_family_chalk;
   background: #222222 asset-url("texture-chalkboard.jpg", image) left top repeat;
   color: white;
@@ -111,7 +111,7 @@ body {
     padding: 0 0.5em;
   }
   .box.details {
-    font-size: $fontSizeSmall;
+    font-size: $font-size-small;
     border: 1px solid $grayLighter;
     @include border-radius(4px);
     margin: 0.5em;
@@ -144,13 +144,13 @@ body {
     }
     .popover {
       font-size: 16px;
-      color: $textColor;
+      color: $text-color;
       text-shadow: none;
       font-weight: normal;
       a {
-        color: $linkColor;
+        color: $link-color;
         &:hover {
-          color: $linkColorHover;
+          color: $link-color-hover;
         }
       }
     }
@@ -158,7 +158,7 @@ body {
 }
 
 .content-right .box {
-  font-size: $fontSizeSmall;
+  font-size: $font-size-small;
   border: 1px solid darken($grayLighter, 4%);
   @include border-radius(4px);
   margin: 0.5em 0;

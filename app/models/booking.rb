@@ -11,7 +11,8 @@ class Booking < ActiveRecord::Base
   belongs_to :chalkler
   has_one :payment
 
-  validates_presence_of :lesson_id, :chalkler_id, :payment_method, :status
+  validates_presence_of :lesson_id, :chalkler_id, :status
+  validates_presence_of :payment_method, :unless => :free?
   validates_acceptance_of :terms_and_conditions, :message => 'please read and agree', :if => :enforce_terms_and_conditions
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
 
@@ -118,6 +119,10 @@ class Booking < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def free?
+    lesson_cost.to_i == 0
   end
 
   private

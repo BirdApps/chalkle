@@ -173,8 +173,8 @@
     %h3 Misc
     .well
       I am a well .well
-    .hero-unit
-      I am a hero unit .hero-unit
+    .jumbotron
+      I am a jumbotron .jumbotron
 
     %h3 Headings
 
@@ -633,45 +633,48 @@
 
         -@lessons = Lesson.where('do_during_class IS NOT NULL').order('created_at desc').limit(5).decorate
         -@lessons << Lesson.where('start_at is NULL').order('created_at desc').first.decorate
+        -@lessons.compact!
+        -#- raise @lessons.last.inspect
         -@lessons.last.suggested_audience = "YOUNG PEOPLE"
         -@lessons.shuffle!
         %p Should these just show title, and expand on clicking info icon?
         %section.box-list
           -@lessons.each_with_index do |ls, i|
-            %article.box-item{class: "#{'box-highlighted' if i == 2} #{('lesson-'+ls.status).downcase}"}
-              .row
-                .col-md-12.box-top
-                  .clearfix
-                    %h5=ls.name
-                    .tags
-                      .tag.tag-blue
-                        Chalkle
-                      .tag.tag-green
-                        Longer Words
+            - if ls
+              %article.box-item{class: "#{'box-highlighted' if i == 2} #{('lesson-'+ls.status).downcase}"}
+                .row
+                  .col-md-12.box-top
+                    .clearfix
+                      %h5=ls.name
+                      .tags
+                        .tag.tag-blue
+                          Chalkle
+                        .tag.tag-green
+                          Longer Words
+                      .pull-right
+                        %span= ls.attendance.to_s + " / " + ls.min_attendee.to_s
+                        .icon.icon-user
+                .row
+                  .col-md-12.box-mid.text-smaller
+                    .box-mid-left.full-width-mobile
+                      %p=(truncate(ls.do_during_class, length: 300, separator: " ") || '').gsub(/\n/, '<br />').html_safe
+                      - if ls.suggested_audience
+                        %p Suggested for:
+                        %p=ls.suggested_audience.gsub(/\n/, '<br />').html_safe
+                    .box-mid-right.full-width-mobile
+                      %ul.unstyled
+                        - if ls.start_at
+                          %li.light-gray-box=l ls.start_at, format: :short
+                        - elsif ls.availabilities
+                          %li= ls.availabilities
+                        %li= ls.venue
+                        -# %li= "#{"Cost: " + number_to_currency(ls.gst_price)} (incl GST)"
+                        -# %li= "#{"Materials: " + number_to_currency(ls.material_cost)}"
+                        %li= "#{"Teacher: " + ls.teacher.name if ls.teacher}"
+                .row
+                  .col-md-12.box-bottom
                     .pull-right
-                      %span= ls.attendance.to_s + " / " + ls.min_attendee.to_s
-                      .icon.icon-user
-              .row
-                .col-md-12.box-mid.text-smaller
-                  .box-mid-left.full-width-mobile
-                    %p=truncate( ls.do_during_class, length: 300, separator: " ").gsub(/\n/, '<br />').html_safe
-                    - if ls.suggested_audience
-                      %p Suggested for:
-                      %p=ls.suggested_audience.gsub(/\n/, '<br />').html_safe
-                  .box-mid-right.full-width-mobile
-                    %ul.unstyled
-                      - if ls.start_at
-                        %li.light-gray-box=l ls.start_at, format: :short
-                      - elsif ls.availabilities
-                        %li= ls.availabilities
-                      %li= ls.venue
-                      -# %li= "#{"Cost: " + number_to_currency(ls.gst_price)} (incl GST)"
-                      -# %li= "#{"Materials: " + number_to_currency(ls.material_cost)}"
-                      %li= "#{"Teacher: " + ls.teacher.name}"
-              .row
-                .col-md-12.box-bottom
-                  .pull-right
-                    .btn.btn-primary=ls.join_chalklers
+                      .btn.btn-primary=ls.join_chalklers
 
 
 :javascript
