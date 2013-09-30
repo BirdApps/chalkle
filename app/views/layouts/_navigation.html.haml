@@ -1,25 +1,50 @@
-%header.navbar.navbar-inverse.navbar-static-top
-  .navbar-inner.navbar-texture-gray-dark
-    .container
-      %h1
-        = link_to (image_tag 'chalkle_logo_strapline_stacked.png', {width: 125, alt: 'chalkle° - six degrees of separation'}), root_path, class: 'logo span2'
-      .nav-collapse.collapse
-        %ul.nav.span10
-          - if chalkler_signed_in?
-            - if current_chalkler.channels.exists? name: 'Horowhenua'
-              %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
-            %li= link_to 'Teach', new_chalklers_teaching_path
-            %li= link_to 'Request class', new_chalklers_lesson_suggestion_path
-            %li= link_to 'Bookings', bookings_path
-            %li.fl-right.no-right-margin= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
-            %li.dropdown.fl-right
-              = link_to '#', { :class => 'dropdown-toggle', 'data-toggle' => 'dropdown' } do
-                = current_chalkler.name
-                %i.icon-chevron-down
-              %ul.dropdown-menu{ :role => 'menu', 'aria-labelledby' => 'dropdownMenu' }
-                %li= link_to 'Email settings', chalklers_preferences_path, { :tabindex => '-1' }
-          -else
-            - if Channel.exists? name: 'Horowhenua'
-              %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
-            %li.fl-right.no-right-margin= link_to 'Sign in', new_chalkler_session_path
-            %li.fl-right= link_to 'Join chalkle&deg;'.html_safe, new_chalkler_registration_path
+%nav.navbar.navbar-inverse.navbar-static-top
+  .container
+    = link_to (image_tag 'chalkle_logo_strapline_stacked.png', {width: 125, alt: 'chalkle° - six degrees of separation'}), root_path, class: 'navbar-brand'
+
+    - if !chalkler_signed_in?
+      %ul.nav.navbar-nav
+        - if Channel.exists? name: 'Horowhenua'
+          %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
+      %ul.nav.navbar-nav.pull-right
+        %li= link_to 'Join chalkle&deg;'.html_safe, new_chalkler_registration_path
+        %li= link_to 'Sign in', new_chalkler_session_path
+    - else
+      %ul.nav.navbar-nav
+        - if current_chalkler.channels.exists? name: 'Horowhenua'
+          %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
+        %li= link_to 'Teach', new_chalklers_teaching_path
+        %li= link_to 'Request class', new_chalklers_lesson_suggestion_path
+        %li= link_to 'Bookings', bookings_path
+      %ul.nav.navbar-nav.pull-right
+        %li.dropdown
+          %a.dropdown-toggle{'data-toggle'=>'dropdown'}
+            = current_chalkler.name
+            %i.icon-chevron-down
+          %ul.dropdown-menu
+            %li= link_to 'Email settings', chalklers_preferences_path, { :tabindex => '-1' }
+        %li= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
+
+
+      -#.navbar-nav
+        -#%ul.nav.span10
+        -#  - if chalkler_signed_in?
+        -#    - if current_chalkler.channels.exists? name: 'Horowhenua'
+        -#      %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
+        -#    %li= link_to 'Teach', new_chalklers_teaching_path
+        -#    %li= link_to 'Request class', new_chalklers_lesson_suggestion_path
+        -#    %li= link_to 'Bookings', bookings_path
+        -#    %li.fl-right.no-right-margin= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
+        -#    %li.dropdown.fl-right
+        -#      = link_to '#', { :class => 'dropdown-toggle', 'data-toggle' => 'dropdown' } do
+        -#        = current_chalkler.name
+        -#        %i.icon-chevron-down
+        -#      %ul.dropdown-menu{ :role => 'menu', 'aria-labelledby' => 'dropdownMenu' }
+        -#        %li= link_to 'Email settings', chalklers_preferences_path, { :tabindex => '-1' }
+        -#  -else
+        -#    - if Channel.exists? name: 'Horowhenua'
+        -#      %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
+        -#    %li.fl-right.no-right-margin= link_to 'Sign in', new_chalkler_session_path
+        -#    %li.fl-right= link_to 'Join chalkle&deg;'.html_safe, new_chalkler_registration_path
+
+

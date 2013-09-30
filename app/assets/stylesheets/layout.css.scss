@@ -10,20 +10,17 @@ body {
 .navbar {
   font-weight: bold;
   font-size: 15px;
-  line-height: 1em;
-  margin-bottom: 2em;
-  .logo {
-    padding: 0;
-    margin: 0;
+  //line-height: 1em;
+  background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
+  border-bottom: solid 1px gray;
+
+  .navbar-brand {
+    padding-bottom: 5px;
   }
-  .navbar-texture-gray-dark {
-    background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
-    padding: 3px 0;
-    border-bottom: solid 1px gray;
-  }
+
   .nav {
-    margin-top: 7px;
-    float: right;
+    margin-top: 17px;
+    //float: right;
     li {
       margin-left: 15px;
       &.fl-right {float: right;}
