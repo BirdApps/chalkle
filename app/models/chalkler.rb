@@ -1,4 +1,8 @@
+require 'omni_avatar/has_avatar'
+
 class Chalkler < ActiveRecord::Base
+  include OmniAvatar::HasAvatar
+
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
     :validatable, :omniauthable, :registerable
 
