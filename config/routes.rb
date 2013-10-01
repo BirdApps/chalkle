@@ -7,7 +7,7 @@ Chalkle::Application.routes.draw do
   root to: 'chalklers/dashboard#index'
 
   resources :channels, :only => :show do
-    resources :lessons, :only => :show, :path => 'classes' do
+    resources :lessons, :only => [:show, :index], :path => 'classes' do
       resources :bookings, :only => [:new, :create] do
         get :payment_callback
       end

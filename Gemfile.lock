@@ -563,7 +563,7 @@ DEPENDENCIES
   rails (= 3.2.14)
   rb-readline
   rmagick
-  rspec-rails (~> 2.12.2)
+  rspec-rails
   sass-rails (~> 3.2.6)
   shoulda (>= 3.5.0)
   simple_form!
