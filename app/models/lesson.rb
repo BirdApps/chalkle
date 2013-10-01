@@ -295,6 +295,10 @@ class Lesson < ActiveRecord::Base
     new_lesson
   end
 
+  def free?
+    cost == 0
+  end
+
   private
 
   #price calculation methods

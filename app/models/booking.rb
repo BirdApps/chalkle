@@ -29,7 +29,8 @@ class Booking < ActiveRecord::Base
 
   before_validation :set_free_lesson_attributes
 
-  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cost, :meetup_url, :to => :lesson, prefix: true
+  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :meetup_url, :cose, to: :lesson, prefix: true
+  delegate :free?, to: :lesson, allow_nil: true
 
   BOOKING_STATUSES = %w(yes waitlist no pending no-show)
 
@@ -121,15 +122,10 @@ class Booking < ActiveRecord::Base
     end
   end
 
-  def free?
-    lesson_cost.to_i == 0
-  end
-
   private
 
   def set_free_lesson_attributes
-    return if self.lesson.nil?
-    if self.lesson_cost == 0
+    if lesson && free?
       self.payment_method = 'free'
       self.paid = true
     end
