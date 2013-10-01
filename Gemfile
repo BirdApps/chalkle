@@ -11,11 +11,14 @@ gem 'omniauth-meetup',  '~> 0.0.7'
 # Authorisation
 gem 'cancan',  '~> 1.6.8'
 
+# Time / Date
+gem 'monthify'
+gem 'chronic',       '~> 0.9.0'
+
 gem 'airbrake',      '~> 3.1.6'
 gem 'activeadmin',   '~> 0.5.1'
 gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails',  '~> 2.1.4'
-gem 'chronic',       '~> 0.9.0'
 gem 'active_attr',   '~> 0.7.0'
 gem 'dragonfly',     '~> 0.9.14'
 gem 'rack-cache', :require => 'rack/cache'

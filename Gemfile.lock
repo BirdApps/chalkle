@@ -315,6 +315,8 @@ GEM
     mime-types (1.23)
     mocha (0.14.0)
       metaclass (~> 0.0.1)
+    monthify (1.0.0)
+      activesupport
     multi_json (1.8.0)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
@@ -550,6 +552,7 @@ DEPENDENCIES
   maruku (~> 0.6.1)
   meta_request (~> 0.2.1)
   mocha (>= 0.14.0)
+  monthify
   nifty-generators (~> 0.4.6)
   omniauth (~> 1.1.4)
   omniauth-meetup (~> 0.0.7)
