@@ -28,7 +28,7 @@ GIT
       oauth (>= 0.3.6)
 
 GIT
-  remote: git://github.com/zlx/simple_form_bootstrap3.git
+  remote: git://github.com/zlx/simple_form_bootstrap3
   revision: 64d9e31c8b0d3fdc9e1ffd82883d00ea455b55ab
   branch: rails_3
   specs:
