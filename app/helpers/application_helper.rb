@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def bootstrap_form_for(*params, &block)
-    params[1][:defaults] = { :input_html => { :class => "form-control" } }
+    params[1][:defaults] = {input_html: {class: "form-control"}}
     simple_form_for(*params, &block)
   end
 end

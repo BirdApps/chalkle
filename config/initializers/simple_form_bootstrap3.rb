@@ -20,11 +20,11 @@ SimpleForm.setup do |config|
     b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
   end
 
-  config.wrappers :prepend, tag: 'div', class: "control-group", error_class: 'error' do |b|
+  config.wrappers :prepend, tag: 'div', class: "form-group", error_class: 'error' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label
-    b.wrapper tag: 'div', class: 'controls' do |input|
+    b.wrapper tag: 'div', class: 'control-group' do |input|
       input.wrapper tag: 'div', class: 'input-group' do |prepend|
         prepend.use :input
       end
@@ -33,17 +33,30 @@ SimpleForm.setup do |config|
     end
   end
 
-  config.wrappers :append, tag: 'div', class: "control-group", error_class: 'error' do |b|
+  config.wrappers :append, tag: 'div', class: "form-group", error_class: 'error' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label
-    b.wrapper tag: 'div', class: 'controls' do |input|
+    b.wrapper tag: 'div', class: 'control-group' do |input|
       input.wrapper tag: 'div', class: 'input-group' do |append|
         append.use :input
       end
       input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
       input.use :error, wrap_with: { tag: 'span', class: 'help-inline' }
     end
+  end
+
+  config.wrappers :checkbox, tag: :div, class: "checkbox", error_class: "has-error" do |b|
+    b.use :html5
+
+    # Form components
+    b.wrapper tag: :label do |ba|
+      ba.use :input
+      ba.use :label_text
+    end
+
+    b.use :hint,  wrap_with: { tag: :p, class: "help-block" }
+    b.use :error, wrap_with: { tag: :span, class: "help-block text-danger" }
   end
 
   # Wrappers for forms and inputs using the Twitter Bootstrap toolkit.
