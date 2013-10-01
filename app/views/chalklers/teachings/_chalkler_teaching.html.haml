@@ -27,7 +27,7 @@
       = f.input :suggested_audience, :label => "What type of audience would this class be appropriate for?", :as => :text, :placeholder => "For example: age, ethnicity, occupation, gender", :input_html => { :rows => 1 }
       = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in hours", :wrapper => :append do
         = f.input_field :duration
-        = content_tag :span, "Hours", :class => "add-on"
+        = content_tag :span, "Hours", :class => "input-group-addon"
 
       = f.input :free_lesson, :label => false, :inline_label => "Check here if you want this class to be offered for free", as: :boolean
 
