@@ -8,6 +8,10 @@ Chalkle::Application.routes.draw do
 
   resources :channels, :only => :show do
     resources :lessons, :only => [:show, :index], :path => 'classes' do
+      collection do
+        get :month
+      end
+
       resources :bookings, :only => [:new, :create] do
         get :payment_callback
       end

@@ -11,12 +11,9 @@
 %h4= "Pay for your class"
 %p= "If you haven’t paid for your booking, click on “Bookings” above and follow the payment instructions shown. Your spot in the class is not guaranteed until you have paid!"
 
-= render partial: 'month_calendar_view', locals: {month: Month.current}
-
 .lesson-list
   - @lessons.each do |lesson|
     = render :partial => "lessons/list_item", :locals => { :lesson => lesson }
-  = paginate @lessons
 
 :coffeescript
   signedIn = () ->
