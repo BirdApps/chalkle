@@ -1,0 +1,29 @@
+%table.month_calendar_view
+  %thead
+    %tr
+      %th
+        .title Monday
+      %th
+        .title Tuesday
+      %th
+        .title Wednesday
+      %th
+        .title Thursday
+      %th
+        .title Friday
+      %th.weekend
+        .title Saturday
+      %th.weekend
+        .title Sunday
+  %tbody
+    - month.to_weeks.each do |week|
+      %tr
+        - week.each do |day|
+          %td{class: Week.on_weekend?(day) ? 'weekend' : nil}
+            - if month.contains?(day)
+              .day_title
+                %span.day_letter= day.strftime('%A').first
+                %span.date= day.strftime('%d %b')
+              %ul.lessons
+                %li Some lesson goes here
+                %li Some lesson goes here

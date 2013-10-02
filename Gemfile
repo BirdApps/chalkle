@@ -12,7 +12,7 @@ gem 'omniauth-meetup',  '~> 0.0.7'
 gem 'cancan',  '~> 1.6.8'
 
 # Time / Date
-gem 'monthify'
+gem 'monthify', require: 'monthify'
 gem 'chronic',       '~> 0.9.0'
 
 gem 'airbrake',      '~> 3.1.6'

@@ -18,23 +18,17 @@ module Weekify
   end
 
   class Week < DateRange
-    WEEK_LENGTH = 7
-    WDAY_START = 1
-
     class << self
       def containing(date)
-        starting date_to_week_start(date)
+        starting date.beginning_of_week
       end
 
       def starting(start_date)
-        end_date = start_date + WEEK_LENGTH - 1
-        new(start_date, end_date)
+        new(start_date, start_date.end_of_week)
       end
 
-      private
-
-      def date_to_week_start(date)
-        date - (date.wday - WDAY_START)
+      def on_weekend?(date)
+        date.saturday? || date.sunday?
       end
     end
 

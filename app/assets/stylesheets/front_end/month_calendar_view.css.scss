@@ -1,0 +1,100 @@
+$calendar-cell-weekday: #D6D6D6;
+$calendar-cell-weekend: #C6C6C6;
+
+table.month_calendar_view {
+  width: 100%;
+  margin-bottom: 1em;
+
+  th, td {
+    border-left: 7px solid white;
+
+    &:first-child {
+      border-right-width: 0;
+    }
+  }
+
+  th, td {
+    padding: 0;
+  }
+
+  td {
+    background-color: $calendar-cell-weekday;
+  }
+
+  th {
+    font-weight: normal;
+    font-size: 20px;
+    height: 40px;
+  }
+
+  th > .title {
+    background-color: $calendar-cell-weekday;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 20px;
+    padding-left: 7px;
+    position: relative;
+  }
+
+  th > .title:after {
+    right: -40px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+
+    border-left-color: $calendar-cell-weekday;
+    border-width: 20px;
+    top: 50%;
+    margin-top: -20px;
+  }
+
+  th.weekend > .title, td.weekend {
+    background-color: $calendar-cell-weekend;
+  }
+
+  th.weekend > .title:after {
+    border-left-color: $calendar-cell-weekend;
+  }
+
+  tr {
+    border-bottom: 14px solid white;
+  }
+
+  tbody tr:last-chid {
+    border-bottom-width: 0;
+  }
+
+  tbody td {
+
+  }
+
+  .day_title {
+    padding: 7px;
+
+    .day_letter {
+      font-weight: bold;
+    }
+  }
+
+  ul.lessons {
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+
+      background-color: #DE5C64;
+      margin-bottom: 1px;
+      padding: 4px 7px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
