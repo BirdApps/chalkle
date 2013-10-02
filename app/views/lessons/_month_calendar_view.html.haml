@@ -33,6 +33,7 @@
                 %ul.lessons
                   - lessons[day].each do |lesson|
                     %li
-                      %a
-                        %span.time= lesson.start_at.strftime('%l:%M %p')
-                        %span.title= lesson.name
+                      %a.ellipsis
+                        %div
+                          %span.time= lesson.start_at.strftime('%l:%M %p')
+                          %span.title= lesson.name

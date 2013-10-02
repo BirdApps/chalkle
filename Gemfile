@@ -60,6 +60,7 @@ group :assets do
   gem 'haml_assets',         '~> 0.2.1'
   gem 'kalendae_assets',     '~> 0.2.1'
   gem 'execjs',              '~> 1.4.0'
+  gem 'bower-rails'
 end
 
 group :development do
