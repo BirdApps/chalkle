@@ -14,11 +14,23 @@ class LessonsController < ApplicationController
 
   def month
     load_channel
-    @month = Month.current
-    @lessons = group_by_day decorate lessons_scope
+    load_month
+    @lessons = group_by_day decorate lessons_for_month
   end
 
   private
+
+    def lessons_for_month
+      @channel.lessons.published.in_month(@month).by_date
+    end
+
+    def load_month
+      @month = if params[:year] && params[:month]
+        Month.new(params[:year].to_i, params[:month].to_i)
+      else
+        Month.current
+      end
+    end
 
     def lessons_scope
       @channel.lessons.upcoming.order('start_at')

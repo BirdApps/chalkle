@@ -72,6 +72,8 @@ class Lesson < ActiveRecord::Base
   scope :unpublished, where{ status != STATUS_1 }
   scope :published, where(status: STATUS_1)
   scope :paid, where("cost > 0")
+  scope :by_date, order(:start_at)
+  scope :in_month, lambda {|month| where(:start_at => month.date_range)}
 
   def self.upcoming(limit = nil)
     return where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)} if limit.nil?

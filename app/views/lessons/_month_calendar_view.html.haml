@@ -35,5 +35,5 @@
                     %li
                       %a.ellipsis
                         %div
-                          %span.time= lesson.start_at.strftime('%l:%M %p')
-                          %span.title= lesson.name
+                          %span.time>= lesson.start_at.strftime('%l:%M %p').strip
+                          %span.title>= lesson.name
