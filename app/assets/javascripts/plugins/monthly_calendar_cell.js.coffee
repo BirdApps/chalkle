@@ -1,11 +1,11 @@
-#= require jquery-dotdotdot/jquery.dotdotdot.js
+#= require jquery.FastEllipsis.js
 
 class MonthlyCalendarCell
   constructor: (element) ->
     @elem = $(element)
     @active_cell = null
     @_attachHandlers()
-    $(".ellipsis").dotdotdot()
+#    $(".ellipsis").dotdotdot()
     @_updateCount()
 
   isExpanded: ->
@@ -49,8 +49,10 @@ class MonthlyCalendarCell
     if more_count > 1
       @elem.addClass('show_more')
       @elem.find('.lesson_count .number').text(more_count)
+      @elem.find('li.viewable').last().addClass('last_showing')
     else
       @elem.removeClass('show_more')
+      @elem.find('li').removeClass('last_showing')
 
 
 $.fn.monthlyCalendarCell = (options) ->

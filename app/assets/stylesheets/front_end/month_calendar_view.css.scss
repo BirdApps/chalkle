@@ -42,9 +42,9 @@ table.month_calendar_view {
     .lesson_count {
       display: block;
       position: absolute;
-      bottom: 0;
-      height: 51px;
-      line-height: 70px;
+      bottom: 2px;
+      height: 20px;
+      line-height: 20px;
       text-align: bottom;
       padding: 0 7px;
       text-align: right;
@@ -52,8 +52,12 @@ table.month_calendar_view {
     }
 
     ul.lessons {
-      li:last-child {
-        display: none;
+      li.last_showing a {
+        height: 28px;
+
+        > div {
+          height: 20px;
+        }
       }
     }
   }
@@ -158,6 +162,11 @@ table.month_calendar_view {
           .time {
             font-weight: bold;
             margin-right: 0.3em;
+          }
+
+          > div {
+            height: 40px;
+            overflow: hidden;
           }
         }
       }
