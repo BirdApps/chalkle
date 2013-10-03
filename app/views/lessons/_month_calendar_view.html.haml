@@ -42,3 +42,7 @@
                             %div
                               %span.time>= lesson.start_at.strftime('%l:%M %p').strip
                               %span.title>= lesson.name
+                .lesson_count
+                  &hellip;and
+                  %span.number X
+                  more

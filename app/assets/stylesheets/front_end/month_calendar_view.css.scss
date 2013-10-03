@@ -24,8 +24,37 @@ table.month_calendar_view {
     height: $calendar-cell-height;
     vertical-align: top;
 
+    .inner {
+      position: relative;
+      height: 100%;
+    }
+
     &.active:hover {
       background-color: darken($calendar-cell-weekday, 10%)
+    }
+
+    .lesson_count {
+      display: none;
+    }
+  }
+
+  td.show_more {
+    .lesson_count {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      height: 51px;
+      line-height: 70px;
+      text-align: bottom;
+      padding: 0 7px;
+      text-align: right;
+      width: 100%;
+    }
+
+    ul.lessons {
+      li:last-child {
+        display: none;
+      }
     }
   }
 
@@ -158,10 +187,6 @@ table.month_calendar_view {
   }
 
   td.expanded {
-    .inner {
-      position: relative;
-    }
-
     .lesson_for_day {
       background-color: white;
       width: 150%;

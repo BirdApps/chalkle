@@ -6,12 +6,13 @@ class MonthlyCalendarCell
     @active_cell = null
     @_attachHandlers()
     $(".ellipsis").dotdotdot()
+    @_updateCount()
 
   isExpanded: ->
     @elem.hasClass('expanded')
 
   hasContents: ->
-    @elem.find('ul li').length > 0
+    @_lessonCount() > 0
 
   canExpand: ->
     !@isExpanded() and @hasContents()
@@ -39,6 +40,18 @@ class MonthlyCalendarCell
 
   _updateEllipsis: ->
     @elem.find('.ellipsis').trigger('update');
+
+  _lessonCount: ->
+    @elem.find('ul li').length
+
+  _updateCount: ->
+    more_count = @_lessonCount() - 2
+    if more_count > 1
+      @elem.addClass('show_more')
+      @elem.find('.lesson_count .number').text(more_count)
+    else
+      @elem.removeClass('show_more')
+
 
 $.fn.monthlyCalendarCell = (options) ->
   @each ->
