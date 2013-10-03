@@ -101,6 +101,7 @@ table.month_calendar_view {
         margin: 0;
         list-style: none;
         margin-bottom: 1px;
+        overflow: hidden;
 
         &:last-child {
           margin-bottom: 0;
@@ -132,10 +133,34 @@ table.month_calendar_view {
         }
       }
     }
+
+    i {
+      height: 35px;
+      padding-top: 10px;
+      float: right;
+      display: none;
+    }
+
+    &.has_classes i {
+      display: inherit;
+
+      &.icon-resize-small {
+        display: none;
+      }
+    }
+
+    &.expanded i.icon-resize-small {
+      display: inherit;
+    }
+    &.expanded i.icon-resize-full {
+      display: none;
+    }
   }
 
   td.expanded {
-    position: relative;
+    .inner {
+      position: relative;
+    }
 
     .lesson_for_day {
       background-color: white;

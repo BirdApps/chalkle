@@ -14,6 +14,9 @@ class MonthlyCalendar
   _handleCellExpanded: (event, cell) =>
     @_collapseCellsExcept(cell)
 
+  _handleResized: (event) =>
+    @elem.find('.ellipsis').trigger('update');
+
   _collapseCellsExcept: (exception) ->
     @_openCellsExcept(exception).each (index, cell) ->
       cell.collapse()

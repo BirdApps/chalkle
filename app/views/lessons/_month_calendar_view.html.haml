@@ -23,18 +23,22 @@
           - classes = []
           - classes << 'weekend' if Week.on_weekend?(day)
           - classes << 'active' if active
+          - classes << 'has_classes' if lessons[day]
 
           %td{class: classes}
-            - if month.contains?(day)
-              .lesson_for_day
-                .day_title
-                  %span.day_letter= day.strftime('%A').first
-                  %span.date= day.strftime('%d %b')
-                %ul.lessons
-                  - if lessons[day]
-                    - lessons[day].each_with_index do |lesson, index|
-                      %li{class: (index > 2 ? 'more' : nil)}
-                        %a.ellipsis{href: channel_lesson_path(@channel, lesson)}
-                          %div
-                            %span.time>= lesson.start_at.strftime('%l:%M %p').strip
-                            %span.title>= lesson.name
+            .inner
+              - if month.contains?(day)
+                .lesson_for_day
+                  .day_title
+                    %span.day_letter= day.strftime('%A').first
+                    %span.date= day.strftime('%d %b')
+                    %i.icon-resize-full
+                    %i.icon-resize-small
+                  %ul.lessons
+                    - if lessons[day]
+                      - lessons[day].each_with_index do |lesson, index|
+                        %li{class: (index > 2 ? 'more' : nil)}
+                          %a.ellipsis{href: channel_lesson_path(@channel, lesson)}
+                            %div
+                              %span.time>= lesson.start_at.strftime('%l:%M %p').strip
+                              %span.title>= lesson.name
