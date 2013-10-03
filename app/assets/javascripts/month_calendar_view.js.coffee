@@ -1,7 +1,5 @@
-#= require jquery-dotdotdot/jquery.dotdotdot.js
-#= require plugins/lesson_calendar_cell.js
+#= require plugins/monthly_calendar.js
 
 $(document).ready ->
-  $(".ellipsis").dotdotdot()
-  $('.month_calendar_view td').lessonCalendarCell()
+  $('table.month_calendar_view').monthlyCalendar()
 
