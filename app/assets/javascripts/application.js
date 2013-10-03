@@ -21,5 +21,4 @@
 //= require underscore
 //= require modernizr
 //= require utils
-//= require jquery-dotdotdot/jquery.dotdotdot.js
 //= require month_calendar_view

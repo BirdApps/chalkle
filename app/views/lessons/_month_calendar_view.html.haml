@@ -26,14 +26,15 @@
 
           %td{class: classes}
             - if month.contains?(day)
-              .day_title
-                %span.day_letter= day.strftime('%A').first
-                %span.date= day.strftime('%d %b')
-              - if lessons[day]
-                %ul.lessons
-                  - lessons[day].each do |lesson|
-                    %li
-                      %a.ellipsis
-                        %div
-                          %span.time>= lesson.start_at.strftime('%l:%M %p').strip
-                          %span.title>= lesson.name
+              .lesson_for_day
+                .day_title
+                  %span.day_letter= day.strftime('%A').first
+                  %span.date= day.strftime('%d %b')
+                - if lessons[day]
+                  %ul.lessons
+                    - lessons[day].each_with_index do |lesson, index|
+                      %li{class: (index > 2 ? 'more' : nil)}
+                        %a.ellipsis{href: channel_lesson_path(@channel, lesson)}
+                          %div
+                            %span.time>= lesson.start_at.strftime('%l:%M %p').strip
+                            %span.title>= lesson.name
