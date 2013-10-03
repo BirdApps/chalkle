@@ -1,5 +1,6 @@
 $calendar-cell-weekday: #D6D6D6;
 $calendar-cell-weekend: #C6C6C6;
+$calendar-cell-height: 202px;
 
 table.month_calendar_view {
   width: 100%;
@@ -20,7 +21,7 @@ table.month_calendar_view {
 
   td {
     background-color: $calendar-cell-weekday;
-    height: 187px;
+    height: $calendar-cell-height;
     vertical-align: top;
 
     &.active:hover {
@@ -139,11 +140,11 @@ table.month_calendar_view {
     .lesson_for_day {
       background-color: white;
       width: 150%;
+      min-height: $calendar-cell-height - 14px;
       position: absolute;
       left: 0;
       top: 0;
       z-index: 2;
-
       box-shadow: 0px 0px 15px #666;
 
       ul {
@@ -153,6 +154,11 @@ table.month_calendar_view {
           display: block;
         }
       }
+    }
+
+    &:last-child .lesson_for_day {
+      left: auto;
+      right: 0;
     }
   }
 }

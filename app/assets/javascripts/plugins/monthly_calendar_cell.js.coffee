@@ -7,15 +7,24 @@ class MonthlyCalendarCell
     @_attachHandlers()
     $(".ellipsis").dotdotdot()
 
-  isExpanded: () ->
+  isExpanded: ->
     @elem.hasClass('expanded')
 
-  collapse: () ->
-    @elem.removeClass('expanded')
+  hasContents: ->
+    @elem.find('ul li').length > 0
 
-  expand: () ->
-    @elem.addClass('expanded')
+  canExpand: ->
+    !@isExpanded() and @hasContents()
+
+  collapse: ->
+    @elem.removeClass('expanded')
+    @_updateEllipsis()
+
+  expand: ->
     @elem.closest('table').trigger('cell_expanded', this)
+    if @canExpand()
+      @elem.addClass('expanded')
+      @_updateEllipsis()
 
   ## PRIVATE
 
@@ -28,6 +37,8 @@ class MonthlyCalendarCell
     else
       @expand()
 
+  _updateEllipsis: ->
+    @elem.find('.ellipsis').trigger('update');
 
 $.fn.monthlyCalendarCell = (options) ->
   @each ->
