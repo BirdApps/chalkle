@@ -8,9 +8,10 @@ table.month_calendar_view {
 
   th, td {
     border-left: 7px solid white;
+    color: $fe-heading-color;
 
     &:first-child {
-      border-right-width: 0;
+      border-left-width: 0;
     }
   }
 

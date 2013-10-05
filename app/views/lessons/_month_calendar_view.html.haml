@@ -1,48 +1,54 @@
-%table.month_calendar_view
-  %thead
-    %tr
-      %th
-        .title Monday
-      %th
-        .title Tuesday
-      %th
-        .title Wednesday
-      %th
-        .title Thursday
-      %th
-        .title Friday
-      %th.weekend
-        .title Saturday
-      %th.weekend
-        .title Sunday
-  %tbody
-    - month.to_weeks.each do |week|
+%section.month
+  %header.calendar_titles
+    %h2
+      - if relative_name = relative_month_name(month)
+        %span.part.main_part= relative_name
+      %span.part= month.name
+  %table.month_calendar_view
+    %thead
       %tr
-        - week.each do |day|
-          - active = month.contains?(day)
-          - classes = []
-          - classes << 'weekend' if Week.on_weekend?(day)
-          - classes << 'active' if active
-          - classes << 'has_classes' if lessons[day]
+        %th
+          .title Monday
+        %th
+          .title Tuesday
+        %th
+          .title Wednesday
+        %th
+          .title Thursday
+        %th
+          .title Friday
+        %th.weekend
+          .title Saturday
+        %th.weekend
+          .title Sunday
+    %tbody
+      - month.to_weeks.each do |week|
+        %tr
+          - week.each do |day|
+            - active = month.contains?(day)
+            - classes = []
+            - classes << 'weekend' if Week.on_weekend?(day)
+            - classes << 'active' if active
+            - classes << 'has_classes' if lessons[day]
 
-          %td{class: classes}
-            .inner
-              - if month.contains?(day)
-                .lesson_for_day
-                  .day_title
-                    %span.day_letter= day.strftime('%A').first
-                    %span.date= day.strftime('%d %b')
-                    %i.icon-resize-full
-                    %i.icon-resize-small
-                  %ul.lessons
-                    - if lessons[day]
-                      - lessons[day].each_with_index do |lesson, index|
-                        %li{class: (index > 2 ? 'more' : 'viewable')}
-                          %a.ellipsis{href: channel_lesson_path(@channel, lesson)}
-                            %div
-                              %span.time>= lesson.start_at.strftime('%l:%M %p').strip
-                              %span.title>= lesson.name
-                .lesson_count
-                  &hellip;and
-                  %span.number X
-                  more
+            %td{class: classes}
+              .inner
+                - if month.contains?(day)
+                  .lesson_for_day
+                    .day_title
+                      %span.day_letter= day.strftime('%A').first
+                      %span.date= day.strftime('%d %b')
+                      %i.icon-resize-full
+                      %i.icon-resize-small
+                    %ul.lessons
+                      - if lessons[day]
+                        - lessons[day].each_with_index do |lesson, index|
+                          %li{class: (index > 2 ? 'more' : 'viewable')}
+                            %a.ellipsis{href: channel_lesson_path(@channel, lesson)}
+                              %div
+                                %span.time>= lesson.start_at.strftime('%l:%M %p').strip
+                                %span.title>= lesson.name
+                  .lesson_count
+                    &hellip;and
+                    %span.number X
+                    more

@@ -5,6 +5,10 @@ module Weekify
     def to_weeks
       (Week.containing(first_day))..(Week.containing(last_day))
     end
+
+    def name
+      first_day.strftime('%B')
+    end
   end
 
   class DateRange < Range

@@ -1,0 +1,18 @@
+header.calendar_titles {
+  h2 {
+    .part {
+      font-weight: normal;
+      border-right: 2px solid $fe-heading-color;
+      padding-right: 0.4em;
+
+      &:last-child {
+        border-right-width: 0px;
+        padding-right: 0px;
+      }
+    }
+
+    .main_part {
+      font-weight: bold
+    }
+  }
+}
