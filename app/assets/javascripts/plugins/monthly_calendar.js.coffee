@@ -5,6 +5,10 @@ class MonthlyCalendar
     @elem = $(element)
     @elem.find('td').monthlyCalendarCell()
     @_attachHandlers()
+  $('[data-append]').on "ajax:success", (evt, data, status, xhr) ->
+    target_id = $(this).attr('data-append')
+    alert("appending to ##{target_id}")
+    $("##{target_id}").append(data)
 
   ## PRIVATE
 

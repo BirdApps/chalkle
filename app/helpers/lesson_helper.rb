@@ -16,4 +16,10 @@ Your Chalkle Administrator")
     return 'Next Month' if month == current.next
     nil
   end
+
+  def month_title(month)
+    parts = [month.name]
+    parts << month.year if month.year != Month.current.year
+    parts.join ' '
+  end
 end

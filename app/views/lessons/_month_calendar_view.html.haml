@@ -3,7 +3,7 @@
     %h2
       - if relative_name = relative_month_name(month)
         %span.part.main_part= relative_name
-      %span.part= month.name
+      %span.part= month_title month
   %table.month_calendar_view
     %thead
       %tr
@@ -52,3 +52,7 @@
                     &hellip;and
                     %span.number X
                     more
+  - next_month = month.next
+  = link_to specific_month_channel_lessons_path(@channel.id, next_month.year, next_month.month, format: :js), {:remote => true, 'data-append' => 'months', :class => 'next-calendar-section'} do
+    %i.icon-arrow-down
+    Show next month

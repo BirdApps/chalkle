@@ -32,4 +32,5 @@ $(document).keyup (e) ->
       background: "yellow"
 
     $(this).fadeIn()
+
 ) jQuery
