@@ -14,15 +14,15 @@ module ChalkleMeetup
           @chalkler_importer.import(data, channel)
         end
       end
+    end
 
-      def import_lessons(channel)
-        puts "Importing classes for channel #{channel.name}"
-        total_pages = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
-        for i in 0...total_pages do
-          results = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
-          results.each do |data|
-            @lesson_importer.import(data, channel)
-          end
+    def import_lessons(channel)
+      puts "Importing classes for channel #{channel.name}"
+      total_pages = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
+      for i in 0...total_pages do
+        results = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
+        results.each do |data|
+          @lesson_importer.import(data, channel)
         end
       end
     end
