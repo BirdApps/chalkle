@@ -73,6 +73,9 @@ class Lesson < ActiveRecord::Base
   scope :published, where(status: STATUS_1)
   scope :paid, where("cost > 0")
 
+  # CRAIG: This is a bit of a hack. Replace this system with a state machine.
+  before_save :update_published_at
+
   def self.upcoming(limit = nil)
     return where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)} if limit.nil?
     where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc) & (start_at < limit)}
@@ -305,6 +308,10 @@ class Lesson < ActiveRecord::Base
   def fee(teacher_price, teacher_percentage, channel_cut)
     return 0 unless teacher_percentage > 0
     teacher_price / teacher_percentage * channel_cut * (1 + GST)
+  end
+
+  def update_published_at
+    self.published_at ||= Time.now
   end
 
 end

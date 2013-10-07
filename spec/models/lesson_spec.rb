@@ -38,14 +38,29 @@ describe Lesson do
     it { Lesson.hidden.should_not include(lesson) }
   end
 
-  describe ".published" do
-    it "should include published lessons" do
-      lesson.status = "Published"
-      lesson.save
-      Lesson.published.should include(lesson)
+  context "publication" do
+    describe ".published" do
+      it "should include published lessons" do
+        lesson.status = Lesson::STATUS_1
+        lesson.save
+        Lesson.published.should include(lesson)
+      end
+
+      it { Lesson.published.should_not include(lesson) }
     end
 
-    it { Lesson.published.should_not include(lesson) }
+    it "sets published at to now if it is nil" do
+      lesson.status = Lesson::STATUS_1
+      lesson.save!
+      lesson.published_at.should be_within(10.seconds).of(Time.now)
+    end
+
+    it "doesn't override published at if already set" do
+      lesson.status = Lesson::STATUS_1
+      lesson.published_at = 1.day.ago
+      lesson.save!
+      lesson.published_at.should be_within(10.seconds).of(1.day.ago)
+    end
   end
 
   describe ".upcoming" do
