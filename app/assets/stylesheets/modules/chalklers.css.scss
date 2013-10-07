@@ -3,6 +3,9 @@
   background: #222 asset-url('chalklers/bw-bike-maintanence.jpg', image) left top no-repeat;
   border: 1px solid #aaa;
   position: relative;
+  max-width: 938px;
+  margin: 0 auto;
+
   #dashboardContent {
     padding: 0 1em;
     position: absolute;
@@ -11,8 +14,10 @@
     color: #fff;
     background-color: rgba(0, 0, 0, 0.75);
     border-top: 1px solid #000;
+
     h2 {
       margin-bottom: 0.5em;
+      font-size: 36px;
     }
   }
 }

@@ -11,11 +11,14 @@ gem 'omniauth-meetup',  '~> 0.0.7'
 # Authorisation
 gem 'cancan',  '~> 1.6.8'
 
+# Time / Date
+gem 'monthify', require: 'monthify'
+gem 'chronic',       '~> 0.9.0'
+
 gem 'airbrake',      '~> 3.1.6'
 gem 'activeadmin',   '~> 0.5.1'
 gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails',  '~> 2.1.4'
-gem 'chronic',       '~> 0.9.0'
 gem 'active_attr',   '~> 0.7.0'
 gem 'dragonfly',     '~> 0.9.14'
 gem 'rack-cache', :require => 'rack/cache'
@@ -37,7 +40,8 @@ gem 'sendgrid'
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml-rails',    '~> 0.3.5'
 gem 'coffee-filter', '~> 0.1.3'
-gem 'simple_form',   '~> 2.0.4'
+#gem 'simple_form'
+gem 'simple_form', git: 'git://github.com/zlx/simple_form_bootstrap3', branch: 'rails_3'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 
@@ -50,13 +54,14 @@ gem "rmagick"
 group :assets do
   gem 'sass-rails',          '~> 3.2.6'
   gem 'coffee-rails',        '~> 3.2.2'
-  gem 'bootstrap-sass',      '~> 2.3.1.0'
-  gem 'font-awesome-rails'
+  gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', git: 'git://github.com/anjlab/bootstrap-rails'
+  gem 'font-awesome-sass-rails'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.9.1'
   gem 'haml_assets',         '~> 0.2.1'
   gem 'kalendae_assets',     '~> 0.2.1'
   gem 'execjs',              '~> 1.4.0'
+  gem 'bower-rails'
 end
 
 group :development do
@@ -101,14 +106,16 @@ group :development do
   gem 'debugger-pry'
 end
 
+group :test, :development do
+  # Placed here so generators work
+  gem 'rspec-rails'
+end
+
 group :test do
   gem "codeclimate-test-reporter", require: nil
   gem 'shoulda', '>= 3.5.0'
   gem 'spork'
   gem 'mocha', '>= 0.14.0', require: false
-
-  # Placed here so generators work
-  gem 'rspec-rails',  '~> 2.12.2'
 
   # Testing Javascript
   gem 'jasmine',  '~> 1.1.2'

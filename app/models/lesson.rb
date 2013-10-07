@@ -72,6 +72,8 @@ class Lesson < ActiveRecord::Base
   scope :unpublished, where{ status != STATUS_1 }
   scope :published, where(status: STATUS_1)
   scope :paid, where("cost > 0")
+  scope :by_date, order(:start_at)
+  scope :in_month, lambda {|month| where(:start_at => month.date_range)}
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at
@@ -296,6 +298,10 @@ class Lesson < ActiveRecord::Base
       new_lesson.visible = true
     end
     new_lesson
+  end
+
+  def free?
+    cost == 0
   end
 
   private

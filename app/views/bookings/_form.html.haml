@@ -1,12 +1,17 @@
 = f.error_notification
-.form-inputs
-  - if @lesson.cost? && @lesson.cost > 0
-    = f.input :payment_method, :type => :select, collection: Booking::PAYMENT_METHODS
-  = f.input :guests, :type => :select, collection: @lesson.guest_values, :label => 'Attendees', :selected => 0
-  = f.input :lesson_id, :as => :hidden, :input_html => { :value => @lesson.id }
-  - if f.object.new_record?
-    .booking-terms-and-conditions
-      = f.input :terms_and_conditions, :as => :boolean , :label => false, :required => true,
-        :inline_label => "<abbr title=\"required\">*</abbr> I agree with the #{link_to 'Terms and Conditions', '#termsModal', :'data-toggle' => 'modal'}".html_safe
+- if @lesson.cost? && @lesson.cost > 0
+  = f.input :payment_method, :type => :select, collection: Booking::PAYMENT_METHODS
+= f.input :guests, :type => :select, collection: @lesson.guest_values, :label => 'Attendees', :selected => 0
+= f.input :lesson_id, :as => :hidden, :input_html => { :value => @lesson.id }
+- if f.object.new_record?
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      .checkbox
+        %label
+          = f.check_box :terms_and_conditions
+          <abbr title="required">*</abbr> I agree with the
+          =link_to 'Terms and Conditions', '#termsModal', :'data-toggle' => 'modal'
+
+    -#= f.input :terms_and_conditions, :as => :boolean , :label => false, :required => true, :input_html => {class: ''}, :inline_label => "<abbr title=\"required\">*</abbr> I agree with the #{link_to 'Terms and Conditions', '#termsModal', :'data-toggle' => 'modal'}".html_safe
 .form-actions
   = f.button :submit, 'Confirm booking', class: 'btn-primary'

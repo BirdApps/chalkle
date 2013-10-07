@@ -1,0 +1,39 @@
+$link-well-color: #D6D6D6;
+$link_well-border: #C6C6C6;
+
+header.calendar_titles {
+  h2 {
+    .part {
+      font-weight: normal;
+      border-right: 2px solid $fe-heading-color;
+      padding-right: 0.4em;
+
+      &:last-child {
+        border-right-width: 0px;
+        padding-right: 0px;
+      }
+    }
+
+    .main_part {
+      font-weight: bold
+    }
+  }
+}
+
+a.next-calendar-section {
+  text-transform: uppercase;
+  display: block;
+  padding: 1em 0;
+  text-align: center;
+  color: $fe-heading-color;
+  background-color: $link-well-color;
+  border: 1px solid $link_well-border;
+  margin-bottom: 1em;
+
+  &:hover {
+    color: $fe-heading-color;
+    text-decoration: none;
+    background-color: darken($link-well-color, 10%);
+    border-color: darken($link-well-border, 10%);
+  }
+}

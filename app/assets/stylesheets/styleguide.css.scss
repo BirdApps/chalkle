@@ -248,7 +248,7 @@ h3.heading-on-bg-inline {
     margin: 0;
   }
   .control-group {
-    margin-bottom: $baseLineHeight;
+    margin-bottom: $line-height-base;
     &.error {
       .control-label { color: $gray-light; }
       .help-inline {
@@ -289,7 +289,7 @@ h3.heading-on-bg-inline {
   }
 
   .control-group {
-    margin-bottom: $baseLineHeight;
+    margin-bottom: $line-height-base;
     &.error {
       .control-label { color: #fff; }
       .help-inline {
@@ -323,7 +323,7 @@ h3.heading-on-bg-inline {
     @include border-radius(3px 3px 0 0);
     h2 {
       margin-top: 0;
-      margin-bottom: $baseLineHeight;
+      margin-bottom: $line-height-base;
     }
   }
   .form-actions {
@@ -332,7 +332,7 @@ h3.heading-on-bg-inline {
     @include border-radius(0 0 3px 3px);
   }
   .control-group {
-    margin-bottom: $baseLineHeight;
+    margin-bottom: $line-height-base;
     &.error {
       .control-label { color: $gray-dark; }
       .help-inline {
@@ -441,7 +441,7 @@ tr.editing {
 }
 
 .box-item {
-  margin-bottom: $baseLineHeight / 2;
+  margin-bottom: $line-height-base / 2;
   background: #f9f9f9;
   .row {
     margin-bottom: 0;
@@ -458,33 +458,33 @@ tr.editing {
     color: $gray;
   }
   .box-mid-right {
-    padding-left: $baseLineHeight;
+    padding-left: $line-height-base;
     float: left;
     width: 33%;
   }
   .box-top {
     @include border-radius(2px 2px 0 0);
-    padding: $baseLineHeight / 2;
-    padding-top: $baseLineHeight / 2;
+    padding: $line-height-base / 2;
+    padding-top: $line-height-base / 2;
     border: solid 1px darken(#f9f9f9, 6%);
     border-bottom: solid 1px darken(#f9f9f9, 6%);
     background: darken(#f9f9f9, 4%);
   }
   .box-bottom {
     @include border-radius(2px 2px 0 0);
-    padding: $baseLineHeight / 2;
-    padding-top: $baseLineHeight / 2;
+    padding: $line-height-base / 2;
+    padding-top: $line-height-base / 2;
     border: solid 1px darken(#f9f9f9, 6%);
     border-bottom: solid 1px darken(#f9f9f9, 6%);
     background: darken(#f9f9f9, 4%);
   }
   .box-mid {
-    padding: $baseLineHeight / 2;
+    padding: $line-height-base / 2;
     @include border-radius(0 0 2px 2px);
     border: solid 1px darken(#f9f9f9, 6%);
     border-top: none;
     li {
-      margin-bottom: $baseLineHeight / 2;
+      margin-bottom: $line-height-base / 2;
     }
   }
   h5 {

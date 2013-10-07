@@ -10,20 +10,17 @@ body {
 .navbar {
   font-weight: bold;
   font-size: 15px;
-  line-height: 1em;
-  margin-bottom: 2em;
-  .logo {
-    padding: 0;
-    margin: 0;
+  //line-height: 1em;
+  background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
+  border-bottom: solid 1px gray;
+
+  .navbar-brand {
+    padding-bottom: 5px;
   }
-  .navbar-texture-gray-dark {
-    background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
-    padding: 3px 0;
-    border-bottom: solid 1px gray;
-  }
+
   .nav {
-    margin-top: 7px;
-    float: right;
+    margin-top: 17px;
+    //float: right;
     li {
       margin-left: 15px;
       &.fl-right {float: right;}
@@ -61,7 +58,7 @@ body {
   }
 }
 
-.hero-unit {
+.jumbotron {
   font-family: $font_family_chalk;
   background: #222222 asset-url("texture-chalkboard.jpg", image) left top repeat;
   color: white;
@@ -92,13 +89,16 @@ body {
   }
 
   .header {
-    border-bottom: solid 1px darken(#f9f9f9, 8%);
-    background: darken(#f9f9f9, 4%);
+    .header_contents {
+      border-bottom: solid 1px darken(#f9f9f9, 8%);
+      background: darken(#f9f9f9, 4%);
+    }
+
     h3 {
       font-size: 1.2em;
       margin: 0;
       padding-left: 0.5em;
-      float: left;
+      line-height: 44px;
     }
     .lesson-attendance {
       margin: 0.75em;
@@ -111,10 +111,7 @@ body {
     padding: 0 0.5em;
   }
   .box.details {
-    .header {
-      @include hide-text();
-    }
-    font-size: $fontSizeSmall;
+    font-size: $font-size-small;
     border: 1px solid $grayLighter;
     @include border-radius(4px);
     margin: 0.5em;
@@ -147,25 +144,21 @@ body {
     }
     .popover {
       font-size: 16px;
-      color: $textColor;
+      color: $text-color;
       text-shadow: none;
       font-weight: normal;
       a {
-        color: $linkColor;
+        color: $link-color;
         &:hover {
-          color: $linkColorHover;
+          color: $link-color-hover;
         }
       }
     }
   }
 }
 
-form .booking-terms-and-conditions label {
-  font-size: 0.75em;
-}
-
 .content-right .box {
-  font-size: $fontSizeSmall;
+  font-size: $font-size-small;
   border: 1px solid darken($grayLighter, 4%);
   @include border-radius(4px);
   margin: 0.5em 0;

@@ -1,0 +1,10 @@
+$fe-heading-color: #496337;
+
+@import "front_end/month_calendar_view";
+@import "front_end/browse_lessons";
+
+.front_end {
+  h1, h2, h3, h4 {
+    color: $fe-heading-color;
+  }
+}

@@ -7,5 +7,19 @@ Thank you for signing up to the upcoming chalkle class ") + URI.escape(name.gsub
 If it is cancelled, you will receive a notice from Meetup upon cancellation and we will try to schedule the class for another date.
 
 Your Chalkle Administrator")
-  	end
+  end
+
+  def relative_month_name(month)
+    current = Month.current
+    return 'Last Month' if month == current.previous
+    return 'This Month' if month == current
+    return 'Next Month' if month == current.next
+    nil
+  end
+
+  def month_title(month)
+    parts = [month.name]
+    parts << month.year if month.year != Month.current.year
+    parts.join ' '
+  end
 end

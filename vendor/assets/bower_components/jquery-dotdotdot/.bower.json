@@ -1,0 +1,13 @@
+{
+  "name": "jquery-dotdotdot",
+  "homepage": "https://github.com/FrDH/jQuery.dotdotdot",
+  "_release": "60cb4417a4",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "60cb4417a4815ba68069aeafe9773c2f38eeb1e7"
+  },
+  "_source": "git://github.com/FrDH/jQuery.dotdotdot.git",
+  "_target": "*",
+  "_originalSource": "jquery-dotdotdot"
+}
