@@ -31,6 +31,7 @@ gem 'httparty'
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
 gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
+gem 'sendgrid'
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'

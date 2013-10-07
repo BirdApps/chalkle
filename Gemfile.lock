@@ -413,6 +413,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip
       websocket (~> 1.0.4)
+    sendgrid (1.2.0)
+      json
     sexp_processor (4.1.4)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
@@ -553,6 +555,7 @@ DEPENDENCIES
   rmagick
   rspec-rails (~> 2.12.2)
   sass-rails (~> 3.2.6)
+  sendgrid
   shoulda (>= 3.5.0)
   simple_form (~> 2.0.4)
   simplecov (~> 0.7.1)
