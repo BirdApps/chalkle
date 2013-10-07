@@ -10,6 +10,8 @@ set :use_sudo,    false
 set :scm, :git
 
 set :whenever_command, "bundle exec whenever"
+set :whenever_environment, defer { stage }
+set :whenever_identifier, defer { "#{application}_#{stage}" }
 
 task :staging do
   set :domain,    "my.chalkle.com"
