@@ -24,7 +24,6 @@ class ChalklerDigest
 
   def new_lessons
     Lesson.visible.published.joins(:categories, :channels).where("lessons.published_at > ? AND
-                                                                  lessons.meetup_url IS NOT NULL AND
                                                                   lessons.do_during_class IS NOT NULL AND
                                                                   lesson_categories.category_id IN (?) AND
                                                                   channel_lessons.channel_id IN (?) AND
@@ -35,7 +34,6 @@ class ChalklerDigest
 
   def default_new_lessons
     Lesson.visible.published.joins(:channels).where("lessons.published_at > ? AND
-                                                     lessons.meetup_url IS NOT NULL AND
                                                      lessons.do_during_class IS NOT NULL AND
                                                      channel_lessons.channel_id IN (?) AND
                                                      channels.visible=true",
@@ -45,7 +43,6 @@ class ChalklerDigest
   def open_lessons
     lessons = Lesson.visible.published.joins(:categories, :channels).where("lessons.start_at > ? AND
                                                                             lessons.published_at <= ? AND
-                                                                            lessons.meetup_url IS NOT NULL AND
                                                                             lessons.do_during_class IS NOT NULL AND
                                                                             lesson_categories.category_id IN (?) AND
                                                                             channel_lessons.channel_id IN (?) AND
@@ -59,7 +56,6 @@ class ChalklerDigest
   def default_open_lessons
     lessons = Lesson.visible.published.joins(:channels).where("lessons.start_at > ? AND
                                                                lessons.published_at <= ? AND
-                                                               lessons.meetup_url IS NOT NULL AND
                                                                lessons.do_during_class IS NOT NULL AND
                                                                channel_lessons.channel_id IN (?) AND
                                                                channels.visible=true",
