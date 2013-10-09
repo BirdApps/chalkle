@@ -7,7 +7,7 @@ table.month_calendar_view {
   margin-bottom: 1em;
 
   th, td {
-    border-left: 7px solid white;
+    border-left: 7px solid $browse-lessons-background;
     color: $fe-heading-color;
 
     &:first-child {
@@ -108,7 +108,7 @@ table.month_calendar_view {
   }
 
   tr {
-    border-bottom: 14px solid white;
+    border-bottom: 14px solid $browse-lessons-background;
   }
 
   tbody tr:last-chid {

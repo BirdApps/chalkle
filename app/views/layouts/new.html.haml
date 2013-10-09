@@ -12,10 +12,11 @@
   %body{ class: body_class }
     = render 'layouts/navigation'
 
-    .old_front_end_body
-      .container
-        = render 'layouts/messages'
-        = yield
+    .container
+      = render 'layouts/messages'
 
-    %footer.row.site-footer
-      .container
+    .front_end_body
+      = yield
+
+      %footer.row.site-footer
+        .container

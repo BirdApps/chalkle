@@ -1,6 +1,7 @@
 class LessonsController < ApplicationController
   #before_filter :horowhenua?
   after_filter :store_location
+  layout 'new', only: :month
 
   def show
     load_channel

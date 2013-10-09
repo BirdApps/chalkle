@@ -1,5 +1,13 @@
 $link-well-color: #D6D6D6;
 $link_well-border: #C6C6C6;
+$browse-lessons-background: #E8E8E8;
+
+.search_panel {
+  background-color: $browse-lessons-background;
+  border-top: 1px solid #BABABA;
+  margin-top: 2em;
+  padding-bottom: 3em;
+}
 
 header.calendar_titles {
   h2 {
