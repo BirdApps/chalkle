@@ -148,7 +148,7 @@ table.month_calendar_view {
         a {
           color: white;
           font-size: 14px;
-          background-color: #DE5C64;
+          background-color: $single-category-color;
           padding: 4px 7px;
           display: block;
           text-decoration: none;
@@ -157,7 +157,7 @@ table.month_calendar_view {
 
           &:hover {
             text-decoration: none;
-            background-color: darken(#DE5C64, 10%);
+            background-color: darken($single-category-color, 10%);
           }
 
           .time {
