@@ -5,7 +5,6 @@ class MonthlyCalendarCell
     @elem = $(element)
     @active_cell = null
     @_attachHandlers()
-#    $(".ellipsis").dotdotdot()
     @_updateCount()
 
   isExpanded: ->
@@ -19,13 +18,11 @@ class MonthlyCalendarCell
 
   collapse: ->
     @elem.removeClass('expanded')
-    @_updateEllipsis()
 
   expand: ->
     @elem.closest('table').trigger('cell_expanded', this)
     if @canExpand()
       @elem.addClass('expanded')
-      @_updateEllipsis()
 
   ## PRIVATE
 
@@ -33,13 +30,14 @@ class MonthlyCalendarCell
     @elem.on 'click', @_handleClick
 
   _handleClick: (event) =>
-    if @isExpanded()
-      @collapse()
-    else
-      @expand()
+    unless @_elementInsideClassList(event.target)
+      if @isExpanded()
+        @collapse()
+      else
+        @expand()
 
-  _updateEllipsis: ->
-    @elem.find('.ellipsis').trigger('update');
+  _elementInsideClassList: (element) ->
+    @elem.find('ul.lessons').find(element).length > 0
 
   _lessonCount: ->
     @elem.find('ul li').length
