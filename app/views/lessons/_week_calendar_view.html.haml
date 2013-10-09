@@ -1,4 +1,4 @@
-%section.month
+%section.week
   %header.calendar_titles
     %h2
       - if relative_name = relative_week_name(week)
@@ -21,3 +21,7 @@
                   %span.details>
                     .lesson_title<
                       = lesson.name
+  - next_week = week.next
+  = link_to specific_week_channel_lessons_path(@channel.id, next_week.first_day.year, next_week.first_day.month, next_week.first_day.day, format: :js), {:remote => true, 'data-append' => 'weeks', :class => 'next-calendar-section'} do
+    %i.icon-arrow-down
+    Show next week
