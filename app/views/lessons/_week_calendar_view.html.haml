@@ -4,3 +4,7 @@
       - if relative_name = relative_week_name(week)
         %span.part.main_part= relative_name
       %span.part= week_title week
+  .week_calendar_view
+    - week.each do |day|
+      .day
+        %h3.day_title= relative_day_title(day)

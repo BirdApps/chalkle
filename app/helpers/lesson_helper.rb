@@ -24,6 +24,18 @@ Your Chalkle Administrator")
     nil
   end
 
+  def relative_day_title(day)
+    parts = [day_title(day), relative_day_name(day)].compact
+    parts.join(' / ')
+  end
+
+  def relative_day_name(day, current = Date.today)
+    return "Yesterday" if day == current - 1
+    return "Today" if day == current
+    return "Tomorrow" if day == current + 1
+    nil
+  end
+
   def month_title(month)
     parts = [month.name]
     parts << month.year if month.year != Month.current.year
@@ -36,6 +48,10 @@ Your Chalkle Administrator")
 
   def date_range_title(date_range)
     [date_title(date_range.first), date_title(date_range.last)].join(' - ')
+  end
+
+  def day_title(date)
+    l date, format: :weekday
   end
 
   def date_title(date)

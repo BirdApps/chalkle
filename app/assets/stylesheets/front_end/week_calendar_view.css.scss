@@ -1,0 +1,28 @@
+.week_calendar_view {
+  .day_title {
+    background-color: $calendar-cell-weekday;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 20px;
+    padding-left: 7px;
+    position: relative;
+    display: inline-block;
+    min-width: 9em;
+  }
+
+  .day_title:after {
+    right: -40px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+
+    border-left-color: $calendar-cell-weekday;
+    border-width: 20px;
+    top: 50%;
+    margin-top: -20px;
+  }
+
+}
