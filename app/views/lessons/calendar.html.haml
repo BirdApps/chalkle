@@ -1,0 +1,6 @@
+.search_panel
+  .container
+    #months
+      = render partial: 'month_calendar_view', locals: {month: @month, lessons: @month_lessons}
+    #weeks
+      = render partial: 'week_calendar_view', locals: {week: @week, lessons: @week_lessons}

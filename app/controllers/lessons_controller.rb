@@ -1,7 +1,7 @@
 class LessonsController < ApplicationController
   #before_filter :horowhenua?
   after_filter :store_location
-  layout 'new', only: [:month, :week]
+  layout 'new', only: [:month, :week, :calendar]
 
   def show
     load_channel
@@ -16,13 +16,18 @@ class LessonsController < ApplicationController
   def month
     load_channel
     load_month
-    @lessons = group_by_day decorate lessons_for_month
+    @month_lessons = group_by_day decorate lessons_for_month
   end
 
   def week
     load_channel
     load_week
-    @lessons = group_by_day decorate lessons_for_week
+    @week_lessons = group_by_day decorate lessons_for_week
+  end
+
+  def calendar
+    month
+    week
   end
 
   private
@@ -64,7 +69,7 @@ class LessonsController < ApplicationController
     end
 
     def load_channel
-      @channel = Channel.find params[:channel_id]
+      @channel ||= Channel.find params[:channel_id]
     end
 
     def group_by_day(lessons)
