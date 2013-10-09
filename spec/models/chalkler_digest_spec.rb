@@ -78,11 +78,6 @@ describe ChalklerDigest do
         @digest.instance_eval{ new_lessons }.should == [@lesson]
       end
 
-      it "won't load a lesson without meetup_url" do
-        @lesson.update_attribute :meetup_url, nil
-        @digest.instance_eval{ new_lessons }.should be_empty
-      end
-
       it "won't load a lesson without do_during_class" do
         @lesson.update_attribute :do_during_class, nil
         @digest.instance_eval{ new_lessons }.should be_empty
@@ -103,11 +98,6 @@ describe ChalklerDigest do
       it "loads a lessons from channels that chalkler belongs to" do
         lesson1.channels << FactoryGirl.create(:channel)
         @digest.instance_eval{ default_new_lessons }.should == [@lesson]
-      end
-
-      it "won't load a lesson without meetup_url" do
-        @lesson.update_attribute :meetup_url, nil
-        @digest.instance_eval{ default_new_lessons }.should be_empty
       end
 
       it "won't load a lesson without do_during_class" do
@@ -151,11 +141,6 @@ describe ChalklerDigest do
         @digest.instance_eval{ open_lessons }.should be_empty
       end
 
-      it "won't load a lesson without meetup_url" do
-        @lesson.update_attribute :meetup_url, nil
-        @digest.instance_eval{ open_lessons }.should be_empty
-      end
-
       it "won't load a lesson without do_during_class" do
         @lesson.update_attribute :do_during_class, nil
         @digest.instance_eval{ open_lessons }.should be_empty
@@ -194,11 +179,6 @@ describe ChalklerDigest do
         @lesson.bookings = []
         10.times { FactoryGirl.create(:booking, lesson: @lesson) }
         @digest.instance_eval{ open_lessons }.should be_empty
-      end
-
-      it "won't load a lesson without meetup_url" do
-        @lesson.update_attribute :meetup_url, nil
-        @digest.instance_eval{ default_open_lessons }.should be_empty
       end
 
       it "won't load a lesson without do_during_class" do
