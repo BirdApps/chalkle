@@ -74,6 +74,8 @@ class Lesson < ActiveRecord::Base
   scope :paid, where("cost > 0")
   scope :by_date, order(:start_at)
   scope :in_month, lambda {|month| where(:start_at => month.date_range)}
+  scope :in_week, lambda {|week| in_month(week)}
+
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at

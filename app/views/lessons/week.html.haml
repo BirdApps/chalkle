@@ -1,0 +1,7 @@
+- if params[:format] == 'js'
+  = render partial: 'week_calendar_view', locals: {week: @month, lessons: @lessons}
+- else
+  .search_panel
+    .container
+      #weeks
+        = render partial: 'week_calendar_view', locals: {week: @week, lessons: @lessons}

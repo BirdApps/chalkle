@@ -34,14 +34,30 @@ module Weekify
       def on_weekend?(date)
         date.saturday? || date.sunday?
       end
+
+      def current
+        containing(Date.today)
+      end
     end
 
     def succ
       self.class.starting(last_day + 1)
     end
 
+    def previous
+      self.class.starting(first_day - 7)
+    end
+
+    def next
+      succ
+    end
+
     def <=>(other)
       first_day <=> other.first_day
+    end
+
+    def date_range
+      self
     end
   end
 

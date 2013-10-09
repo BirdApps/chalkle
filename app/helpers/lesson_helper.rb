@@ -10,10 +10,17 @@ Your Chalkle Administrator")
   end
 
   def relative_month_name(month)
-    current = Month.current
-    return 'Last Month' if month == current.previous
-    return 'This Month' if month == current
-    return 'Next Month' if month == current.next
+    relative_time_name month, Month.current, 'Month'
+  end
+
+  def relative_week_name(week)
+    relative_time_name week, Week.current, 'Week'
+  end
+
+  def relative_time_name(time, current, time_name)
+    return "Last #{time_name}" if time == current.previous
+    return "This #{time_name}" if time == current
+    return "Next #{time_name}" if time == current.next
     nil
   end
 
@@ -21,5 +28,17 @@ Your Chalkle Administrator")
     parts = [month.name]
     parts << month.year if month.year != Month.current.year
     parts.join ' '
+  end
+
+  def week_title(week)
+    date_range_title(week)
+  end
+
+  def date_range_title(date_range)
+    [date_title(date_range.first), date_title(date_range.last)].join(' - ')
+  end
+
+  def date_title(date)
+    date.to_s(:short)
   end
 end

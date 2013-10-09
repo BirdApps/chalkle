@@ -1,0 +1,6 @@
+%section.month
+  %header.calendar_titles
+    %h2
+      - if relative_name = relative_week_name(week)
+        %span.part.main_part= relative_name
+      %span.part= week_title week
