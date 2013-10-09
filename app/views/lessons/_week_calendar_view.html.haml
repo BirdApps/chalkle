@@ -8,3 +8,11 @@
     - week.each do |day|
       .day
         %h3.day_title= relative_day_title(day)
+        %ul.lessons.row
+          - if lessons[day]
+            - lessons[day].each_with_index do |lesson|
+              %li.col-md-4
+                %a{href: channel_lesson_path(@channel, lesson)}
+                  %div
+                    %span.time>= lesson.start_at.strftime('%l:%M %p').strip
+                    %span.title>= lesson.name

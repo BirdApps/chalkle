@@ -44,7 +44,7 @@
                       - if lessons[day]
                         - lessons[day].each_with_index do |lesson, index|
                           %li{class: (index > 2 ? 'more' : 'viewable')}
-                            %a.ellipsis{href: channel_lesson_path(@channel, lesson)}
+                            %a{href: channel_lesson_path(@channel, lesson)}
                               %div
                                 %span.time>= lesson.start_at.strftime('%l:%M %p').strip
                                 %span.title>= lesson.name
