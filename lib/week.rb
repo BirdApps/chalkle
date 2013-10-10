@@ -22,6 +22,8 @@ module Weekify
   end
 
   class Week < DateRange
+    LENGTH = 7
+
     class << self
       def containing(date)
         starting date.beginning_of_week
@@ -45,7 +47,7 @@ module Weekify
     end
 
     def previous
-      self.class.starting(first_day - 7)
+      self.class.starting(first_day - LENGTH)
     end
 
     def next
@@ -54,6 +56,11 @@ module Weekify
 
     def <=>(other)
       first_day <=> other.first_day
+    end
+
+    def +(number)
+      return self if number == 0
+      self.class.starting(first_day + (LENGTH * number))
     end
 
     def date_range

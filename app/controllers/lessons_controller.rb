@@ -20,6 +20,9 @@ class LessonsController < ApplicationController
     get_current_weeks.each do |week|
       load_week_lessons week, @channel
     end
+    while weeks_loaded_count < 4 && no_weekly_lessons?
+      load_another_week(@channel)
+    end
   end
 
   def calendar
@@ -28,6 +31,19 @@ class LessonsController < ApplicationController
   end
 
   private
+    def load_another_week(channel)
+      next_week = @week_lessons.keys.last.next
+      load_week_lessons next_week, channel
+    end
+
+    def weeks_loaded_count
+      @week_lessons.keys.length
+    end
+
+    def no_weekly_lessons?
+      !@week_lessons.values.map(&:empty?).include?(false)
+    end
+
     def load_month_lessons(month, channel)
       @month_lessons ||= {}
       @month_lessons[month] = group_by_day decorate lessons_for_month(month, channel)

@@ -6,6 +6,11 @@ FactoryGirl.define do
     description "You should really learn, it's fun!"
     cost 20
 
+    factory :published_lesson do
+      status Lesson::STATUS_1
+      published_at { Time.now }
+    end
+
     factory :lesson_with_bookings do
       ignore do
         bookings_count { rand(5) }

@@ -23,7 +23,6 @@ describe Week do
   let(:week2)    { Week.containing(monday) }
 
   describe ".containing" do
-
     it "builds a week starting with that date if date is a monday" do
       week = Week.containing(monday)
       week.first_day.should == monday
@@ -50,6 +49,22 @@ describe Week do
     it "can have a range with just one week" do
       range = week1..week1
       range.to_a.should == [week1]
+    end
+  end
+
+  describe "addition" do
+    it "returns same week if adding zero" do
+      (Week.current + 0).should == Week.current
+    end
+
+    it "returns next week if adding 1" do
+      (Week.current + 1).should == Week.current.next
+    end
+
+    it "can return a week a long way in the future" do
+      expected = Week.current
+      10.times { expected = expected.next }
+      (Week.current + 10).should == expected
     end
   end
 end
