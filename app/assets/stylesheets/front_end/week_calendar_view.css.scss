@@ -108,6 +108,16 @@ $chalkboard-background-color: $chalkboard-background-color asset-url("texture-ch
             }
           }
         }
+
+        &.no-image {
+          .image_container {
+            display: none;
+          }
+
+          .details {
+            margin-left: $time-width;
+          }
+        }
       }
     }
   }

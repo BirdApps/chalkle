@@ -40,6 +40,9 @@ class LessonUploadImageUploader < CarrierWave::Uploader::Base
   # end
 
   #Create different versions of your uploaded files:
+  version :mini do
+    process :resize_to_fill => [65, 65]
+  end
   version :thumb do
     process :resize_to_limit => [250, 250]
   end

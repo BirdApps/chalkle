@@ -44,6 +44,7 @@ gem 'coffee-filter', '~> 0.1.3'
 gem 'simple_form', git: 'git://github.com/zlx/simple_form_bootstrap3', branch: 'rails_3'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
+gem 'google-webfonts-rails'
 
 #attachments
 gem 'carrierwave'

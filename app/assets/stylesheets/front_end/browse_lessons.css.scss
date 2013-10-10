@@ -2,6 +2,12 @@ $link-well-color: #D6D6D6;
 $link_well-border: #C6C6C6;
 $browse-lessons-background: #E8E8E8;
 
+.browse_lessons {
+  h1.page-title {
+    font-family: 'Shadows Into Light Two', cursive;
+  }
+}
+
 .search_panel {
   background-color: $browse-lessons-background;
   border-top: 1px solid #BABABA;
