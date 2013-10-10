@@ -95,11 +95,16 @@ $chalkboard-background-color: $chalkboard-background-color asset-url("texture-ch
             $lesson-line-height: ($height - ($top-bottom-margin * 2)) / $lines;
             $lesson-font-size: $lesson-line-height * 0.9;
             $lesson-line-padding: ($lesson-line-height - $lesson-font-size) / 2;
+
             .lesson_title {
               margin: ($top-bottom-margin - $lesson-line-padding) 10px;
               line-height: $lesson-line-height;
               font-size: $lesson-font-size;
-              //margin-left: ($time-width + $image-width);
+              color: $single-category-color;
+
+              &:hover {
+                color: $single-category-color;
+              }
             }
           }
         }
