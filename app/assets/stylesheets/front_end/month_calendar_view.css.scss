@@ -30,7 +30,7 @@ table.month_calendar_view {
       height: 100%;
     }
 
-    &.active:hover {
+    &.has_classes:hover {
       background-color: darken($calendar-cell-weekday, 10%)
     }
 
@@ -98,7 +98,7 @@ table.month_calendar_view {
   }
 
   td.weekend {
-    &.active:hover {
+    &.has_classes:hover {
       background-color: darken($calendar-cell-weekend, 10%)
     }
   }
@@ -220,5 +220,34 @@ table.month_calendar_view {
       left: auto;
       right: 0;
     }
+  }
+
+  td.past {
+    background-color: $browse-lessons-background;
+
+    ul.lessons {
+      opacity: 0.5;
+    }
+    &.expanded ul.lessons {
+      opacity: 1.0;
+    }
+
+    &.has_classes:hover {
+      background-color: $browse-lessons-background;
+
+      .inner {
+        border-color: darken($calendar-cell-weekday, 20%);
+        background-color: darken($browse-lessons-background, 5%);
+      }
+    }
+
+    .inner {
+      border: 2px dashed $calendar-cell-weekday;
+      height: $calendar-cell-height;
+    }
+  }
+
+  td.present .inner {
+    border: 2px solid #333;
   }
 }
