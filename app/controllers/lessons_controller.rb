@@ -17,20 +17,24 @@ class LessonsController < ApplicationController
   end
 
   def week
-    get_current_weeks.each do |week|
-      load_week_lessons week, @channel
-    end
-    while weeks_loaded_count < 4 && no_weekly_lessons?
-      load_another_week(@channel)
-    end
+    load_week_lessons get_current_week, @channel
   end
 
   def calendar
     month
-    week
+    load_enough_weeks
   end
 
   private
+    def load_enough_weeks
+      get_current_weeks.each do |week|
+        load_week_lessons week, @channel
+      end
+      while weeks_loaded_count < 4 && no_weekly_lessons?
+        load_another_week(@channel)
+      end
+    end
+
     def load_another_week(channel)
       next_week = @week_lessons.keys.last.next
       load_week_lessons next_week, channel

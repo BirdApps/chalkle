@@ -33,7 +33,6 @@ Your Chalkle Administrator")
     return "past" if date < current
     return "present" if date == current
     "future"
-
   end
 
   def relative_day_name(day, current = Date.today)

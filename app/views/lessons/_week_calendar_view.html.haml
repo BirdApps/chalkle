@@ -6,7 +6,7 @@
       %span.part= week_title week
   .week_calendar_view
     - week.each do |day|
-      .day{:class => relative_date_class(day)}
+      .day{:class => [relative_date_class(day), ('has_classes' if lessons[day].present?)]}
         - if day >= Date.today
           %h3.day_title= relative_day_title(day)
           .lessons.row

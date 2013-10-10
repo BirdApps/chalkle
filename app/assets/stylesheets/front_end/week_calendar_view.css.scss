@@ -4,6 +4,12 @@ $chalkboard-background-color: $chalkboard-background-color asset-url("texture-ch
 
 .week_calendar_view {
   .day {
+    display: none;
+
+    &.has_classes {
+      display: block;
+    }
+
     .day_title {
       background-color: $calendar-cell-weekday;
       height: 40px;
