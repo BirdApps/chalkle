@@ -22,6 +22,8 @@ describe LessonsController do
         Timecop.freeze(Week.current.friday) do
           lesson_on Week.current.sunday
 
+          raise Date.today.inspect
+
           get :calendar, channel_id: channel.id
           assigns[:week_lessons].keys.should == [Week.current, Week.current.next]
         end

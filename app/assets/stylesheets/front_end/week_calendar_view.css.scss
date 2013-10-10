@@ -40,14 +40,33 @@ $chalkboard-background-color: $chalkboard-background-color asset-url("texture-ch
     .lessons {
       margin: 0 -5px 15px -5px;
 
+      $height: 65px;
+      $time-width: $height;
+      $image-width: $height;
+      $top-bottom-margin: 5px;
+      $lines: 3;
+
+      $suggestion-color: #BBBBBB;
+      .suggestion {
+        border: 2px dashed $suggestion-color;
+        height: $height;
+        text-align: center;
+        padding: 18px;
+        color: $suggestion-color;
+
+        a {
+          color: $suggestion-color;
+          font-size: 90%;
+          text-decoration: underline;
+
+          &:hover {
+            color: darken($suggestion-color, 20%);
+          }
+        }
+      }
+
       .lesson {
         padding: 0 5px;
-
-        $height: 65px;
-        $time-width: $height;
-        $image-width: $height;
-        $top-bottom-margin: 5px;
-        $lines: 3;
 
         a {
           display: block;

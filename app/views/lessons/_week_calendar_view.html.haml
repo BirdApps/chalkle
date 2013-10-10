@@ -12,7 +12,7 @@
           .lessons.row
             - if lessons[day]
               - lessons[day].each_with_index do |lesson|
-                .lesson.col-lg-4.col-md-4.col-sm-6.col-xs-12{class: ('no-image' unless lesson.lesson_upload_image.present?)}
+                .lesson.col-md-4.col-sm-6.col-xs-12{class: ('no-image' unless lesson.lesson_upload_image.present?)}
                   %a{href: channel_lesson_path(@channel, lesson)}
                     %span.time>
                       %span.number= lesson.start_at.strftime('%l:%M').strip
