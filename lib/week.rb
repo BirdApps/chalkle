@@ -59,6 +59,12 @@ module Weekify
     def date_range
       self
     end
+
+    %w(monday tuesday wednesday thursday friday saturday sunday).each_with_index do |day_name, index|
+      define_method(day_name) do
+        first_day + index
+      end
+    end
   end
 
   ::Week = Weekify::Week

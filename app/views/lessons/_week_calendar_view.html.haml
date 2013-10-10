@@ -23,7 +23,8 @@
                     %span.details>
                       .lesson_title<
                         = lesson.name
-  - next_week = week.next
-  = link_to specific_week_channel_lessons_path(@channel.id, next_week.first_day.year, next_week.first_day.month, next_week.first_day.day, format: :js), {:remote => true, 'data-append' => 'weeks', 'data-remove-on-success' => true, :class => 'next-calendar-section'} do
-    %i.icon-arrow-down
-    Show next week
+  - if show_next
+    - next_week = week.next
+    = link_to specific_week_channel_lessons_path(@channel.id, next_week.first_day.year, next_week.first_day.month, next_week.first_day.day, format: :js), {:remote => true, 'data-append' => 'weeks', 'data-remove-on-success' => true, :class => 'next-calendar-section'} do
+      %i.icon-arrow-down
+      Show next week
