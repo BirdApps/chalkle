@@ -28,6 +28,7 @@ table.month_calendar_view {
     .inner {
       position: relative;
       height: 100%;
+      height: $calendar-cell-height;
     }
 
     &.has_classes:hover {
