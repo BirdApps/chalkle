@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LessonsController do
   let(:channel)   { FactoryGirl.create(:channel) }
-  let(:this_week) { Week.containing(Time.local(2013,1,1,0,0,0).to_date) }
+  let(:this_week) { Week.containing(Time.local(2013,1,2,0,0,0).to_date) }
 
   def lesson_on(start_at)
     FactoryGirl.create(:published_lesson, start_at: start_at, channels: [channel])
