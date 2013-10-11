@@ -129,7 +129,7 @@ group :test do
 
   # Test Helpers
   gem 'database_cleaner',    '~> 0.9.1'
-  gem 'timecop',             '~> 0.5.9'
+  gem 'timecop'
   gem 'steak',               '~> 2.0.0'
   gem 'webrat',              '~> 0.7.3'
   gem 'email_spec',          '~> 1.4.0'
