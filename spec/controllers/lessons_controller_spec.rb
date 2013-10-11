@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe LessonsController do
-  let(:channel) { FactoryGirl.create(:channel) }
+  let(:channel)   { FactoryGirl.create(:channel) }
+  let(:this_week) { Week.containing(Date.new(2013,1,1)) }
 
   def lesson_on(start_at)
     FactoryGirl.create(:published_lesson, start_at: start_at, channels: [channel])
@@ -10,40 +11,38 @@ describe LessonsController do
   describe "#calendar" do
     context "weekly lessons" do
       it "loads lessons for current week" do
-        Timecop.freeze(Week.current.tuesday) do
-          lesson_on Week.current.sunday
+        Timecop.freeze(this_week.tuesday) do
+          lesson_on this_week.sunday
 
           get :calendar, channel_id: channel.id
-          assigns[:week_lessons].keys.should == [Week.current]
+          assigns[:week_lessons].keys.should == [this_week]
         end
       end
 
       it "loads lessons for next week if it is friday or later" do
-        Timecop.freeze(Week.current.friday) do
-          lesson_on Week.current.sunday
-
-          raise Date.today.inspect
+        Timecop.freeze(this_week.friday) do
+          lesson_on this_week.sunday
 
           get :calendar, channel_id: channel.id
-          assigns[:week_lessons].keys.should == [Week.current, Week.current.next]
+          assigns[:week_lessons].keys.should == [this_week, this_week.next]
         end
       end
 
       it "loads three weeks if there is no lesson in the first two weeks" do
-        Timecop.freeze(Week.current.monday) do
-          lesson_on (Week.current + 2).wednesday
+        Timecop.freeze(this_week.monday) do
+          lesson_on (this_week + 2).wednesday
 
           get :calendar, channel_id: channel.id
           assigns[:week_lessons].keys.length.should == 3
-          assigns[:week_lessons].keys.should == [Week.current, Week.current.next, Week.current + 2]
+          assigns[:week_lessons].keys.should == [this_week, this_week.next, this_week + 2]
         end
       end
 
       it "loads four weeks if there are no lessons" do
-        Timecop.freeze(Week.current.monday) do
+        Timecop.freeze(this_week.monday) do
           get :calendar, channel_id: channel.id
           assigns[:week_lessons].keys.length.should == 4
-          assigns[:week_lessons].keys.should == [Week.current, Week.current.next, Week.current + 2, Week.current + 3]
+          assigns[:week_lessons].keys.should == [this_week, this_week.next, this_week + 2, this_week + 3]
         end
       end
     end
