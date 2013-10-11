@@ -9,7 +9,7 @@ class LessonsController < ApplicationController
   end
 
   def index
-    @lessons = decorate lessons_scope
+    @lessons = decorate lessons_scope.page(params[:page])
   end
 
   def month
