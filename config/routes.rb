@@ -15,6 +15,9 @@ Chalkle::Application.routes.draw do
         get 'week/:year/:month/:day' => 'lessons#week', as: :specific_week
         get :calendar
       end
+      member do
+        get :beta
+      end
 
       resources :bookings, :only => [:new, :create] do
         get :payment_callback

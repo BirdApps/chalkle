@@ -8,6 +8,10 @@ class LessonsController < ApplicationController
     @lesson = @channel.lessons.find(params[:id]).decorate
   end
 
+  def beta
+    show
+  end
+
   def index
     @lessons = decorate lessons_scope.page(params[:page])
   end
