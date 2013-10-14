@@ -1,2 +1,2 @@
-Payment.xero_consumer_key = 'WEVRYOBQ7URCIBTGNWQ2WAY74KN311'
-Payment.xero_consumer_secret = 'LFAKKVFIAXVNZ3OJJZNCII41JBK4W1'
+Payment.xero_consumer_key = 'V7LDE2QHGE0OTLWYA8QKBLDNDSUDG3'
+Payment.xero_consumer_secret = 'JF7EUJRNHDB90B9LVZODCLRHPEZ0QA'
