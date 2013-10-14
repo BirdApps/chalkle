@@ -206,7 +206,19 @@ class Lesson < ActiveRecord::Base
 
   # this should be a scope
   def bookable?
-    attendance < max_attendee.to_i
+    spaces_left?
+  end
+
+  def spaces_left?
+    !limited_spaces? || spaces_left > 0
+  end
+
+  def spaces_left
+    [(max_attendee.to_i - attendance), 0].max
+  end
+
+  def limited_spaces?
+    !!max_attendee
   end
 
   def published?

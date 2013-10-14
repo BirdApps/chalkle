@@ -19,11 +19,30 @@
           .contents
             %h3= lesson.name
             .description= simple_format lesson.description
-            .details.row
-              .price.col-xs-3 price
-              .location.col-xs-3 location
-              .availability.col-xs-3 spots left
-              .attending.col-xs-3 XX attending
+            .details
+              .price
+                %i.icon-money
+                = lesson.formatted_price
+              - if lesson.venue
+                .location
+                  %i.icon-map-marker
+                  = truncate lesson.venue, length: 20
+              .availability
+                - if lesson.limited_spaces?
+                  - if lesson.spaces_left?
+                    %i.icon-thumbs-up
+                    = pluralize lesson.spaces_left, 'spot'
+                    left
+                  - else
+                    %i.icon-thumbs-down
+                    fully booked!
+                - else
+                  %i.icon-ok
+                  No size limit
+              .attending
+                %i.icon-user
+                = lesson.attendance
+                attending
 
 
     = paginate lessons
