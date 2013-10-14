@@ -2,14 +2,10 @@ class LessonsController < ApplicationController
   #before_filter :horowhenua?
   after_filter :store_location
   before_filter :load_channel
-  layout 'new', only: [:month, :week, :calendar, :upcoming]
+  layout 'new', only: [:month, :week, :calendar, :index]
 
   def show
     @lesson = @channel.lessons.find(params[:id]).decorate
-  end
-
-  def index
-    @lessons = decorate lessons_scope.page(params[:page])
   end
 
   def month
@@ -24,7 +20,7 @@ class LessonsController < ApplicationController
     load_upcoming
   end
 
-  def calendar
+  def index
     month
     load_enough_weeks
     load_upcoming

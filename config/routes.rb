@@ -14,7 +14,6 @@ Chalkle::Application.routes.draw do
         get :week
         get 'week/:year/:month/:day' => 'lessons#week', as: :specific_week
         get :upcoming
-        get :calendar
       end
 
       resources :bookings, :only => [:new, :create] do

@@ -21,7 +21,7 @@
               .price
                 %i.icon-money
                 = lesson.formatted_price
-              - if lesson.venue
+              - unless lesson.venue.blank?
                 .location
                   %i.icon-map-marker
                   = truncate lesson.venue, length: 20
