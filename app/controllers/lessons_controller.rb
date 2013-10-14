@@ -23,9 +23,15 @@ class LessonsController < ApplicationController
   def calendar
     month
     load_enough_weeks
+    load_upcoming
   end
 
   private
+
+    def load_upcoming
+      @upcoming_lessons = decorate lessons_scope.page(params[:page])
+    end
+
     def load_enough_weeks
       get_current_weeks.each do |week|
         load_week_lessons week, @channel

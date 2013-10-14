@@ -1,0 +1,29 @@
+%section.upcoming_lessons
+  %header.calendar_titles
+    %h2 Upcoming chalkle° classes
+  .lesson_list
+    - lessons.each do |lesson|
+      .lesson{class: ('no-image' unless lesson.lesson_upload_image.present?)}
+        .time_details
+          .contents
+            .time>
+              .number= lesson.start_at.strftime('%l:%M').strip
+              .am_pm= lesson.start_at.strftime('%p').strip
+            .date
+              .name= lesson.start_at.strftime('%a').strip
+              .day= lesson.start_at.strftime('%d %b').strip
+        .image_container
+          - if lesson.lesson_upload_image.present?
+            = image_tag(lesson.lesson_upload_image.url(:medium))
+        .lesson_body
+          .contents
+            %h3= lesson.name
+            .description= simple_format lesson.description
+            .details.row
+              .price.col-xs-3 price
+              .location.col-xs-3 location
+              .availability.col-xs-3 spots left
+              .attending.col-xs-3 XX attending
+
+
+    = paginate lessons

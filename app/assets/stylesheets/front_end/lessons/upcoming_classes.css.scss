@@ -1,0 +1,99 @@
+$height: 185px;
+
+.upcoming_lessons{
+  .lesson_list {
+    .lesson {
+      background: $chalkboard-background;
+      margin-bottom: 15px;
+      color: white;
+
+      $time-width: 80px;
+
+      .time_details {
+        width: $time-width;
+        height: $height;
+        background-color: $single-category-color;
+        float: left;
+
+        .contents {
+          margin: 6px 10px;
+        }
+
+        .time {
+          margin-bottom: 1em;
+
+          .number {
+            font-size: 20px;
+          }
+
+          .am_pm {
+            font-size: 80%;
+            text-transform: uppercase;
+            line-height: 100%;
+          }
+        }
+        .date {
+          font-size: 90%;
+        }
+      }
+
+      $image-width: $height;
+
+      .image_container {
+        background-color: $single-category-color;
+        width: $image-width;
+        height: $height;
+        float: left;
+      }
+
+      .lesson_body {
+        margin-left: $time-width + $image-width;
+        height: $height;
+        padding: 6px 10px;
+
+        $height: $height - 12px;
+
+        .contents {
+          overflow: hidden;
+          height: $height;
+
+          $heading-height: 24px;
+          $footer-height: 22px;
+
+          h3 {
+            margin: 0 0 10px 0;
+            color: $single-category-color;
+            border: 0;
+            font-size: 22px;
+            height: $heading-height;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          $desc-space: $height - $heading-height - $footer-height - 10px;
+          $desc-line-height: 18px;
+          $desc-lines: floor($desc-space / $desc-line-height);
+          $desc-height: $desc-line-height * $desc-lines;
+          $desc-margin: $desc-space - $desc-height;
+
+          .description {
+            height: $desc-height;
+            margin-bottom: $desc-margin;
+            font-size: 14px;
+            line-height: $desc-line-height;
+            overflow: hidden;
+
+            p {
+              margin: 0 0 0 0;
+            }
+          }
+
+          .details {
+            height: $footer-height;
+            color: $single-category-color;
+          }
+        }
+      }
+    }
+  }
+}
