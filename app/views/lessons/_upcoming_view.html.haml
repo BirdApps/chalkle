@@ -3,7 +3,7 @@
     %h2 Upcoming chalkle° classes
   .lesson_list
     - lessons.each do |lesson|
-      .lesson{class: ('no-image' unless lesson.lesson_upload_image.present?)}
+      %a.lesson{href: channel_lesson_path(@channel, lesson), class: ('no-image' unless lesson.lesson_upload_image.present?)}
         .time_details
           .contents
             .time>

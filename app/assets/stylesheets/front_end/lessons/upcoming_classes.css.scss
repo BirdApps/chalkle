@@ -3,11 +3,18 @@ $height: 185px;
 .upcoming_lessons{
   .lesson_list {
     .lesson {
+      display: block;
       background: $chalkboard-background;
       margin-bottom: 15px;
       color: white;
 
       $time-width: 80px;
+
+      &:hover {
+        text-decoration: none;
+        border: 3px solid $single-category-color;
+        margin: -3px -3px 12px -3px;
+      }
 
       .time_details {
         width: $time-width;
