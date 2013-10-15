@@ -14,6 +14,10 @@ When(/^they visit the class listings$/) do
   visit channel_path(channel)
 end
 
+And(/^select the first class$/) do
+  page.click_link "lesson_#{Lesson.last.id}"
+end
+
 When(/^they select the payment method "(.*?)"$/) do |method|
   page.select(method, :from => 'booking_payment_method')
 end

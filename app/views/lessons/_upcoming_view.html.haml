@@ -1,7 +1,7 @@
 %section.upcoming_lessons
   .lesson_list
     - lessons.each do |lesson|
-      %a.lesson{href: channel_lesson_path(@channel, lesson), class: ('no-image' unless lesson.lesson_upload_image.present?)}
+      %a.lesson{href: channel_lesson_path(@channel, lesson), id: dom_id(lesson), class: ('no-image' unless lesson.lesson_upload_image.present?)}
         .time_details
           .contents
             .time>
