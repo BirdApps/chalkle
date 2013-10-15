@@ -1,32 +1,33 @@
 - title @lesson.name
 
-%h2= @lesson.name.capitalize
+.container
+  %h2= @lesson.name.capitalize
 
-.row.lesson-details
-  .col-md-8.content-left
-    .lesson-description
-      %h3 What we are doing
-      = simple_format @lesson.do_during_class
-      %h3 What you will learn
-      = simple_format @lesson.learning_outcomes
-      %h6 Note
-      = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
-  .col-md-4.content-right
-    .booking-actions
-      - if chalkler_signed_in?
-        - if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? @lesson
-          %p.text-success
-            %strong You are attending
+  .row.lesson-details
+    .col-md-8.content-left
+      .lesson-description
+        %h3 What we are doing
+        = simple_format @lesson.do_during_class
+        %h3 What you will learn
+        = simple_format @lesson.learning_outcomes
+        %h6 Note
+        = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
+    .col-md-4.content-right
+      .booking-actions
+        - if chalkler_signed_in?
+          - if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? @lesson
+            %p.text-success
+              %strong You are attending
+          - elsif @lesson.bookable?
+            .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
         - elsif @lesson.bookable?
           .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
-      - elsif @lesson.bookable?
-        .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
 
-    = render :partial => 'lesson_details', :locals => { :lesson => @lesson }
-    = render :partial => 'teacher_details', :locals => { :lesson => @lesson }
-    .meetup_image
-      -if @lesson.lesson_upload_image.url.present?
-        =image_tag @lesson.lesson_upload_image.url(:sidebar).to_s, alt: @lesson.name, class: 'lesson-image uploaded-lesson-image'
+      = render :partial => 'lesson_details', :locals => { :lesson => @lesson }
+      = render :partial => 'teacher_details', :locals => { :lesson => @lesson }
+      .meetup_image
+        -if @lesson.lesson_upload_image.url.present?
+          =image_tag @lesson.lesson_upload_image.url(:sidebar).to_s, alt: @lesson.name, class: 'lesson-image uploaded-lesson-image'
 
 :coffeescript
   signedIn = () ->

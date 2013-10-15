@@ -1,6 +1,8 @@
 $link-well-color: #D6D6D6;
 $link_well-border: #C6C6C6;
 $browse-lessons-background: #E8E8E8;
+$chalkboard-background-color: #2B2B2B;
+$chalkboard-background: $chalkboard-background-color asset-url("texture-chalkboard.jpg", "image") repeat;
 
 .browse_lessons {
   h1.page-title {
@@ -56,3 +58,7 @@ a.next-calendar-section {
     border-color: darken($link-well-border, 10%);
   }
 }
+
+@import "month_calendar_view.css.scss";
+@import "week_calendar_view.css.scss";
+@import "upcoming_classes.css.scss";

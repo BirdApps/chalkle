@@ -1,32 +1,31 @@
-- title "Upcoming Classes - #{@channel.name}"
-
-%h2= "Welcome to chalkle° in #{@channel.name}"
-
-%h4= "Discover a class you are interested in"
-%p= "Browse our buffet of upcoming classes below"
-%h4= "Sign up today and learn with your fellow chalklers"
-%p= "Click on “Join” to make a booking and sign up to your favourite class!"
-%h4= "Change your reservation?"
-%p=  "Just click on “Bookings” above and scroll down to the booking you want to change"
-%h4= "Pay for your class"
-%p= "If you haven’t paid for your booking, click on “Bookings” above and follow the payment instructions shown. Your spot in the class is not guaranteed until you have paid!"
-
-.lesson-list
-  - @lessons.each do |lesson|
-    = render :partial => "lessons/list_item", :locals => { :lesson => lesson }
-  = paginate @lessons
-
-:coffeescript
-  signedIn = () ->
-    if _.isString(_.find(document.cookie.split('; '), (a)-> return a == 'signed_in=1')) then true else false
-
-  $('.join-lesson.btn').click (e)->
-    unless signedIn()
-      e.preventDefault()
-
-  unless signedIn()
-    $('.join-lesson.btn').popover
-      placement: 'top'
-      html: true
-      title: 'Sign in to join a class'
-      content: 'Please <a href="/chalklers/sign_in">sign in</a> or <a href="/chalklers/sign_up">create an account</a> to make a booking.'
+.browse_lessons
+  .container
+    %h1.page-title
+      - if chalkler_signed_in?
+        = "Welcome #{current_chalkler.name}, try these upcoming chalkles."
+      - else
+        = "Welcome, try these upcoming chalkles."
+  .search_panel
+    .container
+      %ul.simple-nav#browse_type
+        %li.active
+          %a{:href => "#upcoming", 'data-toggle' => "tab"}
+            %i.icon-tasks
+            List View
+        %li
+          %a{:href => "#weeks", 'data-toggle' => "tab"}
+            %i.icon-list
+            Week View
+        %li
+          %a{:href => "#months", 'data-toggle' => "tab"}
+            %i.icon-calendar
+            Month View
+      .tab-content
+        #upcoming.tab-pane.active
+          %header.calendar_titles
+            %h2 Upcoming chalkle° classes
+          = render partial: 'upcoming_view', locals: {lessons: @upcoming_lessons, page: @page}
+        #weeks.tab-pane
+          = render partial: 'weeks_calendar_view', locals: {week_lessons: @week_lessons}
+        #months.tab-pane
+          = render partial: 'months_calendar_view', locals: {month_lessons: @month_lessons}

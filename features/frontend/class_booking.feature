@@ -14,6 +14,7 @@ Scenario: Chalkler can see the class being listed
 
 Scenario: Chalkler can sign up to a class
   When they visit the class listings
+  And select the first class
   And they press the "Join this class" button
   And they select the payment method "Bank Transfer"
   And they select the number of attendees "2"
