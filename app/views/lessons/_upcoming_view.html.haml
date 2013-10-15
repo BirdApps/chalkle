@@ -16,7 +16,7 @@
         .lesson_body
           .contents
             %h3= lesson.name
-            .description= simple_format lesson.description
+            .description= simple_format (lesson.do_during_class.blank? ? lesson.description : lesson.do_during_class)
             .details
               .price
                 %i.icon-money
