@@ -2,7 +2,7 @@ class LessonsController < ApplicationController
   #before_filter :horowhenua?
   after_filter :store_location
   before_filter :load_channel
-  layout 'new', only: [:month, :week, :calendar, :index]
+  layout 'new'
 
   def show
     @lesson = @channel.lessons.find(params[:id]).decorate
