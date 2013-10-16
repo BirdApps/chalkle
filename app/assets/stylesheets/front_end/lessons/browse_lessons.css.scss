@@ -4,16 +4,8 @@ $browse-lessons-background: #E8E8E8;
 $chalkboard-background-color: #2B2B2B;
 $chalkboard-background: $chalkboard-background-color asset-url("texture-chalkboard.jpg", "image") repeat;
 
-.browse_lessons {
-  h1.page-title {
-    font-family: 'Shadows Into Light Two', cursive;
-  }
-}
-
 .search_panel {
   background-color: $browse-lessons-background;
-  border-top: 1px solid #BABABA;
-  margin-top: 2em;
   padding-bottom: 3em;
 
   #browse_type {

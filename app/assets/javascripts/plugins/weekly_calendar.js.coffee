@@ -38,7 +38,7 @@ class WeeklyCalendar
 
   _addSuggestClassToDay: ($day) ->
     link = "<a href=\"/chalklers/class_suggestions/new\">Click here to find out more</a>"
-    $day.find('.lessons').append("<div class=\"col-md-4 col-sm-6 col-xs-12 suggestion\">Your class here? #{link}</div>")
+    $day.find('.lessons').append("<div class=\"suggestion\">Your class here? #{link}</div>")
 
 $.fn.weeklyCalendar = (options) ->
   @each ->

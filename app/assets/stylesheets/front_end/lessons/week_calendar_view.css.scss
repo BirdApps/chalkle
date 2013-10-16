@@ -34,7 +34,12 @@
     }
 
     .lessons {
-      margin: 0 -5px 15px -5px;
+      @include make-row();
+
+      margin-top: 0;
+      margin-bottom: 15px;
+      margin-right: -5px;
+      margin-left: -5px;
 
       $height: 65px;
       $time-width: $height;
@@ -43,6 +48,7 @@
       $lines: 3;
 
       $suggestion-color: #BBBBBB;
+
       .suggestion {
         border: 2px dashed $suggestion-color;
         height: $height;
@@ -62,8 +68,6 @@
       }
 
       .lesson {
-        padding: 0 5px;
-
         a {
           display: block;
           background: $chalkboard-background;
@@ -141,5 +145,59 @@
         }
       }
     }
+  }
+}
+
+.full_page .week_calendar_view .lessons {
+  .lesson, .suggestion {
+    @include make-xs-column(12);
+    @include make-sm-column(6);
+    @include make-md-column(4);
+    padding: 0 5px;
+  }
+}
+
+.browse_sidebar {
+  padding-top: 14px;
+
+  .calendar_titles h2 {
+    font-size: 28px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+
+    .part {
+      border-right: 0;
+    }
+    .main_part {
+      font-weight: normal;
+    }
+    &.has_relative {
+      .calendar_part {
+        display: none;
+      }
+    }
+  }
+
+  .week_calendar_view {
+    .lessons {
+      margin-bottom: 8px;
+
+      .lesson, .suggestion {
+        @include make-lg-column(12);
+        padding: 0 5px;
+      }
+    }
+
+    .day {
+      .day_title {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .next-calendar-section {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
   }
 }

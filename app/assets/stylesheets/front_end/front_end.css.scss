@@ -3,14 +3,30 @@ $single-category-color: #DE5C64;
 
 @import "front_end/old_design";
 @import "lessons/browse_lessons.css.scss";
+@import "lessons/show_lesson.css.scss";
+
+html,body
+{
+  height: 100%;
+}
 
 .front_end_body {
   h1, h2, h3, h4 {
     color: $fe-heading-color;
   }
 
+  h1.page-title {
+    font-family: 'Shadows Into Light Two', cursive;
+  }
+
   .site-footer {
     background-color: #2E2E2E;
+  }
+
+  .page_header_panel {
+    border-bottom: 2px solid #BABABA;
+
+    min-height: 100px;
   }
 }
 

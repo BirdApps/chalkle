@@ -1,11 +1,12 @@
 .browse_lessons
-  .container
-    %h1.page-title
-      - if chalkler_signed_in?
-        = "Welcome #{current_chalkler.name}, try these upcoming chalkles."
-      - else
-        = "Welcome, try these upcoming chalkles."
-  .search_panel
+  .page_header_panel
+    .container
+      %h1.page-title
+        - if chalkler_signed_in?
+          = "Welcome #{current_chalkler.name}, try these upcoming chalkles."
+        - else
+          = "Welcome, try these upcoming chalkles."
+  .search_panel.full_page
     .container
       %ul.simple-nav#browse_type
         %li.active

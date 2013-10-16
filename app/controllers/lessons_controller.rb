@@ -1,15 +1,11 @@
 class LessonsController < ApplicationController
-  #before_filter :horowhenua?
   after_filter :store_location
   before_filter :load_channel
   layout 'new'
 
   def show
     @lesson = @channel.lessons.find(params[:id]).decorate
-  end
-
-  def beta
-    show
+    load_enough_weeks
   end
 
   def month
