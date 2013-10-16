@@ -5,7 +5,7 @@ class LessonsController < ApplicationController
 
   def show
     @lesson = @channel.lessons.find(params[:id]).decorate
-    load_enough_weeks
+    load_enough_weeks(@lesson.start_on || Date.today)
   end
 
   def month
@@ -33,8 +33,8 @@ class LessonsController < ApplicationController
       @upcoming_lessons = decorate lessons_scope.page(@page)
     end
 
-    def load_enough_weeks
-      get_current_weeks.each do |week|
+    def load_enough_weeks(start_date = Date.today)
+      get_current_weeks(start_date).each do |week|
         load_week_lessons week, @channel
       end
       while weeks_loaded_count < 4 && no_weekly_lessons?
@@ -85,19 +85,18 @@ class LessonsController < ApplicationController
       end
     end
 
-    def get_current_weeks
-      current_week = get_current_week
-      today = Date.today
+    def get_current_weeks(start_date = Date.today)
+      current_week = get_current_week(start_date)
       result = [current_week]
-      result << current_week.next if today.friday? || today.saturday? || today.sunday?
+      result << current_week.next if start_date.friday? || start_date.saturday? || start_date.sunday?
       result
     end
 
-    def get_current_week
+    def get_current_week(start_date = Date.today)
       if params[:day]
         Week.containing(Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i))
       else
-        Week.current
+        Week.containing(start_date)
       end
     end
 

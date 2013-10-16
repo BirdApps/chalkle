@@ -318,6 +318,10 @@ class Lesson < ActiveRecord::Base
     cost == 0
   end
 
+  def start_on
+    start_at.to_date if start_at
+  end
+
   private
 
   #price calculation methods

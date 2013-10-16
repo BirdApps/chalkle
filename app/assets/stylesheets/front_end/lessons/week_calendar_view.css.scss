@@ -67,7 +67,11 @@
         }
       }
 
-      .lesson {
+      > .lesson {
+        &.active {
+          opacity: 0.5;
+        }
+
         a {
           display: block;
           background: $chalkboard-background;
@@ -182,9 +186,13 @@
     .lessons {
       margin-bottom: 8px;
 
-      .lesson, .suggestion {
+      .lesson {
         @include make-lg-column(12);
         padding: 0 5px;
+      }
+
+      .suggestion {
+        display: none;
       }
     }
 
