@@ -10,6 +10,9 @@
 .main_panel.container
   .row.with_browse_sidebar
     #weeks.browse_sidebar.col-sm-3.hidden-xs
+      %a.sidebar_top_nav{href: channel_lessons_path(@channel)}
+        %i.icon-calendar
+        Return to Calendar
       = render partial: 'weeks_calendar_view', locals: {week_lessons: @week_lessons}
     .col-md-9
       %h2= @lesson.name.capitalize

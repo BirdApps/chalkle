@@ -53,7 +53,7 @@ Your Chalkle Administrator")
   end
 
   def date_range_title(date_range)
-    [date_title(date_range.first), date_title(date_range.last)].join(' - ')
+    [date_title(date_range.first), date_title(date_range.last)].join(' - ').html_safe
   end
 
   def day_title(date)
@@ -61,6 +61,6 @@ Your Chalkle Administrator")
   end
 
   def date_title(date)
-    date.to_s(:short)
+    date.to_s(:short).strip.gsub(' ', '&nbsp;').html_safe
   end
 end
