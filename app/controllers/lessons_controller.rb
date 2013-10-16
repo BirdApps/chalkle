@@ -70,7 +70,7 @@ class LessonsController < ApplicationController
     end
 
     def lessons_for_week(week, channel)
-      lessons_base_scope(channel).in_week(week)
+      lessons_base_scope(channel).upcoming.in_week(week)
     end
 
     def lessons_base_scope(channel)
