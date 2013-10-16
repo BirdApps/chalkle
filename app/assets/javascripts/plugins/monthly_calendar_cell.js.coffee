@@ -1,5 +1,3 @@
-#= require jquery.FastEllipsis.js
-
 class MonthlyCalendarCell
   constructor: (element) ->
     @elem = $(element)
