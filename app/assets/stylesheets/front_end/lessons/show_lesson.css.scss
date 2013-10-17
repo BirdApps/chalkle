@@ -32,6 +32,63 @@ $sidebar-color: #E8E8E8;
         }
       }
 
+
+      .details {
+        @include make-row();
+        margin-left: -1px;
+        margin-right: -1px;
+        margin-bottom: -1px;
+
+        .details_block {
+          @include make-sm-column(4);
+
+          padding-left: 1px;
+          padding-right: 1px;
+          margin-bottom: 1px;
+
+          & > div {
+            background-color: $single-category-color;
+            height: 100px;
+            padding: 15px 30px;
+            color: white;
+          }
+
+          .iconic_block {
+            padding-left: 1.5em;
+            margin-bottom: 5px;
+
+            i {
+              float: left;
+              margin-left: -1.5em;
+              margin-top: 2px;
+            }
+          }
+        }
+      }
+
+      .teacher_details {
+        margin: 0;
+        background-color: #F2F2F2;
+
+        .contents {
+          padding: 10px 30px;
+        }
+
+        h3 {
+          margin: 0;
+          font-size: 22px;
+          line-height: 22px;
+          margin-bottom: 8px;
+        }
+      }
+
+      .text_contents {
+        padding: 15px 30px;
+
+        .lesson-description {
+          margin-bottom: 15px;
+        }
+      }
     }
   }
 }

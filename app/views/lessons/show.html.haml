@@ -20,29 +20,78 @@
           -if @lesson.lesson_upload_image.url.present?
             =image_tag @lesson.lesson_upload_image.url(:large).to_s, alt: @lesson.name, class: 'lesson-image uploaded-lesson-image'
           %h2= @lesson.name
+      .details
+        .details_block
+          .time_details
+            .iconic_block.time>
+              %i.icon-time
+              = @lesson.start_at.strftime('%l:%M %p').strip
+            .iconic_block.date
+              %i.icon-calendar
+              .name= @lesson.start_at.strftime('%A').strip
+              .day= @lesson.start_at.strftime('%d %B').strip
+        .details_block
+          .cost_and_location_details
+            .iconic_block.price
+              %i.icon-money
+              = @lesson.formatted_price
+            - unless @lesson.venue.blank?
+              .iconic_block.location
+                %i.icon-map-marker
+                = @lesson.venue
+        .details_block
+          .attendance_details
+            .iconic_block.availability
+              - if @lesson.limited_spaces?
+                - if @lesson.spaces_left?
+                  %i.icon-thumbs-up
+                  = pluralize @lesson.spaces_left, 'spot'
+                  left
+                - else
+                  %i.icon-thumbs-down
+                  fully booked!
+              - else
+                %i.icon-ok
+                No size limit
+            .iconic_block.attending
+              %i.icon-user
+              = @lesson.attendance
+              attending
+      - if teacher = @lesson.teacher
+        .teacher_details
+          .contents
+            %h3
+              Your Teacher:
+              = teacher.name
+            .teacher-bio
+              = simple_format teacher.bio
+      .text_contents
+        .lesson-description
+          - unless @lesson.do_during_class.blank?
+            .do_during_class
+              %h3 What we are doing
+              = simple_format @lesson.do_during_class
+          - unless @lesson.learning_outcomes.blank?
+            .learning_outcomes
+              %h3 What you will learn
+              = simple_format @lesson.learning_outcomes
+          .notes
+            - if @lesson.min_attendee.to_i > 0
+              %h6 Note
+              = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
 
-      .row.lesson-details
-        .col-md-8.content-left
-          .lesson-description
-            %h3 What we are doing
-            = simple_format @lesson.do_during_class
-            %h3 What you will learn
-            = simple_format @lesson.learning_outcomes
-            %h6 Note
-            = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
-        .col-md-4.content-right
-          .booking-actions
-            - if chalkler_signed_in?
-              - if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? @lesson
-                %p.text-success
-                  %strong You are attending
-              - elsif @lesson.bookable?
-                .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
+        .booking-actions
+          - if chalkler_signed_in?
+            - if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? @lesson
+              %p.text-success
+                %strong You are attending
             - elsif @lesson.bookable?
               .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
+          - elsif @lesson.bookable?
+            .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
 
-          = render :partial => 'lesson_details', :locals => { :lesson => @lesson }
-          = render :partial => 'teacher_details', :locals => { :lesson => @lesson }
+      -#= render :partial => 'lesson_details', :locals => { :lesson => @lesson }
+      -#= render :partial => 'teacher_details', :locals => { :lesson => @lesson }
 
 :coffeescript
   signedIn = () ->
