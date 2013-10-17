@@ -17,12 +17,6 @@ describe LessonUploadImageUploader do
     FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
   end
 
-  context 'the thumb version' do
-    it "should scale down a landscape image to be exactly 250 by 250 pixels" do
-      @uploader.thumb.should be_no_larger_than(250, 250)
-    end
-  end
-
   context 'saved image' do
     it "should save the image in the right location" do
       File.exist?("#{Rails.root}/public/uploads/test/lesson/lesson_upload_image/#{@lesson.id}/lesson-bg.png")
