@@ -4,3 +4,34 @@ $sidebar-color: #E8E8E8;
   background-color: #E8E8E8;
 }
 
+.lessons-show {
+  .with_browse_sidebar {
+    margin-right: 0;
+
+    .lesson_panel {
+      padding: 0;
+
+      .masthead {
+        background: $chalkboard-background;
+        min-height: 260px;
+
+        .masthead_contents {
+          border-collapse: none;
+          padding: 30px;
+        }
+
+        .lesson-image {
+          float: right;
+        }
+
+        h2 {
+          margin: 0;
+          color: $single-category-color;
+          font-size: 30px;
+          max-width: 16em;
+        }
+      }
+
+    }
+  }
+}

@@ -14,8 +14,12 @@
         %i.icon-calendar
         Return to Calendar
       = render partial: 'weeks_calendar_view', locals: {week_lessons: @week_lessons}
-    .col-sm-9.col-md-8
-      %h2= @lesson.name.capitalize
+    .col-sm-9.col-md-8.lesson_panel
+      .masthead
+        .masthead_contents
+          -if @lesson.lesson_upload_image.url.present?
+            =image_tag @lesson.lesson_upload_image.url(:large).to_s, alt: @lesson.name, class: 'lesson-image uploaded-lesson-image'
+          %h2= @lesson.name
 
       .row.lesson-details
         .col-md-8.content-left
@@ -39,9 +43,6 @@
 
           = render :partial => 'lesson_details', :locals => { :lesson => @lesson }
           = render :partial => 'teacher_details', :locals => { :lesson => @lesson }
-          .meetup_image
-            -if @lesson.lesson_upload_image.url.present?
-              =image_tag @lesson.lesson_upload_image.url(:sidebar).to_s, alt: @lesson.name, class: 'lesson-image uploaded-lesson-image'
 
 :coffeescript
   signedIn = () ->
