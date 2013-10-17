@@ -20,6 +20,17 @@
           -if @lesson.lesson_upload_image.url.present?
             =image_tag @lesson.lesson_upload_image.url(:large).to_s, alt: @lesson.name, class: 'lesson-image uploaded-lesson-image'
           %h2= @lesson.name
+
+          .booking-actions
+            - if chalkler_signed_in?
+              - if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? @lesson
+                %p.text-success
+                  %strong You are attending
+              - elsif @lesson.bookable?
+                .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
+            - elsif @lesson.bookable?
+              .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
+
       .details
         .details_block
           .time_details
@@ -79,16 +90,6 @@
             - if @lesson.min_attendee.to_i > 0
               %h6 Note
               = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
-
-        .booking-actions
-          - if chalkler_signed_in?
-            - if current_chalkler.lessons.where{bookings.status.eq 'yes'}.exists? @lesson
-              %p.text-success
-                %strong You are attending
-            - elsif @lesson.bookable?
-              .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
-          - elsif @lesson.bookable?
-            .btn.btn-primary= link_to 'Join this class', new_channel_lesson_booking_path(@channel, @lesson), :id => 'join-lesson'
 
       -#= render :partial => 'lesson_details', :locals => { :lesson => @lesson }
       -#= render :partial => 'teacher_details', :locals => { :lesson => @lesson }
