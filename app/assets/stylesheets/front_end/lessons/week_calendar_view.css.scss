@@ -1,3 +1,6 @@
+$lesson-height: 65px;
+$lesson-time-width: $lesson-height;
+
 .week_calendar_view {
   .day {
     display: none;
@@ -17,11 +20,6 @@
       display: inline-block;
       min-width: 9em;
 
-      @media(max-width: $screen-md) {
-        .relative_name {
-          display: none !important;
-        }
-      }
     }
 
     .day_title:after {
@@ -47,9 +45,7 @@
       margin-right: -5px;
       margin-left: -5px;
 
-      $height: 65px;
-      $time-width: $height;
-      $image-width: $height;
+      $image-width: $lesson-height;
       $top-bottom-margin: 5px;
       $lines: 3;
 
@@ -57,7 +53,7 @@
 
       .suggestion {
         border: 2px dashed $suggestion-color;
-        height: $height;
+        height: $lesson-height;
         text-align: center;
         padding: 18px;
         color: $suggestion-color;
@@ -81,18 +77,18 @@
         a {
           display: block;
           background: $chalkboard-background;
-          height: $height;
+          height: $lesson-height;
           overflow: hidden;
           padding: 0;
           margin-bottom: 10px;
 
           > span {
-            height: $height;
+            height: $lesson-height;
             display: block;
           }
 
           .time {
-            width: $time-width;
+            width: $lesson-time-width;
             float: left;
             color: white;
             background-color: $single-category-color;
@@ -125,9 +121,9 @@
 
           .details {
             display: block;
-            margin-left: ($time-width + $image-width);
+            margin-left: ($lesson-time-width + $image-width);
 
-            $lesson-line-height: ($height - ($top-bottom-margin * 2)) / $lines;
+            $lesson-line-height: ($lesson-height - ($top-bottom-margin * 2)) / $lines;
             $lesson-font-size: $lesson-line-height * 0.9;
             $lesson-line-padding: ($lesson-line-height - $lesson-font-size) / 2;
 
@@ -150,7 +146,7 @@
           }
 
           .details {
-            margin-left: $time-width;
+            margin-left: $lesson-time-width;
           }
         }
       }
@@ -169,6 +165,16 @@
 
 .browse_sidebar {
   padding-top: 14px;
+
+  .day_title {
+    min-width: inherit !important;
+
+    @media(max-width: $screen-md) {
+      .relative_name {
+        display: none !important;
+      }
+    }
+  }
 
   .sidebar_top_nav {
     float: right;
@@ -212,6 +218,15 @@
 
       .suggestion {
         display: none;
+      }
+
+      @media(max-width: $screen-md) {
+        .image_container {
+          display: none !important;
+        }
+        .details {
+          margin-left: $lesson-time-width !important;
+        }
       }
     }
 

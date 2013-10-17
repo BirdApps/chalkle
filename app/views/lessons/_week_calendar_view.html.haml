@@ -9,7 +9,8 @@
     - week.each do |day|
       .day{:class => [relative_date_class(day), ('has_classes' if lessons[day].present?)]}
         - if day >= Date.today
-          %h3.day_title= relative_day_title(day)
+          %h3.day_title
+            .day_title_inner= relative_day_title(day)
           .lessons
             - if lessons[day]
               - lessons[day].each_with_index do |lesson|
