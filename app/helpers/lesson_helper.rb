@@ -25,8 +25,11 @@ Your Chalkle Administrator")
   end
 
   def relative_day_title(day)
-    parts = [day_title(day), relative_day_name(day)].compact
-    parts.join(' / ')
+    relative_name = relative_day_name(day)
+
+    parts = [day_title(day)]
+    parts << content_tag(:span, ' / ' + relative_name, class: 'relative_name') if relative_name
+    parts.join('').html_safe
   end
 
   def relative_date_class(date, current = Date.today)

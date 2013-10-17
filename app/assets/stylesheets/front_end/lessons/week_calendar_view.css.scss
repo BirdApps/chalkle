@@ -16,6 +16,12 @@
       position: relative;
       display: inline-block;
       min-width: 9em;
+
+      @media(max-width: $screen-md) {
+        .relative_name {
+          display: none !important;
+        }
+      }
     }
 
     .day_title:after {
