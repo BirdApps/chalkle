@@ -5,3 +5,7 @@ en:
   time:
     formats:
       long_without_year: ! '%l:%M%P %A %-d %B'
+  date:
+    formats:
+      weekday: '%a %e'
+      monthday: '%d %b'

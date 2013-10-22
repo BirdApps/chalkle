@@ -1,5 +1,5 @@
 .row
-  .span12
+  .col-md-12
     %h2 Textures
 
     %p .texture-gray-light | $texture-gray-light
@@ -12,7 +12,7 @@
     .texture-block.texture-chalkboard
 
 .colors.row
-  .span12
+  .col-md-12
     %h2 Colors
     %ul.nav.nav-tabs
       =tab_nav_item "Option 1", "#color_option1", class: "active"
@@ -20,7 +20,7 @@
     .tab-content
       #color_option1.tab-pane.fade.in.active
         .row
-          .span2
+          .col-md-2
             %p
               %small.color-pink
                 \.color-pink
@@ -29,7 +29,7 @@
             .color-block.background-color-pink
               %p
                 %strong #fffff
-          .span2
+          .col-md-2
             %p
               %small.color-green
                 \.color-green
@@ -38,7 +38,7 @@
             .color-block.background-color-green
               %p
                 %strong #fffff
-          .span2
+          .col-md-2
             %p
               %small.color-gray-light
                 \.color-gray-light
@@ -48,7 +48,7 @@
               %p
                 %small
                   Usage: hints, light text
-          .span2
+          .col-md-2
             %p
               %small.color-gray-dark
                 \.color-gray-dark
@@ -59,7 +59,7 @@
                 %small
                   Usage: body text.
         .row
-          .span12
+          .col-md-12
             .alert
               %button.close{"data-dismiss" => "alert", :type => "button"} ×
               Alert Alert
@@ -70,7 +70,7 @@
               %button.close{"data-dismiss" => "alert", :type => "button"} ×
               Alert Success
 
-          .span12
+          .col-md-12
             %p.color-grey-dark
               Lorem ipsum dolor sit amet, consectetur
               =link_to "link in text", "#", class: "color-green"
@@ -83,7 +83,7 @@
 
       #color_option2.tab-pane.fade
         .row
-          .span2
+          .col-md-2
             %p
               %small.color-pink
                 \.color-pink
@@ -92,7 +92,7 @@
             .color-block.background-color-pink
               %p
                 %strong #fffff
-          .span2
+          .col-md-2
             %p
               %small.color-blue
                 \.color-blue
@@ -101,7 +101,7 @@
             .color-block.background-color-blue
               %p
                 %strong #fffff
-          .span2
+          .col-md-2
             %p
               %small.color-green
                 \.color-green
@@ -110,7 +110,7 @@
             .color-block.background-color-green
               %p
                 %strong #fffff
-          .span2
+          .col-md-2
             %p
               %small.color-gray-light
                 \.color-gray-light
@@ -120,7 +120,7 @@
               %p
                 %small
                   Usage: hints, light text
-          .span2
+          .col-md-2
             %p
               %small.color-gray-dark
                 \.color-gray-dark
@@ -131,7 +131,7 @@
                 %small
                   Usage: body text.
         .row
-          .span12
+          .col-md-12
             .alert
               %button.close{"data-dismiss" => "alert", :type => "button"} ×
               Alert Alert
@@ -141,7 +141,7 @@
             .alert.alert-success
               %button.close{"data-dismiss" => "alert", :type => "button"} ×
               Alert Success
-          .span12
+          .col-md-12
             %p.color-grey-dark
               Lorem ipsum dolor sit amet, consectetur
               =link_to "link in text", "#", class: "color-green"
@@ -153,7 +153,7 @@
               %span.color-gray-light sunt in culpa qui officia deserunt mollit
               anim id est laborum.
 .typography.row
-  .span12
+  .col-md-12
     %h2 Typography
 
     %blockquote
@@ -173,8 +173,8 @@
     %h3 Misc
     .well
       I am a well .well
-    .hero-unit
-      I am a hero unit .hero-unit
+    .jumbotron
+      I am a jumbotron .jumbotron
 
     %h3 Headings
 
@@ -183,29 +183,29 @@
       =tab_nav_item "Option 2", "#heading_option2"
     .tab-content
       .row
-        .span2
+        .col-md-2
           #font-swap.btn.btn-small.btn-primary Swap font
       #heading_option1.tab-pane.fade.in.active
         .row
-          .span3
+          .col-md-3
             %p a)
             %h1.color-gray-dark Heading 1
             %h2.color-gray-dark Heading 2
             %h3.color-gray-dark Heading 3
             %h4.color-gray-dark Heading 4
-          .span3
+          .col-md-3
             %p b)
             %h1.color-gray-dark.font-bold Heading 1
             %h2.color-gray-dark.font-bold Heading 2
             %h3.color-gray-dark.font-bold Heading 3
             %h4.color-gray-dark.font-bold Heading 4
-          .span3
+          .col-md-3
             %p c)
             %h1 Heading 1
             %h2 Heading 2
             %h3.color-gray-light.font-bold Heading 3
             %h4.color-gray-light.font-bold Heading 4
-          .span3
+          .col-md-3
             %p d)
             %h1.color-pink Heading 1
             %h2.color-green Heading 2
@@ -213,7 +213,7 @@
             %h4.color-green.font-bold Heading 4
       #heading_option2.tab-pane.fade
         .row
-          .span12
+          .col-md-12
             %p a)
             %h2.color-gray-dark.dashed-underline Heading 2
             %p.color-grey-dark
@@ -228,7 +228,7 @@
               cupidatat non proident,
               %span.color-gray-light sunt in culpa qui officia deserunt mollit
               anim id est laborum.
-          .span12
+          .col-md-12
             %p a)
             %h2.color-white.background-color-pink.heading-on-bg Heading 2
             %p.color-grey-dark
@@ -276,7 +276,7 @@
               anim id est laborum.
 
 .forms_examples.row
-  .span12
+  .col-md-12
     %h2 Forms
     %ul.nav.nav-tabs
       =tab_nav_item "Option 1", "#form_option1", class: "active"
@@ -315,7 +315,7 @@
             .control-group.text.optional
               %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
               .controls
-                %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+                %textarea#teaching_bio.text.optional.col-md-6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
             %p
               %strong Note:
               even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
@@ -353,7 +353,7 @@
             .control-group.text.optional
               %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
               .controls
-                %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+                %textarea#teaching_bio.text.optional.col-md-6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
             %p
               %strong Note:
               even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
@@ -390,7 +390,7 @@
             .control-group.text.optional
               %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
               .controls
-                %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+                %textarea#teaching_bio.text.optional.col-md-6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
             %p
               %strong Note:
               even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
@@ -398,7 +398,7 @@
             %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
       #form_option4.tab-pane.fade
         .row
-          .span6
+          .col-md-6
             %form.form-vertical.texture-gray-light
               .form-inputs
                 %h2.dashed-underline Form Title
@@ -429,13 +429,13 @@
                 .control-group.text.optional
                   %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
                   .controls
-                    %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+                    %textarea#teaching_bio.text.optional.col-md-6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
                 %p
                   %strong Note:
                   even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
               .form-actions.texture-gray-med
                 %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
-          .span6
+          .col-md-6
             %form.form-vertical.texture-gray-light
               .form-inputs
                 %h2.dashed-underline Form Title
@@ -466,7 +466,7 @@
                 .control-group.text.optional
                   %label.text.optional.control-label{:for => "teaching_bio"} Why are you a great teacher for this class?
                   .controls
-                    %textarea#teaching_bio.text.optional.span6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
+                    %textarea#teaching_bio.text.optional.col-md-6{:cols => "40", :name => "teaching[bio]", :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :rows => "4"}
                 %p
                   %strong Note:
                   even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.
@@ -474,21 +474,21 @@
                 %input.btn.btn-inverse{:name => "commit", :type => "submit", :value => "Save Email Preferences"}/
 
 .buttons.row
-  .span12
+  .col-md-12
     %h2 Buttons and hr
-  .span12
+  .col-md-12
     %a.btn{href: "#"} .btn
     %a.btn.btn-primary{href: "#"} .btn-primary
     %a.btn.btn-info{href: "#"} .btn-info
     %a.btn.btn-inverse{href: "#"} .btn-inverse
-  %hr.span12
-  .span12.btn-opt-2
+  %hr.col-md-12
+  .col-md-12.btn-opt-2
     %a.btn{href: "#"} .btn
     %a.btn.btn-primary{href: "#"} .btn-primary
     %a.btn.btn-info{href: "#"} .btn-info
     %a.btn.btn-inverse{href: "#"} .btn-inverse
-  %hr.dashed.span12
-  .span12.btn-opt-2
+  %hr.dashed.col-md-12
+  .col-md-12.btn-opt-2
     %a.btn.btn-large{href: "#"} .btn large
     %a.btn.btn-small.btn-primary{href: "#"} .btn-primary small
     %a.btn.btn-mini.btn-info{href: "#"} .btn-info mini
@@ -496,7 +496,7 @@
 
 .lists.row
   -@data = [{ id: 1, name: "Sirius Snape", channel: "Chalkler", money: "$11.10"}, { id: 20, name: "Harry Potter", channel: "Sonny", money: "$10.50"}, { id: 2591, name: "Longbottom Long Name", channel: "Twice Wordly", money: "$1.50"}]
-  .span12
+  .col-md-12
     %h2 Lists
     %ul.nav.nav-tabs
       =tab_nav_item "Option 1", "#table_option1", class: "active"
@@ -504,10 +504,10 @@
     .tab-content
       #table_option1.tab-pane.fade
         .row
-          .span12
+          .col-md-12
             .search-filters
               .row.no-bottom-margin
-                .span7
+                .col-md-7
                   #filters1.filters.hide.clearfix.text-smaller
                     %ul.unstyled
                       %li.li-header.color-gray-light.font-bold
@@ -538,14 +538,14 @@
                         %a The other
                       %li
                         %a An even
-                .span5
+                .col-md-5
                   .pull-right
                     %a.showhide.btn{href: "#filters1", data: {toggle: "showhide", active_icon_class: "icon-caret-right", inactive_icon_class: "icon-caret-left"}}
                       %i.icon.icon-caret-left
                       Filters
                     %form.form-search
                       .input-append
-                        %input.span3.search-query{:type => "text"}/
+                        %input.col-md-3.search-query{:type => "text"}/
                         %button.btn{:type => "submit"}
                           %i.icon.icon-search
         %table.table.table-striped
@@ -586,10 +586,10 @@
                   %i.icon.color-green.icon-ok
       #table_option2.tab-pane.fade.in.active
         .row
-          .span12
+          .col-md-12
             .search-filters
               .row.no-bottom-margin
-                .span7
+                .col-md-7
                   #filters1.filters.hide.clearfix.text-smaller
                     %ul.unstyled
                       %li.li-header.color-gray-light.font-bold
@@ -620,58 +620,61 @@
                         %a The other
                       %li
                         %a An even
-                .span5
+                .col-md-5
                   .pull-right
                     %a.showhide.btn{href: "#filters1", data: {toggle: "showhide", active_icon_class: "icon-caret-right", inactive_icon_class: "icon-caret-left"}}
                       %i.icon.icon-caret-left
                       Filters
                     %form.form-search
                       .input-append
-                        %input.span3.search-query{:type => "text"}/
+                        %input.col-md-3.search-query{:type => "text"}/
                         %button.btn{:type => "submit"}
                           %i.icon.icon-search
 
         -@lessons = Lesson.where('do_during_class IS NOT NULL').order('created_at desc').limit(5).decorate
         -@lessons << Lesson.where('start_at is NULL').order('created_at desc').first.decorate
+        -@lessons.compact!
+        -#- raise @lessons.last.inspect
         -@lessons.last.suggested_audience = "YOUNG PEOPLE"
         -@lessons.shuffle!
         %p Should these just show title, and expand on clicking info icon?
         %section.box-list
           -@lessons.each_with_index do |ls, i|
-            %article.box-item{class: "#{'box-highlighted' if i == 2} #{('lesson-'+ls.status).downcase}"}
-              .row
-                .span12.box-top
-                  .clearfix
-                    %h5=ls.name
-                    .tags
-                      .tag.tag-blue
-                        Chalkle
-                      .tag.tag-green
-                        Longer Words
+            - if ls
+              %article.box-item{class: "#{'box-highlighted' if i == 2} #{('lesson-'+ls.status).downcase}"}
+                .row
+                  .col-md-12.box-top
+                    .clearfix
+                      %h5=ls.name
+                      .tags
+                        .tag.tag-blue
+                          Chalkle
+                        .tag.tag-green
+                          Longer Words
+                      .pull-right
+                        %span= ls.attendance.to_s + " / " + ls.min_attendee.to_s
+                        .icon.icon-user
+                .row
+                  .col-md-12.box-mid.text-smaller
+                    .box-mid-left.full-width-mobile
+                      %p=(truncate(ls.do_during_class, length: 300, separator: " ") || '').gsub(/\n/, '<br />').html_safe
+                      - if ls.suggested_audience
+                        %p Suggested for:
+                        %p=ls.suggested_audience.gsub(/\n/, '<br />').html_safe
+                    .box-mid-right.full-width-mobile
+                      %ul.unstyled
+                        - if ls.start_at
+                          %li.light-gray-box=l ls.start_at, format: :short
+                        - elsif ls.availabilities
+                          %li= ls.availabilities
+                        %li= ls.venue
+                        -# %li= "#{"Cost: " + number_to_currency(ls.gst_price)} (incl GST)"
+                        -# %li= "#{"Materials: " + number_to_currency(ls.material_cost)}"
+                        %li= "#{"Teacher: " + ls.teacher.name if ls.teacher}"
+                .row
+                  .col-md-12.box-bottom
                     .pull-right
-                      %span= ls.attendance.to_s + " / " + ls.min_attendee.to_s
-                      .icon.icon-user
-              .row
-                .span12.box-mid.text-smaller
-                  .box-mid-left.full-width-mobile
-                    %p=truncate( ls.do_during_class, length: 300, separator: " ").gsub(/\n/, '<br />').html_safe
-                    - if ls.suggested_audience
-                      %p Suggested for:
-                      %p=ls.suggested_audience.gsub(/\n/, '<br />').html_safe
-                  .box-mid-right.full-width-mobile
-                    %ul.unstyled
-                      - if ls.start_at
-                        %li.light-gray-box=l ls.start_at, format: :short
-                      - elsif ls.availabilities
-                        %li= ls.availabilities
-                      %li= ls.venue
-                      -# %li= "#{"Cost: " + number_to_currency(ls.gst_price)} (incl GST)"
-                      -# %li= "#{"Materials: " + number_to_currency(ls.material_cost)}"
-                      %li= "#{"Teacher: " + ls.teacher.name}"
-              .row
-                .span12.box-bottom
-                  .pull-right
-                    .btn.btn-primary=ls.join_chalklers
+                      .btn.btn-primary=ls.join_chalklers
 
 
 :javascript

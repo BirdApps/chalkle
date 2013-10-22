@@ -27,7 +27,9 @@ describe BookingReminder do
     end
 
     it "loads booking for reminder" do
-      @reminder.instance_eval{ remind_now }.should == [@booking]
+      result = @reminder.instance_eval{ remind_now }
+      result.should == [@booking]
+      result.first.should_not be_readonly
     end
 
     it "won't load hidden bookings" do

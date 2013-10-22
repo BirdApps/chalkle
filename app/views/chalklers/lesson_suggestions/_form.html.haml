@@ -1,12 +1,12 @@
-= simple_form_for(@lesson_suggestion, url: chalklers_lesson_suggestions_path, html: { class: 'form-vertical' }) do |f|
+= bootstrap_form_for(@lesson_suggestion, url: chalklers_lesson_suggestions_path, html: { class: 'form-vertical' }) do |f|
   = f.error_notification
   .form-inputs
     = f.input :name, label: 'What would the class be called?'
     = f.input :category_id, as: :select, label: 'Which category is the best fit for the class?', collection: Category.all
 
-    = f.input :description, label: 'Please describe what you would like to happen in the class?', :input_html => { :rows => 3, :class => 'span12' }
+    = f.input :description, label: 'Please describe what you would like to happen in the class?', input_html: {rows: 3}
     - if current_chalkler.channels.size > 1
       %div.channel-selection
-        = f.input :join_channels, as: :check_boxes, label: 'Which channels would you like to suggest this class for?', collection: current_chalkler.channels
+        = f.input :join_channels, as: :check_boxes, label: 'Which channels would you like to suggest this class for?', collection: current_chalkler.channels, input_html: {class: ''}
   .form-actions
     = f.button :submit, 'Suggest class', class: 'btn-primary'

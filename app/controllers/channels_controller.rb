@@ -2,7 +2,6 @@ class ChannelsController < ApplicationController
   after_filter :store_location
 
   def show
-    @channel = Channel.find params[:id]
-    @lessons = LessonDecorator.decorate_collection @channel.lessons.upcoming.order('start_at').page(params[:page])
+    redirect_to channel_lessons_path(params[:id])
   end
 end

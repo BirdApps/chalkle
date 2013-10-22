@@ -6,13 +6,16 @@
     %title= content_for?(:title) ? yield(:title) : 'chalkle°'
     <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
     = csrf_meta_tag
-    = stylesheet_link_tag    "application", media: "all"
+    = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag "application"
 
   %body{ class: body_class }
     = render 'layouts/navigation'
 
-    .container
-      = render 'layouts/messages'
-      = yield
-      %footer.row
+    .old_front_end_body
+      .container
+        = render 'layouts/messages'
+        = yield
+
+    %footer.row.site-footer
+      .container

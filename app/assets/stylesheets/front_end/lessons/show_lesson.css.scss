@@ -1,0 +1,111 @@
+$sidebar-color: #E8E8E8;
+
+.browse_sidebar {
+  background-color: #E8E8E8;
+}
+
+.lessons-show {
+  .btn-primary {
+    background-color: $single-category-color;
+  }
+
+  .with_browse_sidebar {
+    margin-right: 0;
+
+    .lesson_panel {
+      padding: 0;
+
+      .masthead {
+        background: $chalkboard-background;
+        min-height: 260px;
+
+        .masthead_contents {
+          border-collapse: none;
+          padding: 30px;
+        }
+
+        .booking-actions {
+          margin-top: 1em;
+        }
+
+        .lesson-image {
+          float: right;
+        }
+
+        h2 {
+          margin: 0;
+          color: $single-category-color;
+          font-size: 30px;
+          max-width: 16em;
+        }
+      }
+
+
+      .details {
+        @include make-row();
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: -1px;
+
+        .details_block {
+          @include make-sm-column(4);
+
+          padding-left: 1px;
+          padding-right: 1px;
+          margin-bottom: 1px;
+          border-right: 1px solid white;
+          background-color: $single-category-color;
+
+          &:first-child {
+            border-left: 0;
+          }
+
+          &:last-child {
+            border-right: 0;
+          }
+
+          & > div {
+            min-height: 100px;
+            margin: 15px 30px;
+            color: white;
+          }
+
+          .iconic_block {
+            padding-left: 1.5em;
+            margin-bottom: 5px;
+
+            i {
+              float: left;
+              margin-left: -1.5em;
+              margin-top: 2px;
+            }
+          }
+        }
+      }
+
+      .teacher_details {
+        margin: 0;
+        background-color: #F2F2F2;
+
+        .contents {
+          padding: 10px 30px;
+        }
+
+        h3 {
+          margin: 0;
+          font-size: 22px;
+          line-height: 22px;
+          margin-bottom: 8px;
+        }
+      }
+
+      .text_contents {
+        padding: 15px 30px;
+
+        .lesson-description {
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}

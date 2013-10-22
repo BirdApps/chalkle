@@ -12,12 +12,15 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap-tab
-//= require bootstrap-transition
-//= require bootstrap-tooltip
-//= require bootstrap-popover
-//= require bootstrap-modal
-//= require bootstrap-dropdown
+//= require twitter/bootstrap/tab
+//= require twitter/bootstrap/transition
+//= require twitter/bootstrap/tooltip
+//= require twitter/bootstrap/popover
+//= require twitter/bootstrap/modal
+//= require twitter/bootstrap/dropdown
 //= require underscore
 //= require modernizr
+//= require front_end/front_end
 //= require utils
+//= require month_calendar_view
+

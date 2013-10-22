@@ -39,7 +39,7 @@
       =f.input :chalkle_payment, :label => "Payment to Chalkle (leave blank if not paid)"
     =f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Approved", "Unreviewed", "Processing"], :input_html => { :multiple => false }, include_blank: false
     -if @lesson.lesson_upload_image.present?
-      =f.input :lesson_upload_image, :as => :file, :label => "Image to show on class listing", :hint => f.template.image_tag(f.object.lesson_upload_image.url(:thumb), alt: File.basename(@lesson.lesson_upload_image.path))
+      =f.input :lesson_upload_image, :as => :file, :label => "Image to show on class listing", :hint => f.template.image_tag(f.object.lesson_upload_image.url(:mini), alt: File.basename(@lesson.lesson_upload_image.path))
       =f.input :remove_lesson_upload_image, as: :boolean, :label => "Check here to remove the current image"
     -else
       =f.input :lesson_upload_image, :as => :file, :label => "Image to show on class listing", :hint => "Allowed types are jpg, jpeg, gif, png"

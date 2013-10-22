@@ -1,0 +1,99 @@
+$link-well-color: #D6D6D6;
+$link_well-border: #C6C6C6;
+$browse-lessons-background: #E8E8E8;
+$chalkboard-background-color: #2B2B2B;
+$chalkboard-background: $chalkboard-background-color asset-url("texture-chalkboard.jpg", "image") repeat;
+
+.search_panel {
+  background-color: $browse-lessons-background;
+  padding-bottom: 3em;
+
+  #browse_type {
+    margin-top: 37px;
+    float: right;
+  }
+}
+
+header.calendar_titles {
+  h2 {
+    .part {
+      font-weight: normal;
+      border-right: 2px solid $fe-heading-color;
+      padding-right: 0.4em;
+
+      &:last-child {
+        border-right-width: 0px;
+        padding-right: 0px;
+      }
+    }
+
+    .main_part {
+      font-weight: bold
+    }
+  }
+}
+
+a.next-calendar-section {
+  text-transform: uppercase;
+  display: block;
+  padding: 1em 0;
+  text-align: center;
+  color: $fe-heading-color;
+  background-color: $link-well-color;
+  border: 1px solid $link_well-border;
+  margin-bottom: 1em;
+
+  &:hover {
+    color: $fe-heading-color;
+    text-decoration: none;
+    background-color: darken($link-well-color, 10%);
+    border-color: darken($link-well-border, 10%);
+  }
+}
+
+.page_header_panel {
+  .instructions {
+    padding-top: 20px;
+    @include make-row();
+
+    .part {
+      @include make-sm-column(3);
+
+      border-right: 2px solid #E8E8E8;
+      min-height: 170px;
+
+      &:last-child {
+        border-right: 0;
+      }
+
+      h2 {
+        margin-top: 0;
+        font-size: 20px;
+        padding-left: 1.5em;
+        position: relative;
+        line-height: 24px;
+        min-height: 48px;
+
+        i {
+          position: absolute;
+          top: 4px;
+          left: 0;
+          height: 18px;
+          line-height: 18px;
+          font-size: 18px;
+          vertical-align: middle;
+        }
+      }
+    }
+
+  }
+  @media(max-width: $screen-sm) {
+    .instructions {
+      display: none !important;
+    }
+  }
+}
+
+@import "month_calendar_view.css.scss";
+@import "week_calendar_view.css.scss";
+@import "upcoming_classes.css.scss";

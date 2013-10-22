@@ -1,0 +1,113 @@
+.big-scrollable-page {
+  color: $fe-heading-color;
+  font-size: 18px;
+  h3, a {
+    color: $fe-heading-color;
+  }
+  a {
+    text-decoration: underline;
+  }
+
+  header.page-header {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 450px;
+    background-color: #12351B;
+    color: white;
+
+    .text {
+      max-width: 400px;
+    }
+
+    h1 {
+      color: white;
+      font-size: 75px;
+      line-height: 100%;
+      margin-bottom: 50px;
+    }
+
+    p.description {
+      font-size: 20px;
+      max-width: 300px;
+    }
+
+    p.tagline {
+      font-size: 45px;
+      line-height: 110%;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      height: 450px;
+      background-image: url('/assets/front_end/home/header.jpg');
+      background-repeat: no-repeat;
+    }
+  }
+
+  section {
+    padding: 30px 0;
+
+    h3 {
+      border: 0;
+      font-size: 36px;
+      line-height: 120%;
+      margin-top: 0em;
+      margin-bottom: 20px;
+    }
+
+    .single-column {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .section_target {
+      text-align: center;
+
+      a {
+        font-size: 24px;
+        line-heght: 100%;
+        font-family: $chalky-font;
+      }
+    }
+  }
+
+  section.odd {
+    background-color: #EDEDED;
+  }
+
+  p.big_statement {
+    font-size: 32px;
+    line-height: 100%;
+    text-align: center;
+    margin: 0;
+  }
+
+  #join_a_channel {
+    text-align: center;
+  }
+
+  #be_a_teacher {
+    color: $chalklePink;
+    h3 {
+      color: $chalklePink;
+      margin-bottom: 0;
+
+      .text-part {
+        margin-top: 50px;
+      }
+    }
+
+    img.i_have_a_skill {
+      margin-top: -30px;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    .button-part {
+      margin-top: 20px;
+    }
+  }
+}

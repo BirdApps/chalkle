@@ -61,12 +61,21 @@ Chalkle::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  # Google analytics tracking code
+  GA.tracker = "UA-37364156-3"
+
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.action_mailer.default_url_options = { host: "my.chalkle.com" }
 
-  # Google analytics tracking code
-  GA.tracker = "UA-37364156-3"
+  ActionMailer::Base.smtp_settings = {
+    :address => "smtp.sendgrid.net",
+    :port => 25,
+    :domain => "chalkle.com",
+    :authentication => :plain,
+    :user_name => "chalkle",
+    :password => "6degrees"
+  }
 end

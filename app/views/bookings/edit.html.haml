@@ -3,10 +3,10 @@
 %h2 Edit Booking
 
 .row
-  .span12
+  .col-md-12
     %section.booking
       .row
-        .span6
+        .col-md-6
           .lesson-summary
             %h3 Booking summary
             %ul.unstyled
@@ -39,8 +39,8 @@
                     = "#{@lesson.id} - #{current_chalkler.name}"
                 %p Please ensure payment before your class begins.
 
-        .span6
-          = simple_form_for(@booking, url: booking_path, html: { class: 'form-horizontal' }) do |f|
+        .col-md-6
+          = simple_form_for(@booking, url: booking_path) do |f|
             %h3 Update booking details
             = render partial: 'form', locals: { f: f }
             :coffeescript
@@ -54,26 +54,4 @@
                   guests = Number $(this).val()
                   $('#lessonPrice').text '$' + (basePrice * (guests + 1)).toFixed 2
 
-#termsModal.modal.hide.fade{ :'tabindex' => '-1', :'role' => 'dialog', :'aria-labelled-by' => 'Terms and Conditions', :'aria-hidden' => true }
-  .modal-header
-    %button.close{:type => 'button', :'data-dismiss' => 'modal', :'aria-hidden' => 'true'} &times;
-    %h3 Booking Terms and Conditions
-  .modal-body
-    :markdown
-      #### Disclaimer
-
-      Whilst every possible assistance will be offered, chalkle&deg;, the Event
-      Organisers/Hosts and members cannot be held responsible for any accident,
-      injuries or losses sustained leading up to, during, or after a class.
-
-      #### Cancellation policy
-
-      If you RSVP for a class and fail to show up, you will get a "no show".
-      Three no shows means you will be removed from chalkle&deg;. You may request to
-      rejoin after six months.
-
-      If you cancel your booking:
-      - less than 3 days before: no refund
-      - after 7pm the night before: no refund and a "no show" will be recorded
-  .modal-footer
-    %button.btn{ :'data-dismiss' => 'modal', :'aria-hidden' => 'true' } Close
+= render partial: 'terms'

@@ -11,7 +11,8 @@ class Booking < ActiveRecord::Base
   belongs_to :chalkler
   has_one :payment
 
-  validates_presence_of :lesson_id, :chalkler_id, :payment_method, :status
+  validates_presence_of :lesson_id, :chalkler_id, :status
+  validates_presence_of :payment_method, :unless => :free?
   validates_acceptance_of :terms_and_conditions, :message => 'please read and agree', :if => :enforce_terms_and_conditions
   validates_uniqueness_of :chalkler_id, scope: :lesson_id
 
@@ -28,7 +29,8 @@ class Booking < ActiveRecord::Base
 
   before_validation :set_free_lesson_attributes
 
-  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cost, :meetup_url, :to => :lesson, prefix: true
+  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :meetup_url, :cose, to: :lesson, prefix: true
+  delegate :free?, to: :lesson, allow_nil: true
 
   BOOKING_STATUSES = %w(yes waitlist no pending no-show)
 
@@ -123,8 +125,7 @@ class Booking < ActiveRecord::Base
   private
 
   def set_free_lesson_attributes
-    return if self.lesson.nil?
-    if self.lesson_cost == 0
+    if lesson && free?
       self.payment_method = 'free'
       self.paid = true
     end

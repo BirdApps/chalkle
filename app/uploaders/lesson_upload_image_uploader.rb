@@ -40,11 +40,14 @@ class LessonUploadImageUploader < CarrierWave::Uploader::Base
   # end
 
   #Create different versions of your uploaded files:
-  version :thumb do
-    process :resize_to_limit => [250, 250]
+  version :mini do
+    process :resize_to_fill => [65, 65]
   end
-  version :sidebar do
-    process :resize_to_limit => [300, nil]
+  version :medium do
+    process :resize_to_fill => [185, 185]
+  end
+  version :large do
+    process :resize_to_fill => [200, 200]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

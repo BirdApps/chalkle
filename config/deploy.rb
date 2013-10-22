@@ -10,10 +10,12 @@ set :use_sudo,    false
 set :scm, :git
 
 set :whenever_command, "bundle exec whenever"
+set :whenever_environment, defer { rails_env }
+set :whenever_identifier, defer { "#{application}_#{rails_env}" }
 
 task :staging do
   set :domain,    "my.chalkle.com"
-  set :branch,    "staging"
+  set :branch,    "master"
   set :rails_env, "staging"
   set :deploy_to, "/home/#{user}/staging"
   set :bundle_without, [:development, :test]

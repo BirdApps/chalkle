@@ -1,0 +1,66 @@
+$fe-heading-color:      #496337;
+$single-category-color: #DF5B64;
+$chalky-font: 'Shadows Into Light Two', cursive;
+
+@import "front_end/old_design";
+@import "lessons/browse_lessons.css.scss";
+@import "lessons/show_lesson.css.scss";
+@import "front_end/home";
+
+html,body
+{
+  height: 100%;
+}
+
+.front_end_body {
+  h1, h2, h3, h4 {
+    color: $fe-heading-color;
+  }
+
+  h1.page-title {
+    font-family: $chalky-font;
+  }
+
+  .site-footer {
+    background-color: #2E2E2E;
+  }
+
+  .page_header_panel {
+    border-bottom: 2px solid #BABABA;
+
+    min-height: 100px;
+  }
+}
+
+ul.simple-nav {
+  padding: 0;
+
+  li {
+    display: inline;
+    border-right: 2px solid $fe-heading-color;
+
+    &:last-child {
+      border-right-width: 0;
+    }
+
+    a {
+      color: $fe-heading-color;
+      padding: 5px 10px;
+
+      &:hover {
+        color: darken($fe-heading-color, 20%);
+        background-color: rgba(0,0,0,0.1);
+        text-decoration: none;
+      }
+    }
+
+    &.active a {
+      color: silver;
+
+      &:hover {
+        color: silver;
+        background-color: transparent;
+      }
+    }
+  }
+}

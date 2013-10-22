@@ -27,9 +27,17 @@ class BookingReminder
   def remind_now
     if remindable.any?
       bookings = remindable.keep_if {|b| (b.lesson_start_at <= (Time.now.utc + @lesson_start_in)) & (b.lesson_start_at > (Time.now.utc + @lesson_start_in - 1.day)) }
-      return bookings.sort_by{|b| b[:lesson_start_at]}.reverse
+      return fresh_records(bookings.sort_by{|b| b[:lesson_start_at]}.reverse)
     else
       return []
+    end
+  end
+
+  # This is a hack because the code in remind_now is performing a find that is too complex, and it returns records
+  # that are readonly.
+  def fresh_records(records)
+    records.map do |record|
+      record.class.find(record.id)
     end
   end
 

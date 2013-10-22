@@ -1,0 +1,4 @@
+- last_week = @week_lessons.keys.last
+- week_lessons.each do |week, lessons|
+  - show_next = (week == last_week)
+  = render partial: 'week_calendar_view', locals: {week: week, lessons: lessons, show_next: show_next}

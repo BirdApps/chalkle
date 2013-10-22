@@ -207,7 +207,7 @@ ActiveAdmin.register Lesson  do
       end
 
       row "Image for class listing" do |lesson|
-        lesson.lesson_upload_image.present? ? image_tag(lesson.lesson_upload_image.url(:thumb).to_s) : "No image uploaded. Click on Edit Lesson to upload an image"
+        lesson.lesson_upload_image.present? ? image_tag(lesson.lesson_upload_image.url(:mini).to_s) : "No image uploaded. Click on Edit Lesson to upload an image"
       end
       row "Chalkboard image" do |lesson|
         image_tag lesson.image.url if lesson.image

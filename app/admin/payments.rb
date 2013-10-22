@@ -75,7 +75,7 @@ ActiveAdmin.register Payment do
   end
 
   collection_action :reconcile do
-    @payments = Payment.visible.unreconciled.limit(20)
+    @payments = Payment.visible.unreconciled.order("created_at DESC")
   end
 
 
