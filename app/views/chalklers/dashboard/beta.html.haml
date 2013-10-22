@@ -1,1 +1,24 @@
-beta!
+.big-scrollable-page
+  %section.odd
+  %section.even.be_a_teacher
+    .container
+      .single-column
+        %h3.row
+          .col-xs-8.text-part
+            Chalkle° makes it easy for anyone to stand up and say&hellip;
+          .col-xs-4
+            = image_tag 'front_end/home/i_have_a_skill.jpg', class: 'i_have_a_skill', alt: "I have a skill and I want to share it with others."
+        .row
+          .col-xs-8.text-part
+            %p
+              Anyone can be a chalkle° teacher - you don't require any formal qualification,
+              just an enthusiasm to share your unique hobby, skill, trade or area of
+              knowledge.
+          .col-xs-4.button-part
+            = link_to image_tag('front_end/home/button_give_a_class.png', alt: 'Give a class'), '#', class: 'btn-primary'
+
+  %section.odd.curate_channel
+    .container
+      %p.big_statement
+        Want to curate your own chalkle° channel?
+        = link_to 'Find out more.', '#'

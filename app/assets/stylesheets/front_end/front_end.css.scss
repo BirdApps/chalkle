@@ -1,9 +1,10 @@
 $fe-heading-color:      #496337;
-$single-category-color: $chalklePink;
+$single-category-color: #DF5B64;
 
 @import "front_end/old_design";
 @import "lessons/browse_lessons.css.scss";
 @import "lessons/show_lesson.css.scss";
+@import "front_end/home";
 
 html,body
 {

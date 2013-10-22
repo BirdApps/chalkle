@@ -5,6 +5,10 @@ $sidebar-color: #E8E8E8;
 }
 
 .lessons-show {
+  .btn-primary {
+    background-color: $single-category-color;
+  }
+
   .with_browse_sidebar {
     margin-right: 0;
 

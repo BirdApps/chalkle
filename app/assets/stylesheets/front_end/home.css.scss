@@ -1,0 +1,58 @@
+.big-scrollable-page {
+  section {
+    padding: 30px 0;
+
+    h3 {
+      border: 0;
+      font-size: 36px;
+      line-height: 120%;
+      margin-top: 0em;
+      margin-bottom: 1em;
+    }
+
+    .single-column {
+      max-width: 800px;
+      margin: 0 auto;
+
+      .text-left {
+        text-align: left;
+        max-width: 500px;
+      }
+    }
+  }
+
+  section.odd {
+    background-color: #EDEDED;
+  }
+
+  p.big_statement {
+    font-size: 32px;
+    line-height: 100%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .be_a_teacher {
+    color: $chalklePink;
+    h3 {
+      color: $chalklePink;
+      margin-bottom: 0;
+
+      .text-part {
+        margin-top: 50px;
+      }
+    }
+
+    img.i_have_a_skill {
+      margin-top: -30px;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    .button-part {
+      margin-top: 20px;
+    }
+  }
+}
