@@ -9,11 +9,6 @@
         = "Welcome to chalkle°"
 .main_panel.container
   .row.with_browse_sidebar
-    #weeks.browse_sidebar.col-sm-3.col-md-4.hidden-xs
-      %a.sidebar_top_nav{href: channel_lessons_path(@channel)}
-        %i.icon-calendar
-        Return to Calendar
-      = render partial: 'weeks_calendar_view', locals: {week_lessons: @week_lessons}
     .col-sm-9.col-md-8.lesson_panel
       .masthead
         .masthead_contents
@@ -93,6 +88,12 @@
 
       -#= render :partial => 'lesson_details', :locals => { :lesson => @lesson }
       -#= render :partial => 'teacher_details', :locals => { :lesson => @lesson }
+
+    #weeks.browse_sidebar.col-sm-3.col-md-4.hidden-xs
+      %a.sidebar_top_nav{href: channel_lessons_path(@channel)}
+        %i.icon-calendar
+        Return to Calendar
+      = render partial: 'weeks_calendar_view', locals: {week_lessons: @week_lessons}
 
 :coffeescript
   signedIn = () ->
