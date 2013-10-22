@@ -51,6 +51,49 @@ a.next-calendar-section {
   }
 }
 
+.page_header_panel {
+  .instructions {
+    padding-top: 20px;
+    @include make-row();
+
+    .part {
+      @include make-sm-column(3);
+
+      border-right: 2px solid #E8E8E8;
+      min-height: 170px;
+
+      &:last-child {
+        border-right: 0;
+      }
+
+      h2 {
+        margin-top: 0;
+        font-size: 20px;
+        padding-left: 1.5em;
+        position: relative;
+        line-height: 24px;
+        min-height: 48px;
+
+        i {
+          position: absolute;
+          top: 4px;
+          left: 0;
+          height: 18px;
+          line-height: 18px;
+          font-size: 18px;
+          vertical-align: middle;
+        }
+      }
+    }
+
+  }
+  @media(max-width: $screen-sm) {
+    .instructions {
+      display: none !important;
+    }
+  }
+}
+
 @import "month_calendar_view.css.scss";
 @import "week_calendar_view.css.scss";
 @import "upcoming_classes.css.scss";
