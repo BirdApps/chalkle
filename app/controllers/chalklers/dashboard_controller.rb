@@ -2,7 +2,7 @@ class Chalklers::DashboardController < Chalklers::BaseController
   before_filter :authenticate_chalkler!, :except => [:index, :beta]
   before_filter :has_channel_membership?, :except => [:index, :beta]
 
-  layout 'new', only: :beta
+  layout 'home', only: :beta
 
   def index
   end
