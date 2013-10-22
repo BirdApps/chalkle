@@ -1,5 +1,6 @@
 $fe-heading-color:      #496337;
 $single-category-color: #DF5B64;
+$chalky-font: 'Shadows Into Light Two', cursive;
 
 @import "front_end/old_design";
 @import "lessons/browse_lessons.css.scss";
@@ -17,7 +18,7 @@ html,body
   }
 
   h1.page-title {
-    font-family: 'Shadows Into Light Two', cursive;
+    font-family: $chalky-font;
   }
 
   .site-footer {

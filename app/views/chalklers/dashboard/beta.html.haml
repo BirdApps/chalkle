@@ -1,6 +1,15 @@
 .big-scrollable-page
-  %section.odd
-  %section.even.be_a_teacher
+  %section.odd#join_a_channel
+    .container
+      .single-column
+        %h3 Join a chalkle° channel
+        %p
+          Sign up to get the low-down from organisations you know and love!
+          Don't miss out on the real deal from people in the field: get their
+          upcoming chalkles sent straight to your inbox. It's that easy.
+      .single-column.section_target
+        = link_to "View all channels", '#'
+  %section.even#be_a_teacher
     .container
       .single-column
         %h3.row
@@ -17,7 +26,7 @@
           .col-xs-4.button-part
             = link_to image_tag('front_end/home/button_give_a_class.png', alt: 'Give a class'), '#', class: 'btn-primary'
 
-  %section.odd.curate_channel
+  %section.odd#curate_channel
     .container
       %p.big_statement
         Want to curate your own chalkle° channel?

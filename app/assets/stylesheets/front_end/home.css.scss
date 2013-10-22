@@ -1,4 +1,13 @@
 .big-scrollable-page {
+  color: $fe-heading-color;
+  font-size: 18px;
+  h3, a {
+    color: $fe-heading-color;
+  }
+  a {
+    text-decoration: underline;
+  }
+
   section {
     padding: 30px 0;
 
@@ -7,16 +16,21 @@
       font-size: 36px;
       line-height: 120%;
       margin-top: 0em;
-      margin-bottom: 1em;
+      margin-bottom: 20px;
     }
 
     .single-column {
       max-width: 800px;
       margin: 0 auto;
+    }
 
-      .text-left {
-        text-align: left;
-        max-width: 500px;
+    .section_target {
+      text-align: center;
+
+      a {
+        font-size: 24px;
+        line-heght: 100%;
+        font-family: $chalky-font;
       }
     }
   }
@@ -32,7 +46,11 @@
     margin: 0;
   }
 
-  .be_a_teacher {
+  #join_a_channel {
+    text-align: center;
+  }
+
+  #be_a_teacher {
     color: $chalklePink;
     h3 {
       color: $chalklePink;
