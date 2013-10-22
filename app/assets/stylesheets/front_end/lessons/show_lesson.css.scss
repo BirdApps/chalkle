@@ -39,8 +39,8 @@ $sidebar-color: #E8E8E8;
 
       .details {
         @include make-row();
-        margin-left: -1px;
-        margin-right: -1px;
+        margin-left: 0px;
+        margin-right: 0px;
         margin-bottom: -1px;
 
         .details_block {
@@ -49,11 +49,20 @@ $sidebar-color: #E8E8E8;
           padding-left: 1px;
           padding-right: 1px;
           margin-bottom: 1px;
+          border-right: 1px solid white;
+          background-color: $single-category-color;
+
+          &:first-child {
+            border-left: 0;
+          }
+
+          &:last-child {
+            border-right: 0;
+          }
 
           & > div {
-            background-color: $single-category-color;
-            height: 100px;
-            padding: 15px 30px;
+            min-height: 100px;
+            margin: 15px 30px;
             color: white;
           }
 
