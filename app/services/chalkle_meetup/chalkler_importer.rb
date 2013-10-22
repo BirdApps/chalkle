@@ -39,7 +39,7 @@ module ChalkleMeetup
 
       def build_avatar(data)
         url = photo_url(data)
-        OmniAvatar::Avatar.create(remote_image_url: url, provider_name: 'meetup') if url
+        OmniAvatar::Avatar.new(remote_image_url: url, provider_name: 'meetup') if url
       end
 
       def photo_url(data)
