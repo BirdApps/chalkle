@@ -15,6 +15,7 @@
     height: 450px;
     background-color: #12351B;
     color: white;
+    background-image: url('/assets/front_end/home/header_background.jpg');
 
     .text {
       max-width: 400px;
@@ -38,10 +39,11 @@
       margin-bottom: 20px;
     }
 
-    .container {
+    > .container {
       height: 450px;
-      background-image: url('/assets/front_end/home/header.jpg');
       background-repeat: no-repeat;
+      background-image: url('/assets/front_end/home/mini_blackboards.png');
+      background-position: top right;
     }
   }
 
