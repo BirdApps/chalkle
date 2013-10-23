@@ -1,6 +1,10 @@
 .big-scrollable-page
   %header.page-header
-    .container
+    .container.header-container
+      - unless chalkler_signed_in?
+        .user-nav.pull-right
+          = link_to "Join chalkle°", "#", class: 'sign_up'
+          = link_to "Sign in", "#", class: 'sign_in'
       .text
         %h1.site-title
           = image_tag 'front_end/home/logo.png', alt: "chalkle"
@@ -11,6 +15,11 @@
           Aotearoa New Zealand!
     .link_bar
       = link_to "Find a class in your community", '#'
+    .site-nav
+      .container
+        = link_to "Learn", "#"
+        = link_to "Teach", "#"
+        = link_to "About chalkle°", "#"
 
   %section.odd#join_a_channel
     .container

@@ -19,6 +19,15 @@
     background-position: top center;
     position: relative;
 
+    a {
+      color: white;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     .text {
       max-width: 400px;
     }
@@ -41,7 +50,7 @@
       margin-bottom: 25px;
     }
 
-    > .container {
+    > .header-container {
       background-repeat: no-repeat;
       background-image: url('/assets/front_end/home/mini_blackboards.png');
       background-position: top right;
@@ -61,12 +70,53 @@
       right: 0;
       width: 2000px;
       top: 350px;
+      z-index: 1;
 
       a {
         color: white;
         font-family: $chalky-font;
         font-size: 24px;
         line-height: 100%;
+      }
+    }
+
+    .user-nav {
+      font-size: 26px;
+      margin-top: 60px;
+      z-index: 2;
+
+      a {
+        margin-right: 15px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+
+      a.sign_in {
+        border: 1px dashed white;
+        padding: 4px 10px;
+      }
+    }
+
+    .site-nav {
+      z-index: 3;
+      position: absolute;
+      top: 405px;
+      left: 0;
+      width: 100%;
+
+      a {
+        font-size: 22px;
+        padding-right: 20px;
+        border-right: 1px solid white;
+        margin-right: 20px;
+
+        &:last-child {
+          padding-right: 0;
+          border-right: 0;
+          margin-right: 0;
+        }
       }
     }
   }
