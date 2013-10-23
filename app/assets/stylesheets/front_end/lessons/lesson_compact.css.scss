@@ -1,0 +1,108 @@
+$lesson-compact-height: 65px;
+$lesson-compact_time-width: $lesson-compact-height;
+$top-bottom-margin: 5px;
+$image-width: $lesson-compact-height;
+$lines: 3;
+
+.lesson_compact {
+  text-align: left;
+
+  &.active {
+    opacity: 0.5;
+  }
+
+  a {
+    display: block;
+    background: $chalkboard-background;
+    height: $lesson-compact-height;
+    overflow: hidden;
+    padding: 0;
+    margin-bottom: 10px;
+    text-decoration: none !important;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+
+    > span {
+      height: $lesson-compact-height;
+      display: block;
+    }
+
+    .time {
+      width: $lesson-compact_time-width;
+      float: left;
+      color: white;
+      background-color: $single-category-color;
+
+      span {
+        display: block;
+        margin-left: 7px;
+      }
+
+      .number {
+        margin-top: $top-bottom-margin;
+      }
+
+      .am_pm {
+        font-size: 70%;
+        text-transform: uppercase;
+        line-height: 100%;
+      }
+    }
+
+    .image_container {
+      width: $image-width;
+      float: left;
+      display: block;
+      background-color: #CCCCCC;
+
+      img {
+      }
+    }
+
+    .details {
+      display: block;
+      margin-left: ($lesson-compact_time-width + $image-width);
+
+      $lesson-line-height: ($lesson-compact-height - ($top-bottom-margin * 2)) / $lines;
+      $lesson-font-size: $lesson-line-height * 0.9;
+      $lesson-line-padding: ($lesson-line-height - $lesson-font-size) / 2;
+
+      .lesson_title {
+        margin: ($top-bottom-margin - $lesson-line-padding) 10px;
+        line-height: $lesson-line-height;
+        font-size: $lesson-font-size;
+        color: $single-category-color;
+
+        &:hover {
+          color: $single-category-color;
+        }
+      }
+    }
+  }
+
+  &.no-image {
+    .image_container {
+      display: none;
+    }
+
+    .details {
+      margin-left: $lesson-compact_time-width;
+    }
+  }
+}
+
+.lesson-group-preview {
+  @include make-row();
+  margin-top: -5px;
+  margin-bottom: -5px;
+
+  .lesson_compact {
+    @include make-sm-column(6);
+    @include make-xs-column(12);
+
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
