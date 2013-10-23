@@ -17,6 +17,7 @@
     color: white;
     background-image: url('/assets/front_end/home/header_background.jpg');
     background-position: top center;
+    position: relative;
 
     .text {
       max-width: 400px;
@@ -26,7 +27,7 @@
       color: white;
       font-size: 75px;
       line-height: 100%;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
     }
 
     p.description {
@@ -37,14 +38,36 @@
     p.tagline {
       font-size: 45px;
       line-height: 110%;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     > .container {
-      height: 450px;
       background-repeat: no-repeat;
       background-image: url('/assets/front_end/home/mini_blackboards.png');
       background-position: top right;
+      background-size: 80%;
+      height: 450px;
+    }
+
+    .link_bar {
+      text-align: right;
+      background-repeat: no-repeat;
+      background-image: url('/assets/front_end/home/find_a_class_wrapper.png');
+      background-position: top right;
+      height: 80px;
+      padding-right: 240px;
+      padding-top: 27px;
+      position: absolute;
+      right: 0;
+      width: 2000px;
+      top: 350px;
+
+      a {
+        color: white;
+        font-family: $chalky-font;
+        font-size: 24px;
+        line-height: 100%;
+      }
     }
   }
 
