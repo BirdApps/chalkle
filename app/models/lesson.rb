@@ -75,6 +75,7 @@ class Lesson < ActiveRecord::Base
   scope :by_date, order(:start_at)
   scope :in_month, lambda {|month| where(:start_at => month.date_range)}
   scope :in_week, lambda {|week| in_month(week)}
+  scope :with_region, where("lessons.id IN (SELECT id FROM channel_lessons)")
 
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.

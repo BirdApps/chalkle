@@ -21,6 +21,16 @@
         = link_to "Teach", "#"
         = link_to "About chalkle°", "#"
 
+  %section#take_a_class
+    .container
+      .single-column
+        %h3 Take a chalkle° class
+        %p
+          Anyone can be a chalkler - there are no registration fees or ten-week course
+          commitments, just curiosity to learn something new and to meet people.
+      = render partial: 'lessons/upcoming_lessons_preview'
+      .single-column.section_target
+        = link_to "View all classes", '#'
   %section.odd#join_a_channel
     .container
       .single-column

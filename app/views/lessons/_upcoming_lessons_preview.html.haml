@@ -1,0 +1,2 @@
+- Lesson.with_region.upcoming.published.by_date.limit(4).each do |lesson|
+  = render partial: '/lessons/lesson_compact', locals: {lesson: lesson}

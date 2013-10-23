@@ -13,21 +13,8 @@
             .day_title_inner= relative_day_title(day)
           .lessons
             - if lessons[day]
-              - lessons[day].each_with_index do |lesson|
-                - lesson_classes = []
-                - lesson_classes << 'no-image' unless lesson.lesson_upload_image.present?
-                - lesson_classes << 'active' if @lesson && @lesson == lesson
-                .lesson{class: lesson_classes}
-                  %a{href: channel_lesson_path(@channel, lesson)}
-                    %span.time>
-                      %span.number= lesson.start_at.strftime('%l:%M').strip
-                      %span.am_pm= lesson.start_at.strftime('%p').strip
-                    %span.image_container
-                      - if lesson.lesson_upload_image.present?
-                        = image_tag(lesson.lesson_upload_image.url(:mini))
-                    %span.details>
-                      .lesson_title<
-                        = lesson.name
+              - lessons[day].each do |lesson|
+                = render partial: 'lesson_compact', locals: {lesson: lesson}
   - if show_next
     - next_week = week.next
     = link_to specific_week_channel_lessons_path(@channel.id, next_week.first_day.year, next_week.first_day.month, next_week.first_day.day, format: :js), {:remote => true, 'data-append' => 'weeks', 'data-remove-on-success' => true, :class => 'next-calendar-section'} do
