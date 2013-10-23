@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131007071316) do
+ActiveRecord::Schema.define(:version => 20131023011916) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -170,6 +170,12 @@ ActiveRecord::Schema.define(:version => 20131007071316) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "event_logs", :force => true do |t|
+    t.string   "name"
+    t.datetime "started_at"
+    t.datetime "completed_at"
+  end
 
   create_table "lesson_categories", :id => false, :force => true do |t|
     t.integer "lesson_id",   :null => false
