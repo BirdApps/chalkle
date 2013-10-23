@@ -7,6 +7,11 @@ class EventLog < ActiveRecord::Base
       yield
     rescue Exception => e
       record.failed!(e)
+      if Rails.env.development?
+        raise e
+      else
+        Airbrake.notify(e)
+      end
     else
       record.succeeded!
     end
