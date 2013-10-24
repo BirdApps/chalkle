@@ -6,5 +6,5 @@
     - lessons.each_slice(per_page) do |slice|
       .lesson-page.page{class: ('active' if first)}
         - slice.each do |lesson|
-          = render partial: '/lessons/lesson_compact', locals: {lesson: lesson, hidden: !first}
+          = render partial: '/lessons/lesson_compact', locals: {lesson: lesson, show_date: true}
       - first = false

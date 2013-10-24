@@ -4,8 +4,11 @@
 .lesson.lesson_compact{class: lesson_classes}
   %a{href: channel_lesson_path(@channel || lesson.channels.first, lesson)}
     %span.time>
-      %span.number= lesson.start_at.strftime('%l:%M').strip
-      %span.am_pm= lesson.start_at.strftime('%p').strip
+      .parts
+        - if local_assigns[:show_date]
+          %span.date= day_title lesson.start_at.to_date
+        %span.number= lesson.start_at.strftime('%l:%M').strip
+        %span.am_pm= lesson.start_at.strftime('%p').strip
     %span.image_container
       - if lesson.lesson_upload_image.present?
         = image_tag(lesson.lesson_upload_image.url(:mini))
