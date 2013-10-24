@@ -4,16 +4,16 @@ class LessonsController < ApplicationController
   layout 'new'
 
   def show
-    @lesson = @channel.lessons.find(params[:id]).decorate
+    @lesson = start_of_association_chain.find(params[:id]).decorate
     load_enough_weeks(@lesson.start_on || Date.today)
   end
 
   def month
-    load_month_lessons get_current_month, @channel
+    load_month_lessons get_current_month
   end
 
   def week
-    load_week_lessons get_current_week, @channel
+    load_week_lessons get_current_week
   end
 
   def upcoming
@@ -35,16 +35,16 @@ class LessonsController < ApplicationController
 
     def load_enough_weeks(start_date = Date.today)
       get_current_weeks(start_date).each do |week|
-        load_week_lessons week, @channel
+        load_week_lessons week
       end
       while weeks_loaded_count < 4 && no_weekly_lessons?
-        load_another_week(@channel)
+        load_another_week
       end
     end
 
-    def load_another_week(channel)
+    def load_another_week
       next_week = @week_lessons.keys.last.next
-      load_week_lessons next_week, channel
+      load_week_lessons next_week
     end
 
     def weeks_loaded_count
@@ -55,26 +55,26 @@ class LessonsController < ApplicationController
       !@week_lessons.values.map(&:empty?).include?(false)
     end
 
-    def load_month_lessons(month, channel)
+    def load_month_lessons(month)
       @month_lessons ||= {}
-      @month_lessons[month] = group_by_day decorate lessons_for_month(month, channel)
+      @month_lessons[month] = group_by_day decorate lessons_for_month(month)
     end
 
-    def load_week_lessons(week, channel)
+    def load_week_lessons(week)
       @week_lessons ||= {}
-      @week_lessons[week] = group_by_day decorate lessons_for_week(week, channel)
+      @week_lessons[week] = group_by_day decorate lessons_for_week(week)
     end
 
-    def lessons_for_month(month, channel)
-      lessons_base_scope(channel).in_month(month)
+    def lessons_for_month(month)
+      lessons_base_scope.in_month(month)
     end
 
-    def lessons_for_week(week, channel)
-      lessons_base_scope(channel).upcoming.in_week(week)
+    def lessons_for_week(week)
+      lessons_base_scope.upcoming.in_week(week)
     end
 
-    def lessons_base_scope(channel)
-      channel.lessons.published.by_date
+    def lessons_base_scope
+      start_of_association_chain.published.by_date
     end
 
     def get_current_month
@@ -101,7 +101,11 @@ class LessonsController < ApplicationController
     end
 
     def lessons_scope
-      @channel.lessons.upcoming.order('start_at')
+      start_of_association_chain.upcoming.order('start_at')
+    end
+
+    def start_of_association_chain
+      @channel ? @channel.lessons : Lesson
     end
 
     def decorate(lessons)
@@ -109,7 +113,7 @@ class LessonsController < ApplicationController
     end
 
     def load_channel
-      @channel ||= Channel.find params[:channel_id]
+      @channel ||= Channel.find(params[:channel_id]) if params[:channel_id]
     end
 
     def group_by_day(lessons)

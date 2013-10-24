@@ -23,4 +23,4 @@
             .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)
         - elsif lesson.bookable?
           .btn.btn-primary.join-lesson= link_to lesson.join_chalklers, new_channel_lesson_booking_path(@channel, lesson)
-        .btn.btn-primary= link_to 'View class', channel_lesson_path(@channel, lesson)
+        .btn.btn-primary= link_to 'View class', path_for_lesson(lesson)

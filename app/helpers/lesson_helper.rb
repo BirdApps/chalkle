@@ -66,4 +66,8 @@ Your Chalkle Administrator")
   def date_title(date)
     date.to_s(:short).strip.gsub(' ', '&nbsp;').html_safe
   end
+
+  def path_for_lesson(lesson)
+    channel_lesson_path(@channel || lesson.channels.first, lesson)
+  end
 end

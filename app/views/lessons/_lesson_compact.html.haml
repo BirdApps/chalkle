@@ -2,7 +2,7 @@
 - lesson_classes << 'no-image' unless lesson.lesson_upload_image.present?
 - lesson_classes << 'active' if @lesson && @lesson == lesson
 .lesson.lesson_compact{class: lesson_classes}
-  %a{href: channel_lesson_path(@channel || lesson.channels.first, lesson)}
+  %a{href: path_for_lesson(lesson)}
     %span.time>
       .parts
         - if local_assigns[:show_date]
