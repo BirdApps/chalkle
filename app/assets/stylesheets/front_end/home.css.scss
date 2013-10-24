@@ -162,9 +162,34 @@
   #take_a_class {
     text-align: center;
 
-    .lesson-group-preview {
-      margin-top: 20px;
-      margin-bottom: 15px;
+    .paged-lesson-group {
+      .lesson-group-preview {
+        margin: 20px auto 15px auto;
+        max-width: 800px;
+
+        .lesson-page {
+          display: none;
+
+          &.active {
+            display: block;
+          }
+        }
+      }
+
+      .nav {
+        text-decoration: none;
+        font-size: 70px;
+        line-height: 100%;
+        margin-top: 30px;
+      }
+
+      .nav_left {
+        float: left;
+      }
+
+      .nav_right {
+        float: right;
+      }
     }
   }
 

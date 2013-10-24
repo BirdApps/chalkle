@@ -28,7 +28,7 @@
         %p
           Anyone can be a chalkler - there are no registration fees or ten-week course
           commitments, just curiosity to learn something new and to meet people.
-        = render partial: 'lessons/upcoming_lessons_preview'
+      = render partial: 'lessons/upcoming_lessons_preview', locals: {lessons: @lessons, per_page: 4}
       .single-column.section_target
         = link_to "View all classes", '#'
   %section.odd#join_a_channel
@@ -63,3 +63,7 @@
       %p.big_statement
         Want to curate your own chalkle° channel?
         = link_to 'Find out more.', '#'
+
+:coffeescript
+  $ ->
+    $('.paged-lesson-group').simpleCarousel()
