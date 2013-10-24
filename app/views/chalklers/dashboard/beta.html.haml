@@ -3,8 +3,8 @@
     .container.header-container
       - unless chalkler_signed_in?
         .user-nav.pull-right
-          = link_to "Join chalkle°", "#", class: 'sign_up'
-          = link_to "Sign in", "#", class: 'sign_in'
+          = link_to "Join chalkle°", new_chalkler_registration_path, class: 'sign_up'
+          = link_to "Sign in", new_chalkler_session_path, class: 'sign_in'
       .text
         %h1.site-title
           = image_tag 'front_end/home/logo.png', alt: "chalkle"
@@ -14,12 +14,12 @@
           Fun, social, face-to-face learning and teaching opportunities in
           Aotearoa New Zealand!
     .link_bar
-      = link_to "Find a class in your community", '#'
+      = link_to "Find a class in your community", lessons_path
     .site-nav
       .container
-        = link_to "Learn", "#"
-        = link_to "Teach", "#"
-        = link_to "About chalkle°", "#"
+        = link_to "Learn", lessons_path
+        = link_to "Teach", new_chalklers_teaching_path
+        = link_to "About chalkle°", "http://chalkle.com/about/"
 
   %section#take_a_class
     .container
@@ -30,7 +30,7 @@
           commitments, just curiosity to learn something new and to meet people.
       = render partial: 'lessons/upcoming_lessons_preview', locals: {lessons: @lessons, per_page: 4}
       .single-column.section_target
-        = link_to "View all classes", '#'
+        = link_to "View all classes", lessons_path
   %section.odd#join_a_channel
     .container
       .single-column
