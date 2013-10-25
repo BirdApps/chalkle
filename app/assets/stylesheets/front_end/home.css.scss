@@ -226,6 +226,7 @@
   }
 
   .page-footer {
+    padding-bottom: 2em;
     background: $chalkboard-background;
     color: #CCCCCC;
 
@@ -250,6 +251,11 @@
       li {
         margin-bottom: 0;
       }
+    }
+
+    .social_media_links {
+      margin-top: 20px;
+      margin-left: -5px;
     }
   }
 }
