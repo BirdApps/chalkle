@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Category do
-  let(:parent) { Category.new(colour_num: 5, as: :admin) }
+  let(:parent) { Category.new(colour_num: 5) }
 
   context "creation" do
     it { should validate_presence_of :name }

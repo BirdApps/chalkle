@@ -70,4 +70,11 @@ Your Chalkle Administrator")
   def path_for_lesson(lesson)
     channel_lesson_path(@channel || lesson.channels.first, lesson)
   end
+
+  def lesson_classes(lesson)
+    results = []
+    results << 'no-image' unless lesson.lesson_upload_image.present?
+    results << "category#{lesson.best_colour_num}" if lesson.best_colour_num
+    results
+  end
 end

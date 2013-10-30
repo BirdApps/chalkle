@@ -29,6 +29,7 @@ class Lesson < ActiveRecord::Base
   accepts_nested_attributes_for :lesson_image
 
   delegate :name, :to => :teacher, :prefix => true, :allow_nil => true
+  delegate :best_colour_num, to: :main_category, allow_nil: true
 
   #Time span for classes requiring attention
   PAST = 3
@@ -295,6 +296,10 @@ class Lesson < ActiveRecord::Base
     parts = name.split(':')
     c = Category.find_by_name parts[0]
     categories << c unless (c.nil? || categories.exists?(c))
+  end
+
+  def main_category
+    categories.first
   end
 
   def set_name(name)

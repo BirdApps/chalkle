@@ -53,7 +53,7 @@ gem "rmagick"
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',          '~> 3.2.6'
+  gem 'sass-rails'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', git: 'git://github.com/anjlab/bootstrap-rails'
   gem 'font-awesome-sass-rails'

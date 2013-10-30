@@ -4,7 +4,6 @@ $height: 185px;
   .lesson_list {
     .lesson {
       display: block;
-      background: $chalkboard-background;
       margin-bottom: 15px;
       color: white;
 
@@ -12,14 +11,15 @@ $height: 185px;
 
       &:hover {
         text-decoration: none;
-        border: 3px solid $single-category-color;
+        border: 3px solid black;
         margin: -3px -3px 12px -3px;
+
+        @include categoryBorder;
       }
 
       .time_details {
         width: $time-width;
         height: $height;
-        background-color: $single-category-color;
         float: left;
 
         .contents {
@@ -47,13 +47,13 @@ $height: 185px;
       $image-width: $height;
 
       .image_container {
-        background-color: $single-category-color;
         width: $image-width;
         height: $height;
         float: left;
       }
 
       .lesson_body {
+        background: $chalkboard-background;
         margin-left: $time-width + $image-width;
         height: $height;
         padding: 6px 10px 6px 15px;
@@ -69,7 +69,6 @@ $height: 185px;
 
           h3 {
             margin: 0 0 10px 0;
-            color: $single-category-color;
             border: 0;
             font-size: 22px;
             height: $heading-height;
@@ -89,6 +88,7 @@ $height: 185px;
             font-size: 14px;
             line-height: $desc-line-height;
             overflow: hidden;
+            color: white;
 
             p {
               margin: 0 0 0 0;
@@ -97,11 +97,12 @@ $height: 185px;
 
           .details {
             height: $footer-height;
-            color: $single-category-color;
 
             > div {
               display: inline-block;
-              border-right: 1px solid $single-category-color;
+              border-right-width: 1px;
+              border-right-style: solid;
+              border-right-color: inherit;
               padding-right: 20px;
               margin-right: 20px;
 

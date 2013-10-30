@@ -1,5 +1,5 @@
 class Category < ActiveRecord::Base
-  attr_accessible :name, :colour_num, :parent_id, :as => :admin
+  attr_accessible :name, :colour_num, :parent_id, :parent
 
   has_many :channel_categories
   has_many :channels, :through => :channel_categories
@@ -16,6 +16,12 @@ class Category < ActiveRecord::Base
   end
 
   def best_colour_num
-
+    colour_num || parent_best_colour_num
   end
+
+  private
+
+    def parent_best_colour_num
+      parent.best_colour_num if parent
+    end
 end

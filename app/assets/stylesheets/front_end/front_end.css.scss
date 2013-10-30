@@ -4,6 +4,7 @@ $chalky-font: 'Shadows Into Light Two', cursive;
 $chalkboard-background-color: #2B2B2B;
 $chalkboard-background: $chalkboard-background-color asset-url("texture-chalkboard.jpg", "image") repeat;
 
+@import "lessons/categories";
 @import "front_end/old_design";
 @import "lessons/browse_lessons.css.scss";
 @import "lessons/show_lesson.css.scss";
