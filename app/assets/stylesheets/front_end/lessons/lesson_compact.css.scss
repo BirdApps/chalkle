@@ -4,87 +4,84 @@ $top-bottom-margin: 5px;
 $image-width: $lesson-compact-height;
 $lines: 3;
 
-.lesson_compact {
+a.lesson_compact {
   text-align: left;
+  display: block;
+  background: $chalkboard-background;
+  height: $lesson-compact-height;
+  overflow: hidden;
+  padding: 0;
+  margin-bottom: 10px;
+  text-decoration: none !important;
 
-  &.active {
-    opacity: 0.5;
+  &:hover {
+    text-decoration: none !important;
   }
 
-  a {
-    display: block;
-    background: $chalkboard-background;
+  > span {
     height: $lesson-compact-height;
-    overflow: hidden;
-    padding: 0;
-    margin-bottom: 10px;
-    text-decoration: none !important;
+    display: block;
+  }
 
-    &:hover {
-      text-decoration: none !important;
-    }
+  .time {
+    width: $lesson-compact_time-width;
+    float: left;
+    color: white;
 
-    > span {
-      height: $lesson-compact-height;
-      display: block;
-    }
+    .parts {
+      padding-top: $top-bottom-margin;
+      padding-left: 5px;
 
-    .time {
-      width: $lesson-compact_time-width;
-      float: left;
-      color: white;
-      background-color: $single-category-color;
+      span {
+        display: block;
+        line-height: 100%;
+      }
 
-      .parts {
-        padding-top: $top-bottom-margin;
-        padding-left: 5px;
+      .date {
+        margin-bottom: 4px;
+      }
 
-        span {
-          display: block;
-          line-height: 100%;
-        }
+      .number {
+      }
 
-        .date {
-          margin-bottom: 4px;
-        }
-
-        .number {
-        }
-
-        .am_pm {
-          font-size: 70%;
-          text-transform: uppercase;
-        }
+      .am_pm {
+        font-size: 70%;
+        text-transform: uppercase;
       }
     }
 
-    .image_container {
-      width: $image-width;
-      float: left;
-      display: block;
-      background-color: #CCCCCC;
-
-      img {
-      }
+    &.active {
+      opacity: 0.5;
     }
 
-    .details {
-      display: block;
-      margin-left: ($lesson-compact_time-width + $image-width);
+  }
 
-      $lesson-line-height: ($lesson-compact-height - ($top-bottom-margin * 2)) / $lines;
-      $lesson-font-size: $lesson-line-height * 0.9;
-      $lesson-line-padding: ($lesson-line-height - $lesson-font-size) / 2;
+  .image_container {
+    width: $image-width;
+    float: left;
+    display: block;
+    background-color: #CCCCCC;
 
-      .lesson_title {
-        margin: ($top-bottom-margin - $lesson-line-padding) 10px;
-        line-height: $lesson-line-height;
-        font-size: $lesson-font-size;
-        color: $single-category-color;
+    img {
+    }
+  }
 
-        &:hover {
-          color: $single-category-color;
-        }
+  .details {
+    display: block;
+    margin-left: ($lesson-compact_time-width + $image-width);
+
+    $lesson-line-height: ($lesson-compact-height - ($top-bottom-margin * 2)) / $lines;
+    $lesson-font-size: $lesson-line-height * 0.9;
+    $lesson-line-padding: ($lesson-line-height - $lesson-font-size) / 2;
+
+    .lesson_title {
+      margin: ($top-bottom-margin - $lesson-line-padding) 10px;
+      line-height: $lesson-line-height;
+      font-size: $lesson-font-size;
+      //color: $single-category-color;
+
+      &:hover {
+        //color: $single-category-color;
       }
     }
   }
@@ -105,7 +102,7 @@ $lines: 3;
   margin-top: -5px;
   margin-bottom: -5px;
 
-  .lesson_compact {
+  .lesson_compact_container {
     @include make-sm-column(6);
     @include make-xs-column(12);
 
