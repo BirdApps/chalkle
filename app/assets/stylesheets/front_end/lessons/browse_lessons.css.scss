@@ -1,8 +1,6 @@
 $link-well-color: #D6D6D6;
 $link_well-border: #C6C6C6;
 $browse-lessons-background: #E8E8E8;
-$chalkboard-background-color: #2B2B2B;
-$chalkboard-background: $chalkboard-background-color asset-url("texture-chalkboard.jpg", "image") repeat;
 
 .search_panel {
   background-color: $browse-lessons-background;
@@ -94,6 +92,24 @@ a.next-calendar-section {
   }
 }
 
+.lesson {
+  @include categoryBackgroundColor;
+  @include categoryBackgroundColorDarkerHover;
+
+  @include categoryColor('background-color', '&.', ' .coloured');
+
+  @include categoryColor('color', '&.', ' .blackboard');
+  @include categoryColor('color', '&.', ' .blackboard h3');
+
+  h3 {
+    color: inherit;
+  }
+  .text_contents {
+    background-color: transparent;
+  }
+}
+
+@import "lesson_compact.css.scss";
 @import "month_calendar_view.css.scss";
 @import "week_calendar_view.css.scss";
 @import "upcoming_classes.css.scss";

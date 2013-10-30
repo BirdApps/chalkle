@@ -1,0 +1,27 @@
+@mixin categoryColor($attribute, $selector: '&.', $selector_suffix: '') {
+  @each $catData in $categories {
+    #{$selector}#{nth($catData, 1)}#{$selector_suffix} {
+      #{$attribute}: nth($catData, 2);
+    }
+  }
+}
+
+@mixin categoryBorder {
+  @include categoryColor('border-color');
+}
+
+@mixin categoryBackgroundColor {
+  @include categoryColor('background-color');
+}
+
+@mixin categoryBackgroundColorDarkerHover {
+  @each $catData in $categories {
+    &.#{nth($catData, 1)}:hover {
+      background-color: darken(nth($catData, 2), 10%);
+    }
+  }
+}
+
+@mixin categoryTextColor {
+  @include categoryColor('color');
+}

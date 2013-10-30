@@ -15,6 +15,7 @@ class Ability
       can [:read, :create, :update], LessonImage
       can :manage, Category
       can :manage, LessonSuggestion
+      can :manage, EventLog
 
     when "channel admin"
       can :read, Channel, :id => user.channel_ids

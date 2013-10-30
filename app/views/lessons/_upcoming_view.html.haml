@@ -1,7 +1,7 @@
 %section.upcoming_lessons
   .lesson_list
     - lessons.each do |lesson|
-      %a.lesson{href: channel_lesson_path(@channel, lesson), id: dom_id(lesson), class: ('no-image' unless lesson.lesson_upload_image.present?)}
+      %a{href: path_for_lesson(lesson), id: dom_id(lesson), class: lesson_classes(lesson)}
         .time_details
           .contents
             .time>
@@ -13,7 +13,7 @@
         .image_container
           - if lesson.lesson_upload_image.present?
             = image_tag(lesson.lesson_upload_image.url(:medium))
-        .lesson_body
+        .lesson_body.blackboard
           .contents
             %h3= lesson.name
             .description= simple_format (lesson.do_during_class.blank? ? lesson.description : lesson.do_during_class)
@@ -42,6 +42,6 @@
                 = lesson.attendance
                 attending
   - if lessons.present?
-    = link_to upcoming_channel_lessons_path(@channel.id, page: page + 1, format: :js), {:remote => true, 'data-append' => 'upcoming', 'data-remove-on-success' => true, :class => 'next-calendar-section'} do
+    = link_to upcoming_lessons_path(channel_id: @channel, page: page + 1, format: :js), {:remote => true, 'data-append' => 'upcoming', 'data-remove-on-success' => true, :class => 'next-calendar-section'} do
       %i.icon-arrow-down
       Show more

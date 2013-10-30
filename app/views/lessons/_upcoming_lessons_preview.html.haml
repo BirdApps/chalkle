@@ -1,0 +1,10 @@
+.paged-lesson-group
+  = link_to "<", "#", class: 'nav nav_left'
+  = link_to ">", "#", class: 'nav nav_right'
+  .lesson-group-preview
+    - first = true
+    - lessons.each_slice(per_page) do |slice|
+      .lesson-page.page{class: ('active' if first)}
+        - slice.each do |lesson|
+          = render partial: '/lessons/lesson_compact', locals: {lesson: lesson, show_date: true}
+      - first = false

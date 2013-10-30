@@ -9,7 +9,7 @@
         = "Welcome to chalkle°"
 .main_panel.container
   .row.with_browse_sidebar
-    .col-sm-9.col-md-8.lesson_panel
+    .col-sm-9.col-md-8{class: lesson_classes(@lesson, 'lesson_panel')}
       .masthead
         .masthead_contents
           -if @lesson.lesson_upload_image.url.present?

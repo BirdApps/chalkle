@@ -5,8 +5,12 @@ $sidebar-color: #E8E8E8;
 }
 
 .lessons-show {
-  .btn-primary {
-    background-color: $single-category-color;
+  .lesson_panel {
+    @include categoryColor('background-color', '&.', ' .btn-primary');
+    @include categoryColor('border-color', '&.', ' .btn-primary');
+    @include categoryColor('color', '&.', ' h2');
+    @include categoryColor('background-color', '&.', ' .details_block');
+
   }
 
   .with_browse_sidebar {
@@ -34,7 +38,6 @@ $sidebar-color: #E8E8E8;
 
         h2 {
           margin: 0;
-          color: $single-category-color;
           font-size: 30px;
           max-width: 16em;
         }
@@ -54,7 +57,6 @@ $sidebar-color: #E8E8E8;
           padding-right: 1px;
           margin-bottom: 1px;
           border-right: 1px solid white;
-          background-color: $single-category-color;
 
           &:first-child {
             border-left: 0;

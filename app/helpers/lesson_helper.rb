@@ -66,4 +66,16 @@ Your Chalkle Administrator")
   def date_title(date)
     date.to_s(:short).strip.gsub(' ', '&nbsp;').html_safe
   end
+
+  def path_for_lesson(lesson)
+    channel_lesson_path(@channel || lesson.channels.first, lesson)
+  end
+
+  def lesson_classes(lesson, base_class = 'lesson')
+    results = [base_class]
+    results << 'no-image' unless lesson.lesson_upload_image.present?
+    results << "category#{lesson.best_colour_num}" if lesson.best_colour_num
+    results << 'active' if @lesson && @lesson == lesson
+    results
+  end
 end

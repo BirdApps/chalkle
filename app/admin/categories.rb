@@ -8,7 +8,9 @@ ActiveAdmin.register Category do
 
   index do
     column :id
+    column :parent_id
     column :name
+    column :colour_num
     default_actions
   end
 end
