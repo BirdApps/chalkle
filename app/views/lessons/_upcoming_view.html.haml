@@ -1,7 +1,7 @@
 %section.upcoming_lessons
   .lesson_list
     - lessons.each do |lesson|
-      %a.lesson{href: path_for_lesson(lesson), id: dom_id(lesson), class: lesson_classes(lesson)}
+      %a{href: path_for_lesson(lesson), id: dom_id(lesson), class: lesson_classes(lesson)}
         .time_details
           .contents
             .time>

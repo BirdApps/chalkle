@@ -94,6 +94,7 @@ a.next-calendar-section {
 
 .lesson {
   @include categoryBackgroundColor;
+  @include categoryBackgroundColorDarkerHover;
 
   @include categoryColor('background-color', '&.', ' .coloured');
 

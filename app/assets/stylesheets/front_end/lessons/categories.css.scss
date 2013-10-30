@@ -14,6 +14,14 @@
   @include categoryColor('background-color');
 }
 
+@mixin categoryBackgroundColorDarkerHover {
+  @each $catData in $categories {
+    &.#{nth($catData, 1)}:hover {
+      background-color: darken(nth($catData, 2), 10%);
+    }
+  }
+}
+
 @mixin categoryTextColor {
   @include categoryColor('color');
 }
