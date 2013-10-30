@@ -244,6 +244,13 @@ ActiveRecord::Schema.define(:version => 20131030053922) do
     t.string   "lesson_upload_image"
   end
 
+  create_table "omni_avatar_avatars", :force => true do |t|
+    t.integer "owner_id"
+    t.string  "owner_type"
+    t.string  "image"
+    t.string  "provider_name"
+  end
+
   create_table "payments", :force => true do |t|
     t.integer  "booking_id"
     t.string   "xero_id"
