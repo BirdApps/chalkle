@@ -50,6 +50,8 @@ gem 'google-webfonts-rails'
 gem 'carrierwave'
 gem "rmagick"
 
+gem 'omni_avatar', path: '/Users/craig/development/enspiral/omni_avatar'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -66,9 +68,6 @@ group :assets do
 end
 
 group :development do
-  # EXPERIMENTAL
-  gem 'omni_avatar', path: '/Users/craig/development/enspiral/omni_avatar'
-
   gem 'rb-readline'
 
   # Better documentation
@@ -124,8 +123,8 @@ group :test do
 
   # Core Testing
   gem 'cucumber-rails',   '~> 1.3.0', require: false
-  gem 'capybara',         '~> 2.0.2'
-  gem 'capybara-webkit',  '~> 0.14.0'
+  gem 'capybara'
+  gem 'capybara-webkit'
 
   # Test Helpers
   gem 'database_cleaner',    '~> 0.9.1'

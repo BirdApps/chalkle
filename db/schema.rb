@@ -249,6 +249,7 @@ ActiveRecord::Schema.define(:version => 20131030053922) do
     t.string  "owner_type"
     t.string  "image"
     t.string  "provider_name"
+    t.string  "original_url"
   end
 
   create_table "payments", :force => true do |t|

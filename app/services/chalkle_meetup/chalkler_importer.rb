@@ -1,5 +1,11 @@
+require 'omni_avatar/providers/meetup'
+
 module ChalkleMeetup
   class ChalklerImporter
+    def initialize
+      @avatar_updater = OmniAvatar::Providers::Meetup.updater
+    end
+
     def import(data, channel)
       chalkler = Chalkler.find_by_meetup_id(data.id)
       if chalkler.nil?
@@ -34,16 +40,8 @@ module ChalkleMeetup
         chalkler.name = data.name
         chalkler.bio = data.bio
         chalkler.meetup_data = data.to_json
-        chalkler.add_avatar build_avatar(data)
-      end
 
-      def build_avatar(data)
-        url = photo_url(data)
-        OmniAvatar::Avatar.new(remote_image_url: url, provider_name: 'meetup') if url
-      end
-
-      def photo_url(data)
-        data.photo['photo_link'] if data.photo
+        @avatar_updater.update_from_data(chalkler.avatars, data)
       end
   end
 end
