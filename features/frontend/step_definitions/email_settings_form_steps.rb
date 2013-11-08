@@ -11,8 +11,8 @@ Then /^the chalkler "(.*?)" should have new email settings$/ do |name|
 end
 
 Given /^"(.*?)" and "(.*?)" are email categories$/ do |category1, category2|
-  FactoryGirl.create(:category, name: category1)
-  FactoryGirl.create(:category, name: category2)
+  FactoryGirl.create(:category, name: category1, primary: true)
+  FactoryGirl.create(:category, name: category2, primary: true)
   visit current_path
 end
 

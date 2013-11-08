@@ -16,7 +16,7 @@
       Send me emails about classes in the following categories
     %div{ :"data-toggle" => "checkboxes", class: "unchecked" }
       = link_to "Select All", "#",  class: "checkbox-toggle-button"
-      = f.input :email_categories, :label => false, as: :check_boxes, collection: Category.select_options, include_blank: false
+      = f.input :email_categories, :label => false, as: :check_boxes, collection: Category.select_options('&nbsp;&nbsp;&nbsp;'.html_safe), include_blank: false
     %h4
       Send me emails about classes run by the following organisations
     = f.input :email_streams, :label => false, as: :check_boxes, :collection => Stream.select_options, include_blank: false

@@ -7,13 +7,24 @@ class Category < ActiveRecord::Base
   has_many :lesson_categories
   has_many :lessons, :through => :lesson_categories
   belongs_to :parent, class_name: 'Category'
+  has_many :children, class_name: 'Category', foreign_key: :parent_id
+
+  scope :primary, where(primary: true)
+  scope :alphabetical, order(:name)
 
   validates_presence_of :name
 
   #TODO: Move into a presenter class like Draper sometime
-  #FIXME: Data should be inforced in some convention so lowercase conversion is not required here (probably all lowercase)
-  def self.select_options
-    all(order: "name").map { |c| [c.name, c.id] }
+  #FIXME: Data should be enforced in some convention so lowercase conversion is not required here (probably all lowercase)
+  def self.select_options(indent = '+-- ')
+    results = []
+    primary.alphabetical.all.each do |category|
+      results << [category.name, category.id]
+      category.children.each do |child|
+        results << [indent + child.name, child.id]
+      end
+    end
+    results
   end
 
   def best_colour_num
