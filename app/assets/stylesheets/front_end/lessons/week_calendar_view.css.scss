@@ -74,6 +74,12 @@ $lesson-height: $lesson-compact-height;
     @include make-md-column(4);
     padding: 0 5px;
   }
+
+  .lesson_medium_container {
+    @include make-xs-column(12);
+    @include make-sm-column(6);
+    padding: 0 5px;
+  }
 }
 
 .browse_sidebar {
@@ -125,6 +131,11 @@ $lesson-height: $lesson-compact-height;
       margin-bottom: 8px;
 
       .lesson_compact_container {
+        @include make-lg-column(12);
+        padding: 0 5px;
+      }
+
+      .lesson_medium_container {
         @include make-lg-column(12);
         padding: 0 5px;
       }

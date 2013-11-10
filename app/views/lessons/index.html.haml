@@ -41,11 +41,11 @@
   .search_panel.full_page
     .container
       %ul.simple-nav#browse_type
-        %li.active
+        %li
           %a{:href => "#upcoming", 'data-toggle' => "tab"}
             %i.icon-tasks
             List View
-        %li
+        %li.active
           %a{:href => "#weeks", 'data-toggle' => "tab"}
             %i.icon-list
             Week View
@@ -54,11 +54,11 @@
             %i.icon-calendar
             Month View
       .tab-content
-        #upcoming.tab-pane.active
+        #upcoming.tab-pane
           %header.calendar_titles
             %h2 Upcoming chalkle° classes
           = render partial: 'upcoming_view', locals: {lessons: @upcoming_lessons, page: @page}
-        #weeks.tab-pane
+        #weeks.tab-pane.active
           = render partial: 'weeks_calendar_view', locals: {week_lessons: @week_lessons}
         #months.tab-pane
           = render partial: 'months_calendar_view', locals: {month_lessons: @month_lessons}

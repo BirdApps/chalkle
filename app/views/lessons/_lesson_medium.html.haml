@@ -1,0 +1,19 @@
+.lesson_medium_container
+  %a.lesson_medium{href: path_for_lesson(lesson), class: lesson_classes(lesson)}
+    %span.datetime.coloured>
+      - time = lesson.start_at
+      .parts
+        .time
+          %span.number= time.strftime('%l:%M').strip
+          %span.am_pm= time.strftime('%p').strip
+        .date
+          %span.weekday= time.strftime('%a').strip
+          %span.monthday= time.strftime('%-d %b').strip
+    %span.image_container.coloured
+      - if lesson.lesson_upload_image.present?
+        = image_tag(lesson.lesson_upload_image.url(:mini))
+      - else
+        = category_image lesson, 150
+    %span.details.blackboard>
+      .lesson_title<
+        = lesson.name

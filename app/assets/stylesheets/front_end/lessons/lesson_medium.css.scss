@@ -1,0 +1,105 @@
+$lesson-medium-height: 150px;
+$lesson-medium_time-width: 80px;
+$top-bottom-margin: 10px;
+$image-width: $lesson-medium-height;
+$lines: 3;
+
+a.lesson_medium {
+  text-align: left;
+  display: block;
+  background: $chalkboard-background;
+  height: $lesson-medium-height;
+  overflow: hidden;
+  padding: 0;
+  margin-bottom: 10px;
+  text-decoration: none !important;
+
+  &:hover {
+    text-decoration: none !important;
+  }
+
+  > span {
+    height: $lesson-medium-height;
+    display: block;
+  }
+
+  .datetime {
+    width: $lesson-medium_time-width;
+    float: left;
+    color: white;
+    font-size: 18px;
+    line-height: 20px;
+
+    .parts {
+      padding-top: $top-bottom-margin;
+      padding-left: $top-bottom-margin;
+
+      span {
+        display: block;
+        line-height: 100%;
+      }
+
+      .time {
+        height: 85px;
+        .number {
+          font-size: 26px;
+          line-height: 100%;
+        }
+
+        .am_pm {
+          font-size: 18px;
+          text-transform: uppercase;
+        }
+      }
+
+      .date {
+        .weekday {
+          margin-bottom: 5px;
+        }
+        .monthday {
+
+        }
+      }
+    }
+
+    &.active {
+      opacity: 0.5;
+    }
+
+  }
+
+  .image_container {
+    width: $image-width;
+    float: left;
+    display: block;
+    background-color: #CCCCCC;
+
+    img {
+    }
+  }
+
+  .details {
+    display: block;
+    margin-left: ($lesson-medium_time-width + $image-width);
+
+    .lesson_title {
+      margin: $top-bottom-margin 10px;
+      line-height: 24px;
+      font-size: 22px;
+    }
+  }
+}
+
+.lesson-group-preview {
+  @include make-row();
+  margin-top: -5px;
+  margin-bottom: -5px;
+
+  .lesson_medium_container {
+    @include make-sm-column(6);
+    @include make-xs-column(12);
+
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
