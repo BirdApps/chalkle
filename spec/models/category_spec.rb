@@ -45,7 +45,7 @@ describe Category do
 
     it "hyphenates with parent slug" do
       parent = Category.new(name: 'Art')
-      Category.new(name: 'Science & tech').slug.should == 'art-science_tech'
+      Category.new(parent: parent, name: 'Science & tech').slug.should == 'art-science_tech'
     end
   end
 end
