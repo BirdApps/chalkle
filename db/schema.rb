@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131108231341) do
+ActiveRecord::Schema.define(:version => 20131110043313) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -182,13 +182,6 @@ ActiveRecord::Schema.define(:version => 20131108231341) do
     t.string   "error"
   end
 
-  create_table "lesson_categories", :id => false, :force => true do |t|
-    t.integer "lesson_id",   :null => false
-    t.integer "category_id", :null => false
-  end
-
-  add_index "lesson_categories", ["lesson_id", "category_id"], :name => "index_lesson_categories_on_lesson_id_and_category_id", :unique => true
-
   create_table "lesson_images", :force => true do |t|
     t.string   "title"
     t.datetime "created_at", :null => false
@@ -244,14 +237,6 @@ ActiveRecord::Schema.define(:version => 20131108231341) do
     t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
     t.string   "lesson_upload_image"
     t.integer  "category_id"
-  end
-
-  create_table "omni_avatar_avatars", :force => true do |t|
-    t.integer "owner_id"
-    t.string  "owner_type"
-    t.string  "image"
-    t.string  "provider_name"
-    t.string  "original_url"
   end
 
   create_table "payments", :force => true do |t|

@@ -1,4 +1,9 @@
 class CopyLessonCategoriesToCategoryId < ActiveRecord::Migration
+  class LessonCategory < ActiveRecord::Base
+    belongs_to :lesson
+    belongs_to :category
+  end
+
   class Lesson < ActiveRecord::Base
     has_many :lesson_categories
     has_many :categories, :through => :lesson_categories
