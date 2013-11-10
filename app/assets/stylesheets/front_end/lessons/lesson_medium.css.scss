@@ -74,7 +74,9 @@ a.lesson_medium {
     display: block;
     background-color: #CCCCCC;
 
-    img {
+    img.category_image {
+      width: $image-width;
+      height: $image-width;
     }
   }
 

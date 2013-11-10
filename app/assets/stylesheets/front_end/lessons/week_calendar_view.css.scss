@@ -1,4 +1,4 @@
-$lesson-height: $lesson-compact-height;
+$lesson-height: $lesson-medium-height;
 
 .week_calendar_view {
   .day {
@@ -48,10 +48,11 @@ $lesson-height: $lesson-compact-height;
 
       .suggestion {
         border: 2px dashed $suggestion-color;
-        height: $lesson-height;
         text-align: center;
-        padding: 18px !important;
+        padding: 38px !important;
         color: $suggestion-color;
+        height: $lesson-height;
+        font-size: 24px;
 
         a {
           color: $suggestion-color;
