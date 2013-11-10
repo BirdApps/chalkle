@@ -53,9 +53,9 @@ class Teaching
     if check_valid_input(params)
       @lesson = Lesson.new(lesson_args)
       @lesson.status = "Unreviewed"
+      @lesson.category_id = @category_primary_id
       if @lesson.save
         @lesson.channels << Channel.find(@channel_id)
-        @lesson.category_ids = @category_primary_id
       else
         return false
       end

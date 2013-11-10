@@ -9,7 +9,7 @@
         %td
           %h3= link_to lesson.name.capitalize, lesson.url
           %p.details
-            = lesson.category_list
+            = lesson.category_name
             = "| #{lesson.channel_list}"
             = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
           %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
@@ -23,7 +23,7 @@
         %td
           %h3= link_to lesson.name.capitalize, lesson.url
           %p.details
-            = lesson.category_list
+            = lesson.category_name
             = "| #{lesson.channel_list}"
             = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
           %p= truncate(lesson.do_during_class, length: 250, separator: ' ')

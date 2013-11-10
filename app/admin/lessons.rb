@@ -20,7 +20,7 @@ ActiveAdmin.register Lesson  do
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :name
-  filter :categories_name, :as => :select, :label => "Category",
+  filter :category_name, :as => :select, :label => "Category",
     :collection => proc{ Category.all.collect{ |c| [c.name, c.name] }}
   filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("LOWER(name) ASC") }
   filter :cost
@@ -49,9 +49,7 @@ ActiveAdmin.register Lesson  do
     column :channels do |lesson|
       lesson.channels.collect{ |c| c.name}.join(", ")
     end
-    column :categories do |lesson|
-      lesson.categories.collect{ |c| c.name}.join(", ")
-    end
+    column :category_name
     column :teacher
     column :cost do |lesson|
       number_to_currency lesson.cost
@@ -83,9 +81,7 @@ ActiveAdmin.register Lesson  do
           status_tag("Please select a teacher and make sure there is an email contact", :error)
         end
       end
-      row :categories do |lesson|
-        lesson.categories.collect{ |c| c.name}.join(", ")
-      end
+      row :category_name
       row :channels do |lesson|
         lesson.channels.collect{ |c| c.name}.join(", ")
       end
