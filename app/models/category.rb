@@ -4,8 +4,7 @@ class Category < ActiveRecord::Base
 
   has_many :channel_categories
   has_many :channels, :through => :channel_categories
-  has_many :lesson_categories
-  has_many :lessons, :through => :lesson_categories
+  has_many :lessons
   belongs_to :parent, class_name: 'Category'
   has_many :children, class_name: 'Category', foreign_key: :parent_id
 
@@ -31,7 +30,19 @@ class Category < ActiveRecord::Base
     colour_num || parent_best_colour_num
   end
 
+  def slug
+    [parent_slug, this_slug].compact.join('-')
+  end
+
   private
+
+    def parent_slug
+      parent.slug if parent
+    end
+
+    def this_slug
+      name.gsub(/[^\w]/, ' ').gsub(/\s+/, '_').downcase if name
+    end
 
     def parent_best_colour_num
       parent.best_colour_num if parent

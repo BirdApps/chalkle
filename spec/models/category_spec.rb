@@ -33,4 +33,19 @@ describe Category do
       subject.best_colour_num.should == 5
     end
   end
+
+  describe "slug" do
+    it "returns lower case name" do
+      Category.new(name: 'Art').slug.should == 'art'
+    end
+
+    it "replaces non word characters with a single underscore" do
+      Category.new(name: 'Art & science').slug.should == 'art_science'
+    end
+
+    it "hyphenates with parent slug" do
+      parent = Category.new(name: 'Art')
+      Category.new(name: 'Science & tech').slug.should == 'art-science_tech'
+    end
+  end
 end
