@@ -131,11 +131,6 @@ $lesson-height: $lesson-medium-height;
     .lessons {
       margin-bottom: 8px;
 
-      .lesson_compact_container {
-        @include make-lg-column(12);
-        padding: 0 5px;
-      }
-
       .lesson_medium_container {
         @include make-lg-column(12);
         padding: 0 5px;
@@ -150,7 +145,7 @@ $lesson-height: $lesson-medium-height;
           display: none !important;
         }
         .details {
-          margin-left: $lesson-compact_time-width !important;
+          margin-left: $lesson-medium-width !important;
         }
       }
     }
