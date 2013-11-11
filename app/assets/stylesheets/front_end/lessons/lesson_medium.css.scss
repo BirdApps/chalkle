@@ -12,6 +12,7 @@ a.lesson_medium {
   padding: 0;
   margin-bottom: 10px;
   text-decoration: none !important;
+  min-width: 500px;
 
   &:hover {
     text-decoration: none !important;
@@ -95,6 +96,7 @@ a.lesson_medium {
     .title_and_description {
       height: 105px;
       margin-bottom: 5px;
+      overflow: hidden;
     }
 
     .lesson_title {
@@ -160,16 +162,20 @@ a.lesson_medium {
   }
 }
 
+.lesson_medium_container {
+  min-width: 500px;
+}
+
 .lesson-group-preview {
   @include make-row();
   margin-top: -5px;
   margin-bottom: -5px;
 
   .lesson_medium_container {
-    @include make-sm-column(6);
-    @include make-xs-column(12);
+    @include make-md-column(6);
 
     padding-right: 5px;
     padding-left: 5px;
+    min-width: 510px;
   }
 }
