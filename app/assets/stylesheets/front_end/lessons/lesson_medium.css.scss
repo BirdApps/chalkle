@@ -119,6 +119,9 @@ a.lesson_medium {
 
     .footer {
       font-size: 14px;
+      line-height: 100%;
+      height: 14px;
+      overflow: hidden;
 
       div {
         display: inline;

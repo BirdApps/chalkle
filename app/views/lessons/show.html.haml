@@ -89,7 +89,8 @@
       -#= render :partial => 'lesson_details', :locals => { :lesson => @lesson }
       -#= render :partial => 'teacher_details', :locals => { :lesson => @lesson }
 
-    = render partial: 'small_sidebar', locals: {week_lessons: @week_lessons}
+    .col-sm-3.col-md-4.hidden-xs.browse_sidebar
+      = render partial: 'small_sidebar', locals: {week_lessons: @week_lessons}
 
 :coffeescript
   signedIn = () ->
