@@ -15,5 +15,13 @@
       = category_image lesson, 150
     %span.details.blackboard>
       .inner
-        .lesson_title<
-          = lesson.name
+        .title_and_description
+          .lesson_title<
+            = lesson.name
+          .description
+            = lesson.description
+        .footer
+          %span.part
+            = lesson_availability(lesson)
+          %span.part
+            = lesson_attendance(lesson)

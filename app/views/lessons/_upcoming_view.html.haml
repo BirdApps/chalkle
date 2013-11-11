@@ -25,18 +25,7 @@
                 .location
                   %i.icon-map-marker
                   = truncate lesson.venue, length: 20
-              .availability
-                - if lesson.limited_spaces?
-                  - if lesson.spaces_left?
-                    %i.icon-thumbs-up
-                    = pluralize lesson.spaces_left, 'spot'
-                    left
-                  - else
-                    %i.icon-thumbs-down
-                    fully booked!
-                - else
-                  %i.icon-ok
-                  No size limit
+              = lesson_availability(lesson)
               .attending
                 %i.icon-user
                 = lesson.attendance

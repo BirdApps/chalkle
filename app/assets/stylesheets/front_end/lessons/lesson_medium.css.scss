@@ -91,11 +91,52 @@ a.lesson_medium {
 
     .inner {
       padding: 10px;
+    }
 
-      .lesson_title {
-        line-height: 24px;
-        font-size: 22px;
-        height: 48px;
+    .title_and_description {
+      height: 105px;
+      margin-bottom: 5px;
+    }
+
+    .lesson_title {
+      font-size: 17px;
+      line-height: 20px;
+      max-height: 40px;
+      min-height: 20px;
+      margin-bottom: 5px;
+      overflow: hidden;
+    }
+
+    .description {
+      font-size: 14px;
+      line-height: 20px;
+      max-height: 80px;
+      color: #DDDDDD;
+      overflow: hidden;
+    }
+
+    .footer {
+      font-size: 14px;
+
+      div {
+        display: inline;
+      }
+
+      i {
+        margin-right: 4px;
+      }
+
+      .part {
+        border-width: 0 1px 0 0;
+        padding-right: 7px;
+        margin-right: 10px;
+        border-style: solid;
+
+        &:last-child {
+          border: 0;
+          margin-right: 0;
+          padding-right: 0;
+        }
       }
     }
   }
