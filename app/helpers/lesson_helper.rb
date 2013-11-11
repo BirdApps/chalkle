@@ -73,7 +73,7 @@ Your Chalkle Administrator")
 
   def lesson_classes(lesson, base_class = 'lesson')
     results = [base_class]
-    results << 'no-image' unless lesson.lesson_upload_image.present?
+    results << (lesson.lesson_upload_image.present? ? 'has-image' : 'no-image')
     results << "category#{lesson.best_colour_num}" if lesson.best_colour_num
     results << 'active' if @lesson && @lesson == lesson
     results

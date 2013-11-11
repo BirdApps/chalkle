@@ -12,8 +12,7 @@
     %span.image_container.coloured
       - if lesson.lesson_upload_image.present?
         = image_tag(lesson.lesson_upload_image.url(:medium), class: 'lesson_image')
-      - else
-        = category_image lesson, 150
+      = category_image lesson, 150
     %span.details.blackboard>
       .inner
         .lesson_title<

@@ -99,6 +99,25 @@ a.lesson_medium {
       }
     }
   }
+
+  img.category_image {
+    display: none;
+  }
+
+  &.no-image {
+    img.category_image {
+      display: inline;
+    }
+  }
+
+  &.has-image:hover {
+    img.category_image {
+      display: inline;
+    }
+    img.lesson_image {
+      display: none;
+    }
+  }
 }
 
 .lesson-group-preview {
