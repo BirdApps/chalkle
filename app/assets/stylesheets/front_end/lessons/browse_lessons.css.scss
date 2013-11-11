@@ -110,6 +110,10 @@ a.next-calendar-section {
   }
 }
 
+.blackboard {
+  background: $chalkboard-background;
+}
+
 @import "lesson_compact.css.scss";
 @import "lesson_medium.css.scss";
 @import "month_calendar_view.css.scss";
