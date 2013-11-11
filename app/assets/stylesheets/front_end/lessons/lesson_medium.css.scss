@@ -74,6 +74,11 @@ a.lesson_medium {
     display: block;
     background-color: #CCCCCC;
 
+    img.lesson_image {
+      width: $image-width;
+      height: $image-width;
+    }
+
     img.category_image {
       width: $image-width;
       height: $image-width;
@@ -84,10 +89,14 @@ a.lesson_medium {
     display: block;
     margin-left: ($lesson-medium_time-width + $image-width);
 
-    .lesson_title {
-      margin: $top-bottom-margin 10px;
-      line-height: 24px;
-      font-size: 22px;
+    .inner {
+      padding: 10px;
+
+      .lesson_title {
+        line-height: 24px;
+        font-size: 22px;
+        height: 48px;
+      }
     }
   }
 }

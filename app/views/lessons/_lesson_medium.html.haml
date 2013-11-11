@@ -11,9 +11,10 @@
           %span.monthday= time.strftime('%-d %b').strip
     %span.image_container.coloured
       - if lesson.lesson_upload_image.present?
-        = image_tag(lesson.lesson_upload_image.url(:mini))
+        = image_tag(lesson.lesson_upload_image.url(:medium), class: 'lesson_image')
       - else
         = category_image lesson, 150
     %span.details.blackboard>
-      .lesson_title<
-        = lesson.name
+      .inner
+        .lesson_title<
+          = lesson.name
