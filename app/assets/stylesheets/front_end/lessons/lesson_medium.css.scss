@@ -1,4 +1,5 @@
 $lesson-medium-height: 150px;
+$lesson-medium-width: 500px;
 $lesson-medium_time-width: 80px;
 $top-bottom-margin: 10px;
 $image-width: $lesson-medium-height;
@@ -12,7 +13,7 @@ a.lesson_medium {
   padding: 0;
   margin-bottom: 10px;
   text-decoration: none !important;
-  min-width: 500px;
+  min-width: $lesson-medium-width;
 
   &:hover {
     text-decoration: none !important;
@@ -163,7 +164,7 @@ a.lesson_medium {
 }
 
 .lesson_medium_container {
-  min-width: 500px;
+  min-width: $lesson-medium-width;
 }
 
 .lesson-group-preview {
@@ -177,5 +178,61 @@ a.lesson_medium {
     padding-right: 5px;
     padding-left: 5px;
     min-width: 510px;
+  }
+}
+
+$lesson-compact-height: 85px;
+$lesson-compact-width: 300px;
+
+.small_browse_sidebar {
+  .lesson_medium_container {
+    min-width: $lesson-compact-width;
+
+    a.lesson_medium {
+      min-width: $lesson-compact-width;
+      height: $lesson-compact-height;
+
+      .datetime {
+        .time {
+          height: 47px;
+
+          .number {
+            font-size: 22px;
+          }
+          .am_pm {
+            font-size: 14px;
+          }
+        }
+        .date {
+          .weekday {
+            display: none;
+          }
+        }
+      }
+
+      .image_container {
+        display: none;
+      }
+
+      .details {
+        margin-left: $lesson-medium_time-width;
+
+        .title_and_description {
+          height: 40px;
+
+          .description {
+            display: none;
+          }
+        }
+
+        .footer .part {
+          border: 0;
+        }
+
+        .attendance {
+          display: none;
+        }
+      }
+    }
   }
 }

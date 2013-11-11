@@ -1,0 +1,8 @@
+#weeks.browse_sidebar.small_browse_sidebar.col-sm-3.col-md-4.hidden-xs
+  %a.sidebar_top_nav{href: channel_lessons_path(@channel)}
+    %i.icon-calendar
+    Return to Calendar
+  - last_week = week_lessons.keys.last
+  - week_lessons.each do |week, lessons|
+    - show_next = (week == last_week)
+    = render partial: '/lessons/week_calendar_view', locals: {week: week, lessons: lessons, show_next: show_next}
