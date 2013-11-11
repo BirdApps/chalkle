@@ -1,5 +1,5 @@
 .lesson_medium_container
-  %a.lesson_medium{href: path_for_lesson(lesson), class: lesson_classes(lesson)}
+  %a.lesson_medium{href: path_for_lesson(lesson), class: lesson_classes(lesson), id: dom_id(lesson)}
     %span.datetime>
       - time = lesson.start_at
       .parts
