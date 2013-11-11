@@ -161,6 +161,10 @@ a.lesson_medium {
       display: none;
     }
   }
+
+  &.active {
+    opacity: 0.5;
+  }
 }
 
 .lesson_medium_container {
@@ -225,12 +229,16 @@ $lesson-compact-width: 300px;
           }
         }
 
-        .footer .part {
-          border: 0;
-        }
+        .footer {
+          color: #CCCCCC;
 
-        .attendance {
-          display: none;
+          .part {
+            border: 0;
+          }
+
+          .attendance {
+            display: none;
+          }
         }
       }
     }
