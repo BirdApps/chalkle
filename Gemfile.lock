@@ -37,7 +37,7 @@ GIT
       activemodel (~> 3.0)
 
 PATH
-  remote: /Users/craig/development/enspiral/omni_avatar
+  remote: vendor/gems/omni_avatar
   specs:
     omni_avatar (0.0.1)
       carrierwave (~> 0.9)

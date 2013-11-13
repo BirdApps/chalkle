@@ -50,7 +50,7 @@ gem 'google-webfonts-rails'
 gem 'carrierwave'
 gem "rmagick"
 
-gem 'omni_avatar', path: '/Users/craig/development/enspiral/omni_avatar'
+gem 'omni_avatar', path: 'vendor/gems/omni_avatar'
 
 # Gems used only for assets and not required
 # in production environments by default.
