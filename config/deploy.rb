@@ -15,7 +15,7 @@ set :whenever_identifier, defer { "#{application}_#{rails_env}" }
 
 task :staging do
   set :domain,    "my.chalkle.com"
-  set :branch,    "master"
+  set :branch,    "feature-single-category"
   set :rails_env, "staging"
   set :deploy_to, "/home/#{user}/staging"
   set :bundle_without, [:development, :test]

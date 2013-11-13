@@ -1,6 +1,6 @@
 namespace :sync do
   desc "Copy the production database into this local installation"
-  task :production => [:environment] do
+  task :production => [:environment, 'db:drop', 'db:create'] do
     db_host_username = 'chalkle'
     db_host = "my.chalkle.com"
 
@@ -19,5 +19,16 @@ namespace :sync do
     puts "#{Time.now} Importing sql..."
     system "#{password_setting}psql #{psql_params} -f ./tmp/production_data.sql"
     puts "#{Time.now} Done."
+  end
+
+  task :set_passwords => [:environment] do
+    AdminUser.all.each do |user|
+      user.password = 'password'
+      user.save
+    end
+    Chalkler.all.each do |user|
+      user.password = 'password'
+      user.save
+    end
   end
 end

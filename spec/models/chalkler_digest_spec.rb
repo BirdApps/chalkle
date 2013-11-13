@@ -42,8 +42,8 @@ describe ChalklerDigest do
                                    status: 'Published',
                                    do_during_class: 'x',
                                    meetup_url: 'http://meetup.com',
-                                   max_attendee: 15)
-      @lesson.categories << @category
+                                   max_attendee: 15,
+                                   category: @category)
       @lesson.channels << @channel
     end
 
@@ -67,14 +67,16 @@ describe ChalklerDigest do
 
     describe "#new_lessons" do
       it "loads a lesson that a chalkler is interested in" do
-        lesson1.categories << FactoryGirl.create(:category)
+        lesson1.category = FactoryGirl.create(:category)
         lesson1.channels << @channel
+        lesson1.save!
         @digest.instance_eval{ new_lessons }.should == [@lesson]
       end
 
       it "loads a lessons from channels that chalkler belongs to" do
-        lesson1.categories << @category
+        lesson1.category = @category
         lesson1.channels << FactoryGirl.create(:channel)
+        lesson1.save!
         @digest.instance_eval{ new_lessons }.should == [@lesson]
       end
 
@@ -123,14 +125,16 @@ describe ChalklerDigest do
       end
 
       it "loads a lesson that a chalkler is interested in" do
-        lesson1.categories << FactoryGirl.create(:category)
+        lesson1.category = FactoryGirl.create(:category)
         lesson1.channels << @channel
+        lesson1.save!
         @digest.instance_eval{ open_lessons }.should == [@lesson]
       end
 
       it "loads a lessons from channels that chalkler belongs to" do
-        lesson1.categories << @category
+        lesson1.category = @category
         lesson1.channels << FactoryGirl.create(:channel)
+        lesson1.save!
         @digest.instance_eval{ open_lessons }.should == [@lesson]
       end
 
@@ -169,8 +173,9 @@ describe ChalklerDigest do
       end
 
       it "loads a lesson from channels that chalkler belongs to" do
-        lesson1.categories << @category
+        lesson1.category = @category
         lesson1.channels << FactoryGirl.create(:channel)
+        lesson1.save!
         @digest.instance_eval{ default_open_lessons }.should == [@lesson]
       end
 

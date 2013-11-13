@@ -124,3 +124,4 @@ Scenario: Upload an image for the class
   Then this image should be saved
   When they visit the "Wellington" channel class listing
   Then they should see this image on the class listing
+

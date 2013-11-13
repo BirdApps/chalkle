@@ -141,7 +141,7 @@ describe "Teachings" do
   	    end
 
         it "has the correct category" do
-          @lesson.category_ids.should == [category.id]
+          @lesson.category_id.should == category.id
         end
 
         it "has the correct what we will do during class" do

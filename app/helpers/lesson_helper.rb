@@ -73,9 +73,41 @@ Your Chalkle Administrator")
 
   def lesson_classes(lesson, base_class = 'lesson')
     results = [base_class]
-    results << 'no-image' unless lesson.lesson_upload_image.present?
+    results << (lesson.lesson_upload_image.present? ? 'has-image' : 'no-image')
     results << "category#{lesson.best_colour_num}" if lesson.best_colour_num
     results << 'active' if @lesson && @lesson == lesson
     results
   end
+
+  def lesson_availability(lesson)
+    content_tag :div, nil, class: 'availability' do
+      if lesson.limited_spaces?
+        if lesson.spaces_left?
+          icon(:ok) + pluralize(lesson.spaces_left, 'spot') + ' left'
+        else
+          icon(:thumbs_down) + 'fully booked!'
+        end
+      else
+        icon(:ok) + 'No size limit'
+      end
+    end
+  end
+
+  def lesson_attendance(lesson)
+    icon(:user) + "#{lesson.attendance} attending"
+  end
+
+  def icon(name)
+    content_tag(:i, nil, class: "icon-#{name.to_s.gsub('_', '-')}") + ' '
+  end
+  #%i.icon-thumbs-up
+  #        = pluralize lesson.spaces_left, 'spot'
+  #left
+  #- else
+  #    %i.icon-thumbs-down
+  #        fully booked!
+  #    - else
+  #      %i.icon-ok
+  #    No size limit
+
 end

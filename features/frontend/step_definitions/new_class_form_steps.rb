@@ -1,3 +1,4 @@
+
 # encoding: UTF-8
 When /^they enter new class details$/ do
   fill_in 'teaching_title', with: 'new class'

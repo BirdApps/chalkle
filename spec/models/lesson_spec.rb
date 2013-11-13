@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Lesson do
-  it { should have_many(:categories).through(:lesson_categories) }
+  it { should belong_to(:category) }
   it { should have_one :lesson_image }
 
   it { should validate_uniqueness_of :meetup_id }
@@ -141,13 +141,11 @@ describe Lesson do
   describe ".copy_lesson" do
     let(:chalkler) {FactoryGirl.create(:chalkler, name: "Teacher")}
     let(:channel) { FactoryGirl.create(:channel) }
-    let(:category1) { FactoryGirl.create(:category, name: "Category1") }
-    let(:category2) { FactoryGirl.create(:category, name: "Category2") }
-    let(:lesson_original) { FactoryGirl.create(:lesson, name: "Original Lesson", teacher_id: chalkler.id, status: "Published", teacher_payment: 10, visible: false) }
+    let(:category) { FactoryGirl.create(:category, name: "Category1") }
+    let(:lesson_original) { FactoryGirl.create(:lesson, name: "Original Lesson", teacher_id: chalkler.id, status: "Published", teacher_payment: 10, visible: false, category: category) }
     before do
       lesson_original.channels << channel
-      lesson_original.categories << category1
-      lesson_original.categories << category2
+      lesson_original.category = category
       @new_lesson = lesson_original.copy_lesson
     end
 
@@ -163,8 +161,8 @@ describe Lesson do
       @new_lesson.channels.should == lesson_original.channels
     end
 
-    it "should make a new copy with the same categories" do
-      @new_lesson.categories.should == lesson_original.categories
+    it "should make a new copy with the same category" do
+      @new_lesson.category.should == lesson_original.category
     end
 
     it "should not copy teacher payment" do
@@ -180,12 +178,14 @@ describe Lesson do
     end
   end
 
-  describe "#set_category" do
-    it "should create an association" do
-      category = FactoryGirl.create(:category, name: "category")
-      lesson = FactoryGirl.create(:lesson)
-      lesson.set_category 'category: a new lesson'
-      lesson.categories.should include category
+  context "categories" do
+    describe "#set_category" do
+      it "should create an association" do
+        category = FactoryGirl.create(:category, name: "category")
+        lesson = FactoryGirl.create(:lesson)
+        lesson.set_category 'category: a new lesson'
+        lesson.category.should == category
+      end
     end
   end
 

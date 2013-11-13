@@ -14,6 +14,14 @@
   @include categoryColor('background-color');
 }
 
+@mixin categoryBackgroundImage {
+  @for $i from 1 through 5 {
+    &.category#{$i} .category_image {
+      background-image: url('/assets/categories/backgrounds/#{$i}.jpg')
+    }
+  }
+}
+
 @mixin categoryBackgroundColorDarkerHover {
   @each $catData in $categories {
     &.#{nth($catData, 1)}:hover {

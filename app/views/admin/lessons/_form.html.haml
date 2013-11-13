@@ -2,7 +2,7 @@
   =f.inputs :details do
     =f.input :name
     =f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
-    =f.input :categories
+    = f.input :category, :as => :select, :label => "What is the primary category of this class?", :collection => Category.select_options, required: true
     =f.input :start_at
     =f.input :venue, :input_html => { :rows => 1 }
     =f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
