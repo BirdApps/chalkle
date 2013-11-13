@@ -65,13 +65,16 @@
               attending
       - if teacher = @lesson.teacher
         .teacher_details
-          = image_tag 'http://placehold.it/100x100', alt: teacher.name, class: 'avatar teacher_avatar'
+          - if teacher.avatar
+            = image_tag teacher.avatar.image.url, alt: teacher.name, class: 'avatar teacher_avatar'
+          - else
+            = image_tag 'http://placehold.it/100x100', alt: teacher.name, class: 'avatar teacher_avatar'
           .contents
             %h3
               Your Teacher:
               %span.teacher_name
                 = teacher.name
-            .teacher-bio.bio-short
+            .teacher-bio
               = simple_format teacher.bio
       .text_contents
         .lesson-description
@@ -109,5 +112,8 @@
       title: 'Sign in to join a class'
       content: 'Please <a href="/chalklers/sign_in">sign in</a> or <a href="/chalklers/sign_up">create an account</a> to make a booking.'
 
-  $('.with_browse_sidebar').equalize({equalize: 'min-height', reset: true});
-  $('.lesson_panel .details').equalize({equalize: 'min-height', reset: true});
+  $('.with_browse_sidebar').equalize({equalize: 'min-height', reset: true})
+  $('.lesson_panel .details').equalize({equalize: 'min-height', reset: true})
+  $('.teacher_details .teacher-bio').readmore({
+    maxHeight: 60
+  })

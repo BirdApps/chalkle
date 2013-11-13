@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'omni_avatar/avatar'
 
 module OmniAvatar
