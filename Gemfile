@@ -117,10 +117,6 @@ group :test do
   gem 'spork'
   gem 'mocha', '>= 0.14.0', require: false
 
-  # Testing Javascript
-  gem 'jasmine',  '~> 1.1.2'
-  gem 'jasmine-headless-webkit', '~> 0.8.4'
-
   # Core Testing
   gem 'cucumber-rails',   '~> 1.3.0', require: false
   gem 'capybara'

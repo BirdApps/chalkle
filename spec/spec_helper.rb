@@ -24,9 +24,6 @@ prefork = lambda {
     config.include Devise::TestHelpers, :type => :controller
     config.extend ControllerMacros, :type => :controller
     config.include IntegrationSpecHelper, :type => :request
-    Capybara.register_driver :javascript do |app|
-      Capybara::Selenium::Driver.new(app, :browser => :chrome)
-    end
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
