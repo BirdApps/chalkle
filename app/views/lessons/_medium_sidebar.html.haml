@@ -1,0 +1,5 @@
+#weeks.medium_browse_sidebar
+  %a.sidebar_top_nav{href: channel_lessons_path(@channel)}
+    %i.icon-calendar
+    View all classes
+  = render partial: '/lessons/weeks_calendar_view', locals: {week_lessons: week_lessons}

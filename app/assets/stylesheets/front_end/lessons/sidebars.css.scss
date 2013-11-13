@@ -1,0 +1,21 @@
+.small_browse_sidebar {
+  .day {
+    h3.day_title {
+      display: none;
+    }
+
+    .lessons {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.medium_browse_sidebar {
+  .lesson_medium_container {
+    min-width: 400px;
+
+    a.lesson_medium {
+      min-width: 400px;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.container
+  .masthead
+    masthead
+  .contents.row
+    .col-md-2
+      subscribe
+    .col-md-4
+      body
+    .col-md-6.browse_sidebar
+      = render partial: '/lessons/medium_sidebar', locals: {week_lessons: @week_lessons}
+
