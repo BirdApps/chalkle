@@ -55,7 +55,6 @@ $sidebar-color: #E8E8E8;
 
           padding-left: 1px;
           padding-right: 1px;
-          margin-bottom: 1px;
           border-right: 1px solid white;
 
           &:first-child {
@@ -89,15 +88,35 @@ $sidebar-color: #E8E8E8;
         margin: 0;
         background-color: #F2F2F2;
 
+        .avatar {
+          float: right;
+        }
+
         .contents {
-          padding: 10px 30px;
+          padding: 10px 10px 10px 30px;
+          margin-right: 100px;
         }
 
         h3 {
           margin: 0;
-          font-size: 22px;
-          line-height: 22px;
-          margin-bottom: 8px;
+          font-size: 16px;
+          line-height: 100%;
+          margin-bottom: 4px;
+          color: black;
+          font-weight: bold;
+          border: 0;
+        }
+
+        .teacher-bio {
+          p {
+            font-size: 16px;
+            line-height: 20px;
+          }
+
+          &.bio-short {
+            height: 60px;
+            overflow: hidden;
+          }
         }
       }
 

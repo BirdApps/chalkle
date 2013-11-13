@@ -65,11 +65,13 @@
               attending
       - if teacher = @lesson.teacher
         .teacher_details
+          = image_tag 'http://placehold.it/100x100', alt: teacher.name, class: 'avatar teacher_avatar'
           .contents
             %h3
               Your Teacher:
-              = teacher.name
-            .teacher-bio
+              %span.teacher_name
+                = teacher.name
+            .teacher-bio.bio-short
               = simple_format teacher.bio
       .text_contents
         .lesson-description
