@@ -1,6 +1,5 @@
 require 'simplecov'
 require 'rubygems'
-require 'spork'
 require 'email_spec'
 require 'capybara/rspec'
 
@@ -71,10 +70,6 @@ if defined?(Zeus)
     end
     alias_method_chain :after_fork, :test
   end
-elsif ENV['spork'] || $0 =~ /\bspork$/
-  require 'spork'
-  Spork.prefork(&prefork)
-  Spork.each_run(&each_run)
 else
   prefork.call
   each_run.call

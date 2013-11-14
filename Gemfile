@@ -89,21 +89,8 @@ group :development do
   gem 'better_errors',      '~> 0.3.2'
   gem 'binding_of_caller',  '~> 0.6.8'
 
-  # Automatic testing
-  gem 'guard',             '~> 1.6.2'
-  gem 'guard-spork',       '~> 1.4.1'
-  gem 'guard-rspec',       '~> 2.3.3'
-  gem 'guard-sass',        '~> 1.0.1', require: false
-  gem 'guard-livereload',  '~> 1.1.3'
-
   # Opening webpages during tests
   gem 'launchy', '~> 2.1.2'
-
-  # Debugging Tools
-  gem 'pry-rails',     '~> 0.2.2'
-  gem 'pry-coolline',  '~> 0.2.1'
-  gem 'debugger'
-  gem 'debugger-pry'
 end
 
 group :test, :development do
@@ -114,7 +101,6 @@ end
 group :test do
   gem "codeclimate-test-reporter", require: nil
   gem 'shoulda', '>= 3.5.0'
-  gem 'spork'
   gem 'mocha', '>= 0.14.0', require: false
 
   # Core Testing

@@ -2,7 +2,7 @@ Given(/^there is a class "(.*?)" open to sign\-up$/) do |name|
   lesson = FactoryGirl.create(:lesson,
                               name: 'Test class',
                               status: 'Published',
-                              start_at: 3.days.from_now,
+                              start_at: 1.minute.from_now,
                               cost: 10,
                               max_attendee: 10)
   channel = Channel.find_by_name "Horowhenua"

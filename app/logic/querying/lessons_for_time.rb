@@ -45,7 +45,7 @@ module Querying
     end
 
     def lessons_for_month(month)
-      @base_scope.in_month(month)
+      visible_scope.in_month(month)
     end
 
     def get_current_weeks(current_week, current_date)
@@ -55,7 +55,11 @@ module Querying
     end
 
     def lessons_for_week(week)
-      @base_scope.upcoming.in_week(week)
+      visible_scope.upcoming_or_today.in_week(week)
+    end
+
+    def visible_scope
+      @base_scope.displayable
     end
 
     def weeks_loaded_count

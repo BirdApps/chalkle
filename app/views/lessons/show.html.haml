@@ -65,10 +65,7 @@
               attending
       - if teacher = @lesson.teacher
         .teacher_details
-          - if teacher.avatar
-            = image_tag teacher.avatar.image.url, alt: teacher.name, class: 'avatar teacher_avatar'
-          - else
-            = image_tag 'http://placehold.it/100x100', alt: teacher.name, class: 'avatar teacher_avatar'
+          = image_tag teacher.avatar.url, alt: teacher.name, class: 'avatar teacher_avatar'
           .contents
             %h3
               Your Teacher:
