@@ -4,6 +4,7 @@ Given(/^there is a class "(.*?)" open to sign\-up$/) do |name|
                               status: 'Published',
                               start_at: 1.minute.from_now,
                               cost: 10,
+                              visible: true,
                               max_attendee: 10)
   channel = Channel.find_by_name "Horowhenua"
   lesson.channels << channel

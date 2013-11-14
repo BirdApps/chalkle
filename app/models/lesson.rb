@@ -78,9 +78,8 @@ class Lesson < ActiveRecord::Base
   scope :in_month, lambda {|month| where(:start_at => month.date_range)}
   scope :in_week, lambda {|week| in_month(week)}
   scope :with_region, where("lessons.id IN (SELECT id FROM channel_lessons)")
-  #scope :upcoming_or_today
   scope :displayable, lambda { published.visible }
-  scope :upcoming_or_today, where("start_at >= ?", Date.today)
+  scope :upcoming_or_today, lambda { where("start_at >= ?", Time.now.to_date.to_time) }
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at

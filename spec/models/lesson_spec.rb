@@ -80,6 +80,30 @@ describe Lesson do
     end
   end
 
+  describe ".upcoming_or_today" do
+    it "includes lesson published earlier today" do
+      day_start = Time.new(2013,1,1,0,5)
+      day_middle = Time.new(2013,1,1,12,0)
+
+      lesson = FactoryGirl.create(:lesson, start_at: day_start)
+
+      Timecop.freeze(day_middle) do
+        Lesson.upcoming_or_today.should include(lesson)
+      end
+    end
+
+    it "includes lesson published later today" do
+      day_start = Time.new(2013,1,1,0,5,0)
+      day_middle = Time.new(2013,1,1,12,0,0)
+
+      lesson = FactoryGirl.create(:lesson, start_at: day_middle)
+
+      Timecop.freeze(day_start) do
+        Lesson.upcoming_or_today.should include(lesson)
+      end
+    end
+  end
+
   describe "cancellation email" do
     let(:lesson2) { FactoryGirl.create(:lesson, start_at: Date.today, min_attendee: 3) }
 
