@@ -6,7 +6,7 @@ module Querying
 
     def load_month_lessons(month)
       {
-        month => group_by_day(lessons_for_month(month))
+        month => DailyRecordsHash.new(lessons_for_month(month))
       }
     end
 
@@ -31,17 +31,7 @@ module Querying
     private
 
     def load_another_week_lessons(week)
-      @week_lessons[week] = group_by_day lessons_for_week(week)
-    end
-
-    def group_by_day(lessons)
-      result = {}
-      lessons.each do |lesson|
-        date = lesson.start_at.to_date
-        result[date] ||= []
-        result[date] << lesson
-      end
-      result
+      @week_lessons[week] = DailyRecordsHash.new(lessons_for_week(week))
     end
 
     def lessons_for_month(month)

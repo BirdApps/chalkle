@@ -92,7 +92,7 @@ class Lesson < ActiveRecord::Base
   # kaminari
   paginates_per 10
 
-  #allow for mismatch due to rounding
+    #allow for mismatch due to rounding
   def revenue_split_validation
     return unless (channel_percentage_override.present? || chalkle_percentage_override.present?) and teacher_cost.present? and cost.present?
     if ( (rounding > 1) || (rounding < 0))
@@ -317,6 +317,7 @@ class Lesson < ActiveRecord::Base
   def start_on
     start_at.to_date if start_at
   end
+  alias_method :date, :start_on
 
   private
 
