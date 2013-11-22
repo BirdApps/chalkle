@@ -13,7 +13,6 @@ Chalkle::Application.routes.draw do
       get 'month/:year/:month' => 'lessons#month', as: :specific_month
       get :week
       get 'week/:year/:month/:day' => 'lessons#week', as: :specific_week
-      get :upcoming
     end
   end
 
@@ -28,7 +27,6 @@ Chalkle::Application.routes.draw do
         get 'month/:year/:month' => 'lessons#month', as: :specific_month
         get :week
         get 'week/:year/:month/:day' => 'lessons#week', as: :specific_week
-        get :upcoming
       end
 
       resources :bookings, only: [:new, :create] do

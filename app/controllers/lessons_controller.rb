@@ -17,14 +17,9 @@ class LessonsController < ApplicationController
     @week_lessons = lessons_for_time.load_week_lessons(get_current_week)
   end
 
-  def upcoming
-    load_upcoming
-  end
-
   def index
     month
     @week_lessons = lessons_for_time.load_upcoming_week_lessons(get_current_week)
-    load_upcoming
   end
 
   private
@@ -35,11 +30,6 @@ class LessonsController < ApplicationController
 
     def start_of_association_chain
       @channel ? @channel.lessons : Lesson
-    end
-
-    def load_upcoming
-      @page = [params[:page].to_i, 1].max
-      @upcoming_lessons = decorate lessons_scope.page(@page)
     end
 
     def lessons_base_scope
