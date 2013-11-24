@@ -1,10 +1,97 @@
+$gutter-width: 15px;
+$gutters: $gutter-width * 2;
+$photo-width: 360px;
+$logo-column-width: 165px + $gutters;
+
 .channels-home {
   .navbar {
     margin-bottom: 0;
   }
 
   .masthead {
-    height: 300px;
-    border: 1px solid red;
+    margin: 15px 0;
+    padding: 0;
+
+    > .container > .contents {
+      margin: 0px (-$gutter-width);
+    }
+
+    .logo_and_subscribe {
+      width: $logo-column-width;
+      //float: left;
+      //display: inline-block;
+      float: left;
+      padding: 0 $gutter-width;
+    }
+
+    .words_and_pictures {
+      //margin-left: 165px + $gutters;
+      display: inline-block;
+      float: left;
+      margin: 0px (-$gutter-width);
+      padding: 0 $gutter-width;
+
+      @media(max-width: $screen-md-min) {
+        max-width: 585px;
+        max-width: $container-sm - $logo-column-width + $gutters;
+        //float: left;
+        //width: auto;
+        //display: block;
+      }
+
+      .wordy_bits {
+        //margin-right: $photo-width + $gutters;
+        padding: 0 $gutter-width;
+        width: 580px;
+        display: inline-block;
+
+        @media(max-width: $screen-lg-min) {
+          //float: left;
+          //width: auto;
+          //display: block;
+        }
+      }
+
+      .pictures {
+        $thumbnail_margin: 8px;
+
+        width: $photo-width + $gutters;
+        //float: right;
+        display: inline-block;
+        padding: 0 $gutter-width;
+
+        @media(max-width: $screen-lg-min) {
+          display: block;
+          width: auto;
+
+          .main_photo {
+            display: none;
+          }
+        }
+
+
+        img.main_photo {
+          margin-bottom: $thumbnail_margin / 2;
+        }
+
+        .thumbnails {
+          margin: 0 -4px;
+
+          img.thumbnail {
+            width: ($photo-width - ($thumbnail_margin * 3)) / 4;
+            display: inline-block;
+            margin: $thumbnail_margin / 2;
+          }
+        }
+      }
+    }
+
+    .channel_logo {
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
   }
 }
