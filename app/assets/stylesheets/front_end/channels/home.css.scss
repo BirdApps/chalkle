@@ -78,6 +78,11 @@ $logo-column-width: 165px;
             display: none;
           }
         }
+        @media(max-width: $screen-xs-min) {
+          .active {
+            border-color: transparent !important;
+          }
+        }
 
 
         img.main_photo {
@@ -87,11 +92,19 @@ $logo-column-width: 165px;
         .thumbnails {
           margin: 0 -4px;
 
-          img.thumbnail {
-            width: ($photo-width - ($thumbnail_margin * 3)) / 4;
-            height: 56px;
+          .thumbnail {
             display: inline-block;
-            margin: $thumbnail_margin / 2;
+            margin: $thumbnail_margin / 2 - 2px;
+            border: 2px solid transparent;
+
+            img {
+              width: 84px;
+              height: 56px;
+            }
+
+            &.active {
+              border-color: black;
+            }
           }
         }
       }
