@@ -7,12 +7,9 @@
       .words_and_pictures
         .words_and_pictures_contents
           .wordy_bits
-            %h2 Channel description
+            %h2= @channel.name
             .description
-              %p
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et neque in turpis tempor tristique. Proin ultrices ipsum ante, at ornare justo tempus quis.
-              %p
-                Pellentesque pharetra pharetra eros, non gravida nunc bibendum ac. Aliquam erat volutpat. Curabitur id odio dui. Mauris sit amet mauris quis tellus mollis laoreet. In imperdiet leo sit amet arcu consequat tempor. Phasellus interdum dolor at libero euismod rhoncus. Nulla ultricies ipsum sollicitudin eros ullamcorper, vitae imperdiet nisi aliquet. Sed euismod, elit sagittis faucibus aliquam, elit est bibendum elit, quis lacinia magna sem vel odio. Proin sed est ac erat eleifend ullamcorper. Aliquam tincidunt scelerisque augue et egestas.
+              = simple_format @channel.description
           .pictures
             = image_tag 'http://placehold.it/360x240&text=photo1', class: 'main_photo'
             .thumbnails
@@ -27,3 +24,7 @@
 .clearfix
 = render partial: '/lessons/index_without_filters'
 
+:coffeescript
+  $('.masthead .description').readmore({
+    maxHeight: 22 * 10;
+  })

@@ -28,13 +28,15 @@ $logo-column-width: 165px;
     }
 
     .words_and_pictures {
-      display: inline-block;
       padding: 0 $gutter-width;
       display: table-cell;
       vertical-align: top;
+      width: 100%;
 
       .words_and_pictures_contents {
         margin: 0px (-$gutter-width);
+        display: table;
+        width: 100%;
       }
 
       .subscribe_link {
@@ -55,14 +57,17 @@ $logo-column-width: 165px;
       .wordy_bits {
         padding: 0 $gutter-width;
         max-width: 580px;
-        display: inline-block;
+        width: 100%;
+        display: table-cell;
+        vertical-align: top;
       }
 
       .pictures {
         $thumbnail_margin: 8px;
 
         width: $photo-width + $gutters;
-        display: inline-block;
+        display: table-cell;
+        vertical-align: top;
         padding: 0 $gutter-width;
 
         @media(max-width: $screen-lg-min) {
@@ -89,6 +94,16 @@ $logo-column-width: 165px;
           }
         }
       }
+
+      @media(max-width: $screen-lg-min) {
+        .words_and_pictures_contents {
+          display: block;
+
+          .wordy_bits .pictures {
+            display: block;
+          }
+        }
+      }
     }
 
     .channel_logo {
@@ -97,6 +112,7 @@ $logo-column-width: 165px;
 
     h2 {
       margin-top: 0;
+      margin-bottom: 0.8em;
     }
   }
 }
