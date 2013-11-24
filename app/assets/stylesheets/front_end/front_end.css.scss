@@ -16,6 +16,13 @@ html,body
   height: 100%;
 }
 
+a {
+  color: $fe-heading-color;
+  &:hover {
+    color: darken($fe-heading-color, 10%);
+  }
+}
+
 .front_end_body {
   h1, h2, h3, h4 {
     color: $fe-heading-color;
@@ -89,4 +96,11 @@ a.colour5 {
   padding: 0;
   border: 0;
   border-radius: 0;
+}
+
+a.fa_link {
+  &:before {
+    margin-right: 0.5em;
+    text-decoration: none;
+  }
 }

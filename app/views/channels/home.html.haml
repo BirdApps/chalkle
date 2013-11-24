@@ -10,6 +10,9 @@
             %h2= @channel.name
             .description
               = simple_format @channel.description
+            .details
+              - unless @channel.website_url.blank?
+                %a.fa_link.icon-home{href:@channel.website_url}= @channel.website_url
           .pictures
             = image_tag 'http://placehold.it/360x240&text=photo1', class: 'main_photo'
             .thumbnails
