@@ -25,6 +25,9 @@ ActiveAdmin.register Channel do
       row :name
       row :url_name
       row :visible
+      row :logo do |channel|
+        image_tag(channel.logo.url) if channel.logo
+      end
       row :description
       row :website_url
       row "Percentage of revenue going to channel" do |channel|
@@ -41,10 +44,11 @@ ActiveAdmin.register Channel do
   end
 
   form do |f|
-    f.inputs :details do
+    f.inputs :details, :multipart => true do
       f.input :name
       f.input :url_name
       f.input :visible
+      f.input :logo
       f.input :description
       f.input :website_url
       f.input :channel_percentage, label: "Percentage of revenue going to channel"
