@@ -25,10 +25,9 @@ ActiveAdmin.register Channel do
       row :name
       row :url_name
       row :visible
-      row :logo do |channel|
-        image_tag(channel.logo.url) if channel.logo
+      row :description do |channel|
+        simple_format channel.description
       end
-      row :description
       row :website_url
       row "Percentage of revenue going to channel" do |channel|
         number_to_percentage(channel.channel_percentage*100, :precision => 2)
@@ -39,6 +38,15 @@ ActiveAdmin.register Channel do
       row :account
       row :created_at
       row :updated_at
+
+      row :logo do |channel|
+        image_tag(channel.logo.url) if channel.logo
+      end
+      row :photos do |channel|
+        channel.photos.map do |photo|
+          image_tag(photo.image.url)
+        end.join(' ').html_safe
+      end
     end
     active_admin_comments
   end
@@ -48,12 +56,18 @@ ActiveAdmin.register Channel do
       f.input :name
       f.input :url_name
       f.input :visible
-      f.input :logo
       f.input :description
       f.input :website_url
       f.input :channel_percentage, label: "Percentage of revenue going to channel"
       f.input :teacher_percentage, label: "Percentage of revenue going to teacher"
       f.input :account, label: "Bank account number"
+
+      f.input :logo
+      f.has_many :photos do |photo|
+        photo.inputs "Photos" do
+          photo.input :image
+        end
+      end
     end
     f.buttons
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131124045241) do
+ActiveRecord::Schema.define(:version => 20131124054302) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -139,6 +139,13 @@ ActiveRecord::Schema.define(:version => 20131124045241) do
   end
 
   add_index "channel_lessons", ["channel_id", "lesson_id"], :name => "index_channel_lessons_on_channel_id_and_lesson_id", :unique => true
+
+  create_table "channel_photos", :force => true do |t|
+    t.integer  "channel_id"
+    t.string   "image"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "channels", :force => true do |t|
     t.string   "name"

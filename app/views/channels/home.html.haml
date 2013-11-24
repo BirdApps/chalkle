@@ -17,12 +17,12 @@
               - unless @channel.website_url.blank?
                 %a.fa_link.icon-home{href:@channel.website_url}= @channel.website_url
           .pictures
-            = image_tag 'http://placehold.it/360x240&text=photo1', class: 'main_photo'
+            - if @channel.photos.first
+              = image_tag @channel.photos.first.image.url, class: 'main_photo'
             .thumbnails
-              %img.thumbnail{src: 'http://placehold.it/84x56&text=photo1'}>
-              %img.thumbnail{src: 'http://placehold.it/84x56&text=photo2'}>
-              %img.thumbnail{src: 'http://placehold.it/84x56&text=photo3'}>
-              %img.thumbnail{src: 'http://placehold.it/84x56&text=photo4'}>
+              - if @channel.photos.count > 1
+                - @channel.photos.limit(4).each do |photo|
+                  %img.thumbnail{src: photo.image.url}>
 
             .small_controls
               %a.subscribe_link= image_tag('http://placehold.it/165x30&text=subscribe')
@@ -32,5 +32,5 @@
 
 :coffeescript
   $('.masthead .description').readmore({
-    maxHeight: 22 * 10;
+    maxHeight: 22 * 9;
   })
