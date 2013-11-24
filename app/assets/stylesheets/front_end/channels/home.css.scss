@@ -1,7 +1,7 @@
 $gutter-width: 15px;
 $gutters: $gutter-width * 2;
 $photo-width: 360px;
-$logo-column-width: 165px + $gutters;
+$logo-column-width: 165px;
 
 .channels-home {
   .navbar {
@@ -12,51 +12,56 @@ $logo-column-width: 165px + $gutters;
     margin: 15px 0;
     padding: 0;
 
-    > .container > .contents {
-      margin: 0px (-$gutter-width);
+    .masthead_contents {
+      display: table;
     }
 
     .logo_and_subscribe {
       width: $logo-column-width;
-      //float: left;
-      //display: inline-block;
       float: left;
-      padding: 0 $gutter-width;
+      display: table-cell;
+      vertical-align: top;
+
+      @media(max-width: $screen-xs-min) {
+        display: none;
+      }
     }
 
     .words_and_pictures {
-      //margin-left: 165px + $gutters;
       display: inline-block;
-      float: left;
-      margin: 0px (-$gutter-width);
       padding: 0 $gutter-width;
+      display: table-cell;
+      vertical-align: top;
 
-      @media(max-width: $screen-md-min) {
-        max-width: 585px;
-        max-width: $container-sm - $logo-column-width + $gutters;
-        //float: left;
-        //width: auto;
-        //display: block;
+      .words_and_pictures_contents {
+        margin: 0px (-$gutter-width);
+      }
+
+      .subscribe_link {
+        margin-top: 15px;
+      }
+
+      .small_controls {
+        display: none;
+      }
+
+      @media(max-width: $screen-xs-min) {
+        .small_controls {
+          padding-top: 15px;
+          display: block;
+        }
       }
 
       .wordy_bits {
-        //margin-right: $photo-width + $gutters;
         padding: 0 $gutter-width;
-        width: 580px;
+        max-width: 580px;
         display: inline-block;
-
-        @media(max-width: $screen-lg-min) {
-          //float: left;
-          //width: auto;
-          //display: block;
-        }
       }
 
       .pictures {
         $thumbnail_margin: 8px;
 
         width: $photo-width + $gutters;
-        //float: right;
         display: inline-block;
         padding: 0 $gutter-width;
 

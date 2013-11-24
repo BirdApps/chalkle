@@ -1,24 +1,28 @@
 .masthead
   .container
-    .contents
+    .masthead_contents
       .logo_and_subscribe
         = image_tag 'http://placehold.it/165x165&text=channel+logo', class: 'channel_logo'
         %a.subscribe_link= image_tag('http://placehold.it/165x30&text=subscribe')
       .words_and_pictures
-        .wordy_bits
-          %h2 Channel description
-          .description
-            %p
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et neque in turpis tempor tristique. Proin ultrices ipsum ante, at ornare justo tempus quis.
-            %p
-              Pellentesque pharetra pharetra eros, non gravida nunc bibendum ac. Aliquam erat volutpat. Curabitur id odio dui. Mauris sit amet mauris quis tellus mollis laoreet. In imperdiet leo sit amet arcu consequat tempor. Phasellus interdum dolor at libero euismod rhoncus. Nulla ultricies ipsum sollicitudin eros ullamcorper, vitae imperdiet nisi aliquet. Sed euismod, elit sagittis faucibus aliquam, elit est bibendum elit, quis lacinia magna sem vel odio. Proin sed est ac erat eleifend ullamcorper. Aliquam tincidunt scelerisque augue et egestas.
-        .pictures
-          = image_tag 'http://placehold.it/360x240&text=photo1', class: 'main_photo'
-          .thumbnails
-            %img.thumbnail{src: 'http://placehold.it/84x56&text=photo1'}>
-            %img.thumbnail{src: 'http://placehold.it/84x56&text=photo2'}>
-            %img.thumbnail{src: 'http://placehold.it/84x56&text=photo3'}>
-            %img.thumbnail{src: 'http://placehold.it/84x56&text=photo4'}>
+        .words_and_pictures_contents
+          .wordy_bits
+            %h2 Channel description
+            .description
+              %p
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et neque in turpis tempor tristique. Proin ultrices ipsum ante, at ornare justo tempus quis.
+              %p
+                Pellentesque pharetra pharetra eros, non gravida nunc bibendum ac. Aliquam erat volutpat. Curabitur id odio dui. Mauris sit amet mauris quis tellus mollis laoreet. In imperdiet leo sit amet arcu consequat tempor. Phasellus interdum dolor at libero euismod rhoncus. Nulla ultricies ipsum sollicitudin eros ullamcorper, vitae imperdiet nisi aliquet. Sed euismod, elit sagittis faucibus aliquam, elit est bibendum elit, quis lacinia magna sem vel odio. Proin sed est ac erat eleifend ullamcorper. Aliquam tincidunt scelerisque augue et egestas.
+          .pictures
+            = image_tag 'http://placehold.it/360x240&text=photo1', class: 'main_photo'
+            .thumbnails
+              %img.thumbnail{src: 'http://placehold.it/84x56&text=photo1'}>
+              %img.thumbnail{src: 'http://placehold.it/84x56&text=photo2'}>
+              %img.thumbnail{src: 'http://placehold.it/84x56&text=photo3'}>
+              %img.thumbnail{src: 'http://placehold.it/84x56&text=photo4'}>
+
+            .small_controls
+              %a.subscribe_link= image_tag('http://placehold.it/165x30&text=subscribe')
 
 .clearfix
 = render partial: '/lessons/index_without_filters'
