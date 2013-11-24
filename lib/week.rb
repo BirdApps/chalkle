@@ -67,6 +67,20 @@ module Weekify
       self
     end
 
+    def time_range
+      Range.new(first_moment, last_moment)
+    end
+
+    #@return [Time] the very beginning of the month
+    def first_moment
+      first_day.beginning_of_day
+    end
+
+    #@return [Time] the very end of the month
+    def last_moment
+      last_day.end_of_day
+    end
+
     %w(monday tuesday wednesday thursday friday saturday sunday).each_with_index do |day_name, index|
       define_method(day_name) do
         first_day + index

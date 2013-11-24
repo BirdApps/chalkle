@@ -52,10 +52,6 @@ class LessonsController < ApplicationController
       end
     end
 
-    def lessons_scope
-      start_of_association_chain.upcoming.order('start_at')
-    end
-
     def decorate(lessons)
       LessonDecorator.decorate_collection(lessons)
     end

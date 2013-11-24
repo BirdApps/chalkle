@@ -75,7 +75,8 @@ class Lesson < ActiveRecord::Base
   scope :published, where(status: STATUS_1)
   scope :paid, where("cost > 0")
   scope :by_date, order(:start_at)
-  scope :in_month, lambda {|month| where(:start_at => month.date_range)}
+  scope :in_month, lambda {|month| where("start_at" => month.time_range)}
+  #scope :in_month, lambda {|month| where(["\"lessons\".start_at ?", month.date_range.to_s(:db)]) }
   scope :in_week, lambda {|week| in_month(week)}
   scope :with_region, where("lessons.id IN (SELECT id FROM channel_lessons)")
   scope :displayable, lambda { published.visible }
