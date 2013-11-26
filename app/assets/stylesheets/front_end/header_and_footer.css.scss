@@ -1,36 +1,40 @@
 $navbar-height: 62px;
+$vertical-padding: 10px;
+$line-height: $navbar-height - ($vertical-padding * 2);
 
 .navbar {
   font-weight: bold;
   background: #222222 asset-url("front_end/home/header_background.jpg", image) left top repeat;
   border-bottom: none;
+  padding: $vertical-padding 0px;
   font-size: 20px;
-  height: $navbar-height;
-  line-height: $navbar-height;
+  min-height: $line-height;
+  line-height: $line-height;
 
   .navbar-brand {
     padding: 0;
 
     img.logo {
-      height: $navbar-height - 20px;
-      margin: 10px 0px;
+      height: $line-height;
+      margin: 0px;
     }
   }
 
   .nav {
-    height: $navbar-height;
+    min-height: $line-height;
+    margin: 0px;
 
     //float: right;
     li {
-      height: $navbar-height;
+      height: $line-height;
       margin-left: 15px;
-      height: 100%;
+      margin-bottom: 0;
       &.fl-right {float: right;}
-      &.no-right-margin {margin: 0 0 0 15px;}
+      &.no-right-margin {margin-right: 0;}
 
       a {
-        height: $navbar-height;
-        line-height: $navbar-height;
+        height: $line-height;
+        line-height: $line-height;
         color: white;
         display: block;
         padding: 0 10px;
