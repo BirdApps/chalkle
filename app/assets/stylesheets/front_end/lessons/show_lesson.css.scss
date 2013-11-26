@@ -30,6 +30,24 @@ $sidebar-color: #E8E8E8;
 
         .booking-actions {
           margin-top: 1em;
+
+          .btn {
+            /* Causing inheritance issues */
+            font-size: 1.25em;
+            font-weight: bold;
+          }
+          .popover {
+            font-size: 16px;
+            color: $text-color;
+            text-shadow: none;
+            font-weight: normal;
+            a {
+              color: $link-color;
+              &:hover {
+                color: $link-color-hover;
+              }
+            }
+          }
         }
 
         .lesson-image {

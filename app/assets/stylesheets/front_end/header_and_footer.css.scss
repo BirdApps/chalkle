@@ -1,0 +1,50 @@
+.navbar {
+  font-weight: bold;
+  font-size: 15px;
+  //line-height: 1em;
+  background: #222222 asset-url("texture-gray-dark.png", image) left top repeat;
+  border-bottom: solid 1px gray;
+
+  .navbar-brand {
+    padding-bottom: 5px;
+  }
+
+  .nav {
+    margin-top: 17px;
+    //float: right;
+    li {
+      margin-left: 15px;
+      &.fl-right {float: right;}
+      &.no-right-margin {margin: 0 0 0 15px;}
+      a {
+        position: relative;
+        color: white;
+        display: block;
+        padding: 7px 10px;
+        line-height: 18px;
+        text-decoration: none;
+        @include border-radius(2px);
+        border: dashed 1px #999999;
+        &.no-border {
+          border: none;
+          font-weight: normal;
+        }
+        text-shadow: 0px 1px 0px black;
+        &:hover {
+          background: none;
+          color: $pink;
+        }
+      }
+      .dropdown-menu li a {
+        border: none;
+        color: $grayLight;
+        text-shadow: none;
+        font-weight: bold;
+        &:hover {
+          background: none;
+          color: $pink;
+        }
+      }
+    }
+  }
+}
