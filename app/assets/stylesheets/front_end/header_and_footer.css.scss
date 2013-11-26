@@ -20,6 +20,19 @@ $line-height: $navbar-height - ($vertical-padding * 2);
     }
   }
 
+  .navbar-toggle {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+
+    .fa-bars {
+      color: white;
+      font-size: $line-height * 0.8;
+      line-height: $line-height !important;
+      height: $line-height;
+    }
+  }
+
   .nav {
     min-height: $line-height;
     margin: 0px;
