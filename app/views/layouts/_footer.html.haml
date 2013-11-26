@@ -1,0 +1,29 @@
+%footer.page-footer
+  .container
+    .row
+      .col-sm-6
+        %h3 Contact us
+        %ul.email-list
+          %li
+            General enquiries -
+            = link_to "enquiries@chalkle.com", 'mailto:enquiries@chalkle.com', class: 'colour1'
+          %li
+            Account enquiries -
+            = link_to "accounts@chalkle.com", 'mailto:accounts@chalkle.com', class: 'colour2'
+          %li
+            Horowhenua channel -
+            = link_to "horowhenua@chalkle.com", 'mailto:horowhenua@chalkle.com', class: 'colour3'
+          %li
+            Wellington enquiries -
+            = link_to "wellington@chalkle.com", 'mailto:wellington@chalkle.com', class: 'colour4'
+
+      .col-sm-6
+        %h3 Core chalkle° address:
+        .address
+          .street 2/22 Allen Street
+          .city Wellington, 6011
+          .country New Zealand
+
+        .social_media_links
+          = link_to image_tag('front_end/home/twitter.png', alt: 'Twitter'), 'https://www.facebook.com/Chalkle'
+          = link_to image_tag('front_end/home/facebook.png', alt: 'Facebook'), 'https://twitter.com/ChalkleNZ/'

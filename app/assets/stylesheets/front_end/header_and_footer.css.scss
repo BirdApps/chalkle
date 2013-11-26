@@ -53,3 +53,37 @@ $navbar-height: 62px;
     }
   }
 }
+
+footer.page-footer {
+  padding-bottom: 2em;
+  background: $chalkboard-background;
+  color: #CCCCCC;
+
+  h3, h4 {
+    color: #CCCCCC;
+    text-decoration: none;
+    border: none;
+    font-style: $chalky-font;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      margin-left: 0;
+      margin-bottom: 10px;
+    }
+  }
+
+  .email-list {
+    li {
+      margin-bottom: 0;
+    }
+  }
+
+  .social_media_links {
+    margin-top: 20px;
+    margin-left: -5px;
+  }
+}

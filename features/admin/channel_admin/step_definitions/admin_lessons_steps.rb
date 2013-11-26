@@ -1,6 +1,6 @@
 Given /^there is a lesson with no details in the "(.*?)" channel$/ do |name|
   channel = Channel.find_by_name(name)
-  lesson = FactoryGirl.create(:lesson, name: "Test Class")
+  lesson = FactoryGirl.create(:published_lesson, name: "Test Class", start_at: 1.day.from_now)
   lesson.channels << channel
 end
 
