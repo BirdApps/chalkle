@@ -1,27 +1,33 @@
-%nav.navbar.navbar-inverse.navbar-static-top
+%nav.navbar.navbar-static-top{role:'navigation'}
   .container
-    = link_to (image_tag '/assets/front_end/home/logo.png', alt: 'chalkle°', class: 'logo'), root_path, class: 'navbar-brand'
+    .navbar-header
+      %button.navbar-toggle{:type => "button", 'data-toggle' => "collapse", 'data-target' => "#chalkle-page-nav"}
+        %span.sr-only Toggle navigation
+        %i.fa.fa-bars
+      %a.navbar-brand{href: root_path}
+        = image_tag '/assets/front_end/home/logo.png', alt: 'chalkle°', class: 'logo'
 
-    %ul.nav.navbar-nav
-      - if !chalkler_signed_in?
-        - if Channel.exists? name: 'Horowhenua'
-          %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
-      - else
-        - if current_chalkler.channels.exists? name: 'Horowhenua'
-          %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
-        %li= link_to 'Teach', new_chalklers_teaching_path
-        %li= link_to 'Request class', new_chalklers_lesson_suggestion_path
-        %li= link_to 'Bookings', bookings_path
+    #chalkle-page-nav.collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        - if !chalkler_signed_in?
+          - if Channel.exists? name: 'Horowhenua'
+            %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
+        - else
+          - if current_chalkler.channels.exists? name: 'Horowhenua'
+            %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
+          %li= link_to 'Teach', new_chalklers_teaching_path
+          %li= link_to 'Request class', new_chalklers_lesson_suggestion_path
+          %li= link_to 'Bookings', bookings_path
 
-    %ul.nav.navbar-nav.pull-right
-      - if !chalkler_signed_in?
-        %li= link_to 'Join chalkle&deg;'.html_safe, new_chalkler_registration_path
-        %li= link_to 'Sign in', new_chalkler_session_path
-      - else
-        %li.dropdown
-          %a.dropdown-toggle{'data-toggle'=>'dropdown'}
-            = current_chalkler.name
-            %i.icon-chevron-down
-          %ul.dropdown-menu
-            %li= link_to 'Email settings', chalklers_preferences_path, { :tabindex => '-1' }
-        %li= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
+      %ul.nav.navbar-nav.pull-right
+        - if !chalkler_signed_in?
+          %li= link_to 'Join chalkle&deg;'.html_safe, new_chalkler_registration_path
+          %li= link_to 'Sign in', new_chalkler_session_path
+        - else
+          %li.dropdown
+            %a.dropdown-toggle{'data-toggle'=>'dropdown'}
+              = current_chalkler.name
+              %i.fa.fa-chevron-down
+            %ul.dropdown-menu
+              %li= link_to 'Email settings', chalklers_preferences_path, { :tabindex => '-1' }
+          %li= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'

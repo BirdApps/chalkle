@@ -38,8 +38,8 @@
                     .day_title
                       %span.day_letter= day.strftime('%A').first
                       %span.date= day.strftime('%d %b')
-                      %i.icon-resize-full
-                      %i.icon-resize-small
+                      %i.fa.fa-expand
+                      %i.fa.fa-compress
                     %ul.lessons
                       - if lessons[day]
                         - lessons[day].each_with_index do |lesson, index|
@@ -54,5 +54,5 @@
                     more
   - next_month = month.next
   = link_to specific_month_lessons_path(channel_id: @channel, year: next_month.year, month: next_month.month, format: :js), {:remote => true, 'data-append' => 'months', 'data-remove-on-success' => true, :class => 'next-calendar-section'} do
-    %i.icon-arrow-down
+    %i.fa.fa-arrow-down
     Show next month

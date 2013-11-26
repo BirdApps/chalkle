@@ -58,7 +58,7 @@ group :assets do
   gem 'sass-rails'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', git: 'git://github.com/anjlab/bootstrap-rails'
-  gem 'font-awesome-sass-rails'
+  gem 'font-awesome-rails'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.9.1'
   gem 'haml_assets',         '~> 0.2.1'

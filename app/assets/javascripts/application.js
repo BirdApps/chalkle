@@ -18,6 +18,7 @@
 //= require twitter/bootstrap/popover
 //= require twitter/bootstrap/modal
 //= require twitter/bootstrap/dropdown
+//= require twitter/bootstrap/collapse
 //= require underscore
 //= require modernizr
 //= require front_end/front_end

@@ -83,12 +83,12 @@ Your Chalkle Administrator")
     content_tag :div, nil, class: 'availability' do
       if lesson.limited_spaces?
         if lesson.spaces_left?
-          icon(:ok) + pluralize(lesson.spaces_left, 'spot') + ' left'
+          icon(:check) + pluralize(lesson.spaces_left, 'spot') + ' left'
         else
           icon(:thumbs_down) + 'fully booked!'
         end
       else
-        icon(:ok) + 'No size limit'
+        icon(:check) + 'No size limit'
       end
     end
   end
@@ -98,16 +98,7 @@ Your Chalkle Administrator")
   end
 
   def icon(name)
-    content_tag(:i, nil, class: "icon-#{name.to_s.gsub('_', '-')}") + ' '
+    content_tag(:i, nil, class: "fa fa-#{name.to_s.gsub('_', '-')}") + ' '
   end
-  #%i.icon-thumbs-up
-  #        = pluralize lesson.spaces_left, 'spot'
-  #left
-  #- else
-  #    %i.icon-thumbs-down
-  #        fully booked!
-  #    - else
-  #      %i.icon-ok
-  #    No size limit
 
 end

@@ -30,37 +30,37 @@
         .details_block
           .time_details
             .iconic_block.time>
-              %i.icon-time
+              %i.fa.fa-clock-o
               = @lesson.start_at.strftime('%l:%M %p').strip
             .iconic_block.date
-              %i.icon-calendar
+              %i.fa.fa-calendar
               .name= @lesson.start_at.strftime('%A').strip
               .day= @lesson.start_at.strftime('%d %B').strip
         .details_block
           .cost_and_location_details
             .iconic_block.price
-              %i.icon-money
+              %i.fa.fa-money
               = @lesson.formatted_price
             - unless @lesson.venue.blank?
               .iconic_block.location
-                %i.icon-map-marker
+                %i.fa.fa-map-marker
                 = @lesson.venue
         .details_block
           .attendance_details
             .iconic_block.availability
               - if @lesson.limited_spaces?
                 - if @lesson.spaces_left?
-                  %i.icon-thumbs-up
+                  %i.fa.fa-thumbs-up
                   = pluralize @lesson.spaces_left, 'spot'
                   left
                 - else
-                  %i.icon-thumbs-down
+                  %i.fa.fa-thumbs-down
                   fully booked!
               - else
-                %i.icon-ok
+                %i.fa.fa-check
                 No size limit
             .iconic_block.attending
-              %i.icon-user
+              %i.fa.fa-user
               = @lesson.attendance
               attending
       - if teacher = @lesson.teacher

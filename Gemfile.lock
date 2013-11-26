@@ -195,9 +195,8 @@ GEM
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     fastercsv (1.5.5)
-    font-awesome-sass-rails (3.0.2.2)
-      railties (>= 3.1.1)
-      sass-rails (>= 3.1.1)
+    font-awesome-rails (4.0.3.0)
+      railties (>= 3.2, < 5.0)
     formtastic (2.2.1)
       actionpack (>= 3.0)
     gherkin (2.12.0)
@@ -466,7 +465,7 @@ DEPENDENCIES
   email_spec (~> 1.4.0)
   execjs (~> 1.4.0)
   factory_girl_rails (~> 4.2.1)
-  font-awesome-sass-rails
+  font-awesome-rails
   google-analytics-rails
   google-webfonts-rails
   haml-rails (~> 0.3.5)

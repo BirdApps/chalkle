@@ -182,15 +182,15 @@ table.month_calendar_view {
     &.has_classes i {
       display: inherit;
 
-      &.icon-resize-small {
+      &.fa-compress {
         display: none;
       }
     }
 
-    &.expanded i.icon-resize-small {
+    &.expanded i.fa-compress {
       display: inherit;
     }
-    &.expanded i.icon-resize-full {
+    &.expanded i.fa-expand {
       display: none;
     }
   }
