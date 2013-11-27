@@ -9,6 +9,7 @@ class Chalklers::DashboardController < Chalklers::BaseController
 
   def beta
     @lessons = Lesson.with_region.upcoming.published.by_date.limit(4 * 6)
+    @featured_channels = Channel.visible.limit(5).all
   end
 
   def settings

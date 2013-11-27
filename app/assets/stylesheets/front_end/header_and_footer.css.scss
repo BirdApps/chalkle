@@ -53,6 +53,8 @@ $line-height: $navbar-height - ($vertical-padding * 2);
         padding: 0 10px;
         text-decoration: none;
         font-weight: normal;
+        background-color: transparent;
+
         &:hover {
           text-decoration: underline;
         }

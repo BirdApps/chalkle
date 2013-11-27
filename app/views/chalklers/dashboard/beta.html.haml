@@ -39,8 +39,12 @@
           Sign up to get the low-down from organisations you know and love!
           Don't miss out on the real deal from people in the field: get their
           upcoming chalkles sent straight to your inbox. It's that easy.
-      .single-column.section_target
-        = link_to "View all channels", '#'
+      .channel_links
+        - @featured_channels.each do |channel|
+          %a.channel_link{href: channel_path(channel)}
+            = channel_logo channel
+      -#.single-column.section_target
+      -#  = link_to "View all channels", '#'
   %section.even#be_a_teacher
     .container
       .single-column

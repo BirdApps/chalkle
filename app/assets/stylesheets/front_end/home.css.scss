@@ -203,6 +203,20 @@
 
   #join_a_channel {
     text-align: center;
+
+    .channel_links {
+      margin: 20px 0;
+
+      a.channel_link {
+        text-decoration: none;
+        margin: 0 5px;
+
+        img.channel_logo {
+          height: 165px;
+          width: 165px;
+        }
+      }
+    }
   }
 
   #be_a_teacher {

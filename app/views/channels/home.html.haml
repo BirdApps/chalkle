@@ -2,10 +2,7 @@
   .container
     .masthead_contents
       .logo_and_subscribe
-        - if @channel.logo
-          = image_tag @channel.logo.url, class: 'channel_logo'
-        - else
-          = image_tag 'http://placehold.it/165x165&text=channel+logo', class: 'channel_logo'
+        = channel_logo @channel
         -#%a.subscribe_link= image_tag('http://placehold.it/165x30&text=subscribe')
       .words_and_pictures
         .words_and_pictures_contents
