@@ -63,13 +63,13 @@
               just an enthusiasm to share your unique hobby, skill, trade or area of
               knowledge.
           .col-xs-4.button-part
-            = link_to image_tag('front_end/home/button_give_a_class.png', alt: 'Give a class'), '#', class: 'btn-primary'
+            = link_to image_tag('front_end/home/button_give_a_class.png', alt: 'Give a class'), new_chalklers_teaching_path, class: 'btn-primary'
 
-  %section.odd#curate_channel
-    .container
-      %p.big_statement
-        Want to curate your own chalkle° channel?
-        = link_to 'Find out more.', '#'
+  -#%section.odd#curate_channel
+  -#  .container
+  -#    %p.big_statement
+  -#      Want to curate your own chalkle° channel?
+  -#      = link_to 'Find out more.', '#'
   = render '/layouts/expanded_footer'
 :coffeescript
   $ ->
