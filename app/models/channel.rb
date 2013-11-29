@@ -26,6 +26,7 @@ class Channel < ActiveRecord::Base
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
+  scope :has_logo, where("logo IS NOT NULL")
 
   #absolute minimum percentage of revenue paid to chalkle
   CHALKLE_PERCENTAGE = 0.125

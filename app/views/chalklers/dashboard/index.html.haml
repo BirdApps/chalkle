@@ -34,20 +34,21 @@
       = render partial: 'lessons/upcoming_lessons_preview', locals: {lessons: @lessons, per_page: 4}
       .single-column.section_target
         = link_to "View all classes", lessons_path
-  %section.odd#join_a_channel
-    .container
-      .single-column
-        %h3 Join a chalkle° channel
-        %p
-          Sign up to get the low-down from organisations you know and love!
-          Don't miss out on the real deal from people in the field: get their
-          upcoming chalkles sent straight to your inbox. It's that easy.
-      .channel_links
-        - @featured_channels.each do |channel|
-          %a.channel_link{href: channel_path(channel)}
-            = channel_logo channel
-      -#.single-column.section_target
-      -#  = link_to "View all channels", '#'
+  - unless @featured_channels.empty?
+    %section.odd#join_a_channel
+      .container
+        .single-column
+          %h3 Join a chalkle° channel
+          %p
+            Sign up to get the low-down from organisations you know and love!
+            Don't miss out on the real deal from people in the field: get their
+            upcoming chalkles sent straight to your inbox. It's that easy.
+        .channel_links
+          - @featured_channels.each do |channel|
+            %a.channel_link{href: channel_path(channel)}
+              = channel_logo channel
+        -#.single-column.section_target
+        -#  = link_to "View all channels", '#'
   %section.even#be_a_teacher
     .container
       .single-column
