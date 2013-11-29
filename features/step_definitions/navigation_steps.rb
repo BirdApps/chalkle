@@ -2,6 +2,10 @@ When /^they visit the "(.*?)" page$/ do |link|
   click_link link
 end
 
+When /^they visit the Request class page$/ do
+  visit '/chalklers/class_suggestions/new'
+end
+
 Then /^they should see the "(.*?)" button$/ do |name|
   find_link name
 end

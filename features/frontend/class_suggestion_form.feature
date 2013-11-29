@@ -9,12 +9,12 @@ Background:
   And the "Science" category exists
 
 Scenario: Chalkler can submit a new class suggestion
-  When they visit the "Request class" page
+  When they visit the Request class page
   And they enter new class suggestion details
   Then they should see the new class suggestion confirmation message
 
 Scenario: Chalkler can select channel if they belong to multiple channels
   Given the chalkler "Sina" belongs to the "Whanau" channel
-  When they visit the "Request class" page
+  When they visit the Request class page
   And they enter new class suggestion details with channel
   Then they should see the new class suggestion confirmation message

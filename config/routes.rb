@@ -4,8 +4,10 @@ Chalkle::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :chalklers, controllers: { omniauth_callbacks: 'chalklers/omniauth_callbacks', registrations: 'chalklers/registrations' }
 
+  authenticated :chalkler do
+    root :to => "lessons#index"
+  end
   root to: 'chalklers/dashboard#index'
-  match '/beta' => 'chalklers/dashboard#beta'
 
   resources :lessons, only: [:show, :index], path: 'classes' do
     collection do

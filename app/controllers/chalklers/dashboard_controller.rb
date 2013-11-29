@@ -1,13 +1,11 @@
 class Chalklers::DashboardController < Chalklers::BaseController
   before_filter :authenticate_chalkler!, :except => [:index, :beta]
   before_filter :has_channel_membership?, :except => [:index, :beta]
+  before_filter :logged_out_only, only: :index
 
-  layout 'home', only: :beta
+  layout 'home', only: :index
 
   def index
-  end
-
-  def beta
     @lessons = Lesson.with_region.upcoming.published.by_date.limit(4 * 6)
     @featured_channels = Channel.visible.limit(5).all
   end
@@ -19,4 +17,13 @@ class Chalklers::DashboardController < Chalklers::BaseController
   def missing_channel
     @channels = Channel.where{ :urlname != nil }
   end
+
+  private
+
+    def logged_out_only
+      if current_chalkler
+        redirect_to lessons_path
+        false
+      end
+    end
 end

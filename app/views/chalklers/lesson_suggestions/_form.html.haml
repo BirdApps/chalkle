@@ -2,7 +2,7 @@
   = f.error_notification
   .form-inputs
     = f.input :name, label: 'What would the class be called?'
-    = f.input :category_id, as: :select, label: 'Which category is the best fit for the class?', collection: Category.all
+    = f.input :category_id, as: :select, label: 'Which category is the best fit for the class?', collection: Category.select_options
 
     = f.input :description, label: 'Please describe what you would like to happen in the class?', input_html: {rows: 3}
     - if current_chalkler.channels.size > 1
