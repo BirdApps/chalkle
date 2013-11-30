@@ -81,6 +81,7 @@ class Lesson < ActiveRecord::Base
   scope :with_region, where("lessons.id IN (SELECT id FROM channel_lessons)")
   scope :displayable, lambda { published.visible }
   scope :upcoming_or_today, lambda { where("start_at >= ?", Time.now.to_date.to_time) }
+  scope :not_meetup, where("meetup_url IS NULL")
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at
