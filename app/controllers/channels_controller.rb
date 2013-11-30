@@ -3,6 +3,7 @@ class ChannelsController < ApplicationController
   layout 'new'
 
   before_filter :load_channel
+  before_filter :redirect_meetup_channels, only: :show
 
   def show
     @month_lessons = lessons_for_time.load_month_lessons Month.current
@@ -15,8 +16,14 @@ class ChannelsController < ApplicationController
     @channel = Channel.find(params[:id])
   end
 
+  def redirect_meetup_channels
+    if @channel.meetup_url.present?
+      redirect_to @channel.meetup_url
+      return false
+    end
+  end
+
   def lessons_for_time
     @lessons_for_time ||= Querying::LessonsForTime.new(@channel.lessons)
   end
-
 end
