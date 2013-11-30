@@ -1,10 +1,11 @@
 class LessonsController < ApplicationController
   after_filter :store_location
   before_filter :load_channel
+  before_filter :load_lesson, only: :show
+  before_filter :redirect_meetup_lessons, only: :show
   layout 'new'
 
   def show
-    @lesson = start_of_association_chain.find(params[:id]).decorate
     week = get_current_week(@lesson.start_on || Date.today)
     @week_lessons = lessons_for_time.load_week_lessons(week)
   end
@@ -23,6 +24,17 @@ class LessonsController < ApplicationController
   end
 
   private
+
+    def load_lesson
+      @lesson = start_of_association_chain.find(params[:id]).decorate
+    end
+
+    def redirect_meetup_lessons
+      if @lesson.meetup_url.present?
+        redirect_to @lesson.meetup_url
+        return false
+      end
+    end
 
     def lessons_for_time
       @lessons_for_time ||= Querying::LessonsForTime.new(start_of_association_chain)

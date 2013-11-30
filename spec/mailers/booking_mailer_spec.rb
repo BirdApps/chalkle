@@ -94,8 +94,9 @@ describe BookingMailer do
       end
 
       it "should display how to pay for people who booked using Meetup" do
-        @booking.update_attributes({:payment_method => "meetup"}, :as => :admin)
         @lesson.update_attributes({:meetup_url =>'http://meetup.com'}, :as => :admin)
+        @booking.update_attributes({:payment_method => "meetup"}, :as => :admin)
+        @booking.reload
         email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
         email.should have_body_text(/#{@lesson.meetup_url}/)
       end

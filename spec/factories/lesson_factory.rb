@@ -1,8 +1,6 @@
 FactoryGirl.define do
   factory :lesson do
     name "Learning fun"
-    meetup_id
-    meetup_url "http://meetup.com"
     description "You should really learn, it's fun!"
     cost 20
 

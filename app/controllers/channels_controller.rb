@@ -5,10 +5,6 @@ class ChannelsController < ApplicationController
   before_filter :load_channel
 
   def show
-    redirect_to channel_lessons_path(@channel)
-  end
-
-  def home
     @month_lessons = lessons_for_time.load_month_lessons Month.current
     @week_lessons = lessons_for_time.load_upcoming_week_lessons Week.current
   end

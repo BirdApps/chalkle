@@ -19,10 +19,6 @@ Chalkle::Application.routes.draw do
   end
 
   resources :channels, only: :show do
-    member do
-      get :home
-    end
-
     resources :lessons, only: [:show, :index], path: 'classes' do
       collection do
         get :month, shallow: true
