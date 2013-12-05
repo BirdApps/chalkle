@@ -12,5 +12,7 @@ module OmniAvatar
     attr_accessible :remote_image_url, :provider_name, :original_url
 
     validates_uniqueness_of :provider_name, scope: [:owner_id, :owner_type]
+
+    delegate :url, to: :image
   end
 end
