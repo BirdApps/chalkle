@@ -1,3 +1,5 @@
+require 'carrierwave'
+
 class ChannelPhoto < ActiveRecord::Base
   mount_uploader :image, ChannelPhotoUploader
 

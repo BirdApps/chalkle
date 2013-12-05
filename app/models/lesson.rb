@@ -1,3 +1,6 @@
+require 'carrierwave'
+require 'lesson_upload_image_uploader'
+
 class Lesson < ActiveRecord::Base
   include Categorizable
 

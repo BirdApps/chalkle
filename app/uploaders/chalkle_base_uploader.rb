@@ -1,15 +1,14 @@
 # encoding: utf-8
+require 'chalkle_carrierwave'
 
 class ChalkleBaseUploader < CarrierWave::Uploader::Base
-  include CarrierWave::RMagick
-
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
   # include Sprockets::Helpers::RailsHelper
   # include Sprockets::Helpers::IsolatedHelper
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  # storage :file
+  #storage :fog
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -17,9 +16,10 @@ class ChalkleBaseUploader < CarrierWave::Uploader::Base
     if Rails.env.test? or Rails.env.cucumber?
       "uploads/test/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
     else
-      "system/uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+      "#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
     end
   end
+
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url

@@ -47,8 +47,10 @@ gem 'draper',        '~> 1.0'
 gem 'google-webfonts-rails'
 
 #attachments
-gem 'carrierwave'
-gem "rmagick"
+gem 'carrierwave', require: false
+gem 'rmagick', require: false
+gem 'unf', require: false       # optional dependency used by fog for unicode strings
+gem 'fog', ">= 1.3.1", require: false
 
 gem 'omni_avatar', path: 'vendor/gems/omni_avatar'
 

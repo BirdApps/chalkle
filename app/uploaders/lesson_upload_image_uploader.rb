@@ -1,6 +1,7 @@
 # encoding: utf-8
+require 'chalkle_base_image_uploader'
 
-class LessonUploadImageUploader < ChalkleBaseUploader
+class LessonUploadImageUploader < ChalkleBaseImageUploader
   version :mini do
     process :resize_to_fill => [65, 65]
   end
