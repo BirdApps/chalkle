@@ -5,5 +5,4 @@ end
 
 Then /^they should see this lesson suggestion in the "(.*?)" channel$/ do |channel_name|
   page.should have_content("Test Suggestion")
-  page.should have_content(channel_name)
 end

@@ -15,7 +15,6 @@ else
     def partition
       "#{model.id.to_s[-3..-1]}/#{model.id.to_s[-6..-4]}"
     end
-
   end
   AvatarBaseUploader
 end

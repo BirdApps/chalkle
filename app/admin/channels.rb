@@ -40,11 +40,11 @@ ActiveAdmin.register Channel do
       row :updated_at
 
       row :logo do |channel|
-        image_tag(channel.logo.url) if channel.logo
+        image_tag(channel.logo.url) if channel.logo.present?
       end
       row :photos do |channel|
         channel.photos.map do |photo|
-          image_tag(photo.image.url)
+          image_tag(photo.image.url) if photo.image.present?
         end.join(' ').html_safe
       end
     end

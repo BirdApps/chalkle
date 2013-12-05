@@ -11,6 +11,8 @@ class Channel < ActiveRecord::Base
   validate :percentage_sum_validation
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, :message => "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
+  validates_uniqueness_of :name, allow_blank: true
+  validates_uniqueness_of :url_name, allow_blank: true
 
   has_many :channel_admins
   has_many :admin_users, :through => :channel_admins
