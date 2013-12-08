@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131130071609) do
+ActiveRecord::Schema.define(:version => 20131208213635) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -118,13 +118,6 @@ ActiveRecord::Schema.define(:version => 20131130071609) do
   end
 
   add_index "channel_categories", ["channel_id", "category_id"], :name => "index_channel_categories_on_channel_id_and_category_id", :unique => true
-
-  create_table "channel_chalklers", :id => false, :force => true do |t|
-    t.integer "channel_id",  :null => false
-    t.integer "chalkler_id", :null => false
-  end
-
-  add_index "channel_chalklers", ["channel_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
 
   create_table "channel_lesson_suggestions", :id => false, :force => true do |t|
     t.integer "channel_id",           :null => false
@@ -292,6 +285,13 @@ ActiveRecord::Schema.define(:version => 20131130071609) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "subscriptions", :id => false, :force => true do |t|
+    t.integer "channel_id",  :null => false
+    t.integer "chalkler_id", :null => false
+  end
+
+  add_index "subscriptions", ["channel_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
 
   create_table "venues", :force => true do |t|
     t.string   "name",       :null => false

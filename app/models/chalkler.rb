@@ -23,8 +23,8 @@ class Chalkler < ActiveRecord::Base
   validates_presence_of :channel_ids, :on => :update
   validates_presence_of :email, :unless => :meetup_id?
 
-  has_many :channel_chalklers
-  has_many :channels, :through => :channel_chalklers
+  has_many :subscriptions
+  has_many :channels, :through => :subscriptions
   has_many :bookings
   has_many :lessons, :through => :bookings
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"

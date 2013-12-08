@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChannelChalkler do
+describe Subscription do
   it { should belong_to(:channel) }
   it { should belong_to(:chalkler) }
 end
