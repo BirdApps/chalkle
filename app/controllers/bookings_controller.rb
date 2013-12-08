@@ -1,6 +1,5 @@
 class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!
-  before_filter :horowhenua?, :except => [:show, :index, :cancel, :edit, :update]
   before_filter :redirect_on_paid, :only => [:edit, :update]
 
   def index

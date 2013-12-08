@@ -30,11 +30,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def horowhenua?
-    channel = Channel.find params[:channel_id]
-    channel.name == 'Horowhenua' || not_found
-  end
-
   def store_location
     session[:previous_url] = request.fullpath unless request=~ /\/chalklers/
   end
