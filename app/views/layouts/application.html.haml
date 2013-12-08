@@ -8,14 +8,16 @@
     = csrf_meta_tag
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag "application"
+    = google_webfonts_init(google: 'Shadows Into Light Two')
 
   %body{ class: body_class }
     = render 'layouts/navigation'
 
-    .old_front_end_body
+    .container
+      = render 'layouts/messages'
+
+    .front_end_body.oldlayout
       .container
-        = render 'layouts/messages'
         = yield
 
-    %footer.row.site-footer
-      .container
+    = render 'layouts/footer'
