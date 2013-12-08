@@ -24,7 +24,7 @@ class Chalkler < ActiveRecord::Base
   validates_presence_of :email, :unless => :meetup_id?
 
   has_many :subscriptions
-  has_many :channels, :through => :subscriptions
+  has_many :channels, through: :subscriptions, source: :channel
   has_many :bookings
   has_many :lessons, :through => :bookings
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"

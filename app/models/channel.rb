@@ -15,15 +15,15 @@ class Channel < ActiveRecord::Base
   validates_uniqueness_of :url_name, allow_blank: true
 
   has_many :channel_admins
-  has_many :admin_users, :through => :channel_admins
+  has_many :admin_users, through: :channel_admins
   has_many :subscriptions
-  has_many :chalklers, :through => :subscriptions
+  has_many :subscribers, through: :subscriptions, source: :chalkler
   has_many :channel_lessons
-  has_many :lessons, :through => :channel_lessons
-  has_many :bookings, :through => :lessons
-  has_many :payments, :through => :bookings
+  has_many :lessons, through: :channel_lessons
+  has_many :bookings, through: :lessons
+  has_many :payments, through: :bookings
   has_many :channel_categories
-  has_many :categories, :through => :channel_categories
+  has_many :categories, through: :channel_categories
   has_many :photos, class_name: 'ChannelPhoto', dependent: :destroy
 
   accepts_nested_attributes_for :photos
@@ -82,11 +82,11 @@ class Channel < ActiveRecord::Base
 
   #Properties of Channels
   def new_chalklers(start_date, end_date)
-    chalklers.where{(created_at.gt start_date.utc) & (created_at.lteq end_date.utc)}
+    subscribers.where{(created_at.gt start_date.utc) & (created_at.lteq end_date.utc)}
   end
 
   def all_chalklers(date)
-    chalklers.where{created_at.lteq date.utc}
+    subscribers.where{created_at.lteq date.utc}
   end
 
   def lesson_announced(start_date,end_date)
