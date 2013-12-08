@@ -12,5 +12,6 @@ unless Rails.env.test? or Rails.env.cucumber?
       :region                 => 'ap-southeast-2',
     }
     config.fog_directory  = "chalkle-#{Rails.env}"
+    config.cache_dir = Rails.root.join('tmp', 'uploads')
   end
 end
