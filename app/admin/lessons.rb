@@ -1,3 +1,6 @@
+require 'carrierwave'
+require 'lesson_upload_image_uploader'
+
 ActiveAdmin.register Lesson  do
   csv do
     column :id
