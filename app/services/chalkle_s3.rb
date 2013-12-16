@@ -13,5 +13,6 @@ unless Rails.env.test? or Rails.env.cucumber?
     }
     config.fog_directory  = "chalkle-#{Rails.env}"
     config.cache_dir = Rails.root.join('tmp', 'uploads')
+    config.root = '/'
   end
 end

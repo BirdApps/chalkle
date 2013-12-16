@@ -13,6 +13,8 @@ module OmniAvatar
 
     validates_uniqueness_of :provider_name, scope: [:owner_id, :owner_type]
 
-    delegate :url, to: :image
+    def url
+      image.url if image.present?
+    end
   end
 end
