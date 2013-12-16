@@ -12,7 +12,7 @@ class AdminUser < ActiveRecord::Base
   has_many :channel_admins
   has_many :channels, :through => :channel_admins
   has_many :lessons, :through => :channels, :uniq => true
-  has_many :subscribers, :through => :channels, :uniq => true
+  has_many :chalklers, :through => :channels, :uniq => true
   has_many :bookings, :through => :channels, :uniq => true
   has_many :categories, :through => :channels, :uniq => true
   has_many :payments, :through => :bookings

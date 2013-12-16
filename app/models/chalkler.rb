@@ -19,8 +19,6 @@ class Chalkler < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :meetup_id, allow_blank: true
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
-  validates_presence_of :join_channels, :on => :create
-  validates_presence_of :channel_ids, :on => :update
   validates_presence_of :email, :unless => :meetup_id?
 
   has_many :subscriptions

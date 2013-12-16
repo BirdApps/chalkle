@@ -20,7 +20,7 @@ class Ability
     when "channel admin"
       can :read, Channel, :id => user.channel_ids
       can :create, Chalkler
-      can [:read, :update, :send_reset_password_mail], Chalkler, :id => user.subscriber_ids
+      can [:read, :update, :send_reset_password_mail], Chalkler, :id => user.chalkler_ids
       can :manage, LessonSuggestion
       can [:read, :update, :meetup_template, :copy_lesson, :hide, :unhide], Lesson, :id => user.lesson_ids
       can :create, Booking

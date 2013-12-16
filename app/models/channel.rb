@@ -17,7 +17,7 @@ class Channel < ActiveRecord::Base
   has_many :channel_admins
   has_many :admin_users, through: :channel_admins
   has_many :subscriptions
-  has_many :subscribers, through: :subscriptions, source: :chalkler
+  has_many :chalklers, through: :subscriptions, source: :chalkler
   has_many :channel_lessons
   has_many :lessons, through: :channel_lessons
   has_many :bookings, through: :lessons
@@ -82,11 +82,11 @@ class Channel < ActiveRecord::Base
 
   #Properties of Channels
   def new_chalklers(start_date, end_date)
-    subscribers.where{(created_at.gt start_date.utc) & (created_at.lteq end_date.utc)}
+    chalklers.where{(created_at.gt start_date.utc) & (created_at.lteq end_date.utc)}
   end
 
   def all_chalklers(date)
-    subscribers.where{created_at.lteq date.utc}
+    chalklers.where{created_at.lteq date.utc}
   end
 
   def lesson_announced(start_date,end_date)

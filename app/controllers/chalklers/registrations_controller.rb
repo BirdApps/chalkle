@@ -1,9 +1,6 @@
 class Chalklers::RegistrationsController < Devise::RegistrationsController
-
   def create
     build_resource
-    # join chalklers up to Horowhenua by default for now
-    resource.join_channels = [ Channel.find_by_name('Horowhenua').id ]
 
     if resource.save
       if resource.active_for_authentication?
@@ -20,5 +17,4 @@ class Chalklers::RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
-
 end

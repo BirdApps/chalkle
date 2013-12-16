@@ -4,7 +4,7 @@ require 'cancan/matchers'
 describe AdminUser do
   it { should have_many(:channels).through(:channel_admins) }
   it { should have_many(:lessons).through(:channels) }
-  it { should have_many(:subscribers).through(:channels) }
+  it { should have_many(:chalklers).through(:channels) }
   it { should have_many(:bookings).through(:channels) }
   it { should have_many(:categories).through(:channels) }
   it { should have_many(:payments).through(:bookings) }

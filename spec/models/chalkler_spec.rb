@@ -12,16 +12,6 @@ describe Chalkler do
     it { should validate_uniqueness_of :meetup_id }
     it { should validate_uniqueness_of :email }
 
-    it "validates join_channels on create" do
-      FactoryGirl.build(:chalkler, join_channels: nil).should_not be_valid
-    end
-
-    it "validates channel_ids on update" do
-      chalkler = FactoryGirl.create(:chalkler)
-      chalkler.channel_ids = []
-      chalkler.should_not be_valid
-    end
-
     context "non-meetup" do
       before { subject.stub(:meetup_id) { nil } }
       it { should validate_presence_of :email }

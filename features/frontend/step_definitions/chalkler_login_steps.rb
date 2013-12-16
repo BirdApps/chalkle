@@ -15,7 +15,6 @@ end
 
 Then /^a new chalkler will be created$/ do
   chalkler = Chalkler.find_by_name 'Mary Sue'
-  chalkler.channels.should == [ Channel.find_by_name('Horowhenua') ]
   chalkler.email.should == 'mary@example.com'
 end
 
