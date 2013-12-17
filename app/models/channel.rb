@@ -1,4 +1,4 @@
-require 'carrierwave'
+require 'channel_logo_uploader'
 
 class Channel < ActiveRecord::Base
   mount_uploader :logo, ChannelLogoUploader
