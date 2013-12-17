@@ -119,11 +119,6 @@ ActiveRecord::Schema.define(:version => 20131208213635) do
 
   add_index "channel_categories", ["channel_id", "category_id"], :name => "index_channel_categories_on_channel_id_and_category_id", :unique => true
 
-  create_table "channel_chalklers", :id => false, :force => true do |t|
-    t.integer "channel_id",  :null => false
-    t.integer "chalkler_id", :null => false
-  end
-
   create_table "channel_lesson_suggestions", :id => false, :force => true do |t|
     t.integer "channel_id",           :null => false
     t.integer "lesson_suggestion_id", :null => false
