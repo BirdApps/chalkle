@@ -60,13 +60,8 @@ class Chalkler < ActiveRecord::Base
   end
 
   def meetup_data
-    data = read_attribute(:meetup_data)
-    if data.present?
-      member = JSON.parse(data)
-      member["member"]
-    else
-      {}
-    end
+    identity = meetup_identity
+    identity ? identity.provider_data : {}
   end
 
   def self.find_for_meetup_oauth(auth, signed_in_resource=nil)
@@ -85,6 +80,10 @@ class Chalkler < ActiveRecord::Base
   def meetup_id
     identity = identities.for_provider('meetup')
     identity.uid.to_i if identity
+  end
+
+  def meetup_identity
+    identities.for_provider('meetup')
   end
 
   private

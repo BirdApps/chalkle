@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131218034343) do
+ActiveRecord::Schema.define(:version => 20131218060816) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(:version => 20131218034343) do
     t.string   "name"
     t.string   "email"
     t.text     "bio"
-    t.text     "meetup_data"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.string   "encrypted_password",     :default => "", :null => false
@@ -254,6 +253,7 @@ ActiveRecord::Schema.define(:version => 20131218034343) do
     t.string  "provider"
     t.string  "uid"
     t.string  "name"
+    t.text    "provider_data"
   end
 
   add_index "omniauth_identities", ["email"], :name => "index_omniauth_identities_on_email"

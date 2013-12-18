@@ -6,6 +6,8 @@ class OmniauthIdentity < ActiveRecord::Base
 
   attr_accessible :uid, :provider
 
+  serialize :provider_data, JSON
+
   def self.from_omniauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |record|
       record.email = auth.info.email
