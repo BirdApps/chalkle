@@ -131,7 +131,6 @@ ActiveAdmin.register Chalkler do
           f.input :channels, :as => :check_boxes, :label => 'Channels'
         end
       end
-      f.input :meetup_id
       if f.object.new_record?
         f.input :email, :hint => 'User will receive password reset email if entered'
       else

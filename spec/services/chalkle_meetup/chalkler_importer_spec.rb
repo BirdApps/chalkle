@@ -28,7 +28,7 @@ describe ChalkleMeetup::ChalklerImporter do
 
       context "updating existing chalkler" do
         it "updates an existing chalkler" do
-          chalkler = FactoryGirl.create(:chalkler, meetup_id: result.id, name: "Jim Smith")
+          chalkler = FactoryGirl.create(:chalkler, uid: result.id.to_s, provider: 'meetup', name: "Jim Smith")
           @chalkler = subject.import(result, channel)
 
           @chalkler.id.should == chalkler.id

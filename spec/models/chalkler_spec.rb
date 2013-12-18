@@ -9,7 +9,6 @@ describe Chalkler do
     subject { Chalkler.new }
 
     it { should validate_presence_of :name }
-    it { should validate_uniqueness_of :meetup_id }
     it { should validate_uniqueness_of :email }
 
     context "non-meetup" do

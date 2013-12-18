@@ -87,7 +87,7 @@ end
 
 Given(/^the chalkler "(.*?)" has no email$/) do |name|
   chalkler = Chalkler.find_by_name name
-  chalkler.update_attributes({:meetup_id => 1234567, :email => nil}, :as => :admin)
+  chalkler.update_attributes({uid: 1234567, provider: 'meetup', email: nil}, :as => :admin)
 end
 
 Given(/^there is a lesson with no date in the "(.*?)" channel$/) do |name|

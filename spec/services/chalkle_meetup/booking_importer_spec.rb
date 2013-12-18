@@ -4,7 +4,7 @@ require 'chalkle_meetup/booking_importer'
 describe ChalkleMeetup::BookingImporter do
   describe ".import" do
     let(:data) { MeetupApiStub::rsvp_response }
-    let!(:chalkler) { FactoryGirl.create(:chalkler, meetup_id: 12345678) }
+    let!(:chalkler) { FactoryGirl.create(:chalkler, uid: '12345678', provider: 'meetup') }
     let!(:lesson) { FactoryGirl.create(:lesson, meetup_id: 12345678) }
 
     it "creates a valid Booking" do

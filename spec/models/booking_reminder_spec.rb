@@ -121,7 +121,7 @@ describe BookingReminder do
   describe ".load_chalklers" do
     before do
       @chalkler = FactoryGirl.create(:chalkler, name: "Britany Spears", email: "britany@spears.com")
-      @chalkler1 = FactoryGirl.create(:chalkler, email: nil, meetup_id: 12345678)
+      @chalkler1 = FactoryGirl.create(:chalkler, email: nil, uid: '12345678', provider: 'meetup')
       @lesson = FactoryGirl.create(:lesson, name: "Chalkle Class 5", start_at: 3.days.from_now, cost: 10, visible: true)
       FactoryGirl.create(:booking, chalkler_id: @chalkler.id, lesson_id: @lesson.id, status: 'yes', visible: true, paid: false)
       FactoryGirl.create(:booking, chalkler_id: @chalkler1.id, lesson_id: @lesson.id, status: 'yes', visible: true, paid: false)

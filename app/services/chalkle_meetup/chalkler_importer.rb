@@ -22,7 +22,6 @@ module ChalkleMeetup
       def create_chalkler(data, channel)
         chalkler = Chalkler.new
         set_chalkler_data(chalkler, data)
-        chalkler.meetup_id = data.id
         chalkler.provider = 'meetup'
         chalkler.uid = data.id
         chalkler.join_channels = [ channel.id ]

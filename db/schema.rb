@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131208213635) do
+ActiveRecord::Schema.define(:version => 20131218012227) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -76,7 +76,6 @@ ActiveRecord::Schema.define(:version => 20131208213635) do
   create_table "chalklers", :force => true do |t|
     t.string   "name"
     t.string   "email"
-    t.integer  "meetup_id"
     t.text     "bio"
     t.text     "meetup_data"
     t.datetime "created_at",                             :null => false
@@ -250,6 +249,18 @@ ActiveRecord::Schema.define(:version => 20131208213635) do
     t.string  "provider_name"
     t.string  "original_url"
   end
+
+  create_table "omniauth_identities", :force => true do |t|
+    t.integer "user_id"
+    t.string  "email"
+    t.string  "provider"
+    t.string  "uid"
+    t.string  "name"
+  end
+
+  add_index "omniauth_identities", ["email"], :name => "index_omniauth_identities_on_email"
+  add_index "omniauth_identities", ["provider", "uid"], :name => "index_omniauth_identities_on_provider_and_uid"
+  add_index "omniauth_identities", ["user_id"], :name => "index_omniauth_identities_on_user_id"
 
   create_table "payments", :force => true do |t|
     t.integer  "booking_id"

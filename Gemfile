@@ -7,6 +7,7 @@ gem 'pg', '~> 0.15.1'
 gem 'devise',           '~> 2.2.4'
 gem 'omniauth',         '~> 1.1.4'
 gem 'omniauth-meetup',  '~> 0.0.7'
+gem 'omniauth-facebook'
 
 # Authorisation
 gem 'cancan',  '~> 1.6.8'

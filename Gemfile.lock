@@ -308,6 +308,8 @@ GEM
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
+    omniauth-facebook (1.5.1)
+      omniauth-oauth2 (~> 1.1.0)
     omniauth-meetup (0.0.7)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
@@ -504,6 +506,7 @@ DEPENDENCIES
   nifty-generators (~> 0.4.6)
   omni_avatar!
   omniauth (~> 1.1.4)
+  omniauth-facebook
   omniauth-meetup (~> 0.0.7)
   pg (~> 0.15.1)
   premailer-rails (~> 1.4.0)

@@ -9,7 +9,7 @@ class Chalkler < ActiveRecord::Base
   attr_accessible :bio, :email, :name, :password, :password_confirmation,
     :remember_me, :email_frequency, :email_categories, :email_streams,
     :phone_number
-  attr_accessible :bio, :email, :meetup_data, :meetup_id, :name, :password,
+  attr_accessible :bio, :email, :meetup_data, :name, :password,
     :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
     :email_frequency, :email_categories, :email_streams, :phone_number,
     :join_channels, :as => :admin
@@ -17,9 +17,9 @@ class Chalkler < ActiveRecord::Base
   attr_accessor :join_channels, :set_password_token
 
   validates_presence_of :name
-  validates_uniqueness_of :meetup_id, allow_blank: true
+  validates_uniqueness_of :uid, scope: :provider, allow_blank: true
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
-  validates_presence_of :email, :unless => :meetup_id?
+  validates_presence_of :email, :unless => :provider?
 
   has_many :subscriptions
   has_many :channels, through: :subscriptions, source: :channel
@@ -40,6 +40,10 @@ class Chalkler < ActiveRecord::Base
   #TODO: Move into a presenter class like Draper sometime
   def self.email_frequency_select_options
     EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
+  end
+
+  def self.find_by_meetup_id(meetup_id)
+    where(uid: meetup_id.to_s, provider: 'meetup').first
   end
 
   def email_required?
@@ -67,11 +71,14 @@ class Chalkler < ActiveRecord::Base
       chalkler.name = auth[:extra][:raw_info][:name]
       chalkler.provider = auth[:provider]
       chalkler.uid = auth[:uid].to_s
-      chalkler.meetup_id = auth[:uid]
       chalkler.email = auth[:info][:email]
       chalkler.password = Devise.friendly_token[0,20]
     end
     chalkler
+  end
+
+  def meetup_id
+    uid.to_i if provider == 'meetup' && !uid.blank?
   end
 
   private
