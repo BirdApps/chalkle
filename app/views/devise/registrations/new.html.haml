@@ -1,26 +1,39 @@
 - title 'Sign Up'
 
 .row
-  .col-md-12
-    :markdown
-      ## Sign Up
-      We are currently only accepting registrations for users in the Horowhenua region.
+  .col-md-7
+    %h2 Join using social media
 
-      If you live in Wellington, you can sign up to chalkle&deg; by joining one of our
-      [Meetup](http://meetup.com) groups - [Wellington](http://www.meetup.com/sixdegrees/) or
-      [Whānau](http://www.meetup.com/whanau/).
+    %p
+      Start using chalkle&deg; with the press of a button. It wont let us post
+      anything to your social media or access your private data.
 
-    .row
-      .col-md-6
-        = bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-          %h3 Enter your details
-          = f.error_notification
+    = render partial: '/devise/sessions/omniauth_buttons'
 
-          .form-inputs
-            = f.input :name, :autofocus => true
-            = f.input :email, :required => true
-            = f.input :password, :required => true
-            = f.input :password_confirmation, :required => true
+    -#
+    -#:markdown
+    -#  ## Sign Up
+    -#  We are currently only accepting registrations for users in the Horowhenua region.
+    -#
+    -#  If you live in Wellington, you can sign up to chalkle&deg; by joining one of our
+    -#  [Meetup](http://meetup.com) groups - [Wellington](http://www.meetup.com/sixdegrees/) or
+    -#  [Whānau](http://www.meetup.com/whanau/).
 
-          .form-actions
-            = f.button :submit, "Sign up"
+  .col-md-5
+    .well
+      %h3.well-title Join using your email address
+
+      %p
+        Start using chalkle&deg; by picking a username and password.
+
+      = bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        = f.error_notification
+
+        .form-inputs
+          = f.input :name, :autofocus => true
+          = f.input :email, :required => true
+          = f.input :password, :required => true
+          = f.input :password_confirmation, :required => true
+
+        .form-actions
+          = f.button :submit, "Sign up"

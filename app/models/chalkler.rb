@@ -4,7 +4,7 @@ class Chalkler < ActiveRecord::Base
   include OmniAvatar::HasAvatar
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
-    :validatable, :omniauthable, :registerable, :omniauth_providers => [:meetup, :facebook]
+    :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
   attr_accessible :bio, :email, :name, :password, :password_confirmation,
     :remember_me, :email_frequency, :email_categories, :email_streams,

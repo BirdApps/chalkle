@@ -1,0 +1,26 @@
+.btn-social-media {
+  min-width: 13em;
+  border-radius: 0;
+  color: #fff !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.16);
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-facebook {
+  background-color: #3B5998;
+  //border-color: #0f2956 #0f2956 hsl(218, 70%, 17.5%);
+}
+
+.btn-meetup {
+  background-color: #E51838;
+  //border-color: #0f2956 #0f2956 hsl(218, 70%, 17.5%);
+}
+
+.social-media-buttons {
+  text-align: center;
+  margin-top: 20px;
+
+  .btn-social-media {
+    margin-bottom: 10px;
+  }
+}

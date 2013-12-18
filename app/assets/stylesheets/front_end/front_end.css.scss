@@ -11,6 +11,7 @@ $chalkboard-background: $chalkboard-background-color asset-url("texture-chalkboa
 @import "front_end/home";
 @import "front_end/channels/show";
 @import "front_end/header_and_footer";
+@import "front_end/social_media";
 
 html,body
 {
@@ -108,4 +109,8 @@ a.fa_link {
 
 .oldlayout {
   margin-bottom: 2em;
+}
+
+.well .well-title {
+  margin-top: 0;
 }
