@@ -13,4 +13,8 @@ if environment_keys
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :facebook, environment_keys[:app_id], environment_keys[:secret]
   end
+
+  if Rails.env.development?
+    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+  end
 end

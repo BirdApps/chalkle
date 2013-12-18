@@ -1,15 +1,23 @@
 class Chalklers::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def meetup
-    @chalkler = Chalkler.find_for_meetup_oauth(request.env["omniauth.auth"], current_chalkler)
+  include OmniauthAuthenticationHelper
 
-    if @chalkler.persisted?
-      sign_in_and_redirect @chalkler, :event => :authentication #this will throw if @user is not activated
-      set_flash_message(:notice, :success, :kind => "Meetup") if is_navigational_format?
+  def all
+    identity = OmniauthIdentity.from_omniauth(request.env["omniauth.auth"])
+    save_omniauth_authentication_to_session(identity)
+
+    user = Chalkler.find_or_create_for_identity(identity)
+
+    if user
+      set_flash_message(:notice, :success, :kind => identity.provider) if is_navigational_format?
+      sign_in_and_redirect(user)
     else
-      session["devise.meetup_data"] = request.env["omniauth.auth"]
+      flash[:error] = "Failed to log in with #{identity.provider}"
       redirect_to new_chalkler_registration_url
     end
   end
+
+  alias_method :facebook, :all
+  alias_method :meetup, :all
 
   def after_sign_in_path_for(resource)
     if resource.sign_in_count == 1 and resource.email.blank?
@@ -18,4 +26,6 @@ class Chalklers::OmniauthCallbacksController < Devise::OmniauthCallbacksControll
       super
     end
   end
+
+
 end

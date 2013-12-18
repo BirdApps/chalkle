@@ -41,15 +41,50 @@ class Chalkler < ActiveRecord::Base
 
   before_create :set_reset_password_token
 
-  #TODO: Move into a presenter class like Draper sometime
-  def self.email_frequency_select_options
-    EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
+  class << self
+    #TODO: Move into a presenter class like Draper sometime
+    def email_frequency_select_options
+      EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
+    end
+
+    def find_by_meetup_id(meetup_id)
+      identity = OmniauthIdentity.where(uid: meetup_id.to_s, provider: 'meetup').first
+      identity.user if identity
+    end
+
+    def find_for_meetup_oauth(auth, signed_in_resource=nil)
+      chalkler = where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
+      unless chalkler
+        chalkler = self.new
+        chalkler.name = auth[:extra][:raw_info][:name]
+        chalkler.provider = auth[:provider]
+        chalkler.uid = auth[:uid].to_s
+        chalkler.email = auth[:info][:email]
+        chalkler.password = Devise.friendly_token[0,20]
+      end
+      chalkler
+    end
+
+    def find_or_create_for_identity(identity)
+      return identity.user if identity.user
+
+      chalkler = find_by_email(identity.email.to_s) || build_for_identity(identity)
+      chalkler.save!
+      identity.user = chalkler
+      identity.save!
+      chalkler
+    end
+
+    def build_for_identity(identity)
+      chalkler = self.new
+      chalkler.name = identity.name
+      chalkler.email = identity.email
+      chalkler.password = Devise.friendly_token[0,20]
+      chalkler
+    end
   end
 
-  def self.find_by_meetup_id(meetup_id)
-    identity = OmniauthIdentity.where(uid: meetup_id.to_s, provider: 'meetup').first
-    identity.user if identity
-  end
+
 
   def email_required?
     identities.empty?
@@ -62,19 +97,6 @@ class Chalkler < ActiveRecord::Base
   def meetup_data
     identity = meetup_identity
     identity ? identity.provider_data : {}
-  end
-
-  def self.find_for_meetup_oauth(auth, signed_in_resource=nil)
-    chalkler = Chalkler.where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
-    unless chalkler
-      chalkler = Chalkler.new
-      chalkler.name = auth[:extra][:raw_info][:name]
-      chalkler.provider = auth[:provider]
-      chalkler.uid = auth[:uid].to_s
-      chalkler.email = auth[:info][:email]
-      chalkler.password = Devise.friendly_token[0,20]
-    end
-    chalkler
   end
 
   def meetup_id
