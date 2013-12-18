@@ -4,6 +4,10 @@ keys = {
   development: {
     app_id: '1452930364928440',
     secret: '3891f4047b33ef676caf0720d25c114b'
+  },
+  staging: {
+    app_id: '642856212444818',
+    secret: 'e48ae83905c25a08cde69fcaca93e158'
   }
 }
 
