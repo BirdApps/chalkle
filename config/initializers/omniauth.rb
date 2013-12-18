@@ -8,6 +8,10 @@ keys = {
   staging: {
     app_id: '642856212444818',
     secret: 'e48ae83905c25a08cde69fcaca93e158'
+  },
+  production: {
+    app_id: '709387515738435',
+    secret: 'c97d4ae964a5ce9cb36eea58a6d046a5'
   }
 }
 
