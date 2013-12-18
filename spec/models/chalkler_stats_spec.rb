@@ -9,7 +9,7 @@ describe "Chalkler_stats" do
       @lesson1 = FactoryGirl.create(:lesson, name: "test 1")
       @lesson2 = FactoryGirl.create(:lesson, name: "test 2")
       (1..5).each do |i|
-        chalkler = FactoryGirl.create(:chalkler, uid: (i*11111111).to_s, provider: 'meetup', email: "test#{i}@gmail.com", created_at: 1.year.ago)
+        chalkler = FactoryGirl.create(:chalkler, email: "test#{i}@gmail.com", created_at: 1.year.ago)
         chalkler.channels << @channel
         FactoryGirl.create(:booking, lesson_id: @lesson1.id, chalkler_id: chalkler.id, created_at: i.months.ago)
         FactoryGirl.create(:booking, lesson_id: @lesson2.id, chalkler_id: chalkler.id, created_at: i.months.ago)
@@ -17,23 +17,23 @@ describe "Chalkler_stats" do
     end
 
     it "calculates the number of new members" do
-      chalkler2 = FactoryGirl.create(:chalkler, uid: '1234565', provider: 'meetup', email: "test@gmail.com", created_at: 1.day.ago)
+      chalkler2 = FactoryGirl.create(:chalkler, email: "test@gmail.com", created_at: 1.day.ago)
       chalkler2.channels << @channel
       @channel.channel_stats(7.days.ago,7.days).chalkler_stats.new_chalklers.should == 1
     end
 
     it "calculates number of new members in previous time period" do
-      chalkler3 = FactoryGirl.create(:chalkler, uid: '1234563', provider: 'meetup', email: "newuser3@gmail.com", created_at: 10.days.ago)
-      chalkler4 = FactoryGirl.create(:chalkler, uid: '1234564', provider: 'meetup', email: "newuser4@gmail.com", created_at: 10.days.ago)
+      chalkler3 = FactoryGirl.create(:chalkler, email: "newuser3@gmail.com", created_at: 10.days.ago)
+      chalkler4 = FactoryGirl.create(:chalkler, email: "newuser4@gmail.com", created_at: 10.days.ago)
       chalkler3.channels << @channel
       chalkler4.channels << @channel
       @channel.channel_stats(7.days.ago,7.days).chalkler_stats.previous.new_chalklers.should == 2
     end 
 
     it "calculates percentage change in number of new members" do
-      chalkler2 = FactoryGirl.create(:chalkler, uid: 1234562, provider: 'meetup', email: "newuser2@gmail.com", created_at: 1.day.ago)
-      chalkler3 = FactoryGirl.create(:chalkler, uid: 1234563, provider: 'meetup', email: "newuser3@gmail.com", created_at: 10.days.ago)
-      chalkler4 = FactoryGirl.create(:chalkler, uid: 1234564, provider: 'meetup', email: "newuser4@gmail.com", created_at: 10.days.ago)
+      chalkler2 = FactoryGirl.create(:chalkler, email: "newuser2@gmail.com", created_at: 1.day.ago)
+      chalkler3 = FactoryGirl.create(:chalkler, email: "newuser3@gmail.com", created_at: 10.days.ago)
+      chalkler4 = FactoryGirl.create(:chalkler, email: "newuser4@gmail.com", created_at: 10.days.ago)
       chalkler2.channels << @channel
       chalkler3.channels << @channel
       chalkler4.channels << @channel

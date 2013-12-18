@@ -17,9 +17,8 @@ class Chalkler < ActiveRecord::Base
   attr_accessor :join_channels, :set_password_token
 
   validates_presence_of :name
-  validates_uniqueness_of :uid, scope: :provider, allow_blank: true
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
-  validates_presence_of :email, :unless => :provider?
+  validates_presence_of :email, :if => :email_required?
 
   has_many :subscriptions
   has_many :channels, through: :subscriptions, source: :channel
@@ -27,6 +26,11 @@ class Chalkler < ActiveRecord::Base
   has_many :lessons, :through => :bookings
   has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
   has_many :payments
+  has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
+    def for_provider(provider)
+      where(provider: provider).first
+    end
+  end
 
   scope :teachers, joins(:lessons_taught).uniq
 
@@ -43,11 +47,12 @@ class Chalkler < ActiveRecord::Base
   end
 
   def self.find_by_meetup_id(meetup_id)
-    where(uid: meetup_id.to_s, provider: 'meetup').first
+    identity = OmniauthIdentity.where(uid: meetup_id.to_s, provider: 'meetup').first
+    identity.user if identity
   end
 
   def email_required?
-    false
+    identities.empty?
   end
 
   def password_required?
@@ -78,7 +83,8 @@ class Chalkler < ActiveRecord::Base
   end
 
   def meetup_id
-    uid.to_i if provider == 'meetup' && !uid.blank?
+    identity = identities.for_provider('meetup')
+    identity.uid.to_i if identity
   end
 
   private

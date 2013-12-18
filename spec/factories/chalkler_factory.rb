@@ -10,8 +10,16 @@ FactoryGirl.define do
     bio "All about me!!"
 
     factory :meetup_chalkler do
-      uid
       meetup_data { MeetupApiStub::chalkler_response.to_json }
+
+      after(:build) do |user|
+        user.identities << FactoryGirl.build(:meetup_identity)
+      end
     end
+  end
+
+  factory :meetup_identity, class: 'OmniauthIdentity' do
+    uid
+    provider 'meetup'
   end
 end

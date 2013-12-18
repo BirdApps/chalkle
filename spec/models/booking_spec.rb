@@ -148,7 +148,7 @@ describe Booking do
     end
 
     context "booking belongs to the teacher" do
-      let(:teacher) { FactoryGirl.create(:chalkler, email: "example@testy.com", uid: '1234')}
+      let(:teacher) { FactoryGirl.create(:chalkler, email: "example@testy.com")}
       let(:lesson) { FactoryGirl.create(:lesson, teacher: teacher, cost: 10) }
 
       it "is included with guests" do
