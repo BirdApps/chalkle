@@ -68,11 +68,15 @@ class Chalkler < ActiveRecord::Base
     def find_or_create_for_identity(identity)
       return identity.user if identity.user
 
-      chalkler = find_by_email(identity.email.to_s) || build_for_identity(identity)
+      chalkler = for_identity_email(identity) || build_for_identity(identity)
       chalkler.save!
       identity.user = chalkler
       identity.save!
       chalkler
+    end
+
+    def for_identity_email(identity)
+      find_by_email(identity.email) unless identity.email.blank?
     end
 
     def build_for_identity(identity)
