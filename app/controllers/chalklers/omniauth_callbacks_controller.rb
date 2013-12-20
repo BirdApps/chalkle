@@ -20,11 +20,7 @@ class Chalklers::OmniauthCallbacksController < Devise::OmniauthCallbacksControll
   alias_method :meetup, :all
 
   def after_sign_in_path_for(resource)
-    if resource.sign_in_count == 1 and resource.email.blank?
-      chalklers_enter_email_path
-    else
-      super
-    end
+    '/'
   end
 
 
