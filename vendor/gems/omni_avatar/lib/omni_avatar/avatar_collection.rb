@@ -9,7 +9,7 @@ module OmniAvatar
     end
 
     def for_provider(name)
-      all_for_provider(name).first
+      all_for_provider(name.to_s).first
     end
 
     private
