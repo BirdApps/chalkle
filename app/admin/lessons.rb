@@ -48,11 +48,11 @@ ActiveAdmin.register Lesson  do
   index do
     column :id
     column :name
-    column :attendance, :sortable => false
+    column :attendance, sortable: false
     column :channels do |lesson|
       lesson.channels.collect{ |c| c.name}.join(", ")
     end
-    column :category_name
+    column :category_name, sortable: false
     column :teacher
     column :cost do |lesson|
       number_to_currency lesson.cost
