@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131218060816) do
+ActiveRecord::Schema.define(:version => 20131223024600) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -237,6 +237,8 @@ ActiveRecord::Schema.define(:version => 20131218060816) do
     t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
     t.string   "lesson_upload_image"
     t.integer  "category_id"
+    t.decimal  "cached_channel_fee",          :precision => 8, :scale => 2
+    t.decimal  "cached_chalkle_fee",          :precision => 8, :scale => 2
   end
 
   create_table "omni_avatar_avatars", :force => true do |t|

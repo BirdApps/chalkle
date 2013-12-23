@@ -18,7 +18,7 @@ class Lesson < ActiveRecord::Base
     :lesson_image_attributes, :channel_percentage_override,
     :chalkle_percentage_override, :material_cost, :suggested_audience,
     :chalkle_payment, :attendance_last_sent_at, :lesson_upload_image,
-    :remove_lesson_upload_image, :as => :admin
+    :remove_lesson_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
 
   has_many   :channel_lessons
   has_many   :channels, :through => :channel_lessons
