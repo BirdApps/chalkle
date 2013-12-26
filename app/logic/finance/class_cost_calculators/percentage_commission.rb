@@ -7,30 +7,43 @@ module Finance
       end
 
       def channel_fee
-        @lesson.teacher_cost ? fee(@lesson.channel_percentage) : 0
+        teacher_cost ? commission_with_tax(channel_percentage) : 0
       end
 
       def chalkle_fee
+        chalkle_fee_without_rounding + rounding
+      end
 
+      def rounding
+        cost ? cost - all_fees_without_rounding : 0
       end
 
       private
 
-        def teacher_percentage
-          1.0 - @lesson.channel_percentage - @lesson.chalkle_percentage
+        attr_reader :lesson
+        delegate :teacher_cost, :channel_percentage, :chalkle_percentage, :cost, to: :lesson
+
+        def all_fees_without_rounding
+          channel_fee + chalkle_fee_without_rounding + teacher_cost
         end
 
-        # SMELL: This method is poorly named. It's a duplicate equation that has been factored into a method,
-        #        but it isn't clear to the user what calling this method really means.
-        def fee(channel_cut)
-          @tax.apply_to(estimated_final_cost * channel_cut)
+        def chalkle_fee_without_rounding
+          teacher_cost ? commission_with_tax(chalkle_percentage) : 0
+        end
+
+        def teacher_percentage
+          1.0 - channel_percentage - chalkle_percentage
+        end
+
+        def commission_with_tax(percentage_commission)
+          @tax.apply_to(estimated_final_cost * percentage_commission)
         end
 
         def estimated_final_cost
           percentage = teacher_percentage
 
           return 0 unless percentage > 0
-          @lesson.teacher_cost / percentage
+          teacher_cost / percentage
         end
 
     end

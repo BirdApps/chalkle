@@ -163,17 +163,20 @@ class Lesson < ActiveRecord::Base
     1 - channel_percentage - chalkle_percentage
   end
 
-  #Per attendee pricings
   def channel_cost
-    Finance::ClassCostCalculators::PercentageCommission.new(self).channel_fee
+    cost_calculator.channel_fee
   end
 
   def rounding
-    (teacher_cost.present? && cost.present?) ? cost - channel_cost - fee(teacher_cost, teacher_percentage, chalkle_percentage) - teacher_cost : 0
+    cost_calculator.rounding
   end
 
   def chalkle_cost
-    teacher_cost.present? ? fee(teacher_cost, teacher_percentage, chalkle_percentage) + rounding : 0
+    cost_calculator.chalkle_fee
+  end
+
+  def cost_calculator
+    @@cost_calculator ||= Finance::ClassCostCalculators::PercentageCommission.new(self)
   end
 
   #Class incomes
