@@ -1,13 +1,47 @@
 require 'spec_helper_lite'
 require 'finance/class_cost_calculators/percentage_commission'
+require 'ostruct'
+require 'finance/tax/null_tax'
+require 'finance/tax/nz_gst'
 
 module Finance
   module ClassCostCalculators
     describe PercentageCommission do
+      ERROR_MARGIN = 0.000001
+
+      let(:lesson) { OpenStruct.new(teacher_cost: 10.0) }
+      subject { PercentageCommission.new(lesson, Tax::NullTax.new) }
+
       describe "#channel_fee" do
-        it "is zero if no teacher cost has been set"
-        it "is zero if teacher percentage is zero"
-        #it "does complex stuff"
+        it "is zero if no teacher cost has been set" do
+          lesson.teacher_cost = nil
+          subject.channel_fee.should == 0
+        end
+
+        it "is zero if teacher percentage is zero" do
+          lesson.channel_percentage = 0.5
+          lesson.chalkle_percentage = 0.5
+          subject.channel_fee.should == 0
+        end
+
+        it "returns the channel percentage of the estimated final cost" do
+          lesson.teacher_cost = 10.0
+          lesson.channel_percentage = 0.4
+          lesson.chalkle_percentage = 0.1
+          # teacher percentage will be 0.5
+          # estimated cost will be 20.0
+
+          subject.channel_fee.should be_within(ERROR_MARGIN).of(8.0) # 20.0 * 0.4
+        end
+
+        it "applies tax to channel fee" do
+          lesson.teacher_cost = 10.0
+          lesson.channel_percentage = 0.4
+          lesson.chalkle_percentage = 0.1
+
+          subject = PercentageCommission.new(lesson, Tax::NzGst.new)
+          subject.channel_fee.should be_within(ERROR_MARGIN).of(9.2)
+        end
       end
 
       describe "#chalkle_fee" do

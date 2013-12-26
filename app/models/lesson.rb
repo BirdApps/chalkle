@@ -4,11 +4,11 @@ require 'lesson_upload_image_uploader'
 class Lesson < ActiveRecord::Base
   include Categorizable
 
-  attr_accessible :name, :teacher_id, :status, :cost, :teacher_cost,
+  attr_accessible :name, :teacher_id, :status, :cost, :fee,
     :duration,:lesson_type, :teacher_bio, :do_during_class, :learning_outcomes,
     :max_attendee, :min_attendee, :availabilities, :prerequisites,
     :additional_comments, :donation, :lesson_skill, :venue, :category_id, :category,
-    :channel_ids, :suggested_audience
+    :channel_ids, :suggested_audience, :teacher_cost
   attr_accessible :name, :meetup_id, :meetup_url, :teacher_id, :status, :cost,
     :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
     :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
@@ -165,7 +165,7 @@ class Lesson < ActiveRecord::Base
 
   #Per attendee pricings
   def channel_cost
-    teacher_cost.present? ? fee(teacher_cost, teacher_percentage, channel_percentage) : 0
+    Finance::ClassCostCalculators::PercentageCommission.new(self).channel_fee
   end
 
   def rounding
