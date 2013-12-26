@@ -133,19 +133,6 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  def default_chalkle_percentage
-    if channels.present?
-      return channels.collect{|c| c.chalkle_percentage}.first
-    else
-      return 0.125
-    end
-  end
-
-  def chalkle_percentage
-    return chalkle_percentage_override unless chalkle_percentage_override.nil?
-    default_chalkle_percentage
-  end
-
   def default_channel_percentage
     if channels.present?
       return channels.collect{|c| c.channel_percentage}.first
@@ -163,7 +150,7 @@ class Lesson < ActiveRecord::Base
     1 - channel_percentage - chalkle_percentage
   end
 
-  delegate :channel_fee, :rounding, :chalkle_fee, to: :cost_calculator
+  delegate :channel_fee, :rounding, :chalkle_fee, :default_chalkle_percentage, :chalkle_percentage, to: :cost_calculator
 
   def cost_calculator
     @cost_calculator ||= Finance::ClassCostCalculators::PercentageCommission.new(self)

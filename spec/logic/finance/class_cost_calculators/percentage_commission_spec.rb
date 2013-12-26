@@ -21,14 +21,14 @@ module Finance
 
         it "is zero if teacher percentage is zero" do
           lesson.channel_percentage = 0.5
-          lesson.chalkle_percentage = 0.5
+          lesson.chalkle_percentage_override = 0.5
           subject.channel_fee.should == 0
         end
 
         it "returns the channel percentage of the estimated final cost" do
           lesson.teacher_cost = 10.0
           lesson.channel_percentage = 0.4
-          lesson.chalkle_percentage = 0.1
+          lesson.chalkle_percentage_override = 0.1
           # teacher percentage will be 0.5
           # estimated cost will be 20.0
 
@@ -38,7 +38,7 @@ module Finance
         it "applies tax to channel fee" do
           lesson.teacher_cost = 10.0
           lesson.channel_percentage = 0.4
-          lesson.chalkle_percentage = 0.1
+          lesson.chalkle_percentage_override = 0.1
 
           subject_with_gst.channel_fee.should be_within(ERROR_MARGIN).of(9.2)
         end
@@ -52,14 +52,14 @@ module Finance
 
         it "is zero if teacher percentage is zero" do
           lesson.channel_percentage = 0.5
-          lesson.chalkle_percentage = 0.5
+          lesson.chalkle_percentage_override = 0.5
           subject.chalkle_fee.should == 0
         end
 
         it "returns the chalkle percentage of the estimated final cost if no rounding is needed" do
           lesson.teacher_cost = 10.0
           lesson.channel_percentage = 0.4
-          lesson.chalkle_percentage = 0.1
+          lesson.chalkle_percentage_override = 0.1
           # teacher percentage will be 0.5
           # estimated cost will be 20.0
 
@@ -69,7 +69,7 @@ module Finance
         it "rounds values up to the nearest dollar and includes the rounding amount in the chalkle fee" do
           lesson.teacher_cost = 9.8
           lesson.channel_percentage = 0.4
-          lesson.chalkle_percentage = 0.1
+          lesson.chalkle_percentage_override = 0.1
           lesson.cost = 20.0
           # teacher percentage will be 0.5
           # estimated cost will be 19.6
@@ -81,7 +81,7 @@ module Finance
         it "adds tax to the result" do
           lesson.teacher_cost = 10.0
           lesson.channel_percentage = 0.4
-          lesson.chalkle_percentage = 0.1
+          lesson.chalkle_percentage_override = 0.1
           # teacher percentage will be 0.5
           # estimated cost will be 20.0
 

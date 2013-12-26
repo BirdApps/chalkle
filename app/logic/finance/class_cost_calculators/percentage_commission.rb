@@ -18,10 +18,24 @@ module Finance
         cost ? cost - all_fees_without_rounding : 0
       end
 
+      def default_chalkle_percentage
+        if channels.present?
+          channels.first.chalkle_percentage
+        else
+          0.125
+        end
+      end
+
+      def chalkle_percentage
+        return chalkle_percentage_override unless chalkle_percentage_override.nil?
+        default_chalkle_percentage
+      end
+
+
       private
 
         attr_reader :lesson
-        delegate :teacher_cost, :channel_percentage, :chalkle_percentage, :cost, to: :lesson
+        delegate :teacher_cost, :channel_percentage, :chalkle_percentage_override, :channels, :cost, to: :lesson
 
         def all_fees_without_rounding
           channel_fee + chalkle_fee_without_rounding + (teacher_cost || 0)
