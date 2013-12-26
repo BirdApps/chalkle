@@ -144,10 +144,10 @@ ActiveAdmin.register Lesson  do
         end
       end
       row "Chalkle fee per attendee (incl. GST and rounding)" do
-        number_to_currency lesson.chalkle_cost
+        number_to_currency lesson.chalkle_fee
       end
       row "Channel fee per attendee (incl. GST)" do
-        number_to_currency lesson.channel_cost
+        number_to_currency lesson.channel_fee
       end
       row :venue_cost do
         if lesson.venue_cost.present?

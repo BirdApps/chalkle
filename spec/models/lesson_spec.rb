@@ -317,7 +317,7 @@ describe Lesson do
       end
 
       it "should calculate dollars paid to channel per attendee" do
-        @lesson.channel_cost.round(2).should == (@lesson.teacher_cost/@lesson.teacher_percentage*@lesson.channel_percentage*(1 + @GST)).round(2)
+        @lesson.channel_fee.round(2).should == (@lesson.teacher_cost/@lesson.teacher_percentage*@lesson.channel_percentage*(1 + @GST)).round(2)
       end
 
       it "should calculate rounding contribution to the pricing" do
@@ -325,7 +325,7 @@ describe Lesson do
       end
 
       it "should calculate dollars paid to chalkle per attendee" do
-        @lesson.chalkle_cost.round(2).should == (@lesson.cost - @lesson.channel_cost - @lesson.teacher_cost).round(2)
+        @lesson.chalkle_fee.round(2).should == (@lesson.cost - @lesson.channel_fee - @lesson.teacher_cost).round(2)
       end
 
       it "should calculate channel income excluding GST component" do
@@ -392,13 +392,13 @@ describe Lesson do
       it "when teacher cost is 0, should calculate channel cost as 0" do
         @lesson.cost = 0
         @lesson.teacher_cost = 0
-        @lesson.channel_cost.should == 0
+        @lesson.channel_fee.should == 0
       end
 
       it "when teacher cost is 0, should calculate chalkle cost as 0" do
         @lesson.cost = 0
         @lesson.teacher_cost = 0
-        @lesson.chalkle_cost == 0
+        @lesson.chalkle_fee == 0
       end
 
       it "when teacher cost is greater than 0 should not allow percentage overrides to cause teacher percentage to be 0" do

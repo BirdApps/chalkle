@@ -24,7 +24,7 @@ module Finance
         delegate :teacher_cost, :channel_percentage, :chalkle_percentage, :cost, to: :lesson
 
         def all_fees_without_rounding
-          channel_fee + chalkle_fee_without_rounding + teacher_cost
+          channel_fee + chalkle_fee_without_rounding + (teacher_cost || 0)
         end
 
         def chalkle_fee_without_rounding
