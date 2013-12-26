@@ -312,34 +312,12 @@ describe Lesson do
         @GST = 0.15
       end
 
-      it "should calculate teacher percentage" do
-        @lesson.teacher_percentage.should == channel.teacher_percentage
-      end
-
-      it "should calculate dollars paid to channel per attendee" do
-        @lesson.channel_fee.round(2).should == (@lesson.teacher_cost/@lesson.teacher_percentage*@lesson.channel_percentage*(1 + @GST)).round(2)
-      end
-
-      it "should calculate rounding contribution to the pricing" do
-        @lesson.rounding.round(2).should == (@lesson.cost - @lesson.teacher_cost*((1 + @GST)/@lesson.teacher_percentage - @GST)).round(2)
-      end
-
-      it "should calculate dollars paid to chalkle per attendee" do
-        @lesson.chalkle_fee.round(2).should == (@lesson.cost - @lesson.channel_fee - @lesson.teacher_cost).round(2)
-      end
-
       it "should calculate channel income excluding GST component" do
         @lesson.income.round(2).should == (-(@lesson.teacher_payment + @lesson.chalkle_payment)/(1 + @GST)).round(2)
       end
     end
 
     describe "override exists" do
-
-      it "should override the default channel percentage" do
-        @lesson.channel_percentage_override = 0.0
-        @lesson.save
-        @lesson.channel_percentage.should == 0.0
-      end
 
       it "should not allow non numerical channel percentage override" do
         @lesson.channel_percentage_override = "resres"
@@ -355,12 +333,6 @@ describe Lesson do
         @lesson.channel_percentage_override = 1 - @lesson.chalkle_percentage + 0.1
         @lesson.save
         @lesson.should_not be_valid
-      end
-
-      it "should override the default chalkle percentage" do
-        @lesson.chalkle_percentage_override = 0.5
-        @lesson.save
-        @lesson.chalkle_percentage.should == 0.5
       end
 
       it "should not allow non numerical chalkle percentage override" do
@@ -389,18 +361,6 @@ describe Lesson do
         @lesson.should be_valid
       end
 
-      it "when teacher cost is 0, should calculate channel cost as 0" do
-        @lesson.cost = 0
-        @lesson.teacher_cost = 0
-        @lesson.channel_fee.should == 0
-      end
-
-      it "when teacher cost is 0, should calculate chalkle cost as 0" do
-        @lesson.cost = 0
-        @lesson.teacher_cost = 0
-        @lesson.chalkle_fee == 0
-      end
-
       it "when teacher cost is greater than 0 should not allow percentage overrides to cause teacher percentage to be 0" do
         @lesson.cost = 20
         @lesson.teacher_cost = 10
@@ -408,9 +368,6 @@ describe Lesson do
         @lesson.channel_percentage_override = 0.3
         @lesson.should_not be_valid
       end
-
     end
-
   end
-
 end

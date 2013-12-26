@@ -19,11 +19,7 @@ module Finance
       end
 
       def default_chalkle_percentage
-        if channels.present?
-          channels.first.chalkle_percentage
-        else
-          0.125
-        end
+        channel_value_or_default channels.first, :chalkle_percentage, 0.125
       end
 
       def chalkle_percentage
@@ -31,11 +27,27 @@ module Finance
         default_chalkle_percentage
       end
 
+      def default_channel_percentage
+        channel_value_or_default channels.first, :channel_percentage, 0.125
+      end
+
+      def channel_percentage
+        return channel_percentage_override unless channel_percentage_override.nil?
+        default_channel_percentage
+      end
+
+      def teacher_percentage
+        1.0 - channel_percentage - chalkle_percentage
+      end
 
       private
 
         attr_reader :lesson
-        delegate :teacher_cost, :channel_percentage, :chalkle_percentage_override, :channels, :cost, to: :lesson
+        delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :channels, :cost, to: :lesson
+
+        def channel_value_or_default(channel, key, default)
+          channel ? channel.send(key) : default
+        end
 
         def all_fees_without_rounding
           channel_fee + chalkle_fee_without_rounding + (teacher_cost || 0)
@@ -43,10 +55,6 @@ module Finance
 
         def chalkle_fee_without_rounding
           teacher_cost ? commission_with_tax(chalkle_percentage) : 0
-        end
-
-        def teacher_percentage
-          1.0 - channel_percentage - chalkle_percentage
         end
 
         def commission_with_tax(percentage_commission)
