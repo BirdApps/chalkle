@@ -1,3 +1,4 @@
+$lesson-medium-container-height: 170px;
 $lesson-medium-height: 150px;
 $lesson-medium-width: 500px;
 $lesson-medium_time-width: 80px;
@@ -8,7 +9,7 @@ $lines: 3;
 a.lesson_medium {
   text-align: left;
   display: block;
-  height: $lesson-medium-height;
+  height: $lesson-medium-container-height;
   overflow: hidden;
   padding: 0;
   margin-bottom: 10px;
@@ -144,6 +145,13 @@ a.lesson_medium {
         }
       }
     }
+  }
+
+  .channel { 
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
   }
 
   img.category_image {
