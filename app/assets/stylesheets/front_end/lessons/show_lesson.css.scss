@@ -105,8 +105,20 @@ $sidebar-color: #E8E8E8;
         background-color: #F2F2F2;
         position: relative;
         min-height: 100px;
-        .img-right { padding: 10px 10px 10px 30px; margin-right: 100px; }
-        .img-left { padding: 10px 30px 10px 10px; margin-left: 100px; }
+        .img-right { 
+          img { float: right; }
+          .text {
+            margin-right: 100px; 
+            padding: 10px 10px 10px 30px; 
+          }
+        }
+        .img-left {
+          img { float: left; }
+          .text { 
+            padding: 10px 30px 10px 10px; 
+            margin-left: 100px; 
+          }
+        }
 
         h3 {
           margin: 0;
@@ -132,10 +144,6 @@ $sidebar-color: #E8E8E8;
       .teacher_details {
         margin: 0;
         min-height: 100px;
-
-        .avatar {
-          float: right;
-        }
       }
 
       .teacher-bio {
@@ -149,9 +157,8 @@ $sidebar-color: #E8E8E8;
 
       .channel_details { 
         .logo img { 
-          float: left; 
-          padding: 10px;
-          width: 120px;
+          padding: 10px 10px 10px 30px;
+          width: 140px;
         }
       }
 

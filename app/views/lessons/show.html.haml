@@ -65,14 +65,15 @@
               attending
       - if teacher = @lesson.teacher
         .teacher_details.highlighted_content
-          = image_tag teacher.avatar.url, alt: teacher.name, class: 'avatar teacher_avatar'
           .img-right
-            %h3
-              Your Teacher:
-              %span.teacher_name
-                = teacher.name
-            .teacher-bio
-              = simple_format teacher.bio
+            = image_tag teacher.avatar.url, alt: teacher.name, class: 'avatar teacher_avatar'
+            .text
+              %h3
+                Your Teacher:
+                %span.teacher_name
+                  = teacher.name
+              .teacher-bio
+                = simple_format teacher.bio
       .text_contents
         .lesson-description
           - unless @lesson.do_during_class.blank?
@@ -89,10 +90,11 @@
               = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
 
       .channel_details.highlighted_content
-        .logo= channel_logo @channel
         .img-left
-          %h3= @lesson.channels.first.name
-          %p= @lesson.channels.first.description
+          .logo= channel_logo @channel
+          .text
+            %h3= @lesson.channels.first.name
+            %p= @lesson.channels.first.description
 
 
       -#= render :partial => 'lesson_details', :locals => { :lesson => @lesson }
