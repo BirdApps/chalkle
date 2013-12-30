@@ -1,0 +1,130 @@
+LOG:  database system was shut down at 2013-12-30 10:21:55 NZDT
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  database "craftworks" does not exist
+FATAL:  role "test" does not exist
+FATAL:  role "test" does not exist
+FATAL:  role "test" does not exist
+FATAL:  role "test" does not exist
+FATAL:  role "test" does not exist
+FATAL:  role "test" does not exist
+FATAL:  role "test" does not exist
+FATAL:  role "test" does not exist
+FATAL:  role "postgres" does not exist
+FATAL:  role "postgres" does not exist
+FATAL:  role "postgres" does not exist
+FATAL:  role "postgres" does not exist
+FATAL:  database "craftworks" does not exist
+ERROR:  role "craftworks" already exists
+STATEMENT:  create role craftworks WITH SUPERUSER;
+ERROR:  role "craftworks" already exists
+STATEMENT:  create role craftworks WITH SUPERUSER;
+FATAL:  database "chalkle_development" does not exist
+FATAL:  database "chalkle_test" does not exist
+FATAL:  database "chalkle_test" does not exist
+ERROR:  database "chalkle_development" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+STATEMENT:  DROP DATABASE IF EXISTS "chalkle_development"
+FATAL:  terminating autovacuum process due to administrator command
+ERROR:  database "chalkle_test" is being accessed by other users
+DETAIL:  There are 2 other sessions using the database.
+STATEMENT:  DROP DATABASE IF EXISTS "chalkle_test"
+FATAL:  terminating autovacuum process due to administrator command
+ERROR:  database "chalkle_test" is being accessed by other users
+DETAIL:  There are 3 other sessions using the database.
+STATEMENT:  DROP DATABASE IF EXISTS "chalkle_test"
+FATAL:  database "chalkle_development" does not exist
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER FUNCTION public.sum_text(text, text) OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.active_admin_comments OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.active_admin_comments_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.admin_users OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.admin_users_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.bookings OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.bookings_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.categories OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.categories_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.chalklers OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.chalklers_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.channel_admins OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.channel_categories OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.channel_lesson_suggestions OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.channel_lessons OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.channel_photos OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.channel_photos_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.channels OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.channels_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.cities OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.cities_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.delayed_jobs OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.delayed_jobs_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.event_logs OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.event_logs_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.lesson_images OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.lesson_images_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.lesson_suggestions OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.lesson_suggestions_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.lessons OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.lessons_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.omni_avatar_avatars OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.omni_avatar_avatars_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.omniauth_identities OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.omniauth_identities_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.payments OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.payments_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.rails_admin_histories OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.rails_admin_histories_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.schema_migrations OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.streams OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.streams_id_seq OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.subscriptions OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.venues OWNER TO chalkle;
+ERROR:  role "chalkle" does not exist
+STATEMENT:  ALTER TABLE public.venues_id_seq OWNER TO chalkle;
+ERROR:  role "postgres" does not exist
+STATEMENT:  REVOKE ALL ON SCHEMA public FROM postgres;
+ERROR:  role "postgres" does not exist
+STATEMENT:  GRANT ALL ON SCHEMA public TO postgres;
