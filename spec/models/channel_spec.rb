@@ -10,7 +10,6 @@ describe Channel do
   let(:channel) { FactoryGirl.create(:channel) }
 
   describe "default values" do
-
   	it "should set default teacher percentage" do
   		channel.teacher_percentage.should == 0.75
   	end
@@ -26,11 +25,9 @@ describe Channel do
     it "hides channel by default" do
       channel.visible.should be_false
     end
-
   end
 
   describe "validation" do
-
   	it "should not allow teacher percentage greater than 1" do
   		channel.teacher_percentage = 1.2
   		channel.should_not be_valid
@@ -108,6 +105,18 @@ describe Channel do
   		required_array = [['channel1', channel1.id],['channel2', channel2.id]]
   		Channel.select_options(chalkler.channels).should eq(required_array)
   	end
+  end
+
+  describe ".cost_calculator_class" do
+    it "is nil if cost_calculator string is nil" do
+      subject.cost_calculator = nil
+      subject.cost_calculator_class.should be_nil
+    end
+
+    it "is class identified by name in correct namespace" do
+      subject.cost_calculator = 'FlatRateMarkup'
+      subject.cost_calculator_class.should == Finance::ClassCostCalculators::FlatRateMarkup
+    end
   end
 
 end
