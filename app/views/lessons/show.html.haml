@@ -94,7 +94,8 @@
           .logo= channel_logo @channel
           .text
             %h3= @lesson.channels.first.name
-            %p= @lesson.channels.first.description
+            .description= @lesson.channels.first.description
+            = link_to "View more classes by #{@lesson.channels.first.name}", channel_path(@lesson)
 
 
       -#= render :partial => 'lesson_details', :locals => { :lesson => @lesson }
@@ -104,22 +105,23 @@
       = render partial: 'small_sidebar', locals: {week_lessons: @week_lessons}
 
 :coffeescript
-  signedIn = () ->
-    if _.isString(_.find(document.cookie.split('; '), (a)-> return a == 'signed_in=1')) then true else false
+  $ ->
+    signedIn = () ->
+      if _.isString(_.find(document.cookie.split('; '), (a)-> return a == 'signed_in=1')) then true else false
 
-  $('#join-lesson').click (e)->
+    $('#join-lesson').click (e)->
+      unless signedIn()
+        e.preventDefault()
+
     unless signedIn()
-      e.preventDefault()
+      $('#join-lesson').popover
+        placement: 'top'
+        html: true
+        title: 'Sign in to join a class'
+        content: 'Please <a href="/chalklers/sign_in">sign in</a> or <a href="/chalklers/sign_up">create an account</a> to make a booking.'
 
-  unless signedIn()
-    $('#join-lesson').popover
-      placement: 'top'
-      html: true
-      title: 'Sign in to join a class'
-      content: 'Please <a href="/chalklers/sign_in">sign in</a> or <a href="/chalklers/sign_up">create an account</a> to make a booking.'
-
-  $('.with_browse_sidebar').equalize({equalize: 'min-height', reset: true})
-  $('.lesson_panel .details').equalize({equalize: 'min-height', reset: true})
-  $('.teacher_details .teacher-bio').readmore({
-    maxHeight: 60
-  })
+    $('.with_browse_sidebar').equalize({equalize: 'min-height', reset: true})
+    $('.lesson_panel .details').equalize({equalize: 'min-height', reset: true})
+    $('.teacher_details .teacher-bio').readmore({
+      maxHeight: 60
+    })

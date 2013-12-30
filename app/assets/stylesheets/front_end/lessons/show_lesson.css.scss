@@ -119,6 +119,10 @@ $sidebar-color: #E8E8E8;
             margin-left: 100px; 
           }
         }
+        .description { 
+          max-height: #{$line-height-base * 3}em; 
+          overflow: hidden;
+        }
 
         h3 {
           margin: 0;
