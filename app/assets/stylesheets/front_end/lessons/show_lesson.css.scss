@@ -105,23 +105,21 @@ $sidebar-color: #E8E8E8;
         background-color: #F2F2F2;
         position: relative;
         min-height: 100px;
-        .img-right { 
+        .img_right { 
           img { float: right; }
           .text {
             margin-right: 100px; 
             padding: 10px 10px 10px 30px; 
           }
         }
-        .img-left {
+        .img_left {
           img { float: left; }
           .text { 
             padding: 10px 30px 10px 10px; 
           }
         }
         .description { 
-          max-height: #{$line-height-base * 2}em; 
           padding-left: 30px; 
-
         }
 
         h3 {
@@ -160,9 +158,14 @@ $sidebar-color: #E8E8E8;
       }
 
       .channel_details { 
+        min-height: 120px;
         .logo img { 
           padding: 10px 10px 10px 30px;
           width: 140px;
+        }
+        .channel_link { 
+          margin: 0; 
+          padding-left: 30px;
         }
       }
 
