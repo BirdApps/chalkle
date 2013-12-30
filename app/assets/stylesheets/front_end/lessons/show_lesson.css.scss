@@ -101,13 +101,12 @@ $sidebar-color: #E8E8E8;
         }
       }
 
-      .highlighted_contents {
-        padding: 10px 10px 10px 30px;
+      .highlighted_content {
         background-color: #F2F2F2;
         position: relative;
         min-height: 100px;
-        &.img-right { margin-right: 100px; }
-        &.img-left { margin-left: 100px; }
+        .img-right { padding: 10px 10px 10px 30px; margin-right: 100px; }
+        .img-left { padding: 10px 30px 10px 10px; margin-left: 100px; }
 
         h3 {
           margin: 0;
@@ -149,7 +148,11 @@ $sidebar-color: #E8E8E8;
       }
 
       .channel_details { 
-        .logo { float: left; }
+        .logo img { 
+          float: left; 
+          padding: 10px;
+          width: 120px;
+        }
       }
 
       .text_contents {
