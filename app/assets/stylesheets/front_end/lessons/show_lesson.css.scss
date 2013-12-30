@@ -116,12 +116,12 @@ $sidebar-color: #E8E8E8;
           img { float: left; }
           .text { 
             padding: 10px 30px 10px 10px; 
-            margin-left: 100px; 
           }
         }
         .description { 
-          max-height: #{$line-height-base * 3}em; 
-          overflow: hidden;
+          max-height: #{$line-height-base * 2}em; 
+          padding-left: 30px; 
+
         }
 
         h3 {

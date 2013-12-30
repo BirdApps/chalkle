@@ -106,6 +106,8 @@
 
 :coffeescript
   $ ->
+    $(".channel_details .text .description").ellipsis()
+    
     signedIn = () ->
       if _.isString(_.find(document.cookie.split('; '), (a)-> return a == 'signed_in=1')) then true else false
 
