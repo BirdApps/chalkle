@@ -168,7 +168,7 @@ describe Lesson do
     let(:category) { FactoryGirl.create(:category, name: "Category1") }
     let(:lesson_original) { FactoryGirl.create(:lesson, name: "Original Lesson", teacher_id: chalkler.id, status: "Published", teacher_payment: 10, visible: false, category: category) }
     before do
-      lesson_original.channels << channel
+      lesson_original.channel = channel
       lesson_original.category = category
       @new_lesson = lesson_original.copy_lesson
     end
@@ -182,7 +182,7 @@ describe Lesson do
     end
 
     it "should make a new copy with the same channel" do
-      @new_lesson.channels.should == lesson_original.channels
+      @new_lesson.channel.should == lesson_original.channel
     end
 
     it "should make a new copy with the same category" do
