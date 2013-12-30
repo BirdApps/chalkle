@@ -8,13 +8,13 @@ class Lesson < ActiveRecord::Base
     :duration,:lesson_type, :teacher_bio, :do_during_class, :learning_outcomes,
     :max_attendee, :min_attendee, :availabilities, :prerequisites,
     :additional_comments, :donation, :lesson_skill, :venue, :category_id, :category,
-    :channel_ids, :suggested_audience, :teacher_cost
+    :channel_ids, :channel_id, :suggested_audience, :teacher_cost
   attr_accessible :name, :meetup_id, :meetup_url, :teacher_id, :status, :cost,
     :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
     :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
     :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
     :availabilities, :prerequisites, :additional_comments, :donation,
-    :lesson_skill, :venue, :published_at, :category_id, :category, :channel_ids,
+    :lesson_skill, :venue, :published_at, :category_id, :category, :channel_ids, :channel_id,
     :lesson_image_attributes, :channel_percentage_override,
     :chalkle_percentage_override, :material_cost, :suggested_audience,
     :chalkle_payment, :attendance_last_sent_at, :lesson_upload_image,
@@ -22,6 +22,7 @@ class Lesson < ActiveRecord::Base
 
   has_many   :channel_lessons
   has_many   :channels, :through => :channel_lessons
+  belongs_to :channel
   has_many   :bookings
   has_many   :chalklers, :through => :bookings
   has_many   :payments, :through => :bookings
@@ -272,7 +273,6 @@ class Lesson < ActiveRecord::Base
     except = %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment visible}
     copy_attributes = self.attributes.reject { |attr| except.include?(attr) }
     new_lesson = Lesson.new(copy_attributes, :as => :admin)
-    new_lesson.channels = self.channels
     new_lesson.category = self.category
     new_lesson.visible = true
     new_lesson.save
