@@ -8,7 +8,7 @@
     =f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
     -if !@lesson.published?
       - if current_admin_user.role == 'super'
-        = f.input :channels, :as => :check_boxes, :collection => Channel.accessible_by(current_ability)
+        = f.input :channel, :collection => Channel.accessible_by(current_ability)
       =f.input :availabilities, :label => "Availability of the teacher", :input_html => { :rows => 1 }
       =f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
     =f.input :learning_outcomes, :label => "What you will learn", :input_html => { :rows => 6 }

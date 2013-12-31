@@ -9,7 +9,7 @@ module Finance
     describe PercentageCommission do
       ERROR_MARGIN = 0.000001
 
-      let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channels: []) }
+      let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channel: nil) }
       let(:subject_with_gst) { PercentageCommission.new(lesson, Tax::NzGst.new) }
       subject { PercentageCommission.new(lesson, Tax::NullTax.new) }
 

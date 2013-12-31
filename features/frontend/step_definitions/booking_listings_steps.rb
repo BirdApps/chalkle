@@ -1,6 +1,5 @@
 Given(/^the chalkler "(.*?)" has booked a class$/) do |name|
-  lesson = FactoryGirl.create(:lesson, cost: 10, start_at: 2.days.from_now, name: 'Cool class!')
-  lesson.channels << FactoryGirl.create(:channel)
+  lesson = FactoryGirl.create(:lesson, cost: 10, start_at: 2.days.from_now, name: 'Cool class!', channel: FactoryGirl.create(:channel))
   chalkler = Chalkler.find_by_name name
   FactoryGirl.create(:booking, chalkler: chalkler, lesson: lesson, payment_method: 'cash')
 end

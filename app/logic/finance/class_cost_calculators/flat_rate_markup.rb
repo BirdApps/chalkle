@@ -48,7 +48,7 @@ module Finance
       private
 
       attr_reader :lesson
-      delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :channels, :cost, to: :lesson
+      delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :channel, :cost, to: :lesson
 
       def all_fees_without_rounding
         channel_fee + chalkle_fee + teacher_cost

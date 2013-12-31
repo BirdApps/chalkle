@@ -25,6 +25,7 @@ ActiveAdmin.register Channel do
       row :name
       row :url_name
       row :visible
+      row :short_description
       row :description do |channel|
         simple_format channel.description
       end
@@ -56,6 +57,7 @@ ActiveAdmin.register Channel do
       f.input :name
       f.input :url_name
       f.input :visible
+      f.input :short_description
       f.input :description
       f.input :website_url
       f.input :channel_percentage, label: "Percentage of revenue going to channel"

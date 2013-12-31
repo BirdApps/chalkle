@@ -19,90 +19,80 @@ describe BookingReminder do
     before do
       teacher = FactoryGirl.create(:chalkler, name: "Britany Spears", email: "britany@spears.com")
       @chalkler = FactoryGirl.create(:chalkler, name: "Michael Jackson", email: "michael@jackson.com")
-      @channel = FactoryGirl.create(:channel, name: "Music")
-      @lesson = FactoryGirl.create(:lesson, name: "Chalkle Class 5", start_at: 3.days.from_now, cost: 10, teacher_id: teacher.id, visible: true)
-      @lesson.channels << @channel
+      @channel = FactoryGirl.create(:channel, name: "Music", visible: true)
+      @lesson = FactoryGirl.create(:lesson, name: "Chalkle Class 5", start_at: 3.days.from_now, cost: 10, teacher_id: teacher.id, visible: true, channel: @channel)
       @booking = FactoryGirl.create(:booking, chalkler_id: @chalkler.id, lesson_id: @lesson.id, status: 'yes', visible: true, paid: false)
       @reminder = BookingReminder.new(@chalkler,3.days)
     end
 
     it "loads booking for reminder" do
-      result = @reminder.instance_eval{ remind_now }
+      result = @reminder.remind_now
       result.should == [@booking]
       result.first.should_not be_readonly
     end
 
     it "won't load hidden bookings" do
       @booking.update_attributes({:visible => false}, :as => :admin)
-      @reminder.instance_eval{ remindable }.should be_empty
+      @reminder.remindable.should be_empty
       @booking.update_attributes({:visible => true}, :as => :admin)
     end
 
     it "won't load bookings without a yes status" do
       @booking.update_attributes({:status => 'waitlist'}, :as => :admin)
-      @reminder.instance_eval{ remindable }.should be_empty
+      @reminder.remindable.should be_empty
       @booking.update_attributes({:status => 'yes'}, :as => :admin)
     end
 
     it "won't load booking for a free class" do
       @lesson.update_attributes({:cost => 0}, :as => :admin)
-      @reminder.instance_eval{ remindable }.should be_empty
+      @reminder.remindable.should be_empty
       @lesson.update_attributes({:cost => 10}, :as => :admin)
     end
 
     it "won't load free booking" do
       @booking.update_attributes({:cost_override => 0}, :as => :admin)
-      @reminder.instance_eval{ remindable }.should be_empty
+      @reminder.remindable.should be_empty
       @booking.update_attributes({:cost_override => 0}, :as => :admin)
     end
 
     it "won't load a paid booking" do
       @booking.update_attributes({:paid => true}, :as => :admin)
-      @reminder.instance_eval{ remindable }.should be_empty
+      @reminder.remindable.should be_empty
       @booking.update_attributes({:paid => false}, :as => :admin)
     end
 
     it "won't load booking from lessons in the past" do
       @lesson.update_attributes({:start_at => 2.days.ago}, :as => :admin)
-      @reminder.instance_eval{ remindable }.should be_empty
+      @reminder.remindable.should be_empty
       @lesson.update_attributes({:start_at => 3.days.from_now}, :as => :admin)
     end
 
     it "won't load booking by the teacher" do
       @booking.update_attributes({:chalkler_id => @lesson.teacher_id}, :as => :admin)
-      @reminder.instance_eval{ remindable }.should be_empty
+      @reminder.remindable.should be_empty
       @booking.update_attributes({:chalkler_id => @chalkler.id}, :as => :admin)
     end
 
     it "won't load booking for a lesson without a channel" do
-      @lesson.channels = []
-      @reminder.instance_eval{ remindable }.should be_empty
-      @lesson.channels << @channel
+      @lesson.channel = nil
+      @lesson.save
+      @reminder.remindable.should == []
     end
 
     it "won't load booking for a lesson without a start date" do
       @lesson.update_attributes({:start_at => nil}, :as => :admin)
-      @reminder.instance_eval{ remindable }.should be_empty
-      @lesson.update_attributes({:start_at => 3.days.from_now}, :as => :admin)
+      @reminder.remindable.should == []
     end
 
-    it "won't load booking from lessons more than 3 days away" do
-      @lesson.update_attributes({:start_at => 4.days.from_now}, :as => :admin)
-      @reminder.instance_eval{ remind_now }.should be_empty
-      @lesson.update_attributes({:start_at => 3.days.from_now}, :as => :admin)
-    end
-
-    it "won't load booking from lessons less than 3 days away" do
-      @lesson.update_attributes({:start_at => 2.days.from_now}, :as => :admin)
-      @reminder.instance_eval{ remind_now }.should be_empty
-      @lesson.update_attributes({:start_at => 3.days.from_now}, :as => :admin)
+    it "won't load booking from lessons in the past" do
+      @lesson.update_attributes({:start_at => 2.days.ago}, :as => :admin)
+      @reminder.remindable.should == []
     end
 
     it "will sort lessons in order of start time" do
-      lesson = FactoryGirl.create(:lesson, name: "An earlier lesson", cost: 5, teacher_id: @lesson.teacher_id, visible: true, start_at: @lesson.start_at - 5.hours)
-      lesson.channels << @channel
+      lesson = FactoryGirl.create(:lesson, name: "An earlier lesson", cost: 5, teacher_id: @lesson.teacher_id, visible: true, start_at: @lesson.start_at - 5.hours, channel: @channel)
       booking = FactoryGirl.create(:booking, chalkler_id: @chalkler.id, lesson_id: lesson.id, status: 'yes', paid: false, visible: true)
-      @reminder.instance_eval{ remind_now }.should == [booking, @booking]
+      @reminder.remind_now.should == [booking, @booking]
     end
   
   end
@@ -113,7 +103,7 @@ describe BookingReminder do
       lesson = FactoryGirl.create(:lesson)
       booking = FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler)
       reminder = BookingReminder.new(chalkler, 3.days)
-      reminder.instance_eval {log_times([booking])}
+      reminder.log_times([booking])
       booking.reminder_last_sent_at.to_i.should == Time.now.to_time.to_i
     end
   end

@@ -13,13 +13,13 @@ class Channel < ActiveRecord::Base
   validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, :message => "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
   validates_uniqueness_of :name, allow_blank: true
   validates_uniqueness_of :url_name, allow_blank: true
+  validates :short_description, length: { maximum: 250 }
 
   has_many :channel_admins
   has_many :admin_users, through: :channel_admins
   has_many :subscriptions
   has_many :chalklers, through: :subscriptions, source: :chalkler
-  has_many :channel_lessons
-  has_many :lessons, through: :channel_lessons
+  has_many :lessons
   has_many :bookings, through: :lessons
   has_many :payments, through: :bookings
   has_many :channel_categories

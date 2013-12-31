@@ -20,35 +20,33 @@ class ChalklerDigest
     Chalkler.where{(email != "") & (email_frequency == freq)}
   end
 
-  private
-
   def new_lessons
-    Lesson.visible.published.joins(:channels).where(
+    Lesson.visible.published.joins(:channel).where(
       "lessons.published_at > ? AND
        lessons.do_during_class IS NOT NULL AND
        lessons.category_id IN (?) AND
-       channel_lessons.channel_id IN (?) AND
+       lessons.channel_id IN (?) AND
        channels.visible=true",
       @date_offset, @chalkler.email_categories,
       @chalkler.channels).order("start_at").limit(@limit).uniq
   end
 
   def default_new_lessons
-    Lesson.visible.published.joins(:channels).where(
+    Lesson.visible.published.joins(:channel).where(
       "lessons.published_at > ? AND
        lessons.do_during_class IS NOT NULL AND
-       channel_lessons.channel_id IN (?) AND
+       lessons.channel_id IN (?) AND
        channels.visible=true",
        @date_offset, @chalkler.channels).order("start_at").limit(@limit).uniq
   end
 
   def open_lessons
-    lessons = Lesson.visible.published.joins(:channels).where(
+    lessons = Lesson.visible.published.joins(:channel).where(
       "lessons.start_at > ? AND
        lessons.published_at <= ? AND
        lessons.do_during_class IS NOT NULL AND
        lessons.category_id IN (?) AND
-       channel_lessons.channel_id IN (?) AND
+       lessons.channel_id IN (?) AND
        channels.visible=true",
       Time.now.utc + 1.day, @date_offset, @chalkler.email_categories,
       @chalkler.channels).order("start_at").uniq
@@ -57,11 +55,11 @@ class ChalklerDigest
   end
 
   def default_open_lessons
-    lessons = Lesson.visible.published.joins(:channels).where(
+    lessons = Lesson.visible.published.joins(:channel).where(
       "lessons.start_at > ? AND
        lessons.published_at <= ? AND
        lessons.do_during_class IS NOT NULL AND
-       channel_lessons.channel_id IN (?) AND
+       lessons.channel_id IN (?) AND
        channels.visible=true",
       Time.now.utc + 1.day, @date_offset, @chalkler.channels).order("start_at").uniq
     lessons.delete_if { |l| l.bookable? == false  }

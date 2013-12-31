@@ -86,8 +86,7 @@ end
 
 Given(/^"(.*?)" is the teacher for the lesson "(.*?)"$/) do |teacher_name, lesson_name|
   teacher = Chalkler.find_by_name teacher_name
-  lesson = FactoryGirl.create(:lesson, name: lesson_name, teacher_id: teacher.id)
-  lesson.channels = teacher.channels
+  lesson = FactoryGirl.create(:lesson, name: lesson_name, teacher_id: teacher.id, channel: teacher.channels.first)
 end
 
 Then(/^they should see the lesson "(.*?)"$/) do |name|
@@ -96,15 +95,13 @@ end
 
 Given(/^"(.*?)" attended the lesson "(.*?)"$/) do |student_name, lesson_name|
   student = Chalkler.find_by_name student_name
-  lesson = FactoryGirl.create(:lesson, name: lesson_name)
-  lesson.channels = student.channels
+  lesson = FactoryGirl.create(:lesson, name: lesson_name, channel: student.channels.first)
   FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: student.id, status: 'yes')
 end
 
 Given(/^"(.*?)" did not attend the lesson "(.*?)"$/) do |student_name, lesson_name|
   student = Chalkler.find_by_name student_name
-  lesson = FactoryGirl.create(:lesson, name: lesson_name)
-  lesson.channels = student.channels
+  lesson = FactoryGirl.create(:lesson, name: lesson_name, channel: student.channels.first)
   FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: student.id, status: 'no')
 end
 

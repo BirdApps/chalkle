@@ -68,7 +68,7 @@ Your Chalkle Administrator")
   end
 
   def path_for_lesson(lesson)
-    channel_lesson_path(@channel || lesson.channels.first, lesson)
+    channel_lesson_path(@channel || lesson.channel, lesson)
   end
 
   def lesson_classes(lesson, base_class = 'lesson')

@@ -128,57 +128,21 @@ describe "Teachings" do
   	    @lesson = Lesson.find_by_name((category.name + ": " + params2[:title]).downcase)
   	  end
 
-  	    it "has the correct teacher" do
-  	    	@lesson.teacher_id.should == chalkler.id
-  	    end
-
-        it "has the correct channel" do
-          @lesson.channels.should == [channel]
-        end
-
-  	    it "has the correct lesson skill" do
-  	    	@lesson.lesson_skill.should == params2[:lesson_skill]
-  	    end
-
-        it "has the correct category" do
-          @lesson.category_id.should == category.id
-        end
-
-        it "has the correct what we will do during class" do
-          @lesson.do_during_class.should == params2[:do_during_class]
-        end
-
-        it "has the correct what we will learn from class" do
-          @lesson.learning_outcomes.should == params2[:learning_outcomes]
-        end
-
-  	    it "has the correct duration" do
-  	    	@lesson.duration.should == params2[:duration].to_i*60*60
-  	    end
-
-  	    it "has the correct teacher cost" do
-  	    	@lesson.teacher_cost.should == 20
-  	    end
-
-  	    it "has the correct max attendee" do
-  	    	@lesson.max_attendee.should == params2[:max_attendee].to_i
-  	    end
-
-        it "has the correct min attendee" do
-          @lesson.min_attendee.should == params2[:min_attendee].to_i
-        end
-
-        it "has the correct availabilities" do
-          @lesson.availabilities.should == params2[:availabilities]
-        end
-
-        it "has the correct prerequisite" do
-          @lesson.prerequisites.should == params2[:prerequisites]
-        end
-
-        it "has the correct additional comments" do
-          @lesson.additional_comments.should == params2[:additional_comments]
-        end
+      it "builds the lesson with the correct values" do
+        @lesson.teacher_id.should == chalkler.id
+        @lesson.channel.should == channel
+        @lesson.lesson_skill.should == params2[:lesson_skill]
+        @lesson.category_id.should == category.id
+        @lesson.do_during_class.should == params2[:do_during_class]
+        @lesson.learning_outcomes.should == params2[:learning_outcomes]
+        @lesson.duration.should == params2[:duration].to_i*60*60
+        @lesson.teacher_cost.should == 20
+        @lesson.max_attendee.should == params2[:max_attendee].to_i
+        @lesson.min_attendee.should == params2[:min_attendee].to_i
+        @lesson.availabilities.should == params2[:availabilities]
+        @lesson.prerequisites.should == params2[:prerequisites]
+        @lesson.additional_comments.should == params2[:additional_comments]
+      end
   	end
   end
 end

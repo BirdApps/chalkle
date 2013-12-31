@@ -149,7 +149,7 @@
   }
 
   section.odd {
-    background-color: #EDEDED;
+    background-color: $grayLighter;
   }
 
   p.big_statement {
@@ -176,6 +176,9 @@
 
           &.active {
             display: block;
+          }
+          .channel { 
+            background-color: $grayLighter; 
           }
         }
       }
