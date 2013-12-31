@@ -29,12 +29,15 @@ $logo-column-width: 165px;
       .subscribe_link {
         background: asset-url("chalk_button.png", image) left top no-repeat;
         color: $white;
+        display: block;
+        height: 46px;        
+        margin: 0 0 0 6px;
+        padding-top: 10px;
+        text-align: center;
         text-decoration: none;
-        margin-top: 15px;
-        padding: 12px 54px;
-        &:hover { opacity: .8; }
+        width: 154px;
+        &:hover { opacity: .9; }
       }
-
     }
 
     .words_and_pictures {

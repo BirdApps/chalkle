@@ -5,11 +5,11 @@
         = channel_logo @channel
         - if current_chalkler
           - if current_chalkler.is_following?(@channel)
-            =link_to "Unfollow", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :delete
+            =link_to "UNFOLLOW", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :delete
           - else
-            =link_to "Follow", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :post
+            =link_to "FOLLOW", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :post
         - else
-          =link_to "Follow", new_session_path, class: "subscribe_link"
+          =link_to "FOllOW", new_session_path, class: "subscribe_link"
 
       .words_and_pictures
         .words_and_pictures_contents
