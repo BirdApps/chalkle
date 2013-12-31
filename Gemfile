@@ -31,6 +31,7 @@ gem 'premailer-rails', '~> 1.4.0'
 gem 'google-analytics-rails'
 gem 'kaminari'
 gem 'httparty'
+gem 'inherited_resources'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"

@@ -3,7 +3,10 @@
     .masthead_contents
       .logo_and_subscribe
         = channel_logo @channel
-        -#%a.subscribe_link= image_tag('http://placehold.it/165x30&text=subscribe')
+        - if current_chalkler.is_following?(@channel)
+          =link_to "Unfollow", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :post
+        - else
+          =link_to "Follow", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :post
       .words_and_pictures
         .words_and_pictures_contents
           .wordy_bits

@@ -88,7 +88,9 @@ class Chalkler < ActiveRecord::Base
     end
   end
 
+  def is_following?(channel)
 
+  end
 
   def email_required?
     identities.empty?
