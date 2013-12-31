@@ -18,9 +18,9 @@ module ChalkleMeetup
         lesson.created_at = Time.at(data.created / 1000)
       end
 
+      lesson.channel = channel
       lesson.save
       lesson.set_category data.name
-      lesson.channels << channel unless lesson.channels.exists? channel
       lesson
     end
 

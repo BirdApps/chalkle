@@ -19,7 +19,7 @@ module Finance
       end
 
       def default_chalkle_percentage
-        channel_value_or_default channels.first, :chalkle_percentage, 0.125
+        channel_value_or_default channel, :chalkle_percentage, 0.125
       end
 
       def chalkle_percentage
@@ -28,7 +28,7 @@ module Finance
       end
 
       def default_channel_percentage
-        channel_value_or_default channels.first, :channel_percentage, 0.125
+        channel_value_or_default channel, :channel_percentage, 0.125
       end
 
       def channel_percentage
@@ -43,7 +43,7 @@ module Finance
       private
 
         attr_reader :lesson
-        delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :channels, :cost, to: :lesson
+        delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :channel, :cost, to: :lesson
 
         def channel_value_or_default(channel, key, default)
           channel ? channel.send(key) : default

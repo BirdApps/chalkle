@@ -54,11 +54,8 @@ class Teaching
       @lesson = Lesson.new(lesson_args)
       @lesson.status = "Unreviewed"
       @lesson.category_id = @category_primary_id
-      if @lesson.save
-        @lesson.channels << Channel.find(@channel_id)
-      else
-        return false
-      end
+      @lesson.channel = Channel.find(@channel_id)
+      @lesson.save
     else
       return false
     end

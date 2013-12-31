@@ -19,7 +19,7 @@ ActiveAdmin.register Lesson  do
   scope :published
   scope :unpublished
 
-  filter :channels_name, :as => :select, :label => "Channel",
+  filter :channel_name, :as => :select, :label => "Channel",
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :name
@@ -49,9 +49,7 @@ ActiveAdmin.register Lesson  do
     column :id
     column :name
     column :attendance, sortable: false
-    column :channels do |lesson|
-      lesson.channels.collect{ |c| c.name}.join(", ")
-    end
+    column :channel_name
     column :category_name, sortable: false
     column :teacher
     column :cost do |lesson|
@@ -85,9 +83,7 @@ ActiveAdmin.register Lesson  do
         end
       end
       row :category_name
-      row :channels do |lesson|
-        lesson.channels.collect{ |c| c.name}.join(", ")
-      end
+      row :channel_name
       row "Class Date" do |lesson|
         if lesson.start_at.present?
           lesson.start_at
@@ -193,7 +189,7 @@ ActiveAdmin.register Lesson  do
           end
         end
         row :rsvp_list do
-          render partial: "/admin/lessons/rsvp_list", locals: { lesson: LessonDecorator.decorate(lesson), channel_url: (lesson.channels.present? ? lesson.channels.collect{|c| c.url_name} : Channel.find(1).url_name), bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
+          render partial: "/admin/lessons/rsvp_list", locals: { lesson: LessonDecorator.decorate(lesson), channel_url: (lesson.channel ? lesson.channel.url_name : Channel.find(1).url_name), bookings: lesson.bookings.visible.interested.order("status desc"), role: current_admin_user.role }
         end
         row :description do
           simple_format lesson.description

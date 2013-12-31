@@ -7,7 +7,7 @@ Here is your chalkle° <%= @chalkler.email_frequency %> digest for <%= Date.toda
 New chalkles:
 
   <% @new_lessons.each do |lesson| %>
-<%= "#{lesson.channels.first.name}: #{lesson.name} - #{lesson.start_at.strftime("%l:%M %p %a %B %d") if lesson.start_at}" %>
+<%= "#{lesson.channel.name}: #{lesson.name} - #{lesson.start_at.strftime("%l:%M %p %a %B %d") if lesson.start_at}" %>
 
 <%= truncate(lesson.do_during_class, length: 250, separator: ' ') %>
 Join class: <%= lesson.meetup_url %>
@@ -20,7 +20,7 @@ Join class: <%= lesson.meetup_url %>
 There is still time to sign up for these chalkles:
 
   <% @open_lessons.each do |lesson| %>
-<%= "#{lesson.channels.first.name}: #{lesson.name} - #{lesson.start_at.strftime("%l:%M %p %a %B %d") if lesson.start_at}" %>
+<%= "#{lesson.channel.name}: #{lesson.name} - #{lesson.start_at.strftime("%l:%M %p %a %B %d") if lesson.start_at}" %>
 
 <%= truncate(lesson.do_during_class, length: 250, separator: ' ') %>
 Join <%= lesson.attendance %> other chalklers: <%= lesson.meetup_url %>

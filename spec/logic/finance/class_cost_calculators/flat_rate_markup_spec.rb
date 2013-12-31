@@ -9,7 +9,7 @@ module Finance
     describe FlatRateMarkup do
       ERROR_MARGIN = 0.000001
 
-      let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channels: []) }
+      let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channel: nil) }
       subject { FlatRateMarkup.new(lesson, Tax::NullTax.new, channel_fee: 2.0, chalkle_fee: 3.0) }
       let(:subject_with_tax) { FlatRateMarkup.new(lesson, Tax::NzGst.new, channel_fee: 2.0, chalkle_fee: 3.0) }
 

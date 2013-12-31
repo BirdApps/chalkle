@@ -1,7 +1,6 @@
 Given(/^there is a booking with no details in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name name
-  lesson = FactoryGirl.create(:lesson, name: "Test Class")
-  lesson.channels << channel
+  lesson = FactoryGirl.create(:lesson, name: "Test Class", channel: channel)
   chalkler = FactoryGirl.create(:chalkler)
   chalkler.channels << channel
   FactoryGirl.create(:booking, lesson_id: lesson.id, chalkler_id: chalkler.id, payment_method: 'free', status: 'yes')

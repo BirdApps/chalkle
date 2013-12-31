@@ -11,7 +11,6 @@ a.lesson_medium {
   height: $lesson-medium-height;
   overflow: hidden;
   padding: 0;
-  margin-bottom: 10px;
   text-decoration: none !important;
   min-width: $lesson-medium-width;
 
@@ -186,6 +185,16 @@ a.lesson_medium {
     padding-left: 5px;
     min-width: 510px;
   }
+}
+
+.channel { 
+  background-color: $white;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 2px 8px;
+  text-align: left;
+  a { text-decoration: none !important;}
 }
 
 $lesson-compact-height: 85px;

@@ -1,7 +1,6 @@
 Given /^there is a lesson with no details in the "(.*?)" channel$/ do |name|
   channel = Channel.find_by_name(name)
-  lesson = FactoryGirl.create(:published_lesson, name: "Test Class", start_at: 1.day.from_now)
-  lesson.channels << channel
+  lesson = FactoryGirl.create(:published_lesson, name: "Test Class", start_at: 1.day.from_now, channel: channel)
 end
 
 Then /^they should see this lesson in the "(.*?)" channel$/ do |channel_name|
@@ -70,8 +69,7 @@ end
 
 Given(/^there is an unreviewed lesson with no details in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name(name)
-  lesson = FactoryGirl.create(:lesson, name: "Test Class", status: "Unreviewed")
-  lesson.channels << channel
+  lesson = FactoryGirl.create(:lesson, name: "Test Class", status: "Unreviewed", channel: channel)
 end
 
 When(/^they fill in the lessons comments with "(.*?)"$/) do |comments|
@@ -81,8 +79,7 @@ end
 
 Given(/^"(.*?)" is teaching a lesson$/) do |name|
   teacher = Chalkler.find_by_name name
-  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id)
-  lesson.channels = teacher.channels
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, channel: teacher.channels.first)
 end
 
 Given(/^the chalkler "(.*?)" has no email$/) do |name|
@@ -93,38 +90,33 @@ end
 Given(/^there is a lesson with no date in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler)
-  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 10)
-  lesson.channels << channel
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 10, channel: channel)
 end
 
 Given(/^there is a lesson with no what we will do text in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler)
-  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: nil, teacher_cost: 10, venue_cost: 10)
-  lesson.channels << channel
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: nil, teacher_cost: 10, venue_cost: 10, channel: channel)
 end
 
 Given(/^there is a lesson with no teacher cost in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler)
-  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10)
-  lesson.channels << channel
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, channel: channel)
 end
 
 Given(/^there is a lesson with no venue cost in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler)
-  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: nil)
-  lesson.channels << channel
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: nil, channel: channel)
 end
 
 Given(/^there is a lesson in the "(.*?)" channel with RSVP numbers below the minimum number of attendees$/) do |name|
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler, name: "Teacher")
   chalkler = FactoryGirl.create(:channel, name: "Chalkler")
-  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 10)
+  lesson = FactoryGirl.create(:lesson, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 10, channel: channel)
   FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, guests: 2, status: 'yes')
-  lesson.channels << channel
 end
 
 When(/^they attach an image to the lesson$/) do
