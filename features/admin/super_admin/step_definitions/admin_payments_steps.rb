@@ -36,7 +36,7 @@ Given(/^there is an ureconciled payment$/) do
   teacher = FactoryGirl.create(:chalkler, name: "Test teacher")
   lesson = FactoryGirl.create(:lesson, name: "Test class", cost: 10, start_at: 1.day.from_now, teacher_id: teacher.id)
 #  chalkler.channels << FactoryGirl.create(:channel)
-#  lesson.channels = chalkler.channels
+#  lesson.channel = chalkler.channels.first
   FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, status: "yes", guests: 0, paid: false)
 end
 

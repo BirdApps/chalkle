@@ -127,8 +127,8 @@ describe Lesson do
     end
 
     it "should raise warning flag when no channel is assigned" do
+      @lesson.channel = nil
       @lesson.flag_warning.should == "Missing details"
-      @lesson.channels << @channel
     end
 
     it "should raise warning flag when no teacher is assigned" do
@@ -247,7 +247,7 @@ describe Lesson do
     let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.2, teacher_percentage: 0.5) }
 
     before do
-      @lesson = FactoryGirl.create(:lesson, channels: [channel])
+      @lesson = FactoryGirl.create(:lesson, channel: channel)
       @lesson.cost = 20
       @lesson.save
     end

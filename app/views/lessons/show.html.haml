@@ -93,9 +93,9 @@
         .img_left
           .logo= channel_logo @channel
           .text
-            %h3= @lesson.channels.first.name
-            .description= @lesson.channels.first.short_description
-            .channel_link= link_to "View more classes by #{@lesson.channels.first.name}", channel_path(@lesson)
+            %h3= @lesson.channel.name
+            .description= @lesson.channel.short_description
+            .channel_link= link_to "View more classes by #{@lesson.channel.name}", channel_path(@lesson)
 
 
       -#= render :partial => 'lesson_details', :locals => { :lesson => @lesson }

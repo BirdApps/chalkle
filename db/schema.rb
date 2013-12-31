@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20131230045238) do
     t.string   "website_url"
     t.string   "logo"
     t.string   "meetup_url"
+    t.string   "cost_calculator"
     t.string   "short_description"
   end
 

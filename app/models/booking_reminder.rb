@@ -17,11 +17,9 @@ class BookingReminder
     chalklers.delete_if { |c| (c.email == nil || c.email == "") }
   end
 
-  private
-
   def remindable
     bookings = @chalkler.bookings.visible.confirmed.billable.unpaid.upcoming
-    bookings.delete_if { |b| (b.teacher? == true || b.lesson.channels.any? == false || b.lesson_start_at.present? == false || b.cost == 0) }
+    bookings.delete_if { |b| (b.teacher? == true || !b.lesson.channel || b.lesson_start_at.present? == false || b.cost == 0) }
   end
 
   def remind_now
@@ -33,17 +31,19 @@ class BookingReminder
     end
   end
 
+  def log_times(bookings)
+    bookings.each do |b|
+      b.update_attributes!({:reminder_last_sent_at => Time.now.utc.to_datetime}, :as => :admin)
+    end
+  end
+
+  private
+
   # This is a hack because the code in remind_now is performing a find that is too complex, and it returns records
   # that are readonly.
   def fresh_records(records)
     records.map do |record|
       record.class.find(record.id)
-    end
-  end
-
-  def log_times(bookings)
-    bookings.each do |b|
-      b.update_attributes!({:reminder_last_sent_at => Time.now.utc.to_datetime}, :as => :admin)
     end
   end
 

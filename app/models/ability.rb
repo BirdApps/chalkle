@@ -20,10 +20,13 @@ class Ability
     when "channel admin"
       can :read, Channel, :id => user.channel_ids
       can :create, Chalkler
+      # TODO: Do this with a single database join
       can [:read, :update, :send_reset_password_mail], Chalkler, :id => user.chalkler_ids
       can :manage, LessonSuggestion
+      # TODO: Do this with a single database join
       can [:read, :update, :meetup_template, :copy_lesson, :hide, :unhide], Lesson, :id => user.lesson_ids
       can :create, Booking
+      # TODO: Do this with a single database join
       can [:record_cash_payment, :read, :update], Booking, :id => user.booking_ids
       can [:read, :create, :update], LessonImage
       cannot [:read, :update, :destroy], [Payment, Category, AdminUser]

@@ -85,8 +85,7 @@ describe AdminUser do
       it { should be_able_to(:update, LessonImage.new) }
 
       it "should be able to administrate lessons" do
-        lesson = FactoryGirl.create(:lesson)
-        lesson.channels << channel
+        lesson = FactoryGirl.create(:lesson, channel: channel)
         subject.should be_able_to(:read, lesson)
         subject.should be_able_to(:update, lesson)
         subject.should be_able_to(:meetup_template, lesson)
@@ -112,9 +111,8 @@ describe AdminUser do
       end
 
       it "should be able to administrate bookings" do
-        lesson = FactoryGirl.create(:lesson)
+        lesson = FactoryGirl.create(:lesson, channel: channel)
         booking = FactoryGirl.create(:booking, lesson: lesson)
-        lesson.channels << channel
         subject.should be_able_to(:read, booking)
         subject.should be_able_to(:create, booking)
         subject.should be_able_to(:update, booking)
@@ -122,9 +120,8 @@ describe AdminUser do
       end
 
       it "should not be able to delete bookings" do
-        lesson = FactoryGirl.create(:lesson)
+        lesson = FactoryGirl.create(:lesson, channel: channel)
         booking = FactoryGirl.create(:booking, lesson: lesson)
-        lesson.channels << channel
         subject.should_not be_able_to(:destroy, booking)
       end
 

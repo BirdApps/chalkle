@@ -10,7 +10,7 @@
           %h3= link_to lesson.name.capitalize, lesson.url
           %p.details
             = lesson.category_name
-            = "| #{lesson.channel_list}"
+            = "| #{lesson.channel_name}"
             = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
           %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
           %p= link_to lesson.join_chalklers, lesson.url
@@ -24,7 +24,7 @@
           %h3= link_to lesson.name.capitalize, lesson.url
           %p.details
             = lesson.category_name
-            = "| #{lesson.channel_list}"
+            = "| #{lesson.channel_name}"
             = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
           %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
           %p= link_to lesson.join_chalklers, lesson.url

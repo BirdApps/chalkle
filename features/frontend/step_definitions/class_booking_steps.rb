@@ -1,13 +1,13 @@
 Given(/^there is a class "(.*?)" open to sign\-up$/) do |name|
+  channel = Channel.find_by_name "Horowhenua"
   lesson = FactoryGirl.create(:lesson,
                               name: 'Test class',
                               status: 'Published',
                               start_at: 1.minute.from_now,
                               cost: 10,
                               visible: true,
-                              max_attendee: 10)
-  channel = Channel.find_by_name "Horowhenua"
-  lesson.channels << channel
+                              max_attendee: 10,
+                              channel: channel)
 end
 
 When(/^they visit the class listings$/) do

@@ -12,7 +12,7 @@
             %ul.unstyled
               %li
                 %strong Class:
-                = link_to @booking.lesson_name.capitalize, channel_lesson_path(@booking.lesson.channels.first, @booking.lesson)
+                = link_to @booking.lesson_name.capitalize, channel_lesson_path(@booking.lesson.channel, @booking.lesson)
               %li
                 %strong Time:
                 = l @booking.lesson_start_at, :format => :long_without_year
@@ -45,7 +45,7 @@
                 %ul.unstyled
                   %li
                     %strong Account number:
-                    = @booking.lesson.channels.first.account
+                    = @booking.lesson.channel.account
                   %li
                     %strong Reference:
                     = "#{@booking.lesson.id} - #{current_chalkler.name}"

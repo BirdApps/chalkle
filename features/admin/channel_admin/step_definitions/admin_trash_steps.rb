@@ -1,7 +1,6 @@
 Given /^there is a deleted lesson with no details in the "(.*?)" channel$/ do |name|
   channel = Channel.find_by_name(name)
-  lesson = FactoryGirl.create(:lesson, name: "Test Class", visible: false)
-  lesson.channels << channel
+  lesson = FactoryGirl.create(:lesson, name: "Test Class", visible: false, channel: channel)
 end
 
 Then /^they should see this lesson in the trash list$/ do

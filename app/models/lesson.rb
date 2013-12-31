@@ -20,8 +20,6 @@ class Lesson < ActiveRecord::Base
     :chalkle_payment, :attendance_last_sent_at, :lesson_upload_image,
     :remove_lesson_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
 
-  has_many   :channel_lessons
-  has_many   :channels, :through => :channel_lessons
   belongs_to :channel
   has_many   :bookings
   has_many   :chalklers, :through => :bookings
@@ -35,6 +33,7 @@ class Lesson < ActiveRecord::Base
 
   delegate :name, :to => :teacher, :prefix => true, :allow_nil => true
   delegate :best_colour_num, to: :category, allow_nil: true
+  delegate :name, :to => :channel, :prefix => true, :allow_nil => true
 
   #Time span for classes requiring attention
   PAST = 3
@@ -216,7 +215,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def complete_details?
-    teacher_id.present? && start_at.present? && channels.any? && do_during_class.present? && teacher_cost.present? && venue_cost.present? && venue.present?
+    teacher_id.present? && start_at.present? && channel && do_during_class.present? && teacher_cost.present? && venue_cost.present? && venue.present?
   end
 
   def class_may_cancel

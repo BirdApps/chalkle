@@ -19,8 +19,7 @@ class Channel < ActiveRecord::Base
   has_many :admin_users, through: :channel_admins
   has_many :subscriptions
   has_many :chalklers, through: :subscriptions, source: :chalkler
-  has_many :channel_lessons
-  has_many :lessons, through: :channel_lessons
+  has_many :lessons
   has_many :bookings, through: :lessons
   has_many :payments, through: :bookings
   has_many :channel_categories

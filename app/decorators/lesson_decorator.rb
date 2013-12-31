@@ -1,11 +1,6 @@
 class LessonDecorator < ApplicationDecorator
   delegate_all
 
-  def channel_list
-    return if source.channels.blank?
-    source.channels.map{ |c| c.name.capitalize }.join(', ')
-  end
-
   def join_chalklers
     if source.attendance > 1
       "Join #{source.attendance} other chalklers"
@@ -15,8 +10,8 @@ class LessonDecorator < ApplicationDecorator
   end
 
   def account
-    if source.channels.first.account?
-      source.channels.first.account
+    if source.channel.account?
+      source.channel.account
     else
       "Please email accounts@chalkle.com for payment instructions"
     end
@@ -35,10 +30,10 @@ class LessonDecorator < ApplicationDecorator
   end
 
   def url
-    if source.channels.first.url_name?
+    if source.channel.url_name?
       source.meetup_url
     else
-      h.channel_lesson_url(source.channels.first, source)
+      h.channel_lesson_url(source.channel, source)
     end
   end
 

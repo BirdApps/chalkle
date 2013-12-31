@@ -26,4 +26,4 @@
           %span.part.attendance
             = lesson_attendance(lesson)
   .channel
-    = link_to lesson.channels.first.name, channel_path(lesson)
+    = link_to lesson.channel.name, channel_path(lesson)
