@@ -89,7 +89,7 @@ class Chalkler < ActiveRecord::Base
   end
 
   def is_following?(channel)
-
+    channels.exists?(channel)
   end
 
   def email_required?

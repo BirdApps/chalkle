@@ -10,4 +10,7 @@ private
     super.where(chalkler_id: current_chalkler.id)
   end
 
+  def resource
+    @subscription ||= end_of_association_chain.first
+  end
 end
