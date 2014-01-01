@@ -83,13 +83,6 @@ ActiveAdmin.register Chalkler do
           "No email categories selected"
         end
       end
-      # row "Email streams" do
-        # if chalkler.email_streams.present?
-          # chalkler.email_streams.collect{|c| Stream.find(c,:select => :name).name}.join(", ")
-        # else
-          # "No email streams selected"
-        # end
-      # end
       row :bio
       row :teaching do
         render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons_taught }

@@ -16,11 +16,6 @@ Given /^"(.*?)" and "(.*?)" are email categories$/ do |category1, category2|
   visit current_path
 end
 
-Given /^"(.*?)" is an email stream$/ do |stream|
-  FactoryGirl.create(:stream, name: stream)
-  visit current_path
-end
-
 When /^they select new email categories$/ do
   check 'business & finance'
   check 'food & drink'
