@@ -50,46 +50,57 @@ a.next-calendar-section {
 }
 
 .page_header_panel {
-  .instructions {
+  h1 { font-size: 28px; }  
+  .filters {
     padding-top: 20px;
     @include make-row();
-
-    .part {
-      @include make-sm-column(3);
-
-      border-right: 2px solid #E8E8E8;
-      min-height: 170px;
-
-      &:last-child {
-        border-right: 0;
-      }
-
-      h2 {
-        margin-top: 0;
-        font-size: 20px;
-        padding-left: 1.5em;
-        position: relative;
-        line-height: 24px;
-        min-height: 48px;
-
-        i {
-          position: absolute;
-          top: 4px;
-          left: 0;
-          height: 18px;
-          line-height: 18px;
-          font-size: 18px;
-          vertical-align: middle;
+    .types {
+      @include make-sm-column(8);
+      .part {
+        @include make-sm-column(3);
+        .arrow-down {
+          border-left: 14px solid transparent;
+          border-right: 14px solid transparent;
+          border-top: 14px solid $fe-heading-color;
+          height: 0; 
+          margin: 0 auto -16px;
+          width: 0px; 
         }
+        &.title {
+          padding: 0;
+          .part-container {
+            background-color: $fe-heading-color;
+            padding: 12px 0;
+          }
+        }
+        &:last-child {
+          border-right: 0;
+        }
+        h2 {
+          color: $white;
+          font-size: 26px;
+          margin: 0; 
+          text-align: center;
+        }
+        h3 {
+          border-bottom: none;
+          font-size: 16px;
+          font-weight: 700;
+        }
+        p { margin: 0; }
       }
     }
-
+    .resets {
+      @include make-sm-column(4);
+      text-align: right;
+      color: $fe-heading-color;
+    }    
   }
-  @media(max-width: $screen-sm) {
-    .instructions {
-      display: none !important;
-    }
-  }
+  // @media(max-width: $screen-sm) {
+  //   .instructions {
+  //     display: none !important;
+  //   }
+  // }
 }
 
 .lesson {
