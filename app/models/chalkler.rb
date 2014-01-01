@@ -7,11 +7,11 @@ class Chalkler < ActiveRecord::Base
     :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
   attr_accessible :bio, :email, :name, :password, :password_confirmation,
-    :remember_me, :email_frequency, :email_categories, :email_streams,
+    :remember_me, :email_frequency, :email_categories,
     :phone_number
   attr_accessible :bio, :email, :name, :password,
     :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
-    :email_frequency, :email_categories, :email_streams, :phone_number,
+    :email_frequency, :email_categories, :phone_number,
     :join_channels, :as => :admin
 
   attr_accessor :join_channels, :set_password_token
