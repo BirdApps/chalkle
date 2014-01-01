@@ -18,7 +18,7 @@
       = link_to "Select All", "#",  class: "checkbox-toggle-button"
       = f.input :email_categories, :label => false, as: :check_boxes, collection: Category.select_options('&nbsp;&nbsp;&nbsp;'.html_safe), include_blank: false
     %h4 
-      Organisations that I'm following
+      Channels that I'm following
     - subscriptions = current_chalkler.channels.order('name ASC')
     %ul.subscription-list
     - subscriptions.each do |channel|
