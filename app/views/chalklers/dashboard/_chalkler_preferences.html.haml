@@ -17,9 +17,13 @@
     %div{ :"data-toggle" => "checkboxes", class: "unchecked" }
       = link_to "Select All", "#",  class: "checkbox-toggle-button"
       = f.input :email_categories, :label => false, as: :check_boxes, collection: Category.select_options('&nbsp;&nbsp;&nbsp;'.html_safe), include_blank: false
-    %h4
-      Send me emails about classes run by the following organisations
-    = f.input :email_streams, :label => false, as: :check_boxes, :collection => Stream.select_options, include_blank: false
+    %h4 
+      Channels that I'm following
+    - subscriptions = current_chalkler.channels.order('name ASC')
+    %ul.subscription-list
+    - subscriptions.each do |channel|
+      %li 
+        = link_to channel.name, channel_path(channel)
     %br/
     %b Note:
     even if you choose not to receive emails about classes from us, you will still receive our transactional emails, such as messages related to classes you have signed up to or information about your account.

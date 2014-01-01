@@ -25,6 +25,19 @@ $logo-column-width: 165px;
       @media(max-width: $screen-xs-min) {
         display: none;
       }
+
+      .subscribe_link {
+        background: asset-url("chalk_button.png", image) left top no-repeat;
+        color: $white;
+        display: block;
+        height: 46px;        
+        margin: 0 0 0 6px;
+        padding-top: 10px;
+        text-align: center;
+        text-decoration: none;
+        width: 154px;
+        &:hover { opacity: .9; }
+      }
     }
 
     .words_and_pictures {
@@ -37,10 +50,6 @@ $logo-column-width: 165px;
         margin: 0px (-$gutter-width);
         display: table;
         width: 100%;
-      }
-
-      .subscribe_link {
-        margin-top: 15px;
       }
 
       .small_controls {
@@ -121,7 +130,7 @@ $logo-column-width: 165px;
     }
 
     .channel_logo {
-      margin-bottom: 15px;
+      margin-bottom: 25px;
     }
 
     h2 {

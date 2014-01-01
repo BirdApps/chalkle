@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Chalkler do
+  let(:channel) { FactoryGirl.create(:channel) }
 
   specify { FactoryGirl.build(:chalkler).should be_valid }
   specify { FactoryGirl.build(:meetup_chalkler).should be_valid }
@@ -14,6 +15,19 @@ describe Chalkler do
     context "non-meetup" do
       before { subject.stub(:meetup_id) { nil } }
       it { should validate_presence_of :email }
+    end
+  end
+
+  describe "is_following" do
+    subject { FactoryGirl.create(:chalkler) }
+    it "is true if has subscription to channel" do
+      subject.channels << channel
+
+      subject.is_following?(channel).should be_true
+    end
+
+    it "is false if has subscription to channel" do
+      subject.is_following?(channel).should be_false
     end
   end
 

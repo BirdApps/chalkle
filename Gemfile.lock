@@ -494,6 +494,7 @@ DEPENDENCIES
   haml_assets (~> 0.2.1)
   haml_coffee_assets (~> 1.9.1)
   httparty
+  inherited_resources
   jquery-rails (~> 2.1.4)
   kalendae_assets (~> 0.2.1)
   kaminari
