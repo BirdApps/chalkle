@@ -55,9 +55,9 @@ a.next-calendar-section {
     padding-top: 20px;
     @include make-row();
     .types {
-      @include make-sm-column(8);
+      @include make-sm-column(10);
       .part {
-        @include make-sm-column(3);
+        @include make-sm-column(2);
         .arrow-down {
           border-left: 14px solid transparent;
           border-right: 14px solid transparent;
@@ -67,6 +67,7 @@ a.next-calendar-section {
           width: 0px; 
         }
         &.title {
+          @include make-sm-column(4);
           padding: 0;
           .part-container {
             background-color: $fe-heading-color;
@@ -91,9 +92,13 @@ a.next-calendar-section {
       }
     }
     .resets {
-      @include make-sm-column(4);
+      @include make-sm-column(2);
       text-align: right;
       color: $fe-heading-color;
+      p { 
+        font-size: 14px; 
+        margin: 22px 0 0;
+      }
     }    
   }
   // @media(max-width: $screen-sm) {
