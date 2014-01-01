@@ -5,7 +5,6 @@ describe Chalkler do
 
   specify { FactoryGirl.build(:chalkler).should be_valid }
   specify { FactoryGirl.build(:meetup_chalkler).should be_valid }
-  
 
   describe "validation" do
     subject { Chalkler.new }
