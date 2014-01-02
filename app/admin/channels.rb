@@ -11,6 +11,9 @@ ActiveAdmin.register Channel do
     column :name
     column :visible
     column :url_name
+    column :regions do |channel|
+      channel.regions.map(&:name).join(',')
+    end
     column :channel_percentage do |channel|
       number_to_percentage(channel.channel_percentage*100, :precision => 2)
     end
@@ -24,6 +27,9 @@ ActiveAdmin.register Channel do
     attributes_table do
       row :name
       row :url_name
+      row :regions do |channel|
+        channel.regions.map(&:name).join(',')
+      end
       row :visible
       row :short_description
       row :description do |channel|
@@ -56,6 +62,7 @@ ActiveAdmin.register Channel do
     f.inputs :details, :multipart => true do
       f.input :name
       f.input :url_name
+      f.input :regions, include_blank: true
       f.input :visible
       f.input :short_description
       f.input :description

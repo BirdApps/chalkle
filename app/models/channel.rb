@@ -3,7 +3,7 @@ require 'channel_logo_uploader'
 class Channel < ActiveRecord::Base
   mount_uploader :logo, ChannelLogoUploader
 
-  attr_accessible :name, :url_name, :channel_percentage, :teacher_percentage, :email, :account, :visible, :description, :website_url, :logo, :photos_attributes, :as => :admin
+  attr_accessible :name, :url_name, :region_ids, :channel_percentage, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :as => :admin
 
   validates_presence_of :name
   validates :channel_percentage, :presence => true, :numericality => { :less_than_or_equal_to => 1, :message => "Channel percentage of revenue must be less than or equal to 1"}
@@ -25,6 +25,8 @@ class Channel < ActiveRecord::Base
   has_many :channel_categories
   has_many :categories, through: :channel_categories
   has_many :photos, class_name: 'ChannelPhoto', dependent: :destroy
+  has_many :channel_regions, dependent: :destroy
+  has_many :regions, through: :channel_regions
 
   accepts_nested_attributes_for :photos
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140102000428) do
+ActiveRecord::Schema.define(:version => 20140102021413) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -135,6 +135,13 @@ ActiveRecord::Schema.define(:version => 20140102000428) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "channel_regions", :force => true do |t|
+    t.integer "channel_id"
+    t.integer "region_id"
+  end
+
+  add_index "channel_regions", ["channel_id", "region_id"], :name => "index_channel_regions_on_channel_id_and_region_id", :unique => true
 
   create_table "channels", :force => true do |t|
     t.string   "name"
@@ -323,5 +330,10 @@ ActiveRecord::Schema.define(:version => 20140102000428) do
     t.datetime "updated_at", :null => false
     t.string   "address_2"
   end
+
+  add_foreign_key "channel_regions", "channels", name: "channel_regions_channel_id_fk"
+  add_foreign_key "channel_regions", "regions", name: "channel_regions_region_id_fk"
+
+  add_foreign_key "lessons", "regions", name: "lessons_region_id_fk"
 
 end
