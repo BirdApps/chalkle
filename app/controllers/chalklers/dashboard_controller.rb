@@ -6,7 +6,7 @@ class Chalklers::DashboardController < Chalklers::BaseController
   layout 'home', only: :index
 
   def index
-    @lessons = Lesson.with_region.upcoming.published.by_date.not_meetup.limit(4 * 6)
+    @lessons = Lesson.upcoming.published.by_date.not_meetup.limit(4 * 6)
     @featured_channels = Channel.visible.has_logo.limit(5).all
   end
 

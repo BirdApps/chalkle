@@ -40,7 +40,7 @@ class LessonsController < ApplicationController
     end
 
     def lessons_for_time
-      @lessons_for_time ||= Querying::LessonsForTime.new(start_of_association_chain)
+      @lessons_for_time ||= Querying::LessonsForTime.new(lessons_base_scope)
     end
 
     def start_of_association_chain
@@ -48,7 +48,19 @@ class LessonsController < ApplicationController
     end
 
     def lessons_base_scope
-      start_of_association_chain.published.by_date
+      apply_filter(start_of_association_chain.published.by_date)
+    end
+
+    def apply_filter(scope)
+      current_filter.apply_to(scope)
+    end
+
+    def current_filter
+      current_chalkler_filter || Filters::NullFilter.new
+    end
+
+    def current_chalkler_filter
+      current_chalkler.lesson_filter if current_chalkler
     end
 
     def get_current_month

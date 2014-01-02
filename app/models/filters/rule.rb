@@ -4,7 +4,9 @@ module Filters
 
     belongs_to :filter, class_name: 'Filters::Filter'
 
-    validates_presence_of :strategy_name
+    validates_presence_of :strategy
+
+    attr_accessible :strategy_name, :value
 
     delegate :apply_to, to: :strategy
 

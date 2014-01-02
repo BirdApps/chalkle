@@ -81,10 +81,10 @@ class Lesson < ActiveRecord::Base
   scope :in_month, lambda {|month| where("start_at" => month.time_range)}
   #scope :in_month, lambda {|month| where(["\"lessons\".start_at ?", month.date_range.to_s(:db)]) }
   scope :in_week, lambda {|week| in_month(week)}
-  scope :with_region, where("lessons.id IN (SELECT id FROM channel_lessons)")
   scope :displayable, lambda { published.visible }
   scope :upcoming_or_today, lambda { where("start_at >= ?", Time.now.to_date.to_time) }
   scope :not_meetup, where("meetup_url IS NULL")
+  scope :only_with_region, lambda {|region| where(region_id: region.id) }
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at
