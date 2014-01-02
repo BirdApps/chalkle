@@ -13,23 +13,23 @@
           - else
             = "Welcome, try these upcoming chalkles"
       .filters
-        .types
-          .part.title
+        %ul.types
+          %li.part.title
             .part-container
               %h2
                 Upcoming Classes
             .arrow-down
-          .part.regions.dropdown
+          %li.part.regions.dropdown
             %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All regions
               %i.fa.fa-chevron-down
             = render partial: 'regions_dropdown', locals: { regions: @regions }
-          .part.channels
+          %li.part.channels.dropdown
             %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All channels
               %i.fa.fa-chevron-down
             = render partial: 'channels_dropdown', locals: { channels: @channels }
-          .part.categories
+          %li.part.categories.dropdown
             %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All categories
               %i.fa.fa-chevron-down
