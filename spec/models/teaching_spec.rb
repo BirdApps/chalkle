@@ -5,6 +5,7 @@ describe "Teachings" do
   let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.1, teacher_percentage: 0.5) }
   let(:channel2) { FactoryGirl.create(:channel, channel_percentage: 0.6, teacher_percentage: 0.1) }
   let(:category) { FactoryGirl.create(:category, name: "music and dance") }
+  let(:region)   { FactoryGirl.create(:region, name: 'Auckland') }
   let(:params) { {
     title: 'My new class',
     lesson_skill: '',
@@ -18,7 +19,8 @@ describe "Teachings" do
     availabilities: '' ,
     additional_comments: '',
     category_primary_id: category.id,
-    channel_id: channel.id
+    channel_id: channel.id,
+    region_id: region.id
   } }
 
   before do
@@ -107,7 +109,7 @@ describe "Teachings" do
   	let(:category) { FactoryGirl.create(:category, name: "music and dance") }
     let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
     free_lesson: '0', teacher_cost: '20', price: '30', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
-    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, channel_id: channel.id} }
+    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, channel_id: channel.id, region_id: region.id} }
 
   	it "create an unreviewed lesson with correct form" do
   		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unpublished, :count).by(1)
@@ -142,6 +144,7 @@ describe "Teachings" do
         @lesson.availabilities.should == params2[:availabilities]
         @lesson.prerequisites.should == params2[:prerequisites]
         @lesson.additional_comments.should == params2[:additional_comments]
+        @lesson.region.should == region
       end
   	end
   end

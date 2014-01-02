@@ -23,6 +23,7 @@
       %h3 Class Details
       = f.input :availabilities, :label => "When are you available to teach this class?", :placeholder => "What dates or time of day are you available to teach this class?", :as => :text, :input_html => { :rows => 1 }
       = f.input :venue, :label => "If you would like to teach the class in your own venue, please tell us where it is and when it is available.", :placeholder => "For example: Level 4, 19 Hargreaves Street, Ponsonby, Auckland. Available weekdays after 6pm.", :as => :text, :input_html => { :rows => 1 }
+      = f.input :region_id, as: :select, collection: Region.all, label: "Which general region is this in?"
       = f.input :prerequisites, :label => "What equipment or resources do you need for this class?", :placeholder => "For example: a projector or all attendees must have a laptop.", :as => :text, :input_html => { :rows => 1 }
       = f.input :suggested_audience, :label => "What type of audience would this class be appropriate for?", :as => :text, :placeholder => "For example: age, ethnicity, occupation, gender", :input_html => { :rows => 1 }
       = f.input :duration, :label => "How long is the class?", :placeholder => "Enter time in hours", :wrapper => :append do
