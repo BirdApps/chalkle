@@ -58,12 +58,13 @@ a.next-calendar-section {
       @include make-sm-column(10);
       .part {
         @include make-sm-column(2);
+        padding-left: 0;
         .arrow-down {
           border-left: 14px solid transparent;
           border-right: 14px solid transparent;
           border-top: 14px solid $fe-heading-color;
           height: 0; 
-          margin: 0 auto -16px;
+          margin: 0 35% -16px;
           width: 0px; 
         }
         &.title {
@@ -73,6 +74,7 @@ a.next-calendar-section {
             background-color: $fe-heading-color;
             padding: 12px 0;
             text-align: center;
+            width: 80%;
           }
         }
         &:last-child {
@@ -88,7 +90,6 @@ a.next-calendar-section {
           border-bottom: none;
           font-size: 16px;
           font-weight: 700;
-          padding-top: 18px; 
         }
         p { margin: 0; }
       }
@@ -99,7 +100,7 @@ a.next-calendar-section {
       color: $fe-heading-color;
       p { 
         font-size: 14px; 
-        margin: 18px 0 0;
+        margin: 22px 0 0;
       }
     }    
   }

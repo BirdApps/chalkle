@@ -10,6 +10,8 @@ Chalkle::Application.routes.draw do
   root to: 'chalklers/dashboard#index'
 
   resources :lessons, only: [:show, :index], path: 'classes' do
+    resource :regions do
+    end
     collection do
       get :month, shallow: true
       get 'month/:year/:month' => 'lessons#month', as: :specific_month

@@ -23,23 +23,17 @@
             %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All regions
               %i.fa.fa-chevron-down
-            %ul.dropdown-menu
-              %li
-                = link_to 'Stuff', root_path
+            = render partial: 'regions_dropdown', locals: { regions: @regions }
           .part.channels
             %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All channels
               %i.fa.fa-chevron-down
-            %ul.dropdown-menu
-              %li
-                = link_to 'Stuff', root_path
+            = render partial: 'channels_dropdown', locals: { channels: @channels }
           .part.categories
             %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All categories
               %i.fa.fa-chevron-down
-            %ul.dropdown-menu
-              %li
-                = link_to 'Stuff', root_path  
+            = render partial: 'categories_dropdown', locals: { categories: @categories }
         .resets
           %p 
             Show all chalkles
