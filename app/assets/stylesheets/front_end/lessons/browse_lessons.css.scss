@@ -63,7 +63,7 @@ a.next-calendar-section {
           border-right: 14px solid transparent;
           border-top: 14px solid $fe-heading-color;
           height: 0; 
-          margin: 0 auto -16px;
+          margin: 0 35% -16px;
           width: 0px; 
         }
         &.title {
@@ -72,6 +72,8 @@ a.next-calendar-section {
           .part-container {
             background-color: $fe-heading-color;
             padding: 12px 0;
+            text-align: center;
+            width: 80%;
           }
         }
         &:last-child {

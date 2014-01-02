@@ -19,18 +19,27 @@
               %h2
                 Upcoming Classes
             .arrow-down
-          .part.regions
-            %h3
+          .part.regions.dropdown
+            %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All regions
               %i.fa.fa-chevron-down
+            %ul.dropdown-menu
+              %li
+                = link_to 'Stuff', root_path
           .part.channels
-            %h3
+            %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All channels
               %i.fa.fa-chevron-down
+            %ul.dropdown-menu
+              %li
+                = link_to 'Stuff', root_path
           .part.categories
-            %h3
+            %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All categories
               %i.fa.fa-chevron-down
+            %ul.dropdown-menu
+              %li
+                = link_to 'Stuff', root_path  
         .resets
           %p 
             Show all chalkles
