@@ -71,6 +71,15 @@ $logo-column-width: 165px;
         vertical-align: top;
       }
 
+      .details {
+        margin: 1em 0;
+
+        .detail {
+          display: block;
+          margin-bottom: 0.4em;
+        }
+      }
+
       .pictures {
         $thumbnail_margin: 8px;
 

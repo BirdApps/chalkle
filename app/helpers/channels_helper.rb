@@ -11,8 +11,7 @@ module ChannelsHelper
   def lesson_channel_link(lesson)
     channel = lesson.channel
     if channel
-      region = lesson.region
-      names = [channel.name, region.name].reject(&:blank?).uniq
+      names = [lesson.channel_name, lesson.region_name].reject(&:blank?).uniq
       content_tag(:div, nil, class: 'channel') do
         link_to names.join(', '), channel_path(channel)
       end

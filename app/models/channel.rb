@@ -115,4 +115,12 @@ class Channel < ActiveRecord::Base
     "Finance::ClassCostCalculators::#{cost_calculator}".constantize unless cost_calculator.blank?
   end
 
+  def region_names
+    regions.map(&:name)
+  end
+
+  def country_name
+    'New Zealand'
+  end
+
 end

@@ -85,7 +85,7 @@ class Teaching
     else
       @channel_id = @channels[0].id
     end
-    @region_id = params[:region_id].to_i
+    @region_id = params[:region_id].to_i unless params[:region_id].blank?
     self.valid?
   end
 
