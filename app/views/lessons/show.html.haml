@@ -89,14 +89,14 @@
               %h6 Note
               = "We require a minimum of #{@lesson.min_attendee} people for this class to go ahead. If the minimum number of attendees is not reached, a decision to cancel will be made 3 days before the class. If the class is cancelled, you will be notified via email with refund instructions."
 
-      .channel_details.highlighted_content
-        .img_left
-          .logo= channel_logo @channel
-          .text
-            %h3= @lesson.channel.name
-            .description= @lesson.channel.short_description
-            .channel_link= link_to "View more classes by #{@lesson.channel.name}", channel_path(@lesson)
-
+      - if @lesson.channel
+        .channel_details.highlighted_content
+          .img_left
+            .logo= channel_logo @lesson.channel
+            .text
+              %h3= @lesson.channel.name
+              .description= @lesson.channel.short_description
+              .channel_link= link_to "View more classes by #{@lesson.channel.name}", channel_path(@lesson.channel)
 
       -#= render :partial => 'lesson_details', :locals => { :lesson => @lesson }
       -#= render :partial => 'teacher_details', :locals => { :lesson => @lesson }
