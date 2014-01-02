@@ -3,4 +3,4 @@
 		= link_to 'All regions', filter_path('single_region'), class: 'dropdown-link', method: :delete
 	- regions.each do |region|
 		%li.dropdown-entry
-			= link_to region.name, filter_path('single_region', value: region.id), class: 'dropdown-link', method: :post
+			= link_to region.name, filter_path('single_region', value: region.id), class: 'dropdown-link', method: :put

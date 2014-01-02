@@ -2,9 +2,11 @@ require 'filters/filter'
 Filter = Filters::Filter
 
 class FiltersController < ApplicationController
+  include Filters::FilterHelpers
+
   def update
-    if current_chalkler
-      filter = current_chalkler.lesson_filter || current_chalkler.create_lesson_filter
+    filter = start_current_chalkler_filter
+    if filter
       filter.overwrite_rule! params[:id], params[:value]
     end
 
@@ -12,8 +14,8 @@ class FiltersController < ApplicationController
   end
 
   def destroy
-    if current_chalkler
-      filter = current_chalkler.lesson_filter || current_chalkler.create_lesson_filter
+    filter = current_chalkler_filter
+    if filter
       filter.destroy_rule! params[:id]
     end
 

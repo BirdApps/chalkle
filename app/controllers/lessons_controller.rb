@@ -1,4 +1,6 @@
 class LessonsController < ApplicationController
+  include Filters::FilterHelpers
+
   after_filter :store_location
   before_filter :load_channel
   before_filter :load_lesson, only: :show
@@ -49,18 +51,6 @@ class LessonsController < ApplicationController
 
     def lessons_base_scope
       apply_filter(start_of_association_chain.published.by_date)
-    end
-
-    def apply_filter(scope)
-      current_filter.apply_to(scope)
-    end
-
-    def current_filter
-      current_chalkler_filter || Filters::NullFilter.new
-    end
-
-    def current_chalkler_filter
-      current_chalkler.lesson_filter if current_chalkler
     end
 
     def get_current_month
