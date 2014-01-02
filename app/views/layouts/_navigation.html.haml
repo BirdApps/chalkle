@@ -16,7 +16,7 @@
           - if current_chalkler.channels.exists? name: 'Horowhenua'
             %li= link_to 'Horowhenua', channel_path(Channel.where{ name == 'Horowhenua' }.first)
           %li= link_to 'Teach', new_chalklers_teaching_path
-          %li= link_to 'Request class', new_chalklers_lesson_suggestion_path
+          -#%li= link_to 'Request class', new_chalklers_lesson_suggestion_path
           %li= link_to 'Bookings', bookings_path
 
       %ul.nav.navbar-nav.pull-right
