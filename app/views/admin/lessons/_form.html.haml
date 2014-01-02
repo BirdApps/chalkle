@@ -6,6 +6,7 @@
     =f.input :start_at
     =f.input :venue, :input_html => { :rows => 1 }
     =f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
+    =f.input :region
     -if !@lesson.published?
       - if current_admin_user.role == 'super'
         = f.input :channel, :collection => Channel.accessible_by(current_ability)
