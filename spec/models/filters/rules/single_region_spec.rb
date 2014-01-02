@@ -31,5 +31,17 @@ module Filters::Rules
         subject.serialize(rule)
       end
     end
+
+    describe "#active_name" do 
+      it "returns the active region name" do
+        subject.relation = Region.new(name: 'Wellington')
+        subject.active_name.should == 'Wellington'
+      end
+
+      it "returns the clear name if there is no relation" do
+        subject.active_name.should == "All regions"
+      end
+    end
+
   end
 end

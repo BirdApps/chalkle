@@ -21,9 +21,9 @@
             .arrow-down
           %li.part.regions.dropdown
             %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
-              All regions
+              = @region_filter.active_name
               %i.fa.fa-chevron-down
-            = render partial: 'regions_dropdown', locals: { regions: @regions, filter: @region_filter }
+            = render partial: 'regions_dropdown', locals: { filter: @region_filter }
           %li.part.channels.dropdown
             %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
               All channels

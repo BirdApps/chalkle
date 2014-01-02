@@ -17,6 +17,10 @@ module Filters
         "All regions"
       end
 
+      def active_name
+        relation ? relation.name : clear_name
+      end
+
       private
 
       def relation_class
