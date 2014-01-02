@@ -6,10 +6,14 @@ module Filters
     def overwrite_rule!(name, value)
       raise ArgumentError, "you must specify a rule name" if name.blank?
 
-      strategy_name = name.camelize
-      rule = rules.first_or_initialize(strategy_name: strategy_name)
+      rule = rules.first_or_initialize(strategy_name: strategy_name(name))
       rule.value = value
       rule.save!
+    end
+
+    def destroy_rule!(name)
+      rule = rules.where(strategy_name: strategy_name(name)).first
+      rule.destroy if rule
     end
 
     def apply_to(scope)
@@ -18,5 +22,11 @@ module Filters
       end
       scope
     end
+
+    private
+
+      def strategy_name(name)
+        name.camelize
+      end
   end
 end

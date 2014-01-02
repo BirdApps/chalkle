@@ -22,7 +22,7 @@ module Filters
 
         context "with no filter" do
           it "creates a filter and sets the rule" do
-            post :create, type: 'single_region', value: @region.id.to_s
+            put :update, id: 'single_region', value: @region.id.to_s
 
             current_rule_should_be 'SingleRegion', @region.id.to_s
           end
@@ -31,7 +31,7 @@ module Filters
         context "with a filter" do
           it "sets the rule if none exists" do
             @current_chalkler.create_lesson_filter
-            post :create, type: 'single_region', value: @region.id.to_s
+            put :update, id: 'single_region', value: @region.id.to_s
 
             current_rule_should_be 'SingleRegion', @region.id.to_s
           end
@@ -40,7 +40,7 @@ module Filters
             filter = @current_chalkler.create_lesson_filter
             filter.overwrite_rule! 'SingleRegion', FactoryGirl.create(:region).id
 
-            post :create, type: 'single_region', value: @region.id.to_s
+            put :update, id: 'single_region', value: @region.id.to_s
 
             current_rule_should_be 'SingleRegion', @region.id.to_s
           end
