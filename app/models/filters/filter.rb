@@ -4,6 +4,8 @@ module Filters
     has_many :rules, class_name: 'Filters::Rule'
 
     def overwrite_rule!(name, value)
+      raise ArgumentError, "you must specify a rule name" if name.blank?
+
       strategy_name = name.camelize
       rule = rules.first_or_initialize(strategy_name: strategy_name)
       rule.value = value

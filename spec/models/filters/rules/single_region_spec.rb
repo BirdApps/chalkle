@@ -1,11 +1,8 @@
-require 'spec_helper_lite'
+require 'spec_helper'
 require 'filters/rules/single_region'
 
 module Filters::Rules
   describe SingleRegion do
-    class Region
-    end
-
     let(:region) { double(:region, id: 47) }
     let(:scope)  { double(:scope) }
     let(:rule)  { double(:rule) }
