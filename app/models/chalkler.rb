@@ -20,6 +20,7 @@ class Chalkler < ActiveRecord::Base
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
 
+  has_one  :lesson_filter, class_name: 'Filters::Filter', dependent: :destroy
   has_many :subscriptions
   has_many :channels, through: :subscriptions, source: :channel
   has_many :bookings
