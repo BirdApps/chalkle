@@ -99,7 +99,7 @@ a.next-calendar-section {
         p { margin: 0; }
         .dropdown-menu { 
           margin-top: 5px; 
-          padding: 1px 0 0; 
+          padding: 1px; 
          }
          .dropdown-menu li:last-child { margin-bottom: 1px; }
         .dropdown-link { 
@@ -111,9 +111,14 @@ a.next-calendar-section {
             background: url('white-circle.png') 2% center no-repeat;
             color: $white;
           }
+          &.active {
+            background: url('checked-circle.png') 2% center no-repeat;
+            background-color: #59742F;
+            color: $white;
+          }
         }
         .dropdown-entry { 
-          padding: 0 1px; 
+          padding: 0;
           text-align: left;
         }
       }
