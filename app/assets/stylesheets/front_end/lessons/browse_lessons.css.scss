@@ -111,13 +111,15 @@ a.next-calendar-section {
             background: url('white-circle.png') 2% center no-repeat;
             color: $white;
           }
-          &.active {
+          &.dropdown-active {
             background: url('checked-circle.png') 2% center no-repeat;
             background-color: #59742F;
             color: $white;
+            display: block;
           }
         }
         .dropdown-entry { 
+          margin-bottom: 0; 
           padding: 0;
           text-align: left;
         }

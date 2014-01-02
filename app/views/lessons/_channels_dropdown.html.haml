@@ -1,6 +1,7 @@
 %ul.dropdown-menu.pull-right.arrow-right
 	%li.dropdown-entry
-		= link_to 'All channels', '#', class: 'dropdown-link'
+		%span.dropdown-link.dropdown-active
+			All channels
 	- channels.each do |channel|
 		%li.dropdown-entry
 			= link_to channel.name, '#', class: 'dropdown-link'
