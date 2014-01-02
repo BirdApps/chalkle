@@ -22,16 +22,17 @@ gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails',  '~> 2.1.4'
 gem 'active_attr',   '~> 0.7.0'
 gem 'dragonfly',     '~> 0.9.14'
-gem 'rack-cache', :require => 'rack/cache'
+gem 'rack-cache', require: 'rack/cache'
 gem 'delayed_job_active_record'
 gem 'squeel',        '~> 1.0.18'
 gem 'validates_timeliness', '~> 3.0'
-gem 'whenever', :require => false
+gem 'whenever', require: false
 gem 'premailer-rails', '~> 1.4.0'
 gem 'google-analytics-rails'
 gem 'kaminari'
 gem 'httparty'
 gem 'inherited_resources'
+gem 'foreigner'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"

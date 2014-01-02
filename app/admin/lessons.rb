@@ -49,6 +49,7 @@ ActiveAdmin.register Lesson  do
     column :id
     column :name
     column :attendance, sortable: false
+    column :region
     column :channel_name
     column :category_name, sortable: false
     column :teacher
@@ -80,6 +81,13 @@ ActiveAdmin.register Lesson  do
           end
         else
           status_tag("Please select a teacher and make sure there is an email contact", :error)
+        end
+      end
+      row :region do |lesson|
+        if lesson.region
+          lesson.region.name
+        else
+          status_tag("This class must have a region", :error)
         end
       end
       row :category_name

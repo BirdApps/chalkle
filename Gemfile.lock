@@ -208,6 +208,8 @@ GEM
       ruby-hmac
     font-awesome-rails (4.0.3.0)
       railties (>= 3.2, < 5.0)
+    foreigner (1.6.0)
+      activerecord (>= 3.0.0)
     formatador (0.2.4)
     formtastic (2.2.1)
       actionpack (>= 3.0)
@@ -488,6 +490,7 @@ DEPENDENCIES
   factory_girl_rails (~> 4.2.1)
   fog (>= 1.3.1)
   font-awesome-rails
+  foreigner
   google-analytics-rails
   google-webfonts-rails
   haml-rails (~> 0.3.5)

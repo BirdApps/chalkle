@@ -8,7 +8,7 @@ class Lesson < ActiveRecord::Base
     :duration,:lesson_type, :teacher_bio, :do_during_class, :learning_outcomes,
     :max_attendee, :min_attendee, :availabilities, :prerequisites,
     :additional_comments, :donation, :lesson_skill, :venue, :category_id, :category,
-    :channel_ids, :channel_id, :suggested_audience, :teacher_cost
+    :channel_ids, :channel_id, :suggested_audience, :teacher_cost, :region_id
   attr_accessible :name, :meetup_id, :meetup_url, :teacher_id, :status, :cost,
     :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
     :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,
@@ -18,9 +18,10 @@ class Lesson < ActiveRecord::Base
     :lesson_image_attributes, :channel_percentage_override,
     :chalkle_percentage_override, :material_cost, :suggested_audience,
     :chalkle_payment, :attendance_last_sent_at, :lesson_upload_image,
-    :remove_lesson_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
+    :remove_lesson_upload_image, :cached_channel_fee, :cached_chalkle_fee, :region_id, :as => :admin
 
   belongs_to :channel
+  belongs_to :region
   has_many   :bookings
   has_many   :chalklers, :through => :bookings
   has_many   :payments, :through => :bookings
