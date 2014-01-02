@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140102034937) do
+ActiveRecord::Schema.define(:version => 20140102063229) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -192,8 +192,14 @@ ActiveRecord::Schema.define(:version => 20140102034937) do
   end
 
   create_table "filter_rules", :force => true do |t|
-    t.string "strategy_name"
-    t.string "value"
+    t.string  "strategy_name"
+    t.string  "value"
+    t.integer "filter_id"
+  end
+
+  create_table "filters", :force => true do |t|
+    t.integer  "chalkler_id"
+    t.datetime "created_at"
   end
 
   create_table "lesson_images", :force => true do |t|
@@ -338,6 +344,10 @@ ActiveRecord::Schema.define(:version => 20140102034937) do
 
   add_foreign_key "channel_regions", "channels", name: "channel_regions_channel_id_fk"
   add_foreign_key "channel_regions", "regions", name: "channel_regions_region_id_fk"
+
+  add_foreign_key "filter_rules", "filters", name: "filter_rules_filter_id_fk"
+
+  add_foreign_key "filters", "chalklers", name: "filters_chalkler_id_fk"
 
   add_foreign_key "lessons", "regions", name: "lessons_region_id_fk"
 
