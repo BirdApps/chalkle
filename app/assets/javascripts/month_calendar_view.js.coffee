@@ -1,9 +1,7 @@
-#= require plugins/monthly_calendar.js
-#= require plugins/weekly_calendar.js
+#= require plugins/lessons_index.js
 
 $(document).ready ->
-  $('table.month_calendar_view').monthlyCalendar()
-  $('.week_calendar_view').weeklyCalendar()
+  $('#lessons_index').lessonsIndex()
 
   $(document).on "ajax:success", '[data-append]', (evt, data, status, xhr) ->
     target_id = $(this).attr('data-append')
