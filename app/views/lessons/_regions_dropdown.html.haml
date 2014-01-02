@@ -1,8 +1,17 @@
-%ul.dropdown-menu.pull-right.arrow-right
-  %li.dropdown-entry
-    = link_to_unless !filter.active?, filter.clear_name, filter_path(filter.name), class: 'dropdown-link', method: :delete do |name|
-      %span.dropdown-link.dropdown-active= name
-    - filter.options.each do |name, value, active|
-      %li.dropdown-entry
-        = link_to_unless active, name, filter_path(filter.name, value: value), class: 'dropdown-link', method: :put do |name|
-          %span.dropdown-link.dropdown-active= name
+%li.part.regions.dropdown
+  %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
+    = filter.active_name
+    %i.fa.fa-chevron-down
+
+  %ul.dropdown-menu.pull-right.arrow-right.filter_selector
+    %li.dropdown-entry
+      = link_to_unless !filter.active?, filter.clear_name, filter_path(filter.name), class: 'dropdown-link', method: :delete do |name|
+        %span.dropdown-link.dropdown-active= name
+      - filter.options.each do |name, value, active|
+        %li.dropdown-entry
+          = link_to_unless active, name, filter_path(filter.name, value: value), class: 'dropdown-link', method: :put do |name|
+            %span.dropdown-link.dropdown-active= name
+
+:coffeescript
+  $ ->
+    $('.filter_selector').filterSelector('#lessons_index')
