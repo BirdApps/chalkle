@@ -12,6 +12,7 @@ $chalkboard-background: $chalkboard-background-color asset-url("texture-chalkboa
 @import "front_end/channels/show";
 @import "front_end/header_and_footer";
 @import "front_end/social_media";
+@import "front_end/dropdowns";
 
 html,body
 {
@@ -39,8 +40,6 @@ a {
   }
 
   .page_header_panel {
-    border-bottom: 2px solid #BABABA;
-
     min-height: 100px;
   }
 }

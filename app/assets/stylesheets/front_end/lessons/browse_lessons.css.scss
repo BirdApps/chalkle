@@ -58,23 +58,23 @@ a.next-calendar-section {
       @include make-sm-column(10);
       .part {
         @include make-sm-column(2);
-        padding-left: 0;
+        padding-left: 25px; 
+        padding-right: 0; 
         .arrow-down {
           border-left: 14px solid transparent;
           border-right: 14px solid transparent;
           border-top: 14px solid $fe-heading-color;
           height: 0; 
-          margin: 0 35% -16px;
+          margin: 0 auto -16px;
           width: 0px; 
         }
         &.title {
-          @include make-sm-column(4);
+          @include make-sm-column(3);
           padding: 0;
           .part-container {
             background-color: $fe-heading-color;
             padding: 12px 0;
             text-align: center;
-            width: 80%;
           }
         }
         &:last-child {
@@ -90,8 +90,28 @@ a.next-calendar-section {
           border-bottom: none;
           font-size: 16px;
           font-weight: 700;
+          margin-top: 16px;
         }
         p { margin: 0; }
+        .dropdown-menu { 
+          margin-top: 5px; 
+          padding: 1px 0 0; 
+         }
+        .dropdown-link { 
+          background: url('empty-circle.png') 2% center no-repeat;
+          color: $grayLight;
+          padding: 10px 10px 10px 46px;
+
+          &:hover { 
+            background: url('white-circle.png') 2% center no-repeat;
+            background-color: $fe-heading-color; 
+            color: $white;
+          }
+        }
+        .dropdown-entry { 
+          padding: 0 1px; 
+          text-align: left;
+        }
       }
     }
     .resets {
