@@ -11,7 +11,7 @@ module Filters
     delegate :apply_to, to: :strategy
 
     def strategy
-      "Filters::Rules::#{strategy_name}".constantize.new(self)
+      "Filters::Rules::#{strategy_name.camelize}".constantize.new(self)
     end
   end
 end

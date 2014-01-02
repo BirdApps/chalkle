@@ -24,7 +24,7 @@ module Filters
           it "creates a filter and sets the rule" do
             put :update, id: 'single_region', value: @region.id.to_s
 
-            current_rule_should_be 'SingleRegion', @region.id.to_s
+            current_rule_should_be 'single_region', @region.id.to_s
           end
         end
 
@@ -33,16 +33,16 @@ module Filters
             @current_chalkler.create_lesson_filter
             put :update, id: 'single_region', value: @region.id.to_s
 
-            current_rule_should_be 'SingleRegion', @region.id.to_s
+            current_rule_should_be 'single_region', @region.id.to_s
           end
 
           it "updates the rule if it has changed" do
             filter = @current_chalkler.create_lesson_filter
-            filter.overwrite_rule! 'SingleRegion', FactoryGirl.create(:region).id
+            filter.overwrite_rule! 'single_region', FactoryGirl.create(:region).id
 
             put :update, id: 'single_region', value: @region.id.to_s
 
-            current_rule_should_be 'SingleRegion', @region.id.to_s
+            current_rule_should_be 'single_region', @region.id.to_s
           end
         end
       end
