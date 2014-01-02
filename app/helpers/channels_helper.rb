@@ -7,4 +7,15 @@ module ChannelsHelper
     end
     image_tag url, class: 'channel_logo', alt: channel.name
   end
+
+  def lesson_channel_link(lesson)
+    channel = lesson.channel
+    if channel
+      region = lesson.region
+      names = [channel.name, region.name].reject(&:blank?).uniq
+      content_tag(:div, nil, class: 'channel') do
+        link_to names.join(', '), channel_path(channel)
+      end
+    end
+  end
 end
