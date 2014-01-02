@@ -17,4 +17,16 @@ module ChannelsHelper
       end
     end
   end
+
+  def channel_follow_link(channel)
+    if current_chalkler
+      if current_chalkler.is_following?(@channel)
+        link_to "UNFOLLOW", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :delete, "data-toggle" => 'tooltip', title: 'Stop receiving updates and class notifications' 
+      else
+        link_to "FOLLOW", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :post, "data-toggle" => 'tooltip', title: 'Receive updates and class notifications' 
+      end
+    else
+      link_to "FOLLOW", new_chalkler_session_path, class: "subscribe_link", id: "js-subscribe", "data-toggle" => 'tooltip', title: 'Receive updates and class notifications' 
+    end
+  end
 end

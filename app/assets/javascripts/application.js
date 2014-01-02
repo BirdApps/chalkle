@@ -24,4 +24,3 @@
 //= require front_end/front_end
 //= require utils
 //= require month_calendar_view
-

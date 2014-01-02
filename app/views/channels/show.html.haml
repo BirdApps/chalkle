@@ -3,14 +3,8 @@
     .masthead_contents
       .logo_and_subscribe
         = channel_logo @channel
-        - if current_chalkler
-          - if current_chalkler.is_following?(@channel)
-            =link_to "UNFOLLOW", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :delete
-          - else
-            =link_to "FOLLOW", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :post
-        - else
-          =link_to "FOLLOW", new_chalkler_session_path, class: "subscribe_link"
-
+        = channel_follow_link(@channel)
+        
       .words_and_pictures
         .words_and_pictures_contents
           .wordy_bits
@@ -43,6 +37,11 @@
 = render partial: '/lessons/index_without_filters'
 
 :coffeescript
+
+  $('#js-subscribe').tooltip({
+    placement: "bottom"
+  })
+
   $('.masthead .description').readmore({
     maxHeight: 22 * 9;
   })
