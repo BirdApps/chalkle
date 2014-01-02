@@ -8,7 +8,7 @@ module Filters
 
     attr_accessible :strategy_name, :value
 
-    delegate :apply_to, to: :strategy
+    delegate :apply_to, :name, :options, :clear_name, :active?, to: :strategy
 
     def strategy
       "Filters::Rules::#{strategy_name.camelize}".constantize.new(self)

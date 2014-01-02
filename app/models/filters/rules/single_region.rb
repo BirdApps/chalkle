@@ -7,6 +7,16 @@ module Filters
         scope.only_with_region(relation)
       end
 
+      def options
+        Region.all.map do |region|
+          [region.name, region.id, region == relation]
+        end
+      end
+
+      def clear_name
+        "All regions"
+      end
+
       private
 
       def relation_class

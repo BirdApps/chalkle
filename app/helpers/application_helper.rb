@@ -12,4 +12,10 @@ module ApplicationHelper
     params[1][:defaults] = {input_html: {class: "form-control"}}
     simple_form_for(*params, &block)
   end
+
+  def link_to_or_span(*params)
+    link_to_unless *params do |name, href, options|
+      content_tag :span, name, options
+    end
+  end
 end

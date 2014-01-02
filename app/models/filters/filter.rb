@@ -12,7 +12,7 @@ module Filters
     end
 
     def destroy_rule!(name)
-      rule = rules.where(strategy_name: name).first
+      rule = current_filter_for(name)
       rule.destroy if rule
     end
 
@@ -23,5 +23,16 @@ module Filters
       scope
     end
 
+    def current_or_empty_filter_for(name)
+      current_filter_for(name) || build_rule_for(name)
+    end
+
+    def current_filter_for(name)
+      rules.where(strategy_name: name).first
+    end
+
+    def build_rule_for(name)
+      Rule.new(strategy_name: name)
+    end
   end
 end
