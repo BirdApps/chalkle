@@ -63,12 +63,42 @@ $line-height: $navbar-height - ($vertical-padding * 2);
         border: none;
         color: $grayLight;
         text-shadow: none;
-        font-weight: bold;
-        &:hover {
-          background: none;
-          color: $pink;
+        &:hover { 
+          color: $white; 
+          text-decoration: none;
         }
       }
+      .dropdown-link {
+        margin: 0;
+        text-align: center;
+      }
+      .dropdown-menu.email-settings { 
+        margin-top: 10px;
+        padding: 0; 
+      }
+      .dropdown-menu.email-settings:before {
+        position: absolute;
+        top: -14px;
+        right: 3px;
+        display: inline-block;
+        border-right: 14px solid transparent;
+        border-bottom: 14px solid #ccc;
+        border-left: 14px solid transparent;
+        border-bottom-color: #bababa;
+        content: '';
+      }
+
+      .dropdown-menu.email-settings:after {
+        position: absolute;
+        top: -12px;
+        right: 5px;
+        display: inline-block;
+        border-right: 12px solid transparent;
+        border-bottom: 12px solid #ffffff;
+        border-left: 12px solid transparent;
+        content: '';
+      }
+
     }
   }
 }

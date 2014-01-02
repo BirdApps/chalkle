@@ -50,3 +50,12 @@
 	border-left: 12px solid transparent;
 	content: '';
 }
+
+.dropdown-menu li {
+	color: $grayLight;
+	&:hover {
+		background-color: #59742F; 
+	  color: $white;
+	  text-decoration: none;
+	}
+}

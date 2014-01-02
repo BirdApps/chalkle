@@ -28,6 +28,6 @@
             %a.dropdown-toggle{'data-toggle'=>'dropdown'}
               = current_chalkler.name
               %i.fa.fa-chevron-down
-            %ul.dropdown-menu.arrow-right
-              %li= link_to 'Email settings', chalklers_preferences_path, { :tabindex => '-1' }
+            %ul.dropdown-menu.email-settings
+              %li.dropdown-link= link_to 'Email settings', chalklers_preferences_path, { :tabindex => '-1' }
           %li= link_to 'Sign out', destroy_chalkler_session_path, method: 'delete'
