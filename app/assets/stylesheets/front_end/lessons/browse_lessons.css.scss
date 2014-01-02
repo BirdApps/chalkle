@@ -97,6 +97,7 @@ a.next-calendar-section {
           margin-top: 5px; 
           padding: 1px 0 0; 
          }
+         .dropdown-menu li:last-child { margin-bottom: 0; }
         .dropdown-link { 
           background: url('empty-circle.png') 2% center no-repeat;
           color: $grayLight;
