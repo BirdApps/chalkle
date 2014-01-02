@@ -1,7 +1,7 @@
 %section.week
   %header.calendar_titles
     - relative_name = relative_week_name(week)
-    %h2{class: ('has_relative' if relative_name)}
+    %h3{class: ('has_relative' if relative_name)}
       - if relative_name
         %span.part.main_part.relative_part= relative_name
       %span.part.calendar_part= week_title week
@@ -9,7 +9,7 @@
     - week.each do |day|
       .day{:class => [relative_date_class(day), ('has_classes' if lessons[day].present?)]}
         - if day >= Date.today
-          %h3.day_title
+          %h4.day_title
             .day_title_inner= relative_day_title(day)
           .lessons
             - if lessons[day]

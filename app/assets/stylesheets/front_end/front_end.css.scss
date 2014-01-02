@@ -49,29 +49,31 @@ ul.simple-nav {
 
   li {
     display: inline;
-    border-right: 2px solid $fe-heading-color;
+    margin-right: 1px; 
 
     &:last-child {
       border-right-width: 0;
     }
 
     a {
-      color: $fe-heading-color;
-      padding: 5px 10px;
+      background-color: $black;
+      color: $white;
+      font-size: 14px; 
+      padding: 8px 14px;
 
       &:hover {
-        color: darken($fe-heading-color, 20%);
-        background-color: rgba(0,0,0,0.1);
+        opacity: .8;
         text-decoration: none;
       }
     }
 
     &.active a {
-      color: silver;
+     background-color: #59742F;
+     color: $white;
+     cursor: default;
 
       &:hover {
-        color: silver;
-        background-color: transparent;
+        opacity: 1;
       }
     }
   }

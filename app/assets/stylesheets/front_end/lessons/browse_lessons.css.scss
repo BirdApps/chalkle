@@ -5,6 +5,7 @@ $browse-lessons-background: #E8E8E8;
 .search_panel {
   background-color: $browse-lessons-background;
   padding-bottom: 3em;
+  padding-top: 1em;
 
   #browse_type {
     margin-top: 37px;
@@ -13,7 +14,8 @@ $browse-lessons-background: #E8E8E8;
 }
 
 header.calendar_titles {
-  h2 {
+  h3 {
+    font-size: 22px; 
     .part {
       font-weight: normal;
       border-right: 2px solid $fe-heading-color;
@@ -97,7 +99,7 @@ a.next-calendar-section {
           margin-top: 5px; 
           padding: 1px 0 0; 
          }
-         .dropdown-menu li:last-child { margin-bottom: 0; }
+         .dropdown-menu li:last-child { margin-bottom: 1px; }
         .dropdown-link { 
           background: url('empty-circle.png') 2% center no-repeat;
           color: $grayLight;
@@ -105,7 +107,7 @@ a.next-calendar-section {
 
           &:hover { 
             background: url('white-circle.png') 2% center no-repeat;
-            background-color: $fe-heading-color; 
+            background-color: #59742F; 
             color: $white;
           }
         }
