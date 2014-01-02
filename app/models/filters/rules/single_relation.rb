@@ -8,11 +8,19 @@ module Filters
       attr_accessor :relation
 
       def deserialize(rule)
-        self.relation = relation_class.find(rule.value)
+        self.relation = relation_class.find(rule.value) if rule.value
       end
 
       def serialize(rule)
         rule.value = relation.id if relation
+      end
+
+      def name
+        self.class.name.split("::").last.underscore
+      end
+
+      def active?
+        !!relation
       end
 
       private

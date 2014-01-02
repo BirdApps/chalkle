@@ -1,6 +1,8 @@
 %ul.dropdown-menu.pull-right.arrow-right
-	%li.dropdown-entry
-		= link_to 'All regions', filter_path('single_region'), class: 'dropdown-link', method: :delete
-	- regions.each do |region|
-		%li.dropdown-entry
-			= link_to region.name, filter_path('single_region', value: region.id), class: 'dropdown-link', method: :put
+  %li.dropdown-entry
+    = link_to_unless !filter.active?, filter.clear_name, filter_path(filter.name), class: 'dropdown-link', method: :delete do |name|
+      %span.dropdown-active= name
+    - filter.options.each do |name, value, active|
+      %li.dropdown-entry
+        = link_to_unless active, name, filter_path(filter.name, value: value), class: 'dropdown-link', method: :put do |name|
+          %span.dropdown-active= name

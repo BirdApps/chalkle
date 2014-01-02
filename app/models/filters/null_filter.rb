@@ -7,5 +7,9 @@ module Filters
     def apply_to(scope)
       scope
     end
+
+    def current_or_empty_filter_for(name)
+      Rule.new(strategy_name: name)
+    end
   end
 end
