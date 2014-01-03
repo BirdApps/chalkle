@@ -37,16 +37,17 @@
   .search_panel.full_page
     #lessons_index.container
       %ul.simple-nav#browse_type
-        %li.active
+        %li{class: ('active' if !@filter.view_months?)}
           %a{:href => "#weeks", 'data-toggle' => "tab"}
             %i.fa.fa-list
             Week View
-        %li
+        %li{class: ('active' if @filter.view_months?)}
           %a{:href => "#months", 'data-toggle' => "tab"}
             %i.fa.fa-calendar
             Month View
       .tab-content
-        #weeks.tab-pane.active
+        #weeks.tab-pane{class: ('active' if !@filter.view_months?)}
           = render partial: 'weeks_calendar_view', locals: {week_lessons: @week_lessons}
-        #months.tab-pane
+        #months.tab-pane{class: ('active' if @filter.view_months?)}
           = render partial: 'months_calendar_view', locals: {month_lessons: @month_lessons}
+

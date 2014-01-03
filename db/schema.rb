@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(:version => 20140103000109) do
   create_table "filters", :force => true do |t|
     t.integer  "chalkler_id"
     t.datetime "created_at"
-    t.string   "view_type"
+    t.string   "view_type",   :default => "weeks"
   end
 
   create_table "lesson_images", :force => true do |t|

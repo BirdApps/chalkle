@@ -39,5 +39,10 @@ module Filters
     def build_rule_for(name)
       Rule.new(strategy_name: name)
     end
+
+    def view_months?
+      self.view_type == 'months'
+    end
+
   end
 end
