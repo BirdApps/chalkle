@@ -44,6 +44,15 @@ module Filters
 
             current_rule_should_be 'single_region', @region.id.to_s
           end
+
+          it "updates the view type" do
+            filter = @current_chalkler.create_lesson_filter
+
+            put :update, id: 'single_region', value: @region.id.to_s, view: 'months'
+
+            filter.reload.view_type.should == 'months'
+          end
+
         end
       end
 

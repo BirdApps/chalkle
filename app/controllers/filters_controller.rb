@@ -8,6 +8,7 @@ class FiltersController < ApplicationController
     filter = start_current_chalkler_filter
     if filter
       filter.overwrite_rule! params[:id], params[:value]
+      filter.set_view_type! params[:view]
     end
 
     redirect_to lessons_path

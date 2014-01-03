@@ -16,6 +16,11 @@ module Filters
       rule.destroy if rule
     end
 
+    def set_view_type!(value)
+      self.view_type = value
+      save!
+    end
+
     def apply_to(scope)
       rules.each do |rule|
         scope = rule.apply_to(scope)
