@@ -18,9 +18,9 @@ class FiltersController < ApplicationController
     filter = current_chalkler_filter
     if filter
       filter.destroy_rule! params[:id]
+      filter.set_view_type! params[:view]
     end
 
     redirect_to lessons_path
   end
-
 end
