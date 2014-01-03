@@ -22,10 +22,10 @@ class LessonsController < ApplicationController
 
   def index
     month
-    @categories = Category.primary
     @filter = current_filter
     @region_filter = @filter.current_or_empty_filter_for('single_region')
     @channel_filter = @filter.current_or_empty_filter_for('single_channel')
+    @category_filter = @filter.current_or_empty_filter_for('single_category')
     @week_lessons = lessons_for_time.load_upcoming_week_lessons(get_current_week)
   end
 

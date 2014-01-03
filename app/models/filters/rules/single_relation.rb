@@ -23,7 +23,29 @@ module Filters
         !!relation
       end
 
+      def active_name
+        relation ? relation.name : clear_name
+      end
+
+      def options
+        option_scope.all.map do |record|
+          [record.name, record.id, record == relation]
+        end
+      end
+
+      def apply_to(scope)
+        scope.only_with_region(relation)
+      end
+
+      def clear_name
+        "All #{relation_class.name.pluralize.downcase}"
+      end
+
       private
+
+        def option_scope
+          relation_class
+        end
 
         def relation_class
           raise NotImplementedError

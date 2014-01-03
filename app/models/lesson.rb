@@ -86,6 +86,7 @@ class Lesson < ActiveRecord::Base
   scope :not_meetup, where("meetup_url IS NULL")
   scope :only_with_region, lambda {|region| where(region_id: region.id) }
   scope :only_with_channel, lambda {|channel| where(channel_id: channel.id) }
+  scope :with_base_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at

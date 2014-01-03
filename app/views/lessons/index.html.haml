@@ -19,8 +19,9 @@
               %h2
                 Upcoming Classes
             .arrow-down
-          = render partial: 'regions_dropdown', locals: { filter: @region_filter }
-          = render partial: 'channels_dropdown', locals: { filter: @channel_filter }
+          = render partial: 'filter_dropdown', locals: { filter: @region_filter }
+          = render partial: 'filter_dropdown', locals: { filter: @channel_filter }
+          = render partial: 'filter_dropdown', locals: { filter: @category_filter }
           -#%li.part.categories.dropdown
           -#  %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
           -#    All categories
