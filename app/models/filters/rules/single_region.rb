@@ -8,8 +8,8 @@ module Filters
       end
 
       def options
-        Region.all.map do |region|
-          [region.name, region.id, region == relation]
+        Region.all.map do |record|
+          [record.name, record.id, record == relation]
         end
       end
 

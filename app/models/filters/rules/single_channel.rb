@@ -7,6 +7,20 @@ module Filters
         scope.only_with_channel(relation)
       end
 
+      def options
+        Channel.visible.all.map do |record|
+          [record.name, record.id, record == relation]
+        end
+      end
+
+      def clear_name
+        "All channels"
+      end
+
+      def active_name
+        relation ? relation.name : clear_name
+      end
+
       private
 
       def relation_class

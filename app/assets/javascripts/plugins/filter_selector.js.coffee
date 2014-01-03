@@ -17,7 +17,11 @@ class FilterSelector
   ### PRIVATE ###
 
   _buildTarget: (url, view_name) ->
-    "#{url}&view=#{view_name}"
+    if url.match(/\?/)
+      joiner = '&'
+    else
+      joiner = '?'
+    "#{url}#{joiner}view=#{view_name}"
 
   _attachHandlers: () ->
     @elem.find('a.dropdown-link').on 'click', @onFilterSelected

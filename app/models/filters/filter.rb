@@ -6,7 +6,7 @@ module Filters
     def overwrite_rule!(name, value)
       raise ArgumentError, "you must specify a rule name" if name.blank?
 
-      rule = rules.first_or_initialize(strategy_name: name)
+      rule = rules.where(strategy_name: name).first_or_initialize
       rule.value = value
       rule.save!
     end

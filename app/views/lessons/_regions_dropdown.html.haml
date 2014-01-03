@@ -11,7 +11,3 @@
         %li.dropdown-entry
           = link_to_unless active, name, filter_path(filter.name, value: value), class: 'dropdown-link', method: :put do |name|
             %span.dropdown-link.dropdown-active= name
-
-:coffeescript
-  $ ->
-    $('.filter_selector').filterSelector('#lessons_index')

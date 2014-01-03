@@ -20,11 +20,7 @@
                 Upcoming Classes
             .arrow-down
           = render partial: 'regions_dropdown', locals: { filter: @region_filter }
-          -#%li.part.channels.dropdown
-          -#  %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
-          -#    All channels
-          -#    %i.fa.fa-chevron-down
-          -#  = render partial: 'channels_dropdown', locals: { channels: @channels }
+          = render partial: 'channels_dropdown', locals: { filter: @channel_filter }
           -#%li.part.categories.dropdown
           -#  %h3.dropdown-toggle{'data-toggle'=>'dropdown'}
           -#    All categories
@@ -51,3 +47,6 @@
         #months.tab-pane{class: ('active' if @filter.view_months?)}
           = render partial: 'months_calendar_view', locals: {month_lessons: @month_lessons}
 
+:coffeescript
+  $ ->
+    $('.filter_selector').filterSelector('#lessons_index')
