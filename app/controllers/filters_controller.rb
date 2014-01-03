@@ -6,10 +6,8 @@ class FiltersController < ApplicationController
 
   def update
     filter = start_current_chalkler_filter
-    if filter
-      filter.overwrite_rule! params[:id], params[:value]
-      filter.set_view_type! params[:view]
-    end
+    filter.overwrite_rule! params[:id], params[:value]
+    filter.set_view_type! params[:view]
 
     redirect_to lessons_path
   end
@@ -25,6 +23,8 @@ class FiltersController < ApplicationController
   end
 
   def update_view
-
+    filter = start_current_chalkler_filter
+    filter.set_view_type! params[:view]
+    render nothing: true
   end
 end

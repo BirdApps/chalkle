@@ -85,7 +85,15 @@ module Filters
     end
 
     describe "#update_view" do
-      it "sets params to view_type in current filter"
+      login_chalkler
+
+      it "sets params to view_type in current filter" do
+        filter = @current_chalkler.create_lesson_filter
+
+        put :update_view, view: 'months'
+        
+        filter.reload.view_type.should == 'months'
+      end
     end
   end
 end
