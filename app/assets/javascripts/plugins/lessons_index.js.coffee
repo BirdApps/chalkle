@@ -23,7 +23,7 @@ class LessonsIndex
     $.ajax({
       type: "PUT",
       url: "/filters/update_view",
-      data: {view: 'months'}
+      data: {view: @activeViewName()}
     })
 
   ### PRIVATE ###

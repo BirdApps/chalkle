@@ -23,4 +23,8 @@ class FiltersController < ApplicationController
 
     redirect_to lessons_path
   end
+
+  def update_view
+
+  end
 end

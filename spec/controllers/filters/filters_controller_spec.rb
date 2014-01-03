@@ -83,5 +83,9 @@ module Filters
         end
       end
     end
+
+    describe "#update_view" do
+      it "sets params to view_type in current filter"
+    end
   end
 end
