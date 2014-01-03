@@ -9,7 +9,11 @@ Chalkle::Application.routes.draw do
   end
   root to: 'chalklers/dashboard#index'
 
-  resources :filters, only: [:update, :destroy]
+  resources :filters, only: [:update, :destroy] do
+    collection do
+      put :update_view
+    end
+  end
 
   resources :lessons, only: [:show, :index], path: 'classes' do
     resource :regions do
