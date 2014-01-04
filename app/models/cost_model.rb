@@ -5,8 +5,8 @@ class CostModel < ActiveRecord::Base
     first
   end
 
-  def cost_calculator
-    cost_calculator_class.new
+  def cost_calculator(options = {})
+    cost_calculator_class.new(nil, options)
   end
 
   private

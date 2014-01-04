@@ -10,8 +10,8 @@ module Finance
       ERROR_MARGIN = 0.000001
 
       let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channel: nil) }
-      let(:subject_with_gst) { PercentageCommission.new(lesson, Tax::NzGst.new) }
-      subject { PercentageCommission.new(lesson, Tax::NullTax.new) }
+      let(:subject_with_gst) { PercentageCommission.new(lesson, tax: Tax::NzGst.new) }
+      subject { PercentageCommission.new(lesson, tax: Tax::NullTax.new) }
 
       describe "#channel_fee" do
         it "is zero if no teacher cost has been set" do

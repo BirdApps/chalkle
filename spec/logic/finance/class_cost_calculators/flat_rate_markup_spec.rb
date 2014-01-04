@@ -10,8 +10,8 @@ module Finance
       ERROR_MARGIN = 0.000001
 
       let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channel: nil) }
-      subject { FlatRateMarkup.new(lesson, Tax::NullTax.new, channel_fee: 2.0, chalkle_fee: 3.0) }
-      let(:subject_with_tax) { FlatRateMarkup.new(lesson, Tax::NzGst.new, channel_fee: 2.0, chalkle_fee: 3.0) }
+      subject { FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, rates: {channel_fee: 2.0, chalkle_fee: 3.0}) }
+      let(:subject_with_tax) { FlatRateMarkup.new(lesson, tax: Tax::NzGst.new, rates: {channel_fee: 2.0, chalkle_fee: 3.0}) }
 
       describe "#channel_fee" do
         it "should be equal to supplied constant" do

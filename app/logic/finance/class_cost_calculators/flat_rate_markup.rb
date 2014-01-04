@@ -8,18 +8,25 @@ module Finance
         chalkle_fee: 2.0
       }
 
-      def initialize(lesson = nil, tax = Tax::NzGst.new, rates = nil)
-        @lesson = lesson
-        @tax = tax
-        @rates = rates || DEFAULT_RATES
+      def initialize(lesson = nil, options = {})
+        @rates = options[:rates] || DEFAULT_RATES
+        super(lesson, options)
       end
 
       def channel_fee
         @rates[:channel_fee]
       end
 
+      def channel_fee_description
+        "#{describe_money @rates[:channel_fee]}"
+      end
+
       def chalkle_fee
         @tax.apply_to @rates[:chalkle_fee]
+      end
+
+      def chalkle_fee_description
+        "#{describe_money @rates[:chalkle_fee]} #{@tax.included_description}"
       end
 
       def rounding
@@ -50,7 +57,7 @@ module Finance
       private
 
       attr_reader :lesson
-      delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :channel, :cost, to: :lesson
+      delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :cost, to: :lesson
 
       def all_fees_without_rounding
         channel_fee + chalkle_fee + teacher_cost

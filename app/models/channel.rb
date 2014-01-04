@@ -113,7 +113,7 @@ class Channel < ActiveRecord::Base
   end
 
   def cost_calculator
-    (cost_model || CostModel.default).cost_calculator
+    (cost_model || CostModel.default).cost_calculator(channel: self)
   end
 
   def region_names

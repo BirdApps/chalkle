@@ -6,6 +6,9 @@ module Finance
         value
       end
 
+      def included_description
+        nil
+      end
     end
   end
 end

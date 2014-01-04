@@ -7,6 +7,10 @@ module Finance
         value * multiplier
       end
 
+      def included_description
+        "+ GST"
+      end
+
       private
 
         def multiplier

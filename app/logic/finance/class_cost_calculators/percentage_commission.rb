@@ -3,17 +3,24 @@ require_relative 'base'
 module Finance
   module ClassCostCalculators
     class PercentageCommission < Base
-      def initialize(lesson = nil, tax = Tax::NzGst.new)
-        @lesson = lesson
-        @tax = tax
+      def initialize(lesson = nil, options = {})
+        super(lesson, options)
       end
 
       def channel_fee
         teacher_cost ? commission_with_tax(channel_percentage) : 0
       end
 
+      def channel_fee_description
+        "#{describe_percent default_channel_percentage}"
+      end
+
       def chalkle_fee
         chalkle_fee_without_rounding + rounding
+      end
+
+      def chalkle_fee_description
+        "#{describe_percent default_chalkle_percentage} + rounding #{@tax.included_description}"
       end
 
       def rounding
@@ -45,7 +52,7 @@ module Finance
       private
 
         attr_reader :lesson
-        delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :channel, :cost, to: :lesson
+        delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :cost, to: :lesson
 
         def channel_value_or_default(channel, key, default)
           channel ? channel.send(key) : default
