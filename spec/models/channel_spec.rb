@@ -108,14 +108,18 @@ describe Channel do
   end
 
   describe ".cost_calculator_class" do
-    it "is nil if cost_calculator string is nil" do
-      subject.cost_calculator = nil
-      subject.cost_calculator_class.should be_nil
+    before do
+      CostModel.create!(calculator_class_name: 'flat_rate_markup')
     end
 
-    it "is class identified by name in correct namespace" do
-      subject.cost_calculator = 'FlatRateMarkup'
-      subject.cost_calculator_class.should == Finance::ClassCostCalculators::FlatRateMarkup
+    it "returns the default cost calculator if no model is specified" do
+      subject.cost_model = nil
+      subject.cost_calculator.should be_a(Finance::ClassCostCalculators::FlatRateMarkup)
+    end
+
+    it "returns the cost calculator for this channel's cost model" do
+      subject.cost_model = CostModel.create!(calculator_class_name: 'percentage_commission')
+      subject.cost_calculator.should be_a(Finance::ClassCostCalculators::PercentageCommission)
     end
   end
 

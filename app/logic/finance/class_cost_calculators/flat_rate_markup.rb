@@ -1,12 +1,14 @@
+require_relative 'base'
+
 module Finance
   module ClassCostCalculators
-    class FlatRateMarkup
+    class FlatRateMarkup < Base
       DEFAULT_RATES = {
         channel_fee: 2.0,
         chalkle_fee: 2.0
       }
 
-      def initialize(lesson, tax = Tax::NzGst.new, rates = nil)
+      def initialize(lesson = nil, tax = Tax::NzGst.new, rates = nil)
         @lesson = lesson
         @tax = tax
         @rates = rates || DEFAULT_RATES

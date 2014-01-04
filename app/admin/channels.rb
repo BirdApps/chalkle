@@ -14,6 +14,9 @@ ActiveAdmin.register Channel do
     column :regions do |channel|
       channel.regions.map(&:name).join(',')
     end
+    column :cost_breakdown do |channel|
+      channel.cost_calculator.inspect
+    end
     column :channel_percentage do |channel|
       number_to_percentage(channel.channel_percentage*100, :precision => 2)
     end

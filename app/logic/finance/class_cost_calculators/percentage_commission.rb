@@ -1,7 +1,9 @@
+require_relative 'base'
+
 module Finance
   module ClassCostCalculators
-    class PercentageCommission
-      def initialize(lesson, tax = Tax::NzGst.new)
+    class PercentageCommission < Base
+      def initialize(lesson = nil, tax = Tax::NzGst.new)
         @lesson = lesson
         @tax = tax
       end

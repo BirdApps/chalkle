@@ -5,4 +5,14 @@ class CostModel < ActiveRecord::Base
     first
   end
 
+  def cost_calculator
+    cost_calculator_class.new
+  end
+
+  private
+
+    def cost_calculator_class
+      "Finance::ClassCostCalculators::#{calculator_class_name.camelcase}".constantize
+    end
+
 end

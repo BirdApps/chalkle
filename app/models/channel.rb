@@ -112,8 +112,8 @@ class Channel < ActiveRecord::Base
     lesson_ran(start_date,end_date).paid
   end
 
-  def cost_calculator_class
-    "Finance::ClassCostCalculators::#{cost_calculator}".constantize unless cost_calculator.blank?
+  def cost_calculator
+    (cost_model || CostModel.default).cost_calculator
   end
 
   def region_names
