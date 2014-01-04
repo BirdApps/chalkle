@@ -64,7 +64,8 @@ a.next-calendar-section {
         float: left;
         margin-bottom: 0;
         padding-left: 22px; 
-        padding-right: 22px; 
+        padding-right: 22px;
+
         .arrow-down {
           border-left: 14px solid transparent;
           border-right: 14px solid transparent;
@@ -81,9 +82,15 @@ a.next-calendar-section {
             text-align: center;
           }
         }
+
+        &:first-child {
+          padding-left: 0;
+        }
         &:last-child {
           border-right: 0;
+          padding-right: 0;
         }
+
         h2 {
           color: $white;
           font-size: 26px;
