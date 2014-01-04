@@ -15,7 +15,9 @@ $browse-lessons-background: #E8E8E8;
 
 header.calendar_titles {
   h3 {
-    font-size: 22px; 
+    font-size: 22px;
+    border-bottom-width: 0;
+    
     .part {
       font-weight: normal;
       border-right: 2px solid $fe-heading-color;
