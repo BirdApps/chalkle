@@ -20,7 +20,7 @@ ActiveAdmin.register Lesson  do
   scope :unpublished
 
   filter :channel_name, :as => :select, :label => "Channel",
-    :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
+    :collection => proc{ current_admin_user.administerable_channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :name
   filter :category_name, :as => :select, :label => "Category",

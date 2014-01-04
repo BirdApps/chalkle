@@ -13,4 +13,9 @@ private
   def resource
     @subscription ||= end_of_association_chain.first
   end
+
+  def destroy_resource(object)
+    object.destroy if object
+  end
+
 end

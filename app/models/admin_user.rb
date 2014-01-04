@@ -29,4 +29,8 @@ class AdminUser < ActiveRecord::Base
       raise "Can't delete last admin user"
     end
   end
+
+  def administerable_channels
+    role == 'super' ? Channel.all : channels
+  end
 end
