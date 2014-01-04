@@ -26,6 +26,10 @@ Then /^the "(.*?)" channel email link will be displayed$/ do |channel|
   page.should have_content(channel.email)
 end
 
+And(/^the learn@chalkle email link will be displayed$/) do
+  page.should have_content('learn@chalkle.com')
+end
+
 When /^they select the "(.*?)" channel$/ do |channel|
   select channel, from: 'teaching_channel_id'
 end

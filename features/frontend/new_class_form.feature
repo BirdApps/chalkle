@@ -12,7 +12,7 @@ Scenario: Chalkler can submit a new class
   When they visit the "Teach" page
   And they enter new class details
   Then they should see the new class confirmation message
-  And the "Wellington" channel email link will be displayed
+  And the learn@chalkle email link will be displayed
 
 Scenario: Chalkler can select channel if they belong to multiple channels
   Given the chalkler "Sina" belongs to the "Whanau" channel

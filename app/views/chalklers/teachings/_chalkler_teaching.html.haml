@@ -13,10 +13,7 @@
       = f.input :do_during_class, :label => "What will we do during the class?", :as => :text, :placeholder => "Enter a short paragraph to give people an overview of the class. For example: An introduction to protecting personal assets. This class will cover specific protection mechanisms, trusts and touch on wills.", :input_html => { :rows => 1 }
       = f.input :learning_outcomes, :label => "What will we learn from this class?", :as => :text, :placeholder => "List what people will learn. For example: Identify the various ways personal assets can be protected; Identify the most suitable asset protection for the circumstances.", :input_html => { :rows => 2 }
       = f.input :category_primary_id, :label => "What is the primary category of this class?", :collection => Category.select_options, required: true
-      -if @chalkler_teaching.channels.length > 1
-        = f.input :channel_id, :label => "Which channel would you like to hold this class in?", :collection => Channel.select_options(@chalkler_teaching.channels), required: true
-      -else
-        = f.hidden_field :channel_id, value: @chalkler_teaching.channels.first.id
+      = f.input :channel_id, :label => "Which channel would you like to hold this class in?", :collection => Channel.select_options(@chalkler_teaching.channels), required: true
       = f.input :lesson_skill, :label => "What is the skill level of this class?", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }
       = f.input :bio, :label => "Why are you a great teacher for this class?", :as => :text, :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :input_html => { :rows => 2 }
 
@@ -51,10 +48,7 @@
 
       %h3
         Anything else?
-      -if @chalkler_teaching.channels.length == 1 && @chalkler_teaching.channels.where{ name == 'Horowhenua' }.present?
-        = f.input :additional_comments, :label => "Is there anything else you would like to tell us about this class?", as: :text, :placeholder => "For example, if you would like to donate earnings from this class to Te Takere Trust", :input_html => { :rows => 2 }
-      -else
-        = f.input :additional_comments, :label => "Is there anything else you would like to tell us about this class?", as: :text, :input_html => { :rows => 2 }
+      = f.input :additional_comments, :label => "Is there anything else you would like to tell us about this class?", as: :text, :input_html => { :rows => 2 }
 
       .form-actions
         = f.button :submit, 'Submit my class', class: 'btn-primary'
