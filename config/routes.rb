@@ -12,6 +12,7 @@ Chalkle::Application.routes.draw do
   resources :filters, only: [:update, :destroy] do
     collection do
       put :update_view
+      delete :clear
     end
   end
 

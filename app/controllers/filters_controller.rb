@@ -8,8 +8,7 @@ class FiltersController < ApplicationController
     filter = start_current_chalkler_filter
     filter.overwrite_rule! params[:id], params[:value]
     filter.set_view_type! params[:view]
-
-    redirect_to lessons_path
+    back_to_page
   end
 
   def destroy
@@ -18,8 +17,15 @@ class FiltersController < ApplicationController
       filter.destroy_rule! params[:id]
       filter.set_view_type! params[:view]
     end
+    back_to_page
+  end
 
-    redirect_to lessons_path
+  def clear
+    filter = current_chalkler_filter
+    if filter
+      filter.clear_rules!
+    end
+    back_to_page
   end
 
   def update_view
@@ -27,4 +33,10 @@ class FiltersController < ApplicationController
     filter.set_view_type! params[:view]
     render nothing: true
   end
+
+  private
+
+    def back_to_page
+      redirect_to lessons_path
+    end
 end

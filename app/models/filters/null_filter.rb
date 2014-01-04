@@ -15,5 +15,13 @@ module Filters
     def view_months?
       false
     end
+
+    def has_rules?
+      false
+    end
+
+    def clear_rules!
+      nil
+    end
   end
 end

@@ -1,7 +1,7 @@
 module Filters
   class Filter < ActiveRecord::Base
     belongs_to :chalkler
-    has_many :rules, class_name: 'Filters::Rule'
+    has_many :rules, class_name: 'Filters::Rule', dependent: :destroy
 
     def overwrite_rule!(name, value)
       raise ArgumentError, "you must specify a rule name" if name.blank?
@@ -42,6 +42,14 @@ module Filters
 
     def view_months?
       self.view_type == 'months'
+    end
+
+    def has_rules?
+      rules.present?
+    end
+
+    def clear_rules!
+      rules.clear
     end
 
   end
