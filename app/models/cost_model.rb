@@ -2,7 +2,7 @@ class CostModel < ActiveRecord::Base
   attr_accessible :calculator_class_name
 
   def self.default
-    first
+    first || new(calculator_class_name: 'flat_rate_markup')
   end
 
   def cost_calculator(options = {})
