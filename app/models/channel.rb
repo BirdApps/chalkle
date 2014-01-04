@@ -27,6 +27,7 @@ class Channel < ActiveRecord::Base
   has_many :photos, class_name: 'ChannelPhoto', dependent: :destroy
   has_many :channel_regions, dependent: :destroy
   has_many :regions, through: :channel_regions
+  belongs_to :cost_model
 
   accepts_nested_attributes_for :photos
 

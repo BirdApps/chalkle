@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140103000109) do
+ActiveRecord::Schema.define(:version => 20140104074147) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -159,12 +159,17 @@ ActiveRecord::Schema.define(:version => 20140103000109) do
     t.string   "meetup_url"
     t.string   "cost_calculator"
     t.string   "short_description"
+    t.integer  "cost_model_id"
   end
 
   create_table "cities", :force => true do |t|
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "cost_models", :force => true do |t|
+    t.string "calculator_class_name"
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -345,6 +350,8 @@ ActiveRecord::Schema.define(:version => 20140103000109) do
 
   add_foreign_key "channel_regions", "channels", name: "channel_regions_channel_id_fk"
   add_foreign_key "channel_regions", "regions", name: "channel_regions_region_id_fk"
+
+  add_foreign_key "channels", "cost_models", name: "channels_cost_model_id_fk"
 
   add_foreign_key "filter_rules", "filters", name: "filter_rules_filter_id_fk"
 
