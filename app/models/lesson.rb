@@ -1,4 +1,4 @@
-require 'carrierwave'
+require 'carrierwave/orm/activerecord'
 require 'lesson_upload_image_uploader'
 
 class Lesson < ActiveRecord::Base
