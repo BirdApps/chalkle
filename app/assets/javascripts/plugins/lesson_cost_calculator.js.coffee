@@ -1,9 +1,11 @@
 class LessonCostCalculator
   constructor: (element) ->
     @elem = $(element)
+    @input_field_names = ['teacher_cost', 'material_cost']
     @fields = {
-      teacher_cost: @elem.find('#lesson_teacher_cost')
-      cost:         @elem.find('#lesson_cost')
+      teacher_cost:  @elem.find('#lesson_teacher_cost'),
+      material_cost: @elem.find('#lesson_material_cost'),
+      cost:          @elem.find('#lesson_cost')
     }
     @_attachHandlers()
 
@@ -29,12 +31,17 @@ class LessonCostCalculator
     @fields.cost.attr('value', values.cost)
 
   _sourceData: ->
-    {
-      teacher_cost: @fields.teacher_cost.attr('value')
-    }
+    result = {}
+    for field_name in @input_field_names
+      result[field_name] = @fields[field_name].attr('value')
+    result
+
+  _inputFields: ->
+    @fields[field_name] for field_name in @input_field_names
 
   _attachHandlers: ->
-    @fields.teacher_cost.on 'change', @triggerRecompute
+    for field in @_inputFields()
+      field.on 'change', @triggerRecompute
 
 
 $.fn.lessonCostCalculator = (options) ->

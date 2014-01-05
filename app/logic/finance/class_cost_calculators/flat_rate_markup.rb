@@ -52,7 +52,7 @@ module Finance
       private
 
         def all_fees_without_rounding
-          channel_fee + chalkle_fee + teacher_cost
+          channel_fee + chalkle_fee + fixed_attendee_costs
         end
     end
   end

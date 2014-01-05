@@ -40,8 +40,13 @@ module Finance
       end
 
       describe "#total_cost" do
-        it "should add teh channel and chalkle fee onto the teacher cost" do
+        it "should add the channel and chalkle fee onto the teacher cost" do
           subject.total_cost.should be_within(ERROR_MARGIN).of(15.00)
+        end
+
+        it "should include material cost" do
+          lesson.material_cost = 5.0
+          subject.total_cost.should be_within(ERROR_MARGIN).of(20.00)
         end
       end
     end

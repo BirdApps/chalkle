@@ -30,7 +30,7 @@ class LessonsController < ApplicationController
   end
 
   def calculate_cost
-    @lesson = Lesson.new(params[:lesson])
+    @lesson = Lesson.new(params[:lesson], as: :admin)
     @lesson.update_costs
     render json: @lesson
   end

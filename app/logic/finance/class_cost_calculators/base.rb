@@ -28,7 +28,7 @@ module Finance
       private
 
         attr_reader :lesson
-        delegate :teacher_cost, to: :lesson
+        delegate :teacher_cost, :material_cost, to: :lesson
 
         def describe_percent(fraction)
           "#{fraction * 100}%"
@@ -40,6 +40,15 @@ module Finance
 
         def round_up(value)
           value.ceil.to_f
+        end
+
+        def fixed_attendee_costs
+          (teacher_cost || 0.0) + (material_cost || 0.0)
+        end
+
+        def has_fixed_attendee_costs?
+          value = fixed_attendee_costs
+          value && value > 0.0
         end
     end
   end

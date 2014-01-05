@@ -8,7 +8,7 @@ module Finance
       end
 
       def channel_fee
-        teacher_cost ? commission_with_tax(channel_percentage) : 0
+        has_fixed_attendee_costs? ? commission_with_tax(channel_percentage) : 0
       end
 
       def channel_fee_description
@@ -50,11 +50,11 @@ module Finance
         end
 
         def all_fees_without_rounding
-          channel_fee + chalkle_fee_without_rounding + (teacher_cost || 0)
+          channel_fee + chalkle_fee_without_rounding + fixed_attendee_costs
         end
 
         def chalkle_fee_without_rounding
-          teacher_cost ? commission_with_tax(chalkle_percentage) : 0
+          has_fixed_attendee_costs? ? commission_with_tax(chalkle_percentage) : 0
         end
 
         def commission_with_tax(percentage_commission)
@@ -65,7 +65,7 @@ module Finance
           percentage = teacher_percentage
 
           return 0 unless percentage > 0
-          teacher_cost / percentage
+          fixed_attendee_costs / percentage
         end
 
     end

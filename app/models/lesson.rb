@@ -118,7 +118,6 @@ class Lesson < ActiveRecord::Base
   end
 
   def update_costs
-    puts "#{cost_calculator.class.name} updating costs"
     cost_calculator.update_costs(self)
   end
 

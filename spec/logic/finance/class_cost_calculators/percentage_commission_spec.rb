@@ -125,6 +125,15 @@ module Finance
 
           subject.total_cost.should be_within(ERROR_MARGIN).of(17.0)
         end
+
+        it "includes material cost" do
+          lesson.teacher_cost = 7.0
+          lesson.material_cost = 3.0
+          channel.channel_percentage = 0.2
+          channel.chalkle_percentage = 0.2
+
+          subject.total_cost.should be_within(ERROR_MARGIN).of(17.0)
+        end
       end
     end
   end
