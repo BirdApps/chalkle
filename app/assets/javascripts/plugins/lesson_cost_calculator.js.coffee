@@ -1,5 +1,5 @@
 class LessonCostCalculator
-  constructor: (element, options) ->
+  constructor: (element, options = {}) ->
     @elem = $(element)
     @resource_name = options.resource_name || 'lesson'
     @input_field_names = ['teacher_cost', 'material_cost', 'channel_id']
