@@ -37,15 +37,7 @@ module Finance
         round_up all_fees_without_rounding
       end
 
-      def default_chalkle_percentage
-        raise NotImplementedError
-      end
-
       def chalkle_percentage
-        raise NotImplementedError
-      end
-
-      def default_channel_percentage
         raise NotImplementedError
       end
 
@@ -59,12 +51,9 @@ module Finance
 
       private
 
-      attr_reader :lesson
-      delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :cost, to: :lesson
-
-      def all_fees_without_rounding
-        channel_fee + chalkle_fee + teacher_cost
-      end
+        def all_fees_without_rounding
+          channel_fee + chalkle_fee + teacher_cost
+        end
     end
   end
 end

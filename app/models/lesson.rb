@@ -108,8 +108,8 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  delegate :channel_fee, :rounding, :chalkle_fee, :default_chalkle_percentage, :chalkle_percentage,
-           :default_channel_percentage, :channel_percentage, :teacher_percentage, to: :cost_calculator
+  delegate :channel_fee, :rounding, :chalkle_fee, :chalkle_percentage,
+           :channel_percentage, :teacher_percentage, to: :cost_calculator
 
   def cost_calculator
     result = channel ? channel.cost_calculator : CostModel.default.cost_calculator

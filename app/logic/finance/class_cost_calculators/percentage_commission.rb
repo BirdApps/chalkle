@@ -12,7 +12,7 @@ module Finance
       end
 
       def channel_fee_description
-        "#{describe_percent default_channel_percentage}"
+        "#{describe_percent channel_percentage}"
       end
 
       def chalkle_fee
@@ -20,7 +20,7 @@ module Finance
       end
 
       def chalkle_fee_description
-        "#{describe_percent default_chalkle_percentage} + rounding #{@tax.included_description}"
+        "#{describe_percent chalkle_percentage} + rounding #{@tax.included_description}"
       end
 
       def rounding
@@ -31,20 +31,12 @@ module Finance
         round_up all_fees_without_rounding
       end
 
-      def default_chalkle_percentage
+      def chalkle_percentage
         channel_value_or_default channel, :chalkle_percentage, 0.125
       end
 
-      def chalkle_percentage
-        default_chalkle_percentage
-      end
-
-      def default_channel_percentage
-        channel_value_or_default channel, :channel_percentage, 0.125
-      end
-
       def channel_percentage
-        default_channel_percentage
+        channel_value_or_default channel, :channel_percentage, 0.125
       end
 
       def teacher_percentage
@@ -52,9 +44,6 @@ module Finance
       end
 
       private
-
-        attr_reader :lesson
-        delegate :teacher_cost, to: :lesson
 
         def channel_value_or_default(channel, key, default)
           channel ? channel.send(key) : default

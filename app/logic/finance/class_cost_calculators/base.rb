@@ -27,6 +27,9 @@ module Finance
 
       private
 
+        attr_reader :lesson
+        delegate :teacher_cost, to: :lesson
+
         def describe_percent(fraction)
           "#{fraction * 100}%"
         end
