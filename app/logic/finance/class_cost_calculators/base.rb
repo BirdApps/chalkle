@@ -21,6 +21,10 @@ module Finance
         @channel || @lesson.channel
       end
 
+      def update_costs(lesson)
+        lesson.cost = total_cost
+      end
+
       private
 
         def describe_percent(fraction)
@@ -29,6 +33,10 @@ module Finance
 
         def describe_money(value)
           "$#{"%.2f" % value}"
+        end
+
+        def round_up(value)
+          value.ceil.to_f
         end
     end
   end

@@ -38,6 +38,12 @@ module Finance
           subject_with_tax.rounding.should be_within(ERROR_MARGIN).of(0.55)
         end
       end
+
+      describe "#total_cost" do
+        it "should add teh channel and chalkle fee onto the teacher cost" do
+          subject.total_cost.should be_within(ERROR_MARGIN).of(15.00)
+        end
+      end
     end
   end
 end

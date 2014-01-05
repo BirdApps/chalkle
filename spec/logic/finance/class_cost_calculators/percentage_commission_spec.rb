@@ -70,7 +70,6 @@ module Finance
           lesson.teacher_cost = 9.8
           lesson.channel_percentage_override = 0.4
           lesson.chalkle_percentage_override = 0.1
-          lesson.cost = 20.0
           # teacher percentage will be 0.5
           # estimated cost will be 19.6
           # rounding will be 0.4
@@ -85,7 +84,42 @@ module Finance
           # teacher percentage will be 0.5
           # estimated cost will be 20.0
 
-          subject_with_gst.chalkle_fee.should be_within(ERROR_MARGIN).of(2.3) # 20.0 * 0.1
+          subject_with_gst.total_cost.should be_within(ERROR_MARGIN).of(22.0)
+          subject_with_gst.chalkle_fee.should be_within(ERROR_MARGIN).of(2.8) # 20.0 * 0.1
+        end
+      end
+
+      describe "#total_cost" do
+        it "includes channel fee" do
+          lesson.teacher_cost = 10.0
+          lesson.channel_percentage_override = 0.5
+          lesson.chalkle_percentage_override = 0.0
+
+          subject.total_cost.should be_within(ERROR_MARGIN).of(20.0)
+        end
+
+        it "includes chalkle fee" do
+          lesson.teacher_cost = 10.0
+          lesson.channel_percentage_override = 0.0
+          lesson.chalkle_percentage_override = 0.5
+
+          subject.total_cost.should be_within(ERROR_MARGIN).of(20.0)
+        end
+
+        it "includes chalkle and channel fee" do
+          lesson.teacher_cost = 10.0
+          lesson.channel_percentage_override = 0.3
+          lesson.chalkle_percentage_override = 0.2
+
+          subject.total_cost.should be_within(ERROR_MARGIN).of(20.0)
+        end
+
+        it "includes rounding" do
+          lesson.teacher_cost = 10.0
+          lesson.channel_percentage_override = 0.2
+          lesson.chalkle_percentage_override = 0.2
+
+          subject.total_cost.should be_within(ERROR_MARGIN).of(17.0)
         end
       end
     end

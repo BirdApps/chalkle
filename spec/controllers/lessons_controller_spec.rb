@@ -2,14 +2,23 @@ require 'spec_helper'
 
 describe LessonsController do
   let(:channel)   { FactoryGirl.create(:channel) }
-  let(:this_week) { Week.containing(Time.local(2013,1,2,0,0,0).to_date) }
 
-  def lesson_on(start_at)
-    FactoryGirl.create(:published_lesson, start_at: start_at, channels: [channel])
+  describe "#calculate_cost" do
+    it "returns calculated cost value" do
+      get :calculate_cost, lesson: {teacher_cost: '10.00'}
+      response.should be_success
+      results = JSON.parse(response.body)
+      results['cost'].should == '14.0'
+    end
   end
 
   # These are timezone dependent and dont' work on travis
   #describe "#calendar" do
+  #let(:this_week) { Week.containing(Time.local(2013,1,2,0,0,0).to_date) }
+  #
+  #def lesson_on(start_at)
+  #  FactoryGirl.create(:published_lesson, start_at: start_at, channels: [channel])
+  #end
   #  context "weekly lessons" do
   #    it "loads lessons for current week" do
   #      Timecop.freeze(this_week.tuesday) do

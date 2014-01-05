@@ -30,8 +30,11 @@ module Finance
       end
 
       def rounding
-        fees = all_fees_without_rounding
-        fees.ceil.to_f - fees
+        total_cost - all_fees_without_rounding
+      end
+
+      def total_cost
+        round_up all_fees_without_rounding
       end
 
       def default_chalkle_percentage

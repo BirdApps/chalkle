@@ -1,7 +1,7 @@
 class LessonsController < ApplicationController
   include Filters::FilterHelpers
 
-  after_filter :store_location
+  after_filter :store_location, only: [:show, :index]
   before_filter :load_channel
   before_filter :load_lesson, only: :show
   before_filter :redirect_meetup_lessons, only: :show
@@ -27,6 +27,12 @@ class LessonsController < ApplicationController
     @channel_filter = @filter.current_or_empty_filter_for('single_channel')
     @category_filter = @filter.current_or_empty_filter_for('single_category')
     @week_lessons = lessons_for_time.load_upcoming_week_lessons(get_current_week)
+  end
+
+  def calculate_cost
+    @lesson = Lesson.new(params[:lesson])
+    @lesson.update_costs
+    render json: @lesson
   end
 
   private

@@ -142,6 +142,10 @@ class Lesson < ActiveRecord::Base
     @cost_calculator ||= Finance::ClassCostCalculators::PercentageCommission.new(self)
   end
 
+  def update_costs
+    cost_calculator.update_costs(self)
+  end
+
   #Class incomes
   def expected_turnover
     total = 0

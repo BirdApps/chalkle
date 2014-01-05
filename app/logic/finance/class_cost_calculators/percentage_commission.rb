@@ -24,7 +24,11 @@ module Finance
       end
 
       def rounding
-        cost ? cost - all_fees_without_rounding : 0
+        total_cost - all_fees_without_rounding
+      end
+
+      def total_cost
+        round_up all_fees_without_rounding
       end
 
       def default_chalkle_percentage
@@ -52,7 +56,7 @@ module Finance
       private
 
         attr_reader :lesson
-        delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, :cost, to: :lesson
+        delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, to: :lesson
 
         def channel_value_or_default(channel, key, default)
           channel ? channel.send(key) : default

@@ -345,14 +345,6 @@ describe Lesson do
         @lesson.should_not be_valid
       end
 
-      it "should not allow sum of teacher cost, channel cost and chalkle cost that differs from cost by more than 50 cents" do
-        @lesson.cost = 20
-        @lesson.teacher_cost = 10
-        @lesson.chalkle_percentage_override = 0.2
-        @lesson.channel_percentage_override = 0.6
-        @lesson.should_not be_valid
-      end
-
       it "should allow sum of teacher cost, channel cost and chalkle cost that differs from cost by less than 50 cents" do
         @lesson.cost = 24
         @lesson.teacher_cost = 11
