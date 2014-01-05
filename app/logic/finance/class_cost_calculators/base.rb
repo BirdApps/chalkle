@@ -25,6 +25,10 @@ module Finance
         lesson.cost = total_cost
       end
 
+      def uses_percentages?
+        false
+      end
+
       private
 
         attr_reader :lesson

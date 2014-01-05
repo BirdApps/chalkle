@@ -36,11 +36,13 @@ ActiveAdmin.register Channel do
         simple_format channel.description
       end
       row :website_url
-      row "Percentage of revenue going to channel" do |channel|
-        number_to_percentage(channel.channel_percentage*100, :precision => 2)
-      end
-      row "Percentage of revenue going to teacher" do |channel|
-        number_to_percentage(channel.teacher_percentage*100, :precision => 2)
+      if channel.cost_calculator.uses_percentages?
+        row "Percentage of revenue going to channel" do |channel|
+          number_to_percentage(channel.channel_percentage*100, :precision => 2)
+        end
+        row "Percentage of revenue going to teacher" do |channel|
+          number_to_percentage(channel.teacher_percentage*100, :precision => 2)
+        end
       end
       row :account
       row :created_at
@@ -67,8 +69,10 @@ ActiveAdmin.register Channel do
       f.input :short_description
       f.input :description
       f.input :website_url
-      f.input :channel_percentage, label: "Percentage of revenue going to channel"
-      f.input :teacher_percentage, label: "Percentage of revenue going to teacher"
+      if f.object.cost_calculator.uses_percentages?
+        f.input :channel_percentage, label: "Percentage of revenue going to channel"
+        f.input :teacher_percentage, label: "Percentage of revenue going to teacher"
+      end
       f.input :account, label: "Bank account number"
 
       f.input :logo

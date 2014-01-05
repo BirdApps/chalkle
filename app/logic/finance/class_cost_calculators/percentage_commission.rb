@@ -43,6 +43,10 @@ module Finance
         1.0 - channel_percentage - chalkle_percentage
       end
 
+      def uses_percentages?
+        true
+      end
+
       private
 
         def channel_value_or_default(channel, key, default)
