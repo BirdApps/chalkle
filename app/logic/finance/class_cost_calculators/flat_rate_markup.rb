@@ -10,6 +10,7 @@ module Finance
 
       def initialize(lesson = nil, options = {})
         @rates = options[:rates] || DEFAULT_RATES
+        @total_markup = options[:total_markup] || Markup::CreditCardProcessingFee.new
         super(lesson, options)
       end
 
@@ -22,7 +23,7 @@ module Finance
       end
 
       def chalkle_fee
-        @tax.apply_to @rates[:chalkle_fee]
+        @tax.apply_to(@rates[:chalkle_fee])
       end
 
       def chalkle_fee_description
@@ -30,11 +31,11 @@ module Finance
       end
 
       def rounding
-        total_cost - all_fees_without_rounding
+        total_cost - all_fees_with_markup
       end
 
       def total_cost
-        round_up all_fees_without_rounding
+        round_up all_fees_with_markup
       end
 
       def chalkle_percentage
@@ -51,7 +52,11 @@ module Finance
 
       private
 
-        def all_fees_without_rounding
+        def all_fees_with_markup
+          @total_markup.apply_to all_fees
+        end
+
+        def all_fees
           channel_fee + chalkle_fee + fixed_attendee_costs
         end
     end

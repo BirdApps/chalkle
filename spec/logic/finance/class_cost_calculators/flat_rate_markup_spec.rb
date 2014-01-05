@@ -3,6 +3,8 @@ require 'finance/class_cost_calculators/flat_rate_markup'
 require 'ostruct'
 require 'finance/tax/null_tax'
 require 'finance/tax/nz_gst'
+require 'finance/markup/null_markup'
+require 'finance/markup/credit_card_processing_fee'
 
 module Finance
   module ClassCostCalculators
@@ -10,8 +12,10 @@ module Finance
       ERROR_MARGIN = 0.000001
 
       let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channel: nil) }
-      subject { FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, rates: {channel_fee: 2.0, chalkle_fee: 3.0}) }
-      let(:subject_with_tax) { FlatRateMarkup.new(lesson, tax: Tax::NzGst.new, rates: {channel_fee: 2.0, chalkle_fee: 3.0}) }
+      let(:rates)  { {channel_fee: 2.0, chalkle_fee: 3.0} }
+      subject { FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: rates) }
+      let(:subject_with_tax) { FlatRateMarkup.new(lesson, tax: Tax::NzGst.new, total_markup: Markup::NullMarkup.new, rates: rates) }
+      let(:subject_with_markup) { FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::CreditCardProcessingFee.new(0.5), rates: rates) }
 
       describe "#channel_fee" do
         it "should be equal to supplied constant" do
@@ -37,6 +41,10 @@ module Finance
         it "should round the total to the next dollar" do
           subject_with_tax.rounding.should be_within(ERROR_MARGIN).of(0.55)
         end
+
+        it "should calculate rounding after markup" do
+          subject_with_markup.rounding.should be_within(ERROR_MARGIN).of(0.5) # 15 * 1.5 = 22.5, rounded up to 23
+        end
       end
 
       describe "#total_cost" do
@@ -47,6 +55,10 @@ module Finance
         it "should include material cost" do
           lesson.material_cost = 5.0
           subject.total_cost.should be_within(ERROR_MARGIN).of(20.00)
+        end
+
+        it "is affected by overall markup" do
+          subject_with_markup.total_cost.should be_within(ERROR_MARGIN).of(23) # 15 * 1.5 = 22.5, rounded up to 23
         end
       end
     end
