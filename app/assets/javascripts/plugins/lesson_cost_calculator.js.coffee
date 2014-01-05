@@ -1,12 +1,13 @@
 class LessonCostCalculator
-  constructor: (element) ->
+  constructor: (element, options) ->
     @elem = $(element)
+    @resource_name = options.resource_name || 'lesson'
     @input_field_names = ['teacher_cost', 'material_cost', 'channel_id']
     @fields = {
-      teacher_cost:  @elem.find('#lesson_teacher_cost'),
-      material_cost: @elem.find('#lesson_material_cost'),
-      channel_id:    @elem.find('#lesson_channel_id'),
-      cost:          @elem.find('#lesson_cost')
+      teacher_cost:  @elem.find("##{@resource_name}_teacher_cost"),
+      material_cost: @elem.find("##{@resource_name}_material_cost"),
+      channel_id:    @elem.find("##{@resource_name}_channel_id"),
+      cost:          @elem.find("##{@resource_name}_cost")
     }
     @_attachHandlers()
 
@@ -51,4 +52,4 @@ $.fn.lessonCostCalculator = (options) ->
     dataName = 'lessonCostCalculator'
 
     return if element.data(dataName)
-    element.data dataName, new LessonCostCalculator(this)
+    element.data dataName, new LessonCostCalculator(this, options)
