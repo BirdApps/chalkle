@@ -3,6 +3,7 @@ class LessonCostCalculator
     @elem = $(element)
     @fields = {
       teacher_cost: @elem.find('#lesson_teacher_cost')
+      cost:         @elem.find('#lesson_cost')
     }
     @_attachHandlers()
 
@@ -16,13 +17,16 @@ class LessonCostCalculator
 
   ### HANDLERS ###
 
-  onRecomputeSuccess: (data, textStatus) ->
-    alert "success #{JSON.stringify(data)}"
+  onRecomputeSuccess: (data, textStatus) =>
+    @_setData(data)
 
-  onRecomputeError: (data, textStatus) ->
+  onRecomputeError: (data, textStatus) =>
     alert "error: #{textStatus}, #{JSON.stringify(data)}"
 
   ### PRIVATE ###
+
+  _setData: (values) ->
+    @fields.cost.attr('value', values.cost)
 
   _sourceData: ->
     {
