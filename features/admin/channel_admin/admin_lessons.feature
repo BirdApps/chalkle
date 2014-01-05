@@ -50,7 +50,7 @@ Scenario: Given a teacher cost, channel admins can see the advertised price for 
   When they visit the "Lessons" tab
   And they visit the "Edit" page
   And they fill in a teacher fee of "20"
-  Then they should see an advertised price of "30"
+  Then they should see an advertised price of "25.0"
 
 Scenario: Channel admin can see attendee list for each lesson
   Given there is a lesson with no details in the "Wellington" channel

@@ -41,7 +41,8 @@ When /^they fill in a teacher fee of "(.*?)"$/ do |teacher_cost|
 end
 
 Then /^they should see an advertised price of "(.*?)"$/ do |price|
-  page.execute_script("$('lesson_teacher_cost').keyup()")
+  page.execute_script("$('#lesson_teacher_cost').change()")
+  sleep(1)
   find_field('Advertised price').value.should eq price
 end
 

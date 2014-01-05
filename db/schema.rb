@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140104210437) do
+ActiveRecord::Schema.define(:version => 20140105022054) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -229,41 +229,41 @@ ActiveRecord::Schema.define(:version => 20140104210437) do
     t.integer  "teacher_id"
     t.integer  "meetup_id"
     t.string   "name"
-    t.string   "status",                                                    :default => "Unreviewed"
+    t.string   "status",                                                               :default => "Unreviewed"
     t.text     "description"
-    t.decimal  "cost",                        :precision => 8, :scale => 2
+    t.decimal  "cost",                                   :precision => 8, :scale => 2
     t.datetime "start_at"
     t.integer  "duration"
     t.text     "meetup_data"
-    t.datetime "created_at",                                                                          :null => false
-    t.datetime "updated_at",                                                                          :null => false
-    t.decimal  "teacher_cost",                :precision => 8, :scale => 2
-    t.decimal  "venue_cost",                  :precision => 8, :scale => 2
-    t.boolean  "visible",                                                   :default => true
-    t.decimal  "teacher_payment",             :precision => 8, :scale => 2
+    t.datetime "created_at",                                                                                     :null => false
+    t.datetime "updated_at",                                                                                     :null => false
+    t.decimal  "teacher_cost",                           :precision => 8, :scale => 2
+    t.decimal  "venue_cost",                             :precision => 8, :scale => 2
+    t.boolean  "visible",                                                              :default => true
+    t.decimal  "teacher_payment",                        :precision => 8, :scale => 2
     t.string   "lesson_type"
     t.text     "teacher_bio"
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
-    t.integer  "min_attendee",                                              :default => 2
+    t.integer  "min_attendee",                                                         :default => 2
     t.text     "availabilities"
     t.text     "prerequisites"
     t.text     "additional_comments"
-    t.boolean  "donation",                                                  :default => false
+    t.boolean  "donation",                                                             :default => false
     t.string   "lesson_skill"
     t.text     "venue"
     t.datetime "published_at"
-    t.decimal  "channel_percentage_override", :precision => 8, :scale => 2
-    t.decimal  "chalkle_percentage_override", :precision => 8, :scale => 2
-    t.decimal  "material_cost",               :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "deprecated_channel_percentage_override", :precision => 8, :scale => 2
+    t.decimal  "deprecated_chalkle_percentage_override", :precision => 8, :scale => 2
+    t.decimal  "material_cost",                          :precision => 8, :scale => 2, :default => 0.0
     t.text     "suggested_audience"
     t.string   "meetup_url"
-    t.decimal  "chalkle_payment",             :precision => 8, :scale => 2
+    t.decimal  "chalkle_payment",                        :precision => 8, :scale => 2
     t.string   "lesson_upload_image"
     t.integer  "category_id"
-    t.decimal  "cached_channel_fee",          :precision => 8, :scale => 2
-    t.decimal  "cached_chalkle_fee",          :precision => 8, :scale => 2
+    t.decimal  "cached_channel_fee",                     :precision => 8, :scale => 2
+    t.decimal  "cached_chalkle_fee",                     :precision => 8, :scale => 2
     t.integer  "channel_id"
     t.integer  "region_id"
   end

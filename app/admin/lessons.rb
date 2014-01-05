@@ -38,8 +38,6 @@ ActiveAdmin.register Lesson  do
 
     def update
       params[:lesson][:duration] = (params[:lesson][:duration].to_d*60*60).to_i unless params[:lesson][:duration].blank?
-      params[:lesson][:chalkle_percentage_override] = (params[:lesson][:chalkle_percentage_override].to_d/100).to_s unless params[:lesson][:chalkle_percentage_override].blank?
-      params[:lesson][:channel_percentage_override] = (params[:lesson][:channel_percentage_override].to_d/100).to_s unless params[:lesson][:channel_percentage_override].blank?
       update!
     end
 

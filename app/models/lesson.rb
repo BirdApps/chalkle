@@ -15,8 +15,7 @@ class Lesson < ActiveRecord::Base
     :do_during_class, :learning_outcomes, :max_attendee, :min_attendee,
     :availabilities, :prerequisites, :additional_comments, :donation,
     :lesson_skill, :venue, :published_at, :category_id, :category, :channel_ids, :channel_id,
-    :lesson_image_attributes, :channel_percentage_override,
-    :chalkle_percentage_override, :material_cost, :suggested_audience,
+    :lesson_image_attributes, :material_cost, :suggested_audience,
     :chalkle_payment, :attendance_last_sent_at, :lesson_upload_image,
     :remove_lesson_upload_image, :cached_channel_fee, :cached_chalkle_fee, :region_id, :as => :admin
 
@@ -58,12 +57,7 @@ class Lesson < ActiveRecord::Base
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Advertised price must be positive" }
-  validates :channel_percentage_override, allow_nil: true, :numericality => {:less_than_or_equal_to => 1, :message => "Channel percentage can not be greater than 100%" }
-  validates :chalkle_percentage_override, allow_nil: true, :numericality => {:less_than_or_equal_to => 1, :message => "Chalkle percentage can not be greater than 100%" }
-  validate :max_channel_percentage
   validate :max_teacher_cost
-  validate :revenue_split_validation
-  validate :min_teacher_percentage
   validate :image_size
 
   scope :hidden, where(visible: false)
@@ -99,33 +93,12 @@ class Lesson < ActiveRecord::Base
   # kaminari
   paginates_per 10
 
-    #allow for mismatch due to rounding
-  def revenue_split_validation
-    return unless (channel_percentage_override.present? || chalkle_percentage_override.present?) and teacher_cost.present? and cost.present?
-    if ( (rounding > 1) || (rounding < 0))
-      errors.add(:channel_percentage_override, "Advertised price must be split between teacher, channel and chalkle")
-      errors.add(:chalkle_percentage_override, "Advertised price must be split between teacher, channel and chalkle")
-      errors.add(:teacher_cost, "Advertised price must be split between teacher, channel and chalkle")
-    end
-  end
-
-  def max_channel_percentage
-    return unless channel_percentage_override.present? and chalkle_percentage
-    errors.add(:channel_percentage_override, "Percentage of revenue paid to channel is too high") unless (channel_percentage <= 1 - chalkle_percentage)
-  end
-
   def max_teacher_cost
     return unless teacher_cost and cost
     if (teacher_cost > cost)
       errors.add(:teacher_cost, "Payment to teacher must be less than advertised price")
       errors.add(:cost, "Payment to teacher must be less than advertised price")
     end
-  end
-
-  def min_teacher_percentage
-    return unless (channel_percentage_override? || chalkle_percentage_override?) and teacher_cost.present?
-    errors.add(:channel_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
-    errors.add(:chalkle_percentage_override, "Percentage of revenue allocated to teacher cannot be 0") unless ((1 - channel_percentage - chalkle_percentage > 0) || (teacher_cost == 0))
   end
 
   def image_size
@@ -139,10 +112,13 @@ class Lesson < ActiveRecord::Base
            :default_channel_percentage, :channel_percentage, :teacher_percentage, to: :cost_calculator
 
   def cost_calculator
-    @cost_calculator ||= Finance::ClassCostCalculators::PercentageCommission.new(self)
+    result = channel ? channel.cost_calculator : CostModel.default.cost_calculator
+    result.lesson = self
+    result
   end
 
   def update_costs
+    puts "#{cost_calculator.class.name} updating costs"
     cost_calculator.update_costs(self)
   end
 
@@ -276,7 +252,7 @@ class Lesson < ActiveRecord::Base
 
   def copy_lesson
     except = %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment visible}
-    copy_attributes = self.attributes.reject { |attr| except.include?(attr) }
+    copy_attributes = self.attributes.reject { |attr| except.include?(attr) || attr.starts_with?('deprecated_') }
     new_lesson = Lesson.new(copy_attributes, :as => :admin)
     new_lesson.category = self.category
     new_lesson.visible = true

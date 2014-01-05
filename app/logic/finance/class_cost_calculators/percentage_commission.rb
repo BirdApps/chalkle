@@ -36,7 +36,6 @@ module Finance
       end
 
       def chalkle_percentage
-        return chalkle_percentage_override unless chalkle_percentage_override.nil?
         default_chalkle_percentage
       end
 
@@ -45,7 +44,6 @@ module Finance
       end
 
       def channel_percentage
-        return channel_percentage_override unless channel_percentage_override.nil?
         default_channel_percentage
       end
 
@@ -56,7 +54,7 @@ module Finance
       private
 
         attr_reader :lesson
-        delegate :teacher_cost, :channel_percentage_override, :chalkle_percentage_override, to: :lesson
+        delegate :teacher_cost, to: :lesson
 
         def channel_value_or_default(channel, key, default)
           channel ? channel.send(key) : default
