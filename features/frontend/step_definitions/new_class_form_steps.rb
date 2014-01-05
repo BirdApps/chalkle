@@ -39,8 +39,7 @@ And /^they enter a teacher cost$/ do
 end
 
 Then /^the advertised price for the "(.*?)" channel will be displayed$/ do |channel|
-  page.execute_script("$('teaching_teacher_cost').keyup()")
-  channel = Channel.find_by_name channel
-  GST = 0.15
-  find_field('teaching_price').value.should == (( 20*( (1+GST)/channel.teacher_percentage - GST) ).ceil).to_s
+  page.execute_script("$('#teaching_teacher_cost').change()")
+  sleep(1)
+  find_field('teaching_cost').value.should == "25.0"
 end

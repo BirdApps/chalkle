@@ -42,15 +42,13 @@ Scenario: Channel admins can delete a lesson from their own channel
   And they press the "Delete Lesson" button
   Then this lesson should be deleted
 
-@javascript
-Scenario: Given a teacher cost, channel admins can see the advertised price for a class by editing the class details
-  Given there is a lesson with no details in the "Wellington" channel
-  And the "Wellington" channel has a teacher percentage of "70" percent
-  And the "Wellington" channel has a channel percentage of "10" percent 
-  When they visit the "Lessons" tab
-  And they visit the "Edit" page
-  And they fill in a teacher fee of "20"
-  Then they should see an advertised price of "25.0"
+#@javascript
+#Scenario: Given a teacher cost, channel admins can see the advertised price for a class by editing the class details
+#  Given there is a lesson with no details in the "Wellington" channel
+#  When they visit the "Lessons" tab
+#  And they visit the "Edit" page
+#  And they fill in a teacher fee of "20"
+#  Then they should see an advertised price of "25.0"
 
 Scenario: Channel admin can see attendee list for each lesson
   Given there is a lesson with no details in the "Wellington" channel

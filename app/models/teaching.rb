@@ -2,7 +2,7 @@ class Teaching
   include ActiveAttr::Model
 
   attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_skill, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee,
-  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :price, :region_id
+  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
@@ -37,7 +37,7 @@ class Teaching
       do_during_class: @do_during_class,
       learning_outcomes: @learning_outcomes,
       duration: @duration.to_i*60*60,
-      cost: @price,
+      cost: @cost,
       teacher_cost: @teacher_cost,
       max_attendee: @max_attendee.to_i,
       min_attendee: @min_attendee.to_i,
@@ -70,7 +70,7 @@ class Teaching
     @learning_outcomes = params[:learning_outcomes]
     @duration = params[:duration]
     @teacher_cost = params[:teacher_cost]
-    @price = params[:price]
+    @cost = params[:cost]
     @free_lesson = params[:free_lesson]
     @max_attendee = params[:max_attendee]
     @min_attendee = params[:min_attendee]

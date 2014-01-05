@@ -33,9 +33,9 @@
         = content_tag :span, "$", :class => "input-group-addon"
         = f.input_field :teacher_cost, :placeholder => "0.00"
         = content_tag :span, "Per attendee", :class => "input-group-addon"
-      =f.input :price, :label => "Pending confirmation from your Channel Curator, this class will be advertised for approximately", :wrapper => :prepend do
+      =f.input :cost, :label => "Pending confirmation from your Channel Curator, this class will be advertised for approximately", :wrapper => :prepend do
         = content_tag :span, "$", :class => "input-group-addon"
-        = f.input_field :price, :readonly => true
+        = f.input_field :cost, :readonly => true
         = content_tag :span, "Per attendee", :class => "input-group-addon"
 
       = f.input :max_attendee, :label => "What is the maximum number of attendees for this class?", :wrapper => :append do
