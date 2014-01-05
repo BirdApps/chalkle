@@ -1,10 +1,11 @@
 class LessonCostCalculator
   constructor: (element) ->
     @elem = $(element)
-    @input_field_names = ['teacher_cost', 'material_cost']
+    @input_field_names = ['teacher_cost', 'material_cost', 'channel_id']
     @fields = {
       teacher_cost:  @elem.find('#lesson_teacher_cost'),
       material_cost: @elem.find('#lesson_material_cost'),
+      channel_id:    @elem.find('#lesson_channel_id'),
       cost:          @elem.find('#lesson_cost')
     }
     @_attachHandlers()
