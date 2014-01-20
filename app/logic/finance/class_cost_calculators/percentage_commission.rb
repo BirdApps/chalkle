@@ -47,6 +47,10 @@ module Finance
         true
       end
 
+      def payment_methods
+        [Finance::PaymentMethods::Cash.new, Finance::PaymentMethods::Bank.new, Finance::PaymentMethods::CreditCard.new]
+      end
+
       private
 
         def channel_value_or_default(channel, key, default)

@@ -5,6 +5,7 @@ Feature: Class bookings
 Background:
   Given "Said" is a chalkler
   And the chalkler "Said" belongs to the "Horowhenua" channel
+  And the "Horowhenua" channel uses the "percentage_commission" cost calculator
   And the chalkler "Said" is authenticated
   And there is a class "Test class" open to sign-up
 

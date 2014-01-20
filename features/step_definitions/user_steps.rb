@@ -14,6 +14,12 @@ Given /^the chalkler "(.*?)" belongs to the "(.*?)" channel$/ do |chalkler_name,
   chalkler.channels << channel
 end
 
+And(/^the "(.*?)" channel uses the "(.*?)" cost calculator$/) do |channel_name, calculator_name|
+  channel = Channel.where(name: channel_name).first
+  channel.cost_model = CostModel.where(calculator_class_name: calculator_name).first_or_create
+  channel.save!
+end
+
 Given /^the admin "(.*?)" has the "(.*?)" role$/ do |admin_name, role|
   admin_user = AdminUser.find_by_name admin_name
   admin_user.role = role

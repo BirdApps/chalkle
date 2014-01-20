@@ -50,6 +50,10 @@ module Finance
         raise NotImplementedError
       end
 
+      def payment_methods
+        [Finance::PaymentMethods::CreditCard.new]
+      end
+
       private
 
         def all_fees_with_markup
