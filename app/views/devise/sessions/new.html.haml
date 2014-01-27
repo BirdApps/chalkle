@@ -19,4 +19,7 @@
         .sign-in-buttons
           = f.button :submit, "Sign in"
           = render "devise/shared/links"
+        .under-button-alternatives
+          Not a member of chalkle yet?
+          = link_to "Join here", new_chalkler_registration_path
 

@@ -57,7 +57,11 @@ $font-family-base:        $sans-font-family !default;
 // Buttons
 // -------------------------
 $btn-default-bg:                    $chalklePink !default;
+$btn-default-border:                $chalklePink;
+$btn-default-color:                 white;
 $btn-primary-bg:                    $chalklePink !default;
+$btn-primary-border:                $chalklePink;
+$btn-primary-color:                 white;
 $btn-info-bg:                       $chalkleGreen !default;
 $btn-success-bg:                    #62c462 !default;
 $btn-warning-bg:                    lighten($orange, 15%) !default;
