@@ -85,6 +85,7 @@ class Chalkler < ActiveRecord::Base
       chalkler.name = identity.name
       chalkler.email = identity.email
       chalkler.password = Devise.friendly_token[0,20]
+      chalkler.identities << identity
       chalkler
     end
   end
