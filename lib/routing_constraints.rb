@@ -1,6 +1,6 @@
 class Subdomain
   def self.matches?(request)
-    request.subdomain.present? && !['www', 'my', 'my.staging'].include?(request.subdomain)
+    request.subdomain.present? && !['www', 'my', 'my.staging', 'localhost'].include?(request.subdomain)
   end
 end
 

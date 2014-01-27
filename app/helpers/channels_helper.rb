@@ -19,7 +19,7 @@ module ChannelsHelper
   end
 
   def url_for_channel(channel)
-    url_for(subdomain: channel.url_name, controller: "channels", action: "show", only_path: false)
+    root_url(subdomain: channel.url_name)
   end
 
   def channel_follow_link(channel)
