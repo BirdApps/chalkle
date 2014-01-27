@@ -13,9 +13,13 @@ module ChannelsHelper
     if channel
       names = [lesson.channel_name, lesson.region_name].reject(&:blank?).uniq
       content_tag(:div, nil, class: 'channel') do
-        link_to names.join(', '), channel_path(channel)
+        link_to names.join(', '), url_for_channel(channel)
       end
     end
+  end
+
+  def url_for_channel(channel)
+    root_url(subdomain: channel.url_name)
   end
 
   def channel_follow_link(channel)
