@@ -28,6 +28,10 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
+  def default_url_options
+    {subdomain: 'www'}
+  end
+
   private
 
   def store_location

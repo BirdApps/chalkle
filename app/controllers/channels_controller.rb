@@ -13,7 +13,11 @@ class ChannelsController < ApplicationController
   private
 
   def load_channel
-    @channel = Channel.find(params[:id])
+    @channel = find_channel_by_subdomain || Channel.find(params[:id])
+  end
+
+  def find_channel_by_subdomain
+    Channel.find_by_url_name(request.subdomain) if request.subdomain.present?
   end
 
   def redirect_meetup_channels
