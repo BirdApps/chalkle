@@ -45,7 +45,7 @@
             upcoming chalkles sent straight to your inbox. It's that easy.
         .channel_links
           - @featured_channels.each do |channel|
-            %a.channel_link{href: channel_path(channel)}
+            %a.channel_link{href: url_for_channel(channel)}
               = channel_logo channel
         -#.single-column.section_target
         -#  = link_to "View all channels", '#'
