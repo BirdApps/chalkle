@@ -76,6 +76,6 @@ Chalkle::Application.configure do
     :domain => "chalkle.com",
     :authentication => :plain,
     :user_name => "chalkle",
-    :password => "6degrees"
+    :password => "dZAmm26aQsXmHU"
   }
 end
