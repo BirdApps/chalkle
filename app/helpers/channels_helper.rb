@@ -30,7 +30,7 @@ module ChannelsHelper
         link_to "FOLLOW", channel_subscriptions_path(@channel), class: "subscribe_link", id: "js-subscribe", remote: true, method: :post, "data-toggle" => 'tooltip', title: 'Include these classes in my updates'
       end
     else
-      link_to "FOLLOW", new_chalkler_session_path, class: "subscribe_link", id: "js-subscribe", "data-toggle" => 'tooltip', title: 'Include these classes in my updates'
+      link_to "FOLLOW", new_chalkler_session_url, class: "subscribe_link", id: "js-subscribe", "data-toggle" => 'tooltip', title: 'Include these classes in my updates'
     end
   end
 end
