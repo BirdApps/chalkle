@@ -30,11 +30,7 @@ class LessonDecorator < ApplicationDecorator
   end
 
   def url
-    if source.channel.url_name?
-      source.meetup_url
-    else
-      h.channel_lesson_url(source.channel, source)
-    end
+    h.channel_lesson_url(source.channel, source)
   end
 
 end
