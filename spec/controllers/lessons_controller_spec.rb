@@ -14,7 +14,7 @@ describe LessonsController do
     it "will use cost calculator for channel if specified" do
       default_model = CostModel.create(calculator_class_name: 'flat_rate_markup')
       commission_model = CostModel.create(calculator_class_name: 'percentage_commission')
-      channel = FactoryGirl.create(:channel, cost_model: commission_model)
+      channel = FactoryGirl.create(:channel, cost_model: commission_model, channel_rate_override: 0.75)
 
       get :calculate_cost, lesson: {teacher_cost: '100.0', channel_id: channel.id}
       response.should be_success

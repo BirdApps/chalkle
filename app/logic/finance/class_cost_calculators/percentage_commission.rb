@@ -31,16 +31,16 @@ module Finance
         round_up all_fees_without_rounding
       end
 
-      def chalkle_percentage
-        channel_value_or_default channel, :chalkle_percentage, 0.125
-      end
-
       def channel_percentage
-        channel_value_or_default channel, :channel_percentage, 0.125
+        channel_value_or_default channel, :channel_rate_override, 0.125
       end
 
       def teacher_percentage
-        1.0 - channel_percentage - chalkle_percentage
+        channel_value_or_default channel, :teacher_percentage, 0.75
+      end
+
+      def chalkle_percentage
+        1.0 - teacher_percentage - channel_percentage
       end
 
       def uses_percentages?

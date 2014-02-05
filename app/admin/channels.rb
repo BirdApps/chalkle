@@ -36,13 +36,11 @@ ActiveAdmin.register Channel do
         simple_format channel.description
       end
       row :website_url
-      if channel.cost_calculator.uses_percentages?
-        row "Percentage of revenue going to channel" do |channel|
-          number_to_percentage(channel.channel_percentage*100, :precision => 2)
-        end
-        row "Percentage of revenue going to teacher" do |channel|
-          number_to_percentage(channel.teacher_percentage*100, :precision => 2)
-        end
+      row :chalkle_fee do |channel|
+        channel.cost_calculator.chalkle_fee_description
+      end
+      row :channel_fee do |channel|
+        channel.cost_calculator.channel_fee_description
       end
       row :account
       row :created_at
@@ -70,8 +68,10 @@ ActiveAdmin.register Channel do
       f.input :description
       f.input :website_url
       if f.object.cost_calculator.uses_percentages?
-        f.input :channel_percentage, label: "Percentage of revenue going to channel"
+        f.input :channel_rate_override, label: "Percentage of revenue going to channel"
         f.input :teacher_percentage, label: "Percentage of revenue going to teacher"
+      else
+        f.input :channel_rate_override, label: "Amount of revenue going to channel for each student"
       end
       f.input :account, label: "Bank account number"
 

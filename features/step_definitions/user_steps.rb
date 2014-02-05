@@ -9,7 +9,7 @@ Given /^the admin "(.*?)" belongs to the "(.*?)" channel$/ do |admin_name, chann
 end
 
 Given /^the chalkler "(.*?)" belongs to the "(.*?)" channel$/ do |chalkler_name, channel_name|
-  channel = Channel.where(name: channel_name).first_or_create!([name: channel_name, url_name: channel_name.downcase, email: "#{channel_name.downcase}@chalkle.com", teacher_percentage: 0.01, channel_percentage: 0.01], :as => :admin)
+  channel = Channel.where(name: channel_name).first_or_create!([name: channel_name, url_name: channel_name.downcase, email: "#{channel_name.downcase}@chalkle.com"], :as => :admin)
   chalkler = Chalkler.find_by_name chalkler_name
   chalkler.channels << channel
 end

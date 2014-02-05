@@ -9,7 +9,7 @@ module Finance
       }
 
       def initialize(lesson = nil, options = {})
-        @rates = options[:rates] || DEFAULT_RATES
+        @rates = DEFAULT_RATES.merge(non_nil_rates(options[:rates]))
         @total_markup = options[:total_markup] || Markup::CreditCardProcessingFee.new
         super(lesson, options)
       end
@@ -62,6 +62,13 @@ module Finance
 
         def all_fees
           channel_fee + chalkle_fee + fixed_attendee_costs
+        end
+
+        def non_nil_rates(rates)
+          return {} unless rates
+          rates.reject do |key, value|
+            value.nil?
+          end
         end
     end
   end

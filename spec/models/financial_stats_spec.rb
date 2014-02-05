@@ -5,7 +5,7 @@ describe "Financial_stats" do
   describe "Calculations" do
 
     before do
-      @channel = FactoryGirl.create(:channel, channel_percentage: 0.2, teacher_percentage: 0.5)
+      @channel = FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5)
       @chalkler = FactoryGirl.create(:chalkler)
       (1..5).each do |i|
         lesson = FactoryGirl.create(:lesson, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, chalkle_payment: 2*i, start_at: 2.days.ago, status: "Published", max_attendee: 10, channel: @channel)

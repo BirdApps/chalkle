@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
-  let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.1, teacher_percentage: 0.5) }
-  let(:channel2) { FactoryGirl.create(:channel, channel_percentage: 0.6, teacher_percentage: 0.1) }
+  let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.1, teacher_percentage: 0.5) }
+  let(:channel2) { FactoryGirl.create(:channel, channel_rate_override: 0.6, teacher_percentage: 0.1) }
   let(:category) { FactoryGirl.create(:category, name: "music and dance") }
   let(:region)   { FactoryGirl.create(:region, name: 'Auckland') }
   let(:params) { {

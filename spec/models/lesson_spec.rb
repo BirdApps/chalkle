@@ -244,7 +244,7 @@ describe Lesson do
   describe "lesson costs" do
 
     let(:result) { MeetupApiStub::lesson_response }
-    let(:channel) { FactoryGirl.create(:channel, channel_percentage: 0.2, teacher_percentage: 0.5) }
+    let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5) }
 
     before do
       @lesson = FactoryGirl.create(:lesson, channel: channel)

@@ -32,7 +32,7 @@ end
 
 Given /^the "(.*?)" channel has a channel percentage of "(.*?)" percent$/ do |channel_name, channel_percentage|
   channel = Channel.find_by_name(channel_name)
-  channel.channel_percentage = channel_percentage.to_d/100.0
+  channel.channel_rate_override = channel_percentage.to_d/100.0
   channel.save
 end
 

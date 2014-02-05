@@ -3,14 +3,13 @@ require 'channel_logo_uploader'
 class Channel < ActiveRecord::Base
   mount_uploader :logo, ChannelLogoUploader
 
-  attr_accessible :name, :url_name, :region_ids, :channel_percentage, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :as => :admin
+  attr_accessible :name, :url_name, :region_ids, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :as => :admin
 
   validates_presence_of :name
-  validates :channel_percentage, :presence => true, :numericality => { :less_than_or_equal_to => 1, :message => "Channel percentage of revenue must be less than or equal to 1"}
-  validates :teacher_percentage, :presence => true, :numericality => { :less_than_or_equal_to => 1, :message => "Teacher percentage of revenue must be less than or equal to 1"}
-  validate :percentage_sum_validation
+  validates :channel_rate_override, numericality: true, allow_blank: true
+  validates :teacher_percentage, presence: true, numericality: {less_than_or_equal_to: 1, message: "Teacher percentage of revenue must be less than or equal to 1"}
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
-  validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, :message => "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
+  validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, message: "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
   validates_uniqueness_of :name, allow_blank: true
   validates_uniqueness_of :url_name, allow_blank: true
   validates :short_description, length: { maximum: 250 }
@@ -38,17 +37,7 @@ class Channel < ActiveRecord::Base
   #absolute minimum percentage of revenue paid to chalkle
   CHALKLE_PERCENTAGE = 0.125
 
-  def percentage_sum_validation
-    return unless channel_percentage and teacher_percentage
-    if ( channel_percentage + teacher_percentage > 1 - CHALKLE_PERCENTAGE )
-      errors.add(:channel_percentage, "Channel percentage and teacher percentage can not add to more than 75%")
-      errors.add(:teacher_percentage, "Channel percentage and teacher percentage can not add to more than 75%")
-    end
-  end
-
-  def chalkle_percentage
-    1 - teacher_percentage - channel_percentage
-  end
+  delegate :chalkle_percentage, to: :cost_calculator
 
   def self.select_options(channel)
     channel.map { |c| [c.name, c.id] }
@@ -113,7 +102,7 @@ class Channel < ActiveRecord::Base
   end
 
   def cost_calculator
-    (cost_model || CostModel.default).cost_calculator(channel: self)
+    (cost_model || CostModel.default).cost_calculator(channel: self, rates: {channel_fee: channel_rate_override})
   end
 
   def region_names

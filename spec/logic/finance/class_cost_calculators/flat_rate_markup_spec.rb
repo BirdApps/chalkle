@@ -22,6 +22,17 @@ module Finance
           subject.channel_fee.should == 2.0
         end
 
+        it "can be overridden" do
+          subject = FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: {channel_fee: 12.0})
+          subject.channel_fee.should == 12.0
+          subject.chalkle_fee.should == 2.0
+        end
+
+        it "will use default if set to nil" do
+          subject = FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: {channel_fee: nil})
+          subject.channel_fee.should == 2.0
+        end
+
         it "has no tax on channel fee" do
           subject_with_tax.channel_fee.should == 2.0
         end

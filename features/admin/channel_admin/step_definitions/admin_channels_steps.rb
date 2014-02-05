@@ -4,5 +4,5 @@ end
 
 Then /^they should see the default channel percentage of the "(.*?)" channel$/ do |channel_name|
   channel = Channel.find_by_name(channel_name)
-  page.should have_content((100*channel.channel_percentage).to_s)
+  page.should have_content((100*channel.channel_rate_override).to_s)
 end
