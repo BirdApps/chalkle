@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140205065311) do
+ActiveRecord::Schema.define(:version => 20140208091251) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -266,6 +266,7 @@ ActiveRecord::Schema.define(:version => 20140205065311) do
     t.decimal  "cached_chalkle_fee",                     :precision => 8, :scale => 2
     t.integer  "channel_id"
     t.integer  "region_id"
+    t.decimal  "channel_rate_override",                  :precision => 8, :scale => 4
   end
 
   create_table "omni_avatar_avatars", :force => true do |t|

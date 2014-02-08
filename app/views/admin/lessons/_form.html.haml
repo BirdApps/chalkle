@@ -28,10 +28,12 @@
     = f.input :min_attendee
 
   = f.inputs "Costs" do
-    = f.input :cost, :label => "Advertised price", :input_html => { :readonly => true }, :hint => "This is calculated based on the teacher cost"
     = f.input :teacher_cost, :label => "Teacher fee per attendee", :hint => "This cannot be 0 for a class with an entry price."
     = f.input :material_cost, label: 'Material cost per attendee'
     = f.input :venue_cost
+    = f.input :channel_fee,:input_html => { :readonly => true }
+    = f.input :chalkle_fee,:input_html => { :readonly => true }
+    = f.input :cost, :label => "Advertised price", :input_html => { :readonly => true }, :hint => "This is calculated based on the teacher cost"
 
   - if @lesson.published?
     = f.inputs "Payments Made" do
