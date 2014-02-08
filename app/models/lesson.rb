@@ -17,7 +17,7 @@ class Lesson < ActiveRecord::Base
     :lesson_skill, :venue, :published_at, :category_id, :category, :channel_ids, :channel_id,
     :lesson_image_attributes, :material_cost, :suggested_audience,
     :chalkle_payment, :attendance_last_sent_at, :lesson_upload_image,
-    :remove_lesson_upload_image, :cached_channel_fee, :cached_chalkle_fee, :region_id, :as => :admin
+    :remove_lesson_upload_image, :cached_channel_fee, :cached_chalkle_fee, :region_id, :channel_rate_override, :as => :admin
 
   belongs_to :channel
   belongs_to :region

@@ -210,9 +210,6 @@ ActiveAdmin.register Lesson  do
       row "Image for class listing" do |lesson|
         lesson.lesson_upload_image.present? ? image_tag(lesson.lesson_upload_image.url(:mini).to_s) : "No image uploaded. Click on Edit Lesson to upload an image"
       end
-      row "Chalkboard image" do |lesson|
-        image_tag lesson.image.url if lesson.image
-      end
       row :created_at
       row :published_at
       row :updated_at

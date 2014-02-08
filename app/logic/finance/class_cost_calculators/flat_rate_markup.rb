@@ -15,19 +15,23 @@ module Finance
       end
 
       def channel_fee
-        @rates[:channel_fee]
+        lesson_channel_fee_override || @rates[:channel_fee]
       end
 
       def channel_fee_description
-        "#{describe_money @rates[:channel_fee]}"
+        "#{describe_money channel_fee}"
       end
 
       def chalkle_fee
-        @tax.apply_to(@rates[:chalkle_fee])
+        if channel_fee == 0.0 && fixed_attendee_costs == 0.0
+          0.0
+        else
+          @tax.apply_to chalkle_fee_without_tax
+        end
       end
 
       def chalkle_fee_description
-        "#{describe_money @rates[:chalkle_fee]} #{@tax.included_description}"
+        "#{describe_money chalkle_fee} #{@tax.included_description}"
       end
 
       def rounding
@@ -55,6 +59,14 @@ module Finance
       end
 
       private
+
+        def chalkle_fee_without_tax
+          @rates[:chalkle_fee]
+        end
+
+        def lesson_channel_fee_override
+          @lesson.channel_rate_override if @lesson
+        end
 
         def all_fees_with_markup
           @total_markup.apply_to all_fees
