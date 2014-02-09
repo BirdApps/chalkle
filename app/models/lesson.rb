@@ -8,7 +8,7 @@ class Lesson < ActiveRecord::Base
     :duration,:lesson_type, :teacher_bio, :do_during_class, :learning_outcomes,
     :max_attendee, :min_attendee, :availabilities, :prerequisites,
     :additional_comments, :donation, :lesson_skill, :venue, :category_id, :category,
-    :channel_ids, :channel_id, :suggested_audience, :teacher_cost, :region_id
+    :channel_ids, :channel_id, :suggested_audience, :teacher_cost, :region_id, :channel_rate_override
   attr_accessible :name, :meetup_id, :meetup_url, :teacher_id, :status, :cost,
     :teacher_cost, :venue_cost, :start_at, :duration, :meetup_data,
     :description, :visible, :teacher_payment, :lesson_type, :teacher_bio,

@@ -32,7 +32,7 @@ class LessonsController < ApplicationController
   def calculate_cost
     @lesson = Lesson.new(params[:lesson], as: :admin)
     @lesson.update_costs
-    render json: @lesson
+    render json: @lesson.as_json(methods: [:channel_fee, :chalkle_fee])
   end
 
   private
