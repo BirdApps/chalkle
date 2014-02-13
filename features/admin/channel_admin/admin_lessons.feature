@@ -63,13 +63,6 @@ Scenario: Channel admin can record cash payment for attendees
   And they press the "Pay $20.00" button
   Then this booking should be paid
 
-Scenario: Comments on unreviewed lessons are displayed on the dashboard
-  Given there is an unreviewed lesson with no details in the "Wellington" channel
-  When they view this lesson
-  And they fill in the lessons comments with "This is a comment"
-  When they visit the "Dashboard" tab
-  Then they should see "This is a comment"
-
 Scenario: Channel admin can see warning when the teacher is not assigned
   Given there is a lesson with no details in the "Wellington" channel
   When they view this lesson
