@@ -63,6 +63,11 @@ module Finance
           lesson.teacher_cost = 0.0
           subject.chalkle_fee.should == 0.0
         end
+
+        it "is not zero if channel fee is zero and no lesson is present" do
+          subject = FlatRateMarkup.new(nil, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: rates.merge(channel_fee: 0.0))
+          subject.chalkle_fee.should == 3.0
+        end
       end
 
       describe "#rounding" do

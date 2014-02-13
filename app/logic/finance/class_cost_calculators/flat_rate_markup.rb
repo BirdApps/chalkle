@@ -23,7 +23,7 @@ module Finance
       end
 
       def chalkle_fee
-        if channel_fee == 0.0 && fixed_attendee_costs == 0.0
+        if channel_fee == 0.0 && fixed_attendee_costs == 0.0 && lesson
           0.0
         else
           @tax.apply_to chalkle_fee_without_tax

@@ -5,7 +5,6 @@
       %th Teacher
       %th Category
       %th Channel
-      %th Comments
       %th Price
 
   %tbody
@@ -15,5 +14,4 @@
         %td #{lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher"}
         %td #{lesson.category_name}
         %td #{lesson.channel.name}
-        %td #{(comment = ActiveAdmin::Comment.where{(resource_type.eq "Lesson") & (resource_id.eq lesson.id.to_s)}.order("created_at").last).nil? ? nil : comment.body}
         %td #{number_to_currency lesson.cost}
