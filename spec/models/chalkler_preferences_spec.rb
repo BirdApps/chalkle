@@ -32,12 +32,16 @@ describe ChalklerPreferences do
     end
 
     context 'parameters' do
-      before { @email_prefs.update_attributes(params) }
-
       it 'extracts the correct preferences' do
+        cat1 = Category.create!(name: 'one')
+        cat2 = Category.create!(name: 'two')
+
+        @email_prefs.update_attributes(params)
+
         @email_prefs.email.should eq('tested@user.com')
         @email_prefs.email_frequency.should eq('none')
         @email_prefs.email_categories.should eq([2])
+
         @new_chalkler.email.should eq('tested@user.com')
         @new_chalkler.email_frequency.should eq('none')
         @new_chalkler.email_categories.should eq([2])

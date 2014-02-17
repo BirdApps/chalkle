@@ -31,12 +31,18 @@ describe Chalkler do
     end
   end
 
-  describe '.email_frequency_select_options' do
-    it "provides an array of options that can be used in select dropdowns" do
-      stub_const("Chalkler::EMAIL_FREQUENCY_OPTIONS", %w(yes no))
+  describe "emails" do
+    describe '.email_frequency_select_options' do
+      it "provides an array of options that can be used in select dropdowns" do
+        stub_const("Chalkler::EMAIL_FREQUENCY_OPTIONS", %w(yes no))
 
-      required_array = [%w(Yes yes), %w(No no)]
-      Chalkler.email_frequency_select_options.should eq(required_array)
+        required_array = [%w(Yes yes), %w(No no)]
+        Chalkler.email_frequency_select_options.should eq(required_array)
+      end
+    end
+
+    it "defaults to receiving weekly emails for all categories" do
+      Chalkler.new.email_frequency.should == 'weekly'
     end
   end
 

@@ -19,11 +19,16 @@ class ChalklerPreferences
     valid? && persist_to_chalkler
   end
 
+  def has_email_category?(category_id)
+    @email_categories.nil? || @email_categories.include?(category_id)
+  end
+
   private
 
   def parse_categories_params(email_categories)
     email_categories = email_categories.to_a.delete_if(&:blank?)
-    email_categories.map(&:to_i)
+    email_categories = email_categories.map(&:to_i)
+    (Category.all.map(&:id) - email_categories).empty? ? nil : email_categories
   end
 
   def persist_to_chalkler

@@ -33,6 +33,7 @@ gem 'kaminari'
 gem 'httparty'
 gem 'inherited_resources'
 gem 'foreigner'
+gem "default_value_for", ">= 3.0.0"
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"

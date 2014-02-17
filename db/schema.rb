@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140208091251) do
+ActiveRecord::Schema.define(:version => 20140217082612) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -77,9 +77,9 @@ ActiveRecord::Schema.define(:version => 20140208091251) do
     t.string   "name"
     t.string   "email"
     t.text     "bio"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.string   "encrypted_password",     :default => "",       :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(:version => 20140208091251) do
     t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.string   "email_frequency"
+    t.string   "email_frequency",        :default => "weekly"
     t.text     "email_categories"
     t.text     "email_streams"
     t.string   "phone_number"

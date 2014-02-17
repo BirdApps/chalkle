@@ -21,49 +21,77 @@ class ChalklerDigest
   end
 
   def new_lessons
-    Lesson.visible.published.joins(:channel).where(
+    scope = base_scope.where(
       "lessons.published_at > ? AND
        lessons.do_during_class IS NOT NULL AND
-       lessons.category_id IN (?) AND
-       lessons.channel_id IN (?) AND
        channels.visible=true",
-      @date_offset, @chalkler.email_categories,
-      @chalkler.channels).order("start_at").limit(@limit).uniq
+      @date_offset)
+    scope = scope_lessons_by_categories(scope)
+    scope = scope_lessons_by_channels(scope)
+    scope.limit(@limit).uniq
   end
 
   def default_new_lessons
-    Lesson.visible.published.joins(:channel).where(
+    scope = base_scope.where(
       "lessons.published_at > ? AND
        lessons.do_during_class IS NOT NULL AND
-       lessons.channel_id IN (?) AND
        channels.visible=true",
-       @date_offset, @chalkler.channels).order("start_at").limit(@limit).uniq
+       @date_offset)
+    scope = scope.limit(@limit)
+    scope = scope_lessons_by_channels(scope)
+    scope.uniq
   end
 
   def open_lessons
-    lessons = Lesson.visible.published.joins(:channel).where(
+    scope = base_scope.where(
       "lessons.start_at > ? AND
        lessons.published_at <= ? AND
        lessons.do_during_class IS NOT NULL AND
-       lessons.category_id IN (?) AND
-       lessons.channel_id IN (?) AND
        channels.visible=true",
-      Time.now.utc + 1.day, @date_offset, @chalkler.email_categories,
-      @chalkler.channels).order("start_at").uniq
-    lessons.delete_if { |l| l.bookable? == false  }
+      Time.now.utc + 1.day, @date_offset)
+    scope = scope_lessons_by_categories(scope)
+    scope = scope_lessons_by_channels(scope)
+
+    lessons = scope.uniq
+    filter_out_bookable(lessons)
     lessons.shift @limit
   end
 
   def default_open_lessons
-    lessons = Lesson.visible.published.joins(:channel).where(
+    scope = base_scope.where(
       "lessons.start_at > ? AND
        lessons.published_at <= ? AND
        lessons.do_during_class IS NOT NULL AND
-       lessons.channel_id IN (?) AND
        channels.visible=true",
-      Time.now.utc + 1.day, @date_offset, @chalkler.channels).order("start_at").uniq
-    lessons.delete_if { |l| l.bookable? == false  }
+      Time.now.utc + 1.day, @date_offset)
+    scope = scope_lessons_by_channels(scope)
+    lessons = scope.uniq
+    filter_out_bookable(lessons)
     lessons.shift @limit
   end
+
+  private
+
+    def base_scope
+      Lesson.visible.published.joins(:channel).order("start_at")
+    end
+
+    def scope_lessons_by_categories(scope)
+      if @chalkler.email_categories
+        return scope.where(["lessons.category_id IN (?)", @chalkler.email_categories])
+      end
+      scope
+    end
+
+    def scope_lessons_by_channels(scope)
+      if @chalkler.channels.present?
+        return scope.where("lessons.channel_id IN (?)", @chalkler.channels)
+      end
+      scope
+    end
+
+    def filter_out_bookable(lessons)
+      lessons.delete_if { |l| l.bookable? == false  }
+    end
 
 end

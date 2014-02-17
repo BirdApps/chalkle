@@ -18,13 +18,12 @@ end
 
 When /^they select new email categories$/ do
   check 'business & finance'
-  check 'food & drink'
+  uncheck 'food & drink'
   click_button 'Save Email Preferences'
 end
 
 Then /^the chalkler "(.*?)" should have new category settings$/ do |name|
   chalkler = Chalkler.find_by_name name
   cat1 = Category.find_by_name 'business & finance'
-  cat2 = Category.find_by_name 'food & drink'
-  [cat1.id, cat2.id].each{ |c| chalkler.email_categories.should include(c) }
+  chalkler.email_categories.should include(cat1.id)
 end

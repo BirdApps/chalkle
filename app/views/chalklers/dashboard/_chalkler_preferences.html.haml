@@ -16,7 +16,21 @@
       Send me emails about classes in the following categories
     %div{ :"data-toggle" => "checkboxes", class: "unchecked" }
       = link_to "Select All", "#",  class: "checkbox-toggle-button"
-      = f.input :email_categories, :label => false, as: :check_boxes, collection: Category.select_options('&nbsp;&nbsp;&nbsp;'.html_safe), include_blank: false
+      .form-group.check_boxes.optional.chalkler_preferences_email_categories
+        - Category.primary.alphabetical.each do |category|
+          .checkbox
+            = check_box_tag "chalkler_preferences[email_categories][]", category.id, f.object.has_email_category?(category.id), id: "chalkler_preferences_email_categories_#{category.id}"
+            = label_tag "chalkler_preferences[email_categories][]", category.name, for: "chalkler_preferences_email_categories_#{category.id}"
+            -#= f.input :email_categories, label: false, as: :check_boxes, collection: [category], include_blank: false, selected_value: category.id
+          - category.children.each do |child|
+            .checkbox
+              = check_box_tag "chalkler_preferences[email_categories][]", child.id, f.object.has_email_category?(child.id), id: "chalkler_preferences_email_categories_#{child.id}"
+              &nbsp;&nbsp;&nbsp;
+              = label_tag "chalkler_preferences[email_categories][]", child.name, for: "chalkler_preferences_email_categories_#{child.id}"
+
+
+            -#  = f.input :email_categories, label: false, as: :check_boxes, collection: [['&nbsp;&nbsp;&nbsp;'.html_safe + child.name, child.id]], include_blank: false
+
     %h4 
       Channels that I'm following
     - subscriptions = current_chalkler.channels.order('name ASC')
