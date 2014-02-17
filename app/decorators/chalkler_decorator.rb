@@ -4,7 +4,7 @@ class ChalklerDecorator < Draper::Decorator
   def channel_links(style = '')
     source.channels.visible.collect { |c|
       if c.url_name?
-        url = "http://www.meetup.com/#{c.url_name}/events/calendar/?scroll=true"
+        url = "http://#{c.url_name}.chalkle.com/"
       else
         url = h.channel_url(c)
       end

@@ -33,7 +33,7 @@ Join <%= lesson.attendance %> other chalklers: <%= lesson.meetup_url %>
 
 See more chalkles from:
 <% @chalkler.channels.collect do |c| %>
-<%= c.name %>: <%= "http://www.meetup.com/#{c.url_name}/events/calendar/?scroll=true" %>
+<%= c.name %>: <%= "http://#{c.url_name}.chalkle.com" %>
 <% end %>
 
 Thank you for supporting chalkle° and we look forward to seeing you soon!
