@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ChalklerPreferences do
-  let(:chalkler) { double('chalkler', email: 'test@user.com', email_frequency: 'weekly', email_categories: [1]) }
+  let(:chalkler) { double('chalkler', email: 'test@user.com', email_frequency: 'weekly', email_categories: [1], email_region_ids: nil) }
   let(:params) { { email: 'tested@user.com', email_frequency: 'none', email_categories: ['2', ''] } }
 
   describe '#initialize' do

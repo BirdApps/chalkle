@@ -36,7 +36,7 @@ class Chalkler < ActiveRecord::Base
   scope :teachers, joins(:lessons_taught).uniq
 
   serialize :email_categories
-  serialize :email_streams
+  serialize :email_region_ids
 
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
@@ -114,6 +114,10 @@ class Chalkler < ActiveRecord::Base
 
   def meetup_identity
     identities.for_provider('meetup')
+  end
+
+  def email_regions
+    Region.find (email_region_ids || [])
   end
 
   private

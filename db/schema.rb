@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140217082612) do
+ActiveRecord::Schema.define(:version => 20140226190954) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -97,8 +97,8 @@ ActiveRecord::Schema.define(:version => 20140217082612) do
     t.datetime "locked_at"
     t.string   "email_frequency",        :default => "weekly"
     t.text     "email_categories"
-    t.text     "email_streams"
     t.string   "phone_number"
+    t.text     "email_region_ids"
   end
 
   create_table "channel_admins", :id => false, :force => true do |t|
