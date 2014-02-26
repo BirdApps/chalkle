@@ -1,10 +1,7 @@
 require 'spec_helper'
 
 describe ChalklerDigest do
-  describe "#initialize" do
-    let(:chalkler){ FactoryGirl.create(:chalkler, email_frequency: 'daily') }
-    let(:digest) { ChalklerDigest.new(chalkler) }
-  end
+  let(:region) { FactoryGirl.create(:region) }
 
   describe "lesson selection" do
     # this lesson should always be excluded from a set
@@ -82,6 +79,17 @@ describe ChalklerDigest do
 
       it "won't load a lesson from a hidden channel" do
         @channel.update_attribute :visible, false
+        @digest.new_lessons.should be_empty
+      end
+
+      it "only loads a lesson from chalkler's regions if specified" do
+        @chalkler.email_region_ids = [region.id]
+        @lesson.region = region
+        @lesson.save!
+        @digest.new_lessons.should include(@lesson)
+
+        @lesson.region = nil
+        @lesson.save!
         @digest.new_lessons.should be_empty
       end
     end

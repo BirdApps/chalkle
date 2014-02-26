@@ -27,6 +27,7 @@ class ChalklerDigest
        channels.visible=true",
       @date_offset)
     scope = scope_lessons_by_categories(scope)
+    scope = scope_lessons_by_regions(scope)
     scope = scope_lessons_by_channels(scope)
     scope.limit(@limit).uniq
   end
@@ -39,6 +40,7 @@ class ChalklerDigest
        @date_offset)
     scope = scope.limit(@limit)
     scope = scope_lessons_by_channels(scope)
+    scope = scope_lessons_by_regions(scope)
     scope.uniq
   end
 
@@ -51,6 +53,7 @@ class ChalklerDigest
       Time.now.utc + 1.day, @date_offset)
     scope = scope_lessons_by_categories(scope)
     scope = scope_lessons_by_channels(scope)
+    scope = scope_lessons_by_regions(scope)
 
     lessons = scope.uniq
     filter_out_bookable(lessons)
@@ -65,6 +68,7 @@ class ChalklerDigest
        channels.visible=true",
       Time.now.utc + 1.day, @date_offset)
     scope = scope_lessons_by_channels(scope)
+    scope = scope_lessons_by_regions(scope)
     lessons = scope.uniq
     filter_out_bookable(lessons)
     lessons.shift @limit
@@ -79,6 +83,13 @@ class ChalklerDigest
     def scope_lessons_by_categories(scope)
       if @chalkler.email_categories
         return scope.where(["lessons.category_id IN (?)", @chalkler.email_categories])
+      end
+      scope
+    end
+
+    def scope_lessons_by_regions(scope)
+      if @chalkler.email_region_ids
+        return scope.where(["lessons.region_id IN (?)", @chalkler.email_region_ids])
       end
       scope
     end
