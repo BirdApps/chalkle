@@ -20,7 +20,9 @@
 *swp
 .DS_Store
 .rspec
-.rvmrc
 
 #rubymine config
 .idea
+
+#rvm config
+.ruby-gemset
