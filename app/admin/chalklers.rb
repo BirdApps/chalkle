@@ -27,16 +27,20 @@ ActiveAdmin.register Chalkler do
   index do
     column :id
     column :name
-    column :channels do |chalkler|
-      chalkler.channels.collect{|c| c.name}.join(", ")
-    end
-    column :meetup_id do |chalkler|
-      if chalkler.meetup_data.present?
-        link_to chalkler.meetup_id, chalkler.meetup_data["link"]
-      else
-        "non-meetup"
+
+    if current_admin_user.super?
+      column :channels do |chalkler|
+        chalkler.channels.collect{|c| c.name}.join(", ")
+      end
+      column :meetup_id do |chalkler|
+        if chalkler.meetup_data.present?
+          link_to chalkler.meetup_id, chalkler.meetup_data["link"]
+        else
+          "non-meetup"
+        end
       end
     end
+
     column "Last login" do |chalkler|
       if chalkler.current_sign_in_at?
         "#{time_ago_in_words chalkler.current_sign_in_at} ago"
