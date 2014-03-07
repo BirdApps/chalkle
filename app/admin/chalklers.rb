@@ -128,10 +128,12 @@ ActiveAdmin.register Chalkler do
           f.input :channels, :as => :check_boxes, :label => 'Channels'
         end
       end
-      if f.object.new_record?
-        f.input :email, :hint => 'User will receive password reset email if entered'
-      else
-        f.input :email
+      if current_admin_user.super? || f.object.new_record?
+        if f.object.new_record?
+          f.input :email, :hint => 'User will receive password reset email if entered'
+        else
+          f.input :email
+        end
       end
       f.input :phone_number
       f.input :bio
