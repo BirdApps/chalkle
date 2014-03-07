@@ -101,7 +101,7 @@ end
 
 group :test, :development do
   # Placed here so generators work
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.14.1'
 end
 
 group :test do
