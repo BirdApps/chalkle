@@ -16,7 +16,6 @@ class Ability
       can :manage, Category
       can :manage, LessonSuggestion
       can :manage, EventLog
-      can :manage, Lesson
 
     when "channel admin"
       can :read, Channel, :id => user.channel_ids
@@ -30,7 +29,6 @@ class Ability
       # TODO: Do this with a single database join
       can [:record_cash_payment, :read, :update], Booking, :id => user.booking_ids
       can [:read, :create, :update], LessonImage
-      can :manage, Lesson
       cannot [:read, :update, :destroy], [Payment, Category, AdminUser]
       cannot [:update, :destroy], [AdminUser, Channel]
       cannot :destroy, LessonImage
