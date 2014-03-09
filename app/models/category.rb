@@ -1,6 +1,6 @@
 class Category < ActiveRecord::Base
   attr_accessible :name, :colour_num, :parent_id, :parent, as: :default
-  attr_accessible :name, :colour_num, :parent_id, :parent, as: :admin
+  attr_accessible :name, :colour_num, :parent_id, :parent, :primary, as: :admin
 
   has_many :channel_categories
   has_many :channels, :through => :channel_categories
