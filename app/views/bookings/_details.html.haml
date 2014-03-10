@@ -19,12 +19,12 @@
 .modal.fade{ :tabindex => '-1', :role => 'dialog', 'aria-labelled-by' => 'Cancel booking', 'aria-hidden' => true, :id => "cancelModal#{booking.id}" }
   .modal-dialog
     .modal-content
-      .modal-header
-        %button.close{:type => 'button', :'data-dismiss' => 'modal', :'aria-hidden' => 'true'} &times;
-        %h3 Cancel this booking
+      = simple_form_for(booking, :url => cancel_booking_path(booking)) do |f|
+        .modal-header
+          %button.close{:type => 'button', :'data-dismiss' => 'modal', :'aria-hidden' => 'true'} &times;
+          %h3 Cancel this booking
 
-      .modal-body
-        = simple_form_for(booking, :url => cancel_booking_path(booking)) do |f|
+        .modal-body
           %p Are you sure you want to cancel your booking?
           %p.big= booking.lesson_name.capitalize
 
@@ -38,6 +38,6 @@
                 %strong This booking is non-refundable.
                 Your class begins in less than three days.
 
-      .modal-footer
-        %button.btn{ :'data-dismiss' => 'modal', :'aria-hidden' => 'true' } No
-        %button.btn.btn-primary{ :'id' => 'submit', :'type' => 'submit', :'name' => 'submit'} Yes
+        .modal-footer
+          %button.btn{ :'data-dismiss' => 'modal', :'aria-hidden' => 'true' } No
+          %button.btn.btn-primary{ :'id' => 'submit', :'type' => 'submit', :'name' => 'submit'} Yes
