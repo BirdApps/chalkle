@@ -7,7 +7,7 @@
     - @bookings.each do |b|
       %tr
         %td
-          %h3= link_to b.lesson_name.capitalize, "http://my.chalkle.com/#{booking_path(b)}"
+          %h3= link_to b.lesson_name.capitalize, "http://chalkle.com/#{booking_path(b)}"
           %p.details
             = l b.lesson_start_at, :format => :long_without_year if b.lesson_start_at.present?
             = "| #{b.lesson_venue ? b.lesson_venue : "TBD"}"

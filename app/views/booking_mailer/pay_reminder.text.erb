@@ -7,7 +7,7 @@ Thank you for signing up to the upcoming chalkle° classes. This is a reminder t
 Your have <%= "#{pluralize(@bookings.count, "unpaid class")}" %>
 
   <% @bookings.each do |b| %>
-<%= "#{link_to b.lesson_name.capitalize, "http://my.chalkle.com/#{booking_path(b)}"}" %>
+<%= "#{link_to b.lesson_name.capitalize, "http://chalkle.com/#{booking_path(b)}"}" %>
 <%= l b.lesson_start_at, :format => :long_without_year %> | <%= b.lesson_venue ? b.lesson_venue : "TBD" %>
 
   Price : <%= b.formatted_price %>
