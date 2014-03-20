@@ -4,6 +4,7 @@ class LessonsController < ApplicationController
   after_filter :store_location, only: [:show, :index]
   before_filter :load_channel
   before_filter :load_lesson, only: :show
+  before_filter :check_lesson_visibility, only: :show
   before_filter :redirect_meetup_lessons, only: :show
   layout 'new'
 
@@ -36,6 +37,14 @@ class LessonsController < ApplicationController
   end
 
   private
+
+    def check_lesson_visibility
+      unless @lesson.published?
+        flash[:notice] = "This class is no longer available."
+        redirect_to chalklers_root_url
+        return false
+      end
+    end
 
     def load_lesson
       @lesson = start_of_association_chain.find(params[:id]).decorate
