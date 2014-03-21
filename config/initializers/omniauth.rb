@@ -20,6 +20,7 @@ environment_keys = keys[Rails.env.to_sym]
 if environment_keys
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :facebook, environment_keys[:app_id], environment_keys[:secret]
+    provider :developer if Rails.env.development?
   end
 
   if Rails.env.development?
