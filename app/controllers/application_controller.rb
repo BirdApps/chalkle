@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     default_path = root_path
     options      = { from_path: from_path, default_path: default_path }
 
-    ChalklerValidation.new(resource, options).path_name
+    Chalkler::DataCollection.new(resource, options).path_name
   end
 
   def after_register_path_for(resource)

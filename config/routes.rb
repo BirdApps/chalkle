@@ -76,8 +76,8 @@ Chalkle::Application.routes.draw do
     get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: 'meetup_email_settings'
     put '/preferences' => 'preferences#save', as: 'preferences'
 
-    get '/validations/:page' => 'validation#page', as: 'validations'
-    put '/validations' => 'validation#update', as: 'validations'
+    get '/data_collection/:page' => 'data_collection#page', as: 'data_collection'
+    put '/data_collection' => 'data_collection#update', as: 'data_collection'
   end
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'

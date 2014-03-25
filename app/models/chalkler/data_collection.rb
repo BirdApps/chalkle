@@ -1,0 +1,2 @@
+class Chalkler::DataCollection
+end
