@@ -6,5 +6,4 @@ module ControllerMacros
       sign_in @current_chalkler
     end
   end
-
 end

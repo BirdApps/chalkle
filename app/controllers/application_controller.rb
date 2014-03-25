@@ -10,10 +10,13 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    # stored_location_for(resource) || other_path
-    # request.referrer
-    return admin_root_path if resource.is_a? AdminUser
-    session[:previous_url] || root_path
+    return admin_root_path if resource.is_a?(AdminUser)
+
+    from_path    = stored_location_for(resource)
+    default_path = root_path
+    options      = { from_path: from_path, default_path: default_path }
+
+    ChalklerValidation.new(resource, options).path_name
   end
 
   def after_register_path_for(resource)
