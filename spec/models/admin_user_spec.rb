@@ -131,4 +131,26 @@ describe AdminUser do
       end
     end
   end
+
+  describe "#super?" do
+    let(:user) { AdminUser.new }
+
+    it "is true if the admin is a super user" do
+      expect(user.super?).to be_false
+    end
+
+    it "is true if the admin is a super user" do
+      user.role = "super"
+      expect(user.super?).to be_true
+    end
+  end
+
+  describe "#super!" do
+    it "changes the admin user to a super admin user" do
+      user = AdminUser.new
+      expect(user).to receive(:save) { true }
+      user.super!
+      expect(user.super?).to be_true
+    end
+  end
 end
