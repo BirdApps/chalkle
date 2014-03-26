@@ -12,11 +12,11 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     return admin_root_path if resource.is_a?(AdminUser)
 
-    from_path    = stored_location_for(resource)
-    default_path = root_path
-    options      = { from_path: from_path, default_path: default_path }
+    original_path = stored_location_for(resource)
+    default_path  = root_path
+    options       = { original_path: original_path, default_path: default_path }
 
-    Chalkler::DataCollection.new(resource, options).path_name
+    Chalkler::DataCollection.new(resource, options).path
   end
 
   def after_register_path_for(resource)

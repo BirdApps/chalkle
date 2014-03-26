@@ -23,7 +23,7 @@ describe ApplicationController do
     context "when a Chalkler signs in successfully" do
 
       let(:user)       { FactoryGirl.build(:chalkler) }
-      let(:data_collection) { double("data_collection", path_name: "/data_collection/fix") }
+      let(:data_collection) { double("data_collection", path: "/data_collection/fix") }
 
       before { Chalkler::DataCollection.stub(:new) { data_collection } }
 
@@ -33,7 +33,7 @@ describe ApplicationController do
       end
 
       it "gets a path name from the Chalkler data collector" do
-        data_collection.should_receive(:path_name)
+        data_collection.should_receive(:path)
         controller.after_sign_in_path_for(user)
       end
 
