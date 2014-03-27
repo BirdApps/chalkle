@@ -3,6 +3,8 @@ require 'omni_avatar/has_avatar'
 class Chalkler < ActiveRecord::Base
   include OmniAvatar::HasAvatar
 
+  EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
     :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
@@ -17,7 +19,7 @@ class Chalkler < ActiveRecord::Base
   attr_accessor :join_channels, :set_password_token
 
   validates_presence_of :name
-  validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false }
+  validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }, uniqueness: { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
 
   has_one  :lesson_filter, class_name: 'Filters::Filter', dependent: :destroy
