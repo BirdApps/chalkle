@@ -76,8 +76,8 @@ Chalkle::Application.routes.draw do
     get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: 'meetup_email_settings'
     put '/preferences' => 'preferences#save', as: 'preferences'
 
-    get '/data_collection/:page' => 'data_collection#page', as: 'data_collection'
-    put '/data_collection' => 'data_collection#update', as: 'data_collection'
+    get  '/data_collection/:action', as: 'data_collection', controller: 'data_collection_form'
+    post '/data_collection/:action', as: 'data_collection_update', controller: 'data_collection_form'
   end
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
