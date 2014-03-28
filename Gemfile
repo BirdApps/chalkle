@@ -102,7 +102,7 @@ end
 
 group :test, :development do
   # Placed here so generators work
-  gem 'rspec-rails', '~> 2.14.1'
+  gem 'rspec-rails'
 
   gem 'pry-rails'
   gem 'pry-debugger'
