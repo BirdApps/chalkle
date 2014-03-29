@@ -11,7 +11,7 @@ class Ability
       can [:read, :create, :update, :hide, :unhide], [Booking, Payment]
       can [:record_cash_payment], Booking
       can [:reconcile, :do_reconcile, :download_from_xero, :unreconcile], Payment
-      can [:read, :update, :hide, :unhide, :lesson_email, :payment_summary_email, :meetup_template, :copy_lesson], Lesson
+      can :manage, Lesson
       can [:read, :create, :update], LessonImage
       can :manage, Category
       can :manage, LessonSuggestion
@@ -25,6 +25,7 @@ class Ability
       can :manage, LessonSuggestion
       # TODO: Do this with a single database join
       can [:read, :update, :meetup_template, :copy_lesson, :hide, :unhide], Lesson, :id => user.lesson_ids
+      can :create, Lesson
       can :create, Booking
       # TODO: Do this with a single database join
       can [:record_cash_payment, :read, :update], Booking, :id => user.booking_ids
