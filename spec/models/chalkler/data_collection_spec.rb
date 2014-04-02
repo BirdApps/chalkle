@@ -38,13 +38,13 @@ describe Chalkler::DataCollection do
 
       it "returns the path to the email form" do
         data_collection = Chalkler::DataCollection.new(chalkler)
-        expect(data_collection.path).to eq("chalklers/data_collection/email")
+        expect(data_collection.path).to eq("/chalklers/data_collection/email")
       end
 
       it "returns the email form path as well as the encoded original path" do
         options = { original_path: "/class/bookings" }
         data_collection = Chalkler::DataCollection.new(chalkler, options)
-        expect(data_collection.path).to eq("chalklers/data_collection/email?original_path=%2Fclass%2Fbookings")
+        expect(data_collection.path).to eq("/chalklers/data_collection/email?original_path=%2Fclass%2Fbookings")
       end
 
     end

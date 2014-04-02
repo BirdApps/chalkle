@@ -27,7 +27,7 @@ end
 
 task :production do
   set :domain,    "my.chalkle.com"
-  set :branch,    "production"
+  set :branch,    "staging"
   set :rails_env, "production"
   set :deploy_to, "/home/#{user}/production"
   set :bundle_without, [:development, :test]
