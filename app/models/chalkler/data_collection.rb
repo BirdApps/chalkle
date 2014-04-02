@@ -37,5 +37,4 @@ private
     chalkler.email.nil?
   end
 
-
 end
