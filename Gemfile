@@ -33,7 +33,6 @@ gem 'kaminari'
 gem 'httparty'
 gem 'inherited_resources'
 gem 'foreigner'
-gem 'virtus'
 
 #apis
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
