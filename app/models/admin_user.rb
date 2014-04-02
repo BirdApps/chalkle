@@ -7,6 +7,8 @@ class AdminUser < ActiveRecord::Base
   attr_accessible :name, :role, :email, :password, :password_confirmation,
     :remember_me, :channel_ids, :as => :admin
 
+  SUPER = 'super'
+
   validates_presence_of :name, :role
 
   has_many :channel_admins
@@ -31,6 +33,15 @@ class AdminUser < ActiveRecord::Base
   end
 
   def administerable_channels
-    role == 'super' ? Channel.all : channels
+    super? ? Channel.all : channels
+  end
+
+  def super!
+    self.role = SUPER
+    save
+  end
+
+  def super?
+    role == SUPER
   end
 end

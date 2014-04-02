@@ -15,6 +15,7 @@ class BookingsController < ApplicationController
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
     @lesson = Lesson.find(params[:lesson_id]).decorate
+    return false if check_lesson_visibility
   end
 
   def create
@@ -101,6 +102,14 @@ class BookingsController < ApplicationController
   end
 
   private
+
+  def check_lesson_visibility
+    unless @lesson.published?
+      redirect_to chalklers_root_url, notice: "This class is no longer available."
+      return false
+    end
+  end
+
   def load_booking
     @booking = current_chalkler.bookings.find(params[:booking_id] || params[:id]).decorate
   end

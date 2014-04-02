@@ -7,6 +7,11 @@ body {
   padding-top: 0;
 }
 
+// Bootstrap override, for some reason when a modal openned it was adding a margin to the body.
+body.modal-open {
+  margin-right: 0px;
+}
+
 .jumbotron {
   font-family: $font_family_chalk;
   background: #222222 asset-url("texture-chalkboard.jpg", image) left top repeat;

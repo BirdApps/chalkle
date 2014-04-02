@@ -82,4 +82,8 @@ Chalkle::Application.routes.draw do
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
   match '/image' => 'image#generate'
+
+  %w(welcome about blog learn).each do |name|
+    match "/#{name}" => redirect("http://blog.chalkle.com/#{name}"), :as => name.to_sym
+  end
 end
