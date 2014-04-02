@@ -13,5 +13,5 @@
         %td #{link_to(lesson.name, admin_lesson_path(lesson))}
         %td #{lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher"}
         %td #{lesson.category_name}
-        %td #{lesson.channel.name}
+        %td #{lesson.channel.name if lesson.channel}
         %td #{number_to_currency lesson.cost}
