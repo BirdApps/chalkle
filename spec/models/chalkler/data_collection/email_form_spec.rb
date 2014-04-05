@@ -6,14 +6,17 @@ describe Chalkler::DataCollection::EmailForm do
 
     context "when validating" do
 
+      let(:email)    { "a.fake@email.com" }
+      let(:chalkler) { double("chalkler" ) }
+
       it "returns false if the form data is not valid" do
-        form = Chalkler::DataCollection::EmailForm.new
+        form = Chalkler::DataCollection::EmailForm.new("chalkler" => chalkler)
         expect(form.save).to be_false
       end
 
       it "checks the existance of an email via the Chalkler model" do
-        email = "a.fake@email.com"
-        form = Chalkler::DataCollection::EmailForm.new("email" => email)
+        chalkler.stub(:update_attributes) { true }
+        form = Chalkler::DataCollection::EmailForm.new("chalkler" => chalkler, "email" => email)
         Chalkler.should_receive(:where).with("LOWER(email) = LOWER(?)", email) { [] }
         form.save
       end
@@ -22,19 +25,17 @@ describe Chalkler::DataCollection::EmailForm do
 
     context "when saving" do
 
-      let(:chalkler) { double("chalkler") }
       let(:email)    { "a.fake@email.com" }
+      let(:chalkler) { double("chalkler") }
       let(:form)     { Chalkler::DataCollection::EmailForm.new("chalkler" => chalkler, "email" => email) }
 
       it "returns true if the data is persisted" do
-        chalkler.stub(:save) { true }
-        form.save
+        chalkler.stub(:update_attributes) { true }
         expect(form.save).to be_true
       end
 
       it "returns false if the data is not persisted" do
-        chalkler.stub(:save) { false }
-        form.save
+        chalkler.stub(:update_attributes) { false }
         expect(form.save).to be_false
       end
 
@@ -42,17 +43,12 @@ describe Chalkler::DataCollection::EmailForm do
 
     context "sending to other objects" do
 
-      let(:chalkler) { double("chalkler") }
       let(:email)    { "a.fake@email.com" }
+      let(:chalkler) { double("chalkler") }
       let(:form)     { Chalkler::DataCollection::EmailForm.new("chalkler" => chalkler, "email" => email) }
 
-      it "assigns the email to the Chalkler" do
-        chalkler.should_receive(:email=).with(email)
-        form.save
-      end
-
       it "saves the changes to the Chalkler" do
-        chalkler.should_receive(:save)
+        chalkler.should_receive(:update_attributes) { true }
         form.save
       end
 

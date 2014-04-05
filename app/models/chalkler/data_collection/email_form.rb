@@ -19,8 +19,7 @@ class Chalkler::DataCollection::EmailForm
 
   def save
     return false unless valid?
-    chalkler.email = email
-    chalkler.save
+    chalkler.update_attributes(email: email)
   end
 
   def persisted?
@@ -32,9 +31,13 @@ private
   attr_reader :chalkler, :email
 
   def email_uniqueness
-    if Chalkler.where("LOWER(email) = LOWER(?)", email).to_a.empty?
+    if find_chalker_by_email(email)
       errors.add(:email, "has already been taken")
     end
+  end
+
+  def find_chalker_by_email(email)
+    Chalkler.where("LOWER(email) = LOWER(?)", email).first
   end
 
 end
