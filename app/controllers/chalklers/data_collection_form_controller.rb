@@ -15,12 +15,12 @@ private
 
   def form_data
     data = params.fetch("chalkler_data_collection_email_form", {})
-    data.merge({ "chalkler" => Chalkler.new })
+    data.merge({ "chalkler" => current_chalkler })
   end
 
   def successful_update(form)
     flash[:notice] = "Everything has been successfully updated."
-    redirect_to chalkers_root_url
+    redirect_to chalklers_root_url
   end
 
   def failed_update(form)
