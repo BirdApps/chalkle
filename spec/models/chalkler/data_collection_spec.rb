@@ -9,11 +9,13 @@ describe Chalkler::DataCollection do
     context "when no new data needs to be collected" do
 
       context "when there is an originating path to go back to" do
+
         it "returns the original path" do
           options = { original_path: "/class/bookings" }
           data_collection = Chalkler::DataCollection.new(chalkler, options)
           expect(data_collection.path).to eq("/class/bookings")
         end
+
       end
 
       context "when there isn't a originating path to go back to" do
@@ -38,13 +40,13 @@ describe Chalkler::DataCollection do
 
       it "returns the path to the email form" do
         data_collection = Chalkler::DataCollection.new(chalkler)
-        expect(data_collection.path).to eq("chalklers/data_collection/email")
+        expect(data_collection.path).to eq("/chalklers/data_collection/email")
       end
 
       it "returns the email form path as well as the encoded original path" do
         options = { original_path: "/class/bookings" }
         data_collection = Chalkler::DataCollection.new(chalkler, options)
-        expect(data_collection.path).to eq("chalklers/data_collection/email?original_path=%2Fclass%2Fbookings")
+        expect(data_collection.path).to eq("/chalklers/data_collection/email?original_path=%2Fclass%2Fbookings")
       end
 
     end

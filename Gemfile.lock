@@ -551,7 +551,7 @@ DEPENDENCIES
   rails (= 3.2.14)
   rb-readline
   rmagick
-  rspec-rails (~> 2.14.1)
+  rspec-rails
   sass-rails
   sendgrid
   shoulda (>= 3.5.0)

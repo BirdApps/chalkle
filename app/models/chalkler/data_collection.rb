@@ -1,7 +1,5 @@
 class Chalkler::DataCollection
-
-  PREFIXES   = %w(chalklers data_collection)
-  EMAIL_PATH = "email"
+  EMAIL_PATH = '/chalklers/data_collection/email'
 
   def initialize(chalkler, options = {})
     @chalkler      = chalkler
@@ -22,7 +20,7 @@ private
   attr_accessor :add_params
 
   def main_path
-    return email_path if request_email?
+    return EMAIL_PATH if request_email?
     self.add_params = false
     original_path ? original_path : default_path
   end
@@ -36,15 +34,7 @@ private
   end
 
   def request_email?
-    !!chalkler.email.nil?
-  end
-
-  def email_path
-    [ prefix_path, EMAIL_PATH ].join("/")
-  end
-
-  def prefix_path
-    PREFIXES.join("/")
+    chalkler.email.nil?
   end
 
 end
