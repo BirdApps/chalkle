@@ -2,7 +2,7 @@
 
 Chalkle::Application.config.session_store(
   :cookie_store,
-  key: '_chalkle_session',
+  key: '_chalkle_session1',
   domain: :all,
   tld_length: ActionDispatch::Http::URL.tld_length + 1
 )
