@@ -1,12 +1,9 @@
 class Chalkler::DataCollection::EmailForm
-
-  include Virtus.model
   extend ActiveModel::Naming
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  attribute :customer, Chalkler
-  attribute :email, String
+  attr_accessor :chalkler, :email
 
   validates_presence_of :email
   validates_format_of :email, with: Chalkler::EMAIL_VALIDATION_REGEX
@@ -27,8 +24,6 @@ class Chalkler::DataCollection::EmailForm
   end
 
 private
-
-  attr_reader :chalkler, :email
 
   def email_uniqueness
     if find_chalker_by_email(email)
