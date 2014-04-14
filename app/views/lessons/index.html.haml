@@ -2,16 +2,7 @@
   .page_header_panel
     .container
       %h1.page-title
-        - if @channel
-          - if chalkler_signed_in?
-            = "Welcome to chalkle° in #{@channel.name} #{current_chalkler.name}"
-          - else
-            = "Welcome to chalkle° in #{@channel.name}"
-        - else
-          - if chalkler_signed_in?
-            = "Welcome #{current_chalkler.name}, try these upcoming chalkles"
-          - else
-            = "Welcome, try these upcoming chalkles"
+        = lesson_index_welcome_message
       = render partial: 'filters'
 
   .search_panel.full_page

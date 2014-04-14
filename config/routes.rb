@@ -10,6 +10,10 @@ Chalkle::Application.routes.draw do
     match '/' => 'channels#show'
   end
 
+  constraints(MainDomain) do
+    get ':country_code/:region_name', to: 'lessons#index', constraints: {country_code: /[a-zA-Z]{2}/}
+  end
+
   authenticated :chalkler do
     root :to => "lessons#index"
   end

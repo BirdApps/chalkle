@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module LessonHelper
 	def may_cancel_email(name,min_attendee)
     URI.escape("
@@ -101,4 +103,25 @@ Your Chalkle Administrator")
     content_tag(:i, nil, class: "fa fa-#{name.to_s.gsub('_', '-')}") + ' '
   end
 
+  def lesson_index_welcome_message
+    if @region
+      if chalkler_signed_in?
+        "Welcome to chalkle° in #{@region.name} #{current_chalkler.name}"
+      else
+        "Welcome to chalkle° in #{@region.name}"
+      end
+    elsif @channel
+      if chalkler_signed_in?
+        "Welcome to chalkle° in #{@channel.name} #{current_chalkler.name}"
+      else
+        "Welcome to chalkle° in #{@channel.name}"
+      end
+    else
+      if chalkler_signed_in?
+        "Welcome #{current_chalkler.name}, try these upcoming chalkles"
+      else
+        "Welcome, try these upcoming chalkles"
+      end
+    end
+  end
 end
