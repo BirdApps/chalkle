@@ -16,7 +16,7 @@ class Chalkler::DataCollection::EmailForm
 
   def save
     return false unless valid?
-    chalkler.update_attributes(email: email)
+    chalkler.update_attributes(email: email) if chalkler.email.blank?
   end
 
   def persisted?
