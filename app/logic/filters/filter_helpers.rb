@@ -7,7 +7,7 @@ module Filters
       end
 
       def current_filter
-        current_chalkler_filter || Filters::NullFilter.new
+        @filter || current_chalkler_filter || Filters::NullFilter.new
       end
 
       def current_chalkler_filter
