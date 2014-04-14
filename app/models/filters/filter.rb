@@ -28,6 +28,10 @@ module Filters
       scope
     end
 
+    def build_rule(name, value)
+      rules.build(strategy_name: name, value: value)
+    end
+
     def current_or_empty_filter_for(name)
       current_filter_for(name) || build_rule_for(name)
     end
