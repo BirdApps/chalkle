@@ -54,7 +54,8 @@ class LessonsController < ApplicationController
 
     def load_region
       if region_name
-        @region = Region.find_by_name(region_name)
+        @region = Region.find_by_url_name(region_name)
+        raise ActiveRecord::RecordNotFound unless @region
       end
     end
 

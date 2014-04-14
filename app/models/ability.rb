@@ -16,6 +16,7 @@ class Ability
       can :manage, Category
       can :manage, LessonSuggestion
       can :manage, EventLog
+      can :manage, Region
 
     when "channel admin"
       can :read, Channel, :id => user.channel_ids
