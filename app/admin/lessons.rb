@@ -16,8 +16,9 @@ ActiveAdmin.register Lesson  do
     authorize_resource
   end
 
-  scope :published
+  scope :published, default: true
   scope :unpublished
+  scope "Trash", :hidden
 
   filter :channel_name, :as => :select, :label => "Channel",
     :collection => proc{ current_admin_user.administerable_channels.collect{ |c| [c.name, c.name] }}
@@ -31,7 +32,7 @@ ActiveAdmin.register Lesson  do
 
   controller do
     def scoped_collection
-      end_of_association_chain.visible.accessible_by(current_ability)
+      end_of_association_chain.accessible_by(current_ability)
     end
     helper LessonHelper
     helper BookingHelper
@@ -219,9 +220,9 @@ ActiveAdmin.register Lesson  do
   end
 
   action_item(only: :show, if: proc { can?(:hide, resource) && lesson.visible }) do
-    link_to 'Delete Lesson',
+    link_to 'Trash',
       hide_admin_lesson_path(resource),
-      :data => { :confirm => "Are you sure you wish to delete this Lesson?" }
+      :data => { :confirm => "Are you sure you wish to trash this Lesson?" }
   end
 
   action_item(only: :show, if: proc{ can?(:unhide, resource) && !lesson.visible}) do
