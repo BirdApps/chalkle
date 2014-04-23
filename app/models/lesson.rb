@@ -62,14 +62,14 @@ class Lesson < ActiveRecord::Base
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :recent, where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
-  scope :last_week, where("start_at > current_date - #{WEEK} AND start_at < current_date")
-  scope :unreviewed, where(status: STATUS_3)
-  scope :on_hold, where(status: STATUS_2)
-  scope :approved, where(status: STATUS_4)
+  scope :recent, visible.where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
+  scope :last_week, visible.where("start_at > current_date - #{WEEK} AND start_at < current_date")
+  scope :unreviewed, visible.where(status: STATUS_3)
+  scope :on_hold, visible.where(status: STATUS_2)
+  scope :approved, visible.where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
-  scope :unpublished, where{ status != STATUS_1 }
-  scope :published, where(status: STATUS_1)
+  scope :unpublished, visible.where{ status != STATUS_1 }
+  scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
   scope :by_date, order(:start_at)
   scope :in_month, lambda {|month| where("start_at" => month.time_range)}

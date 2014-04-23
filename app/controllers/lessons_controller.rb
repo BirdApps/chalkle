@@ -23,11 +23,11 @@ class LessonsController < ApplicationController
 
   def index
     load_geography_override
-    month
-    @filter = current_filter
-    @region_filter = region_filter || @filter.current_or_empty_filter_for('single_region')
+    @filter = geography_filter || current_filter
+    @region_filter = @filter.current_or_empty_filter_for('single_region')
     @channel_filter = @filter.current_or_empty_filter_for('single_channel')
     @category_filter = @filter.current_or_empty_filter_for('single_category')
+    month
     @week_lessons = lessons_for_time.load_upcoming_week_lessons(get_current_week)
   end
 
@@ -38,6 +38,14 @@ class LessonsController < ApplicationController
   end
 
   private
+
+    def geography_filter
+      if @region
+        filter = Filters::Filter.new
+        filter.rules.build(strategy_name: 'single_region', value: @region)
+        filter
+      end
+    end
 
     def load_geography_override
       load_country
@@ -54,13 +62,8 @@ class LessonsController < ApplicationController
 
     def load_region
       if region_name
-        @region = Region.find_by_name(region_name)
-      end
-    end
-
-    def region_filter
-      if @region
-        Filters::Rule.new(strategy_name: 'single_region', value: @region)
+        @region = Region.find_by_url_name(region_name)
+        raise ActiveRecord::RecordNotFound unless @region
       end
     end
 

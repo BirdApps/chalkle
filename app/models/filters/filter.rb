@@ -37,7 +37,7 @@ module Filters
     end
 
     def current_filter_for(name)
-      rules.where(strategy_name: name).first
+      rules.detect {|rule| rule.strategy_name == name}
     end
 
     def build_rule_for(name)
