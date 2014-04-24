@@ -6,11 +6,9 @@ Chalkle::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :chalklers, controllers: { omniauth_callbacks: 'chalklers/omniauth_callbacks', registrations: 'chalklers/registrations' }
 
-%w[my].each do |subdomain|
-  match '(*any)' => redirect { |p, req| req.url.sub('#{subdomain}.', '') }, :constraints => { :host => /^#{subdomain}\./ }
-end
+  match '(*any)' => redirect { |p, req| req.url.sub('my.', '') }, :constraints => { :host => /^my\./ }
+  match '(*any)' => redirect { |p, req| req.url.sub('www.', '') }, :constraints => { :host => /^www\./ }
   
-
   constraints(Subdomain) do
     match '/' => 'channels#show'
   end
