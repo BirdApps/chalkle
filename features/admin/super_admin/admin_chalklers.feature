@@ -37,3 +37,9 @@ Scenario: Password reset button is not displayed when chalkler has no email
   And the chalkler "Whetu" has no email address
   When the super admin views "Whetu's" profile
   Then super admin should not see a password reset button
+
+Scenario: A chalkler can be deleted
+  Given "Whetu" is a chalkler
+  When they visit the "Chalklers" page
+  And they click on the "Delete" button
+  Then the chalkler "Whetu" should be deleted

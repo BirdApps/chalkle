@@ -7,7 +7,7 @@ class Ability
     when "super"
       can :manage, AdminUser
       can :manage, Channel
-      can [:read, :create, :update, :send_reset_password_mail], Chalkler
+      can [:read, :create, :update, :send_reset_password_mail, :destroy], Chalkler
       can [:read, :create, :update, :hide, :unhide], [Booking, Payment]
       can [:record_cash_payment], Booking
       can [:reconcile, :do_reconcile, :download_from_xero, :unreconcile], Payment

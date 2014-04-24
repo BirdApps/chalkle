@@ -28,3 +28,8 @@ end
 Then /^super admin should not see a password reset button$/ do
   page.should have_no_link('Send password reset email')
 end
+
+Then /^the chalkler "(.*?)" should be deleted$/ do |name|
+  page.should have_content "Chalkler was successfully destroyed"
+  page.should_not have_content name 
+end
