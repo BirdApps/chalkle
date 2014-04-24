@@ -90,7 +90,7 @@ class Channel < ActiveRecord::Base
   end
 
   def cancel_lessons(start_date,end_date)
-    lessons.hidden.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+    lessons.hidden.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
   end
 
   def past_lessons(date)

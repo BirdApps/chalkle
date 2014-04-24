@@ -30,16 +30,16 @@ describe "Chalkler_stats" do
       lesson2.update_attributes({:visible => false}, :as => :admin)
     end
 
-    it "calculates number of lessons announced" do
-      @channel.channel_stats(3.days.ago,3.days).lesson_stats.lessons_announced.should == 6
+    it "calculates number of visible lessons announced" do
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.lessons_announced.should == 5
     end
 
-    it "calculates number of lessons announced in the previous time period" do
-      @channel.channel_stats(3.days.ago,3.days).lesson_stats.previous.lessons_announced.should == 4
+    it "calculates number of visible lessons announced in the previous time period" do
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.previous.lessons_announced.should == 3
     end
 
     it "calculates percentage change in lessons announced" do
-      @channel.channel_stats(3.days.ago,3.days).lesson_stats.percent_lessons_announced.should == 50.0
+      @channel.channel_stats(3.days.ago,3.days).lesson_stats.percent_lessons_announced.should be_within(0.1).of(66.66)
     end
 
     it "calculates number of classes ran" do
