@@ -39,8 +39,8 @@ Scenario: Channel admins can delete a lesson from their own channel
   Given there is a lesson with no details in the "Wellington" channel
   When they visit the "Lessons" tab
   And they visit the "View" page
-  And they press the "Trash" button
-  Then this lesson should be deleted
+  And they press the "Trash Lesson" button
+  Then this lesson should be trashed
 
 #@javascript
 #Scenario: Given a teacher cost, channel admins can see the advertised price for a class by editing the class details
