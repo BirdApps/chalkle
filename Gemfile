@@ -97,6 +97,14 @@ group :development do
 
   # Opening webpages during tests
   gem 'launchy', '~> 2.1.2'
+
+  gem 'guard'
+  gem 'guard-rspec', require: false
+  # gem 'guard-zeus'
+  gem 'guard-cucumber'
+  gem 'guard-livereload'
+
+
 end
 
 group :test, :development do
