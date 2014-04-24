@@ -145,6 +145,6 @@ ActiveAdmin.register Payment do
       f.input :cash_payment
     end
 
-    f.buttons
+    f.actions
   end
 end

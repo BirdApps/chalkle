@@ -136,6 +136,6 @@ ActiveAdmin.register Booking do
       f.input :cost_override, label: "Cost override", :hint => "Leave blank for no override"
       f.input :status, as: :select, collection: ["yes", "no", "waitlist", "no-show"]
     end
-    f.buttons
+    f.actions
   end
 end
