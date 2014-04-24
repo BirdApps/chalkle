@@ -9,6 +9,7 @@ Background:
 Scenario: A lesson with no details should render correctly
   Given there is a lesson with no details
   When they visit the "Lessons" tab
+  And they visit the "Unpublished" page
   Then they should see this lesson
   And they visit the "View" page
   Then they should see this lesson
@@ -16,6 +17,7 @@ Scenario: A lesson with no details should render correctly
 Scenario: A lesson with no details should be editable
   Given there is a lesson with no details
   When they visit the "Lessons" tab
+  And they visit the "Unpublished" tab
   And they visit the "Edit" page
   Then they should see "Edit Lesson"
 

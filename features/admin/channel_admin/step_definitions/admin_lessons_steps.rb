@@ -18,9 +18,9 @@ Then /^they should produce a copy of this lesson$/ do
   Lesson.find_all_by_name("Test Class").count.should == 2
 end
 
-Then /^this lesson should be deleted$/ do
+Then /^this lesson should be trashed$/ do
   lesson = Lesson.find_by_name("Test Class")
-  page.should have_content("Lesson #{lesson.id} deleted!")
+  page.should have_content("Lesson #{lesson.id} trashed!")
   lesson.visible.should be_false
 end
 
@@ -51,6 +51,12 @@ Given /^this lesson has one paid booking by a chalkler named "(.*?)"$/ do |name|
   lesson.update_attributes(:status => "Published", :cost => 10)
   chalkler = FactoryGirl.create(:chalkler, name: name)
   FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, paid: false, status: 'yes', cost_override: 20)
+end
+
+When /^they view this unpublished lesson$/ do
+  click_link "Lessons"
+  click_link "Unpublished"
+  click_link "View"
 end
 
 When /^they view this lesson$/ do

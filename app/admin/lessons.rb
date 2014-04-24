@@ -220,7 +220,7 @@ ActiveAdmin.register Lesson  do
   end
 
   action_item(only: :show, if: proc { can?(:hide, resource) && lesson.visible }) do
-    link_to 'Trash',
+    link_to 'Trash Lesson',
       hide_admin_lesson_path(resource),
       :data => { :confirm => "Are you sure you wish to trash this Lesson?" }
   end
@@ -249,9 +249,9 @@ ActiveAdmin.register Lesson  do
     lesson = Lesson.find(params[:id])
     lesson.visible = false
     if lesson.save!
-      flash[:notice] = "Lesson #{lesson.id} deleted!"
+      flash[:notice] = "Lesson #{lesson.id} trashed!"
     else
-      flash[:warn] = "Lesson #{lesson.id} could not be deleted!"
+      flash[:warn] = "Lesson #{lesson.id} could not be trashed!"
     end
     redirect_to :action => :index
   end
