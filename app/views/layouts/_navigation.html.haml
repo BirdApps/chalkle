@@ -24,4 +24,5 @@
               %i.fa.fa-chevron-down
             %ul.dropdown-menu.email-settings
               %li.dropdown-link= link_to 'Email settings', chalklers_preferences_url(subdomain: 'www'), { :tabindex => '-1' }
+              %li.dropdown-link= link_to "Delete account permenantly", chalklers_delete_url(current_chalkler), method: :delete, confirm: "Your account will be deleted permenantly.\n Are you sure you want to delete your account with Chalkle?"
           %li= link_to 'Sign out', destroy_chalkler_session_url, method: 'delete'
