@@ -32,4 +32,19 @@ class Chalklers::PreferencesController < Chalklers::BaseController
       end
     end
   end
+
+  def destroy
+    @chalkler = Chalkler.find params[:id]
+
+    if current_chalkler != @chalkler
+      return redirect_to :root 
+    end
+
+    if @chalkler.destroy 
+      redirect_to :root, notice: "Your account has been deleted."
+    else
+
+    end
+  end
+
 end
