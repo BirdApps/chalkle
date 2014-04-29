@@ -10,7 +10,7 @@ class Chalkler < ActiveRecord::Base
 
   attr_accessible :bio, :email, :name, :password, :password_confirmation,
     :remember_me, :email_frequency, :email_categories,
-    :phone_number
+    :phone_number, :email_regions
   attr_accessible :bio, :email, :name, :password,
     :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
     :email_frequency, :email_categories, :phone_number,
@@ -122,6 +122,11 @@ class Chalkler < ActiveRecord::Base
     Region.find (email_region_ids || [])
   end
 
+  def email_regions=(email_region)
+  update_attribute :email_region_ids, 
+    email_region.select{|id| Region.exists?(id)}.map!(&:to_i)
+  end
+  
   private
 
   # for Chalklers created outside of meetup
