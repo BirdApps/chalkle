@@ -36,6 +36,12 @@ class Chalkler < ActiveRecord::Base
   end
 
   scope :teachers, joins(:lessons_taught).uniq
+  scope :with_email_region_id, 
+    lambda {|region| 
+      where("email_region_ids LIKE '%?%'", region)
+    }
+
+  search_methods :with_email_region_id
 
   serialize :email_categories
   serialize :email_region_ids
