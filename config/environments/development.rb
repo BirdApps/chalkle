@@ -46,10 +46,7 @@ Chalkle::Application.configure do
 
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-    :user_name => 'chalkle-24b10ef389f7e02b',
-    :password => '05a8b4efeb8d5955',
-    :address => 'mailtrap.io',
-    :port => '2525',
-    :authentication => :plain,
+    :address => '127.0.0.1',
+    :port => '1025'
   }
 end

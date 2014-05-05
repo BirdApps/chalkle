@@ -12,13 +12,18 @@
         %td{:valign => 'top'}
           %table{:align => 'left', :border => '0', :cellpadding => '0', :cellspacing => '0', :width => '600px'}
             %tr
-              %td#header{:valign => 'top', :width => '600px'}
+              %td#header{:valign => 'top', :width => '600px', colspan: 3 }
                 %img#logo{ :src=> "#{root_url}logo.gif", :width => '600', :height => '70', :alt => 'chalkle° : six degrees of education.'}
             %tr
-              %td#content{:valign => 'top', :width => '600px'}
-                = yield
+              %td{ width: "50%"}
+              %td#content{:valign => 'top'}
+                %table#content-padding
+                  %tr
+                    %td
+                      = yield
+              %td{ width: "50%"}
             %tr
-              %td#footer{:valign =>'top', :width => '600px'}
+              %td#footer{:valign =>'top', :width => '600px',  colspan: 3}
                 = link_to 'Change your email settings', chalklers_preferences_url
                 %span.spacer &nbsp;|&nbsp;
                 = link_to 'chalkle.com', root_url
@@ -27,7 +32,7 @@
                 %span.spacer &nbsp;|&nbsp;
                 = link_to 'Twitter', 'http://twitter.com/ChalkleNZ/'
             %tr
-              %td#subfooter{:valign =>'top', :width => '600px'}
+              %td#subfooter{:valign =>'top', :width => '100%',  colspan: 3}
                 %p
                   What do you think of this email?
                   = link_to 'Let us know!', 'mailto:learn@chalkle.com'
