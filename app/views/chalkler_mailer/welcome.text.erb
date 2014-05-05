@@ -1,38 +1,34 @@
 <%#-*- coding: UTF-8 -*-%>
-Welcome to chalkle°!
 
-Thanks for joining chalkle°! Isn’t it exciting to see a community grow around a
-wish to learn, teach and share skills from each other.
+Hi <%= @chalkler.name %>,
 
+Welcome to Chalkle!
 <% if @chalkler.reset_password_token? %>
-Activate your account:
+Activate your account
 
-Your Channel Curator has created an account for you on chalkle.com
-( http://chalkle.com ).  You can use this to submit class details. To activate
-your account simply create a password by clicking on the link below:
+Your Channel Curator has created an account for you on http://chalkle.com. To activate your account simply create a password by clicking on the link below:
 
-<%== "#{edit_chalkler_password_url}?initial=true&reset_password_token=#{@chalkler.reset_password_token}" %>
+Create your account password by visiting <%= "#{edit_chalkler_password_url}?initial=true&reset_password_token=#{@chalkler.reset_password_token}".html_safe %>
 
 <% end %>
-Become a teacher:
 
-We hope to be able to help connect you with people who can share skills and
-knowledge. If you have things you can teach then we can enable that to
-happen. We can help you advertise (find great people), sort all the money
-practicalities, help you find a location, and give suggestions on what makes
-a great chalkle° class.
+It’s great you've joined! We trust you've found a class or two that interests you. Here is a quick rundown on making the most of Chalkle.
 
-When you are ready to teach a class, simply submit your idea:
-http://chalkle.com/chalklers/teachings/new
+LEARN ABOUT NEW CLASSES
+Now that you're part of Chalkle we can keep you up to date with the latest exciting classes. You decide how often you’d like to hear from us by adjusting your email settings here. 
 
-Show us some love!
+CONNECT WITH OUR GREAT ORGANISATIONAL PARTNERS 
+We work with great organisational partners to deliver classes, browse the organisations in your area and if you have any questions about a class, contact the channel operator or teacher directly as they will have all the information you need. 
 
-Please like us on Facebook ( http://www.facebook.com/chalkle ) and follow us on
-Twitter ( https://twitter.com/ChalkleNZ ).
+SPREAD THE WORD!
+It's our job to find great learning opportunities for you so we're always on the lookout for more great teachers or class ideas. Don't forget to spread the word on http://facebook.com/chalkle and follow us
+on http://twitter.com/ChalkleNZ. 
 
-As this is a new initiative, we are still experimenting and playing, so please
-do get in touch if you have any feedback or ideas - in that way we can create
-chalkle° to really meet your needs and those of the community.
+If you have any suggestions for things you’ve love to learn, please don't hesitate to get in touch :)
 
-Cheers,
-The chalkle° team
+That’s it. Nice and easy! 
+Happy Learning! 
+
+Silva & The Chalkle Team 
+
+At Chalkle we’ve adopted a spam free diet, but change your email settings here: <%= chalklers_preferences_url %>

@@ -8,6 +8,7 @@ body {
   -ms-text-size-adjust:100%;
   margin:0;
   padding:0;
+  font-family: "Helvetica", Arial, sans-serif
 }
 
 a {
@@ -21,6 +22,8 @@ h1, h2, h3 {
 
 h2 {
   font-size: 16px;
+  margin-bottom: 0;
+  margin-top: 22px;
 }
 
 p {
@@ -33,7 +36,7 @@ p {
 }
 
 .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
-  line-height: 100%;
+  line-height: 150%;
 }
 
 table {
@@ -50,7 +53,10 @@ table {
 }
 
 table#container {
-  width: 600px !important;
+}
+
+table#content-padding {
+  width: 600px;
 }
 
 img#logo {
@@ -70,10 +76,7 @@ td#header {
 td#content {
   padding: 20px;
   color:#444;
-  border-left: solid 1px #ececec;
-  border-right: solid 1px #ececec;
   font-size: 13px;
-  line-height: 16px;
 }
 
 td#footer {
