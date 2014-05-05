@@ -67,3 +67,22 @@ form div.control-group.hidden {
 }
 
 .dropdown-toggle { cursor: pointer; }
+
+
+.new_chalkler {
+  .checkbox{
+    width: 100%;
+    min-height: 26px;
+    display: block;
+    position: relative;
+    .check_boxes {
+      width: 16px;
+      height: 16px; 
+      border-top: none; 
+      box-shadow: none;
+    }
+    label {
+      min-height: 36px;
+    }
+  }
+}
