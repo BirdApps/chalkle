@@ -133,6 +133,7 @@ class Chalkler < ActiveRecord::Base
     email_region.select{|id| Region.exists?(id)}.map!(&:to_i)
   end
   
+
   private
 
   # for Chalklers created outside of meetup
