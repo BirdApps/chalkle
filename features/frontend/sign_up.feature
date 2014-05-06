@@ -1,6 +1,6 @@
 @omniauth_test
 Feature: Chalkler Login
-  In order to use my.chalkle.com chalklers must be able to create an account
+  In order to use chalkle.com chalklers must be able to create an account
   and log in.
 
 # Scenario: New chalkler logging in via Meetup will be created
