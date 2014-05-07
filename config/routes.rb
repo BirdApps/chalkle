@@ -2,10 +2,10 @@ require 'routing_constraints'
 
 Chalkle::Application.routes.draw do
 
+  ActiveAdmin.routes(self)
+
   match '(*any)' => redirect { |p, req| req.url.sub!('my.', '') } , :constraints => { :host => /^my\./ }
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
-
-  ActiveAdmin.routes(self)
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :chalklers, controllers: { omniauth_callbacks: 'chalklers/omniauth_callbacks', registrations: 'chalklers/registrations' }
