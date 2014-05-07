@@ -93,3 +93,11 @@ Scenario: Comments on chalklers are displayed on the index page
   And they fill in the chalkler comments with "This is a comment"
   When they return to the chalkler index page
   Then they should see "This is a comment"
+
+
+Scenario: Channels for chalklers are not shown to channel admins
+  Given "Whetu" is a chalkler
+  And the chalkler "Whetu" belongs to the "Wellington" channel
+  When they edit "Whetu's" profile
+  Then they should not see the "join channels" form item 
+
