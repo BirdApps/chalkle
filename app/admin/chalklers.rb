@@ -20,7 +20,7 @@ ActiveAdmin.register Chalkler do
 
   filter :channels_name, :as => :select, :label => "Channel",
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
-  filter :email_regions, as: :select, :collection => Region.all
+  # filter :email_regions, as: :select, :collection => Region.all
   filter :meetup_id
   filter :name
   filter :email
