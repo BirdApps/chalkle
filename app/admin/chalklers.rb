@@ -20,6 +20,7 @@ ActiveAdmin.register Chalkler do
 
   filter :channels_name, :as => :select, :label => "Channel",
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
+  filter :email_regions, as: :select, :collection => Region.all
   filter :meetup_id
   filter :name
   filter :email
@@ -121,11 +122,11 @@ ActiveAdmin.register Chalkler do
   form do |f|
     f.inputs :details do
       f.input :name
-      if current_admin_user.channels.size > 1
+      if current_admin_user.administerable_channels.size > 1
         if f.object.new_record?
-          f.input :join_channels, :label => 'Channels', :as => :check_boxes, :collection => current_admin_user.channels
+          f.input :join_channels, :label => 'Channels', :as => :check_boxes, :collection => current_admin_user.administerable_channels
         else
-          f.input :channels, :as => :check_boxes, :label => 'Channels'
+          f.input :channels, :as => :check_boxes, :label => 'Channels', :collection => current_admin_user.administerable_channels
         end
       end
       if current_admin_user.super? || f.object.new_record?
@@ -139,6 +140,18 @@ ActiveAdmin.register Chalkler do
       f.input :bio
     end
     f.actions
+  end
+
+  controller do 
+    def update
+      @chalkler = Chalkler.find(params[:id])
+
+      params[:chalkler][:channel_ids].concat(
+        @chalkler.channels.map(&:id) - current_admin_user.administerable_channels.map(&:id)
+      )
+
+      update! as: :admin
+    end
   end
 
 end
