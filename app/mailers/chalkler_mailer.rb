@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class ChalklerMailer < ActionMailer::Base
-  default from: '"chalkle°" <noreply@chalkle.com>'
+  default from: '"chalkle°" <learn@chalkle.com>'
 
   def welcome(chalkler)
     @chalkler = chalkler
