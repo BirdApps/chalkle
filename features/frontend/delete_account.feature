@@ -1,6 +1,6 @@
 @omniauth_test
 Feature: Chalkler Deletes Account
-  In order to use my.chalkle.com chalklers must be able to delete their account
+  In order to use chalkle.com chalklers must be able to delete their account
 
 
 Background:
