@@ -6,7 +6,7 @@
           Upcoming Classes
       .arrow-down
     = render partial: 'filter_dropdown', locals: { filter: @region_filter }
-    -#= render partial: 'filter_dropdown', locals: { filter: @channel_filter }
+    = render partial: 'filter_dropdown', locals: { filter: @channel_filter }
     = render partial: 'filter_dropdown', locals: { filter: @category_filter }
   - if @filter.has_rules?
     .resets
