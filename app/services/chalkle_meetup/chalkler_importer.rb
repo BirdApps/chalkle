@@ -38,8 +38,8 @@ module ChalkleMeetup
       def set_chalkler_data(chalkler, data, identity)
         identity.provider_data = data.member
 
-        chalkler.name = data.name
-        chalkler.bio = data.bio
+        chalkler.name = data.name if chalkler.name == ""
+        chalkler.bio = data.bio if chalkler.bio == ""
 
         @avatar_updater.update_from_data(chalkler.avatars, data)
       end
