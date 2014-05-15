@@ -70,7 +70,7 @@ Your Chalkle Administrator")
   end
 
   def path_for_lesson(lesson)
-    channel_lesson_url(@channel || lesson.channel, lesson, subdomain: 'www')
+    channel_lesson_url(@channel || lesson.channel, lesson)
   end
 
   def lesson_classes(lesson, base_class = 'lesson')
@@ -87,7 +87,7 @@ Your Chalkle Administrator")
         if lesson.spaces_left?
           icon(:check) + pluralize(lesson.spaces_left, 'spot') + ' left'
         else
-          icon(:thumbs_down) + 'fully booked!'
+          'fully booked!'
         end
       else
         icon(:check) + 'No size limit'
@@ -96,7 +96,7 @@ Your Chalkle Administrator")
   end
 
   def lesson_attendance(lesson)
-    icon(:user) + "#{lesson.attendance} attending"
+    ""
   end
 
   def icon(name)
