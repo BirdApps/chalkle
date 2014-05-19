@@ -96,4 +96,11 @@ Chalkle::Application.routes.draw do
   %w(welcome about blog learn).each do |name|
     match "/#{name}" => redirect("http://blog.chalkle.com/#{name}"), :as => name.to_sym
   end
+
+  get '/partners' => 'partners#index'
+  get '/partners/pricing' => 'partners#pricing'
+  get '/partners/team' => 'partners#team'
+  get '/partners/say_hello' => 'partners#say_hello'
+  post '/partners/said_hello' => 'partners#said_hello'
+
 end

@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <%= analytics_init if Rails.env.production? %>
+    <meta charset='utf-8' />
+    <title>
+      <%= content_for?(:title) ? yield(:title) : 'chalkle°' %>
+    </title>
+    <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+    <%= csrf_meta_tag %>
+
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= stylesheet_link_tag "unsemantic/unsemantic-grid-base" %>
+    <%= stylesheet_link_tag "unsemantic/unsemantic-grid-responsive" %>
+
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "partners" %>
+
+    <%= javascript_include_tag "adapt.min" %>
+
+    <%= google_webfonts_init(google: 'Shadows Into Light Two') %>
+
+    <script type="text/javascript" src="//use.typekit.net/hlu7uvf.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+  </head>
+  <body class="<%= body_class %> tk-proxima-nova">
+    <header id="header" class="">
+      <nav class="grid-container">
+        <%= render 'layouts/partners_navigation' %>
+      </nav>
+      <h1 class="tk-proxima-nova"><%=h @hero_text %></h1>
+    </header>
+
+    <div id="header-mask">
+      <div class="mask"></div>
+      <div class="arrows-mask-left"></div>
+      <div class="arrows-mask-right"></div>
+      <div class="mask"></div>
+    </div>
+
+    <div id="main">
+
+      <div class="container">
+        <%= render 'layouts/messages' %>
+      </div>
+
+      <div class="front_end_body oldlayout">
+        <div class="container">
+          <%= yield %>
+        </div>
+      </div>
+
+    </div>
+    
+  </body>
+</html>

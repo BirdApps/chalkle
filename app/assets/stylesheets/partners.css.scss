@@ -1,0 +1,112 @@
+#header{
+
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  letter-spacing: 0.1em;
+
+  background-image: image-url('partners/index-hero.jpg');
+  background-repeat: none;
+  background-size: cover;
+  background-position: center center;
+  
+  height:600px;
+  
+  nav {
+    height: 50px;
+    padding-top: 20px;
+    font-size: 20px; 
+    
+    * {
+      padding: 0.25em 0.1em;
+      border-radius: 4px;
+    }
+    
+    a { color: white; }
+
+    a:hover { 
+      background-color: green; 
+      text-shadow: none;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    text-shadow: 0 1px 1px #333; 
+    .action {
+      background: white;
+      color: #333 !important;
+      text-shadow: 0 1px 1px #fff; 
+    }
+  }
+
+  h1 {
+    text-align: center; 
+    color: #fff;
+    margin-top: 350px;
+    text-shadow: 0 2px 4px #000;
+    font-weight: 200;
+    padding: 0 50px;
+  }
+}
+
+#header-mask {
+  position: relative;
+  z-index: 2;
+  margin-top: 520px;
+  width: 100%;
+  padding: 0;
+
+  * {
+    height: 30px;
+    float: left;
+  }
+
+  .mask {
+    background: white;
+    width:48%;
+    border: none;
+  }
+  
+  .arrows-mask-left {
+    background-image: image-url('partners/left-arrow-mask.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 2%;
+  }
+  .arrows-mask-right {
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    background-image: image-url('partners/right-arrow-mask.png');
+    width: 2%;
+  }
+}
+
+#main {
+  z-index: 3;
+  margin-top: 630px;
+  position: relative;
+  background-color: white;
+
+
+}
+
+/*
+THIS IS FOR ALL THE SECTIONS OUT THERE 
+*/
+
+
+
+#byline {
+  padding: 5em 0;  
+  color: #333;
+}
+
+
+
+
+
+
+
+
+
