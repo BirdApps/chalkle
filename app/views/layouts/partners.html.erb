@@ -24,12 +24,13 @@
 
   </head>
   <body class="<%= body_class %> tk-proxima-nova">
-    <header id="header" class="">
-      <nav class="grid-container">
-        <%= render 'layouts/partners_navigation' %>
-      </nav>
+    <header id="header" class="" data-0="top:0;  opacity: 1.0" data-500="opacity: 0;" data-5000="top:-600px;">
       <h1 class="tk-proxima-nova"><%=h @hero_text %></h1>
     </header>
+    <nav class="grid-container">
+      <%= render 'layouts/partners_navigation' %>
+    </nav>
+
 
     <div id="header-mask">
       <div class="mask"></div>
@@ -51,6 +52,10 @@
       </div>
 
     </div>
-    
+    <%= javascript_include_tag "skrollr.min" %>
+    <script type="text/javascript">
+    var s = skrollr.init();
+    </script>
+
   </body>
 </html>
