@@ -21,16 +21,17 @@
 
     <script type="text/javascript" src="//use.typekit.net/hlu7uvf.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-
   </head>
+
   <body class="<%= body_class %> tk-proxima-nova">
     <header id="header" class="" data-0="top:0;  opacity: 1.0" data-500="opacity: 0;" data-5000="top:-600px;">
-      <h1 class="tk-proxima-nova"><%=h @hero_text %></h1>
+      <h1 class="tk-proxima-nova" data-0="margin-top: 350px;" data-200="margin-top: -50px;"><%=h @hero_text %></h1>
     </header>
-    <nav class="grid-container">
-      <%= render 'layouts/partners_navigation' %>
+    <nav class="" data-300="background-color: transparent; box-shadow: 0 3px 5px rgba(0,0,0,0.0);" data-500="background-color: #ffffff; box-shadow: 0 0px 2px rgba(0,0,0,0.2);">
+      <div class="grid-container">
+        <%= render 'layouts/partners_navigation' %>
+      </div>
     </nav>
-
 
     <div id="header-mask">
       <div class="mask"></div>
@@ -45,13 +46,10 @@
         <%= render 'layouts/messages' %>
       </div>
 
-      <div class="front_end_body oldlayout">
-        <div class="container">
-          <%= yield %>
-        </div>
-      </div>
+      <%= yield %>
 
     </div>
+
     <%= javascript_include_tag "skrollr.min" %>
     <script type="text/javascript">
     var s = skrollr.init();

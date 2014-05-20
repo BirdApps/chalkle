@@ -15,6 +15,7 @@ class PartnersController < ApplicationController
 
   # GET /partners/team
   def team
+    @hero_text = "What does a renaissance of learning look like?"
     render 'team'
   end
 
