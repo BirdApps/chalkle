@@ -8,11 +8,6 @@ class PartnersController < ApplicationController
     render 'partners'
   end
 
-  # GET /partners/pricing
-  def pricing
-    render 'pricing'
-  end
-
   # GET /partners/team
   def team
     @hero_text = "What does a renaissance of learning look like?"
@@ -21,6 +16,7 @@ class PartnersController < ApplicationController
 
   # GET /partners/say_hello
   def say_hello
+    @hero_text = "Let's get connected. Say Hello!"
     render 'say_hello'
   end
 

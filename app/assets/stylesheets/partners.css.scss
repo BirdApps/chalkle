@@ -1,5 +1,5 @@
 
-  .partners-partners #header {
+  .partners-index #header {
     background-image: image-url('partners/index-hero.jpg');
   }
 
@@ -14,12 +14,14 @@
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: -1;
+  z-index: -1; 
   letter-spacing: 0.1em;
 
   background-repeat: none;
   background-size: cover;
   background-position: center center;
+
+  background-color: #ddf0dd;
   
   height:600px;
 
@@ -52,7 +54,7 @@ nav {
   a { color: black; }
 
   a:hover { 
-    background-color: green; 
+    background-color: #eee; 
     text-shadow: none;
     text-decoration: none;
     color: #000;
@@ -60,7 +62,7 @@ nav {
 
   text-shadow: 0 1px 1px #fff; 
   .action {
-    background: white;
+    background: #eee;
     color: #333 !important;
     text-shadow: 0 1px 1px #fff; 
   }

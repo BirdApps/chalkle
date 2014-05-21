@@ -1,0 +1,42 @@
+<section id="hello" class="grid-container"> 
+  <div class="grid-60 prefix-20">
+  <p>
+    In order to be as helpful as possible, we’d love to learn a little bit more about your organisation. Answer the questions below and we’ll be in touch directly with the next steps.
+  </p>
+  <p>
+  Or if you have a question, grab us directly here: <%= mail_to "hello@chalkle.com", 'hello@chalkle.com' %>.
+  </p>
+
+</section>
+
+<section class="grid-container" id="hello-form">
+
+  <div class="grid-60 prefix-20 grid-parent">
+    <%= bootstrap_form_for 'said_hello', url: 'partners/said_hello' do |f| %> 
+      
+      <div class="grid-100">
+        <h1>Contact Details</h1>
+
+        <%= f.text_field :name, label: "What is your name?" %> 
+        <%= f.text_field :organisation, label: "What is your organisation called?" %>
+        <%= f.text_field :location, label: "Where are you based?" %>
+        <%= f.text_field :contact_details, label: "What is the best way to contact you? Provide contact details." %>
+      </div>
+
+      <div class="grid-100">
+        <h1>How can we help?</h1>
+
+        <%= f.text_field :organisation_activity, label: "What does your organisation do? Or, if you are an independent teacher, what do you do?" %> 
+        <%= f.select, collection: [['yes', 'It is a core part of our product'], ['no', 'No, it is not a core part of our product']] %> 
+        <%= f.text_field :cost, label: "What do your classes cost?" %> 
+        <%= f.check_box :free_classes, label: "Are there free classes?" %>
+        <%= f.text_field :class_count, label: "How many classes do you think you would run per month?" %> 
+        <%= f.text_field :teachour_count, label: "How many teachers do you organise?" %> 
+
+        <%= f.submit label: "Say Hello" %> 
+      </div>
+
+    <% end %>
+  </div>
+
+</section>
