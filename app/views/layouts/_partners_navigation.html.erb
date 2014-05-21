@@ -1,4 +1,5 @@
-<div class="grid-10 prefix-60 mobile-grid-50"><%= link_to 'Partners', partners_path %></div>
-<div class="grid-10"><%= link_to 'Prices', partners_pricing_path %></div>
-<div class="grid-10"><%= link_to 'Team', partners_team_path %></div>
-<div class="grid-10"><%= link_to 'Say Hello', partners_say_hello_path, class: 'action' %></div>
+  <%= link_to 'Partners', partners_path
+   %>
+  <%= link_to 'Prices', partners_path("#prices") %>
+  <%= link_to 'Team', partners_team_path %>
+  <%= link_to 'Say Hello', partners_say_hello_path, class: 'action' %>
