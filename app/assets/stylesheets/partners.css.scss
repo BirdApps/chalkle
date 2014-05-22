@@ -166,7 +166,24 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   > * {
     width: 50%;
     float: left;
+    margin-top: 200px;
   }
+
+  .admin-image {
+    background-image: image-path('partners/admin-lappy@2x.png');
+    width: 80%;
+    margin-left: 10%;
+    margin-top: -200px;
+  }
+
+  .ipad-image {
+    background-image: image-path('partners/ipad-class@2x.png');
+    width: 30%;
+    margin-left: -5%;
+    margin-top: -50px;
+
+  }
+
 }
 
 #admin {
