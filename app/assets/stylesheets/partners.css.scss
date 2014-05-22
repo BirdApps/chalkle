@@ -1,13 +1,13 @@
 
+/*  PARTNERS INDEX  */
   .partners-index #header {
     background-image: image-url('partners/index-hero.jpg');
   }
 
+/*  TEAM PAGE HEADER */
   .partners-team #header {
     background-image: image-url('partners/team-hero.jpg');
   }
-
-
 
 #header{
 
@@ -169,26 +169,43 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     margin-top: 200px;
   }
 
-  .admin-image {
-    background-image: image-path('partners/admin-lappy@2x.png');
-    width: 80%;
-    margin-left: 10%;
-    margin-top: -200px;
-  }
-
-  .ipad-image {
-    background-image: image-path('partners/ipad-class@2x.png');
-    width: 30%;
-    margin-left: -5%;
-    margin-top: -50px;
-  }
-
-  .computer-games-image {
-    width: 60%;
-    margin-left: -10%;
+  h1 {
+    font-family: ProximaNova-Light;
+    font-size: 34px;
+    color: #FFFFFF;
+    line-height: 41px;
+    text-align: center;
+    margin: 20px 2em;
   }
 
 }
+
+.admin-image {
+  background-image: image-url('partners/admin-lappy@2x.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+
+
+  width: 80%;
+  margin-left: 10%;
+  margin-top: -200px;
+  height: 300px;
+}
+
+.ipad-image {
+  background-image: image-url('partners/ipad-class@2x.png');
+  width: 30%;
+  margin-left: -5%;
+  margin-top: -50px;
+}
+
+.computer-games-image {
+  background-image: image-url('partners/computer-games@2x.png');
+  width: 60%;
+  margin-left: -10%;
+}
+
 
 #admin {
   background-color: rgb(34,80,45);
@@ -214,7 +231,3 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 #vision {
   padding: 5em 0;
 }
-
-
-
-
