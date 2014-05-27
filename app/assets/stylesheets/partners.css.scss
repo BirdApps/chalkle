@@ -162,12 +162,6 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 }
 
 #software {
-  width: 100%;
-  > * {
-    width: 50%;
-    float: left;
-    margin-top: 200px;
-  }
 
   h1 {
     font-family: ProximaNova-Light;
@@ -178,34 +172,76 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     margin: 20px 2em;
   }
 
+  .platform-image-holder {
+    height: 400px;
+  }
+
 }
 
 .admin-image {
   background-image: image-url('partners/admin-lappy@2x.png');
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center center;
+  background-position: center bottom;
 
+  position: relative;
 
-  width: 80%;
-  margin-left: 10%;
-  margin-top: -200px;
-  height: 300px;
+  margin: 0 auto;
+  max-width: 500px;
+  height: 350px;
+  z-index: 5;
 }
 
 .ipad-image {
   background-image: image-url('partners/ipad-class@2x.png');
-  width: 30%;
-  margin-left: -5%;
-  margin-top: -50px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+
+  position: relative;
+
+  height: 170px;
+  max-width: 40%;
+  margin: -150px auto 0 0;
+  z-index: 4;
 }
 
 .computer-games-image {
   background-image: image-url('partners/computer-games@2x.png');
-  width: 60%;
-  margin-left: -10%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+
+  max-width: 400px;
+  height: 350px;
+  position: relative;
+  margin: 0 0 0 auto;
+  z-index: 3;
 }
 
+
+#admin, #platform {
+  padding-top: 120px;
+  margin-top: -120px;
+  z-index: 2;
+  position: relative;
+  height: 500px;
+
+  color: #fff;
+
+  li {
+    list-style: none;
+    padding: 0 5px; margin: 0 0 6px 0 ;
+  }
+
+  p { text-align: center; }
+
+  h2 { 
+    font-family: ProximaNova-Light;
+    font-size: 34px;
+    line-height: 41px;
+  }
+}
 
 #admin {
   background-color: rgb(34,80,45);
@@ -213,6 +249,151 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
 #platform {
   background-color: rgb(211,63,64);
+}
+
+
+#benefits {
+  h1 {
+    font-family: ProximaNova-Regular;
+    font-size: 38px;
+    color: #015B28;
+    line-height: 46px;
+    padding: 3em 0;
+    text-align: center;
+  }
+
+  .benefits {
+    padding: 2em 0 2em 120px;
+
+    background-repeat: no-repeat;
+    background-position: 20px; 
+
+    font-family: ProximaNova-Regular;
+    font-size: 17px;
+    color: #646661;
+    line-height: 20px;
+    letter-spacing: 0px;
+
+    
+  }
+
+  .benefits-right  { border-left: solid #DCDCDC 1px; }
+  .benefits-bottom {  border-top: solid #DCDCDC 1px; }
+
+  h2 {
+    font-family: ProximaNova-Semibold;
+    font-size: 20px;
+    color: #2D2D2C;
+    line-height: 34px;
+    letter-spacing: 0px;
+    margin: 0; 
+  }
+
+  .benefits-community { background-image: image-url('partners/community.png') }
+  .benefits-revenue   { background-image: image-url('partners/revenue.png')   }
+  .benefits-organise  { background-image: image-url('partners/organise.png')  }
+  .benefits-classes   { background-image: image-url('partners/classes.png')   }
+
+}
+
+#who, #plans-and-pricing {
+  h1 {
+    font-family: ProximaNova-Regular;
+    font-size: 38px;
+    color: #015B28;
+    line-height: 46px;
+    padding: 2em 0 1em 0;
+    text-align: center;
+  }
+  p {
+    font-family: ProximaNova-Regular;
+    font-size: 15px;
+    color: #666666;
+    line-height: 18px;
+  }
+
+}
+#who {
+  h2 {
+    text-align: center;
+    font-family: ProximaNova-Semibold;
+    font-size: 23px;
+    color: #E52541;
+    line-height: 28px;
+  }
+  h3 {
+    text-align: center;
+    font-family: ProximaNova-Semibold;
+    font-size: 19px;
+    color: #333333;
+    line-height: 23px;
+    letter-spacing: 0px;
+    border: none; text-decoration: none;
+  }
+}
+
+#plans-and-pricing {
+  h2 {
+    font-family: ProximaNova-Regular;
+    font-size: 20px;
+    color: #666666;
+    line-height: 24px;
+  }
+
+  h3 {
+    font-family: ProximaNova-Light;
+    font-size: 34px;
+    color: #FFFFFF;
+    line-height: 41px;
+    letter-spacing: 0px;
+  }
+
+  #community-plan {
+    background: #01653D;
+    border-radius: 3px;
+    
+    .price-circle {
+      border-radius: 300px;
+      background-color: #b2d0c4;
+      width: 205px;
+      height: 205px;
+      margin: 0 auto;
+
+      background-image: image-url('partners/chalkler-add.png');
+      background-repeat: no-repeat;
+      background-position: bottom center;
+
+      > * { text-align: center; margin-right: auto ; margin-left: auto; } 
+      
+      .price { 
+        padding-top: 25px;  
+        font-family: ProximaNova-Light;
+        font-size: 58px;
+        color: #015B28;
+      }
+
+      .per {
+        padding-top: 7px;
+        font-family: ProximaNova-Light;
+        font-size: 24px;
+        color: #015B28;
+      }
+      
+      .class {
+        padding-top: 7px;
+        font-family: ProximaNova-Light;
+        font-size: 18px;
+        color: #015B28;
+        border-bottom: 1px solid #01653D;
+      }
+    }
+  }
+
+  #enterprise-plan {
+    background: #E52541;
+    border-radius: 3px;
+  }
+
 }
 
 #keen {
@@ -223,6 +404,8 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
 }
+
+
 
 #core-team {
   background-color: #ddffdf;
