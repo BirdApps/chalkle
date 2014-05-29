@@ -332,7 +332,14 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 }
 
+.plans-and-pricing-wrapper {
+  background: #eee;
+  width: 100%;
+}
+
 #plans-and-pricing {
+
+
   h2 {
     font-family: ProximaNova-Regular;
     font-size: 20px;
@@ -346,11 +353,16 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     color: #FFFFFF;
     line-height: 41px;
     letter-spacing: 0px;
+    border: none; text-decoration: none;
+
   }
+  color: #fff;
+  text-align: center;
 
   #community-plan {
     background: #01653D;
-    border-radius: 3px;
+    border-radius: 5px;
+
     
     .price-circle {
       border-radius: 300px;
@@ -361,19 +373,20 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
       background-image: image-url('partners/chalkler-add.png');
       background-repeat: no-repeat;
-      background-position: bottom center;
+      background-position: center 155px;
 
       > * { text-align: center; margin-right: auto ; margin-left: auto; } 
       
       .price { 
-        padding-top: 25px;  
+        padding-top: 20px;
         font-family: ProximaNova-Light;
         font-size: 58px;
+        line-height: 58px;
         color: #015B28;
       }
 
       .per {
-        padding-top: 7px;
+        padding-top: 0px;
         font-family: ProximaNova-Light;
         font-size: 24px;
         color: #015B28;
@@ -385,23 +398,128 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
         font-size: 18px;
         color: #015B28;
         border-bottom: 1px solid #01653D;
+        width: 60%;
       }
-    }
+    } /* .price-circle */
+
   }
 
   #enterprise-plan {
     background: #E52541;
-    border-radius: 3px;
+    border-radius: 5px;
+
+    p {
+      font-family: ProximaNova-Regular;
+      font-size: 14px;
+      color: #F2F2F2;
+      line-height: 17px;
+      text-align: center;
+    }
+
+    .who-its-for {
+      background-image: image-url("partners/enterprise-computer.png");
+      background-repeat: no-repeat;
+      background-size: contain; 
+      background-position: center top; 
+
+      padding: 20px 55px 55px 55px;
+
+      min-height: 200px;
+      width: 100%;
+      text-align: center; 
+      
+      h4 {
+        font-family: ProximaNova-Light;
+        font-size: 24px;
+        color: #E52541;
+        line-height: 29px;
+        margin: 0.25em;
+      }
+
+      font-family: ProximaNova-Light;
+      font-size: 18px;
+      color: #E52541;
+      line-height: 23px;
+    
+    }
   }
+
+  .feature-url {
+    background: #B2D0C4;
+    border-radius: 3px; 
+    padding: 3px 5px 4px 5px;
+    color: #01653D;
+    .white { color: white; }
+  }
+
+  li {
+
+    list-style: none;
+    
+    background-image: image-url('partners/white-check.png');
+    background-size: 14px 11px;
+    background-position: left 2px;
+    background-repeat: no-repeat;
+
+    padding: 0 0 0 22px;
+
+    font-family: ProximaNova-Regular;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: 0px;
+  }
+
+  ul {
+    padding: 0; margin: 2em;
+  }
+
+
 
 }
 
 #keen {
-  background-color: rgb(34,80,45);
+  background-color: #eee;
+
+  text-align: center;
 
   h1 {
-    color: white;
+    font-family: ProximaNova-Semibold;
+    font-size: 32px;
+    color: #333131;
+    line-height: 38px;
+    em {
+    font-family: ProximaNova-light;
+
+    }
   }
+
+  .hello-button {
+    background: #E52541;
+    border-radius: 4px;
+    box-shadow: 0 4px 0 #911930;
+    padding: 15px 25px;
+    margin: 2em; 
+    font-family: ProximaNova-Semibold;
+    font-size: 32px;
+    color: #FFFFFF;
+    line-height: 38px;
+
+
+    transition-property: all;
+    transition-duration:0.2s;
+    transition-timing-function: ease-in-out;
+    transition-delay:0s;
+
+
+
+  }
+
+  .hello-button:hover {
+    box-shadow: 0 6px 0 #911930;
+    text-decoration: none;
+
+  }
+
 
 }
 

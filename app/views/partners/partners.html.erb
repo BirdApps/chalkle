@@ -112,106 +112,75 @@
   </div>
 </section>
 
-<section id="plans-and-pricing" class="grid-container">
+<div class="plans-and-pricing-wrapper">
+  <section id="plans-and-pricing" class="grid-container">
 
-  <h1 class="grid-100">Plans & Pricing</h1>
+    <h1 class="grid-100">Plans & Pricing</h1>
 
-  <h2>Our focus on providing accessible, diverse learning opportunities means we refuse to let cost be a barrier to organisations committed to delivering great classes.
-  </h2>
+    <h2 class="grid-80 prefix-10">Our focus on providing accessible, diverse learning opportunities means we refuse to let cost be a barrier to organisations committed to delivering great classes.
+    </h2>
 
-  <div class="grid-30 prefix-15 suffix-5" id="community-plan">
-    <h3>Community Platform</h3>
+    <div class="grid-30 prefix-15 suffix-5" id="community-plan">
+      <h3>Community Platform</h3>
 
-    <div class="price-circle">
-      <div class="price">$2</div>
-      <div class="per">per learner</div>
-      <div class="class">per class</div>
-    </div>
-  </div>
-
-  <div class="grid-30 suffix-15 prefix-5" id="enterprise-plan">
-    <h3>Enterprise Platform</h3>
-
-  </div>
-
-  <div class="standard-plan grid-parent">
-
-    <div class="banner">
-      3 month free trial
-    </div>
-
-    <div class="computer grid-33">
-      <span class="price">$40</span>
-      <span class="per">PER MONTH</span>
-      <span class="normal">standard subscription</span>
-    </div>
-  
-    <div class="circle grid-33">
-      <span class="price">
-        $2
-      </span>
-      
-      <span class="per">
-        PER LEARNER success fee
-      </span>
-    </div>
-
-    <div class="list grid-33">
-      <ul>
-        <li>Your own branded channel </li>
-        <li>yourchannel.chalkle.com</li>
-        <li>Up to 3 Admin Logins</li>
-        <li>Manage up to 10 teachers</li>
-        <li>Manage up to 50 classes per month </li>
-        <li>Full control of class pricing</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="grid-60 prefix-20">
-    <div class="grid-20">
-      <h3>What about free classes?<br />
-      Volunteer Organisations?</h3>
-    </div>
-
-    <div class="grid-80">
-      <strong>We refuse to let cost be a barrier.</strong> If you are a volunteer organisation or running free classes, get in touch and we can work something out.
-    </div>
-  </div>
-
-  <h2>Libraries and Enterprise Plan</h2>
-
-  <div class="grid-60 prefix-20 grid-parent">
-
-    <div class="grid-50">
-      We can tailor a support and software package to best suit your needs.
-
-      <div class="">
-        <%= link_to "Say hello", partners_say_hello_path %>
-        to get started
+      <div class="price-circle">
+        <div class="price">$2</div>
+        <div class="per">per learner</div>
+        <div class="class">per class</div>
       </div>
 
-    </div>
-
-    <div class="grid-50">
       <ul>
-        <li>Setup, training & launch packages</li>
-        <li>Unlimited admin logins and support</li>
-        <li>Manage unlimited teachers & classes</li>
-        <li>Priority support from Chalkle’s team</li>
+        <li>
+          Launch your own branded channel<br />
+          <span class="feature-url">
+          <%= image_tag asset_path("partners/globe.png"), width: 14, height: 14 %> 
+          yourchannel.<span class="white">chalkle.com</span></span>
+        </li>
+        <li>
+          Manage up to 20 teachers and 100 classes per month 
+        </li>
+        <li>
+          No Subscription Fees
+        </li>
+        <li>
+          Full control of class pricing
+        </li>
+        <li>
+          Up to 2 free classes per month
+        </li>
       </ul>
+
     </div>
 
-  </div>
+    <div class="grid-30 suffix-15 prefix-5" id="enterprise-plan">
+      <h3>Enterprise Platform</h3>
+      <p>We can tailor software and support packages for you.</p>
     
+      <div class="who-its-for">
+        <h4>Perfect For</h4>
+        Libraries, local councils, and Adult Community Education providers!
+      </div>
 
-</section>
+      <ul>
+        <li>Full use of community platform features</li>
+        <li>Priority support and feature requests*</li>
+        <li>Manage unlimited: <br />
+          Teachers, Admins Free classes</li>
+        <li>Setup, training & launch packages</li>
+        <li>Design & promotional services</li>
+      </ul>
+      <small>*all enterprise customers receive priority support and feature requests. Chalkle will filter feedback and requests into our product development cycles.</small>
+    </div>
 
+  </section>
+</div>
 
 <section id="keen">
 
   <div class="grid-container">
-    <h1>Keen to learn more or join us? <em>Let's chat</em>. <%= link_to "Say Hello", partners_say_hello_path, class: 'hello-button'  %>.</h1>
+    <h1>Keen to learn more or join us? <em>Let's chat</em>.</h1>
+     <%= link_to "Say Hello", partners_say_hello_path, class: 'hello-button'  %>.
+
   </div>
 
 </section>
