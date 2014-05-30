@@ -133,8 +133,9 @@ nav {
   section {
     clear: both;
   }
-
 }
+
+
 
 /*
 THIS IS FOR ALL THE SECTIONS OUT THERE 
@@ -201,8 +202,8 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   position: relative;
 
   height: 170px;
-  max-width: 40%;
-  margin: -150px auto 0 0;
+  max-width: 50%;
+  margin: -150px auto 0 -50px;
   z-index: 4;
 }
 
@@ -212,15 +213,16 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   background-size: contain;
   background-position: center center;
 
-  max-width: 400px;
-  height: 350px;
+  max-width: 500px;
+  height: 400px;
   position: relative;
-  margin: 0 0 0 auto;
+  margin: -10px 0 0 auto;
   z-index: 3;
 }
 
 
 #admin, #platform {
+
   padding-top: 120px;
   margin-top: -120px;
   z-index: 2;
@@ -245,10 +247,12 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
 #admin {
   background-color: rgb(34,80,45);
+  border-radius: 7px 0 0 7px;
 }
 
 #platform {
-  background-color: rgb(211,63,64);
+  background-color: rgb(229, 37, 65);
+  border-radius: 0 7px 7px 0;
 }
 
 
@@ -258,7 +262,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     font-size: 38px;
     color: #015B28;
     line-height: 46px;
-    padding: 3em 0;
+    padding: 2em 0;
     text-align: center;
   }
 
@@ -268,13 +272,10 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     background-repeat: no-repeat;
     background-position: 20px; 
 
-    font-family: ProximaNova-Regular;
     font-size: 17px;
     color: #646661;
     line-height: 20px;
-    letter-spacing: 0px;
-
-    
+    letter-spacing: 0px;    
   }
 
   .benefits-right  { border-left: solid #DCDCDC 1px; }
@@ -314,6 +315,15 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
 }
 #who {
+
+  .who h1 { 
+    display: block;
+    position: relative;
+    height: 125px;
+    padding: 1em 0 0 0;
+    vertical-align: bottom;
+  }
+  
   h2 {
     text-align: center;
     font-family: ProximaNova-Semibold;
@@ -321,6 +331,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     color: #E52541;
     line-height: 28px;
   }
+  
   h3 {
     text-align: center;
     font-family: ProximaNova-Semibold;
@@ -330,6 +341,20 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     letter-spacing: 0px;
     border: none; text-decoration: none;
   }
+
+  .teacher-hero, .community-hero, .business-hero, .library-hero {
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width:100%;
+    height: 238px;
+  }
+
+  .teacher-hero { background-image: image-url("partners/teacher.png"); }
+  .community-hero { background-image: image-url("partners/community-garden.png"); }
+  .business-hero { background-image: image-url("partners/business.png"); }
+  .library-hero { background-image: image-url("partners/library.png"); }
+
 }
 
 .plans-and-pricing-wrapper {
@@ -358,6 +383,10 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
   color: #fff;
   text-align: center;
+
+  #community-plan, #enterprise-plan { min-height: 635px; margin-bottom: 1em; }
+
+  #community-plan:hover { background: #009258; }
 
   #community-plan {
     background: #01653D;
@@ -405,6 +434,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   #enterprise-plan {
+    
     background: #E52541;
     border-radius: 5px;
 
@@ -444,13 +474,6 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     }
   }
 
-  .feature-url {
-    background: #B2D0C4;
-    border-radius: 3px; 
-    padding: 3px 5px 4px 5px;
-    color: #01653D;
-    .white { color: white; }
-  }
 
   li {
 
@@ -483,6 +506,9 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   text-align: center;
 
   h1 {
+
+    margin: 2em auto;
+
     font-family: ProximaNova-Semibold;
     font-size: 32px;
     color: #333131;
@@ -494,41 +520,152 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   .hello-button {
+
+    display: block;
     background: #E52541;
     border-radius: 4px;
     box-shadow: 0 4px 0 #911930;
     padding: 15px 25px;
-    margin: 2em; 
+
     font-family: ProximaNova-Semibold;
     font-size: 32px;
     color: #FFFFFF;
     line-height: 38px;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.3);
 
+
+    width: 300px;
+    margin: 2em auto;
 
     transition-property: all;
     transition-duration:0.2s;
     transition-timing-function: ease-in-out;
     transition-delay:0s;
-
-
-
   }
 
   .hello-button:hover {
+    -webkit-transform: translate(0,-3px);
+    -moz-transform:    translate(0,-3px);
+    -ms-transform:     translate(0,-3px);
+    transform:         translate(0,-3px);
+    background: #FE2646;
     box-shadow: 0 6px 0 #911930;
     text-decoration: none;
 
   }
-
-
 }
 
+#faq {
 
+  div { padding: 1em 0; }
+
+  h1 {
+    font-family: ProximaNova-Regular;
+    font-size: 38px;
+    color: #015B28;
+    line-height: 46px;
+    padding: 2em 0;
+    text-align: center;
+  }
+
+  strong {
+    font-family: ProximaNova-Semibold;
+    font-size: 17px;
+    color: #000000;
+    line-height: 24px;
+    padding: 0 1em;
+  }
+
+  p {
+    font-family: ProximaNova-Regular;
+    font-size: 17px;
+    color: #939393;
+    line-height: 24px;
+    letter-spacing: 0px;
+    padding: 0 1em;
+  }
+}
+
+.core-team-wrapper {
+  background: #F2F2F2;
+}
 
 #core-team {
-  background-color: #ddffdf;
+
+  padding: 1em 0;
+    
+  h1 {
+    text-align: center;
+    font-family: ProximaNova-Regular;
+    font-size: 38px;
+    color: #015B28;
+    line-height: 46px;
+    margin: 1em 0;
+  }
+
+  h2 {
+    font-family: ProximaNova-Semibold;
+    font-size: 27px;
+    color: #015B28;
+    line-height: 32px;
+    letter-spacing: 0px;
+    margin: 0;
+  }
+
+  p.sub {
+    text-align: center;
+    margin: 2em 0;
+    font-family: ProximaNova-Regular;
+    font-size: 20px;
+    color: #666666;
+    line-height: 24px;
+  }
+
+  sub {
+    margin-bottom: 1em;
+  }
+
+  p {
+    font-family: ProximaNova-Regular;
+    font-size: 15px;
+    color: #666666;
+    line-height: 18px;
+    margin: 1em 0 ;
+  }
 }
 
 #vision {
   padding: 5em 0;
+
+  h1 {
+    font-family: ProximaNova-Regular;
+    font-size: 38px;
+    color: #015B28;
+    line-height: 46px;
+    padding: 2em 0;
+    text-align: center;
+  }
+
 }
+
+.feature-url, .right-hand-equation {
+  background: #B2D0C4;
+  border-radius: 3px; 
+  padding: 5px 5px 4px 5px;
+  color: #01653D;
+  line-height: 34px;
+  text-align: center;
+  .white, &.white { color: white; }
+}
+
+.left-hand-equation {
+  background: #E52541;
+  border-radius: 3px; 
+  padding: 5px 5px 4px 5px;
+  color: #01653D;
+  line-height: 34px;
+  text-align: center;
+  .white, &.white { color: white; }
+
+}
+
