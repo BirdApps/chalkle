@@ -622,15 +622,51 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   sub {
-    margin-bottom: 1em;
+    margin: 1em 0;
+    font-family: ProximaNova-Regular;
+    font-size: 14px;
+    color: #333;
+    line-height: 17px;
+    letter-spacing: 0px;
   }
 
   p {
     font-family: ProximaNova-Regular;
     font-size: 15px;
     color: #666666;
-    line-height: 18px;
+    line-height: 22px;
     margin: 1em 0 ;
+  }
+
+  .founder-padding {
+    padding: 1em 3em;
+  }
+
+  .rounded {
+    border-radius: 500px;
+    max-width: 500px;
+    margin: 2em auto;
+    width: 75%;
+  }
+
+}
+
+#values {
+  h1 { 
+    text-align: center;
+    font-family: ProximaNova-Regular;
+    font-size: 38px;
+    color: #015B28;
+    line-height: 46px;
+    margin: 3em 0 1em 0;
+  }
+
+  h2 {
+    font-family: ProximaNova-Semibold;
+    font-size: 25px;
+    color: #D4145A;
+    line-height: 30px;
+    margin: 1em 0 0 0;
   }
 }
 
@@ -645,7 +681,29 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     padding: 2em 0;
     text-align: center;
   }
+}
 
+#enspiral {
+  padding: 2em 0 ;
+  .enspiral-wrapper {
+    border-radius: 4px;
+    border: 1px solid #333;
+
+    > * {
+      padding: 22px;
+    }
+    > .clear { padding: 0; }
+
+    img { 
+      display: block;
+      max-width: 120px;
+      max-height: 70px;
+      width: auto;
+      height: auto;
+      margin: auto;
+    }
+
+  }
 }
 
 .feature-url, .right-hand-equation {
