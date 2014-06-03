@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140429235339) do
+ActiveRecord::Schema.define(:version => 20140521000556) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -148,9 +148,9 @@ ActiveRecord::Schema.define(:version => 20140429235339) do
     t.datetime "created_at",                                                             :null => false
     t.datetime "updated_at",                                                             :null => false
     t.string   "url_name"
+    t.string   "email"
     t.decimal  "channel_rate_override", :precision => 8, :scale => 4
     t.decimal  "teacher_percentage",    :precision => 8, :scale => 4, :default => 0.75
-    t.string   "email"
     t.string   "account"
     t.boolean  "visible",                                             :default => false
     t.text     "description"
@@ -289,6 +289,16 @@ ActiveRecord::Schema.define(:version => 20140429235339) do
   add_index "omniauth_identities", ["email"], :name => "index_omniauth_identities_on_email"
   add_index "omniauth_identities", ["provider", "uid"], :name => "index_omniauth_identities_on_provider_and_uid"
   add_index "omniauth_identities", ["user_id"], :name => "index_omniauth_identities_on_user_id"
+
+  create_table "partner_inquiries", :force => true do |t|
+    t.string   "name"
+    t.string   "organisation"
+    t.string   "location"
+    t.string   "contact_details"
+    t.text     "comment"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "payments", :force => true do |t|
     t.integer  "booking_id"
