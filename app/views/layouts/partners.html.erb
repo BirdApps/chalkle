@@ -9,13 +9,8 @@
     <%= csrf_meta_tag %>
 
     <%= stylesheet_link_tag "application", media: "all" %>
-    <%= stylesheet_link_tag "unsemantic/unsemantic-grid-base" %>
-    <%= stylesheet_link_tag "unsemantic/unsemantic-grid-responsive" %>
 
     <%= javascript_include_tag "application" %>
-    <%= javascript_include_tag "partners" %>
-
-    <%= javascript_include_tag "adapt.min" %>
 
     <script type="text/javascript" src="//use.typekit.net/hlu7uvf.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -58,10 +53,8 @@
       <%= yield %>
 
     </div>
-
-    <%= javascript_include_tag "skrollr.min" %>
     <script type="text/javascript">
-    var s = skrollr.init({ forceHeight: false });
+      var s = skrollr.init({ forceHeight: false });
     </script>
 
 

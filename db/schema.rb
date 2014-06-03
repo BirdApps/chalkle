@@ -148,9 +148,9 @@ ActiveRecord::Schema.define(:version => 20140521000556) do
     t.datetime "created_at",                                                             :null => false
     t.datetime "updated_at",                                                             :null => false
     t.string   "url_name"
-    t.string   "email"
     t.decimal  "channel_rate_override", :precision => 8, :scale => 4
     t.decimal  "teacher_percentage",    :precision => 8, :scale => 4, :default => 0.75
+    t.string   "email"
     t.string   "account"
     t.boolean  "visible",                                             :default => false
     t.text     "description"
