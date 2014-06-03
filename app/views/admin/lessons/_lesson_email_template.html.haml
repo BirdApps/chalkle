@@ -26,17 +26,20 @@ Hi #{teachers},
 
 %hr
 
--if price > 0
   %p Hi
   %p Thank you for signing up to the upcoming chalkle&deg class, #{title}. Here are the details of your class:
   %p
-    Time: <b> #{start_time.strftime("%l:%M %p %A %d %B")} </b>
+    Time: <b> #{ start_time.strftime("%l:%M %p %A %d %B") if start_time} </b>
     %br/
     Location: <b> #{venue} </b>
     %br/
     Teacher: <b> #{teachers} </b>
     %br/
-    Price: <b> #{number_to_currency price} per person</b>, please pay before the class at Te Takere service desk or by bank transfer using these details:
+-if price == 0
+  Price: <b> Free</b>
+
+-if price > 0
+  Price: <b> #{number_to_currency price} per person</b>, please pay before the class at Te Takere service desk or by bank transfer using these details:
 
   %p
     Account number: 38-9012-0815531-04
@@ -45,9 +48,9 @@ Hi #{teachers},
     %br/
     Reference number: #{reference} - Your name
 
-  %p You can view further details about this class, and sign up for more chalkle&deg classes by visiting chalkle's #{link_to 'Horowhenua website',"http://chalkle.com/channels/3"}.
-  %p Thank you for supporting chalkle&deg and we look forward to seeing you soon!
-  %p Chalkle&deg
+%p You can view further details about this class, and sign up for more chalkle&deg classes by visiting chalkle's #{link_to 'Horowhenua website',"http://chalkle.com/channels/3"}.
+%p Thank you for supporting chalkle&deg and we look forward to seeing you soon!
+%p Chalkle&deg
 
 %hr
 
