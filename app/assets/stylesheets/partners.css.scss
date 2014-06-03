@@ -27,7 +27,7 @@
   background-color: #E52541;
   padding: 1em;
   color: #fff;
-  font-family: ProximaNova-Light;
+  font-weight: 200;
   font-size: 49px;
 }
 
@@ -35,7 +35,7 @@
   .error {
     padding: 0em;
     color: #E52541;
-    font-family: ProximaNova-Light;
+    font-weight: 200;
     font-size: 18px;
   }
 }
@@ -64,13 +64,13 @@
   background-size: cover;
   background-position: center center;
 
-  background-color: #ddf0dd;
+  background-color: #999;
   
   height:600px;
 
   h1 {
 
-    font-family: ProximaNova-Light;
+    font-weight: 400;
     font-size: 49px;
     color: #FFFFFF;
     line-height: 60px;
@@ -78,7 +78,7 @@
 
     text-align: center; 
     margin-top: 350px;
-    text-shadow: 0 2px 2px #000;
+    text-shadow: 0 3px 5px #000;
     padding: 0 50px;
   }
 }
@@ -112,7 +112,7 @@ nav {
     transition-timing-function: ease-in-out;
     transition-delay:0s;
 
-    font-family: ProximaNova-Semibold;
+    font-weight: 600;
     font-size: 18px;
 
     color: #ffffff;
@@ -198,7 +198,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   line-height: 24px;
 
   h2 {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 38px;
     color: #015B28;
   }
@@ -208,7 +208,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 #software {
 
   h1 {
-    font-family: ProximaNova-Light;
+    font-weight: 200;
     font-size: 34px;
     color: #FFFFFF;
     line-height: 41px;
@@ -282,7 +282,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   p { text-align: center; }
 
   h2 { 
-    font-family: ProximaNova-Light;
+    font-weight: 200;
     font-size: 34px;
     line-height: 41px;
   }
@@ -301,7 +301,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
 #benefits {
   h1 {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 38px;
     color: #015B28;
     line-height: 46px;
@@ -325,8 +325,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   .benefits-bottom {  border-top: solid #DCDCDC 1px; }
 
   h2 {
-    font-family: ProximaNova-Semibold;
-    font-size: 20px;
+    font-weight: 600;    font-size: 20px;
     color: #2D2D2C;
     line-height: 34px;
     letter-spacing: 0px;
@@ -342,7 +341,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
 #who, #plans-and-pricing {
   h1 {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 38px;
     color: #015B28;
     line-height: 46px;
@@ -350,7 +349,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     text-align: center;
   }
   p {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 15px;
     color: #666666;
     line-height: 18px;
@@ -369,16 +368,14 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   
   h2 {
     text-align: center;
-    font-family: ProximaNova-Semibold;
-    font-size: 23px;
+    font-weight: 600;    font-size: 23px;
     color: #E52541;
     line-height: 28px;
   }
   
   h3 {
     text-align: center;
-    font-family: ProximaNova-Semibold;
-    font-size: 19px;
+    font-weight: 600;    font-size: 19px;
     color: #333333;
     line-height: 23px;
     letter-spacing: 0px;
@@ -409,14 +406,14 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
 
   h2 {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 20px;
     color: #666666;
     line-height: 24px;
   }
 
   h3 {
-    font-family: ProximaNova-Light;
+    font-weight: 200;
     font-size: 34px;
     color: #FFFFFF;
     line-height: 41px;
@@ -451,7 +448,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
       
       .price { 
         padding-top: 20px;
-        font-family: ProximaNova-Light;
+        font-weight: 200;
         font-size: 58px;
         line-height: 58px;
         color: #015B28;
@@ -459,14 +456,14 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
       .per {
         padding-top: 0px;
-        font-family: ProximaNova-Light;
+        font-weight: 200;
         font-size: 24px;
         color: #015B28;
       }
       
       .class {
         padding-top: 7px;
-        font-family: ProximaNova-Light;
+        font-weight: 200;
         font-size: 18px;
         color: #015B28;
         border-bottom: 1px solid #01653D;
@@ -482,7 +479,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     border-radius: 5px;
 
     p {
-      font-family: ProximaNova-Regular;
+      font-weight: 500;
       font-size: 14px;
       color: #F2F2F2;
       line-height: 17px;
@@ -502,14 +499,14 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
       text-align: center; 
       
       h4 {
-        font-family: ProximaNova-Light;
+        font-weight: 200;
         font-size: 24px;
         color: #E52541;
         line-height: 29px;
         margin: 0.25em;
       }
 
-      font-family: ProximaNova-Light;
+      font-weight: 200;
       font-size: 18px;
       color: #E52541;
       line-height: 23px;
@@ -529,7 +526,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
     padding: 0 0 0 22px;
 
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 16px;
     line-height: 19px;
     letter-spacing: 0px;
@@ -552,12 +549,11 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
     margin: 2em auto;
 
-    font-family: ProximaNova-Semibold;
-    font-size: 32px;
+    font-weight: 600;    font-size: 32px;
     color: #333131;
     line-height: 38px;
     em {
-    font-family: ProximaNova-light;
+    font-weight: 200;
 
     }
   }
@@ -569,7 +565,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   div { padding: 1em 0; }
 
   h1 {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 38px;
     color: #015B28;
     line-height: 46px;
@@ -578,15 +574,14 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   strong {
-    font-family: ProximaNova-Semibold;
-    font-size: 17px;
+    font-weight: 600;    font-size: 17px;
     color: #000000;
     line-height: 24px;
     padding: 0 1em;
   }
 
   p {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 17px;
     color: #939393;
     line-height: 24px;
@@ -605,7 +600,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     
   h1 {
     text-align: center;
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 38px;
     color: #015B28;
     line-height: 46px;
@@ -613,8 +608,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   h2 {
-    font-family: ProximaNova-Semibold;
-    font-size: 27px;
+    font-weight: 600;    font-size: 27px;
     color: #015B28;
     line-height: 32px;
     letter-spacing: 0px;
@@ -624,7 +618,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   p.sub {
     text-align: center;
     margin: 2em 0;
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 20px;
     color: #666666;
     line-height: 24px;
@@ -632,7 +626,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
   sub {
     margin: 1em 0;
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 14px;
     color: #333;
     line-height: 17px;
@@ -640,7 +634,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   p {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 15px;
     color: #666666;
     line-height: 22px;
@@ -663,7 +657,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 #values {
   h1 { 
     text-align: center;
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 38px;
     color: #015B28;
     line-height: 46px;
@@ -671,8 +665,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   h2 {
-    font-family: ProximaNova-Semibold;
-    font-size: 25px;
+    font-weight: 600;    font-size: 25px;
     color: #D4145A;
     line-height: 30px;
     margin: 1em 0 0 0;
@@ -683,7 +676,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   padding: 5em 0;
 
   h1 {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 38px;
     color: #015B28;
     line-height: 46px;
@@ -721,7 +714,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
 #hello-form {
   h1 {
-    font-family: ProximaNova-Regular;
+    font-weight: 500;
     font-size: 38px;
     color: #015B28;
     line-height: 46px;
@@ -742,7 +735,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
     label {
       padding-top: 0.5em;
-      font-family: ProximaNova-Regular;
+      font-weight: 500;
       font-size: 21px;
       color: #666666;
       line-height: 25px;
@@ -787,8 +780,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   padding: 15px 25px;
   border: none;
 
-  font-family: ProximaNova-Semibold;
-  font-size: 32px;
+  font-weight: 600;  font-size: 32px;
   color: #FFFFFF;
   line-height: 38px;
   text-shadow: 0 -1px 1px rgba(0,0,0,0.3);
