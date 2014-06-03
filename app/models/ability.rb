@@ -17,6 +17,7 @@ class Ability
       can :manage, LessonSuggestion
       can :manage, EventLog
       can :manage, Region
+      can :manage, PartnerInquiry
 
     when "channel admin"
       can :read, Channel, :id => user.channel_ids
@@ -34,6 +35,7 @@ class Ability
       cannot [:read, :update, :destroy], [Payment, Category, AdminUser]
       cannot [:update, :destroy], [AdminUser, Channel]
       cannot :destroy, LessonImage
+      cannot :manage, PartnerInquiry
     end
   end
 end
