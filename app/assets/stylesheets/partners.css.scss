@@ -1,13 +1,56 @@
 
-/*  PARTNERS INDEX  */
-  .partners-index #header {
-    background-image: image-url('partners/index-hero.jpg');
-  }
+/*  PARTNERS   */
+.partners-index #header {
+  background-image: image-url('partners/index-hero.jpg');
+}
+.partners-index #footer {
+  background-image: image-url('partners/index-bottom.jpg');
+}
 
-/*  TEAM PAGE HEADER */
-  .partners-team #header {
-    background-image: image-url('partners/team-hero.jpg');
+/*  TEAM PAGE  */
+.partners-team #header {
+  background-image: image-url('partners/team-hero.jpg');
+}
+.partners-team #footer {
+  background-image: image-url('partners/team-bottom.jpg');
+}
+
+/*  SAY HI PAGE  */
+.partners-say_hello #header, .partners-said_hello #header  {
+  background-image: image-url('partners/say-hello-hero.jpg');
+}
+.partners-say_hello #footer, .partners-said_hello #footer {
+  background-image: image-url('partners/say-hello-bottom.jpg');
+}
+
+#flash_messages div {
+  background-color: #E52541;
+  padding: 1em;
+  color: #fff;
+  font-family: ProximaNova-Light;
+  font-size: 49px;
+}
+
+.errors {
+  .error {
+    padding: 0em;
+    color: #E52541;
+    font-family: ProximaNova-Light;
+    font-size: 18px;
   }
+}
+
+#footer {
+  bottom: 0;
+  width: 100%;
+  z-index: -2; 
+
+  background-repeat: none;
+  background-size: cover;
+  background-position: top center;
+  background-color: #ddf0dd;
+  height:600px;
+}
 
 #header{
 
@@ -76,7 +119,7 @@ nav {
   }
 
   a:hover { 
-    background-color: #E52541; 
+    background-color: #fff; 
     text-shadow: none;
     text-decoration: none;
     color: #333;
@@ -519,40 +562,6 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     }
   }
 
-  .hello-button {
-
-    display: block;
-    background: #E52541;
-    border-radius: 4px;
-    box-shadow: 0 4px 0 #911930;
-    padding: 15px 25px;
-
-    font-family: ProximaNova-Semibold;
-    font-size: 32px;
-    color: #FFFFFF;
-    line-height: 38px;
-    text-shadow: 0 -1px 1px rgba(0,0,0,0.3);
-
-
-    width: 300px;
-    margin: 2em auto;
-
-    transition-property: all;
-    transition-duration:0.2s;
-    transition-timing-function: ease-in-out;
-    transition-delay:0s;
-  }
-
-  .hello-button:hover {
-    -webkit-transform: translate(0,-3px);
-    -moz-transform:    translate(0,-3px);
-    -ms-transform:     translate(0,-3px);
-    transform:         translate(0,-3px);
-    background: #FE2646;
-    box-shadow: 0 6px 0 #911930;
-    text-decoration: none;
-
-  }
 }
 
 #faq {
@@ -700,10 +709,51 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
       max-height: 70px;
       width: auto;
       height: auto;
-      margin: auto;
+      margin: auto; 
+    }
+  }
+}
+
+#hello {
+  padding: 3em 0;
+
+}
+
+#hello-form {
+  h1 {
+    font-family: ProximaNova-Regular;
+    font-size: 38px;
+    color: #015B28;
+    line-height: 46px;
+    letter-spacing: 0px;
+    text-align: center;
+  }
+  .form-item {
+    padding: 2em 0;
+    input, textarea {
+      background-color: #fff;
+      border: #888 solid 1px;
+      border-radius: 4px;
+      padding: 0.5em;
+    }
+    input:focus {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
+    label {
+      padding-top: 0.5em;
+      font-family: ProximaNova-Regular;
+      font-size: 21px;
+      color: #666666;
+      line-height: 25px;
+      letter-spacing: 0px;
+    }
   }
+
+  .submit-wrapper {
+    padding: 1em;
+  }
+
 }
 
 .feature-url, .right-hand-equation {
@@ -725,5 +775,41 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   text-align: center;
   .white, &.white { color: white; }
 
+}
+
+
+.hello-button {
+
+  display: block;
+  background: #E52541;
+  border-radius: 4px;
+  box-shadow: 0 4px 0 #911930;
+  padding: 15px 25px;
+  border: none;
+
+  font-family: ProximaNova-Semibold;
+  font-size: 32px;
+  color: #FFFFFF;
+  line-height: 38px;
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.3);
+
+
+  width: 300px;
+  margin: 2em auto;
+
+  transition-property: all;
+  transition-duration:0.2s;
+  transition-timing-function: ease-in-out;
+  transition-delay:0s;
+
+  &:hover {
+    -webkit-transform: translate(0,-3px);
+    -moz-transform:    translate(0,-3px);
+    -ms-transform:     translate(0,-3px);
+    transform:         translate(0,-3px);
+    background: #FE2646;
+    box-shadow: 0 6px 0 #911930;
+    text-decoration: none;
+  }
 }
 

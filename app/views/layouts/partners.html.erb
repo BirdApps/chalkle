@@ -61,8 +61,11 @@
 
     <%= javascript_include_tag "skrollr.min" %>
     <script type="text/javascript">
-    var s = skrollr.init();
+    var s = skrollr.init({ forceHeight: false });
     </script>
+
+
+    <footer id="footer" class=""></footer>
 
   </body>
 </html>

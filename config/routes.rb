@@ -101,6 +101,6 @@ Chalkle::Application.routes.draw do
   get '/partners/pricing' => 'partners#pricing'
   get '/partners/team' => 'partners#team'
   get '/partners/say_hello' => 'partners#say_hello'
-  post '/partners/said_hello' => 'partners#said_hello'
+  post '/partners/said_hello', as: 'said_hello', controller: 'partners'
 
 end
