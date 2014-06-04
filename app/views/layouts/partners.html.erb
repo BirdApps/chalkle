@@ -29,12 +29,10 @@
       data-300="padding: 20px 0;
       background-color: rgba(30,30,30,0); box-shadow: 0 3px 5px rgba(0,0,0,0.0);"
       data-550="padding: 10px 0;
-      background-color: rgba(80, 80,80,0.94); box-shadow: 0 0px 2px rgba(0,0,0,0.2);"
-
-    >
+      background-color: rgba(80, 80,80,0.94); box-shadow: 0 0px 2px rgba(0,0,0,0.2);">
       <div class="grid-container" >
       <div class="grid-20 logo-container">
-        <%= image_tag( asset_path('partners/chalkle@2x.png'), width: 153, height: 38 ) %>
+        <%= link_to image_tag( asset_path('partners/chalkle@2x.png'), width: 153, height: 38 ), :root %>
       </div>
       <div  class="grid-80">
         <%= render 'layouts/partners_navigation' %>
