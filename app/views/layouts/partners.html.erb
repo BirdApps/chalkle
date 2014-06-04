@@ -2,6 +2,9 @@
   <head>
     <%= analytics_init if Rails.env.production? %>
     <meta charset='utf-8' />
+
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
     <title>
       <%= content_for?(:title) ? yield(:title) : 'chalkle°' %>
     </title>
@@ -17,8 +20,10 @@
   </head>
 
   <body class="<%= body_class %> tk-proxima-nova">
+
+
     <header id="header" class="" data-0="margin-top:0;  opacity: 1.0" data-500=" margin-top:-350px; opacity: 0;">
-      <h1 class="tk-proxima-nova" data-0="margin-top: 350px;" data-500="margin-top: 480px;"><%=h @hero_text %></h1>
+      <h1 class="tk-proxima-nova" data-0="margin-top: 300px;" data-500="margin-top: 430px;"><%=h @hero_text %></h1>
     </header>
     <nav class=""  
       data-300="padding: 20px 0;
@@ -27,7 +32,7 @@
       background-color: rgba(80, 80,80,0.94); box-shadow: 0 0px 2px rgba(0,0,0,0.2);"
 
     >
-      <div class="grid-container">
+      <div class="grid-container" >
       <div class="grid-20 logo-container">
         <%= image_tag( asset_path('partners/chalkle@2x.png'), width: 153, height: 38 ) %>
       </div>
@@ -37,28 +42,32 @@
       </div>
     </nav>
 
-    <div id="header-mask">
-      <div class="mask"></div>
-      <div class="arrows-mask-left"></div>
-      <div class="arrows-mask-right"></div>
-      <div class="mask"></div>
-    </div>
+    <div id="skrollr-body">
 
-    <div id="main">
-
-      <div class="container">
-        <%= render 'layouts/messages' %>
+      <div id="header-mask">
+        <div class="mask"></div>
+        <div class="arrows-mask-left"></div>
+        <div class="arrows-mask-right"></div>
+        <div class="mask"></div>
       </div>
 
-      <%= yield %>
+      <div id="main">
 
-    </div>
+        <div class="container">
+          <%= render 'layouts/messages' %>
+        </div>
+
+        <%= yield %>
+
+      </div>
+
+      <footer id="footer" class=""></footer>
+
+    </div> <!-- skrollr-body -->
+
     <script type="text/javascript">
       var s = skrollr.init({ forceHeight: false });
     </script>
-
-
-    <footer id="footer" class=""></footer>
 
   </body>
 </html>
