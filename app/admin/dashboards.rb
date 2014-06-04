@@ -12,6 +12,17 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
       column do
 
+        if current_admin_user.role=="super"
+          panel "Partner Inquiries" do
+            table_for PartnerInquiry.accessible_by(current_ability).order("created_at asc").where( 'created_at > ?', Date.today-1.week ) do
+              column("Name") { |partner_inquiry| link_to(partner_inquiry.name, admin_partner_inquiry_path(partner_inquiry)) }
+              column("Inquiry Date") { |partner_inquiry| partner_inquiry.created_at.to_formatted_s(:long) }
+              column("Contact Details") { |partner_inquiry| partner_inquiry.contact_details }
+            end
+          end
+
+        end
+
         panel "Unreviewed classes" do
           render partial: "/admin/dashboard/lesson_panel", locals: {lessons: Lesson.accessible_by(current_ability).visible.unreviewed.order("updated_at asc")}
         end
@@ -53,16 +64,6 @@ ActiveAdmin.register_page "Dashboard" do
 
         end
 
-        if current_admin_user.role=="super"
-          panel "Partner Inquiries" do
-            table_for PartnerInquiry.accessible_by(current_ability).order("created_at asc").where( 'created_at > ?', Date.today-1.week ) do
-              column("Name") { |partner_inquiry| link_to(partner_inquiry.name, admin_partner_inquiry_path(partner_inquiry)) }
-              column("Inquiry Date") { |partner_inquiry| partner_inquiry.created_at.to_formatted_s(:long) }
-              column("Contact Details") { |partner_inquiry| partner_inquiry.contact_details }
-            end
-          end
-
-        end
 
       end
     end
