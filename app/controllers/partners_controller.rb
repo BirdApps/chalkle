@@ -27,7 +27,7 @@ class PartnersController < ApplicationController
     @partner_inquiry = PartnerInquiry.new params[:said_hello]
     
     if @partner_inquiry.save
-      flash[:notice] = "Thank you for your request. A chalkler will get in touch with you shortly."
+      flash[:notice] = "Thank you for your request. We will get in touch with you shortly."
       render 'say_hello'
     else 
       flash[:errors] = @partner_inquiry.errors.messages
