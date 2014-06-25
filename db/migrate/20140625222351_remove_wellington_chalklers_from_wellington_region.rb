@@ -11,6 +11,7 @@ class RemoveWellingtonChalklersFromWellingtonRegion < ActiveRecord::Migration
         else
           puts "#{c.name} removed from wellington region FAILED"
           puts c.errors
+          raise ActiveRecord::Rollback
         end
       end
     end
