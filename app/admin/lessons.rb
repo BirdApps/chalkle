@@ -102,8 +102,8 @@ ActiveAdmin.register Lesson  do
         lesson.availabilities
       end
       row "venue for this class" do
-        if lesson.venue.present?
-          lesson.venue_cost
+        if lesson.venue?
+          lesson.venue
         else
           status_tag("This class must have a venue", :error)
         end
