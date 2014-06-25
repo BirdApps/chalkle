@@ -32,6 +32,8 @@
             .iconic_block.time>
               %i.fa.fa-clock-o
               = @lesson.start_at.strftime('%l:%M %p').strip
+              .duration= pluralize(@lesson.duration / 60 / 60, "hour") if @lesson.duration?
+
             .iconic_block.date
               %i.fa.fa-calendar
               .name= @lesson.start_at.strftime('%A').strip
