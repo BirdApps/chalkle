@@ -1,7 +1,7 @@
 class RemoveWellingtonChalklersFromWellingtonRegion < ActiveRecord::Migration
   def up
     wellington_region_id = Region.where(name: 'Wellington').map(&:id).first
-    wellington_chalklers = Chalkler.all.select {|c| c.email_region_ids.include? wellington_region_id }
+    wellington_chalklers = Chalkler.with_email_region_id wellington_region_id
 
     transaction do 
       wellington_chalklers.each do |c| 
