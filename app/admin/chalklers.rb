@@ -19,7 +19,14 @@ ActiveAdmin.register Chalkler do
   end
 
   filter :channels_name, :as => :select, :label => "Channel",
-    :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
+    :collection => proc{ 
+      if current_admin_user.super?
+        Channel.all.map {|c| [c.name, c.name ]}
+      else
+        current_admin_user.channels.collect{ |c| [c.name, c.name] }
+      end
+    }
+
   filter :meetup_id
   filter :name
   filter :email
@@ -128,6 +135,10 @@ ActiveAdmin.register Chalkler do
           f.input :channels, :as => :check_boxes, :label => 'Channels', :collection => current_admin_user.administerable_channels
         end
       end
+
+      f.input :email_regions, :label => 'Region', :as => :check_boxes, :collection => Region.all if current_admin_user.super?
+
+
       if current_admin_user.super? || f.object.new_record?
         if f.object.new_record?
           f.input :email, :hint => 'User will receive password reset email if entered'
