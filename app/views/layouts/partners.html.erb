@@ -22,15 +22,10 @@
   <body class="<%= body_class %> tk-proxima-nova">
 
 
-    <header id="header" class="" data-0="margin-top:0;  opacity: 1.0" data-500=" margin-top:-350px; opacity: 0;">
-      <h1 class="tk-proxima-nova" data-0="margin-top: 300px;" data-500="margin-top: 430px;"><%=h @hero_text %></h1>
+    <header id="header" class="" >
+      <h1 class="tk-proxima-nova" ><%=h @hero_text %></h1>
     </header>
-    <nav class=""  
-      data-300="padding: 20px 0;
-      background-color: rgba(30,30,30,0); box-shadow: 0 3px 5px rgba(0,0,0,0.0);"
-      data-550="padding: 10px 0;
-      background-color: rgba(80, 80,80,0.94); box-shadow: 0 0px 2px rgba(0,0,0,0.2);">
-      <div class="grid-container" >
+    <nav class="" >
       <div class="grid-20 logo-container">
         <%= link_to image_tag( asset_path('partners/chalkle@2x.png'), width: 153, height: 38 ), :root %>
       </div>
@@ -40,7 +35,7 @@
       </div>
     </nav>
 
-    <div id="skrollr-body">
+    <div id="">
 
       <div id="header-mask">
         <div class="mask"></div>
@@ -63,9 +58,6 @@
 
     </div> <!-- skrollr-body -->
 
-    <script type="text/javascript">
-      var s = skrollr.init({ forceHeight: false });
-    </script>
 
   </body>
 </html>

@@ -314,7 +314,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   .benefits {
-    padding: 2em 0 2em 120px;
+    padding: 2em 0.5em 2em 120px;
 
     background-repeat: no-repeat;
     background-position: 20px; 
@@ -408,6 +408,8 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
 #plans-and-pricing {
 
+  color: #fff;
+  text-align: left;
 
   h2 {
     font-weight: 500;
@@ -425,10 +427,8 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
     border: none; text-decoration: none;
 
   }
-  color: #fff;
-  text-align: center;
 
-  #community-plan, #enterprise-plan { min-height: 635px; margin-bottom: 1em; }
+  #community-plan, #enterprise-plan { min-height: 720px; margin-bottom: 1em; }
 
   #community-plan {
     background: #01653D;
@@ -485,7 +485,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
       font-size: 14px;
       color: #F2F2F2;
       line-height: 17px;
-      text-align: center;
+      text-align: left;
     }
 
     .who-its-for {
@@ -498,7 +498,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
 
       min-height: 200px;
       width: 100%;
-      text-align: center; 
+      text-align: left; 
       
       h4 {
         font-weight: 200;
@@ -535,7 +535,7 @@ THIS IS FOR ALL THE SECTIONS OUT THERE
   }
 
   ul {
-    padding: 0; margin: 2em;
+    padding: 0; margin: 1em;
   }
 
 
