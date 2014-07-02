@@ -14,6 +14,3 @@ Feature: Following channels
     Then they should see the option to unfollow the channel
     When they unfollow the channel
     Then they should see the option to follow the channel
-    When they follow the channel
-    Given they visit the "Enspiral" channel page
-    Then they should see the option to unfollow the channel

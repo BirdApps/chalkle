@@ -16,14 +16,14 @@ describe ChalkleMeetup::ChalklerImporter do
           @chalkler.reload.should be_valid
         end
 
-        it "saves valid #meetup_data" do
-          @chalkler.meetup_data["id"].should == 12345678
-          @chalkler.meetup_data["name"].should == "Caitlin Oscars"
-        end
+        # it "saves valid #meetup_data" do
+        #   @chalkler.meetup_data["id"].should == 12345678
+        #   @chalkler.meetup_data["name"].should == "Caitlin Oscars"
+        # end
 
-        it "saves correct created_at value" do
-          @chalkler.created_at.to_time.to_i.should == 1346658337
-        end
+        # it "saves correct created_at value" do
+        #   @chalkler.created_at.to_time.to_i.should == 1346658337
+        # end
       end
 
       context "updating existing chalkler" do
