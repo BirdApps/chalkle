@@ -158,7 +158,8 @@ ActiveAdmin.register Chalkler do
 
       params[:chalkler][:channel_ids].concat(
         @chalkler.channels.map(&:id) - current_admin_user.administerable_channels.map(&:id)
-      )
+      ) if params[:chalkler][:channel_ids]
+      
 
       update! as: :admin
     end
