@@ -92,8 +92,8 @@ group :development do
   # Better error reports and logs
   gem 'meta_request',       '~> 0.2.1'
   gem 'quiet_assets',       '~> 1.0.1'
-  gem 'better_errors',      '~> 0.3.2'
-  gem 'binding_of_caller',  '~> 0.6.8'
+  gem 'better_errors'
+  gem 'binding_of_caller',  '0.7.2'
 
   # Opening webpages during tests
   gem 'launchy', '~> 2.1.2'
