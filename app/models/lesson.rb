@@ -19,21 +19,23 @@ class Lesson < ActiveRecord::Base
     :chalkle_payment, :attendance_last_sent_at, :lesson_upload_image,
     :remove_lesson_upload_image, :cached_channel_fee, :cached_chalkle_fee, :region_id, :channel_rate_override, :as => :admin
 
-  belongs_to :channel
-  belongs_to :region
-  has_many   :bookings
-  has_many   :chalklers, :through => :bookings
-  has_many   :payments, :through => :bookings
-  has_one    :lesson_image, :dependent => :destroy, :inverse_of => :lesson
-  belongs_to :teacher, class_name: "Chalkler"
-  belongs_to :category
+  has_one :teacher, through: :course
+  has_one :status, through: :course
+  has_one :channel, through: :course
+  has_one :region, through: :course
+  has_one :category, through: :course
+  has_many  :bookings, through: :course
+  has_many  :chalklers, through: :bookings
+  has_many  :payments, through: :bookings
+  has_one   :lesson_image, :dependent => :destroy, :inverse_of => :lesson
+
   mount_uploader :lesson_upload_image, LessonUploadImageUploader
 
   accepts_nested_attributes_for :lesson_image
 
   [:teacher, :channel, :region].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
   delegate :best_colour_num, to: :category, allow_nil: true
-
+  
   #Time span for classes requiring attention
   PAST = 3
   IMMEDIATE_FUTURE= 5
