@@ -96,10 +96,10 @@ ActiveAdmin.register Chalkler do
       end
       row :bio
       row :teaching do
-        render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons_taught }
+        render partial: "/admin/chalklers/courses", locals: { courses: chalkler.courses_taught }
       end
-      row :lessons do
-        render partial: "/admin/chalklers/lessons", locals: { lessons: chalkler.lessons.where{bookings.status.eq 'yes'} }
+      row :courses do
+        render partial: "/admin/chalklers/courses", locals: { courses: chalkler.courses.where{bookings.status.eq 'yes'} }
       end
       if current_admin_user.role=="super"
         row :meetup_data

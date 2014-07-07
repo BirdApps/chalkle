@@ -6,8 +6,8 @@ class ChannelsController < ApplicationController
   before_filter :redirect_meetup_channels, only: :show
 
   def show
-    @month_lessons = lessons_for_time.load_month_lessons Month.current
-    @week_lessons = lessons_for_time.load_upcoming_week_lessons Week.current
+    @month_courses = courses_for_time.load_month_courses Month.current
+    @week_courses = courses_for_time.load_upcoming_week_courses Week.current
   end
 
   private
@@ -27,7 +27,7 @@ class ChannelsController < ApplicationController
     end
   end
 
-  def lessons_for_time
-    @lessons_for_time ||= Querying::LessonsForTime.new(@channel.lessons)
+  def courses_for_time
+    @courses_for_time ||= Querying::CoursesForTime.new(@channel.courses)
   end
 end

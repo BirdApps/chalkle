@@ -7,10 +7,10 @@ ActiveAdmin.register Booking do
   scope :waitlist
   scope :status_no
 
-  filter :lesson_channel_name, :as => :select, :label => "Channel",
+  filter :course_channel_name, :as => :select, :label => "Channel",
     :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
-  filter :lesson, as: :select, collection: proc{ Lesson.accessible_by(current_ability).order("LOWER(name) ASC").visible }
+  filter :course, as: :select, collection: proc{ Course.accessible_by(current_ability).order("LOWER(name) ASC").visible }
   filter :chalkler, as: :select, collection: proc{ Chalkler.order("LOWER(name) ASC").all }
   filter :cost
   filter :paid
@@ -28,10 +28,10 @@ ActiveAdmin.register Booking do
 
   index do
     column :id
-    column :lesson
+    column :course
     column :chalkler
     column :channels do |booking|
-      booking.lesson.channel_name
+      booking.course.channel_name
     end
     column :status
     column :cost, :sortable => false do |booking|
@@ -46,7 +46,7 @@ ActiveAdmin.register Booking do
   show do
     attributes_table do
       row :id
-      row :lesson
+      row :course
       row :chalkler
       row :status
       row :guests
@@ -107,9 +107,9 @@ ActiveAdmin.register Booking do
     booking = Booking.find(params[:id])
     booking.paid = true
     booking.payment_method = 'free'
-    desired_xero_id = "CASH-Class#{booking.lesson_id}-Chalkler#{booking.chalkler_id}"
+    desired_xero_id = "CASH-Class#{booking.course_id}-Chalkler#{booking.chalkler_id}"
     payment = Payment.find_or_initialize_by_xero_id desired_xero_id
-    payment.reference = booking.lesson.meetup_id? ? "#{booking.lesson.meetup_id} #{booking.chalkler.name}" : "LessonID#{booking.lesson_id} #{booking.chalkler.name}"
+    payment.reference = booking.course.meetup_id? ? "#{booking.course.meetup_id} #{booking.chalkler.name}" : "CourseID#{booking.course_id} #{booking.chalkler.name}"
     payment.xero_contact_id = booking.chalkler.name
     payment.xero_contact_name = booking.chalkler.name
     payment.date = Date.today()
@@ -129,7 +129,7 @@ ActiveAdmin.register Booking do
 
   form do |f|
     f.inputs :details do
-      f.input :lesson, as: :select, :collection => Lesson.accessible_by(current_ability).visible.order("LOWER(name) ASC").map{|l| ["#{l.name} - #{l.start_at? ? l.start_at.to_formatted_s(:short): "no date"}",l.id]}, :required => true
+      f.input :course, as: :select, :collection => Course.accessible_by(current_ability).visible.order("LOWER(name) ASC").map{|l| ["#{l.name} - #{l.start_at? ? l.start_at.to_formatted_s(:short): "no date"}",l.id]}, :required => true
       f.input :chalkler, as: :select, collection: Chalkler.accessible_by(current_ability).order("LOWER(name) ASC"), :required => true
       f.input :guests
       f.input :payment_method, :as => :select, :collection => [['Bank', 'bank'],['Cash', 'cash'],['Meetup', 'meetup']], :hint => 'Leave blank on free classes'

@@ -1,16 +1,16 @@
-ActiveAdmin.register LessonSuggestion do
+ActiveAdmin.register CourseSuggestion do
 
   controller do
     load_resource :except => :index
     authorize_resource
 
     def create
-      if params[:lesson_suggestion][:join_channels]
-        params[:lesson_suggestion][:join_channels].reject!(&:empty?)
+      if params[:course_suggestion][:join_channels]
+        params[:course_suggestion][:join_channels].reject!(&:empty?)
       end
-      @lesson_suggestion = LessonSuggestion.new(params[:lesson_suggestion], :as => :admin)
+      @course_suggestion = CourseSuggestion.new(params[:course_suggestion], :as => :admin)
       if current_admin_user.channels.count == 1
-        @lesson_suggestion.join_channels = [ current_admin_user.channel_ids ]
+        @course_suggestion.join_channels = [ current_admin_user.channel_ids ]
       end
       create!
     end
@@ -25,8 +25,8 @@ ActiveAdmin.register LessonSuggestion do
   index do
     column :id
     column :name
-    column :channels do |lesson_suggestion|
-      lesson_suggestion.channels.collect{ |c| c.name}.join(", ")
+    column :channels do |course_suggestion|
+      course_suggestion.channels.collect{ |c| c.name}.join(", ")
     end
     column :category
     column :chalkler
@@ -35,11 +35,11 @@ ActiveAdmin.register LessonSuggestion do
     default_actions
   end
 
-  show title: :name do |lesson_suggestion|
+  show title: :name do |course_suggestion|
     attributes_table do
       row :name
-      row :channels do |lesson|
-        lesson_suggestion.channels.collect{ |c| c.name}.join(", ")
+      row :channels do |course|
+        course_suggestion.channels.collect{ |c| c.name}.join(", ")
       end
       row :chalkler
       row :category

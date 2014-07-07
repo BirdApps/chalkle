@@ -1,4 +1,4 @@
 %ul
-  -lessons.each  do |l|
+  -courses.each  do |l|
     -if can? :read, l
-      %li= link_to "#{l.name} - #{l.start_at}", admin_lesson_path(l)
+      %li= link_to "#{l.name} - #{l.start_at}", admin_course_path(l)

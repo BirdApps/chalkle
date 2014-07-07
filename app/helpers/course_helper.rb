@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module LessonHelper
+module CourseHelper
 	def may_cancel_email(name,min_attendee)
     URI.escape("
 
@@ -69,23 +69,23 @@ Your Chalkle Administrator")
     date.to_s(:short).strip.gsub(' ', '&nbsp;').html_safe
   end
 
-  def path_for_lesson(lesson)
-    channel_lesson_url(@channel || lesson.channel, lesson)
+  def path_for_course(course)
+    channel_course_url(@channel || course.channel, course)
   end
 
-  def lesson_classes(lesson, base_class = 'lesson')
+  def course_classes(course, base_class = 'course')
     results = [base_class]
-    results << (lesson.lesson_upload_image.present? ? 'has-image' : 'no-image')
-    results << "category#{lesson.best_colour_num}" if lesson.best_colour_num
-    results << 'active' if @lesson && @lesson == lesson
+    results << (course.course_upload_image.present? ? 'has-image' : 'no-image')
+    results << "category#{course.best_colour_num}" if course.best_colour_num
+    results << 'active' if @course && @course == course
     results
   end
 
-  def lesson_availability(lesson)
+  def course_availability(course)
     content_tag :div, nil, class: 'availability' do
-      if lesson.limited_spaces?
-        if lesson.spaces_left?
-          icon(:check) + pluralize(lesson.spaces_left, 'spot') + ' left'
+      if course.limited_spaces?
+        if course.spaces_left?
+          icon(:check) + pluralize(course.spaces_left, 'spot') + ' left'
         else
           'fully booked!'
         end
@@ -95,7 +95,7 @@ Your Chalkle Administrator")
     end
   end
 
-  def lesson_attendance(lesson)
+  def course_attendance(course)
     ""
   end
 
@@ -103,7 +103,7 @@ Your Chalkle Administrator")
     content_tag(:i, nil, class: "fa fa-#{name.to_s.gsub('_', '-')}") + ' '
   end
 
-  def lesson_index_welcome_message
+  def course_index_welcome_message
     if @region
       if chalkler_signed_in?
         "Welcome to chalkle° in #{@region.name} #{current_chalkler.name}"

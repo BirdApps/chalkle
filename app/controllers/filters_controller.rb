@@ -37,6 +37,6 @@ class FiltersController < ApplicationController
   private
 
     def back_to_page
-      redirect_to lessons_path
+      redirect_to courses_path
     end
 end

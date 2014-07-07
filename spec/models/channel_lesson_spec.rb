@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe ChannelLesson do
+describe ChannelCourse do
 end

@@ -6,13 +6,13 @@ describe "Chalkler_stats" do
 
     before do 
       @channel = FactoryGirl.create(:channel)
-      @lesson1 = FactoryGirl.create(:lesson, name: "test 1")
-      @lesson2 = FactoryGirl.create(:lesson, name: "test 2")
+      @course1 = FactoryGirl.create(:course, name: "test 1")
+      @course2 = FactoryGirl.create(:course, name: "test 2")
       (1..5).each do |i|
         chalkler = FactoryGirl.create(:chalkler, email: "test#{i}@gmail.com", created_at: 1.year.ago)
         chalkler.channels << @channel
-        FactoryGirl.create(:booking, lesson_id: @lesson1.id, chalkler_id: chalkler.id, created_at: i.months.ago)
-        FactoryGirl.create(:booking, lesson_id: @lesson2.id, chalkler_id: chalkler.id, created_at: i.months.ago)
+        FactoryGirl.create(:booking, course_id: @course1.id, chalkler_id: chalkler.id, created_at: i.months.ago)
+        FactoryGirl.create(:booking, course_id: @course2.id, chalkler_id: chalkler.id, created_at: i.months.ago)
       end    
     end
 
@@ -50,8 +50,8 @@ describe "Chalkler_stats" do
       @channel = FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5)
       @chalkler = FactoryGirl.create(:chalkler)
       (1..5).each do |i|
-        lesson = FactoryGirl.create(:lesson, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, start_at: 2.days.ago, status: "Published", max_attendee: 10, channel: @channel)
-        booking = FactoryGirl.create(:booking, lesson_id: lesson.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
+        course = FactoryGirl.create(:course, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, start_at: 2.days.ago, status: "Published", max_attendee: 10, channel: @channel)
+        booking = FactoryGirl.create(:booking, course_id: course.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
         if (i == 5)
           FactoryGirl.create(:payment, booking_id: booking.id, total: i*10*1.15, reconciled: true, cash_payment: true)
         else
@@ -59,8 +59,8 @@ describe "Chalkler_stats" do
         end
       end
       (6..8).each do |i|
-        lesson = FactoryGirl.create(:lesson, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, start_at: 5.days.ago, status: "Published", max_attendee: 10, channel: @channel)
-        booking = FactoryGirl.create(:booking, lesson_id: lesson.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
+        course = FactoryGirl.create(:course, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, start_at: 5.days.ago, status: "Published", max_attendee: 10, channel: @channel)
+        booking = FactoryGirl.create(:booking, course_id: course.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
         if (i == 5)
           FactoryGirl.create(:payment, booking_id: booking.id, total: i*10*1.15, reconciled: true, cash_payment: true)
         else

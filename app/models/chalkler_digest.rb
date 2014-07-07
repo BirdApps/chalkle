@@ -8,10 +8,10 @@ class ChalklerDigest
   end
 
   def create!
-    new = new_lessons
-    new = default_new_lessons if new.empty?
-    open = open_lessons
-    open = default_open_lessons if open.empty?
+    new = new_courses
+    new = default_new_courses if new.empty?
+    open = open_courses
+    open = default_open_courses if open.empty?
     # TODO move this to delayed job
     ChalklerMailer.digest(@chalkler, new, open).deliver! if (new.any? || open.any?)
   end
@@ -20,89 +20,89 @@ class ChalklerDigest
     Chalkler.where{(email != "") & (email_frequency == freq)}
   end
 
-  def new_lessons
+  def new_courses
     scope = base_scope.where(
-      "lessons.published_at > ? AND
-       lessons.do_during_class IS NOT NULL AND
+      "courses.published_at > ? AND
+       courses.do_during_class IS NOT NULL AND
        channels.visible=true",
       @date_offset)
-    scope = scope_lessons_by_categories(scope)
-    scope = scope_lessons_by_regions(scope)
-    scope = scope_lessons_by_channels(scope)
+    scope = scope_courses_by_categories(scope)
+    scope = scope_courses_by_regions(scope)
+    scope = scope_courses_by_channels(scope)
     scope.limit(@limit).uniq
   end
 
-  def default_new_lessons
+  def default_new_courses
     scope = base_scope.where(
-      "lessons.published_at > ? AND
-       lessons.do_during_class IS NOT NULL AND
+      "courses.published_at > ? AND
+       courses.do_during_class IS NOT NULL AND
        channels.visible=true",
        @date_offset)
     scope = scope.limit(@limit)
-    scope = scope_lessons_by_channels(scope)
-    scope = scope_lessons_by_regions(scope)
+    scope = scope_courses_by_channels(scope)
+    scope = scope_courses_by_regions(scope)
     scope.uniq
   end
 
-  def open_lessons
+  def open_courses
     scope = base_scope.where(
-      "lessons.start_at > ? AND
-       lessons.published_at <= ? AND
-       lessons.do_during_class IS NOT NULL AND
+      "courses.start_at > ? AND
+       courses.published_at <= ? AND
+       courses.do_during_class IS NOT NULL AND
        channels.visible=true",
       Time.now.utc + 1.day, @date_offset)
-    scope = scope_lessons_by_categories(scope)
-    scope = scope_lessons_by_channels(scope)
-    scope = scope_lessons_by_regions(scope)
+    scope = scope_courses_by_categories(scope)
+    scope = scope_courses_by_channels(scope)
+    scope = scope_courses_by_regions(scope)
 
-    lessons = scope.uniq
-    filter_out_bookable(lessons)
-    lessons.shift @limit
+    courses = scope.uniq
+    filter_out_bookable(courses)
+    courses.shift @limit
   end
 
-  def default_open_lessons
+  def default_open_courses
     scope = base_scope.where(
-      "lessons.start_at > ? AND
-       lessons.published_at <= ? AND
-       lessons.do_during_class IS NOT NULL AND
+      "courses.start_at > ? AND
+       courses.published_at <= ? AND
+       courses.do_during_class IS NOT NULL AND
        channels.visible=true",
       Time.now.utc + 1.day, @date_offset)
-    scope = scope_lessons_by_channels(scope)
-    scope = scope_lessons_by_regions(scope)
-    lessons = scope.uniq
-    filter_out_bookable(lessons)
-    lessons.shift @limit
+    scope = scope_courses_by_channels(scope)
+    scope = scope_courses_by_regions(scope)
+    courses = scope.uniq
+    filter_out_bookable(courses)
+    courses.shift @limit
   end
 
   private
 
     def base_scope
-      Lesson.visible.published.joins(:channel).order("start_at")
+      Course.visible.published.joins(:channel).order("start_at")
     end
 
-    def scope_lessons_by_categories(scope)
+    def scope_courses_by_categories(scope)
       if @chalkler.email_categories
-        return scope.where(["lessons.category_id IN (?)", @chalkler.email_categories])
+        return scope.where(["courses.category_id IN (?)", @chalkler.email_categories])
       end
       scope
     end
 
-    def scope_lessons_by_regions(scope)
+    def scope_courses_by_regions(scope)
       if @chalkler.email_region_ids
-        return scope.where(["lessons.region_id IN (?)", @chalkler.email_region_ids])
+        return scope.where(["courses.region_id IN (?)", @chalkler.email_region_ids])
       end
       scope
     end
 
-    def scope_lessons_by_channels(scope)
+    def scope_courses_by_channels(scope)
       if @chalkler.channels.present?
-        return scope.where("lessons.channel_id IN (?)", @chalkler.channels)
+        return scope.where("courses.channel_id IN (?)", @chalkler.channels)
       end
       scope
     end
 
-    def filter_out_bookable(lessons)
-      lessons.delete_if { |l| l.bookable? == false  }
+    def filter_out_bookable(courses)
+      courses.delete_if { |l| l.bookable? == false  }
     end
 
 end

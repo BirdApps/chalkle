@@ -29,30 +29,30 @@
             - classes = [relative_date_class(day)]
             - classes << 'weekend' if Week.on_weekend?(day)
             - classes << 'active' if active
-            - classes << 'has_classes' if lessons[day]
+            - classes << 'has_classes' if courses[day]
 
             %td{class: classes}
               .inner
                 - if month.contains?(day)
-                  .lesson_for_day
+                  .course_for_day
                     .day_title
                       %span.day_letter= day.strftime('%A').first
                       %span.date= day.strftime('%d %b')
                       %i.fa.fa-expand
                       %i.fa.fa-compress
-                    %ul.lessons
-                      - if lessons[day]
-                        - lessons[day].each_with_index do |lesson, index|
+                    %ul.courses
+                      - if courses[day]
+                        - courses[day].each_with_index do |course, index|
                           %li{class: (index > 2 ? 'more' : 'viewable')}
-                            %a{href: path_for_lesson(lesson), class: lesson_classes(lesson)}
+                            %a{href: path_for_course(course), class: course_classes(course)}
                               %div
-                                %span.time>= lesson.start_at.strftime('%l:%M %p').strip
-                                %span.title>= lesson.name
-                  .lesson_count
+                                %span.time>= course.start_at.strftime('%l:%M %p').strip
+                                %span.title>= course.name
+                  .course_count
                     &hellip;and
                     %span.number X
                     more
   - next_month = month.next
-  = link_to specific_month_lessons_path(channel_id: @channel, year: next_month.year, month: next_month.month, format: :js), {:remote => true, 'data-append' => 'months', 'data-remove-on-success' => true, :class => 'next-calendar-section'} do
+  = link_to specific_month_courses_path(channel_id: @channel, year: next_month.year, month: next_month.month, format: :js), {:remote => true, 'data-append' => 'months', 'data-remove-on-success' => true, :class => 'next-calendar-section'} do
     %i.fa.fa-arrow-down
     Show next month

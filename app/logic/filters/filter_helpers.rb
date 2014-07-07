@@ -11,12 +11,12 @@ module Filters
       end
 
       def current_chalkler_filter
-        current_chalkler ? current_chalkler.lesson_filter : existing_session_filter
+        current_chalkler ? current_chalkler.course_filter : existing_session_filter
       end
 
       def start_current_chalkler_filter
         if current_chalkler
-          current_chalkler.lesson_filter || current_chalkler.create_lesson_filter
+          current_chalkler.course_filter || current_chalkler.create_course_filter
         else
           start_session_filter
         end

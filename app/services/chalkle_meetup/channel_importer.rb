@@ -2,7 +2,7 @@ module ChalkleMeetup
   class ChannelImporter
     def initialize
       @chalkler_importer = ChalkleMeetup::ChalklerImporter.new
-      @lesson_importer = ChalkleMeetup::LessonImporter.new
+      @course_importer = ChalkleMeetup::CourseImporter.new
     end
 
     def import_chalklers(channel)
@@ -18,14 +18,14 @@ module ChalkleMeetup
       end
     end
 
-    def import_lessons(channel)
+    def import_courses(channel)
       if !channel.url_name.blank?
         puts "Importing classes for channel #{channel.name}"
         total_pages = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain' }).total_pages
         for i in 0...total_pages do
           results = RMeetup::Client.fetch(:events, { group_urlname: channel.url_name, status:'upcoming,past,suggested,proposed', text_format: 'plain', offset: i })
           results.each do |data|
-            @lesson_importer.import(data, channel)
+            @course_importer.import(data, channel)
           end
         end
       end

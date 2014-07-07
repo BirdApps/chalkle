@@ -4,7 +4,7 @@ class Category < ActiveRecord::Base
 
   has_many :channel_categories
   has_many :channels, :through => :channel_categories
-  has_many :lessons
+  has_many :courses
   belongs_to :parent, class_name: 'Category'
   has_many :children, class_name: 'Category', foreign_key: :parent_id
 

@@ -1,7 +1,7 @@
 class BookingReminder
-  def initialize(c, lesson_start_in)
+  def initialize(c, course_start_in)
     @chalkler = c
-    @lesson_start_in = lesson_start_in
+    @course_start_in = course_start_in
   end
 
   def create!
@@ -19,13 +19,13 @@ class BookingReminder
 
   def remindable
     bookings = @chalkler.bookings.visible.confirmed.billable.unpaid.upcoming
-    bookings.delete_if { |b| (b.teacher? == true || !b.lesson.channel || b.lesson_start_at.present? == false || b.cost == 0) }
+    bookings.delete_if { |b| (b.teacher? == true || !b.course.channel || b.course_start_at.present? == false || b.cost == 0) }
   end
 
   def remind_now
     if remindable.any?
-      bookings = remindable.keep_if {|b| (b.lesson_start_at <= (Time.now.utc + @lesson_start_in)) & (b.lesson_start_at > (Time.now.utc + @lesson_start_in - 1.day)) }
-      return fresh_records(bookings.sort_by{|b| b[:lesson_start_at]}.reverse)
+      bookings = remindable.keep_if {|b| (b.course_start_at <= (Time.now.utc + @course_start_in)) & (b.course_start_at > (Time.now.utc + @course_start_in - 1.day)) }
+      return fresh_records(bookings.sort_by{|b| b[:course_start_at]}.reverse)
     else
       return []
     end

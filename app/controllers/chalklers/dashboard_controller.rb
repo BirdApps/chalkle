@@ -6,7 +6,7 @@ class Chalklers::DashboardController < Chalklers::BaseController
   layout 'home', only: :index
 
   def index
-    @lessons = Lesson.upcoming.published.by_date.not_meetup.limit(4 * 6)
+    @courses = Course.upcoming.published.by_date.not_meetup.limit(4 * 6)
     @featured_channels = Channel.visible.has_logo.limit(5).all
   end
 
@@ -22,7 +22,7 @@ class Chalklers::DashboardController < Chalklers::BaseController
 
     def logged_out_only
       if current_chalkler
-        redirect_to lessons_path
+        redirect_to courses_path
         false
       end
     end

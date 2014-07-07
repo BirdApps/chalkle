@@ -8,10 +8,10 @@
       %th Price
 
   %tbody
-    -lessons.each do |lesson|
+    -courses.each do |course|
       %tr
-        %td #{link_to(lesson.name, admin_lesson_path(lesson))}
-        %td #{lesson.teacher.present? ? (link_to(lesson.teacher.name, admin_chalkler_path(lesson.teacher))) : "No Teacher"}
-        %td #{lesson.category_name}
-        %td #{lesson.channel.name if lesson.channel}
-        %td #{number_to_currency lesson.cost}
+        %td #{link_to(course.name, admin_course_path(course))}
+        %td #{course.teacher.present? ? (link_to(course.teacher.name, admin_chalkler_path(course.teacher))) : "No Teacher"}
+        %td #{course.category_name}
+        %td #{course.channel.name if course.channel}
+        %td #{number_to_currency course.cost}

@@ -1,4 +1,4 @@
-class LessonSuggestion < ActiveRecord::Base
+class CourseSuggestion < ActiveRecord::Base
   attr_accessible :description, :name, :category_id, :join_channels
   attr_accessible :description, :name, :category_id, :join_channels, :chalkler_id, :channel_ids, :as => :admin
 
@@ -6,8 +6,8 @@ class LessonSuggestion < ActiveRecord::Base
 
   belongs_to :chalkler
   belongs_to :category
-  has_many :channel_lesson_suggestions
-  has_many :channels, :through => :channel_lesson_suggestions
+  has_many :channel_course_suggestions
+  has_many :channels, :through => :channel_course_suggestions
 
   validates_presence_of :name, :description
   validates_presence_of :join_channels, :on => :create

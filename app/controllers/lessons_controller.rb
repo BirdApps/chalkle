@@ -1,24 +1,24 @@
-class LessonsController < ApplicationController
+class CoursesController < ApplicationController
   include Filters::FilterHelpers
 
   after_filter :store_location, only: [:show, :index]
   before_filter :load_channel
-  before_filter :load_lesson, only: :show
-  before_filter :check_lesson_visibility, only: :show
-  before_filter :redirect_meetup_lessons, only: :show
+  before_filter :load_course, only: :show
+  before_filter :check_course_visibility, only: :show
+  before_filter :redirect_meetup_courses, only: :show
   layout 'new'
 
   def show
-    week = get_current_week(@lesson.start_on || Date.today)
-    @week_lessons = lessons_for_time.load_week_lessons(week)
+    week = get_current_week(@course.start_on || Date.today)
+    @week_courses = courses_for_time.load_week_courses(week)
   end
 
   def month
-    @month_lessons = lessons_for_time.load_month_lessons get_current_month
+    @month_courses = courses_for_time.load_month_courses get_current_month
   end
 
   def week
-    @week_lessons = lessons_for_time.load_week_lessons(get_current_week)
+    @week_courses = courses_for_time.load_week_courses(get_current_week)
   end
 
   def index
@@ -28,13 +28,13 @@ class LessonsController < ApplicationController
     @channel_filter = @filter.current_or_empty_filter_for('single_channel')
     @category_filter = @filter.current_or_empty_filter_for('single_category')
     month
-    @week_lessons = lessons_for_time.load_upcoming_week_lessons(get_current_week)
+    @week_courses = courses_for_time.load_upcoming_week_courses(get_current_week)
   end
 
   def calculate_cost
-    @lesson = Lesson.new(params[:lesson], as: :admin)
-    @lesson.update_costs
-    render json: @lesson.as_json(methods: [:channel_fee, :chalkle_fee])
+    @course = Course.new(params[:course], as: :admin)
+    @course.update_costs
+    render json: @course.as_json(methods: [:channel_fee, :chalkle_fee])
   end
 
   private
@@ -75,34 +75,34 @@ class LessonsController < ApplicationController
       params[:region_name] unless params[:region_name].blank?
     end
 
-    def check_lesson_visibility
-      unless @lesson.published?
+    def check_course_visibility
+      unless @course.published?
         flash[:notice] = "This class is no longer available."
         redirect_to chalklers_root_url
         return false
       end
     end
 
-    def load_lesson
-      @lesson = start_of_association_chain.find(params[:id]).decorate
+    def load_course
+      @course = start_of_association_chain.find(params[:id]).decorate
     end
 
-    def redirect_meetup_lessons
-      if @lesson.meetup_url.present?
-        redirect_to @lesson.meetup_url
+    def redirect_meetup_courses
+      if @course.meetup_url.present?
+        redirect_to @course.meetup_url
         return false
       end
     end
 
-    def lessons_for_time
-      @lessons_for_time ||= Querying::LessonsForTime.new(lessons_base_scope)
+    def courses_for_time
+      @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
     end
 
     def start_of_association_chain
-      @channel ? @channel.lessons : Lesson
+      @channel ? @channel.courses : Course
     end
 
-    def lessons_base_scope
+    def courses_base_scope
       apply_filter(start_of_association_chain.published.by_date)
     end
 
@@ -122,8 +122,8 @@ class LessonsController < ApplicationController
       end
     end
 
-    def decorate(lessons)
-      LessonDecorator.decorate_collection(lessons)
+    def decorate(courses)
+      CourseDecorator.decorate_collection(courses)
     end
 
     def load_channel

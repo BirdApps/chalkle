@@ -8,8 +8,8 @@ describe "Financial_stats" do
       @channel = FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5)
       @chalkler = FactoryGirl.create(:chalkler)
       (1..5).each do |i|
-        lesson = FactoryGirl.create(:lesson, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, chalkle_payment: 2*i, start_at: 2.days.ago, status: "Published", max_attendee: 10, channel: @channel)
-        booking = FactoryGirl.create(:booking, lesson_id: lesson.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
+        course = FactoryGirl.create(:course, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, chalkle_payment: 2*i, start_at: 2.days.ago, status: "Published", max_attendee: 10, channel: @channel)
+        booking = FactoryGirl.create(:booking, course_id: course.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
         if (i == 5)
           FactoryGirl.create(:payment, booking_id: booking.id, total: i*10, reconciled: true, cash_payment: true)
         else
@@ -17,8 +17,8 @@ describe "Financial_stats" do
         end
       end
       (6..8).each do |i|
-        lesson = FactoryGirl.create(:lesson, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, chalkle_payment: 2*i, start_at: 10.days.ago, status: "Published", max_attendee: 10, channel: @channel)
-        booking = FactoryGirl.create(:booking, lesson_id: lesson.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
+        course = FactoryGirl.create(:course, meetup_id: i*11111111, name: "test class #{i}", cost: i*10, teacher_cost: i*5, teacher_payment: i*5, chalkle_payment: 2*i, start_at: 10.days.ago, status: "Published", max_attendee: 10, channel: @channel)
+        booking = FactoryGirl.create(:booking, course_id: course.id, guests: i-1, chalkler_id: @chalkler.id, paid: true, status: "yes")
         if (i == 6)
           FactoryGirl.create(:payment, booking_id: booking.id, total: i*10, reconciled: true, cash_payment: true)
         else
@@ -32,7 +32,7 @@ describe "Financial_stats" do
       @financial_stats.turnover.should == 150        
     end
 
-    it "calculates total cost from lessons" do
+    it "calculates total cost from courses" do
       (@financial_stats.cost).round(2).should == (105 + 50).round(2)
     end
 

@@ -1,4 +1,4 @@
-class LessonDecorator < ApplicationDecorator
+class CourseDecorator < ApplicationDecorator
   delegate_all
 
   def join_chalklers
@@ -30,7 +30,7 @@ class LessonDecorator < ApplicationDecorator
   end
 
   def url
-    h.channel_lesson_url(source.channel, source)
+    h.channel_course_url(source.channel, source)
   end
 
 end

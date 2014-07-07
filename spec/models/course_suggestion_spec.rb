@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe LessonSuggestion do
+describe CourseSuggestion do
   it { should belong_to(:category)}
-  it { should have_many(:channels).through(:channel_lesson_suggestions) }
+  it { should have_many(:channels).through(:channel_course_suggestions) }
 
-  specify { FactoryGirl.build(:lesson_suggestion).should be_valid }
+  specify { FactoryGirl.build(:course_suggestion).should be_valid }
 
   describe "validation" do
     it { should validate_presence_of :name }

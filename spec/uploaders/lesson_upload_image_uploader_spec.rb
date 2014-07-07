@@ -1,25 +1,25 @@
 require 'spec_helper'
 require 'carrierwave/test/matchers'
 
-describe LessonUploadImageUploader do
+describe CourseUploadImageUploader do
   include CarrierWave::Test::Matchers
 
   before do
-    LessonUploadImageUploader.enable_processing = true
-    @lesson = FactoryGirl.create(:lesson)
-    @uploader = LessonUploadImageUploader.new(@lesson, :lesson_upload_image)
-    @uploader.store!(File.open("#{Rails.root}/app/assets/images/lesson-bg.png"))
+    CourseUploadImageUploader.enable_processing = true
+    @course = FactoryGirl.create(:course)
+    @uploader = CourseUploadImageUploader.new(@course, :course_upload_image)
+    @uploader.store!(File.open("#{Rails.root}/app/assets/images/course-bg.png"))
   end
 
   after do
-    LessonUploadImageUploader.enable_processing = false
+    CourseUploadImageUploader.enable_processing = false
     @uploader.remove!
     FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
   end
 
   context 'saved image' do
     it "should save the image in the right location" do
-      File.exist?("#{Rails.root}/public/uploads/test/lesson/lesson_upload_image/#{@lesson.id}/lesson-bg.png")
+      File.exist?("#{Rails.root}/public/uploads/test/course/course_upload_image/#{@course.id}/course-bg.png")
     end
   end
 

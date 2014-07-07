@@ -1,64 +1,64 @@
-class LessonStats < ChannelStats
+class CourseStats < ChannelStats
 
   def previous
-    LessonStats.new(start - period, period, channel)
+    CourseStats.new(start - period, period, channel)
   end
 
-  def lessons_announced
-    channel.lesson_announced(start,end_time).count
+  def courses_announced
+    channel.course_announced(start,end_time).count
   end
 
-  def percent_lessons_announced
-    percentage_change(previous.lessons_announced, lessons_announced)
+  def percent_courses_announced
+    percentage_change(previous.courses_announced, courses_announced)
   end
 
-  def new_lessons_announced
-    new_lesson(channel.lesson_announced(start,end_time))
+  def new_courses_announced
+    new_course(channel.course_announced(start,end_time))
   end
 
-  def lessons_ran
-    channel.lesson_ran(start,end_time).count
+  def courses_ran
+    channel.course_ran(start,end_time).count
   end
 
-  def percent_lessons_ran
-    percentage_change(previous.lessons_ran, lessons_ran)
+  def percent_courses_ran
+    percentage_change(previous.courses_ran, courses_ran)
   end
 
-  def new_lessons_ran
-    new_lesson(channel.lesson_ran(start,end_time))
+  def new_courses_ran
+    new_course(channel.course_ran(start,end_time))
   end
 
-  def cancelled_lessons
-    channel.cancel_lessons(start,end_time).count
+  def cancelled_courses
+    channel.cancel_courses(start,end_time).count
   end
 
-  def percent_cancelled_lessons
-    percentage_change(previous.cancelled_lessons, cancelled_lessons)
+  def percent_cancelled_courses
+    percentage_change(previous.cancelled_courses, cancelled_courses)
   end
 
-  def new_cancelled_lessons
-    new_lesson(channel.cancel_lessons(start,end_time))
+  def new_cancelled_courses
+    new_course(channel.cancel_courses(start,end_time))
   end
 
-  def paid_lessons
-    channel.paid_lessons(start,end_time).count
+  def paid_courses
+    channel.paid_courses(start,end_time).count
   end
 
-  def percent_paid_lessons
-    percentage_change(previous.paid_lessons, paid_lessons)
+  def percent_paid_courses
+    percentage_change(previous.paid_courses, paid_courses)
   end
 
   private
 
-  def new_lesson(lessons)
-    new_lesson = 0
-    l_old = channel.past_lessons(start)
-    lessons.each do |lesson|
-    if l_old.find_by_name(lesson.name).nil?
-      new_lesson = new_lesson + 1
+  def new_course(courses)
+    new_course = 0
+    l_old = channel.past_courses(start)
+    courses.each do |course|
+    if l_old.find_by_name(course.name).nil?
+      new_course = new_course + 1
     end
     end
-    return new_lesson
+    return new_course
   end
 
 end

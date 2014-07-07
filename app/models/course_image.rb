@@ -1,9 +1,9 @@
-class LessonImage < ActiveRecord::Base
-  attr_accessible :title, :lesson_id, :as => :admin
+class CourseImage < ActiveRecord::Base
+  attr_accessible :title, :course_id, :as => :admin
 
-  belongs_to :lesson, :inverse_of => :lesson_image
+  belongs_to :course, :inverse_of => :course_image
 
-  validates_presence_of :lesson
+  validates_presence_of :course
   validates_presence_of :title
 
   before_save :generate
@@ -25,10 +25,10 @@ class LessonImage < ActiveRecord::Base
   private
 
   def generate
-    self.image = File.new("#{Rails.root}/app/assets/images/lesson-bg.png")
-    title = LessonImage.sanitize_title(self.title)
+    self.image = File.new("#{Rails.root}/app/assets/images/course-bg.png")
+    title = CourseImage.sanitize_title(self.title)
     self.image.convert!(" \( -gravity center -font #{Rails.root}/app/assets/fonts/mrchalk.ttf -background none -fill '#AAAAAA' -size 400x350 label:\"#{title}\" +distort SRT '%[fx:w/2],%[fx:h/2] 1 354 215,225' \) -flatten")
-    self.image.name = LessonImage.sanitize_filename(self.title)
+    self.image.name = CourseImage.sanitize_filename(self.title)
   end
 
 end

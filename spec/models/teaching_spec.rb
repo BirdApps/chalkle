@@ -8,11 +8,11 @@ describe "Teachings" do
   let(:region)   { FactoryGirl.create(:region, name: 'Auckland') }
   let(:params) { {
     title: 'My new class',
-    lesson_skill: '',
+    course_skill: '',
     do_during_class: 'We will play with Wii',
     learning_outcomes: 'and become experts at tennis',
     duration: '',
-    free_lesson: '0',
+    free_course: '0',
     teacher_cost: '',
     max_attendee: '',
     min_attendee: '',
@@ -82,8 +82,8 @@ describe "Teachings" do
   		@chalkler_teaching.check_valid_input(params).should be_false
   	end
 
-  	it "returns false when teacher cost is nonzero and free lesson is checked" do
-  		params[:free_lesson] = '1'
+  	it "returns false when teacher cost is nonzero and free course is checked" do
+  		params[:free_course] = '1'
   		params[:teacher_cost] = '10'
   		@chalkler_teaching.check_valid_input(params).should be_false
   	end
@@ -107,44 +107,44 @@ describe "Teachings" do
   describe "form submit" do
 
   	let(:category) { FactoryGirl.create(:category, name: "music and dance") }
-    let(:params2) { { title: 'My new class', lesson_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
-    free_lesson: '0', teacher_cost: '20', cost: '30', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
+    let(:params2) { { title: 'My new class', course_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
+    free_course: '0', teacher_cost: '20', cost: '30', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
     prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, channel_id: channel.id, region_id: region.id} }
 
-  	it "create an unreviewed lesson with correct form" do
-  		expect { @chalkler_teaching.submit(params2) }.to change(Lesson.unpublished, :count).by(1)
+  	it "create an unreviewed course with correct form" do
+  		expect { @chalkler_teaching.submit(params2) }.to change(Course.unpublished, :count).by(1)
   	end
 
-  	it "do not create an unreviewed lesson with empty form" do
-  		expect { @chalkler_teaching.submit({}) }.not_to change(Lesson.unpublished, :count)
+  	it "do not create an unreviewed course with empty form" do
+  		expect { @chalkler_teaching.submit({}) }.not_to change(Course.unpublished, :count)
   	end
 
-    it "create a lesson with the correct name" do
+    it "create a course with the correct name" do
       @chalkler_teaching.submit(params2)
-      Lesson.find_by_name((category.name + ": " + params2[:title]).downcase).should be_valid
+      Course.find_by_name((category.name + ": " + params2[:title]).downcase).should be_valid
     end
 
-  	describe "created lesson" do
+  	describe "created course" do
   	  before do
   	    @chalkler_teaching.submit(params2)
-  	    @lesson = Lesson.find_by_name((category.name + ": " + params2[:title]).downcase)
+  	    @course = Course.find_by_name((category.name + ": " + params2[:title]).downcase)
   	  end
 
-      it "builds the lesson with the correct values" do
-        @lesson.teacher_id.should == chalkler.id
-        @lesson.channel.should == channel
-        @lesson.lesson_skill.should == params2[:lesson_skill]
-        @lesson.category_id.should == category.id
-        @lesson.do_during_class.should == params2[:do_during_class]
-        @lesson.learning_outcomes.should == params2[:learning_outcomes]
-        @lesson.duration.should == params2[:duration].to_i*60*60
-        @lesson.teacher_cost.should == 20
-        @lesson.max_attendee.should == params2[:max_attendee].to_i
-        @lesson.min_attendee.should == params2[:min_attendee].to_i
-        @lesson.availabilities.should == params2[:availabilities]
-        @lesson.prerequisites.should == params2[:prerequisites]
-        @lesson.additional_comments.should == params2[:additional_comments]
-        @lesson.region.should == region
+      it "builds the course with the correct values" do
+        @course.teacher_id.should == chalkler.id
+        @course.channel.should == channel
+        @course.course_skill.should == params2[:course_skill]
+        @course.category_id.should == category.id
+        @course.do_during_class.should == params2[:do_during_class]
+        @course.learning_outcomes.should == params2[:learning_outcomes]
+        @course.duration.should == params2[:duration].to_i*60*60
+        @course.teacher_cost.should == 20
+        @course.max_attendee.should == params2[:max_attendee].to_i
+        @course.min_attendee.should == params2[:min_attendee].to_i
+        @course.availabilities.should == params2[:availabilities]
+        @course.prerequisites.should == params2[:prerequisites]
+        @course.additional_comments.should == params2[:additional_comments]
+        @course.region.should == region
       end
   	end
   end

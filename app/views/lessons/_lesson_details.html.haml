@@ -3,24 +3,24 @@
     %h3 Details
   .content
     %ul.unstyled
-      %li.start-time= l lesson.start_at, :format => :long_without_year
+      %li.start-time= l course.start_at, :format => :long_without_year
       %li
         %strong Location:
-        = lesson.venue
+        = course.venue
       %li
         %strong Cost:
-        = lesson.formatted_price
-      -if lesson.lesson_skill?
+        = course.formatted_price
+      -if course.course_skill?
         %li
           %strong Skill level:
-          = lesson.lesson_skill
-      - if lesson.prerequisites?
+          = course.course_skill
+      - if course.prerequisites?
         %li
           %strong What to bring:
-          = simple_format lesson.prerequisites
+          = simple_format course.prerequisites
       %li
         %strong Suitable for:
-        -if lesson.suggested_audience?
-          = lesson.suggested_audience
+        -if course.suggested_audience?
+          = course.suggested_audience
         -else
           Everyone!

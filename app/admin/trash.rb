@@ -5,24 +5,24 @@ ActiveAdmin.register_page "Trash" do
   end
 
   content do
-    @lessons = Lesson.accessible_by(current_ability).find_all_by_visible false
+    @courses = Course.accessible_by(current_ability).find_all_by_visible false
     @bookings = Booking.find_all_by_visible false
     @payments = Payment.find_all_by_visible false
 
-    panel "Deleted Lessons" do
-      table_for @lessons do
+    panel "Deleted Courses" do
+      table_for @courses do
         column :id
         column :meetup_id
         column :name
         column :start_at
         column :created_at
-        column :actions do |lesson|
+        column :actions do |course|
           links = "".html_safe
-          if can?(:read, lesson)
-            links += link_to "View", admin_lesson_path(lesson), :class => "member_link"
+          if can?(:read, course)
+            links += link_to "View", admin_course_path(course), :class => "member_link"
           end
-          if can?(:unhide, lesson)
-            links += link_to "Restore", unhide_admin_lesson_path(lesson), :class => "member_link"
+          if can?(:unhide, course)
+            links += link_to "Restore", unhide_admin_course_path(course), :class => "member_link"
           end
           links
         end
@@ -33,7 +33,7 @@ ActiveAdmin.register_page "Trash" do
       panel "Deleted Bookings" do
         table_for @bookings do
           column :id
-          column :lesson
+          column :course
           column :chalkler
           column :meetup_id
           column :created_at

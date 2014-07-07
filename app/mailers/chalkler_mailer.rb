@@ -10,10 +10,10 @@ class ChalklerMailer < ActionMailer::Base
     end
   end
 
-  def digest(chalkler, new_lessons, open_lessons)
+  def digest(chalkler, new_courses, open_courses)
     @chalkler = ChalklerDecorator.decorate(chalkler)
-  	@new_lessons = LessonDecorator.decorate_collection(new_lessons)
-  	@open_lessons = LessonDecorator.decorate_collection(open_lessons)
+  	@new_courses = CourseDecorator.decorate_collection(new_courses)
+  	@open_courses = CourseDecorator.decorate_collection(open_courses)
     subject = "chalkle° - #{@chalkler.email_frequency.titleize} digest for #{Date.today.to_formatted_s(:long)}"
   	mail(to: @chalkler.email, subject: subject) do |format|
       format.text

@@ -1,7 +1,7 @@
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :lesson, :chalkler, :title, :teacher_id, :bio, :lesson_skill, :do_during_class, :learning_outcomes, :duration, :free_lesson, :teacher_cost, :max_attendee, :min_attendee,
+  attr_accessor :course, :chalkler, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration, :free_course, :teacher_cost, :max_attendee, :min_attendee,
   :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
@@ -11,7 +11,7 @@ class Teaching
   validates :duration, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Only positive hours are allowed"}
   validates :category_primary_id, :allow_blank => false, :numericality => { :greater_than => 0, :message => "You must select a primary category"}
   validates :channel_id, :allow_blank => false, :numericality => { :greater_than => 0, :message => "You must select a channel"}
-  validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "You can not be paid for a free class" }, :if => "self.free_lesson=='1'"
+  validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "You can not be paid for a free class" }, :if => "self.free_course=='1'"
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
   validates :max_attendee, :allow_blank => true, :numericality => {:greater_than => 0, :message => "Number of people must be greater than 0" }
   validates :max_attendee, :allow_blank => true, :numericality => {:only_integer => true, :message => "Only integer number of people are allowed" }
@@ -28,11 +28,11 @@ class Teaching
     end
   end
 
-  def lesson_args
+  def course_args
     {
       name: meetup_event_name(@category_primary_id,@title),
       teacher_id: @teacher_id,
-      lesson_skill: @lesson_skill,
+      course_skill: @course_skill,
       teacher_bio: @bio,
       do_during_class: @do_during_class,
       learning_outcomes: @learning_outcomes,
@@ -52,11 +52,11 @@ class Teaching
 
   def submit(params)
     if check_valid_input(params)
-      @lesson = Lesson.new(lesson_args)
-      @lesson.status = "Unreviewed"
-      @lesson.category_id = @category_primary_id
-      @lesson.channel = Channel.find(@channel_id) if @channel_id
-      @lesson.save
+      @course = Course.new(course_args)
+      @course.status = "Unreviewed"
+      @course.category_id = @category_primary_id
+      @course.channel = Channel.find(@channel_id) if @channel_id
+      @course.save
     else
       return false
     end
@@ -64,14 +64,14 @@ class Teaching
 
   def check_valid_input(params)
     @title = params[:title]
-    @lesson_skill = params[:lesson_skill]
+    @course_skill = params[:course_skill]
     @bio = params[:bio]
     @do_during_class = params[:do_during_class]
     @learning_outcomes = params[:learning_outcomes]
     @duration = params[:duration]
     @teacher_cost = params[:teacher_cost]
     @cost = params[:cost]
-    @free_lesson = params[:free_lesson]
+    @free_course = params[:free_course]
     @max_attendee = params[:max_attendee]
     @min_attendee = params[:min_attendee]
     @availabilities = params[:availabilities]

@@ -34,14 +34,14 @@
         %td= link_to 'Edit booking', edit_admin_booking_path(b) if can? :update, b
         -if role=="super"
           -if b.reminder_email_choice
-            -event_url = lesson.meetup_data.present? ? lesson.meetup_data["event_url"] : nil
-            %td= link_to ( b.status=='no-show' ? 'No-show' : 'Reminder' ), "http://www.meetup.com/" + channel_url.first + "/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{email_subject(b.chalkler.name,lesson.name)}&body=Hi+#{b.chalkler.name.split[0]},#{reminder_email_content(b.reminder_email_choice, lesson.name, (lesson.meetup_id.present? ? lesson.meetup_id : ""),lesson.cost, event_url, lesson.account)}"
+            -event_url = course.meetup_data.present? ? course.meetup_data["event_url"] : nil
+            %td= link_to ( b.status=='no-show' ? 'No-show' : 'Reminder' ), "http://www.meetup.com/" + channel_url.first + "/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{email_subject(b.chalkler.name,course.name)}&body=Hi+#{b.chalkler.name.split[0]},#{reminder_email_content(b.reminder_email_choice, course.name, (course.meetup_id.present? ? course.meetup_id : ""),course.cost, event_url, course.account)}"
           -elsif b.paid? && b.payment
             %td= link_to 'View payment', admin_payment_path(b.payment) if can? :read, b
           -else
             %td= ""
-        -if lesson.class_may_cancel
-          %td= link_to 'Email them', "http://www.meetup.com/" + channel_url.first + "/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{email_subject(b.chalkler.name,lesson.name)}&body=Hi+#{b.chalkler.name.split[0]},#{may_cancel_email(lesson.name, lesson.min_attendee)}"
+        -if course.class_may_cancel
+          %td= link_to 'Email them', "http://www.meetup.com/" + channel_url.first + "/message/?recipientId=#{b.chalkler.meetup_id}&subject=#{email_subject(b.chalkler.name,course.name)}&body=Hi+#{b.chalkler.name.split[0]},#{may_cancel_email(course.name, course.min_attendee)}"
         -else
           %td= ""
         -if (b.cost.present? ? b.cost : 0) > 0 && b.paid != true

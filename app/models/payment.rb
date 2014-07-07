@@ -5,7 +5,7 @@ class Payment < ActiveRecord::Base
 
   belongs_to :booking
   has_one :chalkler, through: :booking
-  has_one :lesson, through: :booking
+  has_one :course, through: :booking
 
   serialize :xero_data
 

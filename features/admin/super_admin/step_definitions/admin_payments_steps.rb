@@ -34,10 +34,10 @@ Given(/^there is an ureconciled payment$/) do
   FactoryGirl.create(:payment, xero_id: "abc", total: 10)
   chalkler = FactoryGirl.create(:chalkler, name: "Test chalkler")
   teacher = FactoryGirl.create(:chalkler, name: "Test teacher")
-  lesson = FactoryGirl.create(:lesson, name: "Test class", cost: 10, start_at: 1.day.from_now, teacher_id: teacher.id)
+  course = FactoryGirl.create(:course, name: "Test class", cost: 10, start_at: 1.day.from_now, teacher_id: teacher.id)
 #  chalkler.channels << FactoryGirl.create(:channel)
-#  lesson.channel = chalkler.channels.first
-  FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, status: "yes", guests: 0, paid: false)
+#  course.channel = chalkler.channels.first
+  FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course.id, status: "yes", guests: 0, paid: false)
 end
 
 When(/^they click to reconcile payments$/) do

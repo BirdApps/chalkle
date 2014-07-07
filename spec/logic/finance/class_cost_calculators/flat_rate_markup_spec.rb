@@ -11,11 +11,11 @@ module Finance
     describe FlatRateMarkup do
       ERROR_MARGIN = 0.000001
 
-      let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channel: nil, channel_rate_override: nil) }
+      let(:course) { OpenStruct.new(teacher_cost: 10.0, channel: nil, channel_rate_override: nil) }
       let(:rates)  { {channel_fee: 2.0, chalkle_fee: 3.0} }
-      subject { FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: rates) }
-      let(:subject_with_tax) { FlatRateMarkup.new(lesson, tax: Tax::NzGst.new, total_markup: Markup::NullMarkup.new, rates: rates) }
-      let(:subject_with_markup) { FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::CreditCardProcessingFee.new(0.5), rates: rates) }
+      subject { FlatRateMarkup.new(course, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: rates) }
+      let(:subject_with_tax) { FlatRateMarkup.new(course, tax: Tax::NzGst.new, total_markup: Markup::NullMarkup.new, rates: rates) }
+      let(:subject_with_markup) { FlatRateMarkup.new(course, tax: Tax::NullTax.new, total_markup: Markup::CreditCardProcessingFee.new(0.5), rates: rates) }
 
       describe "#channel_fee" do
         it "should be equal to supplied constant" do
@@ -23,13 +23,13 @@ module Finance
         end
 
         it "can be overridden by the supplied rates" do
-          subject = FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: {channel_fee: 12.0})
+          subject = FlatRateMarkup.new(course, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: {channel_fee: 12.0})
           subject.channel_fee.should == 12.0
           subject.chalkle_fee.should == 2.0
         end
 
         it "will use default if set to nil" do
-          subject = FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: {channel_fee: nil})
+          subject = FlatRateMarkup.new(course, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: {channel_fee: nil})
           subject.channel_fee.should == 2.0
         end
 
@@ -37,9 +37,9 @@ module Finance
           subject_with_tax.channel_fee.should == 2.0
         end
 
-        it "will override supplied rate with a value from the lesson" do
-          lesson.channel_rate_override = 7.0
-          subject = FlatRateMarkup.new(lesson, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: {channel_fee: 12.0})
+        it "will override supplied rate with a value from the course" do
+          course.channel_rate_override = 7.0
+          subject = FlatRateMarkup.new(course, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: {channel_fee: 12.0})
           subject.channel_fee.should == 7.0
         end
       end
@@ -53,18 +53,18 @@ module Finance
           subject_with_tax.chalkle_fee.should be_within(ERROR_MARGIN).of(3.45)
         end
 
-        it "is not zero if channel fee is zero but lesson has a cost" do
-          lesson.channel_rate_override = 0.0
+        it "is not zero if channel fee is zero but course has a cost" do
+          course.channel_rate_override = 0.0
           subject.chalkle_fee.should == 3.0
         end
 
         it "is zero if channel and teacher fee are both zero" do
-          lesson.channel_rate_override = 0.0
-          lesson.teacher_cost = 0.0
+          course.channel_rate_override = 0.0
+          course.teacher_cost = 0.0
           subject.chalkle_fee.should == 0.0
         end
 
-        it "is not zero if channel fee is zero and no lesson is present" do
+        it "is not zero if channel fee is zero and no course is present" do
           subject = FlatRateMarkup.new(nil, tax: Tax::NullTax.new, total_markup: Markup::NullMarkup.new, rates: rates.merge(channel_fee: 0.0))
           subject.chalkle_fee.should == 3.0
         end
@@ -86,7 +86,7 @@ module Finance
         end
 
         it "should include material cost" do
-          lesson.material_cost = 5.0
+          course.material_cost = 5.0
           subject.total_cost.should be_within(ERROR_MARGIN).of(20.00)
         end
 

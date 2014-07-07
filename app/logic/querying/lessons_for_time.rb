@@ -1,40 +1,40 @@
 module Querying
-  class LessonsForTime
-    def initialize(base_scope = Lesson)
+  class CoursesForTime
+    def initialize(base_scope = Course)
       @base_scope = base_scope
     end
 
-    def load_month_lessons(month)
+    def load_month_courses(month)
       {
-        month => DailyRecordsHash.new(lessons_for_month(month))
+        month => DailyRecordsHash.new(courses_for_month(month))
       }
     end
 
-    def load_upcoming_week_lessons(week, current_date = Date.today)
-      @week_lessons = {}
+    def load_upcoming_week_courses(week, current_date = Date.today)
+      @week_courses = {}
       get_current_weeks(week, current_date).each do |week|
-        load_another_week_lessons week
+        load_another_week_courses week
       end
-      while weeks_loaded_count < 4 && no_weekly_lessons?
+      while weeks_loaded_count < 4 && no_weekly_courses?
         load_another_week
       end
-      @week_lessons
+      @week_courses
     end
 
-    def load_week_lessons(week)
-      @week_lessons = {}
-      load_another_week_lessons(week)
-      @week_lessons
+    def load_week_courses(week)
+      @week_courses = {}
+      load_another_week_courses(week)
+      @week_courses
     end
 
 
     private
 
-    def load_another_week_lessons(week)
-      @week_lessons[week] = DailyRecordsHash.new(lessons_for_week(week))
+    def load_another_week_courses(week)
+      @week_courses[week] = DailyRecordsHash.new(courses_for_week(week))
     end
 
-    def lessons_for_month(month)
+    def courses_for_month(month)
       visible_scope.in_month(month)
     end
 
@@ -44,7 +44,7 @@ module Querying
       result
     end
 
-    def lessons_for_week(week)
+    def courses_for_week(week)
       visible_scope.upcoming_or_today.in_week(week)
     end
 
@@ -53,16 +53,16 @@ module Querying
     end
 
     def weeks_loaded_count
-      @week_lessons.keys.length
+      @week_courses.keys.length
     end
 
     def load_another_week
-      next_week = @week_lessons.keys.last.next
-      load_another_week_lessons next_week
+      next_week = @week_courses.keys.last.next
+      load_another_week_courses next_week
     end
 
-    def no_weekly_lessons?
-      !@week_lessons.values.map(&:empty?).include?(false)
+    def no_weekly_courses?
+      !@week_courses.values.map(&:empty?).include?(false)
     end
 
   end
