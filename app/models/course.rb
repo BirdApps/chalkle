@@ -1,9 +1,9 @@
 require 'carrierwave/orm/activerecord'
 require 'course_upload_image_uploader'
+require 'finance/tax/nz_gst'
 
 class Course < ActiveRecord::Base
   include Categorizable
-  include Tax
 
   attr_accessible *BASIC_ATTR = [
     :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel_id, :suggested_audience, :teacher_cost, :region_id, :channel_rate_override
@@ -31,6 +31,7 @@ class Course < ActiveRecord::Base
 
 
   belongs_to :course
+
   has_one :teacher, through: :course
   has_one :status, through: :course
   has_one :channel, through: :course
@@ -55,11 +56,11 @@ class Course < ActiveRecord::Base
   WEEK = 7
 
   #GST for NZ
-  GST = gst_rate_for :nz
+  GST = Finance::Tax::gst_rate_for :nz
 
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
-  validates_presence_of :course
+  validates_presence_of :lessons
   validates_numericality_of :teacher_payment, allow_nil: true
   validates_numericality_of :material_cost, allow_nil: false
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
@@ -96,6 +97,14 @@ class Course < ActiveRecord::Base
   def self.upcoming(limit = nil)
     return where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)} if limit.nil?
     where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc) & (start_at < limit)}
+  end
+
+  def start_at
+    :lessons.order(start_at: :desc).limit(1).start_at
+  end
+
+  def duration
+    :lessons.sum(:duration)
   end
 
   # kaminari

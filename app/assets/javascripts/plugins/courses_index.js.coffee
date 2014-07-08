@@ -33,10 +33,10 @@ class LessonsIndex
 
 
 
-$.fn.lessonsIndex = (options) ->
+$.fn.coursesIndex = (options) ->
   @each ->
     element = $(this)
-    dataName = 'lessonsIndex'
+    dataName = 'coursesIndex'
 
     return if element.data(dataName)
     element.data dataName, new LessonsIndex(this)

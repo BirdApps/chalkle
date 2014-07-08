@@ -10,8 +10,4 @@ class Course < ActiveRecord::Base
 
   validates_presence_of :course
   
-  def method_missing(method, *args)
-    return course.send(method, *args) if course.respond_to?(method)
-    super
-  end
 end

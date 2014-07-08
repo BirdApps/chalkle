@@ -1,9 +1,9 @@
 $link-well-color: #D6D6D6;
 $link_well-border: #C6C6C6;
-$browse-lessons-background: #E8E8E8;
+$browse-courses-background: #E8E8E8;
 
 .search_panel {
-  background-color: $browse-lessons-background;
+  background-color: $browse-courses-background;
   padding-bottom: 3em;
   padding-top: 1em;
 
@@ -152,7 +152,7 @@ a.next-calendar-section {
   // }
 }
 
-.lesson {
+.course {
   @include categoryBackgroundColor;
   @include categoryBackgroundColorDarkerHover;
   @include categoryBackgroundImage;
@@ -174,7 +174,7 @@ a.next-calendar-section {
   background: $chalkboard-background;
 }
 
-@import "lesson_medium.css.scss";
+@import "course_medium.css.scss";
 @import "month_calendar_view.css.scss";
 @import "week_calendar_view.css.scss";
 @import "sidebars.css.scss";

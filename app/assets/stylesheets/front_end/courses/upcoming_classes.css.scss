@@ -1,8 +1,8 @@
 $height: 185px;
 
-.upcoming_lessons{
-  .lesson_list {
-    .lesson {
+.upcoming_courses{
+  .course_list {
+    .course {
       display: block;
       margin-bottom: 15px;
       color: white;
@@ -52,7 +52,7 @@ $height: 185px;
         float: left;
       }
 
-      .lesson_body {
+      .course_body {
         background: $chalkboard-background;
         margin-left: $time-width + $image-width;
         height: $height;

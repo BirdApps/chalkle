@@ -7,7 +7,7 @@ table.month_calendar_view {
   margin-bottom: 1em;
 
   th, td {
-    border-left: 7px solid $browse-lessons-background;
+    border-left: 7px solid $browse-courses-background;
     color: $fe-heading-color;
 
     &:first-child {
@@ -35,13 +35,13 @@ table.month_calendar_view {
       background-color: darken($calendar-cell-weekday, 10%)
     }
 
-    .lesson_count {
+    .course_count {
       display: none;
     }
   }
 
   td.show_more {
-    .lesson_count {
+    .course_count {
       display: block;
       position: absolute;
       bottom: 2px;
@@ -53,7 +53,7 @@ table.month_calendar_view {
       width: 100%;
     }
 
-    ul.lessons {
+    ul.courses {
       li.last_showing a {
         height: 28px;
 
@@ -109,7 +109,7 @@ table.month_calendar_view {
   }
 
   tr {
-    border-bottom: 14px solid $browse-lessons-background;
+    border-bottom: 14px solid $browse-courses-background;
   }
 
   tbody tr:last-chid {
@@ -127,7 +127,7 @@ table.month_calendar_view {
   }
 
   td {
-    ul.lessons {
+    ul.courses {
       padding: 0;
       margin: 0;
 
@@ -196,7 +196,7 @@ table.month_calendar_view {
   }
 
   td.expanded {
-    .lesson_for_day {
+    .course_for_day {
       background-color: white;
       width: 150%;
       min-height: $calendar-cell-height - 14px;
@@ -215,28 +215,28 @@ table.month_calendar_view {
       }
     }
 
-    &:last-child .lesson_for_day {
+    &:last-child .course_for_day {
       left: auto;
       right: 0;
     }
   }
 
   td.past {
-    background-color: $browse-lessons-background;
+    background-color: $browse-courses-background;
 
-    ul.lessons {
+    ul.courses {
       opacity: 0.5;
     }
-    &.expanded ul.lessons {
+    &.expanded ul.courses {
       opacity: 1.0;
     }
 
     &.has_classes:hover {
-      background-color: $browse-lessons-background;
+      background-color: $browse-courses-background;
 
       .inner {
         border-color: darken($calendar-cell-weekday, 20%);
-        background-color: darken($browse-lessons-background, 5%);
+        background-color: darken($browse-courses-background, 5%);
       }
     }
 

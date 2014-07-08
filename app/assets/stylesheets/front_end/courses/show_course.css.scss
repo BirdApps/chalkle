@@ -4,8 +4,8 @@ $sidebar-color: #E8E8E8;
   background-color: #E8E8E8;
 }
 
-.lessons-show {
-  .lesson_panel {
+.courses-show {
+  .course_panel {
     @include categoryColor('background-color', '&.', ' .btn-primary');
     @include categoryColor('border-color', '&.', ' .btn-primary');
     @include categoryColor('color', '&.', ' h2');
@@ -16,7 +16,7 @@ $sidebar-color: #E8E8E8;
   .with_browse_sidebar {
     margin-right: 0;
 
-    .lesson_panel {
+    .course_panel {
       padding: 0;
 
       .masthead {
@@ -50,7 +50,7 @@ $sidebar-color: #E8E8E8;
           }
         }
 
-        .lesson-image {
+        .course-image {
           float: right;
         }
 
@@ -176,7 +176,7 @@ $sidebar-color: #E8E8E8;
       .text_contents {
         padding: 15px 30px;
 
-        .lesson-description {
+        .course-description {
           margin-bottom: 15px;
         }
       }

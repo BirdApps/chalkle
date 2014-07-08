@@ -1,7 +1,7 @@
 class LessonCostCalculator
   constructor: (element, options = {}) ->
     @elem = $(element)
-    @resource_name = options.resource_name || 'lesson'
+    @resource_name = options.resource_name || 'course'
     @input_field_names = ['teacher_cost', 'material_cost', 'channel_id', 'channel_rate_override']
     @fields = {
       teacher_cost:          @elem.find("##{@resource_name}_teacher_cost"),
@@ -17,7 +17,7 @@ class LessonCostCalculator
   triggerRecompute: =>
     $.ajax {
       url: '/classes/calculate_cost.json',
-      data: {lesson: @_sourceData()},
+      data: {course: @_sourceData()},
       success: @onRecomputeSuccess,
       error: @onRecomputeError
     }
@@ -51,10 +51,10 @@ class LessonCostCalculator
       field.on 'change', @triggerRecompute
 
 
-$.fn.lessonCostCalculator = (options) ->
+$.fn.courseCostCalculator = (options) ->
   @each ->
     element = $(this)
-    dataName = 'lessonCostCalculator'
+    dataName = 'courseCostCalculator'
 
     return if element.data(dataName)
     element.data dataName, new LessonCostCalculator(this, options)

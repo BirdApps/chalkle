@@ -1,30 +1,30 @@
-$lesson-medium-height: 150px;
-$lesson-medium-width: 500px;
-$lesson-medium_time-width: 80px;
+$course-medium-height: 150px;
+$course-medium-width: 500px;
+$course-medium_time-width: 80px;
 $top-bottom-margin: 10px;
-$image-width: $lesson-medium-height;
+$image-width: $course-medium-height;
 $lines: 3;
 
-a.lesson_medium {
+a.course_medium {
   text-align: left;
   display: block;
-  height: $lesson-medium-height;
+  height: $course-medium-height;
   overflow: hidden;
   padding: 0;
   text-decoration: none !important;
-  min-width: $lesson-medium-width;
+  min-width: $course-medium-width;
 
   &:hover {
     text-decoration: none !important;
   }
 
   > span {
-    height: $lesson-medium-height;
+    height: $course-medium-height;
     display: block;
   }
 
   .datetime {
-    width: $lesson-medium_time-width;
+    width: $course-medium_time-width;
     float: left;
     color: white;
     font-size: 18px;
@@ -74,7 +74,7 @@ a.lesson_medium {
     display: block;
     background-color: #CCCCCC;
 
-    img.lesson_image {
+    img.course_image {
       width: $image-width;
       height: $image-width;
     }
@@ -87,7 +87,7 @@ a.lesson_medium {
 
   .details {
     display: block;
-    margin-left: ($lesson-medium_time-width + $image-width);
+    margin-left: ($course-medium_time-width + $image-width);
 
     .inner {
       padding: 10px;
@@ -99,7 +99,7 @@ a.lesson_medium {
       overflow: hidden;
     }
 
-    .lesson_title {
+    .course_title {
       font-size: 17px;
       line-height: 20px;
       max-height: 40px;
@@ -159,7 +159,7 @@ a.lesson_medium {
     img.category_image {
       display: inline;
     }
-    img.lesson_image {
+    img.course_image {
       display: none;
     }
   }
@@ -169,16 +169,16 @@ a.lesson_medium {
   }
 }
 
-.lesson_medium_container {
-  min-width: $lesson-medium-width;
+.course_medium_container {
+  min-width: $course-medium-width;
 }
 
-.lesson-group-preview {
+.course-group-preview {
   @include make-row();
   margin-top: -5px;
   margin-bottom: -5px;
 
-  .lesson_medium_container {
+  .course_medium_container {
     @include make-md-column(6);
 
     padding-right: 5px;
@@ -197,16 +197,16 @@ a.lesson_medium {
   a { text-decoration: none !important;}
 }
 
-$lesson-compact-height: 85px;
-$lesson-compact-width: 300px;
+$course-compact-height: 85px;
+$course-compact-width: 300px;
 
 .small_browse_sidebar {
-  .lesson_medium_container {
-    min-width: $lesson-compact-width;
+  .course_medium_container {
+    min-width: $course-compact-width;
 
-    a.lesson_medium {
-      min-width: $lesson-compact-width;
-      height: $lesson-compact-height;
+    a.course_medium {
+      min-width: $course-compact-width;
+      height: $course-compact-height;
 
       .datetime {
         .time {
@@ -231,7 +231,7 @@ $lesson-compact-width: 300px;
       }
 
       .details {
-        margin-left: $lesson-medium_time-width;
+        margin-left: $course-medium_time-width;
 
         .title_and_description {
           height: 40px;
