@@ -56,7 +56,7 @@ class Course < ActiveRecord::Base
   WEEK = 7
 
   #GST for NZ
-  GST = Finance::Tax::gst_rate_for :nz
+  GST = Finance::Tax::Gst.new.gst_rate_for :nz
 
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
@@ -91,6 +91,11 @@ class Course < ActiveRecord::Base
   scope :only_with_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :with_base_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
 
+
+  def initialize
+    #lessons.add Lesson.new if lessons.nil? || lessons.count == 0
+  end
+
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at
 
@@ -100,11 +105,11 @@ class Course < ActiveRecord::Base
   end
 
   def start_at
-    :lessons.order(start_at: :desc).limit(1).start_at
+    lessons.order('start_at desc').limit(1).pluck(:start_at)[0]
   end
 
   def duration
-    :lessons.sum(:duration)
+    lessons.inject(0){|sum, l| l.duration ? sum += l.duration : sum }
   end
 
   # kaminari

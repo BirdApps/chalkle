@@ -249,41 +249,6 @@ ActiveRecord::Schema.define(:version => 20140708040822) do
     t.string   "view_type",   :default => "weeks"
   end
 
-  create_table "group_admins", :id => false, :force => true do |t|
-    t.integer "group_id",      :null => false
-    t.integer "admin_user_id", :null => false
-  end
-
-  add_index "group_admins", ["group_id", "admin_user_id"], :name => "index_group_admins_on_group_id_and_admin_user_id", :unique => true
-
-  create_table "group_categories", :id => false, :force => true do |t|
-    t.integer "group_id",    :null => false
-    t.integer "category_id", :null => false
-  end
-
-  add_index "group_categories", ["group_id", "category_id"], :name => "index_group_categories_on_group_id_and_category_id", :unique => true
-
-  create_table "group_chalklers", :id => false, :force => true do |t|
-    t.integer "group_id",    :null => false
-    t.integer "chalkler_id", :null => false
-  end
-
-  add_index "group_chalklers", ["group_id", "chalkler_id"], :name => "index_group_chalklers_on_group_id_and_chalkler_id", :unique => true
-
-  create_table "group_lessons", :id => false, :force => true do |t|
-    t.integer "group_id",  :null => false
-    t.integer "lesson_id", :null => false
-  end
-
-  add_index "group_lessons", ["group_id", "lesson_id"], :name => "index_group_lessons_on_group_id_and_lesson_id", :unique => true
-
-  create_table "groups", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "url_name"
-  end
-
   create_table "lesson_images", :force => true do |t|
     t.string   "title"
     t.datetime "created_at", :null => false

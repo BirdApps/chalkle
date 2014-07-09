@@ -1,7 +1,7 @@
-class Course < ActiveRecord::Base
+class Lesson < ActiveRecord::Base
 	
   attr_accessible *BASIC_ATTR = [
-    :start_at, :duration
+    :start_at, :duration, :course_id
   ]
 
   attr_accessible *BASIC_ATTR, :as => :admin
