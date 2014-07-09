@@ -1,10 +1,9 @@
 require 'carrierwave/orm/activerecord'
 require 'course_upload_image_uploader'
 
-
 class Course < ActiveRecord::Base
   include Categorizable
-  include Finance::Tax
+  include Finance::Tax::Gst
 
   attr_accessible *BASIC_ATTR = [
     :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel_id, :suggested_audience, :teacher_cost, :region_id, :channel_rate_override

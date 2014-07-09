@@ -280,6 +280,13 @@ describe Course do
 
     end
 
+
+    describe "GST" do
+      it "should know the gst for supported region" do
+        @course.gst_rate_for(:nz).should = 0.15 
+      end
+    end
+
     describe "pricing and profit calculations" do
       before do
         @course.teacher_cost = 10
