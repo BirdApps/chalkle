@@ -1,17 +1,15 @@
 module Finance
   module Tax
 
-    class Gst
-      include Tax
-      def gst_rate_for(tax_code)
-        case tax_code
-        when :nz
-          0.15
-        else
-          0
-        end
+    def gst_rate_for(tax_code)
+      case tax_code
+      when :nz
+        0.15
+      else
+        0
       end
     end
+  
 
     class NzGst
       include Tax

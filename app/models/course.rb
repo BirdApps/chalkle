@@ -1,9 +1,10 @@
 require 'carrierwave/orm/activerecord'
 require 'course_upload_image_uploader'
-require 'finance/tax/nz_gst'
+
 
 class Course < ActiveRecord::Base
   include Categorizable
+  include Finance::Tax
 
   attr_accessible *BASIC_ATTR = [
     :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel_id, :suggested_audience, :teacher_cost, :region_id, :channel_rate_override
@@ -56,7 +57,7 @@ class Course < ActiveRecord::Base
   WEEK = 7
 
   #GST for NZ
-  GST = Finance::Tax::Gst.new.gst_rate_for :nz
+  GST = 0.15 #gst_rate_for :nz
 
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
@@ -91,11 +92,6 @@ class Course < ActiveRecord::Base
   scope :only_with_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :with_base_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
 
-
-  def initialize
-    #lessons.add Lesson.new if lessons.nil? || lessons.count == 0
-  end
-
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at
 
@@ -104,13 +100,28 @@ class Course < ActiveRecord::Base
     where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc) & (start_at < limit)}
   end
 
+  def first_lesson
+    lessons.order('start_at desc').limit(1).first
+  end
+
   def start_at
-    lessons.order('start_at desc').limit(1).pluck(:start_at)[0]
+    first_lesson.start_at
+  end
+
+  def start_at=(lesson_start)
+    first_lesson.start_at=lesson_start
+    first_lesson.save
   end
 
   def duration
     lessons.inject(0){|sum, l| l.duration ? sum += l.duration : sum }
   end
+
+  def duration=(first_lesson_duration)
+    first_lesson.duration=first_lesson_duration
+    first_lesson.save
+  end
+
 
   # kaminari
   paginates_per 10
