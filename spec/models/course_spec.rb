@@ -283,7 +283,7 @@ describe Course do
 
     describe "GST" do
       it "should know the gst for supported region" do
-        @course.gst_rate_for(:nz).should = 0.15 
+        Course.gst_rate_for(:nz).should == 0.15 
       end
     end
 

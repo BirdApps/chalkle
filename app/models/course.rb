@@ -3,7 +3,7 @@ require 'course_upload_image_uploader'
 
 class Course < ActiveRecord::Base
   include Categorizable
-  include Finance::Tax::Gst
+  include Gst
 
   attr_accessible *BASIC_ATTR = [
     :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel_id, :suggested_audience, :teacher_cost, :region_id, :channel_rate_override
@@ -55,9 +55,8 @@ class Course < ActiveRecord::Base
   IMMEDIATE_FUTURE= 5
   WEEK = 7
 
-  #GST for NZ
-  GST = 0.15 #gst_rate_for :nz
-
+  GST = gst_rate_for :nz #GST for NZ
+  
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
   validates_presence_of :lessons
