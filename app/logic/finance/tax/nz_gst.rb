@@ -1,19 +1,9 @@
 module Finance
   module Tax
 
-    def gst_rate_for(tax_code)
-      case tax_code
-      when :nz
-        0.15
-      else
-        0
-      end
-    end
-  
-
     class NzGst
-      include Tax
-      TAX_RATE = 0.15 
+      include Gst
+      TAX_RATE = gst_rate_for :nz
       def apply_to(value)
         value * multiplier
       end
