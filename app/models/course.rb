@@ -28,17 +28,12 @@ class Course < ActiveRecord::Base
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
   has_one :status
-
-
-  belongs_to :course
-
-  has_one :teacher, through: :course
-  has_one :status, through: :course
-  has_one :channel, through: :course
-  has_one :region, through: :course
-  has_one :category, through: :course
+  has_one :teacher
+  has_one :channel
+  has_one :region
+  has_one :category
   has_one   :course_image, :dependent => :destroy, :inverse_of => :course
-  has_many  :bookings, through: :course
+  has_many  :bookings
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
 
@@ -65,6 +60,7 @@ class Course < ActiveRecord::Base
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Advertised price must be positive" }
+  validates :lessons, :length => { minimum: 1 }
   validate :max_teacher_cost
   validate :image_size
 
