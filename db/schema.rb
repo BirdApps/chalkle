@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140709233752) do
+ActiveRecord::Schema.define(:version => 20140708040822) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -271,7 +271,6 @@ ActiveRecord::Schema.define(:version => 20140709233752) do
     t.integer  "course_id"
     t.datetime "start_at"
     t.decimal  "duration"
-    t.boolean  "cancelled", :default => false
   end
 
   create_table "omni_avatar_avatars", :force => true do |t|
