@@ -29,9 +29,7 @@ class Course < ActiveRecord::Base
   has_many  :payments, through: :bookings
   has_one :status
   has_one :teacher
-  has_one :channel
   has_one :region
-  has_one :category
   has_one   :course_image, :dependent => :destroy, :inverse_of => :course
   has_many  :bookings
   has_many  :chalklers, through: :bookings
@@ -68,7 +66,7 @@ class Course < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :recent, visible.joins(:lessons).where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
-  scope :last_week, visible.where("start_at > current_date - #{WEEK} AND start_at < current_date")
+  scope :last_week, joins(:lessons).visible.where("start_at > current_date - #{WEEK} AND start_at < current_date")
   scope :unreviewed, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
   scope :approved, visible.where(status: STATUS_4)
@@ -76,7 +74,7 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-  scope :by_date, order(:start_at)
+  scope :by_date, joins(:lessons).order('lessons.start_at')
   scope :in_month, lambda {|month| joins(:lessons).where("start_at" => month.time_range)}
   #scope :in_month, lambda {|month| where(["\"courses\".start_at ?", month.date_range.to_s(:db)]) }
   scope :in_week, lambda {|week| in_month(week)}
@@ -91,8 +89,8 @@ class Course < ActiveRecord::Base
   before_save :update_published_at
 
   def self.upcoming(limit = nil)
-    return where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc)} if limit.nil?
-    where{(visible == true) & (status == STATUS_1) & (start_at > Time.now.utc) & (start_at < limit)}
+    return published.joins(:lessons).where("start_at > ?", Time.now.utc) if limit.nil?
+    published.joins(:lessons).where("start_at > ?", Time.now.utc).where("start_at < ?", limit)
   end
 
   def first_lesson

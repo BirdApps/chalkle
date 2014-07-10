@@ -6,7 +6,7 @@
         .time
           %span.number= time.strftime('%l:%M').strip
           %span.am_pm= time.strftime('%p').strip
-          .duration= pluralize(course.duration / 60 / 60, "hour") if course.duration?
+          .duration= pluralize(course.duration / 60 / 60, "hour") if course.duration
         .date
           %span.weekday= time.strftime('%a').strip
           %span.monthday= time.strftime('%-d %b').strip
