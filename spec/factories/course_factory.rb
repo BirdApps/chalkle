@@ -3,9 +3,10 @@ FactoryGirl.define do
     name "Learning fun"
     description "You should really learn, it's fun!"
     cost 20
+    lessons { |i| [i.association(:lesson)]}
 
     factory :published_course do
-      status Course::STATUS_1
+      status 'Published'
       published_at { Time.now }
     end
 

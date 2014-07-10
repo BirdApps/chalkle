@@ -36,7 +36,7 @@ class Teaching
       teacher_bio: @bio,
       do_during_class: @do_during_class,
       learning_outcomes: @learning_outcomes,
-      duration: @duration.to_i*60*60,
+      lessons: [{ duration: @duration.to_i*60*60 }],
       cost: @cost,
       teacher_cost: @teacher_cost,
       max_attendee: @max_attendee.to_i,
