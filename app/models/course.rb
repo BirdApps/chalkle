@@ -68,9 +68,10 @@ class Course < ActiveRecord::Base
   validate :max_teacher_cost
   validate :image_size
 
+  scope :start_at_between, lambda {|from, to| where('') }
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :recent, visible.where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
+  scope :recent, visible.joins(:lessons).where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
   scope :last_week, visible.where("start_at > current_date - #{WEEK} AND start_at < current_date")
   scope :unreviewed, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
@@ -80,11 +81,11 @@ class Course < ActiveRecord::Base
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
   scope :by_date, order(:start_at)
-  scope :in_month, lambda {|month| where("start_at" => month.time_range)}
+  scope :in_month, lambda {|month| joins(:lessons).where("start_at" => month.time_range)}
   #scope :in_month, lambda {|month| where(["\"courses\".start_at ?", month.date_range.to_s(:db)]) }
   scope :in_week, lambda {|week| in_month(week)}
   scope :displayable, lambda { published.visible }
-  scope :upcoming_or_today, lambda { where("start_at >= ?", Time.now.to_date.to_time) }
+  scope :upcoming_or_today, lambda { joins(:lessons).where("start_at >= ?", Time.now.to_date.to_time) }
   scope :not_meetup, where("meetup_url IS NULL")
   scope :only_with_region, lambda {|region| where(region_id: region.id) }
   scope :only_with_channel, lambda {|channel| where(channel_id: channel.id) }
