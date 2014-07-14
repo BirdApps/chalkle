@@ -8,7 +8,8 @@ end
 
 Given(/^there is a paid course in the past$/) do
   teacher = FactoryGirl.create(:chalkler, name: "Test chalkler")
-  course = FactoryGirl.create(:course, name: "Test class", teacher_cost: 5, cost: 10, status: "Published", start_at: 3.days.ago, teacher_id: teacher.id, channel: FactoryGirl.create(:channel))
+  lesson = FactoryGirl.create(:lesson, start_at: 3.days.ago, duration: 1)
+  course = FactoryGirl.create(:course, name: "Test class", teacher_cost: 5, cost: 10, status: "Published", lessons: [lesson], teacher_id: teacher.id, channel: FactoryGirl.create(:channel))
   FactoryGirl.create(:booking, chalkler_id: teacher.id, course_id: course.id, paid: false, guests: 10)
 end
 
@@ -28,7 +29,8 @@ end
 
 Given(/^there is a paid course in the future$/) do
   teacher = FactoryGirl.create(:chalkler, name: "Test chalkler")
-  course = FactoryGirl.create(:course, name: "Test class", teacher_cost: 5, cost: 10, status: "Published", start_at: 10.days.from_now, teacher_id: teacher.id, channel: FactoryGirl.create(:channel))
+  lesson = FactoryGirl.create(:lesson, start_at: 10.days.from_now, duration: 1)
+  course = FactoryGirl.create(:course, name: "Test class", teacher_cost: 5, cost: 10, status: "Published", lessons: [lesson], teacher_id: teacher.id, channel: FactoryGirl.create(:channel))
 end
 
 When(/^they fill in a teacher cost of "(.*?)"$/) do |teacher_cost|

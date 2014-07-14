@@ -40,7 +40,8 @@ describe ChalkleMeetup::CourseImporter do
     end
 
     it "update published date for a course already created" do
-      course = FactoryGirl.create(:course, meetup_id: 12345678, start_at: Date.today)
+      lesson = FactoryGirl.create(:lesson, start_at: Date.today, duration: 1.5)
+      course = FactoryGirl.create(:course, meetup_id: 12345678, lessons: [lesson])
       subject.import(result, channel)
       course.reload.published_at.to_time.to_i.should == 1351297791
     end

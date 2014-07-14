@@ -1,5 +1,7 @@
 Given(/^the chalkler "(.*?)" has booked a class$/) do |name|
-  course = FactoryGirl.create(:course, cost: 10, start_at: 2.days.from_now, name: 'Cool class!', channel: FactoryGirl.create(:channel))
+
+  lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1)
+  course = FactoryGirl.create(:course, cost: 10, lessons: [lesson], name: 'Cool class!', channel: FactoryGirl.create(:channel))
   chalkler = Chalkler.find_by_name name
   FactoryGirl.create(:booking, chalkler: chalkler, course: course, payment_method: 'cash')
 end
@@ -30,7 +32,8 @@ end
 
 Given(/^the chalkler "(.*?)" has booked a free class$/) do |name|
   chalkler = Chalkler.find_by_name name
-  course = FactoryGirl.create(:course, cost: 0, name: 'Free class', start_at: 3.days.from_now)
+  lesson = FactoryGirl.create(:lesson, start_at: 3.days.from_now, duration: 1)
+  course = FactoryGirl.create(:course, cost: 0, name: 'Free class', lessons: [lesson])
   booking = FactoryGirl.create(:booking, chalkler: chalkler, course: course)
 end
 
@@ -43,7 +46,8 @@ end
 
 Given(/^the chalkler "(.*?)" has been to a class already$/) do |name|
   course = Course.find_by_name 'Cool class!'
-  course.update_attribute :start_at, 3.days.ago
+  #course.update_attribute :start_at, 3.days.ago
+  course.start_at=3.days.ago
   Booking.find_by_course_id(course.id).update_attribute(:paid, true)
 end
 

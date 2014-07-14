@@ -9,7 +9,7 @@ ActiveAdmin.register Course  do
     column("Class Date") { |course| course.start_at.strftime("%B %d, %Y") if course.start_at.present? }
     column("Class Time") { |course| course.start_at.strftime("%l:%M%p") if course.start_at.present? }
   end
-  config.sort_order = "start_at_desc"
+  #config.sort_order = "start_at_desc"
 
   controller do
     load_resource :except => :index
@@ -60,7 +60,10 @@ ActiveAdmin.register Course  do
         number_to_currency course.uncollected_turnover, sortable: false
      end
     end
-    column :start_at
+    #column :start_at
+    column(:start_at) {|course| course.lessons.empty? ? nil : course.start_at.strftime("%B %d, %Y %H:%M") }
+      
+
     default_actions
   end
 

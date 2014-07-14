@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140710224526) do
+ActiveRecord::Schema.define(:version => 20140710225858) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -369,7 +369,7 @@ ActiveRecord::Schema.define(:version => 20140710224526) do
 
   add_foreign_key "channels", "cost_models", name: "channels_cost_model_id_fk"
 
-  add_foreign_key "courses", "regions", name: "lessons_region_id_fk"
+  add_foreign_key "courses", "regions", name: "courses_region_id_fk"
 
   add_foreign_key "filter_rules", "filters", name: "filter_rules_filter_id_fk"
 
