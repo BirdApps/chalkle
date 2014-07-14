@@ -29,6 +29,8 @@ class Teaching
   end
 
   def course_args
+    lesson = Lesson.new{|l| l.duration = @duration.to_i*60*60 }
+    lesson.save
     {
       name: meetup_event_name(@category_primary_id,@title),
       teacher_id: @teacher_id,
@@ -36,7 +38,7 @@ class Teaching
       teacher_bio: @bio,
       do_during_class: @do_during_class,
       learning_outcomes: @learning_outcomes,
-      lessons: [{ duration: @duration.to_i*60*60 }],
+      lessons: [lesson],
       cost: @cost,
       teacher_cost: @teacher_cost,
       max_attendee: @max_attendee.to_i,

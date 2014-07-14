@@ -82,15 +82,16 @@ class Channel < ActiveRecord::Base
   end
 
   def course_announced(start_date,end_date)
-    courses.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+    #courses.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+    courses.published.start_at_between(start_date,end_date)
   end
 
   def course_ran(start_date,end_date)
-    courses.visible.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+    courses.visible.published.start_at_between(start_date,end_date)
   end
 
   def cancel_courses(start_date,end_date)
-    courses.hidden.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+    courses.hidden.start_at_between(start_date,end_date)
   end
 
   def past_courses(date)

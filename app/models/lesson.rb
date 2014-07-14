@@ -8,12 +8,10 @@ class Lesson < ActiveRecord::Base
 
   belongs_to :course
 
-  validates_format_of :duration, with: /^[+]?([1-9][0-9]*(?:[\.][0-9]*)?|0*\.0*[1-9][0-9]*)(?:[eE][+-][0-9]+)?$/
+  validates_presence_of :start_at
+  validates_presence_of :duration
 
-  validate :starts_within_a_century
-  
-  def starts_within_a_century
-    errors.add(:start_at, "is not within a century") unless start_at <= 100.years.from_now && start_at >= 100.years.ago
+  validate do |lesson|
+    lesson.duration > 0 if lesson.duration
   end
-
 end

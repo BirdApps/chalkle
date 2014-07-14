@@ -30,8 +30,10 @@ end
 
 Given /^there is course in the "(.*?)" channel coming up this week$/ do |channel_name|
   channel = Channel.where(name: channel_name).first_or_create!([name: channel_name, url_name: channel_name.downcase, email: "#{channel_name.downcase}@chalkle.com"], :as => :admin)
+
   Course.where(:name => "Test Class").destroy_all
-  course = FactoryGirl.create(:course, name: "Test Class", status: "Published", start_at: 2.days.from_now, cost: 5, channel: channel)
+  lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1)
+  course = FactoryGirl.create(:course, name: "Test Class", status: "Published", lessons: [lesson], cost: 5, channel: channel)
 end
 
 Then(/^they should see an "(.*?)" link$/) do |name|
@@ -42,7 +44,8 @@ Given /^there is course in the "(.*?)" channel coming up this week with minimum 
   channel = Channel.where(name: channel_name).first_or_create!([name: channel_name, url_name: channel_name.downcase, email: "#{channel_name.downcase}@chalkle.com"], :as => :admin)
   Course.where(:name => "Test Class").destroy_all
   teacher = FactoryGirl.create(:chalkler, name: "Teacher")
-  course = FactoryGirl.create(:course, name: "Test Class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, status: "Published", cost: 10, venue: "Town Hall", min_attendee: min_attendee, channel: channel)
+  lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1)
+  course = FactoryGirl.create(:course, name: "Test Class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, status: "Published", cost: 10, venue: "Town Hall", min_attendee: min_attendee, channel: channel)
 end
 
 Given(/^the number of RSVPs is "(.*?)"$/) do |bookings_count|
@@ -55,7 +58,8 @@ Given(/^there is course in the "(.*?)" channel coming up this week with no teach
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler, name: "Teacher")
   chalkler = FactoryGirl.create(:channel, name: "Student")
-  course = FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, status: "Published", cost: 10, venue: "Town Hall", channel: channel)
+  lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1)
+  course = FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: nil, venue_cost: 10, status: "Published", cost: 10, venue: "Town Hall", channel: channel)
   FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course.id, guests: 10, status: 'yes')
 end
 

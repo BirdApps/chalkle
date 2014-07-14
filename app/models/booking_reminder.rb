@@ -24,7 +24,7 @@ class BookingReminder
 
   def remind_now
     if remindable.any?
-      bookings = remindable.keep_if {|b| (b.course_start_at <= (Time.now.utc + @course_start_in)) & (b.course_start_at > (Time.now.utc + @course_start_in - 1.day)) }
+      bookings = remindable.keep_if {|b| (b.course_start_at <= (Time.now.utc + @course_start_in)) & (b.course_start_at > (Time.now.utc + @course_start_in - 1.day-1.minute)) }
       return fresh_records(bookings.sort_by{|b| b[:course_start_at]}.reverse)
     else
       return []
