@@ -4,7 +4,7 @@ class BookingsController < ApplicationController
 
   def index
     @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
-    @upcoming_bookings = current_chalkler.bookings.visible.upcoming.confirmed.paid.order('courses.start_at').decorate
+    @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming.decorate
   end
 
   def new

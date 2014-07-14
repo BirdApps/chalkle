@@ -53,7 +53,8 @@ describe BookingMailer do
         teacher = FactoryGirl.create(:chalkler, name: "Britany Spears", email: "britany@spears.com")
         @chalkler = FactoryGirl.create(:chalkler, name: "Michael Jackson", email: "michael@jackson.com")
         channel = FactoryGirl.create(:channel, name: "Music", account: "11-1111-1234567-00", url_name: 'sixdegrees')
-        @course = FactoryGirl.create(:course, name: "Chalkle Class 5", start_at: 2.days.from_now, cost: 10, teacher_id: teacher.id, venue: "Town Hall", prerequisites: "White shoes", channel: channel)
+        lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
+        @course = FactoryGirl.create(:course, name: "Chalkle Class 5", lessons: [lesson], cost: 10, teacher_id: teacher.id, venue: "Town Hall", prerequisites: "White shoes", channel: channel)
         @booking = FactoryGirl.create(:booking, chalkler_id: @chalkler.id, course_id: @course.id, payment_method: "cash", guests: 2)
         @email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
       end

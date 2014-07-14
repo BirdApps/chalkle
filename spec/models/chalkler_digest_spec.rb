@@ -6,9 +6,10 @@ describe ChalklerDigest do
   describe "course selection" do
     # this course should always be excluded from a set
     let(:course1) {
+      lesson = FactoryGirl.create(:lesson, start_at: 1.day.from_now, duration: 1)
       FactoryGirl.create(:course,
                          published_at: 1.day.ago,
-                         start_at: 1.day.from_now,
+                         lessons: [lesson],
                          status: 'Published',
                          do_during_class: 'x',
                          meetup_url: 'http://meetup.com',
@@ -21,9 +22,10 @@ describe ChalklerDigest do
       @channel = FactoryGirl.create(:channel, visible: true)
       @chalkler.channels << @channel
       @digest = ChalklerDigest.new(@chalkler)
+      lesson = FactoryGirl.create(:lesson, start_at: 3.days.from_now, duration: 1)
       @course = FactoryGirl.create(:course,
                                    published_at: 1.day.ago,
-                                   start_at: 3.days.from_now,
+                                   lessons: [lesson],
                                    status: 'Published',
                                    do_during_class: 'x',
                                    meetup_url: 'http://meetup.com',

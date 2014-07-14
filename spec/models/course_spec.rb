@@ -66,7 +66,8 @@ describe Course do
   describe ".upcoming" do
     before do
       { 'old' => 1.day.ago, 'soon' => 1.day.from_now, 'later' => 5.days.from_now }.each do |name, start_at|
-        FactoryGirl.create(:course, visible: true, status: 'Published', name: name, start_at: start_at)
+        lesson = FactoryGirl.create(:lesson, start_at: start_at, duration: 1)
+        FactoryGirl.create(:course, visible: true, status: 'Published', name: name, lessons: [lesson])
       end
     end
 
@@ -85,7 +86,8 @@ describe Course do
       day_start = Time.new(2013,1,1,0,5)
       day_middle = Time.new(2013,1,1,12,0)
 
-      course = FactoryGirl.create(:course, start_at: day_start)
+      lesson = FactoryGirl.create(:lesson, start_at: day_start, duration: 1)
+      course = FactoryGirl.create(:course, lessons: [lesson])
 
       Timecop.freeze(day_middle) do
         Course.upcoming_or_today.should include(course)
@@ -96,7 +98,8 @@ describe Course do
       day_start = Time.new(2013,1,1,0,5,0)
       day_middle = Time.new(2013,1,1,12,0,0)
 
-      course = FactoryGirl.create(:course, start_at: day_middle)
+      lesson = FactoryGirl.create(:lesson, start_at: day_middle, duration: 1)
+      course = FactoryGirl.create(:course, lessons: [lesson])
 
       Timecop.freeze(day_start) do
         Course.upcoming_or_today.should include(course)
@@ -105,7 +108,11 @@ describe Course do
   end
 
   describe "cancellation email" do
-    let(:course2) { FactoryGirl.create(:course, start_at: Date.today, min_attendee: 3) }
+    let(:course2) { FactoryGirl.create(
+        :course, 
+        lessons: [FactoryGirl.create(:lesson, start_at: Date.today, duration: 1)],
+        min_attendee: 3)
+      }
 
     it "sends cancellation email for too little bookings" do
       course2.class_may_cancel.should be_true
@@ -122,7 +129,8 @@ describe Course do
       @teacher = FactoryGirl.create(:chalkler, name: "Teacher")
       chalkler = FactoryGirl.create(:chalkler, name: "Chalkler")
       @channel = FactoryGirl.create(:channel)
-      @course = FactoryGirl.create(:course, name: "Test class", teacher_id: @teacher.id, start_at: 2.days.from_now, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 2, venue: "Town Hall")
+      lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
+      @course = FactoryGirl.create(:course, name: "Test class", teacher_id: @teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 2, venue: "Town Hall")
       FactoryGirl.create(:booking, chalkler_id: chalkler.id, course: @course, status: 'yes', guests: 5)
     end
 
@@ -140,7 +148,8 @@ describe Course do
     it "should raise warning flag when no date is assigned" do
       @course.update_attributes({:start_at => nil}, :as => :admin)
       @course.flag_warning.should == "Missing details"
-      @course.update_attributes({:start_at => 2.days.from_now}, :as => :admin)
+      #@course.update_attributes({:start_at => 2.days.from_now}, :as => :admin)
+      @course.start_at=2.days.from_now
     end
 
     it "should raise warning flag when no venue cost is assigned" do
