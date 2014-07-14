@@ -11,5 +11,5 @@ end
 
 Then /^this lesson should be undeleted$/ do
   lesson = Lesson.find_by_name("Test Class")
-  lesson.visible.should be_true
+  lesson.visible.should be true
 end

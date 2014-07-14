@@ -19,7 +19,7 @@ describe "Chalkler_stats" do
     it "calculates the number of new members" do
       chalkler2 = FactoryGirl.create(:chalkler, email: "test@gmail.com", created_at: 1.day.ago)
       chalkler2.channels << @channel
-      @channel.channel_stats(7.days.ago,7.days).chalkler_stats.new_chalklers.should == 1
+      expect(@channel.channel_stats(7.days.ago,7.days).chalkler_stats.new_chalklers).to eq 1
     end
 
     it "calculates number of new members in previous time period" do
@@ -27,7 +27,7 @@ describe "Chalkler_stats" do
       chalkler4 = FactoryGirl.create(:chalkler, email: "newuser4@gmail.com", created_at: 10.days.ago)
       chalkler3.channels << @channel
       chalkler4.channels << @channel
-      @channel.channel_stats(7.days.ago,7.days).chalkler_stats.previous.new_chalklers.should == 2
+      expect(@channel.channel_stats(7.days.ago,7.days).chalkler_stats.previous.new_chalklers).to eq 2
     end 
 
     it "calculates percentage change in number of new members" do
@@ -37,11 +37,11 @@ describe "Chalkler_stats" do
       chalkler2.channels << @channel
       chalkler3.channels << @channel
       chalkler4.channels << @channel
-      @channel.channel_stats(7.days.ago,7.days).chalkler_stats.percent_new_chalklers.should == -50.0
+      expect(@channel.channel_stats(7.days.ago,7.days).chalkler_stats.percent_new_chalklers).to eq -50.0
     end 
 
     it "calculates the percentage of active members" do
-      @channel.channel_stats(7.days.ago,7.days).chalkler_stats.percent_active.should == 40.0
+      expect(@channel.channel_stats(7.days.ago,7.days).chalkler_stats.percent_active).to eq 40.0
     end
   end
 
@@ -70,20 +70,20 @@ describe "Chalkler_stats" do
     end
 
     it "calculates total attendee" do
-      @channel.channel_stats(3.days.ago,3.days).chalkler_stats.attendee.should == 15
+      expect(@channel.channel_stats(3.days.ago,3.days).chalkler_stats.attendee).to eq 15
     end
 
     it "calculates total attendee in previous time period" do
-      @channel.channel_stats(3.days.ago,3.days).chalkler_stats.previous.attendee.should == 21
+      expect(@channel.channel_stats(3.days.ago,3.days).chalkler_stats.previous.attendee).to eq 21
     end
 
     it "calculates percentage change in number of attendees" do
       expected = -(6.0/21.0*100.0)
-      @channel.channel_stats(3.days.ago,3.days).chalkler_stats.percent_attendee.to_f.should be_within(0.0001).of(expected)
+      expect(@channel.channel_stats(3.days.ago,3.days).chalkler_stats.percent_attendee.to_f).to be_within(0.0001).of(expected)
     end
 
     it "calculates fill fraction" do
-      @channel.channel_stats(3.days.ago,3.days).chalkler_stats.fill_fraction.should == 30
+      expect(@channel.channel_stats(3.days.ago,3.days).chalkler_stats.fill_fraction).to eq 30
     end
 
   end

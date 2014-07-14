@@ -7,7 +7,7 @@ describe VenueImporter do
 
   describe 'initialization' do
     it "assigns a channel for the import" do
-      importer.instance_eval{ @channel }.should == channel
+      expect(importer.instance_eval{ @channel }).to be channel
     end
   end
 
@@ -18,11 +18,11 @@ describe VenueImporter do
     end
 
     it "creates a venue from imported hash" do
-      Venue.where{name == 'Venue'}.exists?.should be_true
+      expect(Venue.where{name == 'Venue'}.exists?).to be true
     end
 
     it "creates a city from imported hash" do
-      City.where{name == 'Wellington'}.exists?.should be_true
+      expect(City.where{name == 'Wellington'}.exists?).to be true
     end
   end
 end

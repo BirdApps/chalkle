@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Booking do
   describe "resource creation" do
-    specify { FactoryGirl.build(:booking).should be_valid }
+    specify { expect(FactoryGirl.build(:booking)).to be_valid }
 
     it { should validate_presence_of(:lesson_id) }
     it { should validate_presence_of(:chalkler_id) }
@@ -12,7 +12,7 @@ describe Booking do
       chalkler = FactoryGirl.create(:chalkler)
       lesson = FactoryGirl.create(:lesson)
       FactoryGirl.create(:booking, chalkler: chalkler, lesson: lesson)
-      FactoryGirl.build(:booking, chalkler: chalkler, lesson: lesson).should_not be_valid
+      expect(FactoryGirl.build(:booking, chalkler: chalkler, lesson: lesson)).not_to be_valid
     end
 
     describe "callbacks" do
@@ -23,11 +23,11 @@ describe Booking do
           let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
 
           it "sets payment method to free" do
-            booking.payment_method.should == 'free'
+            expect(booking.payment_method).to eq 'free'
           end
 
           it "sets paid to true" do
-            booking.paid.should be_true
+            expect(booking.paid).to be true
           end
         end
 
@@ -36,8 +36,8 @@ describe Booking do
           let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
 
           it "leaves booking untouched" do
-            booking.payment_method.should_not == 'free'
-            booking.paid.should be_false
+            expect(booking.payment_method).not_to eq 'free'
+            expect(booking.paid).to be_falsey
           end
         end
 
@@ -46,8 +46,8 @@ describe Booking do
           let(:booking) { FactoryGirl.create(:booking, lesson: lesson) }
 
           it "leaves booking untouched" do
-            booking.payment_method.should_not == 'free'
-            booking.paid.should be_false
+            expect(booking.payment_method).not_to eq 'free'
+            expect(booking.paid).to be_falsey
           end
         end
       end
@@ -58,79 +58,79 @@ describe Booking do
     it "returns nil when lesson has no cost" do
       lesson = FactoryGirl.create(:lesson, cost: nil)
       booking = FactoryGirl.create(:booking, guests: 5, cost_override: nil, lesson: lesson)
-      booking.cost.should be_nil
+      expect(booking.cost).to be nil
     end
 
     it "returns cost from lesson" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
       booking = FactoryGirl.create(:booking, guests: 0, cost_override: nil, lesson: lesson)
-      booking.cost.to_f.should == 10
+      expect(booking.cost.to_f).to eq 10
     end
 
     it "calculates cost when booking has no guests" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
       booking = FactoryGirl.create(:booking, guests: nil, cost_override: nil, lesson: lesson)
-      booking.cost.to_f.should == 10
+      expect(booking.cost.to_f).to eq 10
     end
 
     it "calculates cost when booking has guests" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
       booking =  FactoryGirl.create(:booking, guests: 9, cost_override: nil, lesson: lesson)
-      booking.cost.to_f.should == 100
+      expect(booking.cost.to_f).to eq 100
     end
 
     it "sets a correct cost_override" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
       booking =  FactoryGirl.create(:booking, cost_override: 20, lesson: lesson)
-      booking.cost.to_f.should == 20
+      expect(booking.cost.to_f).to eq 20
     end
   end
 
   describe ".paid" do
     it "excludes unpaid bookings" do
       booking = FactoryGirl.create(:booking)
-      Booking.paid.should_not include(booking)
+      expect(Booking.paid).not_to include(booking)
     end
 
     it "includes paid bookings" do
       booking = FactoryGirl.create(:booking, paid: true)
-      Booking.paid.should include(booking)
+      expect(Booking.paid).to include(booking)
     end
   end
 
   describe ".unpaid" do
     it "excludes paid bookings" do
       booking = FactoryGirl.create(:booking, paid: true)
-      Booking.unpaid.should_not include(booking)
+      expect(Booking.unpaid).not_to include(booking)
     end
 
     it "includes unpaid bookings" do
       booking = FactoryGirl.create(:booking)
-      Booking.unpaid.should include(booking)
+      expect(Booking.unpaid).to include(booking)
     end
   end
 
   describe ".confirmed" do
     it "excludes unconfirmed bookings" do
       booking = FactoryGirl.create(:booking, status: "waitlist")
-      Booking.confirmed.should_not include(booking)
+      expect(Booking.confirmed).not_to include(booking)
     end
 
     it "includes confirmed bookings" do
       booking = FactoryGirl.create(:booking, status: "yes")
-      Booking.confirmed.should include(booking)
+      expect(Booking.confirmed).to include(booking)
     end
   end
 
   describe ".waitlist" do
     it "excludes confirmed bookings" do
       booking = FactoryGirl.create(:booking, status: "yes")
-      Booking.waitlist.should_not include(booking)
+      expect(Booking.waitlist).not_to include(booking)
     end
 
     it "includes waitlisted bookings" do
       booking = FactoryGirl.create(:booking, status: "waitlist")
-      Booking.waitlist.should include(booking)
+      expect(Booking.waitlist).to include(booking)
     end
   end
 
@@ -138,13 +138,13 @@ describe Booking do
     it "excludes bookings with a zero cost" do
       lesson = FactoryGirl.create(:lesson, cost: 0)
       booking = FactoryGirl.create(:booking, lesson: lesson)
-      Booking.billable.should_not include(booking)
+      expect(Booking.billable).not_to include(booking)
     end
 
     it "includes bookings that have a cost" do
       lesson = FactoryGirl.create(:lesson, cost: 10)
       booking = FactoryGirl.create(:booking, lesson: lesson)
-      Booking.billable.should include(booking)
+      expect(Booking.billable).to include(booking)
     end
 
     context "booking belongs to the teacher" do
@@ -153,12 +153,12 @@ describe Booking do
 
       it "is included with guests" do
         booking = FactoryGirl.create(:booking, lesson: lesson, chalkler: teacher, guests: 1)
-        Booking.billable.should include(booking)
+        expect(Booking.billable).to include(booking)
       end
 
       it "is excluded without guests" do
         booking = FactoryGirl.create(:booking, lesson: lesson, chalkler: teacher, guests: nil)
-        Booking.billable.should_not include(booking)
+        expect(Booking.billable).not_to include(booking)
       end
     end
   end
@@ -167,19 +167,19 @@ describe Booking do
     it "includes booking for lessons in the future" do
       lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, visible: true)
       booking = FactoryGirl.create(:booking, lesson: lesson)
-      Booking.upcoming.should include(booking)
+      expect(Booking.upcoming).to include(booking)
     end
 
     it "excludes bookings for lessons in the past" do
       lesson = FactoryGirl.create(:lesson, start_at: 2.days.ago, visible: true)
       booking = FactoryGirl.create(:booking, lesson: lesson)
-      Booking.upcoming.should_not include(booking)
+      expect(Booking.upcoming).not_to include(booking)
     end
 
     it "excludes bookings for cancelled lessons" do
       lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, visible: false)
       booking = FactoryGirl.create(:booking, lesson: lesson)
-      Booking.upcoming.should_not include(booking)
+      expect(Booking.upcoming).not_to include(booking)
     end
   end
 
@@ -188,69 +188,69 @@ describe Booking do
       lesson = FactoryGirl.create(:lesson, name: "lesson_name", meetup_id: 12345678)
       chalkler = FactoryGirl.create(:chalkler, name: "chalkler_name")
       booking = FactoryGirl.create(:booking, lesson: lesson, chalkler: chalkler)
-      booking.name.should == "lesson_name (12345678) - chalkler_name"
+      expect(booking.name).to eq "lesson_name (12345678) - chalkler_name"
     end
   end
 
   let(:booking) { FactoryGirl.create(:booking) }
 
   describe ".visible" do
-    it {Booking.visible.should include(booking)}
+    it {expect(Booking.visible).to include(booking)}
 
     it "should not include a hidden booking" do
       booking.update_attribute :visible, false
-      Booking.visible.should_not include(booking)
+      expect(Booking.visible).not_to include(booking)
     end
   end
 
   describe ".hidden" do
     it "includes hidden bookings" do
       booking.update_attribute :visible, false
-      Booking.hidden.should include(booking)
+      expect(Booking.hidden).to include(booking)
     end
 
-    it {Booking.hidden.should_not include(booking)}
+    it {expect(Booking.hidden).not_to include(booking)}
   end
 
   describe "#refundable?" do
     it "returns false when lesson is less than 3 days away" do
       lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now)
-      FactoryGirl.build(:booking, lesson: lesson).refundable?.should be_false
+      expect(FactoryGirl.build(:booking, lesson: lesson).refundable?).to be false
     end
 
     it "returns true when lesson is more than 3 days away" do
       lesson = FactoryGirl.create(:lesson, start_at: 4.days.from_now)
-      FactoryGirl.build(:booking, lesson: lesson).refundable?.should be_true
+      expect(FactoryGirl.build(:booking, lesson: lesson).refundable?).to be true
     end
   end
 
   describe "#teacher?" do
     it "returns false when lesson has no teacher" do
       lesson = FactoryGirl.create(:lesson, teacher_id: nil)
-      FactoryGirl.build(:booking, lesson: lesson).teacher?.should be_false
+      expect(FactoryGirl.build(:booking, lesson: lesson).teacher?).to be false
     end
 
     it "returns true when chalkler is teacher" do
       chalkler = FactoryGirl.create(:chalkler)
       lesson = FactoryGirl.create(:lesson, teacher: chalkler)
-      FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_true
+      expect(FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?).to be true
     end
 
     it "returns false when chalkler isn't a teacher" do
       chalkler = FactoryGirl.create(:chalkler)
       teacher = FactoryGirl.create(:chalkler)
       lesson = FactoryGirl.create(:lesson, teacher: teacher)
-      FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?.should be_false
+      expect(FactoryGirl.build(:booking, lesson: lesson, chalkler: chalkler).teacher?).to be false
     end
   end
 
   describe "#cancelled?" do
     it "reurns true if booking is cancelled" do
-      FactoryGirl.build(:booking, status: 'no').cancelled?.should be_true
+      expect(FactoryGirl.build(:booking, status: 'no').cancelled?).to be true
     end
 
     it "returns false if booking is not cancelled" do
-      FactoryGirl.build(:booking, status: 'yes').cancelled?.should be_false
+      expect(FactoryGirl.build(:booking, status: 'yes').cancelled?).to be false
     end
   end
 end

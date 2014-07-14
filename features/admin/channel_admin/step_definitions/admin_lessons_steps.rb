@@ -21,7 +21,7 @@ end
 Then /^this lesson should be trashed$/ do
   lesson = Lesson.find_by_name("Test Class")
   page.should have_content("Lesson #{lesson.id} trashed!")
-  lesson.visible.should be_false
+  expect(lesson.visible).to be false
 end
 
 Given /^the "(.*?)" channel has a teacher percentage of "(.*?)" percent$/ do |channel_name, teacher_percentage|
@@ -142,6 +142,6 @@ When(/^they visit the "(.*?)" channel class listing$/) do |name|
 end
 
 Then(/^they should see this image on the class listing$/) do
-  page.should have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
+  expect(page).to have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
   FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
 end

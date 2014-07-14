@@ -28,20 +28,20 @@ describe BookingMailer do
       	@email = BookingMailer.first_reminder_to_pay(chalkler,lesson).deliver
       end
 
-      pending "should deliver to the right person" do
-      	@email.should deliver_to(chalkler.email)
+      it "should deliver to the right person" do
+      	expect(@email).to deliver_to(chalkler.email)
       end
 
-    	pending "should have the right subject" do
-    		@email.should have_subject(chalkler.name + " - " + lesson.name)
+    	it "should have the right subject" do
+    		expect(@email).to have_subject(chalkler.name + " - " + lesson.name)
     	end
 
-    	pending "should have the right salutation" do
-    		@email.should have_body_text(chalkler.name.split[0])
+    	it "should have the right salutation" do
+    		expect(@email).to have_body_text(chalkler.name.split[0])
     	end
 
-    	pending "should have the right GST inclusive price" do
-    		@email.should have_body_text((lesson.cost*1.15).to_s)
+    	it "should have the right GST inclusive price" do
+    		expect(@email).to have_body_text((lesson.cost*1.15).to_s)
     	end
 
     end
@@ -59,37 +59,37 @@ describe BookingMailer do
       end
 
       it "should deliver to the right person" do
-        @email.should deliver_to("michael@jackson.com")
+        expect(@email).to deliver_to("michael@jackson.com")
       end
 
       it "should have the right salutation" do
-        @email.should have_body_text("Hello Michael")
+        expect(@email).to have_body_text("Hello Michael")
       end
 
       it "should have the class name" do
-        @email.should have_body_text("Chalkle class 5")
+        expect(@email).to have_body_text("Chalkle class 5")
       end
 
       it "should tell chalklers what to bring to the class" do
-        @email.should have_body_text("White shoes")
+        expect(@email).to have_body_text("White shoes")
       end
 
       it "should display the number of guests" do
-        @email.should have_body_text("You and 2 guests")
+        expect(@email).to have_body_text("You and 2 guests")
       end
 
       it "should display the total price" do
-        @email.should have_body_text("$30.00")
+        expect(@email).to have_body_text("$30.00")
       end
 
       it "should display how to pay" do
-        @email.should have_body_text("Pay $30.00 cash at Te Takere service desk")
+        expect(@email).to have_body_text("Pay $30.00 cash at Te Takere service desk")
       end
 
       it "should display how to pay for bank transfer" do
         @booking.update_attributes({:payment_method => "bank"}, :as => :admin)
         email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
-        email.should have_body_text("Deposit $30.00 into the following account:")
+        expect(email).to have_body_text("Deposit $30.00 into the following account:")
       end
 
       it "should display how to pay for people who booked using Meetup" do
@@ -97,19 +97,19 @@ describe BookingMailer do
         @booking.update_attributes({:payment_method => "meetup"}, :as => :admin)
         @booking.reload
         email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
-        email.should have_body_text(/#{@lesson.meetup_url}/)
+        expect(email).to have_body_text(/#{@lesson.meetup_url}/)
       end
 
       it "should should not show guests when there aren't any" do
         @booking.update_attributes({:guests => 0}, :as => :admin)
         email = BookingMailer.pay_reminder(@chalkler, [@booking]).deliver
-        email.should_not have_body_text("You and 2 guests")
+        expect(email).to_not have_body_text("You and 2 guests")
       end
 
       it "should should say TBD when venue is absent" do
         @lesson.update_attributes({:venue => nil}, :as => :admin)
         email = BookingMailer.pay_reminder(@chalkler, [@booking.reload]).deliver
-        email.should have_body_text("TBD")
+        expect(email).to have_body_text("TBD")
       end
     end
 

@@ -5,14 +5,14 @@ Given /^there is a booking with no details$/ do
 end
 
 Then /^they should see this booking$/ do
-  page.should have_content("Test Class")
+  expect(page).to have_content("Test Class")
 end
 
 Then /^this booking should be deleted$/ do
   lesson = Lesson.find_by_name("Test Class")
   booking = Booking.find_by_lesson_id(lesson.id)
-  page.should have_content("Booking #{booking.id} deleted!")
-  booking.visible.should be_false
+  expect(page).to have_content("Booking #{booking.id} deleted!")
+  booking.visible.should be false
 end
 
 Given /^there is a paid booking$/ do
