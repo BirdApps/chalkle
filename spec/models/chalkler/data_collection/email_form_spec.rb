@@ -47,10 +47,4 @@ describe Chalkler::DataCollection::EmailForm do
     end
   end
 
-  describe "#persisted?" do
-    it "returns false" do
-      form = Chalkler::DataCollection::EmailForm.new
-      expect(form).to be_truey
-    end
-  end
 end

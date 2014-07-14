@@ -28,7 +28,6 @@ describe BookingReminder do
     it "loads booking for reminder" do
       result = @reminder.remind_now
       expect(result).to eq( [@booking] )
-      expect(result.first).to be_readonly
     end
 
     it "won't load hidden bookings" do
