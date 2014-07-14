@@ -1,0 +1,26 @@
+.box.details
+  .header
+    %h3 Details
+  .content
+    %ul.unstyled
+      %li.start-time= l course.start_at, :format => :long_without_year
+      %li
+        %strong Location:
+        = course.venue
+      %li
+        %strong Cost:
+        = course.formatted_price
+      -if course.course_skill?
+        %li
+          %strong Skill level:
+          = course.course_skill
+      - if course.prerequisites?
+        %li
+          %strong What to bring:
+          = simple_format course.prerequisites
+      %li
+        %strong Suitable for:
+        -if course.suggested_audience?
+          = course.suggested_audience
+        -else
+          Everyone!

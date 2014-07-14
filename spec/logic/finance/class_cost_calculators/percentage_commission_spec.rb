@@ -9,14 +9,14 @@ module Finance
     describe PercentageCommission do
       ERROR_MARGIN = 0.000001
 
-      let(:lesson) { OpenStruct.new(teacher_cost: 10.0, channel: nil) }
+      let(:course) { OpenStruct.new(teacher_cost: 10.0, channel: nil) }
       let(:channel) { OpenStruct.new() }
-      let(:subject_with_gst) { PercentageCommission.new(lesson, tax: Tax::NzGst.new, channel: channel) }
-      subject { PercentageCommission.new(lesson, tax: Tax::NullTax.new, channel: channel) }
+      let(:subject_with_gst) { PercentageCommission.new(course, tax: Tax::NzGst.new, channel: channel) }
+      subject { PercentageCommission.new(course, tax: Tax::NullTax.new, channel: channel) }
 
       describe "#channel_fee" do
         it "is zero if no teacher cost has been set" do
-          lesson.teacher_cost = nil
+          course.teacher_cost = nil
           subject.channel_fee.should == 0
         end
 
@@ -27,7 +27,7 @@ module Finance
         end
 
         it "returns the channel percentage of the estimated final cost" do
-          lesson.teacher_cost = 10.0
+          course.teacher_cost = 10.0
           channel.channel_rate_override = 0.4
           channel.teacher_percentage = 0.5
           # estimated cost will be 20.0
@@ -36,7 +36,7 @@ module Finance
         end
 
         it "applies tax to channel fee" do
-          lesson.teacher_cost = 10.0
+          course.teacher_cost = 10.0
           channel.channel_rate_override = 0.4
           channel.teacher_percentage = 0.5
           # estimated cost will be 20.0
@@ -48,7 +48,7 @@ module Finance
 
       describe "#chalkle_fee" do
         it "is zero if no teacher cost has been set" do
-          lesson.teacher_cost = nil
+          course.teacher_cost = nil
           subject.chalkle_fee.should == 0
         end
 
@@ -59,7 +59,7 @@ module Finance
         end
 
         it "returns the chalkle percentage of the estimated final cost if no rounding is needed" do
-          lesson.teacher_cost = 10.0
+          course.teacher_cost = 10.0
           channel.channel_rate_override = 0.4
           channel.teacher_percentage = 0.5
           # estimated cost will be 20.0
@@ -68,7 +68,7 @@ module Finance
         end
 
         it "rounds values up to the nearest dollar and includes the rounding amount in the chalkle fee" do
-          lesson.teacher_cost = 9.8
+          course.teacher_cost = 9.8
           channel.channel_rate_override = 0.4
           channel.teacher_percentage = 0.5
           # estimated cost will be 19.6
@@ -78,7 +78,7 @@ module Finance
         end
 
         it "adds tax to the result" do
-          lesson.teacher_cost = 10.0
+          course.teacher_cost = 10.0
           channel.channel_rate_override = 0.4
           channel.teacher_percentage = 0.5
           # estimated cost will be 20.0
@@ -90,7 +90,7 @@ module Finance
 
       describe "#total_cost" do
         it "includes channel fee" do
-          lesson.teacher_cost = 10.0
+          course.teacher_cost = 10.0
           channel.channel_rate_override = 0.5
           channel.teacher_percentage = 0.5
 
@@ -98,7 +98,7 @@ module Finance
         end
 
         it "includes chalkle fee" do
-          lesson.teacher_cost = 10.0
+          course.teacher_cost = 10.0
           channel.channel_rate_override = 0.0
           channel.teacher_percentage = 0.5
 
@@ -106,7 +106,7 @@ module Finance
         end
 
         it "includes chalkle and channel fee" do
-          lesson.teacher_cost = 10.0
+          course.teacher_cost = 10.0
           channel.channel_rate_override = 0.3
           channel.teacher_percentage = 0.5
 
@@ -114,7 +114,7 @@ module Finance
         end
 
         it "includes rounding" do
-          lesson.teacher_cost = 10.0
+          course.teacher_cost = 10.0
           channel.channel_rate_override = 0.2
           channel.teacher_percentage = 0.6
 
@@ -122,8 +122,8 @@ module Finance
         end
 
         it "includes material cost" do
-          lesson.teacher_cost = 7.0
-          lesson.material_cost = 3.0
+          course.teacher_cost = 7.0
+          course.material_cost = 3.0
           channel.channel_rate_override = 0.2
           channel.teacher_percentage = 0.6
 

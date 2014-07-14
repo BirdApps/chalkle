@@ -10,7 +10,7 @@ module MeetupApiStub
     })
   end
 
-  def self.lesson_response
+  def self.course_response
     RMeetup::Type::Event.new({
       "status" => "upcoming",
       "id" => 12345678,

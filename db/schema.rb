@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140625222351) do
+ActiveRecord::Schema.define(:version => 20140710224526) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 20140625222351) do
 
   create_table "bookings", :force => true do |t|
     t.integer  "meetup_id"
-    t.integer  "lesson_id"
+    t.integer  "course_id"
     t.integer  "chalkler_id"
     t.string   "status",                                              :default => "yes"
     t.integer  "guests",                                              :default => 0
@@ -115,19 +115,19 @@ ActiveRecord::Schema.define(:version => 20140625222351) do
 
   add_index "channel_categories", ["channel_id", "category_id"], :name => "index_channel_categories_on_channel_id_and_category_id", :unique => true
 
-  create_table "channel_lesson_suggestions", :id => false, :force => true do |t|
+  create_table "channel_course_suggestions", :id => false, :force => true do |t|
     t.integer "channel_id",           :null => false
-    t.integer "lesson_suggestion_id", :null => false
+    t.integer "course_suggestion_id", :null => false
   end
 
-  add_index "channel_lesson_suggestions", ["channel_id", "lesson_suggestion_id"], :name => "cha_les_sug_index", :unique => true
+  add_index "channel_course_suggestions", ["channel_id", "course_suggestion_id"], :name => "cha_les_sug_index", :unique => true
 
-  create_table "channel_lessons", :id => false, :force => true do |t|
+  create_table "channel_courses", :id => false, :force => true do |t|
     t.integer "channel_id", :null => false
-    t.integer "lesson_id",  :null => false
+    t.integer "course_id",  :null => false
   end
 
-  add_index "channel_lessons", ["channel_id", "lesson_id"], :name => "index_channel_lessons_on_channel_id_and_lesson_id", :unique => true
+  add_index "channel_courses", ["channel_id", "course_id"], :name => "index_channel_courses_on_channel_id_and_course_id", :unique => true
 
   create_table "channel_photos", :force => true do |t|
     t.integer  "channel_id"
@@ -171,6 +171,66 @@ ActiveRecord::Schema.define(:version => 20140625222351) do
     t.string "calculator_class_name"
   end
 
+  create_table "course_images", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "course_id"
+    t.string   "image_uid"
+    t.string   "image_name"
+  end
+
+  create_table "course_suggestions", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "category_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "chalkler_id"
+  end
+
+  create_table "courses", :force => true do |t|
+    t.integer  "teacher_id"
+    t.integer  "meetup_id"
+    t.string   "name"
+    t.string   "status",                                                               :default => "Unreviewed"
+    t.text     "description"
+    t.decimal  "cost",                                   :precision => 8, :scale => 2
+    t.text     "meetup_data"
+    t.datetime "created_at",                                                                                     :null => false
+    t.datetime "updated_at",                                                                                     :null => false
+    t.decimal  "teacher_cost",                           :precision => 8, :scale => 2
+    t.decimal  "venue_cost",                             :precision => 8, :scale => 2
+    t.boolean  "visible",                                                              :default => true
+    t.decimal  "teacher_payment",                        :precision => 8, :scale => 2
+    t.string   "course_type"
+    t.text     "teacher_bio"
+    t.text     "do_during_class"
+    t.text     "learning_outcomes"
+    t.integer  "max_attendee"
+    t.integer  "min_attendee",                                                         :default => 2
+    t.text     "availabilities"
+    t.text     "prerequisites"
+    t.text     "additional_comments"
+    t.boolean  "donation",                                                             :default => false
+    t.string   "course_skill"
+    t.text     "venue"
+    t.datetime "published_at"
+    t.decimal  "deprecated_channel_percentage_override", :precision => 8, :scale => 2
+    t.decimal  "deprecated_chalkle_percentage_override", :precision => 8, :scale => 2
+    t.decimal  "material_cost",                          :precision => 8, :scale => 2, :default => 0.0
+    t.text     "suggested_audience"
+    t.string   "meetup_url"
+    t.decimal  "chalkle_payment",                        :precision => 8, :scale => 2
+    t.string   "course_upload_image"
+    t.integer  "category_id"
+    t.decimal  "cached_channel_fee",                     :precision => 8, :scale => 2
+    t.decimal  "cached_chalkle_fee",                     :precision => 8, :scale => 2
+    t.integer  "channel_id"
+    t.integer  "region_id"
+    t.decimal  "channel_rate_override",                  :precision => 8, :scale => 4
+  end
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -207,66 +267,11 @@ ActiveRecord::Schema.define(:version => 20140625222351) do
     t.string   "view_type",   :default => "weeks"
   end
 
-  create_table "lesson_images", :force => true do |t|
-    t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "lesson_id"
-    t.string   "image_uid"
-    t.string   "image_name"
-  end
-
-  create_table "lesson_suggestions", :force => true do |t|
-    t.string   "name"
-    t.text     "description"
-    t.integer  "category_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-    t.integer  "chalkler_id"
-  end
-
   create_table "lessons", :force => true do |t|
-    t.integer  "teacher_id"
-    t.integer  "meetup_id"
-    t.string   "name"
-    t.string   "status",                                                               :default => "Unreviewed"
-    t.text     "description"
-    t.decimal  "cost",                                   :precision => 8, :scale => 2
+    t.integer  "course_id"
     t.datetime "start_at"
-    t.integer  "duration"
-    t.text     "meetup_data"
-    t.datetime "created_at",                                                                                     :null => false
-    t.datetime "updated_at",                                                                                     :null => false
-    t.decimal  "teacher_cost",                           :precision => 8, :scale => 2
-    t.decimal  "venue_cost",                             :precision => 8, :scale => 2
-    t.boolean  "visible",                                                              :default => true
-    t.decimal  "teacher_payment",                        :precision => 8, :scale => 2
-    t.string   "lesson_type"
-    t.text     "teacher_bio"
-    t.text     "do_during_class"
-    t.text     "learning_outcomes"
-    t.integer  "max_attendee"
-    t.integer  "min_attendee",                                                         :default => 2
-    t.text     "availabilities"
-    t.text     "prerequisites"
-    t.text     "additional_comments"
-    t.boolean  "donation",                                                             :default => false
-    t.string   "lesson_skill"
-    t.text     "venue"
-    t.datetime "published_at"
-    t.decimal  "deprecated_channel_percentage_override", :precision => 8, :scale => 2
-    t.decimal  "deprecated_chalkle_percentage_override", :precision => 8, :scale => 2
-    t.decimal  "material_cost",                          :precision => 8, :scale => 2, :default => 0.0
-    t.text     "suggested_audience"
-    t.string   "meetup_url"
-    t.decimal  "chalkle_payment",                        :precision => 8, :scale => 2
-    t.string   "lesson_upload_image"
-    t.integer  "category_id"
-    t.decimal  "cached_channel_fee",                     :precision => 8, :scale => 2
-    t.decimal  "cached_chalkle_fee",                     :precision => 8, :scale => 2
-    t.integer  "channel_id"
-    t.integer  "region_id"
-    t.decimal  "channel_rate_override",                  :precision => 8, :scale => 4
+    t.decimal  "duration"
+    t.boolean  "cancelled", :default => false
   end
 
   create_table "omni_avatar_avatars", :force => true do |t|
@@ -364,10 +369,10 @@ ActiveRecord::Schema.define(:version => 20140625222351) do
 
   add_foreign_key "channels", "cost_models", name: "channels_cost_model_id_fk"
 
+  add_foreign_key "courses", "regions", name: "lessons_region_id_fk"
+
   add_foreign_key "filter_rules", "filters", name: "filter_rules_filter_id_fk"
 
   add_foreign_key "filters", "chalklers", name: "filters_chalkler_id_fk"
-
-  add_foreign_key "lessons", "regions", name: "lessons_region_id_fk"
 
 end

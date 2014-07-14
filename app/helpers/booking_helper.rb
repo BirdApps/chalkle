@@ -1,7 +1,7 @@
 module BookingHelper
 
-	def email_subject(chalkler_name,lesson_name)
-      URI.escape(chalkler_name) + " - " + URI.escape(lesson_name.gsub(/&/,"and"))
+	def email_subject(chalkler_name,course_name)
+      URI.escape(chalkler_name) + " - " + URI.escape(course_name.gsub(/&/,"and"))
 	end
 
 	def email_ending
@@ -28,14 +28,14 @@ Thank you for signing up to the upcoming chalkle class, ") + URI.escape(name.gsu
 
   def send_first_email(name, reference, price, event_url,account)
     # if first_email_condition
-    #   BookingMailer.first_reminder_to_pay(self.chalkler, self.lesson).deliver
+    #   BookingMailer.first_reminder_to_pay(self.chalkler, self.course).deliver
     # end
     email_preamble(name, reference, price, event_url, account) + email_ending
   end
 
   def send_second_email(name, reference, price, event_url,account)
     # if second_email_condition
-    #   BookingMailer.second_reminder_to_pay(self.chalkler, self.lesson).deliver
+    #   BookingMailer.second_reminder_to_pay(self.chalkler, self.course).deliver
     # end
   email_preamble(name, reference, price, event_url, account) + URI.escape("
 
@@ -50,7 +50,7 @@ Your RSVP status will be moved to yes when we have received your payment or a no
 
   def send_reminder_after_class(name, reference, price, event_url,account)
     # if reminder_after_class_condition
-    #   BookingMailer.reminder_after_class(self.chalkler, self.lesson).deliver
+    #   BookingMailer.reminder_after_class(self.chalkler, self.course).deliver
     # end
     URI.escape("
 We hope you have enjoyed your recent chalkle class, ") + URI.escape(name.gsub(/&/,"and"))  + URI.escape(".

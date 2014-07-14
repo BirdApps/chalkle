@@ -1,0 +1,166 @@
+$course-height: $course-medium-height;
+
+.week_calendar_view {
+  .day {
+    display: none;
+
+    &.has_classes {
+      display: block;
+    }
+
+    .day_title {
+      background-color: $calendar-cell-weekday;
+      font-weight: 400;
+      height: 40px;
+      line-height: 40px;
+      margin-right: 20px;
+      margin-top: 0;
+      padding-left: 7px;
+      position: relative;
+      display: inline-block;
+      min-width: 9em;
+
+    }
+
+    .day_title:after {
+      right: -40px;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+
+      border-left-color: $calendar-cell-weekday;
+      border-width: 20px;
+      top: 50%;
+      margin-top: -20px;
+    }
+
+    .courses {
+      @include make-row();
+
+      margin-top: 0;
+      margin-bottom: 15px;
+      margin-right: -5px;
+      margin-left: -5px;
+
+      $suggestion-color: #BBBBBB;
+
+      .suggestion {
+        border: 2px dashed $suggestion-color;
+        text-align: center;
+        padding: 38px !important;
+        color: $suggestion-color;
+        height: $course-height;
+        font-size: 24px;
+
+        a {
+          color: $suggestion-color;
+          font-size: 90%;
+          text-decoration: underline;
+
+          &:hover {
+            color: darken($suggestion-color, 20%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.full_page .week_calendar_view .courses {
+  .course_compact_container {
+    @include make-xs-column(12);
+    @include make-sm-column(6);
+    @include make-md-column(4);
+    padding: 0 5px;
+  }
+
+  .course_medium_container {
+    @include make-md-column(12);
+    @include make-lg-column(6);
+    padding: 0 5px;
+  }
+}
+
+.browse_sidebar {
+  padding-top: 14px;
+
+  .day_title {
+    min-width: inherit !important;
+
+    @media(max-width: $screen-md) {
+      .relative_name {
+        display: none !important;
+      }
+    }
+  }
+
+  .sidebar_top_nav {
+    float: right;
+    font-size: 12px;
+    line-height: 12px;
+    color: $fe-heading-color;
+    width: 120px;
+    margin-top: 10px;
+    text-align: right;
+    text-wrap: none;
+    overflow: visible;
+  }
+
+  .calendar_titles h2 {
+    font-size: 24px;
+    line-height: 28px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+
+    .part {
+      border-right: 0;
+    }
+    .main_part {
+      font-weight: normal;
+    }
+    &.has_relative {
+      .calendar_part {
+        display: none;
+      }
+    }
+  }
+
+  .week_calendar_view {
+    .courses {
+      margin-bottom: 8px;
+
+      .course_medium_container {
+        @include make-lg-column(12);
+        padding: 0 5px;
+      }
+
+      .suggestion {
+        display: none;
+      }
+
+      @media(max-width: $screen-md) {
+        .image_container {
+          display: none !important;
+        }
+        .details {
+          margin-left: $course-medium-width !important;
+        }
+      }
+    }
+
+    .day {
+      .day_title {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .next-calendar-section {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+  }
+}

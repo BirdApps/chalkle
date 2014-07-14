@@ -1,33 +1,33 @@
 %p Hello #{@chalkler.name.split[0]},
 %p Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.today.strftime("%A %B #{Date.today.day.ordinalize}")}.
 
-- if @new_lessons.any?
+- if @new_courses.any?
   %h2 New classes:
   %table.class-list{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0"}
-    - @new_lessons.each do |lesson|
+    - @new_courses.each do |course|
       %tr
         %td
-          %h3= link_to lesson.name.capitalize, lesson.url
+          %h3= link_to course.name.capitalize, course.url
           %p.details
-            = lesson.category_name
-            = "| #{lesson.channel_name}"
-            = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
-          %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
-          %p= link_to lesson.join_chalklers, lesson.url
+            = course.category_name
+            = "| #{course.channel_name}"
+            = "| Starts: #{course.start_at.strftime("%l:%M%p %a %B %d")}" if course.start_at?
+          %p= truncate(course.do_during_class, length: 250, separator: ' ')
+          %p= link_to course.join_chalklers, course.url
 
-- if @open_lessons.any?
+- if @open_courses.any?
   %h2 There is still time to sign up for these classes:
   %table.class-list{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0"}
-    - @open_lessons.each do |lesson|
+    - @open_courses.each do |course|
       %tr
         %td
-          %h3= link_to lesson.name.capitalize, lesson.url
+          %h3= link_to course.name.capitalize, course.url
           %p.details
-            = lesson.category_name
-            = "| #{lesson.channel_name}"
-            = "| Starts: #{lesson.start_at.strftime("%l:%M%p %a %B %d")}" if lesson.start_at?
-          %p= truncate(lesson.do_during_class, length: 250, separator: ' ')
-          %p= link_to lesson.join_chalklers, lesson.url
+            = course.category_name
+            = "| #{course.channel_name}"
+            = "| Starts: #{course.start_at.strftime("%l:%M%p %a %B %d")}" if course.start_at?
+          %p= truncate(course.do_during_class, length: 250, separator: ' ')
+          %p= link_to course.join_chalklers, course.url
 
 - if @chalkler.channels.any?
   %p= "See more classes from: #{@chalkler.channel_links}".html_safe

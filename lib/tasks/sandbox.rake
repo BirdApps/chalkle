@@ -29,8 +29,8 @@ namespace :sandbox do
       upload_file record, :image
     end
 
-    Lesson.all.each do |record|
-      upload_file record, :lesson_upload_image
+    Course.all.each do |record|
+      upload_file record, :course_upload_image
     end
 
     OmniAvatar::Avatar.all.each do |record|

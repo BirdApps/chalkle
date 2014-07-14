@@ -7,21 +7,21 @@ Thank you for signing up to the upcoming chalkle° classes. This is a reminder t
 Your have <%= "#{pluralize(@bookings.count, "unpaid class")}" %>
 
   <% @bookings.each do |b| %>
-<%= "#{link_to b.lesson_name.capitalize, "http://chalkle.com/#{booking_path(b)}"}" %>
-<%= l b.lesson_start_at, :format => :long_without_year %> | <%= b.lesson_venue ? b.lesson_venue : "TBD" %>
+<%= "#{link_to b.course_name.capitalize, "http://chalkle.com/#{booking_path(b)}"}" %>
+<%= l b.course_start_at, :format => :long_without_year %> | <%= b.course_venue ? b.course_venue : "TBD" %>
 
   Price : <%= b.formatted_price %>
 		<% if b.payment_method == 'cash' %>
   How to pay : <%= "Pay #{b.formatted_price} cash at Te Takere service desk prior to the course" %>
 		<% elsif b.payment_method == 'bank' %>
   How to pay : <%= "Deposit #{b.formatted_price} into the following account:" %>
-    Account number : <%= "#{b.lesson.channel.account}" %>
-    Reference : <%= "#{b.lesson.id} - #{@chalkler.name}" %>
+    Account number : <%= "#{b.course.channel.account}" %>
+    Reference : <%= "#{b.course.id} - #{@chalkler.name}" %>
 		<% elsif b.payment_method == 'meetup' %>
-  How to pay : <%= "Make payment using the #{link_to 'Meeup Event site', b.lesson_meetup_url}" %>
+  How to pay : <%= "Make payment using the #{link_to 'Meeup Event site', b.course_meetup_url}" %>
 		<% end %>
-		<% if b.lesson_prerequisites %>
-  What to bring : <%= b.lesson_prerequisites.empty? ? "Nothing" : b.lesson_prerequisites %>
+		<% if b.course_prerequisites %>
+  What to bring : <%= b.course_prerequisites.empty? ? "Nothing" : b.course_prerequisites %>
 		<% end %>
 		<% if b.guests? %>
   Attendees : <%= "You and #{pluralize(b.guests,"guest")}" %>

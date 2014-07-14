@@ -15,11 +15,11 @@ Chalkle::Application.routes.draw do
   end
 
   constraints(MainDomain) do
-    get ':country_code/:region_name', to: 'lessons#index', constraints: {country_code: /[a-zA-Z]{2}/}
+    get ':country_code/:region_name', to: 'courses#index', constraints: {country_code: /[a-zA-Z]{2}/}
   end
 
   authenticated :chalkler do
-    root :to => "lessons#index"
+    root :to => "courses#index"
   end
   root to: 'chalklers/dashboard#index'
 
@@ -30,14 +30,14 @@ Chalkle::Application.routes.draw do
     end
   end
 
-  resources :lessons, only: [:show, :index], path: 'classes' do
+  resources :courses, only: [:show, :index], path: 'classes' do
     resource :regions do
     end
     collection do
       get :month, shallow: true
-      get 'month/:year/:month' => 'lessons#month', as: :specific_month
+      get 'month/:year/:month' => 'courses#month', as: :specific_month
       get :week
-      get 'week/:year/:month/:day' => 'lessons#week', as: :specific_week
+      get 'week/:year/:month/:day' => 'courses#week', as: :specific_week
       get :calculate_cost
     end
   end
@@ -45,12 +45,12 @@ Chalkle::Application.routes.draw do
   resources :channels, only: :show do
     resource :subscriptions, only: [:create, :destroy] do
     end
-    resources :lessons, only: [:show, :index], path: 'classes' do
+    resources :courses, only: [:show, :index], path: 'classes' do
       collection do
         get :month, shallow: true
-        get 'month/:year/:month' => 'lessons#month', as: :specific_month
+        get 'month/:year/:month' => 'courses#month', as: :specific_month
         get :week
-        get 'week/:year/:month/:day' => 'lessons#week', as: :specific_week
+        get 'week/:year/:month/:day' => 'courses#week', as: :specific_week
       end
 
       resources :bookings, only: [:new, :create] do
@@ -67,7 +67,7 @@ Chalkle::Application.routes.draw do
 
   namespace :chalklers do
     root to: 'dashboard#index'
-    resources :lesson_suggestions, only: [:new, :create], path: 'class_suggestions'
+    resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
 
     get '/enter_email' => 'preferences#enter_email', as: 'enter_email'
     put '/enter_email' => 'preferences#enter_email', as: 'enter_email'

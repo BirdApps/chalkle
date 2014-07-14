@@ -22,12 +22,12 @@ class Chalkler < ActiveRecord::Base
   validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }, uniqueness: { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
 
-  has_one  :lesson_filter, class_name: 'Filters::Filter', dependent: :destroy
+  has_one  :course_filter, class_name: 'Filters::Filter', dependent: :destroy
   has_many :subscriptions
   has_many :channels, through: :subscriptions, source: :channel
   has_many :bookings
-  has_many :lessons, :through => :bookings
-  has_many :lessons_taught, class_name: "Lesson", foreign_key: "teacher_id"
+  has_many :courses, :through => :bookings
+  has_many :courses_taught, class_name: "Course", foreign_key: "teacher_id"
   has_many :payments
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
     def for_provider(provider)
@@ -35,7 +35,7 @@ class Chalkler < ActiveRecord::Base
     end
   end
 
-  scope :teachers, joins(:lessons_taught).uniq
+  scope :teachers, joins(:courses_taught).uniq
   scope :with_email_region_id, 
     lambda {|region| 
       where("email_region_ids LIKE '%?%'", region)

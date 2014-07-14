@@ -1,28 +1,28 @@
-- title "Booking: #{@booking.lesson_name.capitalize}"
+- title "Booking: #{@booking.course_name.capitalize}"
 
-%h2= "Booking: #{@booking.lesson_name.capitalize}"
+%h2= "Booking: #{@booking.course_name.capitalize}"
 
 .row
   .col-md-12
     %section.booking
       .row
         .col-md-6
-          .lesson-summary
+          .course-summary
             %h3 Summary
             %ul.unstyled
               %li
                 %strong Class:
-                = link_to @booking.lesson_name.capitalize, channel_lesson_path(@booking.lesson.channel, @booking.lesson)
+                = link_to @booking.course_name.capitalize, channel_course_path(@booking.course.channel, @booking.course)
               %li
                 %strong Time:
-                = l @booking.lesson_start_at, :format => :long_without_year
+                = l @booking.course_start_at, :format => :long_without_year
               %li
                 %strong Where:
-                = @booking.lesson_venue
-              - if @booking.lesson_prerequisites
+                = @booking.course_venue
+              - if @booking.course_prerequisites
                 %li
                   %strong What to bring:
-                  = simple_format @booking.lesson_prerequisites
+                  = simple_format @booking.course_prerequisites
               %li
                 %strong Price:
                 = @booking.formatted_price
@@ -45,10 +45,10 @@
                 %ul.unstyled
                   %li
                     %strong Account number:
-                    = @booking.lesson.channel.account
+                    = @booking.course.channel.account
                   %li
                     %strong Reference:
-                    = "#{@booking.lesson.id} - #{current_chalkler.name}"
+                    = "#{@booking.course.id} - #{current_chalkler.name}"
                 %p Please ensure payment before your class begins.
               - elsif @booking.payment_method == 'free'
                 %h4 Free Booking

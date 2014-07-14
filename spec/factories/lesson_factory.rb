@@ -1,21 +1,11 @@
 FactoryGirl.define do
   factory :lesson do
-    name "Learning fun"
-    description "You should really learn, it's fun!"
-    cost 20
+    start_at Time.now + 2.days
+    duration 1.5
 
-    factory :published_lesson do
-      status Lesson::STATUS_1
-      published_at { Time.now }
-    end
-
-    factory :lesson_with_bookings do
+    factory :cancelled_lesson do
       ignore do
-        bookings_count { rand(5) }
-      end
-
-      after(:create) do |lesson, evaluator|
-        FactoryGirl.create_list(:booking, evaluator.bookings_count, lesson: lesson)
+        cancelled true
       end
     end
   end

@@ -14,10 +14,10 @@
           Fun, social, face-to-face learning and teaching opportunities in
           Aotearoa New Zealand!
     .link_bar
-      = link_to "Find a class in your community", lessons_path
+      = link_to "Find a class in your community", courses_path
     .site-nav
       .container
-        = link_to "Learn", lessons_path
+        = link_to "Learn", courses_path
         = link_to "Teach", new_chalklers_teaching_path
         = link_to "About chalkle°", partners_path
 
@@ -31,9 +31,9 @@
         %p
           Anyone can be a chalkler - there are no registration fees or ten-week course
           commitments, just curiosity to learn something new and to meet people.
-      = render partial: 'lessons/upcoming_lessons_preview', locals: {lessons: @lessons, per_page: 4}
+      = render partial: 'courses/upcoming_courses_preview', locals: {courses: @courses, per_page: 4}
       .single-column.section_target
-        = link_to "View all classes", lessons_path
+        = link_to "View all classes", courses_path
   - unless @featured_channels.empty?
     %section.odd#join_a_channel
       .container
@@ -74,4 +74,4 @@
   = render '/layouts/expanded_footer'
 :coffeescript
   $ ->
-    $('.paged-lesson-group').simpleCarousel()
+    $('.paged-course-group').simpleCarousel()

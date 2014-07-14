@@ -162,8 +162,8 @@
   #take_a_class {
     text-align: center;
 
-    .paged-lesson-group {
-      .lesson-group-preview {
+    .paged-course-group {
+      .course-group-preview {
         margin: 20px auto 15px auto;
         max-width: 1020px;
 
@@ -171,7 +171,7 @@
           max-width: 520px;
         }
 
-        .lesson-page {
+        .course-page {
           display: none;
 
           &.active {

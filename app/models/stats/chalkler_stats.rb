@@ -21,10 +21,10 @@ class ChalklerStats < ChannelStats
   end
 
   def attendee
-    l = channel.lesson_ran(start,end_time)
+    l = channel.course_ran(start,end_time)
     total = 0
-    l.each do |lesson|
-      total = total + lesson.attendance
+    l.each do |course|
+      total = total + course.attendance
     end
     return total
   end
@@ -34,11 +34,11 @@ class ChalklerStats < ChannelStats
   end
 
   def fill_fraction
-    l = channel.lesson_ran(start,end_time)
+    l = channel.course_ran(start,end_time)
     total = 0
-    l.each do |lesson|
-      if lesson.attendance > 0
-        total = total + lesson.attendance.to_d / (lesson.max_attendee.present? ? lesson.max_attendee.to_d : lesson.attendance.to_d)
+    l.each do |course|
+      if course.attendance > 0
+        total = total + course.attendance.to_d / (course.max_attendee.present? ? course.max_attendee.to_d : course.attendance.to_d)
       end
     end
     if l.length > 0

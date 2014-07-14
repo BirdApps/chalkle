@@ -22,8 +22,8 @@
 #  describe "#set_category" do
 #    it "should create an association" do
 #      Category.should_receive(:find_by_name).with('category').and_return(category)
-#      subject.set_category 'category: a new lesson'
-#      lesson.categories.should include category
+#      subject.set_category 'category: a new course'
+#      course.categories.should include category
 #    end
 #  end
 #

@@ -14,7 +14,7 @@
       = f.input :learning_outcomes, :label => "What will we learn from this class?", :as => :text, :placeholder => "List what people will learn. For example: Identify the various ways personal assets can be protected; Identify the most suitable asset protection for the circumstances.", :input_html => { :rows => 2 }
       = f.input :category_primary_id, :label => "What is the primary category of this class?", :collection => Category.select_options, required: true
       = f.input :channel_id, :label => "Which channel would you like to hold this class in?", :collection => Channel.select_options(@chalkler_teaching.channels), required: true
-      = f.input :lesson_skill, :label => "What is the skill level of this class?", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }
+      = f.input :course_skill, :label => "What is the skill level of this class?", :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }
       = f.input :bio, :label => "Why are you a great teacher for this class?", :as => :text, :placeholder => "Tell us about the relevant experience or background you have. For example: I am a litigator with 13 years of experience in property and commercial law.", :input_html => { :rows => 2 }
 
       %h3 Class Details
@@ -27,7 +27,7 @@
         = f.input_field :duration
         = content_tag :span, "Hours", :class => "input-group-addon"
 
-      = f.input :free_lesson, wrapper: :checkbox, label: "Check here if you want this class to be offered for free", as: :boolean, input_html: {class: ''}
+      = f.input :free_course, wrapper: :checkbox, label: "Check here if you want this class to be offered for free", as: :boolean, input_html: {class: ''}
 
       = f.input :teacher_cost, :label => "How much money do you need to run this class? Note this must include any GST or materials you may need to purchase for this class. Chalkle&deg will add its fee and any applicable taxes to this to calculate the advertised price for the class.", :wrapper => :prepend do
         = content_tag :span, "$", :class => "input-group-addon"
@@ -54,4 +54,4 @@
         = f.button :submit, 'Submit my class', class: 'btn-primary'
 
 :javascript
-  $('form#new_teaching').lessonCostCalculator({resource_name: 'teaching'});
+  $('form#new_teaching').courseCostCalculator({resource_name: 'teaching'});

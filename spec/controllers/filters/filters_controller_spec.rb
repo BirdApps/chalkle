@@ -10,7 +10,7 @@ module Filters
       end
 
       def current_rule_should_be(key, value, filter = nil)
-        filter ||= @current_chalkler.lesson_filter
+        filter ||= @current_chalkler.course_filter
         filter.should_not be_nil
         filter.rules.length.should == 1
         filter.rules.first.strategy_name.should == key
@@ -30,14 +30,14 @@ module Filters
 
         context "with a filter" do
           it "sets the rule if none exists" do
-            @current_chalkler.create_lesson_filter
+            @current_chalkler.create_course_filter
             put :update, id: 'single_region', value: @region.id.to_s
 
             current_rule_should_be 'single_region', @region.id.to_s
           end
 
           it "updates the rule if it has changed" do
-            filter = @current_chalkler.create_lesson_filter
+            filter = @current_chalkler.create_course_filter
             filter.overwrite_rule! 'single_region', FactoryGirl.create(:region).id
 
             put :update, id: 'single_region', value: @region.id.to_s
@@ -46,7 +46,7 @@ module Filters
           end
 
           it "updates the view type" do
-            filter = @current_chalkler.create_lesson_filter
+            filter = @current_chalkler.create_course_filter
 
             put :update, id: 'single_region', value: @region.id.to_s, view: 'months'
 
@@ -88,7 +88,7 @@ module Filters
       login_chalkler
 
       it "sets params to view_type in current filter" do
-        filter = @current_chalkler.create_lesson_filter
+        filter = @current_chalkler.create_course_filter
 
         put :update_view, view: 'months'
         

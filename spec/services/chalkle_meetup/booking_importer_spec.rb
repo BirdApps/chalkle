@@ -9,7 +9,7 @@ describe ChalkleMeetup::BookingImporter do
         chalkler.identities.create(uid: '12345678', provider: 'meetup')
       end
     }
-    let!(:lesson) { FactoryGirl.create(:lesson, meetup_id: 12345678) }
+    let!(:course) { FactoryGirl.create(:course, meetup_id: 12345678) }
 
     it "creates a valid Booking" do
       booking = subject.import(data)
@@ -17,7 +17,7 @@ describe ChalkleMeetup::BookingImporter do
     end
 
     it "updates existing booking" do
-      booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
+      booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, course: course, guests: 20)
       subject.import(data)
       booking.reload.guests.should == 1
     end
@@ -29,9 +29,9 @@ describe ChalkleMeetup::BookingImporter do
     end
 
     it "won't update past classes" do
-      booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, lesson: lesson, guests: 20)
-      lesson.start_at = Chronic.parse("a year ago")
-      lesson.save
+      booking = FactoryGirl.create(:booking, meetup_id: 12345678, chalkler: chalkler, course: course, guests: 20)
+      course.start_at = Chronic.parse("a year ago")
+      course.save
       subject.import(data)
       booking.reload.guests.should == 20
     end

@@ -49,7 +49,7 @@ describe Chalkler do
   describe '.teachers' do
     it "includes chalklers who are teachers" do
       chalkler = FactoryGirl.create(:chalkler)
-      lesson = FactoryGirl.create(:lesson, name: "New Class", teacher_id: chalkler.id)
+      course = FactoryGirl.create(:course, name: "New Class", teacher_id: chalkler.id)
       expect(Chalkler.teachers).to include(chalkler)
     end
 

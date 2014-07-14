@@ -1,20 +1,20 @@
 class Booking < ActiveRecord::Base
   PAYMENT_METHODS = [Finance::PaymentMethods::Cash.new, Finance::PaymentMethods::Bank.new, Finance::PaymentMethods::CreditCard.new]
-  attr_accessible :lesson_id, :guests, :payment_method, :terms_and_conditions
-  attr_accessible :chalkler_id, :lesson_id, :meetup_data, :status, :guests,
+  attr_accessible :course_id, :guests, :payment_method, :terms_and_conditions
+  attr_accessible :chalkler_id, :course_id, :meetup_data, :status, :guests,
     :meetup_id, :cost_override, :paid, :payment_method, :visible, :reminder_last_sent_at, :as => :admin
 
   attr_accessor :terms_and_conditions
   attr_accessor :enforce_terms_and_conditions
 
-  belongs_to :lesson
+  belongs_to :course
   belongs_to :chalkler
   has_one :payment
 
-  validates_presence_of :lesson_id, :chalkler_id, :status
+  validates_presence_of :course_id, :chalkler_id, :status
   validates_presence_of :payment_method, :unless => :free?
   validates_acceptance_of :terms_and_conditions, :message => 'please read and agree', :if => :enforce_terms_and_conditions
-  validates_uniqueness_of :chalkler_id, scope: :lesson_id
+  validates_uniqueness_of :chalkler_id, scope: :course_id
 
   scope :paid, where{ paid == true }
   scope :unpaid, where{ paid == false }
@@ -22,24 +22,24 @@ class Booking < ActiveRecord::Base
   scope :waitlist, where(status: 'waitlist')
   scope :status_no, where(status: 'no')
   scope :interested, where{ (status == 'yes') | (status == 'waitlist') | (status == 'no-show') }
-  scope :billable, joins(:lesson).where{ (lessons.cost > 0) & (status == 'yes') & ((chalkler_id != lessons.teacher_id) | (guests > 0)) }
+  scope :billable, joins(:course).where{ (courses.cost > 0) & (status == 'yes') & ((chalkler_id != courses.teacher_id) | (guests > 0)) }
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :upcoming, lambda{ joins{ :lesson }.where{ (lessons.start_at > Time.now.utc) & lessons.visible } }
+  scope :upcoming, lambda{ joins{ :course }.where{ (courses.start_at > Time.now.utc) & courses.visible } }
 
-  before_validation :set_free_lesson_attributes
+  before_validation :set_free_course_attributes
 
-  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :meetup_url, :cose, to: :lesson, prefix: true
-  delegate :free?, to: :lesson, allow_nil: true
+  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :meetup_url, :cose, to: :course, prefix: true
+  delegate :free?, to: :course, allow_nil: true
 
   BOOKING_STATUSES = %w(yes waitlist no pending no-show)
 
   def name
-    if lesson.present? && chalkler.present?
-      if lesson.meetup_id.present?
-        "#{lesson.name} (#{lesson.meetup_id}) - #{chalkler.name}"
+    if course.present? && chalkler.present?
+      if course.meetup_id.present?
+        "#{course.name} (#{course.meetup_id}) - #{chalkler.name}"
       else
-        "#{lesson.name} - #{chalkler.name}"
+        "#{course.name} - #{chalkler.name}"
       end
     else
       id
@@ -59,7 +59,7 @@ class Booking < ActiveRecord::Base
   def cost
     return cost_override unless cost_override.nil?
     seats = guests.present? ? guests + 1 : 1
-    lesson.cost.present? ? (lesson.cost * seats) : nil
+    course.cost.present? ? (course.cost * seats) : nil
   end
 
   def answers
@@ -68,12 +68,12 @@ class Booking < ActiveRecord::Base
   end
 
   def refundable?
-    lesson_start_at > (Time.now + 3.days)
+    course_start_at > (Time.now + 3.days)
   end
 
   def teacher?
-    return false unless lesson_teacher_id
-    chalkler_id == lesson_teacher_id
+    return false unless course_teacher_id
+    chalkler_id == course_teacher_id
   end
 
   def cancelled?
@@ -83,27 +83,27 @@ class Booking < ActiveRecord::Base
   # Refactor all of this:
 
   def emailable
-    status == 'yes' && (cost ? cost : 0) > 0 && !teacher? && (paid != true) && lesson_teacher_id.present?
+    status == 'yes' && (cost ? cost : 0) > 0 && !teacher? && (paid != true) && course_teacher_id.present?
   end
 
   def first_email_condition
-    self.emailable && self.lesson.class_not_done && !self.lesson.class_coming_up
+    self.emailable && self.course.class_not_done && !self.course.class_coming_up
   end
 
   def second_email_condition
-    self.emailable && self.lesson.class_coming_up && (self.chalkler.email.nil? || self.chalkler.email == "")
+    self.emailable && self.course.class_coming_up && (self.chalkler.email.nil? || self.chalkler.email == "")
   end
 
   def third_email_condition
-    self.status=='waitlist' && (self.cost.present? ? self.cost : 0) > 0 && !self.teacher? && (self.paid!=true) && self.lesson.class_coming_up
+    self.status=='waitlist' && (self.cost.present? ? self.cost : 0) > 0 && !self.teacher? && (self.paid!=true) && self.course.class_coming_up
   end
 
   def reminder_after_class_condition
-    self.emailable && !self.lesson.class_not_done
+    self.emailable && !self.course.class_not_done
   end
 
   def no_show_email_condition
-    self.status=='no-show' && !self.teacher? && (self.paid!=true) && !self.lesson.class_not_done
+    self.status=='no-show' && !self.teacher? && (self.paid!=true) && !self.course.class_not_done
   end
 
   def reminder_email_choice
@@ -124,8 +124,8 @@ class Booking < ActiveRecord::Base
 
   private
 
-  def set_free_lesson_attributes
-    if lesson && free?
+  def set_free_course_attributes
+    if course && free?
       self.payment_method = 'free'
       self.paid = true
     end

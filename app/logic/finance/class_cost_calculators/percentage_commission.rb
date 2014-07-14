@@ -3,8 +3,8 @@ require_relative 'base'
 module Finance
   module ClassCostCalculators
     class PercentageCommission < Base
-      def initialize(lesson = nil, options = {})
-        super(lesson, options)
+      def initialize(course = nil, options = {})
+        super(course, options)
       end
 
       def channel_fee

@@ -1,7 +1,7 @@
 %li
-  %h4= link_to booking.lesson_name.capitalize, booking_path(booking)
+  %h4= link_to booking.course_name.capitalize, booking_path(booking)
   .booking-details
-    = "#{l booking.lesson_start_at, :format => :long_without_year} | #{booking.lesson_venue}"
+    = "#{l booking.course_start_at, :format => :long_without_year} | #{booking.course_venue}"
   .booking-actions
     %strong
       - unless booking.paid?
@@ -26,7 +26,7 @@
 
         .modal-body
           %p Are you sure you want to cancel your booking?
-          %p.big= booking.lesson_name.capitalize
+          %p.big= booking.course_name.capitalize
 
           - if booking.paid?
             - if booking.refundable?
