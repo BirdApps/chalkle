@@ -1,9 +1,10 @@
 Given(/^there is a class "(.*?)" open to sign\-up$/) do |name|
   channel = Channel.find_by_name "Horowhenua"
+  lesson = FactoryGirl.create(:lesson, start_at: 1.minute.from_now)
   course = FactoryGirl.create(:course,
                               name: 'Test class',
                               status: 'Published',
-                              start_at: 1.minute.from_now,
+                              lessons: [lesson],
                               cost: 10,
                               visible: true,
                               max_attendee: 10,

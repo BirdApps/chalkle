@@ -20,7 +20,8 @@ describe BookingReminder do
       teacher = FactoryGirl.create(:chalkler, name: "Britany Spears", email: "britany@spears.com")
       @chalkler = FactoryGirl.create(:chalkler, name: "Michael Jackson", email: "michael@jackson.com")
       @channel = FactoryGirl.create(:channel, name: "Music", visible: true)
-      @course = FactoryGirl.create(:course, name: "Chalkle Class 5", start_at: 3.days.from_now, cost: 10, teacher_id: teacher.id, visible: true, channel: @channel)
+      lesson = FactoryGirl.create(:lesson, start_at: 3.days.from_now, duration: 1)
+      @course = FactoryGirl.create(:course, name: "Chalkle Class 5", lessons: [lesson], cost: 10, teacher_id: teacher.id, visible: true, channel: @channel)
       @booking = FactoryGirl.create(:booking, chalkler_id: @chalkler.id, course_id: @course.id, status: 'yes', visible: true, paid: false)
       @reminder = BookingReminder.new(@chalkler,3.days)
     end
@@ -61,9 +62,15 @@ describe BookingReminder do
     end
 
     it "won't load booking from courses in the past" do
+<<<<<<< HEAD
       @course.update_attributes({:start_at => 2.days.ago}, :as => :admin)
       expect(@reminder.remindable).to be_empty
       @course.update_attributes({:start_at => 3.days.from_now}, :as => :admin)
+=======
+      @course.lessons = [FactoryGirl.create(:lesson, start_at: 2.days.ago)]
+      @reminder.remindable.should be_empty
+      @course.lessons = [FactoryGirl.create(:lesson, start_at: 3.days.from_now)]
+>>>>>>> feature/Courses
     end
 
     it "won't load booking by the teacher" do
@@ -79,6 +86,7 @@ describe BookingReminder do
     end
 
     it "won't load booking for a course without a start date" do
+<<<<<<< HEAD
       @course.update_attributes({:start_at => nil}, :as => :admin)
       expect(@reminder.remindable).to eq []
     end
@@ -86,10 +94,20 @@ describe BookingReminder do
     it "won't load booking from courses in the past" do
       @course.update_attributes({:start_at => 2.days.ago}, :as => :admin)
       expect(@reminder.remindable).to eq []
+=======
+      @course.lessons=[]
+      @reminder.remindable.should == []
+    end
+
+    it "won't load booking from courses in the past" do
+      @course.lessons = [FactoryGirl.create(:lesson, start_at: 2.days.ago)]
+      @reminder.remindable.should == []
+>>>>>>> feature/Courses
     end
 
     it "will sort courses in order of start time" do
-      course = FactoryGirl.create(:course, name: "An earlier course", cost: 5, teacher_id: @course.teacher_id, visible: true, start_at: @course.start_at - 5.hours, channel: @channel)
+      lesson = FactoryGirl.create(:lesson, start_at: @course.start_at - 5.hours, duration: 1)
+      course = FactoryGirl.create(:course, name: "An earlier course", cost: 5, teacher_id: @course.teacher_id, visible: true, lessons: [lesson], channel: @channel)
       booking = FactoryGirl.create(:booking, chalkler_id: @chalkler.id, course_id: course.id, status: 'yes', paid: false, visible: true)
       expect(@reminder.remind_now).to eq [booking, @booking]
     end
@@ -112,7 +130,8 @@ describe BookingReminder do
       @chalkler = FactoryGirl.create(:chalkler, name: "Britany Spears", email: "britany@spears.com")
       @chalkler1 = FactoryGirl.create(:chalkler, name: "Miley Cyrus", email: "mileycyrus@spears.com")
       @chalkler1.update_attribute(:email, nil)
-      @course = FactoryGirl.create(:course, name: "Chalkle Class 5", start_at: 3.days.from_now, cost: 10, visible: true)
+      lesson = FactoryGirl.create(:lesson, start_at: 3.days.from_now, duration: 1)
+      @course = FactoryGirl.create(:course, name: "Chalkle Class 5", lessons: [lesson], cost: 10, visible: true)
       FactoryGirl.create(:booking, chalkler_id: @chalkler.id, course_id: @course.id, status: 'yes', visible: true, paid: false)
       FactoryGirl.create(:booking, chalkler_id: @chalkler1.id, course_id: @course.id, status: 'yes', visible: true, paid: false)
     end
@@ -126,8 +145,13 @@ describe BookingReminder do
     end
 
     it "won't return duplicated chalklers" do
+<<<<<<< HEAD
       expect( BookingReminder.load_chalklers ).to eq [@chalkler]
       course2 = FactoryGirl.create(:course, name: "Another course", start_at: 3.days.from_now, cost: 10, visible: true)
+=======
+      lesson = FactoryGirl.create(:lesson,  start_at: 3.days.from_now, duration: 1.5)
+      course2 = FactoryGirl.create(:course, name: "Another course", lessons: [lesson], cost: 10, visible: true)
+>>>>>>> feature/Courses
       FactoryGirl.create(:booking, chalkler_id: @chalkler.id, course_id: course2.id, status: 'yes', visible: true, paid: false)
       expect(BookingReminder.load_chalklers).to eq [@chalkler]
     end

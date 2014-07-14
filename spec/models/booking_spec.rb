@@ -171,19 +171,22 @@ describe Booking do
 
   describe ".upcoming" do
     it "includes booking for courses in the future" do
-      course = FactoryGirl.create(:course, start_at: 2.days.from_now, visible: true)
+      lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
+      course = FactoryGirl.create(:course, lesson: [lesson], visible: true)
       booking = FactoryGirl.create(:booking, course: course)
       expect(Booking.upcoming).to include(booking)
     end
 
     it "excludes bookings for courses in the past" do
-      course = FactoryGirl.create(:course, start_at: 2.days.ago, visible: true)
+      lessons = [FactoryGirl.create(:lesson, start_at: 2.days.ago)]
+      course = FactoryGirl.create(:course, lessons: lessons, visible: true)
       booking = FactoryGirl.create(:booking, course: course)
       expect(Booking.upcoming).not_to include(booking)
     end
 
     it "excludes bookings for cancelled courses" do
-      course = FactoryGirl.create(:course, start_at: 2.days.from_now, visible: false)
+      lessons = [FactoryGirl.create(:lesson, start_at: 2.days.from_now)]
+      course = FactoryGirl.create(:course, lessons: lessons, visible: false)
       booking = FactoryGirl.create(:booking, course: course)
       expect(Booking.upcoming).not_to include(booking)
 
@@ -223,14 +226,15 @@ describe Booking do
 
   describe "#refundable?" do
     it "returns false when course is less than 3 days away" do
-      course = FactoryGirl.create(:course, start_at: 2.days.from_now)
+      lessons = [FactoryGirl.create(:lesson, start_at: 2.days.from_now)]
+      course = FactoryGirl.create(:course, lessons: lessons)
       expect(FactoryGirl.build(:booking, course: course).refundable?).to be false
     end
 
     it "returns true when course is more than 3 days away" do
-      course = FactoryGirl.create(:course, start_at: 4.days.from_now)
+      lessons = [FactoryGirl.create(:lesson, start_at: 4.days.from_now)]
+      course = FactoryGirl.create(:course, lessons: lessons)
       expect(FactoryGirl.build(:booking, course: course).refundable?).to be true
-
     end
   end
 

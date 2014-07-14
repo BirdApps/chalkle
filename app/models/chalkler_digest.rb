@@ -77,7 +77,7 @@ class ChalklerDigest
   private
 
     def base_scope
-      Course.visible.published.joins(:channel).order("start_at")
+      Course.visible.published.by_date.joins(:channel)
     end
 
     def scope_courses_by_categories(scope)

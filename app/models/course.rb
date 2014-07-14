@@ -27,9 +27,6 @@ class Course < ActiveRecord::Base
   has_many  :bookings
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
-  has_one :status
-  has_one :teacher
-  has_one :region
   has_one   :course_image, :dependent => :destroy, :inverse_of => :course
   has_many  :bookings
   has_many  :chalklers, through: :bookings
@@ -39,7 +36,7 @@ class Course < ActiveRecord::Base
 
   accepts_nested_attributes_for :course_image
 
-  [:teacher, :channel, :region].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
+  [:teacher, :channel, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
 
   delegate :best_colour_num, to: :category, allow_nil: true
   
@@ -62,7 +59,7 @@ class Course < ActiveRecord::Base
   validate :max_teacher_cost
   validate :image_size
 
-  scope :start_at_between, lambda {|from, to| where('') }
+  scope :start_at_between, lambda {|from,to| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", from.to_s(:db), to.to_s(:db))}
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :recent, visible.joins(:lessons).where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
@@ -75,8 +72,7 @@ class Course < ActiveRecord::Base
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
   scope :by_date, joins(:lessons).order('lessons.start_at')
-  scope :in_month, lambda {|month| joins(:lessons).where("start_at" => month.time_range)}
-  #scope :in_month, lambda {|month| where(["\"courses\".start_at ?", month.date_range.to_s(:db)]) }
+  scope :in_month, lambda {|month| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", month.first_day.to_s(:db), month.last_day.to_s(:db))}
   scope :in_week, lambda {|week| in_month(week)}
   scope :displayable, lambda { published.visible }
   scope :upcoming_or_today, lambda { joins(:lessons).where("start_at >= ?", Time.now.to_date.to_time) }
@@ -98,7 +94,7 @@ class Course < ActiveRecord::Base
   end
 
   def start_at
-    first_lesson.start_at
+    first_lesson.try :start_at if first_lesson
   end
 
   def start_at=(lesson_start)

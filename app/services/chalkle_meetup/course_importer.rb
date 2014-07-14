@@ -9,7 +9,10 @@ module ChalkleMeetup
       course.description = data.description
       course.meetup_data = data.to_json
       course.max_attendee = data.rsvp_limit
-      course.start_at = data.time if (data.status == "upcoming" && data.time.present?)
+
+      #course.start_at = data.time if (data.status == "upcoming" && data.time.present?)
+      
+
       course.published_at = Time.at(data.created / 1000) if (data.status == "upcoming" && data.created.present?)
       course.updated_at = data.updated
       course.duration = data.duration / 1000 if data.duration
