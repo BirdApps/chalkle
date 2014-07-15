@@ -33,6 +33,7 @@ describe BookingMailer do
       end
 
     	pending "should have the right subject" do
+        binding.pry
         expect(@email).to have_subject(chalkler.name + " - " + course.name)
     	end
 

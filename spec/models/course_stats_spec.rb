@@ -3,7 +3,11 @@ require 'spec_helper'
 describe "Chalkler_stats" do
 
   describe "Course activity statistics" do
-    before do
+
+    let(:chalkler){ FactoryGirl.create(:chalkler) }
+    let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5) }
+
+    before(:all) do
       @chalkler = FactoryGirl.create(:chalkler)
       @channel = FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5)
       (1..5).each do |i|
@@ -60,11 +64,11 @@ describe "Chalkler_stats" do
     end
 
     it "calculates number of cancelled classes" do
-      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.cancelled_courses).to eq 1
+      expect(@channel.channel_stats(3.days.ago,3.days.from_now).course_stats.cancelled_courses.count).to eq 1
     end
 
     it "calculates number of cancelled classes in previous time period" do
-      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.previous.cancelled_courses).to eq 1 
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.previous.cancelled_courses.count).to eq 1 
     end
 
     it "calculates number of new cancelled classes" do

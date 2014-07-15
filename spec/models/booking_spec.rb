@@ -172,7 +172,7 @@ describe Booking do
   describe ".upcoming" do
     it "includes booking for courses in the future" do
       lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
-      course = FactoryGirl.create(:course, lesson: [lesson], visible: true)
+      course = FactoryGirl.create(:course, lessons: [lesson], visible: true)
       booking = FactoryGirl.create(:booking, course: course)
       expect(Booking.upcoming).to include(booking)
     end
@@ -198,8 +198,7 @@ describe Booking do
       course = FactoryGirl.create(:course, name: "course_name", meetup_id: 12345678)
       chalkler = FactoryGirl.create(:chalkler, name: "chalkler_name")
       booking = FactoryGirl.create(:booking, course: course, chalkler: chalkler)
-      expect(booking.name).to eq "lesson_name (12345678) - chalkler_name"
-
+      expect(booking.name).to eq "course_name (12345678) - chalkler_name"
     end
   end
 
@@ -246,7 +245,7 @@ describe Booking do
     it "returns true when chalkler is teacher" do
       chalkler = FactoryGirl.create(:chalkler)
       course = FactoryGirl.create(:course, teacher: chalkler)
-      expect(FactoryGirl.build(:booking, course: course, chalkler: chalkler).teacher?).to be_true
+      expect(FactoryGirl.build(:booking, course: course, chalkler: chalkler).teacher?).to be true
     end
 
     it "returns false when chalkler isn't a teacher" do
@@ -254,7 +253,7 @@ describe Booking do
       teacher = FactoryGirl.create(:chalkler)
 
       course = FactoryGirl.create(:course, teacher: teacher)
-      expect(FactoryGirl.build(:booking, course: course, chalkler: chalkler).teacher?).to be_false
+      expect(FactoryGirl.build(:booking, course: course, chalkler: chalkler).teacher?).to be false
     end
   end
 

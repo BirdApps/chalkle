@@ -50,7 +50,7 @@ describe Chalkler::DataCollection::EmailForm do
   describe "#persisted?" do
     it "returns false" do
       form = Chalkler::DataCollection::EmailForm.new
-      expect(form).to be_truey
+      expect(form.persisted?).to be false
     end
   end
 end

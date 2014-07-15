@@ -18,17 +18,10 @@ Then /^they should produce a copy of this course$/ do
   Course.find_all_by_name("Test Class").count.should == 2
 end
 
-<<<<<<< HEAD:features/admin/channel_admin/step_definitions/admin_lessons_steps.rb
-Then /^this lesson should be trashed$/ do
-  lesson = Lesson.find_by_name("Test Class")
-  page.should have_content("Lesson #{lesson.id} trashed!")
-  expect(lesson.visible).to be false
-=======
 Then /^this course should be trashed$/ do
   course = Course.find_by_name("Test Class")
   page.should have_content("Course #{course.id} trashed!")
-  course.visible.should be_false
->>>>>>> feature/Courses:features/admin/channel_admin/step_definitions/admin_courses_steps.rb
+  expect(course.visible).to be false
 end
 
 Given /^the "(.*?)" channel has a teacher percentage of "(.*?)" percent$/ do |channel_name, teacher_percentage|
