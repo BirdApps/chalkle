@@ -1,4 +1,5 @@
 require 'spec_helper'
+include Faker
 
 describe "Chalkler_stats" do
 
@@ -21,7 +22,6 @@ describe "Chalkler_stats" do
       
     let(:course2)do FactoryGirl.create(:course, name: "Cancelled course 2", status: "Published", start_at: 5.days.ago, cost: 10, channel: channel, visible: false)
     end
-
 
     it "calculates number of visible courses announced" do
       expect(channel.channel_stats(3.days.ago,3.days).course_stats.courses_announced).to eq 5
@@ -67,12 +67,12 @@ describe "Chalkler_stats" do
     end
 
     it "calculates number of paid classes ran" do
-      course2 = FactoryGirl.create(:course, name: "test class 1", status: "Published", start_at: 2.days.ago, cost: 0, channel: channel)
+      course2 = FactoryGirl.create(:course, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 2.days.ago, cost: 0, channel: channel)
       expect(channel.channel_stats(3.days.ago,3.days).course_stats.paid_courses).to eq 5
     end
 
     it "calculates number of paid classes ran in previous time period" do
-      course2 = FactoryGirl.create(:course, name: "test class 1", status: "Published", start_at: 5.days.ago, cost: 0, channel: channel)
+      course2 = FactoryGirl.create(:course, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 5.days.ago, cost: 0, channel: channel)
       expect(channel.channel_stats(3.days.ago,3.days).course_stats.previous.paid_courses).to eq 3
     end
 
