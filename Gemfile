@@ -134,9 +134,11 @@ group :test do
   gem 'webrat',              '~> 0.7.3'
   gem 'email_spec',          '~> 1.4.0'
   gem 'factory_girl_rails',  '~> 4.2.1'
+  gem 'faker'
 
   # Test coverage
   gem 'simplecov',  '~> 0.7.1', require: false
 
   gem 'zeus', '0.13.4.pre2'
+
 end
