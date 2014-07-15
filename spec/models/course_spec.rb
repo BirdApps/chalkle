@@ -145,7 +145,7 @@ describe Course do
       @channel = FactoryGirl.create(:channel)
       lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
       @course = FactoryGirl.create(:course, name: "Test class", teacher_id: @teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 2, venue: "Town Hall")
-      FactoryGirl.create(:booking, chalkler_id: chalkler.id, course: @course, status: 'yes', guests: 5)
+      FactoryGirl.create(:booking, chalkler: chalkler, course: @course, status: 'yes', guests: 5)
     end
 
     it "should raise warning flag when no channel is assigned" do
