@@ -10,7 +10,7 @@ describe BookingReminder do
     end
 
     it "sets starting time of courses to be reminded" do
-      expect(reminder.instance_eval{ @course_start_in }.to eq 3.days
+      expect(reminder.instance_eval{ @course_start_in }).to eq 3.days
     end
 
   end
