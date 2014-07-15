@@ -12,7 +12,7 @@ describe Booking do
       chalkler = FactoryGirl.create(:chalkler)
       course = FactoryGirl.create(:course)
       FactoryGirl.create(:booking, chalkler: chalkler, course: course)
-      expect(FactoryGirl.build(:booking, chalkler: chalkler, course: course).not_to be_valid
+      expect(FactoryGirl.build(:booking, chalkler: chalkler, course: course)).not_to be_valid
     end
 
     describe "callbacks" do
@@ -197,7 +197,6 @@ describe Booking do
     it "creates name when course and chalkler present" do
       course = FactoryGirl.create(:course, name: "course_name", meetup_id: 12345678)
       chalkler = FactoryGirl.create(:chalkler, name: "chalkler_name")
-===
       booking = FactoryGirl.create(:booking, course: course, chalkler: chalkler)
       expect(booking.name).to eq "lesson_name (12345678) - chalkler_name"
 

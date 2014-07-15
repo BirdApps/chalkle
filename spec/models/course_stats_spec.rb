@@ -31,60 +31,60 @@ describe "Chalkler_stats" do
     end
 
     it "calculates number of visible courses announced" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.courses_announced.should == 5
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.courses_announced).to eq 5
     end
 
     it "calculates number of visible courses announced in the previous time period" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.previous.courses_announced.should == 3
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.previous.courses_announced).to eq 3
     end
 
     it "calculates percentage change in courses announced" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.percent_courses_announced.should be_within(0.1).of(66.66)
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.percent_courses_announced).to be_within(0.1).of(66.66)
     end
 
     it "calculates number of classes ran" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.courses_ran.should == 5
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.courses_ran).to eq 5
     end
 
     it "calculates number of classes ran in the previous time period" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.previous.courses_ran.should == 3
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.previous.courses_ran).to eq 3
     end
 
     it "calculates percentage change in number of classes ran" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.percent_courses_ran.to_f.should be_within(0.00001).of(2.0/3.0*100.0)
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.percent_courses_ran.to_f).to be_within(0.00001).of(2.0/3.0*100.0)
     end
 
     it "calculates number of new classes ran" do
       course2 = FactoryGirl.create(:course, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 50.days.ago, channel: @channel)
-      @channel.channel_stats(3.days.ago,3.days).course_stats.new_courses_ran.should == 4
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.new_courses_ran).to eq 4
     end
 
     it "calculates number of cancelled classes" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.cancelled_courses.should == 1
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.cancelled_courses).to eq 1
     end
 
     it "calculates number of cancelled classes in previous time period" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.previous.cancelled_courses.should == 1 
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.previous.cancelled_courses).to eq 1 
     end
 
     it "calculates number of new cancelled classes" do
       course = FactoryGirl.create(:course, name: "Cancelled course 1", status: "Published", start_at: 10.days.ago, cost: 10, channel: @channel)
-      @channel.channel_stats(3.days.ago,3.days).course_stats.new_cancelled_courses.should == 0
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.new_cancelled_courses).to eq 0
       course.destroy 
     end
 
     it "calculates number of paid classes ran" do
       course2 = FactoryGirl.create(:course, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 2.days.ago, cost: 0, channel: @channel)
-      @channel.channel_stats(3.days.ago,3.days).course_stats.paid_courses.should == 5
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.paid_courses).to eq 5
     end
 
     it "calculates number of paid classes ran in previous time period" do
       course2 = FactoryGirl.create(:course, meetup_id: 1234567, name: "test class 1", status: "Published", start_at: 5.days.ago, cost: 0, channel: @channel)
-      @channel.channel_stats(3.days.ago,3.days).course_stats.previous.paid_courses.should == 3
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.previous.paid_courses).to eq 3
     end
 
     it "calculates percentage change in paid courses ran" do
-      @channel.channel_stats(3.days.ago,3.days).course_stats.percent_paid_courses.to_f.should be_within(0.00001).of(2.0/3.0*100.0)
+      expect(@channel.channel_stats(3.days.ago,3.days).course_stats.percent_paid_courses.to_f).to be_within(0.00001).of(2.0/3.0*100.0)
     end
   
   end
