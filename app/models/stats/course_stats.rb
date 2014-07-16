@@ -25,7 +25,7 @@ class CourseStats < ChannelStats
   end
 
   def new_courses_ran
-    new_course(channel.course_ran(start,end_time))
+    channel.course_ran(start,end_time).not_repeat_course.count
   end
 
   def cancelled_courses
@@ -37,7 +37,7 @@ class CourseStats < ChannelStats
   end
 
   def new_cancelled_courses
-    new_course(channel.cancel_courses(start,end_time))
+    channel.cancel_courses(start,end_time).not_repeat_course.count
   end
 
   def paid_courses
@@ -49,16 +49,5 @@ class CourseStats < ChannelStats
   end
 
   private
-
-  def new_course(courses)
-    new_course = 0
-    l_old = channel.past_courses(start)
-    courses.each do |course|
-    if l_old.find_by_name(course.name).nil?
-      new_course = new_course + 1
-    end
-    end
-    return new_course
-  end
 
 end
