@@ -10,13 +10,6 @@ describe "Chalkler_stats" do
     let(:repeat_course) { FactoryGirl.create(:repeat_course) }
 
     before(:each) do
-      # lesson = FactoryGirl.create(:lesson, start_at: 2.days.ago)
-      # FactoryGirl.create(:course, channel: channel, lessons: [lesson], status: "Published")
-      # lesson = FactoryGirl.create(:lesson, start_at: 2.days.ago)
-      # FactoryGirl.create(:course, channel: channel, lessons: [lesson], status: "Unreviewed")
-      # lesson = FactoryGirl.create(:lesson, start_at: 4.days.ago)
-      # FactoryGirl.create(:course, channel: channel, lessons: [lesson], status: "Published")
-
       (1..5).each do |i|
         lesson = FactoryGirl.create(:lesson, start_at: 2.days.ago)
         course = FactoryGirl.create(:course, lessons: [lesson], status: "Published", channel: channel)
