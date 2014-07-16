@@ -6,10 +6,10 @@ class Course < ActiveRecord::Base
   include Gst
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel_id, :suggested_audience, :teacher_cost, :region_id, :channel_rate_override
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id
   ]
 
-  attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :venue_cost, :meetup_data, :description, :teacher_payment, :published_at, :category_id, :category, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
+  attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :venue_cost, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
 
   #Course statuses
   STATUS_5 = "Processing"
@@ -19,6 +19,7 @@ class Course < ActiveRecord::Base
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
 
+  belongs_to :repeat_course
   belongs_to :region
   belongs_to :channel
   belongs_to :teacher, class_name: "Chalkler"
@@ -76,10 +77,12 @@ class Course < ActiveRecord::Base
   scope :in_week, lambda {|week| in_month(week)}
   scope :displayable, lambda { published.visible }
   scope :upcoming_or_today, lambda { joins(:lessons).where("start_at >= ?", Time.now.to_date.to_time) }
+  scope :previous, lambda { joins(:lessons).where("start_at < ?", Time.now.to_date.to_time) }
   scope :not_meetup, where("meetup_url IS NULL")
   scope :only_with_region, lambda {|region| where(region_id: region.id) }
   scope :only_with_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :with_base_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
+  scope :not_repeat_course, where(repeat_course_id: nil)
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at
@@ -97,6 +100,11 @@ class Course < ActiveRecord::Base
     first_lesson.try :start_at if first_lesson
   end
 
+  def new? 
+    true if !repeat_course || repeat_course.courses.count == 1
+    false
+  end
+
   def start_at=(lesson_start)
     first_lesson.start_at=lesson_start
     first_lesson.save
@@ -110,6 +118,7 @@ class Course < ActiveRecord::Base
     first_lesson.duration=first_lesson_duration
     first_lesson.save
   end
+
 
 
   # kaminari
