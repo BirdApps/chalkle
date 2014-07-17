@@ -1,8 +1,7 @@
 class Booking < ActiveRecord::Base
   PAYMENT_METHODS = [Finance::PaymentMethods::Cash.new, Finance::PaymentMethods::Bank.new, Finance::PaymentMethods::CreditCard.new]
   attr_accessible :course_id, :guests, :payment_method, :terms_and_conditions
-  attr_accessible :chalkler_id, :course_id, :meetup_data, :status, :guests,
-    :meetup_id, :cost_override, :paid, :payment_method, :visible, :reminder_last_sent_at, :as => :admin
+  attr_accessible :chalkler_id, :chalkler, :course_id, :course, :meetup_data, :status, :guests, :meetup_id, :cost_override, :paid, :payment_method, :visible, :reminder_last_sent_at, :as => :admin
 
   attr_accessor :terms_and_conditions
   attr_accessor :enforce_terms_and_conditions

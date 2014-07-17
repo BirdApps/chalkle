@@ -82,7 +82,6 @@ class Channel < ActiveRecord::Base
   end
 
   def course_announced(start_date,end_date)
-    #courses.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
     courses.published.start_at_between(start_date,end_date)
   end
 
@@ -95,7 +94,7 @@ class Channel < ActiveRecord::Base
   end
 
   def past_courses(date)
-    courses.visible.published.where{start_at.lt date.utc}
+    courses.visible.published.previous
   end
 
   def paid_courses(start_date,end_date)
