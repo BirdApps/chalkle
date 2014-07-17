@@ -13,9 +13,9 @@ begin
     task "load_all" => :environment do
       EventLog.log('load_all') do
         Rake::Task["chalkle:load_chalklers"].execute
-        Rake::Task["chalkle:load_classes"].execute
-        Rake::Task["chalkle:load_bookings"].execute
-        Rake::Task["chalkle:load_venues"].execute
+        # Rake::Task["chalkle:load_classes"].execute
+        # Rake::Task["chalkle:load_bookings"].execute
+        # Rake::Task["chalkle:load_venues"].execute
       end
     end
 
