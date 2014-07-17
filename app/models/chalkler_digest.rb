@@ -21,11 +21,8 @@ class ChalklerDigest
   end
 
   def new_courses
-    scope = base_scope.where(
-      "courses.published_at > ? AND
-       courses.do_during_class IS NOT NULL AND
-       channels.visible=true",
-      @date_offset)
+    #binding.pry
+    scope = base_scope.where("courses.published_at > ? AND courses.do_during_class IS NOT NULL AND channels.visible=true", @date_offset)
     scope = scope_courses_by_categories(scope)
     scope = scope_courses_by_regions(scope)
     scope = scope_courses_by_channels(scope)
@@ -45,8 +42,8 @@ class ChalklerDigest
   end
 
   def open_courses
-    scope = base_scope.where(
-      "courses.start_at > ? AND
+    scope = base_scope.joins(:lessons).where(
+      "lessons.start_at > ? AND
        courses.published_at <= ? AND
        courses.do_during_class IS NOT NULL AND
        channels.visible=true",
@@ -61,8 +58,8 @@ class ChalklerDigest
   end
 
   def default_open_courses
-    scope = base_scope.where(
-      "courses.start_at > ? AND
+    scope = base_scope.joins(:lessons).where(
+      "lessons.start_at > ? AND
        courses.published_at <= ? AND
        courses.do_during_class IS NOT NULL AND
        channels.visible=true",
@@ -77,7 +74,7 @@ class ChalklerDigest
   private
 
     def base_scope
-      Course.visible.published.by_date.joins(:channel)
+      Course.visible.published.joins(:channel)
     end
 
     def scope_courses_by_categories(scope)

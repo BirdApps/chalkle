@@ -268,7 +268,7 @@ ActiveAdmin.register Course  do
 
   member_action :course_email do
     course = Course.find(params[:id])
-    render partial: "/admin/courses/course_email_template", locals: { bookings: course.bookings.visible.confirmed,
+    render partial: "/admin/courses/course_email_template", locals: { channel_id: course.channel_id, course_id: course.id, bookings: course.bookings.visible.confirmed,
       teachers: course.teacher.present? ? course.teacher.name.split[0].titleize : nil,
       title: course.name.present? ? course.name : "that is coming up", price: course.cost.present? ? course.cost : 0,
       reference: course.meetup_id.present? ? course.meetup_id : course.id, start_time: course.start_at, venue: course.venue }

@@ -129,7 +129,7 @@ ActiveAdmin.register Booking do
 
   form do |f|
     f.inputs :details do
-      f.input :course, as: :select, :collection => Course.accessible_by(current_ability).visible.order("LOWER(name) ASC").map{|l| ["#{l.name} - #{l.start_at? ? l.start_at.to_formatted_s(:short): "no date"}",l.id]}, :required => true
+      f.input :course, as: :select, :collection => Course.accessible_by(current_ability).visible.order("LOWER(name) ASC").map{|l| ["#{l.name} - #{l.start_at ? l.start_at.to_formatted_s(:short): "no date"}",l.id]}, :required => true
       f.input :chalkler, as: :select, collection: Chalkler.accessible_by(current_ability).order("LOWER(name) ASC"), :required => true
       f.input :guests
       f.input :payment_method, :as => :select, :collection => [['Bank', 'bank'],['Cash', 'cash'],['Meetup', 'meetup']], :hint => 'Leave blank on free classes'

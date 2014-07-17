@@ -7,7 +7,7 @@ describe "Teachings" do
   let(:category) { FactoryGirl.create(:category, name: "music and dance") }
   let(:region)   { FactoryGirl.create(:region, name: 'Auckland') }
   let(:params) { {
-    title: 'My new class',
+    name: 'My new class',
     course_skill: '',
     do_during_class: 'We will play with Wii',
     learning_outcomes: 'and become experts at tennis',
@@ -22,17 +22,17 @@ describe "Teachings" do
     channel_id: channel.id,
     region_id: region.id
   } }
+  let(:chalkler_teaching){ Teaching.new(chalkler) }
 
-  before do
+  before(:each) do
     chalkler.channels << channel
     chalkler.channels << channel2
-    @chalkler_teaching = Teaching.new(chalkler)
   end
 
   describe "initialize" do
 
   	it "assign current chalkler as teacher" do
-  	  @chalkler_teaching.teacher_id = chalkler.id
+  	  chalkler_teaching.teacher_id = chalkler.id
   	end
 
   end
@@ -40,67 +40,67 @@ describe "Teachings" do
   describe "form validation" do
 
   	it "returns true for all required inputs completed" do
-  		expect(@chalkler_teaching.check_valid_input(params)).to be true
+  		expect(chalkler_teaching.check_valid_input(params)).to be true
   	end
 
   	it "returns false for blank form" do
-  		expect(@chalkler_teaching.check_valid_input({})).to be_falsey
+  		expect(chalkler_teaching.check_valid_input({})).to be_falsey
   	end
 
   	it "returns false without a class title" do
-  		params[:title] = ''
-  		expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+  		params[:name] = ''
+  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
   	it "returns false without what we do during class" do
   		params[:do_during_class] = ''
-  		expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
   	it "returns false without what we will learn during class" do
   		params[:learning_outcomes] = ''
-  		expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
   	it "returns false without a numerical duration" do
   		params[:duration] = 'ABC'
-  		expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
   	it "returns false without a numerical teacher cost" do
   		params[:teacher_cost] = 'ABC'
-  		expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
   	it "returns false without a numerical maximum attendee" do
   		params[:max_attendee] = 'ABC'
-  		expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
   	it "returns false without a numerical minimum attendee" do
   		params[:min_attendee] = 'ABC'
-  		expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
   	it "returns false when teacher cost is nonzero and free course is checked" do
   		params[:free_course] = '1'
   		params[:teacher_cost] = '10'
-  		expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
     it "returns false when min number of attendee is not an integer" do
       params[:min_attendee] = '1.3'
-      expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+      expect(chalkler_teaching.check_valid_input(params)).to be_falsey
     end
 
     it "returns false when max number of attendee is not an integer" do
       params[:max_attendee] = '10.3'
-      expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+      expect(chalkler_teaching.check_valid_input(params)).to be_falsey
     end
 
     it "returns false when a primary category is not assigned" do
       params[:category_primary_id] = '0'
-      expect(@chalkler_teaching.check_valid_input(params)).to be_falsey
+      expect(chalkler_teaching.check_valid_input(params)).to be_falsey
     end
   end
 
@@ -112,40 +112,32 @@ describe "Teachings" do
     prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, channel_id: channel.id, region_id: region.id} }
 
   	it "create an unreviewed course with correct form" do
-  		expect { @chalkler_teaching.submit(params2) }.to change(Course.unpublished, :count).by(1)
+  		expect { chalkler_teaching.submit(params2) }.to change(Course.unpublished, :count).by(1)
   	end
 
   	it "do not create an unreviewed course with empty form" do
-  		expect { @chalkler_teaching.submit({}) }.not_to change(Course.unpublished, :count)
+  		expect { chalkler_teaching.submit({}) }.not_to change(Course.unpublished, :count)
   	end
 
-    it "create a course with the correct name" do
-      @chalkler_teaching.submit(params2)
-
-      expect(Course.find_by_name((category.name + ": " + params2[:title]).downcase)).to be_valid
-    end
-
   	describe "created course" do
-  	  before do
-  	    @chalkler_teaching.submit(params2)
-  	    @course = Course.find_by_name((category.name + ": " + params2[:title]).downcase)
-  	  end
 
       it "builds the course with the correct values" do
-        expect(@course.teacher_id).to eq chalkler.id
-        expect(@course.channel).to eq channel
-        expect(@course.course_skill).to eq params2[:course_skill]
-        expect(@course.category_id).to eq category.id
-        expect(@course.do_during_class).to eq params2[:do_during_class]
-        expect(@course.learning_outcomes).to eq params2[:learning_outcomes]
-        expect(@course.duration).to eq params2[:duration].to_i*60*60
-        expect(@course.teacher_cost).to eq 20
-        expect(@course.max_attendee).to eq params2[:max_attendee].to_i
-        expect(@course.min_attendee).to eq params2[:min_attendee].to_i
-        expect(@course.availabilities).to eq params2[:availabilities]
-        expect(@course.prerequisites).to eq params2[:prerequisites]
-        expect(@course.additional_comments).to eq params2[:additional_comments]
-        expect(@course.region).to eq region
+        id = chalkler_teaching.submit(params2)
+        course = Course.find(id)
+        expect(course.teacher_id).to eq chalkler.id
+        expect(course.channel).to eq channel
+        expect(course.course_skill).to eq params2[:course_skill]
+        expect(course.category_id).to eq category.id
+        expect(course.do_during_class).to eq params2[:do_during_class]
+        expect(course.learning_outcomes).to eq params2[:learning_outcomes]
+        expect(course.duration.to_i.to_s).to eq params2[:duration]
+        expect(course.teacher_cost).to eq 20
+        expect(course.max_attendee).to eq params2[:max_attendee].to_i
+        expect(course.min_attendee).to eq params2[:min_attendee].to_i
+        expect(course.availabilities).to eq params2[:availabilities]
+        expect(course.prerequisites).to eq params2[:prerequisites]
+        expect(course.additional_comments).to eq params2[:additional_comments]
+        expect(course.region).to eq region
 
       end
   	end

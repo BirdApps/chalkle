@@ -106,8 +106,7 @@ class Course < ActiveRecord::Base
   end
 
   def start_at=(lesson_start)
-    first_lesson.start_at=lesson_start
-    first_lesson.save
+    first_lesson.update_attribute :start_at, lesson_start
   end
 
   def duration
@@ -119,6 +118,9 @@ class Course < ActiveRecord::Base
     first_lesson.save
   end
 
+  def reference
+    start_at.strftime("%y%m%d")+self.id.to_s
+  end
 
 
   # kaminari

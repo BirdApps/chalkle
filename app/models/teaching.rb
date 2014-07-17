@@ -29,8 +29,6 @@ class Teaching
   end
 
   def course_args
-    lesson = Lesson.new{|l| l.duration = @duration.to_i*60*60 }
-    lesson.save
     {
       name: meetup_event_name(@category_primary_id,@title),
       teacher_id: @teacher_id,
@@ -38,7 +36,6 @@ class Teaching
       teacher_bio: @bio,
       do_during_class: @do_during_class,
       learning_outcomes: @learning_outcomes,
-      lessons: [lesson],
       cost: @cost,
       teacher_cost: @teacher_cost,
       max_attendee: @max_attendee.to_i,
@@ -54,20 +51,23 @@ class Teaching
 
   def submit(params)
     if check_valid_input(params)
+      lesson = Lesson.create({start_at: Time.now, duration: @duration})
       @course = Course.new(course_args)
+      @course.lessons = [lesson]
       @course.status = "Unreviewed"
       @course.category_id = @category_primary_id
       @course.channel = Channel.find(@channel_id) if @channel_id
       @course.save
+      return @course.id unless @course.id.nil?
+      false
     else
       return false
     end
   end
 
   def check_valid_input(params)
-    @title = params[:title]
+    @title = params[:name]
     @course_skill = params[:course_skill]
-    @bio = params[:bio]
     @do_during_class = params[:do_during_class]
     @learning_outcomes = params[:learning_outcomes]
     @duration = params[:duration]
@@ -79,9 +79,7 @@ class Teaching
     @availabilities = params[:availabilities]
     @prerequisites = params[:prerequisites]
     @additional_comments = params[:additional_comments]
-    @venue = params[:venue]
     @category_primary_id = params[:category_primary_id].to_i
-    @suggested_audience = params[:suggested_audience]
     if @channels.length > 1
       @channel_id = params[:channel_id].to_i
     else
