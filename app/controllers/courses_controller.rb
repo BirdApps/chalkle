@@ -15,12 +15,12 @@ class CoursesController < ApplicationController
 
   def month
     @month_courses = courses_for_time.load_month_courses get_current_month
-    render layout: false
+    #render layout: false
   end
 
   def week
     @week_courses = courses_for_time.load_week_courses(get_current_week)
-    render layout: false
+    #render layout: false
   end
 
   def index

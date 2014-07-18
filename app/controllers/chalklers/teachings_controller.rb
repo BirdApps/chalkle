@@ -1,5 +1,6 @@
 class Chalklers::TeachingsController < Chalklers::BaseController
   def new
+    params.merge(repeating: false)
     @chalkler_teaching = Teaching.new(current_chalkler)
   end
 

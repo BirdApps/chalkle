@@ -8,7 +8,6 @@ class BookingMailer < ActionMailer::Base
   	@course = course
     @cost = Finance::Tax::NzGst.new.apply_to course.cost
   	mail(to: chalkler.email, subject: chalkler.name + " - " + course.name)
-  #  binding.pry 
   end
 
   def pay_reminder(chalkler,bookings)

@@ -51,7 +51,7 @@ class Teaching
 
   def submit(params)
     if check_valid_input(params)
-      lesson = Lesson.create({start_at: Time.now, duration: @duration})
+      lesson = Lesson.create({start_at: Time.now, duration: @duration*60*60.to_i})
       @course = Course.new(course_args)
       @course.lessons = [lesson]
       @course.status = "Unreviewed"
@@ -66,7 +66,11 @@ class Teaching
   end
 
   def check_valid_input(params)
-    @title = params[:name]
+    if params[:name].nil?
+      @title = params[:title]
+    else
+      @title = params[:name]
+    end 
     @course_skill = params[:course_skill]
     @do_during_class = params[:do_during_class]
     @learning_outcomes = params[:learning_outcomes]

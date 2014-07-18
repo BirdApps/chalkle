@@ -288,6 +288,8 @@ class Course < ActiveRecord::Base
     new_course = Course.new(copy_attributes, :as => :admin)
     new_course.category = self.category
     new_course.visible = true
+    new_lesson = Lesson.create({start_at: start_at, duration: duration})
+    new_course.lessons = [new_lesson]
     new_course.save
     new_course
   end

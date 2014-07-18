@@ -38,7 +38,11 @@ ActiveAdmin.register Course  do
     helper BookingHelper
 
     def update
-      params[:course][:duration] = (params[:course][:duration].to_d*60*60).to_i unless params[:course][:duration].blank?
+      course = Course.find(params[:id])
+      first_lesson = course.first_lesson
+      first_lesson.start_at = params[:course].delete(:start_at) unless params[:course][:start_at].blank?
+      first_lesson.duration = (params[:course].delete(:duration)).to_d*60*60.to_i unless params[:course][:duration].blank?
+      first_lesson.save
       update!
     end
 

@@ -21,7 +21,6 @@ class ChalklerDigest
   end
 
   def new_courses
-    #binding.pry
     scope = base_scope.where("courses.published_at > ? AND courses.do_during_class IS NOT NULL AND channels.visible=true", @date_offset)
     scope = scope_courses_by_categories(scope)
     scope = scope_courses_by_regions(scope)
