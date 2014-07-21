@@ -15,12 +15,12 @@ class CoursesController < ApplicationController
 
   def month
     @month_courses = courses_for_time.load_month_courses get_current_month
-    #render layout: false
+    render layout: false
   end
 
   def week
     @week_courses = courses_for_time.load_week_courses(get_current_week)
-    #render layout: false
+    render layout: false
   end
 
   def index
@@ -29,7 +29,7 @@ class CoursesController < ApplicationController
     @region_filter = @filter.current_or_empty_filter_for('single_region')
     @channel_filter = @filter.current_or_empty_filter_for('single_channel')
     @category_filter = @filter.current_or_empty_filter_for('single_category')
-    month
+    @month_courses = courses_for_time.load_month_courses get_current_month
     @week_courses = courses_for_time.load_upcoming_week_courses(get_current_week)
   end
 
