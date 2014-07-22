@@ -14,11 +14,13 @@ class LessonsController < ApplicationController
   end
 
   def month
-    
+    @month_lessons = lessons_for_time.load_month_lessons get_current_month
+    render layout: false
   end
 
   def week
     @week_lessons = lessons_for_time.load_week_lessons(get_current_week)
+    render layout: false
   end
 
   def index
