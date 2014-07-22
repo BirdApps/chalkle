@@ -14,7 +14,7 @@ class LessonsController < ApplicationController
   end
 
   def month
-    @month_lessons = lessons_for_time.load_month_lessons get_current_month
+    
   end
 
   def week
@@ -27,7 +27,7 @@ class LessonsController < ApplicationController
     @region_filter = @filter.current_or_empty_filter_for('single_region')
     @channel_filter = @filter.current_or_empty_filter_for('single_channel')
     @category_filter = @filter.current_or_empty_filter_for('single_category')
-    month
+    @month_lessons = lessons_for_time.load_month_lessons get_current_month
     @week_lessons = lessons_for_time.load_upcoming_week_lessons(get_current_week)
   end
 
