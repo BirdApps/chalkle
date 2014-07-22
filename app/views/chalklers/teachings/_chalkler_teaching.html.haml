@@ -3,7 +3,7 @@
   %p So tell us about your idea and take the first step towards being a chalkle&deg; teacher
 
 .row
-  .col-lg-8
+  .col-lg-8.teachings
     = bootstrap_form_for(@chalkler_teaching, wrapper: :simple_bootstrap3, url: chalklers_teachings_path, html: { method: :post, class: 'basic-form' }) do |f|
       = f.error_notification
 
@@ -19,11 +19,56 @@
 
       %h3 Class Details
       .form-group
-        %label Will this be a regularly repeating course, or a once off?
-        %select.form-control(name="repeating")
-          %option
-          %option{:value => 0, :selected => params[:repeating]}= "Once-off"
-          %option{:value => 1, :selected => params[:repeating]}= "Repeating"
+        %label
+        Will this be a regularly repeating course, or a once off? 
+        %select#repeating-course-select.form-control(name="repeating")
+          %option{ :value => 'once-off', :selected => ('once-off'==params[:repeating]) }= "Once-off"
+          %option{ :value => 'repeating', :selected => ('repeating' == params[:repeating]) }= "Repeating"
+      .repeating-options
+        .form-group
+          %label How often will the course repeat?
+          %select.form-control(name="repeat_frequency")
+            %option
+            %option{:value => 'weekly', :selected => ('weekly' == params[:repeat_frequency])}= "Weekly"
+            %option{:value => 'monthly', :selected => ('monthly' == params[:repeat_frequency])}= "Monthly"
+        .form-group
+          %label Day of the week to repeat
+          %br
+          .checkbox-inline
+            %label
+              %input{:class => "form-inline", :type => "radio", :name => "repeat_day", :value => "monday" } 
+              Monday
+          .checkbox-inline
+            %label
+              %input{:class => "form-inline", :type => "radio", :name => "repeat_day", :value => "tuesday" } 
+              Tuesday
+          .checkbox-inline
+            %label
+              %input{:class => "form-inline", :type => "radio", :name => "repeat_day", :value => "wednesday" }
+              Wednesday
+          .checkbox-inline
+            %label
+              %input{:class => "form-inline", :type => "radio", :name => "repeat_day", :value => "thursday" }
+              Thursday
+          .checkbox-inline
+            %label
+              %input{:class => "form-inline", :type => "radio", :name => "repeat_day", :value => "friday" }
+              Friday
+          .checkbox-inline
+            %label
+              %input{:class => "form-inline", :type => "radio", :name => "repeat_day", :value => "saturday" }
+              Saturday
+          .checkbox-inline
+            %label
+              %input{:class => "form-inline", :type => "radio", :name => "repeat_day", :value => "sunday" }
+              Sunday
+        .form-group
+          %label How many times should the course repeat?
+          %input.form-control(name="repeat_times")
+      .once-off-options
+        .date-picker
+      .form-group  
+
       = f.input :availabilities, :label => "When are you available to teach this class?", :placeholder => "What dates or time of day are you available to teach this class?", :as => :text, :input_html => { :rows => 1 }
       = f.input :venue, :label => "If you would like to teach the class in your own venue, please tell us where it is and when it is available.", :placeholder => "For example: Level 4, 19 Hargreaves Street, Ponsonby, Auckland. Available weekdays after 6pm.", :as => :text, :input_html => { :rows => 1 }
       = f.input :region_id, as: :select, collection: Region.all, label: "Which general region is this in?"

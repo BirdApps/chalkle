@@ -48,6 +48,7 @@ gem 'simple_form', git: 'git://github.com/zlx/simple_form_bootstrap3', branch: '
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 gem 'google-webfonts-rails'
+gem 'bootstrap-datepicker-rails'
 
 #attachments
 gem 'carrierwave'
