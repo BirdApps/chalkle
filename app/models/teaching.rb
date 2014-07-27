@@ -1,14 +1,16 @@
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :chalkler, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration, :free_course, :teacher_cost, :max_attendee, :min_attendee,
-  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id
+  attr_accessor :course, :chalkler, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :free_course, :teacher_cost, :max_attendee, :min_attendee,
+  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_day, :repeat_month ,:repeat_times
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
   validates :do_during_class, :presence => { :message => "What we will do during the class can not be blank"}
   validates :learning_outcomes, :presence => { :message => "What we will learn from this class can not be blank"}
-  validates :duration, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Only positive hours are allowed"}
+  validates :repeat_times, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Repeat classes must be 1 or more"}
+  validates :duration_hours, :allow_blank => false, :numericality => { :greater_than_or_equal_to => 0, :message => "Hours must be 0 or more"}
+   validates :duration_minutes, :allow_blank => false, :numericality => { :greater_than_or_equal_to => 0, :message => "Minutes must be 0 or more"}
   validates :category_primary_id, :allow_blank => false, :numericality => { :greater_than => 0, :message => "You must select a primary category"}
   validates :channel_id, :allow_blank => false, :numericality => { :greater_than => 0, :message => "You must select a channel"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "You can not be paid for a free class" }, :if => "self.free_course=='1'"
@@ -17,6 +19,16 @@ class Teaching
   validates :max_attendee, :allow_blank => true, :numericality => {:only_integer => true, :message => "Only integer number of people are allowed" }
   validates :min_attendee, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Number of people must be greater than or equal to 0" }
   validates :min_attendee, :allow_blank => true, :numericality => {:only_integer => true, :message => "Only integer number of people are allowed"  }
+  validates :repeat_times, presence: true, if: :is_repeating
+  validates :repeat_frequency, presence: true, if: :is_repeating
+
+  def is_repeating
+    @repeating == "repeating"
+  end
+
+  def repeats_monthly
+    @repeat_frequency == "monthly" && is_repeating
+  end
 
   def initialize(chalkler)
   	@chalkler = chalkler
@@ -49,21 +61,83 @@ class Teaching
     }
   end
 
+  def nth_day_in(month, nth)
+    current_nth = 0;
+    add_years = month/12;
+    start_at = Date.parse @start_at
+    months = (start_at.month+month)%12
+    start_at = Date.parse @start_at
+    date_lapse = Date.new(start_at.year+add_years, months, 1);
+    until current_nth == nth do
+      current_nth = current_nth + 1 if(date_lapse.wday == start_at.wday)
+      date_lapse = date_lapse.next_day
+    end
+    date_lapse.prev_day
+  end
+
+  def nth_wday_of_start_at
+    nth = 1
+    start_at = Date.parse @start_at
+    date_lapse = Date.new start_at.year, start_at.month, 1
+    until (date_lapse.day == start_at.day) do
+      nth = nth + 1 if (date_lapse.wday == start_at.wday)
+      date_lapse = date_lapse.next_day
+    end
+    nth = 4 if nth > 4
+    nth
+  end
+
+  def calculate_monthly_course_dates
+    course_dates = [];
+    nth = nth_wday_of_start_at;
+    start_at = Date.parse @start_at
+    @repeat_times.to_i.times do |multiplier|
+      course_dates << nth_day_in(multiplier, nth)
+    end
+    course_dates
+  end
+
   def submit(params)
     if check_valid_input(params)
-      lesson = Lesson.create({start_at: Time.now, duration: @duration*60*60.to_i})
-      @course = Course.new(course_args)
-      @course.lessons = [lesson]
-      @course.status = "Unreviewed"
-      @course.category_id = @category_primary_id
-      @course.channel = Channel.find(@channel_id) if @channel_id
-      @course.save
-      return @course.id unless @course.id.nil?
+      repeating = @repeating == 'repeating'
+      starting = @start_at
+      if !repeating
+        @repeat_times = 1
+      else
+        @repeat_course = RepeatCourse.create()
+      end
+      course_dates = []
+      @repeat_times.to_i.times do |multiplier|
+        if @repeat_frequency == 'weekly' && repeating
+          starting = Time.parse(@start_at) + 7.days*multiplier
+        elsif @repeat_frequency == 'monthly' && repeating
+          course_dates = calculate_monthly_course_dates() if multiplier == 0
+          starting = course_dates[multiplier]
+        end
+        lesson = Lesson.create({start_at: starting, duration: @duration_hours.to_i*60*60+@duration_minutes.to_i*60})
+        @course = Course.new(course_args)
+        @course.lessons = [lesson]
+        @course.status = "Unreviewed"
+        @course.category_id = @category_primary_id
+        @course.channel = Channel.find(@channel_id) if @channel_id
+        if @repeat_course
+          @repeat_course.courses << @course
+        else
+          @course.save
+        end  
+      end
+      if(@repeat_course)
+        @repeat_course.save
+        return @repeat_course.courses[0] unless @repeat_course.nil?
+      else
+        return @course.id unless @course.id.nil?
+      end
       false
     else
       return false
     end
   end
+
 
   def check_valid_input(params)
     if params[:name].nil?
@@ -74,16 +148,24 @@ class Teaching
     @course_skill = params[:course_skill]
     @do_during_class = params[:do_during_class]
     @learning_outcomes = params[:learning_outcomes]
-    @duration = params[:duration]
+    @duration_hours = params[:duration_hours]
+    @duration_minutes = params[:duration_minutes]
     @teacher_cost = params[:teacher_cost]
     @cost = params[:cost]
     @free_course = params[:free_course]
     @max_attendee = params[:max_attendee]
     @min_attendee = params[:min_attendee]
     @availabilities = params[:availabilities]
+    @start_at = params[:start_at]
     @prerequisites = params[:prerequisites]
     @additional_comments = params[:additional_comments]
     @category_primary_id = params[:category_primary_id].to_i
+    @repeating = params[:repeating]
+    @repeat_frequency = params[:repeat_frequency]
+    @repeat_day = params[:repeat_day]
+    @repeat_month = params[:repeat_month]
+    @repeat_times = params[:repeat_times]
+
     if @channels.length > 1
       @channel_id = params[:channel_id].to_i
     else
