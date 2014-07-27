@@ -115,3 +115,19 @@ a.fa_link {
 .well .well-title {
   margin-top: 0;
 }
+
+.form-control {
+  max-width: 100%;
+}
+
+input[readonly] {
+     cursor: pointer !important;
+}
+
+.help-inline{
+  background-color: #f0ad4e;
+  @include border-radius(4px);
+  padding: 2px 6px;
+  display: inline-block;
+  margin: 5px 0;
+}
