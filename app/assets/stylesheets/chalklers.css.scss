@@ -20,3 +20,16 @@ label.radio_buttons {
     line-height: 2.5em;
   }
 }
+
+.info {
+  padding: 0.25em 0.5em ;
+  margin: 0.25em 0;
+  font-size: 9pt;
+  text-align: center;
+  color: #888844;
+  font-style: italic;
+
+  background-color: #ffffdd;
+  border: #ddddbb solid 1px;
+  @include border-radius(3px); 
+}
