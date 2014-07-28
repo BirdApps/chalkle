@@ -11,7 +11,8 @@ describe "Teachings" do
     course_skill: '',
     do_during_class: 'We will play with Wii',
     learning_outcomes: 'and become experts at tennis',
-    duration: '',
+    duration_hours: '1',
+    duration_minutes: '0',
     free_course: '0',
     teacher_cost: '',
     max_attendee: '',
@@ -20,7 +21,10 @@ describe "Teachings" do
     additional_comments: '',
     category_primary_id: category.id,
     channel_id: channel.id,
-    region_id: region.id
+    region_id: region.id,
+    repeating: false,
+    repeat_frequency: '',
+    repeat_times: 1
   } }
   let(:chalkler_teaching){ Teaching.new(chalkler) }
 
@@ -63,7 +67,8 @@ describe "Teachings" do
   	end
 
   	it "returns false without a numerical duration" do
-  		params[:duration] = 'ABC'
+  		params[:duration_hours] = 'ABC'
+      params[:duration_minutes] = 'ABC'
   		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
   	end
 
@@ -105,11 +110,28 @@ describe "Teachings" do
   end
 
   describe "form submit" do
-
   	let(:category) { FactoryGirl.create(:category, name: "music and dance") }
-    let(:params2) { { name: 'My new class', course_skill: 'Beginner', do_during_class: 'We will play with Wii', learning_outcomes: 'and become experts at tennis', duration: '1',
-    free_course: '0', teacher_cost: '20', cost: '30', max_attendee: '20', min_attendee: '5', availabilities: 'March 1st 2013' ,
-    prerequisites: 'Wii controller and tennis racquet', additional_comments: 'Nothing elseto talk about', category_primary_id: category.id, channel_id: channel.id, region_id: region.id} }
+    let(:params2) { { 
+      name: 'My new class', 
+      course_skill: 'Beginner', 
+      do_during_class: 'We will play with Wii', 
+      learning_outcomes: 'and become experts at tennis', 
+      duration_hours: '1',
+      duration_minutes: '0',
+      free_course: '0', 
+      teacher_cost: '20', 
+      cost: '30', 
+      max_attendee: '20', 
+      min_attendee: '5', 
+      availabilities: 'March 1st 2013' ,
+      prerequisites: 'Wii controller and tennis racquet', 
+      additional_comments: 'Nothing elseto talk about', 
+      category_primary_id: category.id, 
+      channel_id: channel.id, 
+      region_id: region.id,
+      start_at: Time.new(2013,3,1,18,00,00).to_s,
+      repeating: 'once-off'
+    } }
 
   	it "create an unreviewed course with correct form" do
   		expect { chalkler_teaching.submit(params2) }.to change(Course.unpublished, :count).by(1)
@@ -130,7 +152,7 @@ describe "Teachings" do
         expect(course.category_id).to eq category.id
         expect(course.do_during_class).to eq params2[:do_during_class]
         expect(course.learning_outcomes).to eq params2[:learning_outcomes]
-        expect(course.duration.to_i.to_s).to eq params2[:duration]
+        expect(course.duration.to_i).to eq params2[:duration_hours].to_i*60*60+params2[:duration_minutes].to_i*60
         expect(course.teacher_cost).to eq 20
         expect(course.max_attendee).to eq params2[:max_attendee].to_i
         expect(course.min_attendee).to eq params2[:min_attendee].to_i

@@ -2,7 +2,7 @@ class Teaching
   include ActiveAttr::Model
 
   attr_accessor :course, :chalkler, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :free_course, :teacher_cost, :max_attendee, :min_attendee,
-  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_day, :repeat_month ,:repeat_times
+  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency,:repeat_times
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
@@ -67,7 +67,10 @@ class Teaching
     months = start_at.month+month;
     add_years = months/12;
     months = months%12
-    months = 12 if months == 0
+    if months == 0
+      months = 12 
+      add_years = 0 if add_years == 1
+    end
     start_at = Time.parse @start_at
     date_lapse = Date.new start_at.year+add_years, months, 1;
     until current_nth == nth do
@@ -102,19 +105,23 @@ class Teaching
   def submit(params)
     if check_valid_input(params)
       repeating = @repeating == 'repeating'
-      starting = @start_at
-      if !repeating
-        @repeat_times = 1
-      else
+      starting = Time.parse(@start_at)
+      if repeating
         @repeat_course = RepeatCourse.create()
       end
       course_dates = []
+      @repeat_times ="1" if @repeat_times.to_i < 1
       @repeat_times.to_i.times do |multiplier|
         if @repeat_frequency == 'weekly' && repeating
+          hour = starting.hour
           starting = Time.parse(@start_at) + 7.days*multiplier
+          starting = Time.new(starting.year,starting.month,starting.day,hour,starting.min)
         elsif @repeat_frequency == 'monthly' && repeating
-          course_dates = calculate_monthly_course_dates() if multiplier == 0
-          starting = course_dates[multiplier]
+          if multiplier == 0
+            course_dates = calculate_monthly_course_dates()
+          else
+            starting = course_dates[multiplier]
+          end
         end
         lesson = Lesson.create({start_at: starting, duration: @duration_hours.to_i*60*60+@duration_minutes.to_i*60})
         @course = Course.new(course_args)
@@ -130,9 +137,9 @@ class Teaching
       end
       if(@repeat_course)
         @repeat_course.save
-        return @repeat_course.courses[0] unless @repeat_course.nil?
+        return @repeat_course.courses[0].id unless @repeat_course.nil? || @repeat_course.courses.nil? || @repeat_course.courses[0].nil?
       else
-        return @course.id unless @course.id.nil?
+        return @course.id unless @course.nil?
       end
       false
     else
@@ -146,12 +153,18 @@ class Teaching
       @title = params[:title]
     else
       @title = params[:name]
-    end 
+    end
     @course_skill = params[:course_skill]
     @do_during_class = params[:do_during_class]
     @learning_outcomes = params[:learning_outcomes]
     @duration_hours = params[:duration_hours]
     @duration_minutes = params[:duration_minutes]
+    if @duration_hours != "" && @duration_minutes == ""
+      @duration_minutes = 0
+    end
+    if @duration_minutes != "" && @duration_hours == ""
+      @duration_hours = 0
+    end
     @teacher_cost = params[:teacher_cost]
     @cost = params[:cost]
     @free_course = params[:free_course]
