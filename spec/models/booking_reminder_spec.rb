@@ -73,12 +73,6 @@ describe BookingReminder do
       @booking.update_attributes({:chalkler_id => @chalkler.id}, :as => :admin)
     end
 
-    it "won't load booking for a course without a channel" do
-      @course.channel = nil
-      @course.save
-      expect(@reminder.remindable).to eq []
-    end
-
     it "won't load booking for a course without a start date" do
       @course.lessons=[]
       expect(@reminder.remindable).to eq []

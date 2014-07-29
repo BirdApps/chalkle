@@ -48,7 +48,7 @@ describe CourseDecorator do
     it "returns rails path when channel is local" do
       channel = FactoryGirl.create(:channel, url_name: '')
       @course.channel = channel
-      @course.decorate.url.should include("/channels/#{channel.id}/classes/#{@course.id}")
+      expect(@course.decorate.url).to include("/channels/#{channel.id}/classes/#{@course.id}")
     end
   end
 

@@ -4,10 +4,15 @@ FactoryGirl.define do
     description "You should really learn, it's fun!"
     cost 20
     lessons { |i| [i.association(:lesson)]}
+    channel
 
     factory :published_course do
       status 'Published'
       published_at { Time.now }
+    end
+
+    factory :course_without_lessons do
+      lessons []
     end
 
     factory :course_with_bookings do

@@ -1,5 +1,11 @@
 Given /^"(.*?)" is a channel admin$/ do |name|
-  FactoryGirl.create(:admin_user, name: name, email: "#{name.downcase}@chalkle.com", password: 'password', role: 'channel admin')
+  admin_user = AdminUser.find_by_name(name)
+  if(admin_user)
+    admin_user.role = 'channel admin'
+    admin_user.save
+  else
+    FactoryGirl.create(:admin_user, name: name, email: "#{name.downcase}@chalkle.com", password: 'password', role: 'channel admin')
+  end
 end
 
 When /^the channel admin "(.*?)" logs in$/ do |name|

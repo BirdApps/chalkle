@@ -20,6 +20,7 @@ Scenario: Channel admin can not see a course from another channel
   When they visit the "Courses" tab
   Then they should not see this course 
 
+@javascript
 Scenario: A course with no details should be editable
   Given there is a course with no details in the "Wellington" channel
   When they visit the "Courses" tab
@@ -108,6 +109,7 @@ Scenario: Channel admin can see warning when RSVP number is below minimum attend
   When they view this unpublished course
   Then they should see "Lower This Number If The Class Is Still Going Ahead"
 
+@javascript
 Scenario: Upload an image for the class
   Given there is a course with no details in the "Wellington" channel
   When they edit this course

@@ -51,14 +51,14 @@ class Course < ActiveRecord::Base
   
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
-  validates_presence_of :lessons
+  validates_presence_of :lessons, if: :published?
   validates_presence_of :channel
   validates_numericality_of :teacher_payment, allow_nil: true
   validates_numericality_of :material_cost, allow_nil: false
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Advertised price must be positive" }
-  validates :lessons, :length => { minimum: 1 }
+  validates :lessons, :length => { minimum: 1 }, if: :published?
   validate :max_teacher_cost
   validate :image_size
 

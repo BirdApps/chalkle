@@ -7,7 +7,7 @@ describe Course do
   it { should validate_uniqueness_of :meetup_id }
   it { should accept_nested_attributes_for :course_image }
 
-  specify { FactoryGirl.create(:course).should be_valid }
+  specify { expect(FactoryGirl.create(:course)).to be_valid }
 
   let(:course) { FactoryGirl.create(:course) }
 

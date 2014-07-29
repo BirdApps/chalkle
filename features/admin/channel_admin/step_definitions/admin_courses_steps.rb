@@ -97,7 +97,7 @@ end
 Given(/^there is a course with no date in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler)
-  course = FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 10, channel: channel)
+  course = FactoryGirl.create(:course_without_lessons, name: "Test class", teacher_id: teacher.id, do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 10, channel: channel)
 end
 
 Given(/^there is a course with no what we will do text in the "(.*?)" channel$/) do |name|

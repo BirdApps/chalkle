@@ -17,13 +17,13 @@ module Finance
       describe "#channel_fee" do
         it "is zero if no teacher cost has been set" do
           course.teacher_cost = nil
-          subject.channel_fee.should == 0
+          expect(subject.channel_fee).to eq 0
         end
 
         it "is zero if teacher percentage is zero" do
           channel.channel_rate_override = 0.5
           channel.teacher_percentage = 0.0
-          subject.channel_fee.should == 0
+          expect(subject.channel_fee).to eq 0
         end
 
         it "returns the channel percentage of the estimated final cost" do
@@ -32,7 +32,7 @@ module Finance
           channel.teacher_percentage = 0.5
           # estimated cost will be 20.0
 
-          subject.channel_fee.should be_within(ERROR_MARGIN).of(8.0) # 20.0 * 0.4
+          expect(subject.channel_fee).to be_within(ERROR_MARGIN).of(8.0) # 20.0 * 0.4
         end
 
         it "applies tax to channel fee" do
@@ -42,20 +42,20 @@ module Finance
           # estimated cost will be 20.0
           # pre-tax channel fee will be 8.0
 
-          subject_with_gst.channel_fee.should be_within(ERROR_MARGIN).of(9.2) # 8.0 * 1.15
+          expect(subject_with_gst.channel_fee).to be_within(ERROR_MARGIN).of(9.2) # 8.0 * 1.15
         end
       end
 
       describe "#chalkle_fee" do
         it "is zero if no teacher cost has been set" do
           course.teacher_cost = nil
-          subject.chalkle_fee.should == 0
+          expect(subject.chalkle_fee).to eq 0
         end
 
         it "is zero if teacher percentage is zero" do
           channel.channel_rate_override = 0.5
           channel.teacher_percentage = 0.0
-          subject.chalkle_fee.should == 0
+          expect(subject.chalkle_fee).to eq 0
         end
 
         it "returns the chalkle percentage of the estimated final cost if no rounding is needed" do
@@ -64,7 +64,7 @@ module Finance
           channel.teacher_percentage = 0.5
           # estimated cost will be 20.0
 
-          subject.chalkle_fee.should be_within(ERROR_MARGIN).of(2.0) # 20.0 * 0.1
+          expect(subject.chalkle_fee).to be_within(ERROR_MARGIN).of(2.0) # 20.0 * 0.1
         end
 
         it "rounds values up to the nearest dollar and includes the rounding amount in the chalkle fee" do
@@ -74,7 +74,7 @@ module Finance
           # estimated cost will be 19.6
           # rounding will be 0.4
 
-          subject.chalkle_fee.should be_within(ERROR_MARGIN).of(2.36) # (19.6 * 0.1) + 0.4
+          expect(subject.chalkle_fee).to be_within(ERROR_MARGIN).of(2.36) # (19.6 * 0.1) + 0.4
         end
 
         it "adds tax to the result" do
@@ -83,8 +83,8 @@ module Finance
           channel.teacher_percentage = 0.5
           # estimated cost will be 20.0
 
-          subject_with_gst.total_cost.should be_within(ERROR_MARGIN).of(22.0)
-          subject_with_gst.chalkle_fee.should be_within(ERROR_MARGIN).of(2.8) # 20.0 * 0.1
+          expect(subject_with_gst.total_cost).to be_within(ERROR_MARGIN).of(22.0)
+          expect(subject_with_gst.chalkle_fee).to be_within(ERROR_MARGIN).of(2.8) # 20.0 * 0.1
         end
       end
 
@@ -94,7 +94,7 @@ module Finance
           channel.channel_rate_override = 0.5
           channel.teacher_percentage = 0.5
 
-          subject.total_cost.should be_within(ERROR_MARGIN).of(20.0)
+          expect(subject.total_cost).to be_within(ERROR_MARGIN).of(20.0)
         end
 
         it "includes chalkle fee" do
@@ -102,7 +102,7 @@ module Finance
           channel.channel_rate_override = 0.0
           channel.teacher_percentage = 0.5
 
-          subject.total_cost.should be_within(ERROR_MARGIN).of(20.0)
+          expect(subject.total_cost).to be_within(ERROR_MARGIN).of(20.0)
         end
 
         it "includes chalkle and channel fee" do
@@ -110,7 +110,7 @@ module Finance
           channel.channel_rate_override = 0.3
           channel.teacher_percentage = 0.5
 
-          subject.total_cost.should be_within(ERROR_MARGIN).of(20.0)
+          expect(subject.total_cost).to be_within(ERROR_MARGIN).of(20.0)
         end
 
         it "includes rounding" do
@@ -118,7 +118,7 @@ module Finance
           channel.channel_rate_override = 0.2
           channel.teacher_percentage = 0.6
 
-          subject.total_cost.should be_within(ERROR_MARGIN).of(17.0)
+          expect(subject.total_cost).to be_within(ERROR_MARGIN).of(17.0)
         end
 
         it "includes material cost" do
@@ -127,7 +127,7 @@ module Finance
           channel.channel_rate_override = 0.2
           channel.teacher_percentage = 0.6
 
-          subject.total_cost.should be_within(ERROR_MARGIN).of(17.0)
+          expect(subject.total_cost).to be_within(ERROR_MARGIN).of(17.0)
         end
       end
     end
