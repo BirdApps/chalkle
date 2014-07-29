@@ -46,6 +46,28 @@ ActiveAdmin.register Course  do
       update!
     end
 
+    def create
+      start_at = Time.parse params[:course][:start_at]
+      duration = params[:course][:duration]
+      duration = 3600 if duration.to_i < 1
+      lesson = Lesson.create({start_at: start_at , duration: duration})
+      params[:course].except! :start_at
+      params[:course].except! :duration
+      params[:course][:lessons] = [lesson]
+      c = Course.new
+      c.assign_attributes(params[:course], as: :admin)
+      c.save
+      if c.valid?
+        return redirect_to({action: :index}, {:notice => "Your course has been saved!"}) 
+      end
+      notice = ""
+      c.errors.messages.keys.each do |key|
+        notice += key.to_s+" "+ c.errors.messages[key][0].to_s+", "
+      end
+      flash.notice = notice
+      new
+    end
+
   end
 
   index do

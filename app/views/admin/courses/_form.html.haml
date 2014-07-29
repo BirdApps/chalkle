@@ -1,9 +1,12 @@
 = semantic_form_for [:admin, @course], :html => {:multipart => true}  do |f|
+  = f.semantic_errors *f.object.errors.keys
+
   = f.inputs "Details" do
     = f.input :name
     = f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
     = f.input :category, :as => :select, :label => "What is the primary category of this class?", :collection => Category.select_options, required: true
-    = f.input :start_at
+    = f.datetime_select :start_at
+    = f.input :start_at, as: :hidden
     = f.input :venue, :input_html => { :rows => 1 }
     = f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
     = f.input :region
@@ -54,3 +57,26 @@
 
 :javascript
   $('form.course').courseCostCalculator();
+  $(function(){
+    function update_start_at(){
+      var new_val = "";
+      new_val += $('#course_start_at_1i').val()+"-";
+      new_val += $('#course_start_at_2i').val()+"-";
+      new_val += $('#course_start_at_3i').val()+" ";
+      new_val += $('#course_start_at_4i').val()+":";
+      new_val += $('#course_start_at_5i').val();
+      console.log(new_val);
+      $('#course_start_at').val(new_val);
+    }
+    $('#course_start_at_1i').attr('name','');
+    $('#course_start_at_2i').attr('name','');
+    $('#course_start_at_3i').attr('name','');
+    $('#course_start_at_4i').attr('name','');
+    $('#course_start_at_5i').attr('name','');
+    $('#course_start_at_1i').change(update_start_at);
+    $('#course_start_at_2i').change(update_start_at);
+    $('#course_start_at_3i').change(update_start_at);
+    $('#course_start_at_4i').change(update_start_at);
+    $('#course_start_at_5i').change(update_start_at);
+
+  });
