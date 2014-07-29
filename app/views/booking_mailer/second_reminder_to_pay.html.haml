@@ -1,15 +1,15 @@
 %h3{style: "border-bottom: solid 1px #ececec; padding-bottom: 5px;"}
   Hello #{ @chalkler.name.split[0] },
-Thank you for signing up to the upcoming chalkle class, <%= @lesson.name %>. This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details: 
+Thank you for signing up to the upcoming chalkle class, <%= @course.name %>. This is a reminder that payment for the class should be made prior to the class. If possible, please make payment via bank transfer or cash deposit at any Kiwibank branch using these details: 
 %br/
 %br/
 Account number: 38-9012-0815531-00 
 %br/
 Name: Chalkle Limited
 %br/
-Reference number: #{ @lesson.meetup_id } - Your name
+Reference number: #{ @course.meetup_id } - Your name
 %br/
-Payment Amount: $#{(@lesson.cost.present? ? @lesson.cost : 0) *1.15 } per person incl. GST 
+Payment Amount: $#{(@course.cost.present? ? @course.cost : 0) *1.15 } per person incl. GST 
 %br/
 %br/
 If we do not receive your payment within the next 24 hours, your RSVP status will be moved to waitlist to allow other chalklers to attend this class. 

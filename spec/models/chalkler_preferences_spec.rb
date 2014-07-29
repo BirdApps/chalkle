@@ -8,9 +8,9 @@ describe ChalklerPreferences do
     before { @email_prefs = ChalklerPreferences.new(chalkler) }
 
     it 'extracts the correct preferences' do
-      @email_prefs.email.should eq('test@user.com')
-      @email_prefs.email_frequency.should eq('weekly')
-      @email_prefs.email_categories.should eq([1])
+      expect( @email_prefs.email).to eq('test@user.com')
+      expect( @email_prefs.email_frequency).to eq('weekly')
+      expect( @email_prefs.email_categories).to eq([1])
     end
   end
 
@@ -22,12 +22,12 @@ describe ChalklerPreferences do
 
     context 'saving' do
       it 'returns true for valid params' do
-        @email_prefs.update_attributes(params).should be_true
+        expect( @email_prefs.update_attributes(params)).to be true
       end
 
       it 'returns false for invalid params' do
         params.delete(:email)
-        @email_prefs.update_attributes(params).should be_false
+        expect( @email_prefs.update_attributes(params)).to be false
       end
     end
 
@@ -38,13 +38,13 @@ describe ChalklerPreferences do
 
         @email_prefs.update_attributes(params)
 
-        @email_prefs.email.should eq('tested@user.com')
-        @email_prefs.email_frequency.should eq('none')
-        @email_prefs.email_categories.should eq([2])
+        expect( @email_prefs.email).to eq('tested@user.com')
+        expect( @email_prefs.email_frequency).to eq('none')
+        expect( @email_prefs.email_categories).to eq([2])
 
-        @new_chalkler.email.should eq('tested@user.com')
-        @new_chalkler.email_frequency.should eq('none')
-        @new_chalkler.email_categories.should eq([2])
+        expect( @new_chalkler.email).to eq('tested@user.com')
+        expect( @new_chalkler.email_frequency).to eq('none')
+        expect( @new_chalkler.email_categories).to eq([2])
       end
     end
   end

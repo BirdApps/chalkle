@@ -17,8 +17,8 @@ class ChannelStats
     FinancialStats.new(start,period,channel)
   end
 
-  def lesson_stats
-    LessonStats.new(start,period,channel)
+  def course_stats
+    CourseStats.new(start,period,channel)
   end
 
   def chalkler_stats

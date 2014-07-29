@@ -10,3 +10,11 @@ begin
 rescue Exception
   nil
 end
+  desc 'run all specs'
+  task :all_specs do
+    Rake::Task[:spec].invoke
+    Rake::Task[:cucumber].invoke
+  end
+
+Rake::Task[:default].prerequisites.clear
+task :default => :all_specs

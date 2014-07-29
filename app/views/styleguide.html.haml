@@ -631,17 +631,17 @@
                         %button.btn{:type => "submit"}
                           %i.icon.icon-search
 
-        -@lessons = Lesson.where('do_during_class IS NOT NULL').order('created_at desc').limit(5).decorate
-        -@lessons << Lesson.where('start_at is NULL').order('created_at desc').first.decorate
-        -@lessons.compact!
-        -#- raise @lessons.last.inspect
-        -@lessons.last.suggested_audience = "YOUNG PEOPLE"
-        -@lessons.shuffle!
+        -@courses = Course.where('do_during_class IS NOT NULL').order('created_at desc').limit(5).decorate
+        -@courses << Course.where('start_at is NULL').order('created_at desc').first.decorate
+        -@courses.compact!
+        -#- raise @courses.last.inspect
+        -@courses.last.suggested_audience = "YOUNG PEOPLE"
+        -@courses.shuffle!
         %p Should these just show title, and expand on clicking info icon?
         %section.box-list
-          -@lessons.each_with_index do |ls, i|
+          -@courses.each_with_index do |ls, i|
             - if ls
-              %article.box-item{class: "#{'box-highlighted' if i == 2} #{('lesson-'+ls.status).downcase}"}
+              %article.box-item{class: "#{'box-highlighted' if i == 2} #{('course-'+ls.status).downcase}"}
                 .row
                   .col-md-12.box-top
                     .clearfix

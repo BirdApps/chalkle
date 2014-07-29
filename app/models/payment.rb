@@ -1,11 +1,11 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :booking_id, :xero_id, :xero_contact_id, :xero_contact_name,
+  attr_accessible :booking_id, :booking, :xero_id, :xero_contact_id, :xero_contact_name,
     :date, :complete_record_downloaded, :total, :reconciled, :reference,
     :visible, :cash_payment, :as => :admin
 
   belongs_to :booking
   has_one :chalkler, through: :booking
-  has_one :lesson, through: :booking
+  has_one :course, through: :booking
 
   serialize :xero_data
 

@@ -6,8 +6,8 @@ Given /^there is a reconciled payment$/ do
   FactoryGirl.create(:payment, xero_id: "abc", total: 10, reconciled: true)
 end
 
-Then /^they should see this payment$/ do
-  page.should have_content("10")
+Then /^they to see this payment$/ do
+  expect(page).to have_content("10")
 end
 
 And(/^they click into this payment$/) do 
@@ -26,18 +26,19 @@ end
 
 Then /^this payment should be deleted$/ do
   payment = Payment.find_by_xero_id("abc")
-  page.should have_content("Payment #{payment.id} deleted!")
-  payment.visible.should be_false
+  expect(page).to have_content("Payment #{payment.id} deleted!")
+  expect(payment.visible).to be false
 end
 
 Given(/^there is an ureconciled payment$/) do
   FactoryGirl.create(:payment, xero_id: "abc", total: 10)
   chalkler = FactoryGirl.create(:chalkler, name: "Test chalkler")
   teacher = FactoryGirl.create(:chalkler, name: "Test teacher")
-  lesson = FactoryGirl.create(:lesson, name: "Test class", cost: 10, start_at: 1.day.from_now, teacher_id: teacher.id)
+  lesson = FactoryGirl.create(:lesson, start_at: 1.day.from_now, duration: 1)
+  course = FactoryGirl.create(:course, name: "Test class", cost: 10, lessons: [lesson], teacher_id: teacher.id)
 #  chalkler.channels << FactoryGirl.create(:channel)
-#  lesson.channel = chalkler.channels.first
-  FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, status: "yes", guests: 0, paid: false)
+#  course.channel = chalkler.channels.first
+  FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course.id, status: "yes", guests: 0, paid: false)
 end
 
 When(/^they click to reconcile payments$/) do
@@ -54,5 +55,5 @@ end
 
 Then(/^this payment should be reconciled$/) do
   payment = Payment.find_by_xero_id "abc"
-  payment.reconciled.should be_true
+  expect(payment.reconciled).to be true
 end

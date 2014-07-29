@@ -9,13 +9,13 @@ describe Chalkler::DataCollection::EmailForm do
     context "when validating" do
       it "returns false if the form data is not valid" do
         form = Chalkler::DataCollection::EmailForm.new("chalkler" => chalkler)
-        expect(form.save).to be_false
+        expect(form.save).to be false
       end
 
       it "checks the existance of an email via the Chalkler model" do
         chalkler.stub(:update_attributes) { true }
         form = Chalkler::DataCollection::EmailForm.new("chalkler" => chalkler, "email" => email)
-        Chalkler.should_receive(:where).with("LOWER(email) = LOWER(?)", email) { [] }
+        expect(Chalkler).to receive(:where).with("LOWER(email) = LOWER(?)", email) { [] }
         form.save
       end
     end
@@ -23,12 +23,12 @@ describe Chalkler::DataCollection::EmailForm do
     context "when saving" do
       it "returns true if the data is persisted" do
         chalkler.stub(:update_attributes) { true }
-        expect(form.save).to be_true
+        expect(form.save).to be true
       end
 
       it "returns false if the data is not persisted" do
         chalkler.stub(:update_attributes) { false }
-        expect(form.save).to be_false
+        expect(form.save).to be false
       end
 
     end
@@ -50,7 +50,7 @@ describe Chalkler::DataCollection::EmailForm do
   describe "#persisted?" do
     it "returns false" do
       form = Chalkler::DataCollection::EmailForm.new
-      expect(form).to be_true
+      expect(form.persisted?).to be false
     end
   end
 end

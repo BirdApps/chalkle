@@ -9,7 +9,7 @@ class MonthlyCalendarCell
     @elem.hasClass('expanded')
 
   hasContents: ->
-    @_lessonCount() > 0
+    @_courseCount() > 0
 
   canExpand: ->
     !@isExpanded() and @hasContents()
@@ -35,16 +35,16 @@ class MonthlyCalendarCell
         @expand()
 
   _elementInsideClassList: (element) ->
-    @elem.find('ul.lessons').find(element).length > 0
+    @elem.find('ul.courses').find(element).length > 0
 
-  _lessonCount: ->
+  _courseCount: ->
     @elem.find('ul li').length
 
   _updateCount: ->
-    more_count = @_lessonCount() - 2
+    more_count = @_courseCount() - 2
     if more_count > 1
       @elem.addClass('show_more')
-      @elem.find('.lesson_count .number').text(more_count)
+      @elem.find('.course_count .number').text(more_count)
       @elem.find('li.viewable').last().addClass('last_showing')
     else
       @elem.removeClass('show_more')

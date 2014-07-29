@@ -1,9 +1,10 @@
 Given(/^there is a class "(.*?)" open to sign\-up$/) do |name|
   channel = Channel.find_by_name "Horowhenua"
-  lesson = FactoryGirl.create(:lesson,
+  lesson = FactoryGirl.create(:lesson, start_at: 1.minute.from_now)
+  course = FactoryGirl.create(:course,
                               name: 'Test class',
                               status: 'Published',
-                              start_at: 1.minute.from_now,
+                              lessons: [lesson],
                               cost: 10,
                               visible: true,
                               max_attendee: 10,
@@ -16,7 +17,7 @@ When(/^they visit the class listings$/) do
 end
 
 And(/^select the first class$/) do
-  page.click_link "lesson_#{Lesson.last.id}"
+  page.click_link "course_#{Course.last.id}"
 end
 
 When(/^they select the payment method "(.*?)"$/) do |method|
@@ -37,21 +38,21 @@ Then(/^they should see a summary of this booking$/) do
 end
 
 Given(/^the chalkler has cancelled an unpaid booking$/) do
-  lesson = Lesson.find_by_status "Published"
+  course = Course.find_by_status "Published"
   chalkler = Chalkler.find_by_name "Said"
-  FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, status: "no", paid: false)
+  FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course.id, status: "no", paid: false)
 end
 
 Given(/^the chalkler "(.*?)" has cancelled a booking$/) do |name|
-  lesson = Lesson.find_by_name 'Test class'
+  course = Course.find_by_name 'Test class'
   chalkler = Chalkler.find_by_name name
-  FactoryGirl.create(:booking, chalkler_id: chalkler.id, lesson_id: lesson.id, status: 'no')
+  FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course.id, status: 'no')
 end
 
 When(/^they visit an open class$/) do
   channel = Channel.find_by_name 'Horowhenua'
-  lesson = Lesson.find_by_status 'Published'
-  visit channel_lesson_path channel, lesson
+  course = Course.find_by_status 'Published'
+  visit channel_course_path channel, course
 end
 
 When(/^they fill out the booking form$/) do

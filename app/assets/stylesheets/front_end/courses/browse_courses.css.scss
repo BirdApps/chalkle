@@ -1,0 +1,180 @@
+$link-well-color: #D6D6D6;
+$link_well-border: #C6C6C6;
+$browse-courses-background: #E8E8E8;
+
+.search_panel {
+  background-color: $browse-courses-background;
+  padding-bottom: 3em;
+  padding-top: 1em;
+
+  #browse_type {
+    margin-top: 24px;
+    float: right;
+  }
+}
+
+header.calendar_titles {
+  h3 {
+    font-size: 22px;
+    border-bottom-width: 0;
+    
+    .part {
+      font-weight: normal;
+      border-right: 2px solid $fe-heading-color;
+      padding-right: 0.4em;
+
+      &:last-child {
+        border-right-width: 0px;
+        padding-right: 0px;
+      }
+    }
+
+    .main_part {
+      font-weight: bold
+    }
+  }
+}
+
+a.next-calendar-section {
+  text-transform: uppercase;
+  display: block;
+  padding: 1em 0;
+  text-align: center;
+  color: $fe-heading-color;
+  background-color: $link-well-color;
+  border: 1px solid $link_well-border;
+  margin-bottom: 1em;
+
+  &:hover {
+    color: $fe-heading-color;
+    text-decoration: none;
+    background-color: darken($link-well-color, 10%);
+    border-color: darken($link-well-border, 10%);
+  }
+}
+
+.page_header_panel {
+  h1 { font-size: 28px; }  
+  .filters {
+    padding-top: 20px;
+    @include make-row();
+    .types {
+      @include make-sm-column(10);
+      list-style: none;
+      margin-bottom: 0;
+      .part {
+        float: left;
+        margin-bottom: 0;
+        padding-left: 22px; 
+        padding-right: 22px;
+
+        .arrow-down {
+          border-left: 14px solid transparent;
+          border-right: 14px solid transparent;
+          border-top: 14px solid $fe-heading-color;
+          height: 0; 
+          margin: 0 auto -14px;
+          width: 0px; 
+        }
+        &.title {
+          padding-right: 10px;
+          .part-container {
+            background-color: $fe-heading-color;
+            padding: 10px 18px;
+            text-align: center;
+          }
+        }
+
+        &:first-child {
+          padding-left: 0;
+        }
+        &:last-child {
+          border-right: 0;
+          padding-right: 0;
+        }
+
+        h2 {
+          color: $white;
+          font-size: 26px;
+          margin: 0; 
+          text-align: center;
+        }
+        h3 {
+          border-bottom: none;
+          font-size: 16px;
+          font-weight: 700;
+          margin-top: 16px;
+        }
+        p { margin: 0; }
+        .dropdown-menu { 
+          margin-top: 5px; 
+          padding: 1px; 
+         }
+         .dropdown-menu li:last-child { margin-bottom: 1px; }
+        .dropdown-link { 
+          background: url('empty-circle.png') 2% center no-repeat;
+          color: $grayLight;
+          padding: 10px 10px 10px 46px;
+
+          &:hover { 
+            background: url('white-circle.png') 2% center no-repeat;
+            color: $white;
+          }
+          &.dropdown-active {
+            background: url('checked-circle.png') 2% center no-repeat;
+            background-color: #59742F;
+            color: $white;
+            display: block;
+          }
+        }
+        .dropdown-entry { 
+          margin-bottom: 0; 
+          padding: 0;
+          text-align: left;
+        }
+      }
+    }
+    .resets {
+      @include make-sm-column(2);
+      text-align: right;
+      color: $fe-heading-color;
+      p { 
+        font-size: 14px; 
+        margin: 13px 0 0;
+        line-height: 45px;
+      }
+    }    
+  }
+  // @media(max-width: $screen-sm) {
+  //   .instructions {
+  //     display: none !important;
+  //   }
+  // }
+}
+
+.course {
+  @include categoryBackgroundColor;
+  @include categoryBackgroundColorDarkerHover;
+  @include categoryBackgroundImage;
+
+  @include categoryColor('background-color', '&.', ' .coloured');
+
+  @include categoryColor('color', '&.', ' .blackboard');
+  @include categoryColor('color', '&.', ' .blackboard h3');
+
+  h3 {
+    color: inherit;
+  }
+  .text_contents {
+    background-color: transparent;
+  }
+}
+
+.blackboard {
+  background: $chalkboard-background;
+}
+
+@import "course_medium.css.scss";
+@import "month_calendar_view.css.scss";
+@import "week_calendar_view.css.scss";
+@import "sidebars.css.scss";

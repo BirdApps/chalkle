@@ -13,9 +13,9 @@ begin
     task "load_all" => :environment do
       EventLog.log('load_all') do
         Rake::Task["chalkle:load_chalklers"].execute
-        Rake::Task["chalkle:load_classes"].execute
-        Rake::Task["chalkle:load_bookings"].execute
-        Rake::Task["chalkle:load_venues"].execute
+        # Rake::Task["chalkle:load_classes"].execute
+        # Rake::Task["chalkle:load_bookings"].execute
+        # Rake::Task["chalkle:load_venues"].execute
       end
     end
 
@@ -23,7 +23,7 @@ begin
     task "reprocess" => :environment do
       EventLog.log('reprocess') do
         Chalkler.all.each {|c| c.set_from_meetup_data; c.save}
-        Lesson.all.each {|l| l.set_from_meetup_data; l.save}
+        Course.all.each {|l| l.set_from_meetup_data; l.save}
         Booking.all.each {|b| b.set_from_meetup_data; b.save}
       end
     end
@@ -45,7 +45,7 @@ begin
         channel_importer = ChalkleMeetup::ChannelImporter.new
 
         Channel.where("url_name IS NOT NULL").all.each do |channel|
-          channel_importer.import_lessons(channel)
+          channel_importer.import_courses(channel)
         end
       end
     end
@@ -55,7 +55,7 @@ begin
       EventLog.log('load_bookings') do
         booking_importer = ChalkleMeetup::BookingImporter.new
 
-        l = Lesson.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(10).to_a
+        l = Course.where('meetup_id IS NOT NULL').collect {|l| l.meetup_id}.each_slice(10).to_a
         l.each do |event_id|
           result = RMeetup::Client.fetch(:rsvps, { event_id: event_id.join(','),  fields: 'host' })
           result.each do |data|

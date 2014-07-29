@@ -2,13 +2,13 @@ require "spec_helper"
 
 describe BookingsController do
   describe "#new" do
-    context "lesson status" do
+    context "course status" do
       login_chalkler
       let(:channel) { FactoryGirl.create(:channel) }
 
-      context "when the lesson is unpublished" do
-        let(:lesson) { FactoryGirl.create(:lesson, status: 'On-hold', channel: channel) }
-        before { get :new, channel_id: channel.id, lesson_id: lesson.id }
+      context "when the course is unpublished" do
+        let(:course) { FactoryGirl.create(:course, status: 'On-hold', channel: channel) }
+        before { get :new, channel_id: channel.id, course_id: course.id }
 
         it "redirects to the chalkler dashboard" do
           expect(response).to redirect_to(chalklers_root_url)
@@ -20,8 +20,8 @@ describe BookingsController do
       end
 
       it "renders the new template" do
-        lesson = FactoryGirl.create(:lesson, status: 'Published', channel: channel)
-        get :new, channel_id: channel.id, lesson_id: lesson.id
+        course = FactoryGirl.create(:course, status: 'Published', channel: channel)
+        get :new, channel_id: channel.id, course_id: course.id
         expect(response).to render_template(:new)
       end
     end

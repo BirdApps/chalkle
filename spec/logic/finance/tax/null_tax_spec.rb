@@ -5,7 +5,7 @@ module Finance::Tax
   describe NullTax do
     describe "#apply_to" do
       it "returns the value unchanged" do
-        subject.apply_to('foobar').should == 'foobar'
+        expect(subject.apply_to('foobar')).to eq 'foobar'
       end
     end
   end

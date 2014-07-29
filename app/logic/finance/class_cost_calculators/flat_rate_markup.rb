@@ -8,14 +8,14 @@ module Finance
         chalkle_fee: 2.0
       }
 
-      def initialize(lesson = nil, options = {})
+      def initialize(course = nil, options = {})
         @rates = DEFAULT_RATES.merge(non_nil_rates(options[:rates]))
         @total_markup = options[:total_markup] || Markup::CreditCardProcessingFee.new
-        super(lesson, options)
+        super(course, options)
       end
 
       def channel_fee
-        lesson_channel_fee_override || @rates[:channel_fee]
+        course_channel_fee_override || @rates[:channel_fee]
       end
 
       def channel_fee_description
@@ -23,7 +23,7 @@ module Finance
       end
 
       def chalkle_fee
-        if channel_fee == 0.0 && fixed_attendee_costs == 0.0 && lesson
+        if channel_fee == 0.0 && fixed_attendee_costs == 0.0 && course
           0.0
         else
           @tax.apply_to chalkle_fee_without_tax
@@ -64,8 +64,8 @@ module Finance
           @rates[:chalkle_fee]
         end
 
-        def lesson_channel_fee_override
-          @lesson.channel_rate_override if @lesson
+        def course_channel_fee_override
+          @course.channel_rate_override if @course
         end
 
         def all_fees_with_markup

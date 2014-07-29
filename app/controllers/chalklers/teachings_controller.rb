@@ -22,4 +22,8 @@ class Chalklers::TeachingsController < Chalklers::BaseController
   def show
   end
 
+  def index
+    redirect_to new_chalklers_teaching_url
+  end
+
 end

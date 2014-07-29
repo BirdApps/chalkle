@@ -4,18 +4,18 @@ class BookingsController < ApplicationController
 
   def index
     @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
-    @upcoming_bookings = current_chalkler.bookings.visible.upcoming.confirmed.paid.order('lessons.start_at').decorate
+    @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming.decorate
   end
 
   def new
-    if current_chalkler.lessons.where{ bookings.status.eq 'yes' }.exists? params[:lesson_id]
+    if current_chalkler.courses.where{ bookings.status.eq 'yes' }.exists? params[:course_id]
       flash[:notice] = 'You are already attending this class'
       redirect_to :back
     end
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
-    @lesson = Lesson.find(params[:lesson_id]).decorate
-    return false if check_lesson_visibility
+    @course = Course.find(params[:course_id]).decorate
+    return false if check_course_visibility
   end
 
   def create
@@ -32,7 +32,7 @@ class BookingsController < ApplicationController
         wrapper = SwipeWrapper.new
         identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
                                                       amount: @booking.cost,
-                                                      return_url: channel_lesson_booking_payment_callback_url(params[:channel_id], @booking.lesson_id, @booking.id),
+                                                      return_url: channel_course_booking_payment_callback_url(params[:channel_id], @booking.course_id, @booking.id),
                                                       description: @booking.name)
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
       else
@@ -41,7 +41,7 @@ class BookingsController < ApplicationController
       end
     else
       delete_any_unpaid_credit_card_booking
-      @lesson = Lesson.find(params[:lesson_id]).decorate
+      @course = Course.find(params[:course_id]).decorate
       render action: 'new'
     end
   end
@@ -53,7 +53,7 @@ class BookingsController < ApplicationController
       #should I set it to yes?
       payment = @booking.build_payment
       payment.booking = @booking
-      payment.total = @booking.lesson.cost
+      payment.total = @booking.course.cost
       payment.reconciled = true
       payment.save
       @booking.status = 'yes'
@@ -61,10 +61,10 @@ class BookingsController < ApplicationController
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
-      redirect_to channel_lesson_path(params[:channel_id], params[:lesson_id])
+      redirect_to channel_course_path(params[:channel_id], params[:course_id])
     else
       flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
-      redirect_to new_channel_lesson_booking_url(params[:channel_id], params[:lesson_id], params[:booking_id])
+      redirect_to new_channel_course_booking_url(params[:channel_id], params[:course_id], params[:booking_id])
     end
   end
 
@@ -75,7 +75,7 @@ class BookingsController < ApplicationController
   def edit
     load_booking
     redirect_edit_on_paid(@booking) if @booking.paid?
-    @lesson = @booking.lesson.decorate
+    @course = @booking.course.decorate
   end
 
   def update
@@ -84,7 +84,7 @@ class BookingsController < ApplicationController
     if @booking.save
       redirect_to booking_path @booking
     else
-      @lesson = @booking.lesson.decorate
+      @course = @booking.course.decorate
       render action: 'edit'
     end
   end
@@ -103,8 +103,8 @@ class BookingsController < ApplicationController
 
   private
 
-  def check_lesson_visibility
-    unless @lesson.published?
+  def check_course_visibility
+    unless @course.published?
       redirect_to chalklers_root_url, notice: "This class is no longer available."
       return false
     end
@@ -123,11 +123,11 @@ class BookingsController < ApplicationController
   end
 
   def destroy_cancelled_booking
-    current_chalkler.bookings.where{ (lesson_id == my{params[:lesson_id]}) & (status == 'no') }.destroy_all
+    current_chalkler.bookings.where{ (course_id == my{params[:course_id]}) & (status == 'no') }.destroy_all
   end
 
   def delete_any_unpaid_credit_card_booking
-    if booking = current_chalkler.bookings.where(lesson_id: params[:lesson_id], payment_method: 'credit_card').first
+    if booking = current_chalkler.bookings.where(course_id: params[:course_id], payment_method: 'credit_card').first
       if booking.payment.nil?
         booking.destroy
       end

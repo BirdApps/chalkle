@@ -18,8 +18,8 @@ class Channel < ActiveRecord::Base
   has_many :admin_users, through: :channel_admins
   has_many :subscriptions
   has_many :chalklers, through: :subscriptions, source: :chalkler
-  has_many :lessons
-  has_many :bookings, through: :lessons
+  has_many :courses
+  has_many :bookings, through: :courses
   has_many :payments, through: :bookings
   has_many :channel_categories
   has_many :categories, through: :channel_categories
@@ -56,12 +56,12 @@ class Channel < ActiveRecord::Base
     financials
   end
 
-  def lessons_table(first_day, period, num_rows)
-    lessons = StatsMath.new()
+  def courses_table(first_day, period, num_rows)
+    courses = StatsMath.new()
     num_rows.times do |i|
-      lessons[i] = channel_stats(first_day + i*period, period).lesson_stats
+      courses[i] = channel_stats(first_day + i*period, period).course_stats
     end
-    lessons
+    courses
   end
 
   def chalkler_table(first_day, period, num_rows)
@@ -81,24 +81,24 @@ class Channel < ActiveRecord::Base
     chalklers.where{created_at.lteq date.utc}
   end
 
-  def lesson_announced(start_date,end_date)
-    lessons.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+  def course_announced(start_date,end_date)
+    courses.published.start_at_between(start_date,end_date)
   end
 
-  def lesson_ran(start_date,end_date)
-    lessons.visible.published.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+  def course_ran(start_date,end_date)
+    courses.visible.published.start_at_between(start_date,end_date)
   end
 
-  def cancel_lessons(start_date,end_date)
-    lessons.hidden.where{(start_at.gt start_date.utc) & (start_at.lteq end_date.utc)}
+  def cancel_courses(start_date,end_date)
+    courses.hidden.start_at_between(start_date,end_date)
   end
 
-  def past_lessons(date)
-    lessons.visible.published.where{start_at.lt date.utc}
+  def past_courses(date)
+    courses.visible.published.previous
   end
 
-  def paid_lessons(start_date,end_date)
-    lesson_ran(start_date,end_date).paid
+  def paid_courses(start_date,end_date)
+    course_ran(start_date,end_date).paid
   end
 
   def cost_calculator

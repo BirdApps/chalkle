@@ -1,7 +1,7 @@
 class FilterSelector
-  constructor: (element, lessons_index) ->
+  constructor: (element, courses_index) ->
     @elem = $(element)
-    @index = lessons_index
+    @index = courses_index
     @_attachHandlers()
 
   ### HANDLERS ###
@@ -27,11 +27,11 @@ class FilterSelector
     @elem.find('a.dropdown-link').on 'click', @onFilterSelected
 
 
-$.fn.filterSelector = (lessons_index_id) ->
+$.fn.filterSelector = (courses_index_id) ->
   @each ->
     element = $(this)
     dataName = 'filterSelector'
-    index = $(lessons_index_id).data('lessonsIndex')
+    index = $(courses_index_id).data('coursesIndex')
 
     return if element.data(dataName)
     element.data dataName, new FilterSelector(this, index)

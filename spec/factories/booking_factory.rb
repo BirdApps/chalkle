@@ -6,6 +6,6 @@ FactoryGirl.define do
     paid false
     payment_method 'meetup'
     chalkler
-    lesson
+    course
   end
 end

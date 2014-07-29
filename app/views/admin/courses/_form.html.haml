@@ -1,0 +1,81 @@
+= semantic_form_for [:admin, @course], :html => {:multipart => true}  do |f|
+  = f.semantic_errors *f.object.errors.keys
+
+  = f.inputs "Details" do
+    = f.input :name
+    = f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
+    = f.input :category, :as => :select, :label => "What is the primary category of this class?", :collection => Category.select_options, required: true
+    = f.datetime_select :start_at
+    = f.input :start_at, as: :hidden
+    = f.input :venue, :input_html => { :rows => 1 }
+    = f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
+    = f.input :region
+    - if !@course.published?
+      - if current_admin_user.role == 'super' || current_admin_user.role == 'channel admin'
+        = f.input :channel, :collection => Channel.accessible_by(current_ability)
+      = f.input :availabilities, :label => "Availability of the teacher", :input_html => { :rows => 1 }
+      = f.input :meetup_id, :label => "Enter the Meetup ID here after you have made a draft on Meetup"
+    = f.input :learning_outcomes, :label => "What you will learn", :input_html => { :rows => 6 }
+    = f.input :course_type, :as => :select, :label => "Type of class", :collection => ["test flight", "intro", "next step", "tips & tricks", "practice", "master class", "zero to hero"]
+    = f.input :course_skill, :as => :select, :label => "Skills required", :collection => ["Beginner", "Intermediate", "Advanced"]
+    = f.input :teacher_bio, :label => "Your chalkler will be", :input_html => { :rows => 2 }
+    = f.input :prerequisites, :label => "What to bring", :input_html => { :rows => 1 }
+    = f.input :additional_comments, :input_html => { :rows => 2 }
+    - @course.duration = @course.duration/60/60 if !@course.duration.nil?
+    = f.input :duration, :label => "Duration in hours"
+    = f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Approved", "Unreviewed", "Processing"], :input_html => { :multiple => false }, include_blank: false
+
+  = f.inputs "Attendees" do
+    = f.input :suggested_audience, :label => "Appropriate audience", :input_html => { :rows => 1 }
+    = f.input :max_attendee
+    = f.input :min_attendee
+
+  = f.inputs "Costs" do
+    = f.input :teacher_cost, label: "Teacher fee per attendee", hint: "This cannot be 0 for a class with an entry price."
+    = f.input :material_cost, label: 'Material cost per attendee'
+    = f.input :venue_cost
+    = f.input :channel_rate_override, label: 'Channel fee override', hint: "Set this to something if you don't want to charge the usual channel fee for this course."
+    = f.input :channel_fee, input_html: {readonly: true, disabled: true}
+    = f.input :chalkle_fee, input_html: {readonly: true, disabled: true}
+    = f.input :cost, label: "Advertised price", input_html: {readonly: true}, hint: "This is calculated based on the teacher cost"
+
+  - if @course.published?
+    = f.inputs "Payments Made" do
+      - if @course.published?
+        = f.input :teacher_payment, :label => "Payment to teacher (leave blank if not paid)"
+        = f.input :chalkle_payment, :label => "Payment to Chalkle (leave blank if not paid)"
+
+
+  = f.inputs "Image", :for => [:course_image, f.object.course_image || CourseImage.new ] do |fi|
+    - if @course.course_upload_image.present?
+      = f.input :course_upload_image, :as => :file, :label => "Image to show on class listing", :hint => f.template.image_tag(f.object.course_upload_image.url(:mini), alt: File.basename(@course.course_upload_image.path))
+      = f.input :remove_course_upload_image, as: :boolean, :label => "Check here to remove the current image"
+    - else
+      = f.input :course_upload_image, :as => :file, :label => "Image to show on class listing", :hint => "Allowed types are jpg, jpeg, gif, png"
+
+  = f.actions
+
+:javascript
+  $('form.course').courseCostCalculator();
+  $(function(){
+    function update_start_at(){
+      var new_val = "";
+      new_val += $('#course_start_at_1i').val()+"-";
+      new_val += $('#course_start_at_2i').val()+"-";
+      new_val += $('#course_start_at_3i').val()+" ";
+      new_val += $('#course_start_at_4i').val()+":";
+      new_val += $('#course_start_at_5i').val();
+      $('#course_start_at').val(new_val);
+    }
+    $('#course_start_at_1i').attr('name','');
+    $('#course_start_at_2i').attr('name','');
+    $('#course_start_at_3i').attr('name','');
+    $('#course_start_at_4i').attr('name','');
+    $('#course_start_at_5i').attr('name','');
+    $('#course_start_at_1i').change(update_start_at);
+    $('#course_start_at_2i').change(update_start_at);
+    $('#course_start_at_3i').change(update_start_at);
+    $('#course_start_at_4i').change(update_start_at);
+    $('#course_start_at_5i').change(update_start_at);
+
+  });

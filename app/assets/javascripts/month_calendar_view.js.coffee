@@ -1,7 +1,7 @@
-#= require plugins/lessons_index.js
+#= require plugins/courses_index.js
 
 $(document).ready ->
-  $('#lessons_index').lessonsIndex()
+  $('#courses_index').coursesIndex()
 
   $(document).on "ajax:success", '[data-append]', (evt, data, status, xhr) ->
     target_id = $(this).attr('data-append')

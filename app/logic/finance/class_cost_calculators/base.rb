@@ -1,10 +1,10 @@
 module Finance
   module ClassCostCalculators
     class Base
-      attr_accessor :lesson
+      attr_accessor :course
 
-      def initialize(lesson, options = {})
-        @lesson = lesson
+      def initialize(course, options = {})
+        @course = course
         @channel = options[:channel]
         @tax = options[:tax] || Tax::NzGst.new
       end
@@ -18,11 +18,11 @@ module Finance
       end
 
       def channel
-        @channel || @lesson.channel
+        @channel || @course.channel
       end
 
-      def update_costs(lesson)
-        lesson.cost = total_cost
+      def update_costs(course)
+        course.cost = total_cost
       end
 
       def uses_percentages?
@@ -31,8 +31,8 @@ module Finance
 
       private
 
-        attr_reader :lesson
-        delegate :teacher_cost, :material_cost, to: :lesson, allow_nil: true
+        attr_reader :course
+        delegate :teacher_cost, :material_cost, to: :course, allow_nil: true
 
         def describe_percent(fraction)
           "#{fraction * 100}%"

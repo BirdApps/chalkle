@@ -41,13 +41,14 @@ gem 'sendgrid'
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'
-gem 'haml-rails',    '~> 0.3.5'
-gem 'coffee-filter', '~> 0.1.3'
+gem 'haml', '~> 4.0.5'
+gem 'haml-rails',    '~> 0.4.0'
 #gem 'simple_form'
 gem 'simple_form', git: 'git://github.com/zlx/simple_form_bootstrap3', branch: 'rails_3'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 gem 'google-webfonts-rails'
+gem 'bootstrap-datepicker-rails'
 
 #attachments
 gem 'carrierwave'
@@ -65,8 +66,8 @@ group :assets do
   gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', git: 'git://github.com/anjlab/bootstrap-rails'
   gem 'font-awesome-rails'
   gem 'uglifier',            '~> 1.3.0'
-  gem 'haml_coffee_assets',  '~> 1.9.1'
-  gem 'haml_assets',         '~> 0.2.1'
+  gem 'haml_coffee_assets',  '~> 1.16'
+  gem 'haml_assets',         '~> 0.2.2'
   gem 'kalendae_assets',     '~> 0.2.1'
   gem 'execjs',              '~> 1.4.0'
   gem 'bower-rails'
@@ -134,9 +135,11 @@ group :test do
   gem 'webrat',              '~> 0.7.3'
   gem 'email_spec',          '~> 1.4.0'
   gem 'factory_girl_rails',  '~> 4.2.1'
+  gem 'faker'
 
   # Test coverage
   gem 'simplecov',  '~> 0.7.1', require: false
 
   gem 'zeus', '0.13.4.pre2'
+
 end

@@ -3,206 +3,208 @@ require 'spec_helper'
 describe ChalklerDigest do
   let(:region) { FactoryGirl.create(:region) }
 
-  describe "lesson selection" do
-    # this lesson should always be excluded from a set
-    let(:lesson1) {
-      FactoryGirl.create(:lesson,
+
+  describe "course selection" do
+    # this course should always be excluded from a set
+    let(:course1) {
+      lesson = FactoryGirl.create(:lesson, start_at: 1.day.from_now, duration: 1)
+      FactoryGirl.create(:course,
                          published_at: 1.day.ago,
-                         start_at: 1.day.from_now,
+                         lessons: [lesson],
                          status: 'Published',
                          do_during_class: 'x',
                          meetup_url: 'http://meetup.com',
                          max_attendee: 10)
     }
-
-    before do
-      @category = FactoryGirl.create(:category)
-      @chalkler = FactoryGirl.create(:chalkler, email_categories: [@category.id], email_frequency: 'daily')
-      @channel = FactoryGirl.create(:channel, visible: true)
-      @chalkler.channels << @channel
-      @digest = ChalklerDigest.new(@chalkler)
-      @lesson = FactoryGirl.create(:lesson,
+    let(:category){FactoryGirl.create(:category)}
+    let(:channel){FactoryGirl.create(:channel, visible: true)}
+    let(:chalkler){ FactoryGirl.create(:chalkler, email_categories: [category.id], email_frequency: 'daily', channels: [channel])}
+    let(:digest){ChalklerDigest.new(chalkler)}
+    let(:lesson){FactoryGirl.create(:lesson, start_at: 3.days.from_now, duration: 3600)}
+    let(:course){FactoryGirl.create(:course,
                                    published_at: 1.day.ago,
-                                   start_at: 3.days.from_now,
+                                   lessons: [lesson],
                                    status: 'Published',
                                    do_during_class: 'x',
                                    meetup_url: 'http://meetup.com',
                                    max_attendee: 15,
-                                   category: @category,
-                                   channel: @channel)
-    end
+                                   category: category,
+                                   channel: channel)}
 
-    it "only loads new/open lessons once" do
+    it "only loads new/open courses once" do
       channel = FactoryGirl.create(:channel, visible: true)
-      @lesson.channel = channel
-      @lesson.save!
-      @chalkler.channels << channel
-      lessons = @digest.new_lessons
-      lessons.concat @digest.open_lessons
-      lessons.should == [@lesson]
+      course.channel = channel
+      course.save!
+      chalkler.channels << channel
+      courses = digest.new_courses
+      courses.concat digest.open_courses
+      courses.should == [course]
     end
 
-    it "only loads default new/open lessons once" do
+    it "only loads default new/open courses once" do
       channel = FactoryGirl.create(:channel, visible: true)
-      @lesson.channel = channel
-      @lesson.save!
-      @chalkler.channels << channel
-      lessons = @digest.default_new_lessons
-      lessons.concat @digest.default_open_lessons
-      lessons.should == [@lesson]
+      course.channel = channel
+      course.save!
+      chalkler.channels << channel
+      courses = digest.default_new_courses
+      courses.concat digest.default_open_courses
+      courses.should == [course]
     end
 
-    describe "#new_lessons" do
-      it "loads a lesson that a chalkler is interested in" do
-        lesson1.category = FactoryGirl.create(:category)
-        lesson1.channel = @channel
-        lesson1.save!
-        @digest.new_lessons.should == [@lesson]
+    describe "#new_courses" do
+      it "loads a course that a chalkler is interested in" do
+        course1.category = FactoryGirl.create(:category)
+        course1.channel = channel
+        course1.save!
+        digest.new_courses.should == [course]
       end
 
-      it "loads a lessons from channels that chalkler belongs to" do
-        lesson1.category = @category
-        lesson1.channel = FactoryGirl.create(:channel)
-        lesson1.save!
-        @digest.new_lessons.should == [@lesson]
+      it "loads a courses from channels that chalkler belongs to" do
+        course1.category = category
+        course1.channel = FactoryGirl.create(:channel)
+        course1.save!
+        digest.new_courses.should == [course]
       end
 
-      it "won't load a lesson without do_during_class" do
-        @lesson.update_attribute :do_during_class, nil
-        @digest.instance_eval{ new_lessons }.should be_empty
+      it "won't load a course without do_during_class" do
+        course.update_attribute :do_during_class, nil
+        digest.instance_eval{ new_courses }.should be_empty
       end
 
-      it "won't load a lesson that is more than 1 day old" do
-        @lesson.update_attribute :published_at, 2.days.ago
-        @digest.instance_eval{ new_lessons }.should be_empty
+      it "won't load a course that is more than 1 day old" do
+        course.update_attribute :published_at, 2.days.ago
+        digest.instance_eval{ new_courses }.should be_empty
       end
 
-      it "won't load a lesson from a hidden channel" do
-        @channel.update_attribute :visible, false
-        @digest.new_lessons.should be_empty
+      it "won't load a course from a hidden channel" do
+        channel.update_attribute :visible, false
+        digest.new_courses.should be_empty
       end
 
-      it "only loads a lesson from chalkler's regions if specified" do
-        @chalkler.email_region_ids = [region.id]
-        @lesson.region = region
-        @lesson.save!
-        @digest.new_lessons.should include(@lesson)
-
-        @lesson.region = nil
-        @lesson.save!
-        @digest.new_lessons.should be_empty
-      end
-    end
-
-    describe "#default_new_lessons" do
-      it "loads a lessons from channels that chalkler belongs to" do
-        lesson1.channel = FactoryGirl.create(:channel)
-        lesson1.save!
-        @digest.default_new_lessons.should == [@lesson]
-      end
-
-      it "won't load a lesson without do_during_class" do
-        @lesson.update_attribute :do_during_class, nil
-        @digest.default_new_lessons.should be_empty
-      end
-
-      it "won't load a lesson that is more than 1 day old" do
-        @lesson.update_attribute :published_at, 2.days.ago
-        @digest.default_new_lessons.should be_empty
-      end
-
-      it "won't load a lesson from a hidden channel" do
-        @channel.update_attribute :visible, false
-        @digest.default_new_lessons.should be_empty
+      it "only loads a course from chalkler's regions if specified" do
+        course.published_at = Time.now
+        chalkler.email_region_ids = [region.id]
+        course.region = region
+        course.save!
+        
+        digest.new_courses.should include(course)
+        course.region = nil
+        course.save!
+        digest.new_courses.should be_empty
       end
     end
 
-    describe "#open_lessons" do
+    describe "#default_new_courses" do
+      it "loads a courses from channels that chalkler belongs to" do
+        course1.channel = FactoryGirl.create(:channel)
+        course1.save!
+        digest.default_new_courses.should == [course]
+      end
+
+      it "won't load a course without do_during_class" do
+        course.update_attribute :do_during_class, nil
+        digest.default_new_courses.should be_empty
+      end
+
+      it "won't load a course that is more than 1 day old" do
+        course.update_attribute :published_at, 2.days.ago
+        digest.default_new_courses.should be_empty
+      end
+
+      it "won't load a course from a hidden channel" do
+        channel.update_attribute :visible, false
+        digest.default_new_courses.should be_empty
+      end
+    end
+
+    describe "#open_courses" do
       before do
-        @lesson.update_attribute :published_at, 3.days.ago
-        lesson1.update_attribute :published_at, 3.days.ago
+        course.update_attribute :published_at, 3.days.ago
+        course1.update_attribute :published_at, 3.days.ago
       end
 
-      it "loads a lesson that a chalkler is interested in" do
-        lesson1.category = FactoryGirl.create(:category)
-        lesson1.channel = @channel
-        lesson1.save!
-        @digest.open_lessons.should == [@lesson]
+      it "loads a course that a chalkler is interested in" do
+        course1.category = FactoryGirl.create(:category)
+        course1.channel = channel
+        course1.save!
+        digest.open_courses.should == [course]
       end
 
-      it "loads a lessons from channels that chalkler belongs to" do
-        lesson1.category = @category
-        lesson1.channel = FactoryGirl.create(:channel)
-        lesson1.save!
-        @digest.open_lessons.should == [@lesson]
+      it "loads a courses from channels that chalkler belongs to" do
+        course1.category = category
+        course1.channel = FactoryGirl.create(:channel)
+        course1.save!
+        digest.open_courses.should == [course]
       end
 
-      it "won't load a full lesson" do
-        @lesson.update_attribute :max_attendee, 10
-        @lesson.bookings = []
-        10.times { FactoryGirl.create(:booking, lesson: @lesson) }
-        @digest.open_lessons.should be_empty
+      it "won't load a full course" do
+        course.update_attribute :max_attendee, 10
+        course.bookings = []
+        10.times { FactoryGirl.create(:booking, course: course) }
+        digest.open_courses.should be_empty
       end
 
-      it "won't load a lesson without do_during_class" do
-        @lesson.update_attribute :do_during_class, nil
-        @digest.open_lessons.should be_empty
+      it "won't load a course without do_during_class" do
+        course.update_attribute :do_during_class, nil
+        digest.open_courses.should be_empty
       end
 
-      it "won't load a lesson that begins less than one day from now" do
-        @lesson.update_attribute :start_at, Time.now.utc + 23.hours
-        @digest.open_lessons.should be_empty
+      it "won't load a course that begins less than one day from now" do
+        course.start_at = Time.now.utc + 23.hours
+        course.save
+        digest.open_courses.should be_empty
       end
 
       it "won't choke on an empty set" do
-        @lesson.destroy
-        @digest.open_lessons.should be_empty
+        course.destroy
+        digest.open_courses.should be_empty
       end
 
-      it "won't load a lesson from a hidden channel" do
-        @channel.update_attribute :visible, false
-        @digest.open_lessons.should be_empty
+      it "won't load a course from a hidden channel" do
+        channel.update_attribute :visible, false
+        digest.open_courses.should be_empty
       end
     end
 
-    describe "#default_open_lessons" do
+    describe "#default_open_courses" do
       before do
-        @lesson.update_attribute :published_at, 3.days.ago
-        lesson1.update_attribute :published_at, 3.days.ago
+        course.update_attribute :published_at, 3.days.ago
+        course1.update_attribute :published_at, 3.days.ago
       end
 
-      it "loads a lesson from channels that chalkler belongs to" do
-        lesson1.category = @category
-        lesson1.channel = FactoryGirl.create(:channel)
-        lesson1.save!
-        @digest.default_open_lessons.should == [@lesson]
+      it "loads a course from channels that chalkler belongs to" do
+        course1.category = category
+        course1.channel = FactoryGirl.create(:channel)
+        course1.save!
+        digest.default_open_courses.should == [course]
       end
 
-      it "won't load a full lesson" do
-        @lesson.update_attribute :max_attendee, 10
-        @lesson.bookings = []
-        10.times { FactoryGirl.create(:booking, lesson: @lesson) }
-        @digest.default_open_lessons.should be_empty
+      it "won't load a full course" do
+        course.update_attribute :max_attendee, 10
+        course.bookings = []
+        10.times { FactoryGirl.create(:booking, course: course) }
+        digest.default_open_courses.should be_empty
       end
 
-      it "won't load a lesson without do_during_class" do
-        @lesson.update_attribute :do_during_class, nil
-        @digest.default_open_lessons.should be_empty
+      it "won't load a course without do_during_class" do
+        course.update_attribute :do_during_class, nil
+        digest.default_open_courses.should be_empty
       end
 
-      it "won't load a lesson that begins less than one day from now" do
-        @lesson.update_attribute :start_at, Time.now.utc + 23.hours
-        @digest.default_open_lessons.should be_empty
+      it "won't load a course that begins less than one day from now" do
+        course.start_at = Time.now.utc + 23.hours
+        course.save
+        digest.default_open_courses.should be_empty
       end
 
       it "won't choke on an empty set" do
-        @lesson.destroy
-        @digest.default_open_lessons.should be_empty
+        course.destroy
+        digest.default_open_courses.should be_empty
       end
 
-      it "won't load a lesson from a hidden channel" do
-        @channel.update_attribute :visible, false
-        @digest.default_open_lessons.should be_empty
+      it "won't load a course from a hidden channel" do
+        channel.update_attribute :visible, false
+        digest.default_open_courses.should be_empty
       end
     end
   end

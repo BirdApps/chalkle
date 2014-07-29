@@ -66,26 +66,26 @@ Scenario: Password reset button is not displayed when chalkler has no email
   When the channel admin views "Whetu's" profile
   Then channel admin should not see a password reset button
 
-Scenario: Channel Admin can see lessons taught by chalkler
+Scenario: Channel Admin can see courses taught by chalkler
   Given "Whetu" is a chalkler
   And the chalkler "Whetu" belongs to the "Wellington" channel
-  And "Whetu" is the teacher for the lesson "How to braid your hair"
+  And "Whetu" is the teacher for the course "How to braid your hair"
   When the channel admin views "Whetu's" profile
-  Then they should see the lesson "How to braid your hair"
+  Then they should see the course "How to braid your hair"
 
-Scenario: Channel Admin can see lessons attended by chalkler
+Scenario: Channel Admin can see courses attended by chalkler
   Given "Whetu" is a chalkler
   And the chalkler "Whetu" belongs to the "Wellington" channel
-  And "Whetu" attended the lesson "How to braid your hair 2"
+  And "Whetu" attended the course "How to braid your hair 2"
   When the channel admin views "Whetu's" profile
-  Then they should see the lesson "How to braid your hair 2"
+  Then they should see the course "How to braid your hair 2"
 
-Scenario: Channel Admin cannot see lessons not attended by chalkler
+Scenario: Channel Admin cannot see courses not attended by chalkler
   Given "Whetu" is a chalkler
   And the chalkler "Whetu" belongs to the "Wellington" channel
-  And "Whetu" did not attend the lesson "How to braid your hair 2"
+  And "Whetu" did not attend the course "How to braid your hair 2"
   When the channel admin views "Whetu's" profile
-  Then they should not see the lesson "How to braid your hair 2"
+  Then they should not see the course "How to braid your hair 2"
 
 Scenario: Comments on chalklers are displayed on the index page
   Given there is a chalkler with no details in the "Wellington" channel

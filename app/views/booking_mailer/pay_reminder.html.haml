@@ -7,10 +7,10 @@
     - @bookings.each do |b|
       %tr
         %td
-          %h3= link_to b.lesson_name.capitalize, "http://chalkle.com/#{booking_path(b)}"
+          %h3= link_to b.course_name.capitalize, "http://chalkle.com/#{booking_path(b)}"
           %p.details
-            = l b.lesson_start_at, :format => :long_without_year if b.lesson_start_at.present?
-            = "| #{b.lesson_venue ? b.lesson_venue : "TBD"}"
+            = l b.course_start_at, :format => :long_without_year if b.course_start_at.present?
+            = "| #{b.course_venue ? b.course_venue : "TBD"}"
           %ul.unstyled
             %li
               %strong Price:
@@ -24,16 +24,16 @@
                 %ul.unstyled
                   %li
                     %strong Account number:
-                    = b.lesson.channel.account
+                    = b.course.channel.account
                   %li
                     %strong Reference:
-                    = "#{b.lesson.id} - #{@chalkler.name}"
+                    = "#{b.course.id} - #{@chalkler.name}"
               - elsif b.payment_method == 'meetup'
-                Make payment using the #{link_to 'Meeup Event site',b.lesson_meetup_url.to_s}
-            - if b.lesson_prerequisites
+                Make payment using the #{link_to 'Meeup Event site',b.course_meetup_url.to_s}
+            - if b.course_prerequisites
               %li
                 %strong What to bring:
-                = "#{b.lesson_prerequisites.empty? ? "Nothing" : b.lesson_prerequisites}"
+                = "#{b.course_prerequisites.empty? ? "Nothing" : b.course_prerequisites}"
             - if b.guests?
               %li
                 %strong Attendees:

@@ -19,7 +19,7 @@ class WeeklyCalendar
     lowest_count = 100
     candidates = []
     days.each (index, day) =>
-      count = $(day).find('.lesson').length
+      count = $(day).find('.course').length
       if count > 0
         if count < lowest_count
           lowest_count = count
@@ -38,7 +38,7 @@ class WeeklyCalendar
 
   _addSuggestClassToDay: ($day) ->
     link = "<a href=\"/chalklers/class_suggestions/new\">Click here to find out more</a>"
-    $day.find('.lessons').append("<div class=\"suggestion lesson_medium_container\">Your class here? #{link}</div>")
+    $day.find('.courses').append("<div class=\"suggestion course_medium_container\">Your class here? #{link}</div>")
 
 $.fn.weeklyCalendar = (options) ->
   @each ->

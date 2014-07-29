@@ -17,7 +17,7 @@ describe Category do
         Category.stub(:all) { categories }
 
         required_array = [['Work', 1], ['Play', 2]]
-        Category.select_options.should eq(required_array)
+        expect(Category.select_options).to eq(required_array)
       end
     end
   end
@@ -25,27 +25,27 @@ describe Category do
   describe ".best_colour_num" do
     it "returns colour num if this category has one" do
       subject = Category.new(parent: parent, colour_num: 3)
-      subject.best_colour_num.should == 3
+      expect(subject.best_colour_num).to eq 3
     end
 
     it "returns parent colour num if this category doesn't have it's own" do
       subject = Category.new(parent: parent)
-      subject.best_colour_num.should == 5
+      expect(subject.best_colour_num).to eq 5
     end
   end
 
   describe "slug" do
     it "returns lower case name" do
-      Category.new(name: 'Art').slug.should == 'art'
+      expect(Category.new(name: 'Art').slug).to eq 'art'
     end
 
     it "replaces non word characters with a single underscore" do
-      Category.new(name: 'Art & science').slug.should == 'art_science'
+      expect(Category.new(name: 'Art & science').slug).to eq 'art_science'
     end
 
     it "hyphenates with parent slug" do
       parent = Category.new(name: 'Art')
-      Category.new(parent: parent, name: 'Science & tech').slug.should == 'art-science_tech'
+      expect(Category.new(parent: parent, name: 'Science & tech').slug).to eq 'art-science_tech'
     end
   end
 end

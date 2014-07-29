@@ -1,4 +1,4 @@
-- title "Edit Booking: #{@lesson.name}"
+- title "Edit Booking: #{@course.name}"
 
 %h2 Edit Booking
 
@@ -7,22 +7,22 @@
     %section.booking
       .row
         .col-md-6
-          .lesson-summary
+          .course-summary
             %h3 Booking summary
             %ul.unstyled
               %li
                 %strong Class:
-                = @lesson.name.capitalize
+                = @course.name.capitalize
               %li
                 %strong Time:
-                = l @lesson.start_at, :format => :long_without_year
+                = l @course.start_at, :format => :long_without_year
               %li
                 %strong Where:
-                = @lesson.venue
+                = @course.venue
               %li
                 %strong Price:
-                %span#lessonPrice= @lesson.formatted_price
-                #lessonBasePrice.hide= @lesson.cost
+                %span#coursePrice= @course.formatted_price
+                #courseBasePrice.hide= @course.cost
             %div.payment-descriptions
               .payment-cash.hide
                 %h4 Cash payment
@@ -33,10 +33,10 @@
                 %ul
                   %li
                     %strong Account number:
-                    = @lesson.channel.account
+                    = @course.channel.account
                   %li
                     %strong Reference:
-                    = "#{@lesson.id} - #{current_chalkler.name}"
+                    = "#{@course.id} - #{current_chalkler.name}"
                 %p Please ensure payment before your class begins.
 
         .col-md-6
@@ -48,10 +48,10 @@
                 $('.payment-descriptions').children().hide()
                 $('.payment-descriptions .payment-' + $(this).val()).show()
 
-              unless $('#lessonPrice').text() == 'Free'
+              unless $('#coursePrice').text() == 'Free'
                 $('#booking_guests').change (e) ->
-                  basePrice = Number $('#lessonBasePrice').text()
+                  basePrice = Number $('#courseBasePrice').text()
                   guests = Number $(this).val()
-                  $('#lessonPrice').text '$' + (basePrice * (guests + 1)).toFixed 2
+                  $('#coursePrice').text '$' + (basePrice * (guests + 1)).toFixed 2
 
 = render partial: 'terms'

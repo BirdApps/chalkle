@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Chalkler do
   let(:channel) { FactoryGirl.create(:channel) }
 
-  specify { FactoryGirl.build(:chalkler).should be_valid }
-  specify { FactoryGirl.build(:meetup_chalkler).should be_valid }
+  specify { expect( FactoryGirl.build(:chalkler) ).to be_valid }
+  specify { expect( FactoryGirl.build(:meetup_chalkler) ).to be_valid }
 
   describe "validation" do
     subject { Chalkler.new }
@@ -23,11 +23,11 @@ describe Chalkler do
     it "is true if has subscription to channel" do
       subject.channels << channel
 
-      subject.is_following?(channel).should be_true
+      expect(subject.is_following?(channel)).to be true
     end
 
     it "is false if has subscription to channel" do
-      subject.is_following?(channel).should be_false
+      expect(subject.is_following?(channel)).to be_falsey
     end
   end
 
@@ -37,25 +37,25 @@ describe Chalkler do
         stub_const("Chalkler::EMAIL_FREQUENCY_OPTIONS", %w(yes no))
 
         required_array = [%w(Yes yes), %w(No no)]
-        Chalkler.email_frequency_select_options.should eq(required_array)
+        expect(Chalkler.email_frequency_select_options).to eq(required_array)
       end
     end
 
     it "defaults to receiving weekly emails for all categories" do
-      Chalkler.new.email_frequency.should == 'weekly'
+      expect(Chalkler.new.email_frequency).to eq 'weekly'
     end
   end
 
   describe '.teachers' do
     it "includes chalklers who are teachers" do
       chalkler = FactoryGirl.create(:chalkler)
-      lesson = FactoryGirl.create(:lesson, name: "New Class", teacher_id: chalkler.id)
-      Chalkler.teachers.should include(chalkler)
+      course = FactoryGirl.create(:course, name: "New Class", teacher_id: chalkler.id)
+      expect(Chalkler.teachers).to include(chalkler)
     end
 
     it "excludes chalklers who are not teachers" do
       chalkler = FactoryGirl.create(:chalkler)
-      Chalkler.teachers.should_not include(chalkler)
+      expect(Chalkler.teachers).not_to include(chalkler)
     end
   end
 
