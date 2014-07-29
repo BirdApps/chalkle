@@ -6,7 +6,7 @@ class Course < ActiveRecord::Base
   include Gst
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration
   ]
 
   attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :venue_cost, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
@@ -36,6 +36,7 @@ class Course < ActiveRecord::Base
   mount_uploader :course_upload_image, CourseUploadImageUploader
 
   accepts_nested_attributes_for :course_image
+  accepts_nested_attributes_for :lessons
 
   [:teacher, :channel, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
 
@@ -51,6 +52,7 @@ class Course < ActiveRecord::Base
   validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
   validates_presence_of :lessons
+  validates_presence_of :channel
   validates_numericality_of :teacher_payment, allow_nil: true
   validates_numericality_of :material_cost, allow_nil: false
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
