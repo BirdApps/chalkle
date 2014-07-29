@@ -10,7 +10,7 @@ gem 'omniauth-meetup',  '~> 0.0.7'
 gem 'omniauth-facebook'
 
 # Authorisation
-gem 'cancan',  '~> 1.6.8'
+gem 'cancan'
 
 # Time / Date
 gem 'monthify', require: 'monthify'
@@ -133,7 +133,7 @@ group :test do
   gem 'timecop'
   gem 'steak',               '~> 2.0.0'
   gem 'webrat',              '~> 0.7.3'
-  gem 'email_spec',          '~> 1.4.0'
+  gem 'email_spec'
   gem 'factory_girl_rails',  '~> 4.2.1'
   gem 'faker'
 
