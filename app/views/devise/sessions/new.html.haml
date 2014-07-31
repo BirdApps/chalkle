@@ -9,6 +9,7 @@
       = bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f|
         %h3.well-title Sign in with a password
         %p If you already have a password, you can sign in using your email address.
+        %input{type: "hidden", name: "redirect_to", value: params[:redirect_to]}
         = f.input :email, :required => false, :autofocus => true
         = f.input :password, :required => false
         .control-group

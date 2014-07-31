@@ -17,11 +17,15 @@ class ApplicationController < ActionController::Base
     options       = { original_path: original_path, default_path: default_path }
 
     Chalkler::DataCollection.new(resource, options).path
+
+    return params[:redirect_to] if params[:redirect_to]
   end
+
 
   def after_register_path_for(resource)
     session[:previous_url] || root_path
   end
+
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to admin_dashboard_path, :alert => exception.message
