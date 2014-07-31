@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <%= analytics_init if Rails.env.production? %>
+    <meta charset="utf-8" />
+    <title> 
+      <%= content_for?(:title) ? yield(:title) : 'chalkle°' %>
+    </title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <%= csrf_meta_tag %>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= google_webfonts_init(google: 'Shadows Into Light Two') %>
+  </head>
+
+  <body class="<%= body_class %> v2" role="document">
+    <%= render 'v2/layouts/navigation' %>
+    <%= render 'v2/layouts/header' %>
+    <%= render 'v2/layouts/navigation_secondary' %>
+    <div class="container" role="main">
+      <%= render 'layouts/messages' %>
+      <%= yield %>
+    </div>
+    <%= render 'v2/layouts/footer' %> 
+  </body>
+
+</html>

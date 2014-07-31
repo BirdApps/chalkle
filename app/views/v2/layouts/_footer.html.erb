@@ -1,0 +1,35 @@
+<footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Contact us</h3>
+        <ul class="email-list">
+          <li>
+            General enquiries -
+            <%= link_to "enquiries@chalkle.com", 'mailto:enquiries@chalkle.com', class: 'colour1' %>
+          </li>
+          <li>
+            Account enquiries -
+            <%= link_to "accounts@chalkle.com", 'mailto:accounts@chalkle.com', class: 'colour2' %>
+          </li>
+          <li>
+            Website feedback and assistance -
+            <%= link_to "support@chalkle.com", 'mailto:support@chalkle.com', class: 'colour3' %>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <h3>Core chalkle° address:</h3>
+        <div class="address">
+          <div class="street">2/22 Allen Street</div>
+          <div class="city">Wellington, 6011</div>
+          <div class="country">New Zealand</div>
+        </div>
+        <div class="social_media_links">
+          <%= link_to image_tag('front_end/home/twitter.png', alt: 'Twitter'), 'https://twitter.com/ChalkleNZ/' %>
+          <%= link_to image_tag('front_end/home/facebook.png', alt: 'Facebook'), 'https://www.facebook.com/Chalkle' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -4,7 +4,7 @@
       %button.navbar-toggle{:type => "button", 'data-toggle' => "collapse", 'data-target' => "#chalkle-page-nav"}
         %span.sr-only Toggle navigation
         %i.fa.fa-bars
-      %a.navbar-brand{href: 'http://chalkle.com' }
+      %a.navbar-brand{href: '/' }
         = image_tag '/assets/front_end/home/logo.png', alt: 'chalkle°', class: 'logo'
 
     #chalkle-page-nav.collapse.navbar-collapse
@@ -16,7 +16,7 @@
       %ul.nav.navbar-nav.pull-right
         - if !chalkler_signed_in?
           %li= link_to 'Join chalkle&deg;'.html_safe, new_chalkler_registration_url
-          %li= link_to 'Sign in', new_chalkler_session_url
+          %li= link_to 'Sign in', new_chalkler_session_path(redirect_to: request.env['PATH_INFO'])
         - else
           %li.dropdown
             %a.dropdown-toggle{'data-toggle'=>'dropdown'}

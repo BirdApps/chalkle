@@ -1,0 +1,5 @@
+<% @courses.each do |course| %>
+  <div class="course">
+    <%= link_to course.name, v2_course_show_path( course.channel.url_name, course.url_name, course.id) %>
+  </div>
+<% end %>

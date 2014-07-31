@@ -1,0 +1,67 @@
+html {
+  position: relative;
+  min-height: 100%;
+  height: auto;
+}
+body.v2 {
+  margin-bottom: 232px;
+  height: auto;
+
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 232px;
+    clear: both;
+  }
+
+  .navbar-wrapper{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 20;
+  }
+  .navbar{
+    background: rgba(0,121,52,0.5);
+    .navbar-brand img.logo {
+      height: auto;
+      padding-top: 8px;
+    }
+    .dropdown-menu{ 
+      background: rgba(0, 121, 52, 0.5);
+      border-radius: 0px;
+      border: 0px;
+      margin-top:10px;
+    }
+  }
+  .navbar-brand:hover{
+    background: transparent;
+  }
+  .header{
+    padding-top: 80px;
+    min-height:200px;
+    background-size: cover !important;
+    width: 100%
+  }
+  .nav .open > a, .nav .open > a:hover, .nav .open > a:focus{
+    background: none;
+    border: 0px;
+  }
+  
+  .search-form {
+    input, .input-group-addon {
+      border: 0px;
+      background: #F1F1F1;
+      border: 0px;
+      box-shadow: none;
+    }
+    .form-control:focus, input:focus{
+      @include box-shadow( none );
+      border: 0px;
+    }
+    .fa{
+      color: #BDBDBD;
+    }
+  }
+}
