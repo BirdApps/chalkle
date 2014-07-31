@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140731032429) do
+ActiveRecord::Schema.define(:version => 20140731224601) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20140731032429) do
     t.integer  "parent_id"
     t.integer  "colour_num"
     t.boolean  "primary",    :default => false
+    t.string   "url_name"
   end
 
   create_table "chalklers", :force => true do |t|
