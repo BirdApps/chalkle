@@ -6,7 +6,7 @@ class Course < ActiveRecord::Base
   include Gst
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name
   ]
 
   attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :venue_cost, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
@@ -327,6 +327,11 @@ class Course < ActiveRecord::Base
 
   def update_published_at
     self.published_at ||= Time.now
+  end
+
+  before_create :set_url_name
+  def set_url_name
+    self.url_name = name.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
   end
 
 end
