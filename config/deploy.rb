@@ -1,3 +1,8 @@
+require "rvm/capistrano"
+require "bundler/capistrano"
+
+set :rvm_type, :system
+
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 

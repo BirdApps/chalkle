@@ -469,6 +469,8 @@ GEM
     rspec-support (3.0.3)
     ruby_parser (3.6.2)
       sexp_processor (~> 4.1)
+    rvm-capistrano (1.4.1)
+      capistrano (>= 2.0.0)
     sass (3.3.11)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -626,6 +628,7 @@ DEPENDENCIES
   rb-readline
   rmagick
   rspec-rails
+  rvm-capistrano
   sass-rails
   sendgrid
   shoulda (>= 3.5.0)
