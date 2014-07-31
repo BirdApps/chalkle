@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Chalkler::DataCollection do
 
-  let(:chalkler) { double("chalkler", email: "fake@email.com") }
+  let(:chalkler) { FactoryGirl.create(:chalkler, :name => "chalkler", email: "fake@email.com") }
 
   describe "#path" do
 
@@ -36,15 +36,15 @@ describe Chalkler::DataCollection do
     end
 
     context "when the an email address is required for the Chalkler" do
-      before { chalkler.stub(:email) { nil } }
-
       it "returns the path to the email form" do
-        data_collection = Chalkler::DataCollection.new(chalkler)
+        chalkler.email = nil
+        data_collection = Chalkler::DataCollection.new( chalkler )
         expect(data_collection.path).to eq("/chalklers/data_collection/email")
       end
 
       it "returns the email form path as well as the encoded original path" do
         options = { original_path: "/class/bookings" }
+        chalkler.email = nil
         data_collection = Chalkler::DataCollection.new(chalkler, options)
         expect(data_collection.path).to eq("/chalklers/data_collection/email?original_path=%2Fclass%2Fbookings")
       end

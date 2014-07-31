@@ -159,9 +159,10 @@ describe Course do
       @course.update_attributes({:teacher_id => @teacher.id}, :as => :admin)
     end
 
-    it "should not be valid if published with no lessons" do
+    it "should not be valid if published with no lessons and published" do
       @course.lessons = []
       @course.visible = true
+      @course.status = Course::STATUS_1
       expect(@course).not_to be_valid
       @course.lessons << FactoryGirl.create(:lesson, start_at: 2.days.from_now)
       expect(@course).to be_valid

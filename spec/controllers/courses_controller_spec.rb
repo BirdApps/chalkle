@@ -38,7 +38,7 @@ describe CoursesController do
       channel = FactoryGirl.create(:channel, cost_model: commission_model, channel_rate_override: 0.75)
 
       get :calculate_cost, course: {teacher_cost: '100.0', channel_id: channel.id}
-      response.should be_success
+      expect(response).to be_success
       results = JSON.parse(response.body)
       results['cost'].should == '139.0'
     end
