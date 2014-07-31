@@ -23,6 +23,29 @@ Chalkle::Application.routes.draw do
   end
   root to: 'chalklers/dashboard#index'
 
+  class ChannelUrlConstrainer
+    def matches?(request)
+      reserved_resources = ['courses']
+      parts = request.path.split('/')
+      parts.each do |part|
+        return false if reserved_resources.include? part
+      end
+      reserved_resources
+      true
+    end
+  end
+
+  namespace 'v2' do
+    root to: 'courses#index'
+    
+    get ':channel_url_name', to: 'channels#show', as: :channel_show, constraints: ChannelUrlConstrainer.new
+    
+    get ':channel_url_name/:course_url_name', to: 'channels#series', as: :course_series
+    get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :course_show
+
+    resources :courses
+  end
+
   resources :filters, only: [:update, :destroy] do
     collection do
       put :update_view
