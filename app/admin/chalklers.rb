@@ -5,7 +5,6 @@ ActiveAdmin.register Chalkler do
 
   controller do
     load_resource :except => :index
-    authorize_resource
 
     def create
       params[:chalkler][:join_channels].reject!(&:empty?) if params[:chalkler][:join_channels]
@@ -32,6 +31,8 @@ ActiveAdmin.register Chalkler do
   filter :email
 
   index do
+    authorized? :index, Chalkler
+
     column :id
     column :name
 

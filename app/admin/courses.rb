@@ -13,7 +13,6 @@ ActiveAdmin.register Course  do
 
   controller do
     load_resource :except => :index
-    authorize_resource
   end
 
   scope :published, default: true
@@ -71,6 +70,7 @@ ActiveAdmin.register Course  do
   end
 
   index do
+    authorized? :index, Course
     column :id
     column :name
     column :attendance, sortable: false

@@ -3,7 +3,6 @@ ActiveAdmin.register Payment do
 
   controller do
     load_resource :except => :index
-    authorize_resource
   end
 
   filter :xero_contact_name
@@ -18,6 +17,7 @@ ActiveAdmin.register Payment do
   end
 
   index do
+    authorize? :index, Payment
     column :id
     column :booking
     column :reference

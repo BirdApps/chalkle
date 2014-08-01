@@ -3,10 +3,10 @@ ActiveAdmin.register Category do
 
   controller do
     load_resource :except => :index
-    authorize_resource
   end
 
   index do
+    authorized? :index, Category
     column :id
     column :parent_id
     column :name

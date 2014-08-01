@@ -3,8 +3,8 @@ ActiveAdmin.register AdminUser do
 
   controller do
     load_resource :except => :index
-    authorize_resource
-
+    
+  
     def create
       @admin_user = AdminUser.new
       @admin_user.email = params[:admin_user][:email]
@@ -19,6 +19,8 @@ ActiveAdmin.register AdminUser do
   end
 
   index do
+    authorized? :index, AdminUser
+
     column :id
     column :name
     column :channels do |admin_user|

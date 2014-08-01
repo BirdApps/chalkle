@@ -2,7 +2,6 @@ ActiveAdmin.register CourseSuggestion do
 
   controller do
     load_resource :except => :index
-    authorize_resource
 
     def create
       if params[:course_suggestion][:join_channels]
@@ -23,6 +22,7 @@ ActiveAdmin.register CourseSuggestion do
   filter :chalkler
 
   index do
+    authorized? :index, CourseSuggestion
     column :id
     column :name
     column :channels do |course_suggestion|

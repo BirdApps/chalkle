@@ -3,10 +3,13 @@ ActiveAdmin.register Channel do
 
   controller do
     load_resource :except => :index
-    authorize_resource
   end
 
+  filter :name
+
+
   index do
+    authorized? :index, Channel
     column :id
     column :name
     column :visible

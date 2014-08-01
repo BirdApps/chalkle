@@ -19,14 +19,14 @@ ActiveAdmin.register Booking do
 
   controller do
     load_resource :except => :index
-    authorize_resource
-
+    
     def scoped_collection
       end_of_association_chain.visible.accessible_by(current_ability)
     end
   end
 
   index do
+    authorized? :index, Booking
     column :id
     column :course
     column :chalkler
