@@ -1,0 +1,9 @@
+<% if params[:view] == "grid" %>
+  <div class="channel col-sm-6">
+    <%= link_to channel.name, v2_channel_show_path(channel.url_name) %>
+  </div>
+<% else %>
+  <div class="channel col-xs-12">
+    <%= link_to channel.name, v2_channel_show_path(channel.url_name) %>
+  </div>
+<% end %>

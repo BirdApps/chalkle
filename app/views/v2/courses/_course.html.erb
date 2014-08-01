@@ -1,0 +1,9 @@
+<% if params[:view] == "grid" %>
+  <div class="course col-sm-6">
+    <%= link_to course.name, v2_course_show_path(course.channel.url_name,course.url_name,course.id) %>
+  </div>
+<% else %>
+  <div class="course col-xs-12">
+    <%= link_to course.name, v2_course_show_path(course.channel.url_name,course.url_name,course.id) %>
+  </div>
+<% end %>
