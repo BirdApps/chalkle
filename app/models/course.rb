@@ -142,8 +142,11 @@ class Course < ActiveRecord::Base
 
   def image_size
     return unless course_upload_image.present?
-    if course_upload_image.file.size.to_f/(1000*1000) > 4.to_f
-      errors.add(:course_upload_image, "You cannot upload an image greater than 4 MB")
+    begin
+      if course_upload_image.file.size.to_f/(1000*1000) > 4.to_f
+        errors.add(:course_upload_image, "You cannot upload an image greater than 4 MB")
+      end
+    rescue
     end
   end
 
@@ -304,6 +307,17 @@ class Course < ActiveRecord::Base
     cost == 0
   end
 
+  def path
+    if channel.nil?
+      self.channel = Course.find(self.id).channel
+    end
+    "/#{channel.url_name}/#{url_name}/#{id}"
+  end
+
+  def path_series
+    "/#{channel.url_name}/#{url_name}"
+  end
+
   def start_on
     start_at.to_date if start_at
   end
@@ -331,7 +345,7 @@ class Course < ActiveRecord::Base
 
   before_create :set_url_name
   def set_url_name
-    self.url_name = name.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+    self.url_name = name.parameterize
   end
 
 end

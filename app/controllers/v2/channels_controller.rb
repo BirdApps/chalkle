@@ -1,16 +1,16 @@
 class V2::ChannelsController < V2::BaseController
 
-  def index
+  before_filter :load_channel
 
+  def index
+    @channels = Channel.visible
   end
 
   def show
-    @channel = Channel.includes(:courses).find_by_url_name params[:channel_url_name]
     not_found if !@channel
   end
 
   def series 
-    @channel = Channel.includes(:courses).find_by_url_name params[:channel_url_name]
     not_found if !@channel
     @courses = @channel.courses.where url_name: params[:course_url_name]
   end
@@ -35,5 +35,11 @@ class V2::ChannelsController < V2::BaseController
 
   def destroy
 
+  end
+
+  private 
+
+  def load_channel
+    @channel = Channel.includes(:courses).find_by_url_name params[:channel_url_name] if params[:channel_url_name]
   end
 end

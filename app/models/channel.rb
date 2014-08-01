@@ -48,6 +48,10 @@ class Channel < ActiveRecord::Base
     ChannelStats.new(start, period, self)
   end
 
+  def path
+    url_name
+  end
+
   def financial_table(first_day, period, num_rows)
     financials = StatsMath.new()
     num_rows.times do |i|
@@ -115,8 +119,8 @@ class Channel < ActiveRecord::Base
 
   after_create :set_url_name
   def set_url_name
-    url_name = name.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
-    self.url_name = Course.find_by_url(url_name).nil? ? url_name : url_name+self.id.to_s
+    url_name = name.parameterize
+    self.url_name = Channel.find_by_url_name(url_name).nil? ? url_name : url_name+self.id.to_s
     save
   end
 
