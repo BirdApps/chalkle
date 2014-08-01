@@ -1,8 +1,7 @@
 <h2> <%= @courses.first.name.capitalize %> </h2>
 
-
 <% @courses.each do |course| %>
   <div class="course">
-    <%= link_to course.name+" on "+course.start_at.to_s, v2_course_show_path(@channel.name,course.name,course.id) %>
+    <%= link_to course.name+" on "+course.start_at.to_s, v2_course_show_path(@channel.url_name,course.url_name,course.id) %>
   </div>
 <% end %>
