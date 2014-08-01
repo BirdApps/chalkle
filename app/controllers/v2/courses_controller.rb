@@ -2,7 +2,6 @@ class V2::CoursesController < V2::BaseController
 
   def index
     @courses = Course.includes(:channel).limit(5)
-    @links = [{text: "Channels", target: "/v2" }, {text: "Categories", target: "/v2" }]
   end
 
   def show
