@@ -69,8 +69,10 @@ Your Chalkle Administrator")
     date.to_s(:short).strip.gsub(' ', '&nbsp;').html_safe
   end
 
-  def path_for_course(course)
-    channel_course_url(@channel || course.channel, course)
+  def path_for_lesson(lesson)
+    if (@channel || lesson.channel)
+      channel_lesson_url(@channel || lesson.channel, lesson)
+    end
   end
 
   def course_classes(course, base_class = 'course')
