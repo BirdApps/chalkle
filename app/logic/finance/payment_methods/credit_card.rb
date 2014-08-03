@@ -2,7 +2,7 @@ module Finance
   module PaymentMethods
     class CreditCard < Base
       def label
-        'Credit Card'
+        'Credit or Debit Card'
       end
     end
   end
