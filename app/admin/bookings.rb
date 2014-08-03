@@ -8,7 +8,7 @@ ActiveAdmin.register Booking do
   scope :status_no
 
   filter :course_channel_name, :as => :select, :label => "Channel",
-    :collection => proc{ current_admin_user.channels.collect{ |c| [c.name, c.name] }}
+    :collection => proc{ current_admin_user.super? ? Channel.all : current_admin_user.channels.collect{ |c| [c.name, c.name] }}
   filter :meetup_id
   filter :course, as: :select, collection: proc{ Course.accessible_by(current_ability).order("LOWER(name) ASC").visible }
   filter :chalkler, as: :select, collection: proc{ Chalkler.order("LOWER(name) ASC").all }
