@@ -14,6 +14,8 @@ When /^they enter new class details with channel$/ do
   fill_in 'teaching_learning_outcomes', with: 'the new stuff'
   select 'Science', from: 'teaching_category_primary_id'
   select 'Whanau', from: 'teaching_channel_id'
+  fill_in 'teaching_duration_hours', with: '5'
+  fill_in 'teaching_duration_minutes', with: '30'
   click_button 'Submit my class'
 end
 

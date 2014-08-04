@@ -2,9 +2,9 @@
 
 set :output, '~/production/shared/log/cron.log'
 
-every :hour, :at => 15 do
-  rake "chalkle:load_all"
-end
+# every :hour, :at => 15 do
+#   rake "chalkle:load_all"
+# end
 
 every :hour, :at => 30 do
   rake "chalkle:load_payments"
