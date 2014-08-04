@@ -17,7 +17,7 @@ ActiveAdmin.register Payment do
   end
 
   index do
-    authorize? :index, Payment
+    authorized? :index, Payment
     column :id
     column :booking
     column :reference

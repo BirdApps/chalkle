@@ -14,13 +14,14 @@ class Chalkler < ActiveRecord::Base
   attr_accessible :bio, :email, :name, :password,
     :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
     :email_frequency, :email_categories, :phone_number,
-    :join_channels, :email_regions, :as => :admin
+    :join_channels, :email_regions, :email_region_ids, :as => :admin
 
   attr_accessor :join_channels, :set_password_token
 
   validates_presence_of :name
   validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }, uniqueness: { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
+  validates_associated :subscriptions, :channels
 
   has_one  :course_filter, class_name: 'Filters::Filter', dependent: :destroy
   has_many :subscriptions
@@ -34,6 +35,8 @@ class Chalkler < ActiveRecord::Base
       where(provider: provider).first
     end
   end
+
+  after_create :create_channel_associations
 
   scope :teachers, joins(:courses_taught).uniq
   scope :with_email_region_id, 
@@ -129,8 +132,7 @@ class Chalkler < ActiveRecord::Base
   end
 
   def email_regions=(email_region)
-  update_attribute :email_region_ids, 
-    email_region.select{|id| Region.exists?(id)}.map!(&:to_i)
+  assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
   
 
@@ -143,5 +145,14 @@ class Chalkler < ActiveRecord::Base
     self.reset_password_token = Chalkler.reset_password_token
     self.reset_password_sent_at = Time.now.utc
   end
+
+  def create_channel_associations  
+    return unless join_channels.is_a?(Array)
+    join_channels.reject(&:empty?).each do |channel_id|
+      channels << Channel.find(channel_id) unless channels.include?(Channel.find(channel_id))
+    end
+    save!
+  end
+
 
 end

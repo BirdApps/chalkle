@@ -1,6 +1,6 @@
 Given /^there is a course with no details in the "(.*?)" channel$/ do |name|
   channel = Channel.find_by_name(name)
-  course = FactoryGirl.create(:published_course, name: "Test Class", start_at: 1.day.from_now, channel: channel)
+  course = FactoryGirl.create(:published_course, name: "Test Class", start_at: Date.today + 1.day, channel: channel)
 end
 
 Then /^they should see this course in the "(.*?)" channel$/ do |channel_name|
@@ -103,7 +103,7 @@ end
 Given(/^there is a course with no what we will do text in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler)
-  lesson = FactoryGirl.create(:lesson, start_at: 2.from_now.ago, duration: 1.5)
+  lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
   course = FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: nil, teacher_cost: 10, venue_cost: 10, channel: channel)
 end
 
@@ -117,7 +117,7 @@ end
 Given(/^there is a course with no venue cost in the "(.*?)" channel$/) do |name|
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler)
-  lesson = FactoryGirl.create(:lesson, start_at: 2.from_now.ago, duration: 1.5)
+  lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
   course = FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, venue_cost: nil, channel: channel)
 end
 
@@ -125,7 +125,7 @@ Given(/^there is a course in the "(.*?)" channel with RSVP numbers below the min
   channel = Channel.find_by_name(name)
   teacher = FactoryGirl.create(:chalkler, name: "Teacher")
   chalkler = FactoryGirl.create(:channel, name: "Chalkler")
-  lesson = FactoryGirl.create(:lesson, start_at: 2.from_now.ago, duration: 1.5)
+  lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
   course = FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 10, channel: channel)
   FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course.id, guests: 2, status: 'yes')
 end
@@ -146,6 +146,7 @@ When(/^they visit the "(.*?)" channel class listing$/) do |name|
 end
 
 Then(/^they should see this image on the class listing$/) do
+  binding.pry
   expect(page).to have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
   FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
 end

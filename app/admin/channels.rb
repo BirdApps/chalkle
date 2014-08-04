@@ -7,7 +7,6 @@ ActiveAdmin.register Channel do
 
   filter :name
 
-
   index do
     authorized? :index, Channel
     column :id

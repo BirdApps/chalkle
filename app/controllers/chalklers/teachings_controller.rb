@@ -8,7 +8,7 @@ class Chalklers::TeachingsController < Chalklers::BaseController
   	if @chalkler_teaching.submit(params[:teaching])
       channel = Channel.find(params[:teaching][:channel_id]) unless params[:teaching][:channel_id].blank?
       session[:teachings_channel_email] = (channel && channel.email?) ? channel.email : 'learn@chalkle.com'
-  	  redirect_to success_chalklers_teachings_url, notice: 'Your class has been saved.'
+  	  redirect_to success_chalklers_teachings_url, notice: 'Class submitted! Your class will be reviewed and published shortly.'
   	else
       render 'new'
   	end
