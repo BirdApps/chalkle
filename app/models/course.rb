@@ -323,6 +323,10 @@ class Course < ActiveRecord::Base
   end
   alias_method :date, :start_on
 
+  def has_reviews
+    false
+  end
+
   private
 
   def save_first_lesson

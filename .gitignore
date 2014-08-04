@@ -26,3 +26,5 @@
 
 #rvm config
 .ruby-gemset
+
+.sublime-workspace

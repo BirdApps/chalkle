@@ -2,8 +2,48 @@
   <div class="course col-sm-6">
     <%= link_to course.name, v2_course_show_path(course.channel.url_name,course.url_name,course.id) %>
   </div>
+
 <% else %>
-  <div class="course col-xs-12">
-    <%= link_to course.name, v2_course_show_path(course.channel.url_name,course.url_name,course.id) %>
-  </div>
+  <article class="course row">
+    <div class="col-xs-1 col-sm-2">
+      <div class="porthole">
+          <% if course.course_upload_image.present? %>
+            <%= image_tag(course.course_upload_image.url(:medium), class: 'course_image') %>
+          <% else %>
+            <%= category_image course, 150 %>
+          <% end %>
+      </div>
+    </div>
+    <div class="col-sm-7">
+      <header>
+        <h5 class="category">
+        <%= link_to course.category.name, v2_category_show_path(course.category.url_name), { :class => "colour"+course.best_colour_num.to_s } %>
+        </h5> 
+        <div class="cost">
+          <% if course.cost? %>
+            $<%= course.cost %>
+          <% else %>
+            FREE
+          <% end %>
+        </div>
+       <h3 class="title">
+        <%= link_to course.name, v2_course_show_path(course.channel.url_name,course.url_name,course.id), { :class => "colour"+course.best_colour_num.to_s } %>
+        </h3>
+      </header>
+      <p class="description">
+        <%= course.do_during_class %>
+      </p>
+      <footer class="reviews">
+        <% if course.has_reviews %>
+          <span class="fa fa-heart"></span> 
+          <%= course.review_percent %>
+          <%= course.reviews.count %> reviews
+        <% end %>
+      </footer>
+    </div>
+    <div class="col-sm-3">
+      <%= course_availability course %>
+      <%= day_ordinal_month course.start_at %>
+    </div>
+  </article>
 <% end %>

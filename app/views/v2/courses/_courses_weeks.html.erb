@@ -1,0 +1,5 @@
+<% last_week = @courses_weeks.keys.last %>
+<% @courses_weeks.each do |week, courses| %>
+  <% show_next = (week == last_week) %>
+  <%= render 'courses_week', locals: {week: week, courses: courses, show_next: show_next} %>
+<% end %>

@@ -11,6 +11,13 @@ If it is cancelled, you will receive a notice from Meetup upon cancellation and 
 Your Chalkle Administrator")
   end
 
+  def day_ordinal_month(date, use_relative_day = true)
+    relative = relative_day_name date
+    return relatve if relative && use_relative_day
+    ordinalDay = date.day.ordinalize
+    date.strftime("%B #{ordinalDay}, %Y")
+  end
+
   def relative_month_name(month)
     relative_time_name month, Month.current, 'Month'
   end
@@ -87,12 +94,12 @@ Your Chalkle Administrator")
     content_tag :div, nil, class: 'availability' do
       if course.limited_spaces?
         if course.spaces_left?
-          icon(:check) + pluralize(course.spaces_left, 'spot') + ' left'
+          pluralize(course.spaces_left, 'spot') + ' left'
         else
-          'fully booked!'
+          'Fully booked'
         end
       else
-        icon(:check) + 'No size limit'
+        'No booking limit'
       end
     end
   end
