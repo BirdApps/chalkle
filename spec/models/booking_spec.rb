@@ -170,26 +170,25 @@ describe Booking do
   end
 
   describe ".upcoming" do
+      let(:lesson) { FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5) }
+      let(:lesson_earlier) { FactoryGirl.create(:lesson, start_at: 2.days.ago) }
+      let(:course) { FactoryGirl.create(:course, lessons: [lesson], visible: true) }
+      let(:course_earlier) { FactoryGirl.create(:course, lessons: [lesson_earlier], visible: true) }
+      let(:booking) { FactoryGirl.create(:booking, course: course) }
+      let(:booking_earlier) { FactoryGirl.create(:booking, course: course_earlier) }
+    
     it "includes booking for courses in the future" do
-      lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
-      course = FactoryGirl.create(:course, lessons: [lesson], visible: true)
-      booking = FactoryGirl.create(:booking, course: course)
       expect(Booking.upcoming).to include(booking)
     end
 
     it "excludes bookings for courses in the past" do
-      lessons = [FactoryGirl.create(:lesson, start_at: 2.days.ago)]
-      course = FactoryGirl.create(:course, lessons: lessons, visible: true)
-      booking = FactoryGirl.create(:booking, course: course)
-      expect(Booking.upcoming).not_to include(booking)
+      expect(Booking.upcoming).not_to include(booking_earlier)
     end
 
     it "excludes bookings for cancelled courses" do
-      lessons = [FactoryGirl.create(:lesson, start_at: 2.days.from_now)]
-      course = FactoryGirl.create(:course, lessons: lessons, visible: false)
-      booking = FactoryGirl.create(:booking, course: course)
+      course.visible = false
+      course.save
       expect(Booking.upcoming).not_to include(booking)
-
     end
   end
 
