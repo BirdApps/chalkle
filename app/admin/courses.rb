@@ -28,6 +28,7 @@ ActiveAdmin.register Course  do
   filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("LOWER(name) ASC") }
   filter :cost
   filter :start_at
+  filter :venue
 
   controller do
     def scoped_collection
@@ -38,17 +39,12 @@ ActiveAdmin.register Course  do
 
     def update
       course = Course.find(params[:id])
-      first_lesson = course.first_lesson
-      first_lesson.start_at = params[:course].delete(:start_at) unless params[:course][:start_at].blank?
-      first_lesson.duration = (params[:course].delete(:duration)).to_d*60*60.to_i unless params[:course][:duration].blank?
-      first_lesson.save
       update!
     end
 
     def create
       start_at = Time.parse params[:course][:start_at]
-      duration = params[:course][:duration]
-      duration = 3600 if duration.to_i < 1
+      duration = (params[:course][:duration].to_f*60*60).to_i
       lesson = Lesson.create({start_at: start_at , duration: duration})
       params[:course].except! :start_at
       params[:course].except! :duration

@@ -36,7 +36,7 @@ class Teaching
     if @chalkler.channels.length > 0
       @channels = @chalkler.channels
     else
-      @channels = [Channel.find(1)]
+      @channels = Channel.visible
     end
   end
 

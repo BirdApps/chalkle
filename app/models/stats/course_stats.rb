@@ -50,4 +50,8 @@ class CourseStats < ChannelStats
 
   private
 
+  def new_course(courses)
+    courses.not_repeat_course.count
+  end
+
 end

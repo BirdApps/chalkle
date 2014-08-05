@@ -89,11 +89,6 @@ Scenario: Channel admin can see warning when course has no date/time
   When they view this unpublished course
   Then they should see "This Class Must Have A Date And Time"
 
-Scenario: Channel admin can see warning when course has no synopsis
-  Given there is a course with no what we will do text in the "Wellington" channel
-  When they view this unpublished course
-  Then they should see "This Class Must Have A What We Will Do During The Class"
-
 Scenario: Channel admin can see warning when course has no teacher cost
   Given there is a course with no teacher cost in the "Wellington" channel
   When they view this unpublished course

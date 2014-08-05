@@ -1,6 +1,12 @@
 ActiveAdmin.register AdminUser do
   config.sort_order = "email_asc"
 
+
+  filter :name
+  filter :email 
+  filter :channels
+  filter :role
+  
   controller do
     load_resource :except => :index
     

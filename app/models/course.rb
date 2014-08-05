@@ -89,6 +89,8 @@ class Course < ActiveRecord::Base
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
   before_save :update_published_at
 
+  before_save :save_first_lesson
+
   def self.upcoming(limit = nil)
     return published.joins(:lessons).where("start_at > ?", Time.now.utc) if limit.nil?
     published.joins(:lessons).where("start_at > ?", Time.now.utc).where("start_at < ?", limit)
@@ -96,6 +98,10 @@ class Course < ActiveRecord::Base
 
   def first_lesson
     lessons.order('start_at desc').limit(1).first
+  end
+
+  def first_or_new_lesson
+    @first_or_new_lesson ||= ( first_lesson || Lesson.new(course_id: id) )
   end
 
   def start_at
@@ -108,7 +114,7 @@ class Course < ActiveRecord::Base
   end
 
   def start_at=(lesson_start)
-    first_lesson.update_attribute :start_at, lesson_start
+    first_or_new_lesson.update_attribute :start_at, lesson_start
   end
 
   def duration
@@ -116,14 +122,12 @@ class Course < ActiveRecord::Base
   end
 
   def duration=(first_lesson_duration)
-    first_lesson.duration=first_lesson_duration
-    first_lesson.save
+    first_or_new_lesson.duration = first_lesson_duration.to_d*60*60.to_i
   end
 
   def reference
     start_at.strftime("%y%m%d")+self.id.to_s
   end
-
 
   # kaminari
   paginates_per 10
@@ -306,6 +310,10 @@ class Course < ActiveRecord::Base
   alias_method :date, :start_on
 
   private
+
+  def save_first_lesson
+    @first_or_new_lesson.save if @first_or_new_lesson
+  end
 
   #price calculation methods
   def excl_gst(price)
