@@ -5,8 +5,13 @@
     = f.input :name
     = f.input :teacher, :as => :select, :collection => Chalkler.accessible_by(current_ability).order("LOWER(name) ASC")
     = f.input :category, :as => :select, :label => "What is the primary category of this class?", :collection => Category.select_options, required: true
-    = f.datetime_select :start_at
-    = f.input :start_at, as: :hidden
+    %li
+      = f.datetime_select :start_at
+      %label.label{ for: "start_at" }
+        When should the course start?
+        %abbr{title: "required" }
+          *
+      = f.input :start_at, as: :hidden
     = f.input :venue, :input_html => { :rows => 1 }
     = f.input :do_during_class, :label => "What we are doing", :input_html => { :rows => 6 }
     = f.input :region
