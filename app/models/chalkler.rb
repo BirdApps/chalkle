@@ -150,8 +150,9 @@ class Chalkler < ActiveRecord::Base
   def create_channel_associations  
     return unless join_channels.is_a?(Array)
     join_channels.reject(&:empty?).each do |channel_id|
-      join_channel = Channel.find(channel_id)
-      channels << join_channel unless channels.include? join_channel
+      if Subscription.where(chalkler_id: id, channel_id: channel_id).count == 0
+        channels << Channel.find(channel_id)
+      end
     end
     save!
   end
