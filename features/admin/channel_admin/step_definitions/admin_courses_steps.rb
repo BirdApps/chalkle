@@ -146,7 +146,6 @@ When(/^they visit the "(.*?)" channel class listing$/) do |name|
 end
 
 Then(/^they should see this image on the class listing$/) do
-  binding.pry
   expect(page).to have_xpath("//img[contains(@src, 'chalkle_logo_strapline_stacked.png')]")
   FileUtils.remove_dir("#{Rails.root}/public/uploads/test", :force => true)
 end

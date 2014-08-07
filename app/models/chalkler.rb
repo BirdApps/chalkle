@@ -19,7 +19,8 @@ class Chalkler < ActiveRecord::Base
   attr_accessor :join_channels, :set_password_token
 
   validates_presence_of :name
-  validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }, uniqueness: { case_sensitive: false }
+  validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }
+  validates_uniqueness_of :email, { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
   validates_associated :subscriptions, :channels
 
@@ -149,7 +150,9 @@ class Chalkler < ActiveRecord::Base
   def create_channel_associations  
     return unless join_channels.is_a?(Array)
     join_channels.reject(&:empty?).each do |channel_id|
-      channels << Channel.find(channel_id) unless channels.include?(Channel.find(channel_id))
+      if Subscription.where(chalkler_id: id, channel_id: channel_id).count == 0
+        channels << Channel.find(channel_id)
+      end
     end
     save!
   end
