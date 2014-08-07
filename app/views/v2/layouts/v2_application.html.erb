@@ -15,9 +15,11 @@
   </head>
 
   <body class="<%= body_class %> v2" role="document">
-    <%= render 'v2/layouts/navigation' %>
-    <%= render 'v2/layouts/header' %>
-    <%= render 'v2/layouts/navigation_secondary' %>
+    <header>
+      <%= render 'v2/layouts/navigation' %>
+      <%= render 'v2/layouts/header' %>
+      <%= render 'v2/layouts/navigation_secondary' %>
+    </header>
     <div class="container" role="main">
       <%= render 'layouts/messages' %>
       <%= yield %>

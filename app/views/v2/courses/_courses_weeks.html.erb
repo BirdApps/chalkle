@@ -1,5 +1,11 @@
-<% last_week = @courses_weeks.keys.last %>
-<% @courses_weeks.each do |week, courses| %>
-  <% show_next = (week == last_week) %>
-  <%= render 'courses_week', locals: {week: week, courses: courses, show_next: show_next} %>
+<% @courses_weeks.keys.each do |week| %>
+  <div class="row">
+    <div class="col-xs-12">
+      <h5>Classes <%= relative_week_name(week) %></h5>
+    </div>
+  </div>
+  <% @courses_weeks[week].each_day do |day, courses| %>
+    <% show_next = day == week.last %>
+    <%= render courses %>
+  <% end %>
 <% end %>

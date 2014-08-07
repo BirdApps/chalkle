@@ -1,6 +1,6 @@
 class V2::ChannelsController < V2::BaseController
 
-  before_filter :load_channel
+  before_filter :load_channel, except: :index
 
   def index
     @channels = Channel.visible
@@ -16,25 +16,25 @@ class V2::ChannelsController < V2::BaseController
   end
 
   def new
-
+    
   end
 
   def create
-
+    
   end
 
 
   def edit
-
+    
   end
 
   def update
-
+    
   end
 
 
   def destroy
-
+    
   end
 
   private 

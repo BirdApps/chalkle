@@ -323,8 +323,20 @@ class Course < ActiveRecord::Base
   end
   alias_method :date, :start_on
 
+  def end_at
+    start_at+duration if start_at && duration
+  end
+  alias_method :end_on, :end_at
+
   def has_reviews
     false
+  end
+
+  def venue_truncated
+    return unless venue
+    truncated = venue.split()[0..venue[0..16].split(" ").count()-1].join(" ")
+    truncated[truncated.length-1] = truncated[truncated.length-1].gsub(/[^0-9A-Za-z]/, '')
+    truncated
   end
 
   private
@@ -348,8 +360,14 @@ class Course < ActiveRecord::Base
   end
 
   before_create :set_url_name
+  before_save :check_url_name
+  
   def set_url_name
     self.url_name = name.parameterize
   end
 
+  def check_url_name
+    self.url_name = name.parameterize if self.url_name.nil?
+  end
+  
 end

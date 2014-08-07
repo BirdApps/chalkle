@@ -23,9 +23,7 @@
           </h4>
           <div class="courses">
             <% if courses[day] %>
-              <%= #binding.pry %>
-              <% @courses = courses[day] %>
-              <%= render @courses %>
+              <%= render partial: '_course', locals: { course: courses[day] } %>
             <% end %>
           </div>
         <% end %>

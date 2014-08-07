@@ -1,9 +1,12 @@
-<header class="header" style="background-image: url( <%= @header_bg ? @header_bg : '/assets/header_bg.jpg' %> )">
-  <div class="container">
-    <% if chalkler_signed_in? %>
-      signed in
-    <% else %>
-      signed out
-    <% end %>
-  </div>
-</header>
+<div class="header" style="background-image: url( <%= @header_bg ? @header_bg : '/assets/header_bg.jpg' %> )">
+  <% if @channel %>
+    <div class="container header_content">
+      <h1>
+        <%= @channel.name %>
+      </h1>
+    </div>
+  <% end %>
+  <% if @the_user.admin? %>
+    <%= render "v2/layouts/navigation_admin" %>
+  <% end %>
+</div>

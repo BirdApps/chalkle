@@ -1,20 +1,24 @@
 <% if params[:view] == "grid" %>
+  <%# grid view %>
   <div class="course col-sm-6">
     <%= link_to course.name, v2_course_show_path(course.channel.url_name,course.url_name,course.id) %>
   </div>
 
 <% else %>
+  <%# list view %>
   <article class="course row">
     <div class="col-xs-1 col-sm-2">
       <div class="porthole">
+        <a href="<%= course.path %>" title="<%= course.name %>">
           <% if course.course_upload_image.present? %>
             <%= image_tag(course.course_upload_image.url(:medium), class: 'course_image') %>
           <% else %>
             <%= category_image course, 150 %>
           <% end %>
+        </a>
       </div>
     </div>
-    <div class="col-sm-7">
+    <div class="col-sm-8">
       <header>
         <h5 class="category">
         <%= link_to course.category.name, v2_category_show_path(course.category.url_name), { :class => "colour"+course.best_colour_num.to_s } %>
@@ -41,9 +45,39 @@
         <% end %>
       </footer>
     </div>
-    <div class="col-sm-3">
-      <%= course_availability course %>
-      <%= day_ordinal_month course.start_at %>
+    <div class="col-sm-2">  
+      <a href="<%= new_v2_course_path %>" class="availability bg-colour<%= course.best_colour_num %>">
+        <%= course_availability course %>
+      </a>
+      <div class="row details">
+        <div class="col-lg-1 col-md-4"></div>
+        <div class="col-lg-11 col-md-8 ">
+          <%= day_ordinal_month course.start_at %>
+        </div>
+
+        <div class="col-lg-1 col-xs-1">
+          <span class="fa fa-clock-o"></span>
+        </div>
+        <div class="col-lg-11 col-xs-11">
+          <%= pretty_time_range course.start_at, course.end_at %>
+        </div>
+
+        <div class="col-lg-1 col-xs-3"></div>
+        <div class="col-sm-11 col-xs-9">
+          <span class="small grey">
+            <%= pretty_duration course %>
+          </span>
+        </div>
+
+        <div class="col-sm-1 col-xs-3">
+          <span class="fa fa-map-marker grey"></span>
+        </div>
+        <div class="col-sm-11 col-xs-9">
+          <span class="grey">
+            <%= course.venue_truncated %>
+          </span>
+        </div>
+      </div>
     </div>
   </article>
 <% end %>

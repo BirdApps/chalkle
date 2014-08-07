@@ -12,14 +12,14 @@ class V2::BaseController < ApplicationController
   private
 
   def the_user
-    if current_chalkler || current_admin_user
-      @the_user = TheUser.new current_chalkler
-    else
-      @the_user = nil
-    end
+    @the_user = TheUser.new current_chalkler, current_admin_user
   end
 
   def nav_links
+    @nav_links = []
+  end
+  
+  def course_nav_links
     @nav_links = [{text: "Classes", target: v2_courses_path }, {text: "Categories", target: v2_categories_path }, {text: "Channels", target: v2_channels_path }]
   end
 

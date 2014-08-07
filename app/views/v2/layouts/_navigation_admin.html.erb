@@ -1,0 +1,54 @@
+<%= javascript_include_tag "nav_admin" %>
+<%  
+  controller_parts = request.path_parameters[:controller].split("/")
+  nav_links = [
+    {
+      img_name: "bolt",
+      link: v2_courses_path,
+      active: controller_parts.index("courses").nil? ? false : true,
+      title: "Classes"
+    },
+    {
+      img_name: "people",
+      link: v2_people_root_path,
+      active: controller_parts.index("people").nil? ? false : true,
+      title: "People"
+    },
+    {
+      img_name: "metrics",
+      link: v2_metrics_path,
+      active: controller_parts.index("metrics").nil? ? false : true,
+      title: "Metrics"
+    },
+    {
+      img_name: "book",
+      link: v2_resources_path,
+      active: controller_parts.index("resources").nil? ? false : true,
+      title: "Resources"
+    }
+  ]
+%>
+<div class="admin_nav_wrapper">
+  <div class="flex">
+    <div class="nav-bumper">&nbsp;</div>
+    <nav class="container flush">
+      <ul>
+        <% nav_links.each do |nav_link| %>
+          <li class="<%= "active" if nav_link[:active] %>" >
+            <a href="<%= nav_link[:link] %>" title="<%= nav_link[:title] %>">
+              <div class="img-wrapper">
+                <%= image_tag(asset_path(nav_link[:img_name]+".png"), { class: "reg" }) %>
+                <%= image_tag(asset_path(nav_link[:img_name]+"-alt.png"), { class: "alt" }) %>
+                <div class="title">
+                  <%= nav_link[:title] %>
+                </div>
+              </div>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+    <div class="nav-bumper nav-bumper2">&nbsp;</div>
+    <br style="clear:both" />
+  </div>
+</div>

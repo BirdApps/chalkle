@@ -11,9 +11,26 @@ If it is cancelled, you will receive a notice from Meetup upon cancellation and 
 Your Chalkle Administrator")
   end
 
+  def pretty_duration(course)
+    # when above 24 this should cover periods greater than a day in a more elegent way than n hours  - Josh
+     (course.duration.to_i/60/60).to_s+" hours"
+  end
+
+  def pretty_time(date)
+    date.strftime("%l:%M%P")
+  end
+
+  def pretty_time_range(start, finish)
+    if(finish - start < 24*3600)
+      pretty_time(start)+" -"+pretty_time(finish)
+    else
+      day_ordinal_month(start)+" "+pretty_time(start)+" "+day_ordinal_month(finish)+" "+pretty_time(finish)
+    end
+  end
+
   def day_ordinal_month(date, use_relative_day = true)
-    relative = relative_day_name date
-    return relatve if relative && use_relative_day
+    relative = relative_day_name date.to_date
+    return relative if relative && use_relative_day
     ordinalDay = date.day.ordinalize
     date.strftime("%B #{ordinalDay}, %Y")
   end
@@ -91,16 +108,14 @@ Your Chalkle Administrator")
   end
 
   def course_availability(course)
-    content_tag :div, nil, class: 'availability' do
-      if course.limited_spaces?
-        if course.spaces_left?
-          pluralize(course.spaces_left, 'spot') + ' left'
-        else
-          'Fully booked'
-        end
+    if course.limited_spaces?
+      if course.spaces_left?
+        pluralize(course.spaces_left, 'spot') + ' left'
       else
-        'No booking limit'
+        'Fully booked'
       end
+    else
+      'No booking limit'
     end
   end
 
