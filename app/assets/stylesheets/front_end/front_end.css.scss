@@ -79,20 +79,36 @@ ul.simple-nav {
   }
 }
 
-a.colour1 {
+.colour1 {
   color: $category1;
 }
-a.colour2 {
+.colour2 {
   color: $category2;
 }
-a.colour3 {
+.colour3 {
   color: $category3;
 }
-a.colour4 {
+.colour4 {
   color: $category4;
 }
-a.colour5 {
+.colour5 {
   color: $category5;
+}
+
+.bg-colour1 {
+  background-color: $category1;
+}
+.bg-colour2 {
+  background-color: $category2;
+}
+.bg-colour3 {
+  background-color: $category3;
+}
+.bg-colour4 {
+  background-color: $category4;
+}
+.bg-colour5 {
+  background-color: $category5;
 }
 
 .thumbnail {
