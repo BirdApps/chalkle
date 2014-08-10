@@ -23,7 +23,6 @@ class TheUser
     chalkler.name ? chalkler.name : admin_user.name if authenticated?
   end 
 
-  private
   def chalkler
     @chalkler
   end

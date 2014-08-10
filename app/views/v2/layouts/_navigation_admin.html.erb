@@ -1,29 +1,41 @@
 <%= javascript_include_tag "nav_admin" %>
 <%  
   controller_parts = request.path_parameters[:controller].split("/")
+
+  
+  if controller_parts.index("resources")
+    active_link = "resources"
+  elsif controller_parts.index("metrics")
+    active_link = "metrics"
+  elsif controller_parts.index("people")
+    active_link = "people"
+  else
+    active_link = "courses"
+  end
+
   nav_links = [
     {
       img_name: "bolt",
       link: v2_courses_path,
-      active: controller_parts.index("courses").nil? ? false : true,
+      active: active_link == "courses",
       title: "Classes"
     },
     {
       img_name: "people",
       link: v2_people_root_path,
-      active: controller_parts.index("people").nil? ? false : true,
+      active: active_link == "people",
       title: "People"
     },
     {
       img_name: "metrics",
       link: v2_metrics_path,
-      active: controller_parts.index("metrics").nil? ? false : true,
+      active: active_link == "metrics",
       title: "Metrics"
     },
     {
       img_name: "book",
       link: v2_resources_path,
-      active: controller_parts.index("resources").nil? ? false : true,
+      active: active_link == "resources",
       title: "Resources"
     }
   ]

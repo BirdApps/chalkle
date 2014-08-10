@@ -2,6 +2,8 @@ class V2::CoursesController < V2::BaseController
   include Filters::FilterHelpers
   before_filter :load_course, only: [:show]
   before_filter :course_nav_links, except: [:new]
+  before_filter :authenticate_chalkler!, only: [:new]
+
   def index
     @courses_weeks = courses_for_time.load_upcoming_week_courses get_current_week
   end
@@ -11,7 +13,8 @@ class V2::CoursesController < V2::BaseController
   end
 
   def new
-
+    @no_search = true
+    @teaching = Teaching.new( @the_user.chalkler)
   end
 
   def create
