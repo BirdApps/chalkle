@@ -1,37 +1,84 @@
 <div class="new_course_form_wrapper">
-  <ol class="breadcrumb">
-    <li class="active"><a href="#type">Class Type</a></li>
-    <li><a href="#details">Class Details</a></li>
-    <li><a href="#learning">Learning</a></li>
-    <li><a href="#teaching">Teacher & Venue</a></li>
-    <li><a href="#summary">Summary & Submit</a></li>
-  </ol>
-  <form>
+  <div class="col-md-2">
+    <%= link_to "< Upcoming Classes", v2_courses_path, {:class => "small grey"} %>
+  </div>
+  <div class="col-md-9">
+    <ol class="breadcrumb">
+      <li class="active"><a href="#type" id="type-link">Class Type</a></li>
+      <li><a href="#details" id="details-link">Class Details</a></li>
+      <li><a href="#learning" id="learning-link">Learning</a></li>
+      <li><a href="#teaching" id="teaching-link">Teacher & Venue</a></li>
+      <li><a href="#summary" id="summary-link">Summary & Submit</a></li>
+    </ol>
+    <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: new_v2_course_path, html: { method: :post, class: 'form-horizontal', role: 'form' }) do |f| %>
+      <div id="type" class="parts center">
+        <h3>Class Type</h3>
+        <hr />
+        <p>Do you want to create a course with many classes, or a single course?</p>
+        
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-default active"><%= f.radio_button :course_class_type, 'course' %>Create a course</label>
+          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class' %>Create class</label>
+        </div>
 
-    <div id="type" class="parts">
-      <h3>Class Type</h3>
-      <hr />
-      <div class="input-group">
-        <span class="input-group-addon">@</span>
-        <input type="text" class="form-control" placeholder="Username">
+        <p><small>Choose a course if attendees pay once for a series of courses. <br /> To create a series of repeating classes, choose to create </small></p>
       </div>
-    </div>
 
-    <div id="details" class="parts">
-      <h3></h3>
-    </div>
+      <div id="details" class="parts">
+        <h3>Course Info</h3>
+        <hr />
 
-    <div id="learning" class="parts">
-      <h3></h3>
-    </div>
+        <div class="form-group">
+          <label for="teaching_title" class="col-sm-5 control-label">Give your <span class="course_key_word">course</span> a <strong>name</strong></label>
+          <div class="col-sm-7">
+            <%= f.text_field :title, class: "form-control" %>
+            <small class="small grey">ie. Gardening for beginners. The <span class="course_key_word">course</span> name should be short, decriptive and clear</small>
+          </div>
+        </div>
+    
+        <div class="form-group">
+          <label for="course_name" class="col-sm-5 control-label">Select a <strong>Category</strong> for this <span class="course_key_word">course</span></label>
+          <div class="col-sm-7">
+            <%= f.select :category_primary_id, Category.select_options,{prompt: ""}, {class: "form-control"} %>
+          </div>
+        </div>
 
-    <div id="teaching" class="parts">
-      <h3></h3>
-    </div>
+        <h3>Course Time</h3>
+        <hr />
 
-    <div id="Summary" class="parts">
-      <h3></h3>
-    </div>
+        <div class="form-group">
+          <label for="course_name" class="col-sm-5 control-label">How often will the <span class="course_key_word">course</span> take place</label>
+          <div class="col-sm-7">
+            <%= f.select :repeat_frequency, ['weekly', 'monthly'] ,{prompt: ""}, {class: "form-control"} %>
+          </div>
+        </div>
 
-  </form>
+      </div>
+
+      <div id="learning" class="parts">
+        <h3>Course Details</h3>
+        <hr />
+        learning
+      </div>
+
+      <div id="teaching" class="parts">
+        <h3>Channel</h3>
+        <hr />
+        teaching
+        <h3>Teacher Setup</h3>
+        <hr />
+        <h3>Venue Information</h3>
+        <hr />
+      </div>
+
+      <div id="summary" class="parts">
+        <h3>Summary</h3>
+        <hr />
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-1">
+  </div>
+
+  <%= javascript_include_tag "course_new" %>
 </div>
