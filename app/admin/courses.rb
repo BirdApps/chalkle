@@ -41,8 +41,7 @@ ActiveAdmin.register Course  do
   filter :venue
   filter :lessons_start_at,
     :as => :date_range,
-    :label => 'Start between',
-    :collection => proc { Course.lessons(:start_at) }
+    :label => 'Start between'
 
   controller do
     def scoped_collection
