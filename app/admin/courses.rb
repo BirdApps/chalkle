@@ -1,6 +1,17 @@
 require 'carrierwave'
 require 'course_upload_image_uploader'
 
+# module MetaSearch::Searches
+#   class Course
+#     def start_at_gte
+#       binding.pry
+#     end
+#     def start_at_lte
+#       binding.pry
+#     end
+#   end
+#end
+
 ActiveAdmin.register Course  do
   csv do
     column :id
@@ -27,11 +38,15 @@ ActiveAdmin.register Course  do
     :collection => proc{ Category.all.collect{ |c| [c.name, c.name] }}
   filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("LOWER(name) ASC") }
   filter :cost
-  filter :start_at
   filter :venue
+  filter :lessons_start_at,
+    :as => :date_range,
+    :label => 'Start between',
+    :collection => proc { Course.lessons(:start_at) }
 
   controller do
     def scoped_collection
+      super.includes :lessons
       end_of_association_chain.accessible_by(current_ability)
     end
     helper CourseHelper
