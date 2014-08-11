@@ -112,9 +112,9 @@ ActiveAdmin.register Course  do
       end
       row :teacher
       row "Teacher's email" do |course|
-        if course.teacher_id.present?
-          if Chalkler.find(course.teacher_id).email?
-            Chalkler.find(course.teacher_id).email
+        if course.teacher
+          if course.teacher.email?
+            course.teacher.email
           else
             status_tag( "Please click on teacher above and enter their email", :error )
           end
