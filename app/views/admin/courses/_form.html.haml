@@ -26,7 +26,7 @@
     = f.input :teacher_bio, :label => "Your chalkler will be", :input_html => { :rows => 2 }
     = f.input :prerequisites, :label => "What to bring", :input_html => { :rows => 1 }
     = f.input :additional_comments, :input_html => { :rows => 2 }
-    = f.input :duration, :label => "Duration in hours", :input_html => { :value => @course.duration/60/60 }
+    = f.input :duration, :label => "Duration in hours", :input_html => { :value => @course.duration.to_f/60/60 }
     = f.input :status, :as => :select, :collection =>  ["Published", "On-hold", "Approved", "Unreviewed", "Processing"], :input_html => { :multiple => false }, include_blank: false
 
   = f.inputs "Attendees" do

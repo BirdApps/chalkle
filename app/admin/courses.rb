@@ -202,7 +202,7 @@ ActiveAdmin.register Course  do
         number_to_currency course.material_cost
       end
       row :duration do
-        pluralize(course.duration / 60 / 60, "hour") if course.duration
+        pluralize(course.duration.to_f / 60 / 60, "hour") if course.duration
       end
       row :max_attendee
       row "Minimum Attendee" do
