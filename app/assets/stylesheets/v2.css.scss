@@ -45,10 +45,24 @@ body.v2 {
     background: #F9F9F9;
     border: 2px solid #EAEAEA;
     color: #4B4B4B;
-  }
-  .btn-default:active, .btn-default.active{
     box-shadow: none;
-    background: #f2f2f2;
+  }
+  .btn-default:hover{
+    background-color: #f2f3f3;
+  }
+  .btn-default.active, .btn-default:active, .btn-default:focus{
+    background: #EAEAEA;
+  }
+  .btn-primary{
+    background-color: #F5BA56;
+    border: 2px solid #E9B151;
+  }
+  .btn-primary:hover{
+    background-color: #eeb553;
+  }
+  .btn-primary:active, .btn-primary:focus{
+    border: 2px solid #F5BA56;
+    background-color: #E9B151;
   }
   header{
     .header_content{
@@ -323,6 +337,9 @@ body.v2 {
         color: #696969;
     }
     .new_course_form_wrapper{
+      .course_only {
+        display: none;
+      }
       ol.breadcrumb{
         margin: 0 auto 10px auto;
         font-family: ProximaNova-Light;
@@ -386,6 +403,13 @@ body.v2 {
         }
       }
       form {
+        .prevnext>*{
+          min-width: 150px;
+        }
+        .time-picker{
+          width: 100px;
+          text-align: center;
+        }
         input,textarea,select{
           border: 0px;
           border-radius: 4px;
@@ -394,6 +418,13 @@ body.v2 {
           font-family: ProximaNova-Light ;
           letter-spacing: 1px;
           -webkit-appearance:none;
+        }
+        .date-picker{
+          background: #F1F1F1;
+          float: left;
+          margin-bottom:20px;
+          padding: 5px 15px 5px 5px;
+          border-radius: 4px;
         }
         label{
           font-weight: normal;
@@ -435,5 +466,28 @@ body.v2 {
   }
   a:focus, a:hover, a:active{
     text-decoration: none !important;
+  }
+  #class-repeat-times{
+    text-align: center;
+    width:100%;
+    padding: 7px;
+    font-size:1.2em;
+    margin: 20px auto;
+  }
+  .number-picker{
+    .fa{
+      display: block;
+      position: relative;
+      left: 10px;
+      font-size: 18px;
+    }
+    .control-wrapper{
+      float: left;
+    }
+    input{
+      float: left;
+      max-width: 100px;
+      text-align: right;
+    }
   }
 }

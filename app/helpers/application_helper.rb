@@ -13,6 +13,7 @@ module ApplicationHelper
     simple_form_for(*params, &block)
   end
 
+
   def link_to_or_span(*params)
     link_to_unless *params do |name, href, options|
       content_tag :span, name, options

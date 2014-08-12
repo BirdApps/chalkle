@@ -1,64 +1,89 @@
+<%= 
+  config.wrappers :small do |b|
+    b.use :placeholder
+    b.use :label_input
+  end
+ %>
 <div class="new_course_form_wrapper">
   <div class="col-md-2">
     <%= link_to "< Upcoming Classes", v2_courses_path, {:class => "small grey"} %>
   </div>
   <div class="col-md-9">
     <ol class="breadcrumb">
-      <li class="active"><a href="#type" id="type-link">Class Type</a></li>
-      <li><a href="#details" id="details-link">Class Details</a></li>
-      <li><a href="#learning" id="learning-link">Learning</a></li>
-      <li><a href="#teaching" id="teaching-link">Teacher & Venue</a></li>
-      <li><a href="#summary" id="summary-link">Summary & Submit</a></li>
+      <li class="active"><a class="part_link" href="#type" id="type-link"><span class="class_only">Class</span><span class="course_only">Course</span> Type</a></li>
+      <li><a href="#details" class="part_link" id="details-link"><span class="class_only">Class</span><span class="course_only">Course</span> Details</a></li>
+      <li><a href="#learning" class="part_link" id="learning-link">Learning</a></li>
+      <li><a href="#teaching" class="part_link" id="teaching-link">Teacher & Venue</a></li>
+      <li><a href="#summary" class="part_link" id="summary-link">Summary & Submit</a></li>
     </ol>
     <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: new_v2_course_path, html: { method: :post, class: 'form-horizontal', role: 'form' }) do |f| %>
       <div id="type" class="parts center">
-        <h3>Class Type</h3>
+        <h3>
+          <span class="class_only">Class</span> 
+          <span class="course_only">Course</span> 
+          Type
+        </h3>
         <hr />
-        <p>Do you want to create a course with many classes, or a single course?</p>
+        <p>Do you want to create a course with many classes, or a single class?</p>
         
         <div class="btn-group" data-toggle="buttons">
-          <label class="btn btn-default active"><%= f.radio_button :course_class_type, 'course' %>Create a course</label>
+          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course' %>Create a course</label>
           <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class' %>Create class</label>
         </div>
 
-        <p><small>Choose a course if attendees pay once for a series of courses. <br /> To create a series of repeating classes, choose to create </small></p>
+        <p><small>Create a course if attendees pay once for a series of courses. <br /> To create a single class, or a series of repeating classes, create a class. </small></p>
       </div>
 
       <div id="details" class="parts">
-        <h3>Course Info</h3>
+        <h3><span class="class_only">Class</span><span class="course_only">Course</span> Info</h3>
         <hr />
 
-        <div class="form-group">
-          <label for="teaching_title" class="col-sm-5 control-label">Give your <span class="course_key_word">course</span> a <strong>name</strong></label>
-          <div class="col-sm-7">
-            <%= f.text_field :title, class: "form-control" %>
-            <small class="small grey">ie. Gardening for beginners. The <span class="course_key_word">course</span> name should be short, decriptive and clear</small>
-          </div>
-        </div>
-    
-        <div class="form-group">
-          <label for="course_name" class="col-sm-5 control-label">Select a <strong>Category</strong> for this <span class="course_key_word">course</span></label>
-          <div class="col-sm-7">
-            <%= f.select :category_primary_id, Category.select_options,{prompt: ""}, {class: "form-control"} %>
-          </div>
-        </div>
+        <%= f.input :title, label: "Give your <span class='class_only'>class</span><span class='course_only'>course</span> a <strong>name</strong>", wrapper: :horizonal %>
 
-        <h3>Course Time</h3>
+        <%= f.input :category_primary_id, as: :select, collection: Category.select_options,label: "Select a <strong>Category</strong> for this <span class='class_only'>class</span><span class='course_only'>course</span>", wrapper: :horizonal %>
+
+        <h3><span class="class_only">Class</span><span class="course_only">Course</span> Time</h3>
         <hr />
 
-        <div class="form-group">
-          <label for="course_name" class="col-sm-5 control-label">How often will the <span class="course_key_word">course</span> take place</label>
-          <div class="col-sm-7">
-            <%= f.select :repeat_frequency, ['weekly', 'monthly'] ,{prompt: ""}, {class: "form-control"} %>
+        <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Will this be a regularly repeating class, or a once off?", wrapper: :horizonal, :input_html => { :multiple => false } %>
+        <div class="repeating-options">
+          <div class="col-xs-12 info">
+            Attendees can sign up for any repeating class, and pay for each class individually. 
           </div>
+          <br />
+          <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> take place", wrapper: :horizonal %>
+
+          <%= f.input :repeat_times, as: :number_picker, label: "<strong>How many</strong> times will the <span class='class_only'>class</span><span class='course_only'>course</span> be held?", wrapper: :horizonal %>
         </div>
 
+        <%= f.input :start_at, as: :calendar, label: "What date will the <span class='repeating-options'>first </span><span class='class_only'>class </span><span class='course_only'>course </span>be on?", wrapper: :horizonal %>
+        
+        <%= f.input :start_at, as: :clock, label: "What time of day will the <span class='class_only'>class</span><span class='course_only'>course</span> start?", wrapper: :horizonal, input_html: {  id: 'saved_timepick', name: '' } %>
+        
+        <%= f.input :duration_hours, as: :number_picker, label: "How many hours will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-zero' => 'true' }  %>
+        
+        <%= f.input :duration_minutes, as: :number_picker, label: "and how many minutes?", wrapper: :horizonal, input_html: { :'data-zero' => 'true'  } %>
+        
+        <div class="col-xs-12">
+          <div class="info" id="class-repeat-times">
+            Attendees can sign up for any repeating class, and pay for each class individually. 
+          </div>
+        </div>
+        
+        <div class="col-xs-12 prevnext">
+          <a href="#type" class="part_link btn btn-primary pull-left">Previous</a>
+          <a href="#learning" class="part_link btn btn-primary pull-right">Next</a>
+        </div>
       </div>
 
       <div id="learning" class="parts">
-        <h3>Course Details</h3>
+        <h3><span class="class_only">Class</span> Details</h3>
         <hr />
         learning
+        <div class="col-xs-12 prevnext">
+          <a href="#details" class="part_link btn btn-primary pull-left">Previous</a>
+          <a href="#teaching" class="part_link btn btn-primary pull-right">Next</a>
+        </div>
       </div>
 
       <div id="teaching" class="parts">
@@ -69,16 +94,24 @@
         <hr />
         <h3>Venue Information</h3>
         <hr />
+        <div class="col-xs-12 prevnext">
+          <a href="#learning" class="part_link btn btn-primary pull-left">Previous</a>
+          <a href="#summary" class="part_link btn btn-primary pull-right">Next</a>
+        </div>
       </div>
 
       <div id="summary" class="parts">
         <h3>Summary</h3>
         <hr />
+        <div class="col-xs-12 prevnext">
+          <a href="#teaching" class="part_link btn btn-primary pull-left">Previous</a>
+          <button class="part_link btn btn-primary pull-right">Submit</button>
+        </div>
       </div>
     <% end %>
   </div>
   <div class="col-md-1">
   </div>
 
-  <%= javascript_include_tag "course_new" %>
+  <%= javascript_include_tag "v2/course_new" %>
 </div>

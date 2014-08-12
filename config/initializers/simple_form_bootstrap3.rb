@@ -20,6 +20,15 @@ SimpleForm.setup do |config|
     b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
   end
 
+  config.wrappers :horizonal, tag: 'div', class: 'form-group', error_class: 'error' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.use :label, wrap_with: { :class => 'control-label col-sm-5' }
+    b.use :input, wrap_with: { :class => 'col-sm-7' }
+    b.use :error, wrap_with: { tag: 'span', class: 'help-inline' }
+    b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
+  end
+
   config.wrappers :prepend, tag: 'div', class: "form-group", error_class: 'error' do |b|
     b.use :html5
     b.use :placeholder
