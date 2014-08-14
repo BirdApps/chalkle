@@ -30,8 +30,9 @@
           <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course' %>Create a course</label>
           <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class' %>Create class</label>
         </div>
+        
+        <p><small class="small grey">Create a course if attendees pay once for a series of courses. <br /> To create a single class, or a series of repeating classes, create a class. </small></p>
 
-        <p><small>Create a course if attendees pay once for a series of courses. <br /> To create a single class, or a series of repeating classes, create a class. </small></p>
       </div>
 
       <div id="details" class="parts">
@@ -40,12 +41,17 @@
 
         <%= f.input :title, label: "Give your <span class='class_only'>class</span><span class='course_only'>course</span> a <strong>name</strong>", wrapper: :horizonal %>
 
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p><small class="small grey">ie. Gardening for beginniers. The <span class="class_only">class</span><span class="course_only">course</span>  name should be short, decriptive and clear</small></p>
+        </div>
+
         <%= f.input :category_primary_id, as: :select, collection: Category.select_options,label: "Select a <strong>Category</strong> for this <span class='class_only'>class</span><span class='course_only'>course</span>", wrapper: :horizonal %>
 
         <h3><span class="class_only">Class</span><span class="course_only">Course</span> Time</h3>
         <hr />
 
-        <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Will this be a regularly repeating class, or a once off?", wrapper: :horizonal, :input_html => { :multiple => false } %>
+        <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizonal, :input_html => { :multiple => false } %>
         <div class="repeating-options">
           <div class="col-xs-12 info">
             Attendees can sign up for any repeating class, and pay for each class individually. 
@@ -56,62 +62,151 @@
           <%= f.input :repeat_times, as: :number_picker, label: "<strong>How many</strong> times will the <span class='class_only'>class</span><span class='course_only'>course</span> be held?", wrapper: :horizonal %>
         </div>
 
-        <%= f.input :start_at, as: :calendar, label: "What date will the <span class='repeating-options'>first </span><span class='class_only'>class </span><span class='course_only'>course </span>be on?", wrapper: :horizonal %>
+        <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the <span class='repeating-options'>first </span><span class='class_only'>class </span><span class='course_only'>course </span>be on?", wrapper: :horizonal %>
         
-        <%= f.input :start_at, as: :clock, label: "What time of day will the <span class='class_only'>class</span><span class='course_only'>course</span> start?", wrapper: :horizonal, input_html: {  id: 'saved_timepick', name: '' } %>
+        <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> start?", wrapper: :horizonal, input_html: {  id: 'saved_timepick', name: '' } %>
         
-        <%= f.input :duration_hours, as: :number_picker, label: "How many hours will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-zero' => 'true' }  %>
+        <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-zero' => 'true' }  %>
         
-        <%= f.input :duration_minutes, as: :number_picker, label: "and how many minutes?", wrapper: :horizonal, input_html: { :'data-zero' => 'true'  } %>
+        <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: { :'data-zero' => 'true'  } %>
         
         <div class="col-xs-12">
           <div class="info" id="class-repeat-times">
             Attendees can sign up for any repeating class, and pay for each class individually. 
           </div>
         </div>
-        
-        <div class="col-xs-12 prevnext">
-          <a href="#type" class="part_link btn btn-primary pull-left">Previous</a>
-          <a href="#learning" class="part_link btn btn-primary pull-right">Next</a>
+
+        <div class="row prevnext">
+          <div class="col-xs-5 prev">
+            <a href="#type" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+          </div>
+          <div class="col-xs-7 next">
+            <a href="#learning" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
+          </div>
         </div>
+
       </div>
 
       <div id="learning" class="parts">
-        <h3><span class="class_only">Class</span> Details</h3>
+        <h3><span class="class_only">Class</span><span class="course_only">Course</span>  Details</h3>
         <hr />
-        learning
-        <div class="col-xs-12 prevnext">
-          <a href="#details" class="part_link btn btn-primary pull-left">Previous</a>
-          <a href="#teaching" class="part_link btn btn-primary pull-right">Next</a>
+        
+        <%= f.input :do_during_class, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Activities</strong>", wrapper: :horizonal %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p><small class="small grey">What activities can learners expect from this <span class="class_only">class</span><span class="course_only">course</span>?</small></p>
+        </div>
+        
+        <%= f.input :learning_outcomes, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Outcomes</strong>", wrapper: :horizonal %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p><small class="small grey">What should learners come away with at the end of the <span class="class_only">class</span><span class="course_only">course</span>?</small></p>
+        </div>
+
+        <%= f.input :suggested_audience, as: :text, label: "<strong>Who</strong> is the <span class='class_only'>class</span><span class='course_only'>course</span> for?", wrapper: :horizonal %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p><small class="small grey">Describe the ideal attendee your <span class="class_only">class</span><span class="course_only">course</span> is designed for. If it would work for everyone, leave it blank.</small></p>
+        </div>
+
+        <%= f.input :prerequisites, as: :text, label: "What should learners <strong>bring</strong> along?", wrapper: :horizonal %>
+
+        <%= f.input :additional_comments, as: :text, label: "Any other comments?", wrapper: :horizonal %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p><small class="small grey">Is there anything else that learners should know before coming?</small></p>
+        </div>
+        
+        <div class="row prevnext">
+          <div class="col-xs-5 prev">
+            <a href="#details" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+          </div>
+          <div class="col-xs-7 next">
+            <a href="#teaching" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
+          </div>
         </div>
       </div>
 
       <div id="teaching" class="parts">
-        <h3>Channel</h3>
-        <hr />
-        teaching
+        <% if @the_user.channels.count > 1 %>
+          <h3>Channel</h3>
+          <hr />
+          <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => Channel.select_options(@teaching.channels), wrapper: :horizonal, required: true %>
+          <div class="col-sm-5"></div>
+          <div class="col-sm-7">
+            <p><small class="small grey"><span class="class_only">Classes</span><span class="course_only">Courses</span> must belong to a channel.</small></p>
+          </div>
+      
+          <div class="col-sm-5"></div>
+          <div class="col-sm-7">
+            <p><br />Channel fee will be $XX.xx</p>
+          </div>
+
+          <%= f.input :waive_channel_fee, as: :boolean, label: "Waive the channel fee", wrapper: :horizonal, inline_label: "<small class='small grey'>waiving the channel fee sets the channel income to 0</small>".html_safe, :boolean_style => :nested %>
+        <% end %>
         <h3>Teacher Setup</h3>
         <hr />
+        <% if @the_user.channels.count > 1 %>
+          <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => Course.all.map(&:teacher), wrapper: :horizonal, required: true %>
+        <% end %>
+        <%= f.input :teacher_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal %>
+       
         <h3>Venue Information</h3>
         <hr />
-        <div class="col-xs-12 prevnext">
-          <a href="#learning" class="part_link btn btn-primary pull-left">Previous</a>
-          <a href="#summary" class="part_link btn btn-primary pull-right">Next</a>
+
+        <div class="form-group currency optional teaching_teacher_cost">
+          <div class="control-label col-sm-5">
+            <label class="currency optional" for="teaching_teacher_cost">Venue <strong>Address</strong></label>
+          </div>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="venue_address" />
+          </div>
         </div>
+
+
+        <%= f.input :street_number, as: :hidden %>
+        <%= f.input :street_name, as: :hidden %>
+        <%= f.input :city, as: :hidden %>
+        <%= f.input :region, as: :hidden %>
+        <%= f.input :country, as: :hidden %>
+        <%= f.input :postal_code, as: :hidden %>
+        <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizonal %>
+
+        <%= f.input :venue_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal %>
+
+        <div class="row prevnext">
+          <div class="col-xs-5 prev">
+            <a href="#learning" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+          </div>
+          <div class="col-xs-7 next">
+            <a href="#summary" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
+          </div>
+        </div>
+
       </div>
 
       <div id="summary" class="parts">
         <h3>Summary</h3>
         <hr />
-        <div class="col-xs-12 prevnext">
-          <a href="#teaching" class="part_link btn btn-primary pull-left">Previous</a>
-          <button class="part_link btn btn-primary pull-right">Submit</button>
+
+        <div class="row prevnext">
+          <div class="col-xs-5 prev">
+            <a href="#teaching" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+          </div>
+          <div class="col-xs-7 next">
+            <a href="#submit" class="part_link btn btn-primary">Submit <span class="fa fa-angle-double-right"></span></a>
+          </div>
         </div>
+
       </div>
     <% end %>
   </div>
   <div class="col-md-1">
   </div>
-
-  <%= javascript_include_tag "v2/course_new" %>
+  <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+  <%= javascript_include_tag *Dir[Rails.root.join("app/assets/javascripts/v2/*.js")] %>
 </div>
