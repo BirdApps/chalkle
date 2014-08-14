@@ -30,8 +30,6 @@ class Chalkler < ActiveRecord::Base
   has_many :courses, :through => :bookings
   has_many :courses_taught, class_name: "Course", foreign_key: "teacher_id"
   has_many :payments
-  has_many :channel_teachers
-  has_many :channels_teachable, source: :channel, through: :channel_teachers
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
     def for_provider(provider)
       where(provider: provider).first

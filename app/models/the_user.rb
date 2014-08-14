@@ -11,6 +11,10 @@ class TheUser
     !!(chalkler || admin_user)
   end
 
+  def admin?
+    !admin_user.nil?
+  end
+
   def role
     admin_user.role if admin_user
   end
@@ -25,20 +29,5 @@ class TheUser
 
   def admin_user
     @admin_user
-  end
-
-  def admin?
-    !admin_user.nil?
-  end
-
-  def chalkler?
-    !chalkler.nil?
-  end
-
-  def channels
-    channel_list = []
-    channel_list += admin_user.channels if admin?
-    channel_list += chalkler.channels_teachable if admin?
-    channel_list
   end
 end
