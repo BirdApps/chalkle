@@ -36,7 +36,7 @@
             .iconic_block.time>
               %i.fa.fa-clock-o
               = @course.start_at.strftime('%l:%M %p').strip
-              .duration= pluralize(@course.duration / 60 / 60, "hour") if @course.duration
+              .duration= pluralize(@course.duration.to_f / 60 / 60, "hour") if @course.duration
 
             .iconic_block.date
               %i.fa.fa-calendar
