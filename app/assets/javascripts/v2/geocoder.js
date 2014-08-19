@@ -18,7 +18,7 @@ $(function(){
     // Create the autocomplete object, restricting the search
     // to geographical location types.
     autocomplete = new google.maps.places.Autocomplete(
-        /** @type {HTMLInputElement} */(document.getElementById('venue_address')),
+        /** @type {HTMLInputElement} */(document.getElementById('teaching_venue_address')),
         { types: ['geocode'], componentRestrictions: {country: "nz"} });
     console.log*(autocomplete);
     // When the user selects an address from the dropdown,

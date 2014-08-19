@@ -1,5 +1,39 @@
+/* Load teachers for selected channel */
+$(function(){
+  $('#teaching_channel_id').change(function(){
+    var channel_id = $(this).val();
+    $.getJSON('/v2/people/teachers.json?channel_id='+channel_id, function(data){
+        $('#teaching_teacher_id').empty();
+        if(data.length < 2){
+          $('.teacher-select').hide();
+        }else{
+            $('.teacher-select').show();  
+        }
+        $.each(data, function(index,item) {
+           $('#teaching_teacher_id').append('<option value=' + item.id + '>' + item.name + '</option>');
+        });
+      });
+
+  });
+});
 /* Navigation through form parts*/
 $(function(){
+  function summarize(){
+    $('[id^=teaching_]').each(function(){
+      var val = $(this).val() ? $(this).val() : $(this).text();
+      if(val.indexOf('Your class will be held ')){
+        val = val.split('Your class will be held ')[1];
+      }
+      var target = this.id.split('teaching_')[1];
+      console.log('val:'+val);
+      if(!val){
+        val = '<em>{'+target+'}</em>'
+      }
+      var target = '#summary_'+this.id.split('teaching_')[1];
+      $(target).html(val);
+    });
+  }
+
   $(".new_course_form_wrapper .parts").hide();
   function part_change( location ){
     location = (typeof location == 'undefined') ? window.location.hash : location;
@@ -7,6 +41,9 @@ $(function(){
     $(location).delay(350).fadeIn();
     $(".new_course_form_wrapper .breadcrumb li").removeClass('active')
     $(location+'-link').parent().addClass('active');
+    if(location == '#summary'){
+      summarize();
+    }
   };
   $(".part_link").click(function(e){
       part_change($(this).attr('href'));
@@ -52,10 +89,9 @@ $(function() {
         hours = 12
       }      
     }
-
     if(minutes > 59){
-      minutes = minutes % 60;
       hours = hours + Math.floor(minutes/60);
+      minutes = minutes % 60;
     }
     if(minutes < 10){
       minutes = "0"+minutes
@@ -147,10 +183,10 @@ $(function() {
       }
       string_build += " between "+start_time;
       string_build += " and "+end_time;
-      $('#class-repeat-times').html(string_build);
-      $('#class-repeat-times').show();
+      $('#teaching_times_summary').html(string_build);
+      $('#teaching_times_summary').show();
     } else {
-      $('#class-repeat-times').hide();
+      $('#teaching_times_summary').hide();
     }
   }
 
@@ -188,11 +224,7 @@ $(function() {
 
   function repeating_course_init() {
     calculate_class_times();
-    $('#teaching_repeat_frequency').change(calculate_class_times);
-    $('#teaching_repeating').change(calculate_class_times);
-    $('#teaching_repeat_times').change(calculate_class_times);
-    $('#teaching_duration_minutes').change(calculate_class_times);
-    $('#teaching_duration_hours').change(calculate_class_times);
+    $('.update_class_time').change(calculate_class_times);
     $('.number-picker .num-up').click(calculate_class_times);
     $('.number-picker .num-down').click(calculate_class_times);
   }

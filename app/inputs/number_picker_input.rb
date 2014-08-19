@@ -1,5 +1,6 @@
 class NumberPickerInput < SimpleForm::Inputs::Base
   def input
+    input_html_options[:class] << :'form-control'
     "<div class='number-picker'>
       #{ @builder.text_field(attribute_name, input_html_options)} 
       <div class='control-wrapper'>

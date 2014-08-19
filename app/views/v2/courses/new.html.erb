@@ -51,27 +51,27 @@
         <h3><span class="class_only">Class</span><span class="course_only">Course</span> Time</h3>
         <hr />
 
-        <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizonal, :input_html => { :multiple => false } %>
+        <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizonal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
         <div class="repeating-options">
           <div class="col-xs-12 info">
             Attendees can sign up for any repeating class, and pay for each class individually. 
           </div>
           <br />
-          <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> take place", wrapper: :horizonal %>
+          <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> take place", input_html: { :class => 'form-control update_class_time' }, wrapper: :horizonal %>
 
-          <%= f.input :repeat_times, as: :number_picker, label: "<strong>How many</strong> times will the <span class='class_only'>class</span><span class='course_only'>course</span> be held?", wrapper: :horizonal %>
+          <%= f.input :repeat_times, as: :number_picker, label: "<strong>How many</strong> times will the <span class='class_only'>class</span><span class='course_only'>course</span> be held?", input_html: { class: :'update_class_time' }, wrapper: :horizonal %>
         </div>
 
-        <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the <span class='repeating-options'>first </span><span class='class_only'>class </span><span class='course_only'>course </span>be on?", wrapper: :horizonal %>
+        <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the <span class='repeating-options'>first </span> class be on?", wrapper: :horizonal %>
         
         <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> start?", wrapper: :horizonal, input_html: {  id: 'saved_timepick', name: '' } %>
         
-        <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-zero' => 'true' }  %>
+        <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-zero' => 'true', class: 'update_class_time'  }  %>
         
-        <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: { :'data-zero' => 'true'  } %>
+        <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: { :'data-zero' => 'true', class: :'update_class_time'   } %>
         
         <div class="col-xs-12">
-          <div class="info" id="class-repeat-times">
+          <div class="info" id="teaching_times_summary">
             Attendees can sign up for any repeating class, and pay for each class individually. 
           </div>
         </div>
@@ -132,27 +132,27 @@
       </div>
 
       <div id="teaching" class="parts">
+        <%# if not multiple channel will be inferred %>
         <% if @the_user.channels.count > 1 %>
           <h3>Channel</h3>
           <hr />
-          <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => Channel.select_options(@teaching.channels), wrapper: :horizonal, required: true %>
-          <div class="col-sm-5"></div>
-          <div class="col-sm-7">
-            <p><small class="small grey"><span class="class_only">Classes</span><span class="course_only">Courses</span> must belong to a channel.</small></p>
-          </div>
-      
+          <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => @the_user.channels, wrapper: :horizonal, required: true %>
           <div class="col-sm-5"></div>
           <div class="col-sm-7">
             <p><br />Channel fee will be $XX.xx</p>
           </div>
-
           <%= f.input :waive_channel_fee, as: :boolean, label: "Waive the channel fee", wrapper: :horizonal, inline_label: "<small class='small grey'>waiving the channel fee sets the channel income to 0</small>".html_safe, :boolean_style => :nested %>
         <% end %>
+        
         <h3>Teacher Setup</h3>
         <hr />
-        <% if @the_user.channels.count > 1 %>
-          <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => Course.all.map(&:teacher), wrapper: :horizonal, required: true %>
+        <%# if no channel or single channel having 1 or 0 teachers, teacher is inferred %>
+        <% if @the_user.channels.count >  1 %>
+          <div class="teacher-select">
+            <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a channel first'}, wrapper: :horizonal, required: true %>
+          </div>
         <% end %>
+
         <%= f.input :teacher_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal %>
        
         <h3>Venue Information</h3>
@@ -163,7 +163,7 @@
             <label class="currency optional" for="teaching_teacher_cost">Venue <strong>Address</strong></label>
           </div>
           <div class="col-sm-7">
-            <input type="text" class="form-control" id="venue_address" />
+            <input type="text" class="form-control" id="teaching_venue_address" />
           </div>
         </div>
 
@@ -176,7 +176,7 @@
         <%= f.input :postal_code, as: :hidden %>
         <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizonal %>
 
-        <%= f.input :venue_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal %>
+        <%= f.input :venue_cost, as: :currency, :label => "<strong>Venue</strong> costs", wrapper: :horizonal %>
 
         <div class="row prevnext">
           <div class="col-xs-5 prev">
@@ -192,8 +192,79 @@
       <div id="summary" class="parts">
         <h3>Summary</h3>
         <hr />
+        <div class="center">
+          <h2 id="summary_title"></h2>
+          <p>Your <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> will run</p>
+          <p id="summary_times_summary"></p>
+        </div>
+        
+        <div class="col-sm-6 text-right">
+          Your <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> is priced at:
+        </div>
+        <div class="col-sm-6">
+          $<span id="summary_cost"></span>
+        </div>
 
-        <div class="row prevnext">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+          <hr />
+        </div>
+        <div class="col-md-3">
+        </div>
+        
+        <div class="col-sm-6 text-right">
+         Teacher payment 
+        </div>
+        <div class="col-sm-6">
+          $<span id="summary_cost"></span>
+        </div>
+        <div class="col-sm-6 text-right">
+         Channel fee
+        </div>
+        <div class="col-sm-6">
+          $<span id="summary_cost"></span>
+        </div>
+        <div class="col-sm-6 text-right">
+         Chalkle fee
+        </div>
+        <div class="col-sm-6">
+          $<span id="summary_cost"></span>
+        </div>
+        <div class="col-sm-6 text-right">
+         Processing fee
+        </div>
+        <div class="col-sm-6">
+          $<span id="summary_cost"></span>
+        </div>
+
+        <h3 style="margin-top:250px;">Teacher</h3>
+        <hr />
+        <h4 id="summary_teacher" class="center">{teacher}</h4>
+        
+        <h3>Venue Information</h3>
+        <hr />
+        <div class="col-sm-6 text-right">
+         Venue Details
+        </div>
+        <div class="col-sm-6">
+          <span id="summary_venue"></span>
+        </div>
+        <div class="col-sm-6 text-right">
+         Venue Address
+        </div>
+        <div class="col-sm-6">
+          <span id="summary_venue_address"></span>
+        </div>
+        <div class="col-sm-6 text-right">
+         Venue Costs
+        </div>
+        <div class="col-sm-6">
+          <span id="summary_venue_cost"></span>
+        </div>
+        <br /><br />
+        <br /><br />
+        <div class="prevnext">
           <div class="col-xs-5 prev">
             <a href="#teaching" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
           </div>
