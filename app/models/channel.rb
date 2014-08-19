@@ -3,7 +3,7 @@ require 'channel_logo_uploader'
 class Channel < ActiveRecord::Base
   mount_uploader :logo, ChannelLogoUploader
 
-  attr_accessible :name, :url_name, :region_ids, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :as => :admin
+  attr_accessible :name, :channel_teachers, :url_name, :region_ids, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :as => :admin
 
   validates_presence_of :name
   validates :channel_rate_override, numericality: true, allow_blank: true
@@ -26,6 +26,7 @@ class Channel < ActiveRecord::Base
   has_many :photos, class_name: 'ChannelPhoto', dependent: :destroy
   has_many :channel_regions, dependent: :destroy
   has_many :regions, through: :channel_regions
+  has_many :channel_teachers
   belongs_to :cost_model
 
   accepts_nested_attributes_for :photos
@@ -33,6 +34,7 @@ class Channel < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :has_logo, where("logo IS NOT NULL")
+  scope :chalkler_can_teach, lambda { |chalkler| joins(:channel_teachers).where("chalkler_id = ?", chalkler.id) }
 
   #absolute minimum percentage of revenue paid to chalkle
   CHALKLE_PERCENTAGE = 0.125

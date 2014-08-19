@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140731224601) do
+ActiveRecord::Schema.define(:version => 20140819015929) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -102,9 +102,10 @@ ActiveRecord::Schema.define(:version => 20140731224601) do
     t.text     "email_region_ids"
   end
 
-  create_table "channel_admins", :id => false, :force => true do |t|
+  create_table "channel_admins", :force => true do |t|
     t.integer "channel_id",    :null => false
     t.integer "admin_user_id", :null => false
+    t.integer "chalkler_id"
   end
 
   add_index "channel_admins", ["channel_id", "admin_user_id"], :name => "index_channel_admins_on_channel_id_and_admin_user_id", :unique => true
@@ -143,6 +144,15 @@ ActiveRecord::Schema.define(:version => 20140731224601) do
   end
 
   add_index "channel_regions", ["channel_id", "region_id"], :name => "index_channel_regions_on_channel_id_and_region_id", :unique => true
+
+  create_table "channel_teachers", :force => true do |t|
+    t.integer "channel_id",                               :null => false
+    t.integer "chalkler_id"
+    t.string  "name"
+    t.string  "bio"
+    t.string  "pseudo_chalkler_email"
+    t.boolean "can_make_classes",      :default => false
+  end
 
   create_table "channels", :force => true do |t|
     t.string   "name"
@@ -273,7 +283,7 @@ ActiveRecord::Schema.define(:version => 20140731224601) do
   create_table "lessons", :force => true do |t|
     t.integer  "course_id"
     t.datetime "start_at"
-    t.decimal  "duration"
+    t.integer  "duration"
     t.boolean  "cancelled", :default => false
   end
 
@@ -370,8 +380,13 @@ ActiveRecord::Schema.define(:version => 20140731224601) do
     t.string   "address_2"
   end
 
+  add_foreign_key "channel_admins", "chalklers", name: "channel_admins_chalkler_id_fk"
+
   add_foreign_key "channel_regions", "channels", name: "channel_regions_channel_id_fk"
   add_foreign_key "channel_regions", "regions", name: "channel_regions_region_id_fk"
+
+  add_foreign_key "channel_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
+  add_foreign_key "channel_teachers", "channels", name: "channel_teachers_channel_id_fk"
 
   add_foreign_key "channels", "cost_models", name: "channels_cost_model_id_fk"
 

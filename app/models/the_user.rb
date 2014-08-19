@@ -15,6 +15,10 @@ class TheUser
     !admin_user.nil?
   end
 
+  def chalkler?
+    !chalkler.nil?
+  end
+
   def role
     admin_user.role if admin_user
   end
@@ -29,5 +33,12 @@ class TheUser
 
   def admin_user
     @admin_user
+  end
+
+  def channels
+    channels = []
+    channels += admin_user.channels if admin?
+    channels += chalkler.channels_teachable  if chalkler?
+    channels.uniq
   end
 end

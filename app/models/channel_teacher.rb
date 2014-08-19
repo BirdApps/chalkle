@@ -6,4 +6,12 @@ class ChannelTeacher < ActiveRecord::Base
 
   validates_uniqueness_of :chalkler_id, :scope => :channel_id
   validates_presence_of :channel
+
+  def email
+    unless chalkler.nil?
+      chalkler.email
+    else
+      pseudo_chalkler_email
+    end
+  end
 end

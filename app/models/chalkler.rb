@@ -10,10 +10,10 @@ class Chalkler < ActiveRecord::Base
 
   attr_accessible :bio, :email, :name, :password, :password_confirmation,
     :remember_me, :email_frequency, :email_categories,
-    :phone_number, :email_regions
+    :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable
   attr_accessible :bio, :email, :name, :password,
     :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
-    :email_frequency, :email_categories, :phone_number,
+    :email_frequency, :email_categories, :phone_number, :channel_admins, :channels_adminable,
     :join_channels, :email_regions, :email_region_ids, :as => :admin
 
   attr_accessor :join_channels, :set_password_token
@@ -26,6 +26,10 @@ class Chalkler < ActiveRecord::Base
   has_one  :course_filter, class_name: 'Filters::Filter', dependent: :destroy
   has_many :subscriptions
   has_many :channels, through: :subscriptions, source: :channel
+  has_many :channel_teachers
+  has_many :channels_teachable, through: :channel_teachers, source: :channel
+  has_many :channel_admins
+  has_many :channels_adminable, through: :channel_admins, source: :channel
   has_many :bookings
   has_many :courses, :through => :bookings
   has_many :courses_taught, class_name: "Course", foreign_key: "teacher_id"
