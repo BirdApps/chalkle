@@ -27,15 +27,18 @@ $(function(){
     temp_val =$(this).val();
   });
   $('.number-picker input').change(function(){
-    temp_val = $(this).val();
-    test_val = temp_val;
-    if($(this).data('zero')){
-      test_val++;
-    }
-    if(!whole_positive_int(test_val)){
+    if(isNaN($(this).val())){
       $(this).val(temp_val);
+    }else{
+      temp_val = $(this).val();
+      test_val = temp_val;
+      if($(this).data('zero')){
+        test_val++;
+      }
+      if(!whole_positive_int(test_val)){
+        $(this).val(temp_val);
+      }
     }
-
   });
   $('.number-picker .num-up').click(function(){
     change_num($(this).parent().siblings('input'), true);
