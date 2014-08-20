@@ -47,34 +47,41 @@
         </div>
 
         <%= f.input :category_primary_id, as: :select, collection: Category.select_options,label: "Select a <strong>Category</strong> for this <span class='class_only'>class</span><span class='course_only'>course</span>", wrapper: :horizonal %>
+        
+        <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizonal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
+        
+        <div class="col-xs-12 info repeating-options">
+          Attendees can sign up for any repeating <span class="class_only">class</span><span class="course_only">course</span>, and pay for each <span class="class_only">class</span><span class="course_only">course</span> individually. 
+        </div>
 
         <h3><span class="class_only">Class</span><span class="course_only">Course</span> Time</h3>
         <hr />
-
-        <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizonal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
+        
         <div class="repeating-options">
-          <div class="col-xs-12 info">
-            Attendees can sign up for any repeating class, and pay for each class individually. 
-          </div>
-          <br />
           <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> take place", input_html: { :class => 'form-control update_class_time' }, wrapper: :horizonal %>
 
-          <%= f.input :repeat_times, as: :number_picker, label: "<strong>How many</strong> times will the <span class='class_only'>class</span><span class='course_only'>course</span> be held?", input_html: { class: :'update_class_time' }, wrapper: :horizonal %>
+          <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the <span class='class_only'>class</span><span class='course_only'>course</span> be held?", input_html: { class: :'update_class_time' }, wrapper: :horizonal %>
         </div>
 
-        <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the <span class='repeating-options'>first </span> class be on?", wrapper: :horizonal %>
-        
-        <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> start?", wrapper: :horizonal, input_html: {  id: 'saved_timepick', name: '' } %>
-        
-        <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-zero' => 'true', class: 'update_class_time'  }  %>
-        
-        <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: { :'data-zero' => 'true', class: :'update_class_time'   } %>
-        
-        <div class="col-xs-12">
-          <div class="info" id="teaching_times_summary">
-            Attendees can sign up for any repeating class, and pay for each class individually. 
-          </div>
+        <div class="course_only" >
+          <%= f.input :class_count, as: :number_picker, label: "<strong>How many classes</strong> make up the one course?", wrapper_html: { class: :'update_class_count' }, wrapper: :horizonal %>
         </div>
+
+        <div class="class-count" >
+          
+          <div class="course_only class-count-title row">
+            <div class="col-sm-5 class-count-title-text">Class <strong>1</strong> Date & Time</div>
+          </div>
+
+          <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the <span class='repeating-options'>first </span> class be on?", wrapper: :horizonal %>
+          
+          <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the class start?", wrapper: :horizonal, input_html: {  id: 'saved_timepick', name: '' } %>
+          
+          <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-zero' => 'true', class: 'update_class_time'  }  %>
+          
+          <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: { :'data-zero' => 'true', class: :'update_class_time'   } %>
+        </div>
+        <div class="class-count-bumper"></div>
 
         <div class="row prevnext">
           <div class="col-xs-5 prev">
@@ -133,10 +140,10 @@
 
       <div id="teaching" class="parts">
         <%# if not multiple channel will be inferred %>
-        <% if @the_user.channels.count > 1 %>
+        <% if current_user.channels.count > 1 %>
           <h3>Channel</h3>
           <hr />
-          <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => @the_user.channels, wrapper: :horizonal, required: true %>
+          <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => current_user.channels, wrapper: :horizonal, required: true %>
           <div class="col-sm-5"></div>
           <div class="col-sm-7">
             <p><br />Channel fee will be $XX.xx</p>
@@ -147,7 +154,7 @@
         <h3>Teacher Setup</h3>
         <hr />
         <%# if no channel or single channel having 1 or 0 teachers, teacher is inferred %>
-        <% if @the_user.channels.count >  1 %>
+        <% if current_user.channels.count >  1 %>
           <div class="teacher-select">
             <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a channel first'}, wrapper: :horizonal, required: true %>
           </div>
@@ -174,6 +181,8 @@
         <%= f.input :region, as: :hidden %>
         <%= f.input :country, as: :hidden %>
         <%= f.input :postal_code, as: :hidden %>
+        <%= f.input :longitude, as: :hidden %>
+        <%= f.input :latitude, as: :hidden %>
         <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizonal %>
 
         <%= f.input :venue_cost, as: :currency, :label => "<strong>Venue</strong> costs", wrapper: :horizonal %>

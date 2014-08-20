@@ -25,8 +25,8 @@
             .info 
               Attendees can sign up for any repeating class, and pay for each class individually. 
             = f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'], label: "How often will the class repeat?"
-            = f.input :repeat_times, as: :number, :label => "How many classes do you want to hold in total", :wrapper => :append do
-              = f.input_field :repeat_times
+            = f.input :repeat_count, as: :number, :label => "How many classes do you want to hold in total", :wrapper => :append do
+              = f.input_field :repeat_count
               = content_tag :span, "classes", :class => "input-group-addon"
       .row
         .col-sm-6

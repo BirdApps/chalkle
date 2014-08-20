@@ -2,13 +2,13 @@ class Teaching
   include ActiveAttr::Model
 
   attr_accessor :course, :chalkler, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :free_course, :teacher_cost, :max_attendee, :min_attendee,
-  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency,:repeat_times, :course_class_type, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :waive_channel_fee
+  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :waive_channel_fee, :longitude, :latitude
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
   validates :do_during_class, :presence => { :message => "What we will do during the class can not be blank"}
   validates :learning_outcomes, :presence => { :message => "What we will learn from this class can not be blank"}
-  validates :repeat_times, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Repeat classes must be 1 or more"}
+  validates :repeat_count, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Repeat classes must be 1 or more"}
   validates :duration_hours, :allow_blank => false, :numericality => { :greater_than_or_equal_to => 0, :message => "Hours must be 0 or more"}
    validates :duration_minutes, :allow_blank => false, :numericality => { :greater_than_or_equal_to => 0, :message => "Minutes must be 0 or more"}
   validates :category_primary_id, :allow_blank => false, :numericality => { :greater_than => 0, :message => "You must select a primary category"}
@@ -19,7 +19,7 @@ class Teaching
   validates :max_attendee, :allow_blank => true, :numericality => {:only_integer => true, :message => "Only integer number of people are allowed" }
   validates :min_attendee, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Number of people must be greater than or equal to 0" }
   validates :min_attendee, :allow_blank => true, :numericality => {:only_integer => true, :message => "Only integer number of people are allowed"  }
-  validates :repeat_times, presence: true, if: :is_repeating
+  validates :repeat_count, presence: true, if: :is_repeating
   validates :repeat_frequency, presence: true, if: :is_repeating
 
   def is_repeating
@@ -96,7 +96,7 @@ class Teaching
   def calculate_monthly_course_dates
     course_dates = [];
     nth = nth_wday_of_start_at
-    @repeat_times.to_i.times do |multiplier|
+    @repeat_count.to_i.times do |multiplier|
       course_dates << nth_day_in(multiplier, nth)
     end
     course_dates
@@ -110,8 +110,8 @@ class Teaching
         @repeat_course = RepeatCourse.create()
       end
       course_dates = []
-      @repeat_times ="1" if @repeat_times.to_i < 1
-      @repeat_times.to_i.times do |multiplier|
+      @repeat_count ="1" if @repeat_count.to_i < 1
+      @repeat_count.to_i.times do |multiplier|
         if @repeat_frequency == 'weekly' && repeating
           hour = starting.hour
           starting = Time.parse(@start_at) + 7.days*multiplier
@@ -179,7 +179,7 @@ class Teaching
     @repeat_frequency = params[:repeat_frequency]
     @repeat_day = params[:repeat_day]
     @repeat_month = params[:repeat_month]
-    @repeat_times = params[:repeat_times]
+    @repeat_count = params[:repeat_count]
 
     if @channels.length > 1
       @channel_id = params[:channel_id].to_i

@@ -1,5 +1,6 @@
 // =require '//maps.googleapis.com/maps/api/js?v=3.exp';
 $(function(){
+
   var placeSearch, autocomplete;
   var componentForm = {
     street_number: 'teaching_street_number',
@@ -7,9 +8,7 @@ $(function(){
     locality: 'teaching_city',
     administrative_area_level_1: 'teaching_region',
     country: 'teaching_country',
-    postal_code: 'teaching_postal_code',
-    lat: '',
-    lng: ''
+    postal_code: 'teaching_postal_code'
   };
 
   
@@ -31,7 +30,7 @@ $(function(){
   function fillInAddress() {
     // Get the place details from the autocomplete object.
     var place = autocomplete.getPlace();
-
+    console.log(place.geometry.location['k']);
     for (var component in componentForm) {
       document.getElementById(componentForm[component]).value = '';
       document.getElementById(componentForm[component]).disabled = false;
@@ -40,17 +39,16 @@ $(function(){
     // Get each component of the address from the place details
     // and fill the corresponding field on the form.
     for (var i = 0; i < place.address_components.length; i++) {
-      var addressType = place.address_components[i].types[0];
-
-
-
-
-      
+      var addressType = place.address_components[i].types[0];      
       if (componentForm[addressType]) {
         var val = place.address_components[i]['long_name'];
         document.getElementById(componentForm[addressType]).value = val;
       }
     }
+
+    //set the longitude and latitude
+    document.getElementById('teaching_longitude').value = place.geometry.location['B'];
+    document.getElementById('teaching_latitude').value = place.geometry.location['k'];
   }
 
   // Bias the autocomplete object to the user's geographical location,

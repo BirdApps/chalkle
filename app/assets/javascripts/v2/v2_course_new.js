@@ -1,3 +1,36 @@
+/* Show correct number of class-divs */
+$(function(){  
+  function show_class_opts(){
+    var target_class_count = $('.update_class_count input').val();
+    if(target_class_count < 1){
+      $('.update_class_count input').val('1');
+    }else{
+      if(target_class_count > 20){
+        $('.update_class_count input').val('20');
+        target_class_count = 20;
+        alert('Maximum 20 classes to a course at the moment. Contact Chalkle if this is an issue');
+      } 
+      var existing_class_count = $('.class-count').length;
+      var difference = target_class_count - existing_class_count;
+
+      /* add div.class-count that should exist */
+      for(var i = 0; i < difference; i++){
+        $($('.class-count')[0]).clone().insertBefore('.class-count-bumper');
+        $('.class-count-bumper').prev().children('.class-count-title').children().html('Class <strong>'+(i+existing_class_count+1)+'</strong> Date & Time');
+      }
+
+      /* remove div.class-count that shouldn't exist */
+      $('.class-count').each(function(index){
+        if(index+1 > target_class_count){
+          $(this).remove();
+        }
+      });
+    }
+  }
+  $('.update_class_count .num-up').click(show_class_opts);
+  $('.update_class_count .num-down').click(show_class_opts);
+  $('.update_class_count input').change(show_class_opts);
+});
 /* Load teachers for selected channel */
 $(function(){
   $('#teaching_channel_id').change(function(){
@@ -16,8 +49,23 @@ $(function(){
 
   });
 });
-/* Navigation through form parts*/
+/* Navigation through form*/
 $(function(){
+  function coursify(course){
+    $('.class-count input').each(function(){
+      var new_name = $(this).attr('name');
+      if(new_name != ''){
+        if(course){
+          new_name+='[]';
+        }else{
+          is_course = false;
+          new_name = new_name.split('[]')[0];
+        }
+        $(this).attr('name', new_name);
+      }
+    }); 
+  }
+
   function summarize(){
     $('[id^=teaching_]').each(function(){
       var val = $(this).val() ? $(this).val() : $(this).text();
@@ -25,7 +73,7 @@ $(function(){
         val = val.split('Your class will be held ')[1];
       }
       var target = this.id.split('teaching_')[1];
-      console.log('val:'+val);
+      //console.log('val:'+val);
       if(!val){
         val = '<em>{'+target+'}</em>'
       }
@@ -55,9 +103,11 @@ $(function(){
     part_change( '#details' );
     var key_word = $($(this).text().split(/[ ]+/)).last()[0];
     if(key_word == "class"){
+      coursify(false);
       $('.course_only').hide();
       $('.class_only').show();
     }else{
+      coursify(true);
       $('.class_only').hide();
       $('.course_only').show();
     }
@@ -71,7 +121,7 @@ $(function() {
   var instance_date = "";
   var monthly  = "";
   var repeating  = "";
-  var repeat_times  = "";
+  var repeat_count  = "";
   var duration_hours  = "";
   var duration_minutes  = "";
   var weekdays = ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday","Friday","Saturday"];
@@ -150,14 +200,14 @@ $(function() {
       var start_time = make_time(instance_date.getHours(), instance_date.getMinutes(),0,0);
       var end_time = make_time(instance_date.getHours(), instance_date.getMinutes(), duration_hours, duration_minutes);
       var string_build = "Your class will be held ";
-      repeat_times = parseInt($("#teaching_repeat_times").val());
-      repeating = repeating && repeat_times > 1
+      repeat_count = parseInt($("#teaching_repeat_count").val());
+      repeating = repeating && repeat_count > 1
       if(repeating && monthly) {
         //monthly
         var wday = instance_date.getDay();
         var date_lapse = new Date();
         date_lapse.setYear(instance_date.getFullYear());
-        date_lapse.setMonth(instance_date.getMonth() + parseInt(repeat_times) - 1);
+        date_lapse.setMonth(instance_date.getMonth() + parseInt(repeat_count) - 1);
         date_lapse.setDate(1);
         var target_nth = nth_day_instance_date();
         var end_date = nth_day_of(target_nth, wday, date_lapse);
@@ -166,7 +216,7 @@ $(function() {
         //weekly
         var end_date = new Date();
         end_date.setMonth(instance_date.getMonth());
-        end_date.setDate(instance_date.getDate()+7*(repeat_times-1));
+        end_date.setDate(instance_date.getDate()+7*(repeat_count-1));
         string_build += " weekly from "+instance_date.toDateString()+" until "+end_date.toDateString();
       }else if(!repeating){
         //once-off
@@ -242,8 +292,8 @@ $(function() {
   }
 
   function date_time_picker_init() {
-    repeat_times = parseInt($("#teaching_repeat_times").val());
-    if( isNaN(repeat_times) ) { $("#teaching_repeat_times").val(1)}; 
+    repeat_count = parseInt($("#teaching_repeat_count").val());
+    if( isNaN(repeat_count) ) { $("#teaching_repeat_count").val(1)}; 
     $('.date-picker').datepicker({
       startDate: new Date(), todayHighlight: true
     }).on('changeDate', function(e){
