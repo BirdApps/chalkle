@@ -14,7 +14,7 @@ class V2::CoursesController < V2::BaseController
 
   def new
     @no_search = true
-    @teaching = Teaching.new( @the_user.chalkler)
+    @teaching = Teaching.new current_user.chalkler
   end
 
   def create

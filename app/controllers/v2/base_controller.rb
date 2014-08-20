@@ -3,7 +3,6 @@ class V2::BaseController < ApplicationController
   layout 'v2/layouts/v2_application'
   
   before_filter :nav_links
-  before_filter :the_user
 
   def not_found object="Page"
     raise ActionController::RoutingError.new("#{object} could not be found")
@@ -11,8 +10,11 @@ class V2::BaseController < ApplicationController
 
   private
 
-  def the_user
-    @the_user = TheUser.new current_chalkler, current_admin_user
+  def current_user
+    if @current_user.nil?
+      @current_user = TheUser.new current_chalkler, current_admin_user
+    end
+    return @current_user 
   end
 
   def nav_links

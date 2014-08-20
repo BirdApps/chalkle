@@ -6,7 +6,7 @@
       </h1>
     </div>
   <% end %>
-  <% if @the_user.admin? %>
+  <% if current_user.admin? %>
     <%= render "v2/layouts/navigation_admin" %>
   <% end %>
 </div>
