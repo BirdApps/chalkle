@@ -50,36 +50,40 @@
         
         <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizonal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
         
-        <div class="col-xs-12 info repeating-options">
-          Attendees can sign up for any repeating <span class="class_only">class</span><span class="course_only">course</span>, and pay for each <span class="class_only">class</span><span class="course_only">course</span> individually. 
-        </div>
-
-        <h3><span class="class_only">Class</span><span class="course_only">Course</span> Time</h3>
-        <hr />
-        
         <div class="repeating-options">
           <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> take place", input_html: { :class => 'form-control update_class_time' }, wrapper: :horizonal %>
 
-          <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the <span class='class_only'>class</span><span class='course_only'>course</span> be held?", input_html: { class: :'update_class_time' }, wrapper: :horizonal %>
-        </div>
-
-        <div class="course_only" >
-          <%= f.input :class_count, as: :number_picker, label: "<strong>How many classes</strong> make up the one course?", wrapper_html: { class: :'update_class_count' }, wrapper: :horizonal %>
-        </div>
-
-        <div class="class-count" >
-          
-          <div class="course_only class-count-title row">
-            <div class="col-sm-5 class-count-title-text">Class <strong>1</strong> Date & Time</div>
+          <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the <span class='class_only'>class</span><span class='course_only'>course</span> be held?", wrapper_html: { class: :'update_repeat_count' }, input_html: { class: :'update_class_time' }, wrapper: :horizonal %>
+       
+          <div class="col-xs-12 info">
+            Attendees can sign up for any repeating <span class="class_only">class</span><span class="course_only">course</span>, and pay for each <span class="class_only">class</span><span class="course_only">course</span> individually. 
           </div>
+        </div>
+
+        <h3>Class Time<span class="course_only">s</span></h3>
+        <hr />
+        
+        <div class="course_only" >
+          <%= f.input :class_count, as: :number_picker, label: "<strong>How many classes</strong> make up the one course?", input_html: {:'data-min' => '2', :'data-max' => '20', :'data-max-error' => 'Maximum 20 classes to a course, if you need more contact Chalkle.', :'data-min-error' =>  'Minimum 2 classes to a course - otherwise go back and make a class. '}, wrapper_html: { class: :'update_class_count' }, wrapper: :horizonal %>
+        </div>
+
+        <div class="class-count">
+          <div class="class-count-title row">
+            <div class="course_only col-sm-5 class-count-title-text">Class <strong>1</strong> Date & Time</div>
+            <div class="col-sm-7">
+              <div class="info" id="teaching_times_summary" style="display: none;">
+              </div>
+            </div>
+          </div>
+          
 
           <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the <span class='repeating-options'>first </span> class be on?", wrapper: :horizonal %>
           
           <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the class start?", wrapper: :horizonal, input_html: {  id: 'saved_timepick', name: '' } %>
           
-          <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-zero' => 'true', class: 'update_class_time'  }  %>
+          <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-min' => '0', class: 'update_class_time'  }  %>
           
-          <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: { :'data-zero' => 'true', class: :'update_class_time'   } %>
+          <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: { :'data-min' => '0', class: :'update_class_time'   } %>
         </div>
         <div class="class-count-bumper"></div>
 
