@@ -1,10 +1,12 @@
-require "rvm/capistrano"
+require "capistrano-rbenv"
 require "bundler/capistrano"
 
-set :rvm_type, :system
+set :rbenv_ruby_version, "1.9.3-p545"
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
+set :rbenv_setup_default_environment, false
+
 
 set :application, "chalkle"
 set :repository,  "git@github.com:enspiral/#{application}.git"
@@ -19,10 +21,10 @@ set :whenever_environment, defer { rails_env }
 set :whenever_identifier, defer { "#{application}_#{rails_env}" }
 
 task :staging do
-  set :domain,    "my.chalkle.com"
-  set :branch,    "staging"
+  set :domain,    "chalklestaging.cloudapp.net"
+  set :branch,    "feature/heroku"
   set :rails_env, "staging"
-  set :deploy_to, "/home/#{user}/staging"
+  set :deploy_to, "/apps/chalkle/staging"
   set :bundle_without, [:development, :test]
 
   role :web, domain

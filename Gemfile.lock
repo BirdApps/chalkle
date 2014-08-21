@@ -120,6 +120,11 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
+    capistrano-platform-resources (0.1.3)
+      capistrano (< 3)
+    capistrano-rbenv (1.0.5)
+      capistrano (< 3)
+      capistrano-platform-resources (>= 0.1.3)
     capybara (2.4.1)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -467,8 +472,6 @@ GEM
     rspec-support (3.0.3)
     ruby_parser (3.6.2)
       sexp_processor (~> 4.1)
-    rvm-capistrano (1.4.1)
-      capistrano (>= 2.0.0)
     sass (3.3.11)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -567,6 +570,7 @@ DEPENDENCIES
   cancan
   capistrano (~> 2.14.1)
   capistrano-ext (~> 1.2.1)
+  capistrano-rbenv (~> 1.0)
   capybara
   capybara-webkit
   carrierwave
@@ -626,7 +630,6 @@ DEPENDENCIES
   rb-readline
   rmagick
   rspec-rails
-  rvm-capistrano
   sass-rails
   sendgrid
   shoulda (>= 3.5.0)
