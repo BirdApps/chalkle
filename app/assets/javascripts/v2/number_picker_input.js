@@ -1,49 +1,74 @@
-$(function(){
-  var temp_val = "";
+function number_picker(scope){
+  var prev_val;
   function whole_positive_int(int){
-    return /^[1-9]\d*$/.test(int);
+    return /^[0-9]\d*$/.test(int);
   }
-  function change_num(element, positive){
+  function change_num(element, increment){
+    if(isNaN(prev_val)){
+      data_min = $(element).data('min');
+      prev_val = isNaN(data_min) ? 0 : data_min;
+    }
     $(element).focus();
-    temp_val = $(element).val();
-    if(temp_val == ""){
-      temp_val = 1;
-    }
-    temp_val = parseInt(temp_val);
-    if(positive){
-      temp_val++;
+    if(increment){
+      new_val = prev_val+1;
     }else{
-      temp_val--; 
+      new_val = prev_val-1; 
     }
-    test_val = temp_val;
-    if($(element).data("zero")){
-      test_val++;
-    }
-    if(whole_positive_int(test_val)){
-      $(element).val(temp_val);
-    }
+    $(element).val(validate_picker_val(element, new_val));
   }
-  $('.number-picker input').focus(function(){
-    temp_val =$(this).val();
-  });
-  $('.number-picker input').change(function(){
-    if(isNaN($(this).val())){
-      $(this).val(temp_val);
-    }else{
-      temp_val = $(this).val();
-      test_val = temp_val;
-      if($(this).data('zero')){
-        test_val++;
+
+  function validate_picker_val(element, this_val){
+    var data_min = $(element).data('min');
+    var data_max = $(element).data('max');
+    var min_error = $(element).data('min-error');
+    var max_error = $(element).data('max-error');
+    data_min = isNaN(data_min) ? 0 : data_min;
+    data_max = isNaN(data_max) ? 9999999 : data_max;
+    min_error = min_error ? min_error : 'Minimum is '+data_min;
+    max_error = max_error ? max_error : 'Maximum is '+data_max;
+    this_val = isNaN(this_val) ? $(element).val() : this_val; 
+
+    var return_val;
+    if(!whole_positive_int(this_val)){
+      return_val = prev_val;
+    } else {
+      if(whole_positive_int(data_min)){
+        if(this_val < data_min){
+          this_val = data_min;
+          alert(min_error);
+        }else if(this_val > data_max){
+          this_val = data_max;
+          alert(max_error);
+        }
       }
-      if(!whole_positive_int(test_val)){
-        $(this).val(temp_val);
-      }
+      prev_val = this_val;
+      return_val = this_val;
+    }
+    return return_val;
+  }
+
+  //stored previous variable to revert if new input invalid
+  $(scope).find('.number-picker-input').focus(function(){
+    this_val = $(this).val();
+    if(whole_positive_int(this_val)){
+      prev_val = parseInt(this_val);
     }
   });
-  $('.number-picker .num-up').click(function(){
+
+  // input_invalid ? revert : update;
+  $(scope).find('.number-picker-input').change(function (){
+    $(this).val(validate_picker_val(this));
+  });
+
+  $(scope).find('.number-picker-up').click(function(){
     change_num($(this).parent().siblings('input'), true);
   });
-  $('.number-picker .num-down').click(function(){
+
+  $(scope).find('.number-picker-down').click(function(){
     change_num($(this).parent().siblings('input'), false);
   });
+};
+
+$('.number-picker').each(function(){
+  number_picker(this);
 });
