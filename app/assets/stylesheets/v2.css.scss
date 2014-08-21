@@ -40,6 +40,14 @@ body.v2 {
   .block{
     display:block;
   }
+  .info{
+    font-weight: 600;
+    text-align: center;
+    color: #eeb553;
+    padding: 0.25em 0.5em ;
+    margin: 0.25em 0;
+    font-size: 9pt;
+  }
   .flush{
     padding:0;
     margin:0;
@@ -407,17 +415,6 @@ body.v2 {
         }
       }
       form {
-        .class-count-title {
-          font-style: italic;
-          font-weight: 100;
-          font-size: 14px;
-          border-top: 1px solid #eee;
-          margin:0 5px 0;
-          padding:10px;
-        }
-        .class-count-title>*{
-          text-align: right;
-        }
         .checkbox {
           position: relative;
           input{
@@ -478,6 +475,7 @@ body.v2 {
         small.small.grey{
           font-family: ProximaNova-Light;
           font-size: 0.8em;
+          padding: 5px;
         }
         #type{
           .btn-group label{

@@ -3,7 +3,7 @@ $(function(){
   var monthly  = "";
   var repeating  = "";
   var repeat_count  = "";
-  var weekdays = ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday","Friday","Saturday"];
+  var weekdays = ["Sun","Mon", "Tues", "Wed", "Thurs","Fri","Sat"];
 
   /* initilizes on page load */
   function init(){
@@ -64,7 +64,11 @@ $(function(){
       for(var i = 0; i < difference; i++){
         $($('.class-count')[0]).clone().insertBefore('.class-count-bumper');
         var inserted_element = $('.class-count-bumper').prev();
-        $(inserted_element).find('.class-count-title').children('.class-count-title-text').html('Class <strong>'+(i+existing_class_count+1)+'</strong> Date & Time');
+        $(inserted_element).find('.class-count-num').text(i+existing_class_count+1);
+        $(inserted_element).find('input').each(function(){
+          $(this).val("");
+        });
+        $(inserted_element).find('#teaching_times_summary').hide();
         number_picker(inserted_element);
         apply_start_at_controls(inserted_element);
       }
@@ -79,7 +83,7 @@ $(function(){
   }
 
   /* when course is selected over class, make the class time input into an array */
-  function coursify(is_course){
+  function inputs_to_array(is_course){
     $('.class-count input').each(function(){
       var new_name = $(this).attr('name');
       if(new_name != ''){
@@ -132,14 +136,16 @@ $(function(){
     part_change( '#details' );
     var key_word = $($(this).text().split(/[ ]+/)).last()[0];
     if(key_word == "class"){
-      coursify(false);
+      inputs_to_array(false);
       $('.course_only').hide();
       $('.class_only').show();
       show_class_opts(1);
     }else{
-      coursify(true);
+      inputs_to_array(true);
       $('.class_only').hide();
       $('.course_only').show();
+      $('#teaching_repeating').val('once-off');
+      show_class_opts();
     }
   }
 
@@ -157,68 +163,6 @@ $(function(){
            $('#teaching_teacher_id').append('<option value=' + item.id + '>' + item.name + '</option>');
         });
       });
-  }
-
-  /* combines a time + hours + minutes to human readable form */
-  function make_time(hours, minutes, add_hours, add_minutes) {
-    hours = parseInt(hours.toString())+parseInt(add_hours.toString());
-    minutes = parseInt(minutes.toString())+parseInt(add_minutes.toString());
-    var meridian = "AM";
-    if(hours >= 12) {
-      meridian = "PM";
-    }
-    if(hours > 12) {
-      hours = hours % 12;
-      if(hours == 0) {
-        hours = 12
-      }      
-    }
-    if(minutes > 59){
-      hours = hours + Math.floor(minutes/60);
-      minutes = minutes % 60;
-    }
-    if(minutes < 10){
-      minutes = "0"+minutes
-    }
-    return hours+":"+minutes+" "+meridian;
-  }
-
-  /* returns the nth weekday after a day */
-  function nth_day_of(target_nth, wday, date_lapse){
-    var nth = 0;
-    while(nth != target_nth){
-      if(date_lapse.getDay() == instance_date.getDay()){
-        nth++;
-      }
-      date_lapse.setDate(date_lapse.getDate()+1);
-    }
-    date_lapse.setDate(date_lapse.getDate()-1);
-    return date_lapse;
-  }
-
-  /* 1 returns 1st, 222 returns 222nd, 34 returns 34th, etc. */
-  function ordinal(num){
-    parts = num.toString().split('');
-    ordinal_num = parts[parts.length-1];
-    switch(ordinal_num){
-      case "1":
-        return num+"st";
-      case "2":
-        return num+"nd";
-      case "3":
-        return num+"rd";
-      default:
-        return num+"th";
-    }
-  }
-
-  /* clones a date so the new variable is not just a pointer */
-  function date_clone(instance_date){
-    clone = new Date();
-    clone.setYear(instance_date.getFullYear());
-    clone.setMonth(instance_date.getMonth());
-    clone.setDate(instance_date.getDate());
-    return clone;
   }
 
   /* returns count of that weekday in the month preceeding a date, including that date */
@@ -289,7 +233,7 @@ $(function(){
       if(instance_date && instance_time && ( duration_hours || duration_minutes )){
         var start_time = make_time(instance_date.getHours(), instance_date.getMinutes(),0,0);
         var end_time = make_time(instance_date.getHours(), instance_date.getMinutes(), duration_hours, duration_minutes);
-        var string_build = "Your class will be held ";
+        var class_time_summary = "";
         
         repeating = repeating && repeat_count > 1
         if(repeating && monthly) {
@@ -301,29 +245,29 @@ $(function(){
           date_lapse.setDate(1);
           var target_nth = nth_day_instance_date(instance_date);
           var end_date = nth_day_of(target_nth, wday, date_lapse);
-          string_build += " on the "+ordinal(target_nth)+" "+weekdays[wday]+" of every month from "+instance_date.toDateString()+" until "+end_date.toDateString();
+          class_time_summary += ordinal(target_nth)+" "+weekdays[wday]+" of every month from "+instance_date.toDateString()+" until "+end_date.toDateString();
         }else if(repeating && !monthly){
           //weekly
           var end_date = new Date();
           end_date.setMonth(instance_date.getMonth());
           end_date.setDate(instance_date.getDate()+7*(repeat_count-1));
-          string_build += " weekly from "+instance_date.toDateString()+" until "+end_date.toDateString();
+          class_time_summary += " Weekly from "+instance_date.toDateString()+" until "+end_date.toDateString();
         }else if(!repeating){
           //once-off
-          string_build += " on "+instance_date.toDateString();  
+          class_time_summary += instance_date.toDateString();  
         }
            
         class_length_in_hours = (instance_date.getHours()*60 + duration_hours*60+duration_minutes)/60;
         if(class_length_in_hours > 24){
           //more than a day long
-          start_time = weekdays[instance_date.getDay()] + " " + start_time
+          //start_time = weekdays[instance_date.getDay()] + " " + start_time
           end_date = date_clone(instance_date);
           end_date.setDate(end_date.getDate() + Math.floor(class_length_in_hours/24));
           end_time = weekdays[end_date.getDay()] + " " + end_time;
         }
-        string_build += " between "+start_time;
-        string_build += " and "+end_time;
-        $(scope).find('#teaching_times_summary').html(string_build);
+        class_time_summary += " between "+start_time;
+        class_time_summary += " and "+end_time;
+        $(scope).find('#teaching_times_summary').html(class_time_summary);
         $(scope).find('#teaching_times_summary').show();
       } else {
         var error_msg = ignore_invalid ? '' : 'Invalid class time';
@@ -364,5 +308,72 @@ $(function(){
     start_at_controls_init();
   }
 
+  //---START NAVIGATION VALIDATION 
+
+  //---END NAVIGATION VALIDATION
+
+  //---START LIBRARY-ISH
+  /* combines a time + hours + minutes to human readable form */
+  function make_time(hours, minutes, add_hours, add_minutes) {
+    hours = parseInt(hours.toString())+parseInt(add_hours.toString());
+    minutes = parseInt(minutes.toString())+parseInt(add_minutes.toString());
+    var meridian = "AM";
+    if(hours >= 12) {
+      meridian = "PM";
+    }
+    if(hours > 12) {
+      hours = hours % 12;
+      if(hours == 0) {
+        hours = 12
+      }      
+    }
+    if(minutes > 59){
+      hours = hours + Math.floor(minutes/60);
+      minutes = minutes % 60;
+    }
+    if(minutes < 10){
+      minutes = "0"+minutes
+    }
+    return hours+":"+minutes+" "+meridian;
+  }
+
+  /* returns the nth weekday after a day */
+  function nth_day_of(target_nth, wday, date_lapse){
+    var nth = 0;
+    while(nth != target_nth){
+      if(date_lapse.getDay() == instance_date.getDay()){
+        nth++;
+      }
+      date_lapse.setDate(date_lapse.getDate()+1);
+    }
+    date_lapse.setDate(date_lapse.getDate()-1);
+    return date_lapse;
+  }
+
+  /* 1 returns 1st, 222 returns 222nd, 34 returns 34th, etc. */
+  function ordinal(num){
+    parts = num.toString().split('');
+    ordinal_num = parts[parts.length-1];
+    switch(ordinal_num){
+      case "1":
+        return num+"st";
+      case "2":
+        return num+"nd";
+      case "3":
+        return num+"rd";
+      default:
+        return num+"th";
+    }
+  }
+
+  /* clones a date so the new variable is not just a pointer */
+  function date_clone(instance_date){
+    clone = new Date();
+    clone.setYear(instance_date.getFullYear());
+    clone.setMonth(instance_date.getMonth());
+    clone.setDate(instance_date.getDate());
+    return clone;
+  }
+  //---END LIBRARY-ISH
   init();
 });
