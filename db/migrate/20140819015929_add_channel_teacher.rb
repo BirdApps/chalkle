@@ -22,7 +22,6 @@ class AddChannelTeacher < ActiveRecord::Migration
 
       if chalkler.nil?
         password = SecureRandom.hex(8)
-        binding.pry if channel_admin.admin_user.nil?
         params = { name: channel_admin.admin_user.name, email: channel_admin.admin_user.email, password: password }  
         chalkler = Chalkler.create params
         new_chalklers << params
