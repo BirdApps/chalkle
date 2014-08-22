@@ -1,5 +1,13 @@
 require "capistrano-rbenv"
 require "bundler/capistrano"
+require 'capistrano-unicorn'
+
+set :bundle_flags, "--deployment --quiet --binstubs"
+
+
+set :default_environment, {
+  'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
+}
 
 set :rbenv_ruby_version, "1.9.3-p545"
 
@@ -75,6 +83,12 @@ namespace :dragonfly do
   end
 end
 
+
+after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
+after 'deploy:restart', 'unicorn:restart'   # app preloaded
+after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
+
+
 after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs", "deploy:migrate"
 after "deploy:update", "deploy:cleanup"
 
@@ -82,4 +96,4 @@ require './config/boot'
 load 'deploy/assets'
 require 'bundler/capistrano'
 require 'airbrake/capistrano'
-require 'whenever/capistrano'
+# require 'whenever/capistrano'

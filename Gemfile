@@ -121,6 +121,10 @@ group :test, :development do
   gem 'pry-debugger'
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
+
+  gem 'capistrano-unicorn', :require => false
+
+
 end
 
 group :test do
