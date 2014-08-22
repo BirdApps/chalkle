@@ -4,6 +4,8 @@ $(function(){
   var repeating  = "";
   var repeat_count  = "";
   var weekdays = ["Sun","Mon", "Tues", "Wed", "Thurs","Fri","Sat"];
+  var parts = ['#type','#details','#learning','#teaching','#summary'];
+  var validate_off = false;
 
   /* initilizes on page load */
   function init(){
@@ -21,7 +23,12 @@ $(function(){
     $('#teaching_repeating').change(set_repeating);
     $('form#new_teaching').courseCostCalculator({resource_name: 'teaching'});
     part_change("#type");
-    apply_start_at_controls($('body'));
+    apply_inline_validation();
+    get_teacher_list();
+    $('.class-count').each(function(){
+      apply_start_at_controls(this);
+    });
+    $('.new_course_form_wrapper').fadeIn();
   }
 
   /* sets the monthly variable */
@@ -64,11 +71,9 @@ $(function(){
       for(var i = 0; i < difference; i++){
         $($('.class-count')[0]).clone().insertBefore('.class-count-bumper');
         var inserted_element = $('.class-count-bumper').prev();
+        //set the title to the class number
         $(inserted_element).find('.class-count-num').text(i+existing_class_count+1);
-        $(inserted_element).find('input').each(function(){
-          $(this).val("");
-        });
-        $(inserted_element).find('#teaching_times_summary').hide();
+        $(inserted_element).find('.teaching_times_summary').hide();
         number_picker(inserted_element);
         apply_start_at_controls(inserted_element);
       }
@@ -97,61 +102,9 @@ $(function(){
     }); 
   }
 
-  /* collects the information set throughout the form and displays it on the summary page */
-  function summarize(){
-    $('[id^=teaching_]').each(function(){
-      var val = $(this).val() ? $(this).val() : $(this).text();
-      if(val.indexOf('Your class will be held ')){
-        val = val.split('Your class will be held ')[1];
-      }
-      var target = this.id.split('teaching_')[1];
-      if(!val){
-        val = '<em>{'+target+'}</em>'
-      }
-      var target = '#summary_'+this.id.split('teaching_')[1];
-      $(target).html(val);
-    });
-  }
-
-  /* shows the part of the form that matches the location anchor */
-  function part_change( location ){
-    location = (typeof location == 'undefined') ? window.location.hash : location;
-    $(".new_course_form_wrapper .parts").fadeOut();
-    $(location).delay(350).fadeIn();
-    $(".new_course_form_wrapper .breadcrumb li").removeClass('active')
-    $(location+'-link').parent().addClass('active');
-    if(location == '#summary'){
-      summarize();
-    }
-  };
-
-  /* makes the target href for the form anchors trigger form part changes */
-  function link_part_change(e){
-      part_change($(this).attr('href'));
-      e.preventDefault();
-  }
-
-  /* handles changing between course or class on the first form part */
-  function course_class_select(){
-    part_change( '#details' );
-    var key_word = $($(this).text().split(/[ ]+/)).last()[0];
-    if(key_word == "class"){
-      inputs_to_array(false);
-      $('.course_only').hide();
-      $('.class_only').show();
-      show_class_opts(1);
-    }else{
-      inputs_to_array(true);
-      $('.class_only').hide();
-      $('.course_only').show();
-      $('#teaching_repeating').val('once-off');
-      show_class_opts();
-    }
-  }
-
   /* Retrieves list of teachers for a given channel and populates select element */
   function get_teacher_list(){
-    var channel_id = $(this).val();
+    var channel_id = $('#teaching_channel_id').val();
     $.getJSON('/v2/people/teachers.json?channel_id='+channel_id, function(data){
         $('#teaching_teacher_id').empty();
         if(data.length < 2){
@@ -208,6 +161,13 @@ $(function(){
         startDate: new Date(), todayHighlight: true
       }).on('changeDate', function(e){
         instance_date = e.date;
+
+        //update next datepicker to be minimum this date
+        var next_date_picker = $(scope).next().find('.date-picker');
+        if(next_date_picker.length){
+          $(next_date_picker[0]).datepicker('setStartDate', e.date);
+        }
+
         update_teaching_start_at();
       });
       saved_datepick = $(scope).find('#teaching_start_at').val();
@@ -234,7 +194,7 @@ $(function(){
         var start_time = make_time(instance_date.getHours(), instance_date.getMinutes(),0,0);
         var end_time = make_time(instance_date.getHours(), instance_date.getMinutes(), duration_hours, duration_minutes);
         var class_time_summary = "";
-        
+        var teaching_time_summary = $(scope).find('.teaching_times_summary')[0];
         repeating = repeating && repeat_count > 1
         if(repeating && monthly) {
           //monthly
@@ -267,12 +227,13 @@ $(function(){
         }
         class_time_summary += " between "+start_time;
         class_time_summary += " and "+end_time;
-        $(scope).find('#teaching_times_summary').html(class_time_summary);
-        $(scope).find('#teaching_times_summary').show();
+        $(teaching_time_summary).html(class_time_summary);
+        $(teaching_time_summary).show();
       } else {
         var error_msg = ignore_invalid ? '' : 'Invalid class time';
-        $(scope).find('#teaching_times_summary').html(error_msg);
+        $(teaching_time_summary).html(error_msg);
       }
+      $(teaching_time_summary).siblings('.form-error').remove();
     }
 
     /* validates and/or corrects duration input 
@@ -308,9 +269,149 @@ $(function(){
     start_at_controls_init();
   }
 
-  //---START NAVIGATION VALIDATION 
+  /* collects the information set throughout the form and displays it on the summary page */
+  function summarize(){
+    $('[id^=teaching_]').each(function(){
+      var val = $(this).val() ? $(this).val() : $(this).text();
+      var target = this.id.split('teaching_')[1];
+      console.log(target);
+      if(!val){
+        val = '<em>{'+target+'}</em>'
+      }
+      var target = '#summary_'+this.id.split('teaching_')[1];
+      $(target).html(val);
+    });
+  }
 
-  //---END NAVIGATION VALIDATION
+  //---START NAVIGATION 
+  function navigate_to_invalid(location){
+    var prev_location = parts[parts.indexOf(location)-1]; 
+    if(!$(prev_location).is(':visible')){
+      part_change(prev_location, true);
+    }else{
+      $('.form-error').remove();
+      validate_part(location);
+    }
+  }
+
+  function show_error_for(element, error_msg){
+    if(error_msg == undefined){
+      error_msg = $(element).data('error-message');
+    }
+    if(!$(element).siblings('.form-error').length){
+      $(element).after('<div class="info form-error">'+error_msg+'</div>');
+    }
+  }
+
+  function validate_type(){   
+    //return !!$('.course-class-radio:checked').val();
+    return true;
+  }
+
+  function validate_basics(location){
+    var valid = true;
+    $(location).find('[data-error-message]').each(function(){ 
+      if(!!!$(this).val()){
+        show_error_for(this);
+        valid = false;
+      }
+    });
+    return valid;
+  }
+
+  function apply_inline_validation(){
+    $('[data-error-message]').each(function(){
+      $(this).focusout(function(){
+        if(!!!$(this).val()){
+          show_error_for(this);
+        }else{
+          $(this).siblings('.form-error').remove();
+        }
+      });
+    });
+  }
+
+  function validate_details(){
+    var valid = true;
+    valid_basics = validate_basics('#details');
+    //validate the datetime pickers by their output
+    $('.teaching_times_summary').each(function(){
+      if($(this).text() == "" || $(this).text().trim() == 'Invalid class time'){
+        valid = false;
+        show_error_for(this,'Select a valid date, time, and duration for this class');
+      }
+    });
+    return valid & valid_basics;
+  }
+
+  function validate_learning(){
+    return validate_basics('#learning');
+  }
+
+  function validate_teaching(){
+    var valid = true;
+    valid_basics = validate_basics('#teaching');
+    return valid & valid_basics;
+  }
+
+  function validate_part(location){
+    var valid = true;
+    if(location == '#type'){ return valid; }
+    if(valid){ valid = validate_type(); }
+    if(parts.indexOf(location) <= parts.indexOf('#details')){ return valid; }
+    if(valid){  valid = validate_details(); }
+    if(parts.indexOf(location) <= parts.indexOf('#learning')){ return valid; }
+    if(valid){ valid = validate_learning(); }
+    if(parts.indexOf(location) <= parts.indexOf('#teaching')){ return valid; }
+    if(valid){ valid = validate_teaching(); }
+    if(parts.indexOf(location) <= '#teaching'){ return valid; }
+    return valid;
+  }
+
+  /* shows the part of the form that matches the location anchor */
+  function part_change( location, keep_errors ){
+    location = (typeof location == 'undefined') ? window.location.hash : location;
+    if(validate_part(location) || validate_off){
+      if(!keep_errors){
+        $('.form-error').remove();
+      }
+      $(".new_course_form_wrapper .parts").fadeOut();
+      $(location).delay(350).fadeIn();
+      $(".new_course_form_wrapper .breadcrumb li").removeClass('active')
+      $(location+'-link').parent().addClass('active');
+      if(location == '#summary'){
+        summarize();
+      }
+    }else{
+      navigate_to_invalid(location);
+    }
+  };
+
+  /* makes the target href for the form anchors trigger form part changes */
+  function link_part_change(e){
+      part_change($(this).attr('href'));
+      e.preventDefault();
+  }
+
+  /* handles changing between course or class on the first form part */
+  function course_class_select(){
+    part_change( '#details' );
+    var key_word = $($(this).text().split(/[ ]+/)).last()[0];
+    if(key_word == "class"){
+      inputs_to_array(false);
+      $('.course_only').hide();
+      $('.class_only').show();
+      show_class_opts(1);
+    }else{
+      inputs_to_array(true);
+      $('.class_only').hide();
+      $('.course_only').show();
+      $('#teaching_repeating').val('once-off');
+      show_class_opts();
+    }
+  }
+
+  //---END NAVIGATION
 
   //---START LIBRARY-ISH
   /* combines a time + hours + minutes to human readable form */

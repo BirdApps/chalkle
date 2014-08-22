@@ -1,7 +1,7 @@
-<h2><%= @channel.name %></h2>
+<div class="fancy-header">
+  <h3><%= @channel.name %></h3>
+  <hr />
+</div>
 
-<% @channel.courses.each do |course| %>
-  <div class="course">
-    <%= link_to course.name, v2_course_show_path(@channel.url_name, course.url_name,course.id) %>
-  </div>
-<% end %>
+<%= render @channel.courses %>
+

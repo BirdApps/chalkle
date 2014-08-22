@@ -333,7 +333,7 @@ class Course < ActiveRecord::Base
   end
 
   def venue_truncated
-    return unless venue
+    return if !venue || venue.empty?
     truncated = venue.split()[0..venue[0..16].split(" ").count()-1].join(" ")
     truncated[truncated.length-1] = truncated[truncated.length-1].gsub(/[^0-9A-Za-z]/, '')
     truncated

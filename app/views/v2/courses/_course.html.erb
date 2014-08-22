@@ -12,8 +12,15 @@
         <a href="<%= course.path %>" title="<%= course.name %>">
           <% if course.course_upload_image.present? %>
             <%= image_tag(course.course_upload_image.url(:medium), class: 'course_image') %>
-          <% else %>
+          <% elsif course.category %>
             <%= category_image course, 150 %>
+          <% else %>
+            <%= image_tag(
+              "categories/grey.png",
+              alt: course.name,
+              title: course.name,
+              class: 'course_image'
+            ) %>
           <% end %>
         </a>
       </div>
@@ -21,8 +28,12 @@
     <div class="col-sm-8">
       <header>
         <h5 class="category">
-        <%= link_to course.category.name, v2_category_show_path(course.category.url_name), { :class => "colour"+course.best_colour_num.to_s } %>
-        </h5> 
+          <% unless course.category.nil? %>
+            <%= link_to course.category.name, v2_category_show_path(course.category.url_name), { :class => "colour"+course.best_colour_num.to_s } %>
+          <% else %>
+            <br />
+          <% end %>
+        </h5>
         <div class="cost">
           <% if course.cost? %>
             $<%= course.cost %>

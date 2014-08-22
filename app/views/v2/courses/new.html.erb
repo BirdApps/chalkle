@@ -4,7 +4,7 @@
     b.use :label_input
   end
  %>
-<div class="new_course_form_wrapper">
+<div class="new_course_form_wrapper" style="display:none;">
   <div class="col-md-2">
     <%= link_to "< Upcoming Classes", v2_courses_path, {:class => "small grey"} %>
   </div>
@@ -17,26 +17,34 @@
       <li><a href="#summary" class="part_link" id="summary-link">Summary & Submit</a></li>
     </ol>
     <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: new_v2_course_path, html: { method: :post, class: 'form-horizontal', role: 'form' }) do |f| %>
+      
+     
+
       <div id="type" class="parts center">
-        <h3>Class Type</h3>
-        <hr />
-        <p>Do you want to create a course with many classes, or a single class?</p>
+        <div class="fancy-header">
+          <h3>Class Type</h3>
+          <hr />
+        </div>
+        <p>Do you want to create a class, or a course with many classes?</p>
         
         <div class="btn-group" data-toggle="buttons">
-          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course' %>Create a course</label>
-          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class' %>Create class</label>
+         <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class', class: :'course-class-radio' %>Create class</label>
+          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course', class: :'course-class-radio' %>Create a course</label>
         </div>
         
-        <p class="col-sm-6 text-right"><small class="small grey">Courses are for learning across multiple classes</small></p>
-         <p class="col-sm-6 text-left"><small class="small grey">Classes are for learning that is all in the one class</small></p>
+       
+         <p class="col-sm-6 text-right"><small class="small grey">Classes are for learning that is all in the one class</small></p>
+          <p class="col-sm-6 text-left"><small class="small grey">Courses are for learning across multiple classes</small></p>
 
       </div>
 
       <div id="details" class="parts">
-        <h3><span class="class_only">Class</span><span class="course_only">Course</span> Info</h3>
-        <hr />
+        <div class="fancy-header">
+          <h3><span class="class_only">Class</span><span class="course_only">Course</span> Info</h3>
+          <hr />
+        </div>
 
-        <%= f.input :title, label: "Give your <span class='class_only'>class</span><span class='course_only'>course</span> a <strong>name</strong>", wrapper: :horizonal %>
+        <%= f.input :title, label: "Give your <span class='class_only'>class</span><span class='course_only'>course</span> a <strong>name</strong>", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizonal %>
 
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
@@ -48,10 +56,10 @@
         <div class="class_only">
           <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizonal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
           
-          <div class="repeating-options">
+          <div class="repeating-options" style="display:none;">
             <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the class take place", input_html: { :class => 'form-control update_class_time' }, wrapper: :horizonal %>
 
-            <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the class be held?", wrapper_html: { class: :'update_repeat_count' }, input_html: { class: :'update_class_time' }, wrapper: :horizonal %>
+            <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the class be held?", wrapper_html: { class: :'update_repeat_count' }, input_html: { value: f.object.repeat_count || 0, class: :'update_class_time' }, wrapper: :horizonal %>
          
             <div class="col-xs-12 info">
               Attendees can sign up for any repeating class, and pay for each one individually. 
@@ -63,13 +71,13 @@
         </div>
 
         <div class="class-count">
-          <div class="class-count-title">
+          <div class="class-count-title fancy-header">
             <h3>Class <span class="class_only">Time</span><span class="course_only class-count-num">1</span></h3>
             <hr />
           </div>
             
           <div class="col-sm-12">
-              <div class="info" id="teaching_times_summary" style="display: none;">
+              <div class="info teaching_times_summary" style="display: none;">
                 Invalid class time
               </div>
             </div>
@@ -79,9 +87,9 @@
           
           <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the class start?", wrapper: :horizonal, input_html: {  id: 'saved_timepick', name: '' } %>
           
-          <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { :'data-min' => '0', class: 'update_class_time'  }  %>
+          <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { value: f.object.repeat_count || 0, :'data-min' => '0', class: 'update_class_time'  }  %>
           
-          <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: { :'data-min' => '0', class: :'update_class_time'   } %>
+          <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: {value: f.object.repeat_count || 0, :'data-min' => '0', class: :'update_class_time'   } %>
         </div>
         <div class="class-count-bumper"></div>
 
@@ -97,17 +105,18 @@
       </div>
 
       <div id="learning" class="parts">
-        <h3><span class="class_only">Class</span><span class="course_only">Course</span>  Details</h3>
-        <hr />
-        
-        <%= f.input :do_during_class, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Activities</strong>", wrapper: :horizonal %>
+        <div class="fancy-header">
+          <h3><span class="class_only">Class</span><span class="course_only">Course</span>  Details</h3>
+          <hr />
+        </div>
+        <%= f.input :do_during_class, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Activities</strong>", wrapper: :horizonal, input_html: { :'data-error-message' => 'You must specify activities. This is the excerpt shown when we advertise classes.' } %>
 
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
           <p><small class="small grey">What activities can learners expect from this <span class="class_only">class</span><span class="course_only">course</span>?</small></p>
         </div>
         
-        <%= f.input :learning_outcomes, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Outcomes</strong>", wrapper: :horizonal %>
+        <%= f.input :learning_outcomes, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Outcomes</strong>", wrapper: :horizonal, input_html: { :'data-error-message' => 'You must specify learning outcomes' } %>
 
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
@@ -143,36 +152,38 @@
       <div id="teaching" class="parts">
         <%# if not multiple channel will be inferred %>
         <% if current_user.channels.count > 1 %>
+        <div class="fancy-header">
           <h3>Channel</h3>
           <hr />
-          <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => current_user.channels, wrapper: :horizonal, required: true %>
-          <div class="col-sm-5"></div>
-          <div class="col-sm-7">
-            <p><br />Channel fee will be $XX.xx</p>
-          </div>
+        </div>
+          <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => current_user.channels, wrapper: :horizonal, input_html: {:'data-error-message'=>'Please select a channel'} %>
           <%= f.input :waive_channel_fee, as: :boolean, label: "Waive the channel fee", wrapper: :horizonal, inline_label: "<small class='small grey'>waiving the channel fee sets the channel income to 0</small>".html_safe, :boolean_style => :nested %>
+          <%# TODO: only channel admins can waive fee %>
         <% end %>
         
-        <h3>Teacher Setup</h3>
-        <hr />
+        <div class="fancy-header">
+          <h3>Teacher Setup</h3>
+          <hr />
+        </div>
         <%# if no channel or single channel having 1 or 0 teachers, teacher is inferred %>
         <% if current_user.channels.count >  1 %>
           <div class="teacher-select">
-            <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a channel first'}, wrapper: :horizonal, required: true %>
+            <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a channel first'}, wrapper: :horizonal, input_html: {:'data-error-message'=>'Please select a teacher'} %>
           </div>
         <% end %>
 
-        <%= f.input :teacher_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal %>
+        <%= f.input :teacher_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal, input_html: {:'data-error-message'=>'Specify the teacher fee (this is the base cost for an attendee)', value: f.object.venue_cost || '0.00'} %>
        
-        <h3>Venue Information</h3>
-        <hr />
-
+        <div class="fancy-header">
+          <h3>Venue Information</h3>
+          <hr />
+        </div>
         <div class="form-group currency optional teaching_teacher_cost">
           <div class="control-label col-sm-5">
-            <label class="currency optional" for="teaching_teacher_cost">Venue <strong>Address</strong></label>
+            <label class="currency optional" for="teaching_teacher_cost"><abbr title="required">*</abbr>Venue <strong>Address</strong></label>
           </div>
           <div class="col-sm-7">
-            <input type="text" class="form-control" id="teaching_venue_address" />
+            <input type="text" class="form-control" id="teaching_venue_address" data-error-message="Please specify the venue location" />
           </div>
         </div>
 
@@ -187,7 +198,7 @@
         <%= f.input :latitude, as: :hidden %>
         <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizonal %>
 
-        <%= f.input :venue_cost, as: :currency, :label => "<strong>Venue</strong> costs", wrapper: :horizonal %>
+        <%= f.input :venue_cost, as: :currency, :label => "<strong>Venue</strong> costs", wrapper: :horizonal, input_html: { value: f.object.venue_cost || '0.00' } %>
 
         <div class="row prevnext">
           <div class="col-xs-5 prev">
@@ -200,9 +211,14 @@
 
       </div>
 
+      
+        
+
       <div id="summary" class="parts">
-        <h3>Summary</h3>
-        <hr />
+        <div class="fancy-header">
+          <h3>Summary</h3>
+          <hr />
+        </div>
         <div class="center">
           <h2 id="summary_title"></h2>
           <p>Your <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> will run</p>
@@ -213,7 +229,7 @@
           Your <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> is priced at:
         </div>
         <div class="col-sm-6">
-          $<span id="summary_cost"></span>
+          $ <span id="summary_cost">0.00</span>
         </div>
 
         <div class="col-md-3">
@@ -228,33 +244,37 @@
          Teacher payment 
         </div>
         <div class="col-sm-6">
-          $<span id="summary_cost"></span>
+          $ <span id="summary_teacher_cost"></span>
         </div>
         <div class="col-sm-6 text-right">
          Channel fee
         </div>
         <div class="col-sm-6">
-          $<span id="summary_cost"></span>
+          $ <span id="summary_cost">0.00</span>
         </div>
         <div class="col-sm-6 text-right">
          Chalkle fee
         </div>
         <div class="col-sm-6">
-          $<span id="summary_cost"></span>
+          $ <span id="summary_cost">0.00</span>
         </div>
         <div class="col-sm-6 text-right">
          Processing fee
         </div>
         <div class="col-sm-6">
-          $<span id="summary_cost"></span>
+          $ <span id="summary_cost">0.00</span>
         </div>
-
-        <h3 style="margin-top:250px;">Teacher</h3>
-        <hr />
+        <br style="clear:both" />
+        <div class="fancy-header">
+          <h3>Teacher</h3>
+          <hr />
+        </div>
         <h4 id="summary_teacher" class="center">{teacher}</h4>
         
-        <h3>Venue Information</h3>
-        <hr />
+        <div class="fancy-header">
+          <h3>Venue Information</h3>
+          <hr />
+        </div>
         <div class="col-sm-6 text-right">
          Venue Details
         </div>

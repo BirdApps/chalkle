@@ -6,6 +6,7 @@ class V2::CoursesController < V2::BaseController
 
   def index
     @courses_weeks = courses_for_time.load_upcoming_week_courses get_current_week
+    #@courses_weeks = Course.in_week get_current_week
   end
 
   def show
@@ -28,7 +29,6 @@ class V2::CoursesController < V2::BaseController
   def update
 
   end
-
 
   def destroy
 

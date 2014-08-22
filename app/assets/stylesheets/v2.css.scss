@@ -37,6 +37,23 @@ body.v2 {
   div[role=main]{
     padding-bottom:75px;
   }
+  .fancy-header{
+      text-align: center;
+      h3{
+          display: inline;
+          border: 0;
+          position: relative;
+          top: 35px;
+          margin:60px auto 0;
+          padding:0 20px;
+          width:300px;
+          background-color: #fff;
+        }
+        hr{
+          margin-bottom:40px;
+          border-color: #BDBDBD;
+        }
+  }
   .block{
     display:block;
   }
@@ -329,6 +346,7 @@ body.v2 {
         padding: 10px;
         letter-spacing: 1px;
         white-space: nowrap;
+        background: #c7c7c7;
       }
       .reviews{
         .fa-heart{
@@ -349,6 +367,23 @@ body.v2 {
         color: #696969;
     }
     .new_course_form_wrapper{
+      .form_errors, .form-error{
+        padding: .2em .6em .1em;
+        font-size: 75%;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        vertical-align: baseline;
+        line-height: 1;
+        color: #fff;
+        background-color: #d9534f;
+      }
+      .form_errors{
+        margin-top:10px;
+      }
+      .form-error{
+        margin-bottom: 5px;
+      }
       .course_only {
         display: none;
       }
@@ -483,20 +518,6 @@ body.v2 {
             border-radius:7px;
             width: 250px;
           }
-        }
-        h3{
-          text-align: center;
-          border: 0;
-          position:relative;
-          top: 35px;
-          margin:60px auto 0;
-          padding:0;
-          width:250px;
-          background-color: #fff;
-        }
-        hr{
-          margin-bottom:40px;
-          border-color: #BDBDBD;
         }
       }
     }

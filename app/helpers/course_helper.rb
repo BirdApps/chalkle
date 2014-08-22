@@ -21,6 +21,7 @@ Your Chalkle Administrator")
   end
 
   def pretty_time_range(start, finish)
+    return unless start && finish
     if(finish - start < 24*3600)
       pretty_time(start)+" -"+pretty_time(finish)
     else
@@ -29,6 +30,7 @@ Your Chalkle Administrator")
   end
 
   def day_ordinal_month(date, use_relative_day = true)
+    return unless date
     relative = relative_day_name date.to_date
     return relative if relative && use_relative_day
     ordinalDay = date.day.ordinalize

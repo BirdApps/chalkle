@@ -12,18 +12,19 @@ module Querying
 
     def load_upcoming_week_courses(week, current_date = Date.today)
       @week_courses = {}
-      get_current_weeks(week, current_date).each do |week|
+      weeks = get_current_weeks week, current_date
+      weeks.each do |week|
         load_another_week_courses week
       end
       while weeks_loaded_count < 4 && no_weekly_courses?
         load_another_week
       end
-      @week_courses
+      return @week_courses
     end
 
     def load_week_courses(week)
       @week_courses = {}
-      load_another_week_courses(week)
+      load_another_week_courses week
       @week_courses
     end
 

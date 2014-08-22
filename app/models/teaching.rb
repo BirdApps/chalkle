@@ -2,12 +2,16 @@ class Teaching
   include ActiveAttr::Model
 
   attr_accessor :course, :chalkler, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :free_course, :teacher_cost, :max_attendee, :min_attendee,
-  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :waive_channel_fee, :longitude, :latitude
+  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :waive_channel_fee, :longitude, :latitude, :venue_address
 
   validates :title, :presence => { :message => "Title of class can not be blank"}
   validates :teacher_id, :presence => { :message => "You must be registered with chalkle first"}
   validates :do_during_class, :presence => { :message => "What we will do during the class can not be blank"}
   validates :learning_outcomes, :presence => { :message => "What we will learn from this class can not be blank"}
+  validates :channel_id, :presence => { :message => "You must select a channel"}
+  validates :venue_address, :presence => { :message => "You must specify a venue address"}
+
+
   validates :repeat_count, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Repeat classes must be 1 or more"}
   validates :duration_hours, :allow_blank => false, :numericality => { :greater_than_or_equal_to => 0, :message => "Hours must be 0 or more"}
    validates :duration_minutes, :allow_blank => false, :numericality => { :greater_than_or_equal_to => 0, :message => "Minutes must be 0 or more"}
