@@ -5,7 +5,7 @@ $(function(){
   var repeat_count  = "";
   var weekdays = ["Sun","Mon", "Tues", "Wed", "Thurs","Fri","Sat"];
   var parts = ['#type','#details','#learning','#teaching','#summary'];
-  var validate_off = false;
+  var validate_off = true;
 
   /* initilizes on page load */
   function init(){
@@ -28,7 +28,28 @@ $(function(){
     $('.class-count').each(function(){
       apply_start_at_controls(this);
     });
+    image_preview();
+    $('#teaching_image').change(image_preview);
     $('.new_course_form_wrapper').fadeIn();
+  }
+
+  function init_start_at(){
+    $('.class-count').each(function(){
+      apply_start_at_controls(this);
+    });
+  }
+
+  /* updates the image preview from local file */
+  function image_preview(){
+    var input = $('#teaching_image')[0];
+    console.log(input);
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('.image-preview .img').css('background-image', 'url('+e.target.result+')');
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
   }
 
   /* sets the monthly variable */
@@ -74,6 +95,7 @@ $(function(){
         //set the title to the class number
         $(inserted_element).find('.class-count-num').text(i+existing_class_count+1);
         $(inserted_element).find('.teaching_times_summary').hide();
+        $(inserted_element).find('.number_picker').val(0);
         number_picker(inserted_element);
         apply_start_at_controls(inserted_element);
       }
@@ -272,15 +294,23 @@ $(function(){
   /* collects the information set throughout the form and displays it on the summary page */
   function summarize(){
     $('[id^=teaching_]').each(function(){
-      var val = $(this).val() ? $(this).val() : $(this).text();
-      var target = this.id.split('teaching_')[1];
-      console.log(target);
-      if(!val){
-        val = '<em>{'+target+'}</em>'
+      var val = "";
+      if($(this).is("select")){
+        val = $(this).find("option:selected").text();
+      }else if($(this).is("input")){
+        val = $(this).val();
+      }else{
+        val = $(this).text();
       }
+      $(this).val() ? $(this).val() : $(this).text();
+      var target = this.id.split('teaching_')[1];
       var target = '#summary_'+this.id.split('teaching_')[1];
       $(target).html(val);
     });
+    $("#summary_times_summary").empty();
+    $('.teaching_times_summary').each(function(){
+      $("#summary_times_summary").append($(this).clone());
+    })
   }
 
   //---START NAVIGATION 
@@ -300,6 +330,7 @@ $(function(){
     }
     if(!$(element).siblings('.form-error').length){
       $(element).after('<div class="info form-error">'+error_msg+'</div>');
+      $(element).parent().removeClass('hidden');
     }
   }
 
@@ -351,6 +382,11 @@ $(function(){
   function validate_teaching(){
     var valid = true;
     valid_basics = validate_basics('#teaching');
+    if($('#teaching_longitude').val() == "")
+    {
+      valid = false;
+      show_error_for($('#teaching_venue_address'));
+    }
     return valid & valid_basics;
   }
 
@@ -403,6 +439,8 @@ $(function(){
       $('.class_only').show();
       show_class_opts(1);
     }else{
+      repeating = false;
+      $('.teaching_times_summary').empty();
       inputs_to_array(true);
       $('.class_only').hide();
       $('.course_only').show();

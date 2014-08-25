@@ -157,8 +157,6 @@
           <hr />
         </div>
           <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => current_user.channels, wrapper: :horizonal, input_html: {:'data-error-message'=>'Please select a channel'} %>
-          <%= f.input :waive_channel_fee, as: :boolean, label: "Waive the channel fee", wrapper: :horizonal, inline_label: "<small class='small grey'>waiving the channel fee sets the channel income to 0</small>".html_safe, :boolean_style => :nested %>
-          <%# TODO: only channel admins can waive fee %>
         <% end %>
         
         <div class="fancy-header">
@@ -168,7 +166,7 @@
         <%# if no channel or single channel having 1 or 0 teachers, teacher is inferred %>
         <% if current_user.channels.count >  1 %>
           <div class="teacher-select">
-            <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a channel first'}, wrapper: :horizonal, input_html: {:'data-error-message'=>'Please select a teacher'} %>
+            <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a channel first'}, wrapper: :horizonal %>
           </div>
         <% end %>
 
@@ -183,7 +181,7 @@
             <label class="currency optional" for="teaching_teacher_cost"><abbr title="required">*</abbr>Venue <strong>Address</strong></label>
           </div>
           <div class="col-sm-7">
-            <input type="text" class="form-control" id="teaching_venue_address" data-error-message="Please specify the venue location" />
+            <input type="text" class="form-control" id="teaching_venue_address" data-error-message="Sorry, we couldn't understand that address" />
           </div>
         </div>
 
@@ -195,7 +193,9 @@
         <%= f.input :country, as: :hidden %>
         <%= f.input :postal_code, as: :hidden %>
         <%= f.input :longitude, as: :hidden %>
-        <%= f.input :latitude, as: :hidden %>
+        <%= f.input :latitude, as: :hidden%>
+        
+       
         <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizonal %>
 
         <%= f.input :venue_cost, as: :currency, :label => "<strong>Venue</strong> costs", wrapper: :horizonal, input_html: { value: f.object.venue_cost || '0.00' } %>
@@ -264,12 +264,16 @@
         <div class="col-sm-6">
           $ <span id="summary_cost">0.00</span>
         </div>
+        <% if current_user.channels.count > 1  %>
+          <%# f.input :override_channel_fee, as: :currency, label: "Override the channel fee", wrapper: :horizonal %>
+          <%# TODO: only channel admins can waive fee %>
+        <% end %>
         <br style="clear:both" />
         <div class="fancy-header">
           <h3>Teacher</h3>
           <hr />
         </div>
-        <h4 id="summary_teacher" class="center">{teacher}</h4>
+        <h4 id="summary_teacher_id" class="center">You</h4>
         
         <div class="fancy-header">
           <h3>Venue Information</h3>
@@ -293,7 +297,32 @@
         <div class="col-sm-6">
           <span id="summary_venue_cost"></span>
         </div>
-        <br /><br />
+         <div class="fancy-header">
+          <h3>Photo</h3>
+          <hr />
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <% if(f.object.image.nil?)
+                f.object.image = "/images/no-course-img.png"
+               end %>
+              <div class="course center">
+                <small class="small grey">Your image will look like this</small>
+                <div class="porthole round image-preview">
+                  <div class="img" style="background-image: 'url(<%= f.object.image %>)';"></div>
+                </div>
+                 <small class="small grey">and like this</small>
+                <div class="porthole square image-preview">
+                  <div class="img" style="background-image: '<%= f.object.image %>';"></div>
+                </div>
+                 <small class="small grey">We recommend an image at least 300px by 300px, and preferable containly no text (it gets chopped off and looks really messy!)</small>
+              </div>
+          </div>
+          <div class="col-sm-6">
+            <%= f.input :image, as: :styled_file, input_html: { class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
+          </div>
+        </div>
+        <br class="clear" /><br />
         <br /><br />
         <div class="prevnext">
           <div class="col-xs-5 prev">
