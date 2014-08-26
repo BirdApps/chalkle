@@ -9,6 +9,7 @@
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag "application"
     = google_webfonts_init(google: 'Shadows Into Light Two')
+    = content_for?(:header) ? yield(:header) : ""
 
   %body{ class: body_class }
     = render 'layouts/navigation'

@@ -1,4 +1,8 @@
 - title @course.name
+= content_for :header { 
+  %meta{ property: "og:image", content: @course.course_upload_image.url(:large).to_s }
+  %meta{ property: "og:image:secure_url", content: @course.course_upload_image.url(:large).to_s }
+}
 
 .page_header_panel
   .container
