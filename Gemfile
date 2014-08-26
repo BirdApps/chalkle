@@ -87,6 +87,8 @@ group :development do
   gem 'capistrano',      '~> 2.14.1',  require: false
   gem 'capistrano-ext',  '~> 1.2.1',   require: false
   gem 'capistrano-rbenv', '~> 1.0'
+  gem 'capistrano-unicorn', :require => false
+
   # Helpful Rails Generators
   gem 'nifty-generators',  '~> 0.4.6',  require: false
 
@@ -116,6 +118,7 @@ group :test, :development do
   gem 'pry-debugger'
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
+
 end
 
 group :test do
