@@ -42,6 +42,10 @@ body.v2 {
       display: none;
     }
   }
+  .light{
+    font-weight: 100;
+    font-family: ProximaNova-Light;
+  }
   .styled-file{
     position: relative;
     cursor: pointer;
@@ -430,6 +434,10 @@ body.v2 {
         color: #696969;
     }
     .new_course_form_wrapper{
+      #map-canvas{
+        height: 300px;
+        width: 100%;
+      }
       .form_errors, .form-error{
         padding: .2em .6em .1em;
         font-size: 75%;
@@ -554,7 +562,7 @@ body.v2 {
           -webkit-appearance:none;
         }
         textarea{
-          height: 130px
+          height: 130px;
         }
         input:focus, textarea:focus, select:focus{
           background-color: #FFF3DF;
@@ -575,6 +583,11 @@ body.v2 {
           font-size: 0.8em;
           padding: 5px;
         }
+        .teaching_times_summary{
+          font-weight: normal;
+          font-style: italic;
+          font-size: 14pt;
+        }
         #type{
           .btn-group label{
             margin:20px;
@@ -587,6 +600,38 @@ body.v2 {
           p{
             @media screen and (max-width: $col-sm) {
               text-align: center;
+            }
+          }
+        }
+        #summary{
+          .teaching_times_summary{
+            color: #4E4E4E;
+            letter-spacing: 1.2px;
+            font-family: ProximaNova-Light;
+            font-weight:100;
+            line-height: 31px;
+          }
+          .summary-part{
+            margin-bottom: 40px;
+          }
+          .fee-summary{
+            #teaching_cost{
+              margin-left: 0;
+              font-size:1.5em;
+              width:100px;
+              text-align:left;
+            }
+            .teaching_cost{
+              position:relative;
+              top:9px;
+            }
+            input{
+              border: 0;
+              text-align: right;
+              width:50px;
+              margin-left:10px;
+              background: transparent;
+              font-family: ProximaNova-Light;
             }
           }
         }

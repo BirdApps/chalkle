@@ -42,7 +42,6 @@ $(function(){
   /* updates the image preview from local file */
   function image_preview(){
     var input = $('#teaching_image')[0];
-    console.log(input);
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -287,7 +286,6 @@ $(function(){
       }
       calculate_class_times();
     }
-
     start_at_controls_init();
   }
 
@@ -297,21 +295,28 @@ $(function(){
       var val = "";
       if($(this).is("select")){
         val = $(this).find("option:selected").text();
-      }else if($(this).is("input")){
+      }else if($(this).is("input") || $(this).is("textarea")){
         val = $(this).val();
       }else{
         val = $(this).text();
       }
-      $(this).val() ? $(this).val() : $(this).text();
-      var target = this.id.split('teaching_')[1];
-      var target = '#summary_'+this.id.split('teaching_')[1];
-      $(target).html(val);
+      if(val != ""){
+        var target = this.id.split('teaching_')[1];
+        var target = '#summary_'+this.id.split('teaching_')[1];
+        if($(target).is('input')){
+          $(target).val(val);
+        }else{
+          $(target).html(val);
+        }
+      }
     });
     $("#summary_times_summary").empty();
     $('.teaching_times_summary').each(function(){
       $("#summary_times_summary").append($(this).clone());
-    })
+    });
   }
+
+
 
   //---START NAVIGATION 
   function navigate_to_invalid(location){
@@ -412,7 +417,7 @@ $(function(){
         $('.form-error').remove();
       }
       $(".new_course_form_wrapper .parts").fadeOut();
-      $(location).delay(350).fadeIn();
+      $(location).delay(350).fadeIn(400, setMap);
       $(".new_course_form_wrapper .breadcrumb li").removeClass('active')
       $(location+'-link').parent().addClass('active');
       if(location == '#summary'){
@@ -448,6 +453,44 @@ $(function(){
       show_class_opts();
     }
   }
+
+  function setMap() {
+    var lat = $('#teaching_latitude').val();
+    var lng = $('#teaching_longitude').val();
+    var latlng = new google.maps.LatLng(lat, lng);
+    if(lat != "" && lng != ""){
+      var styles = [
+        {
+          stylers: [
+            { visibility: "simplified" },
+            { weight: 1.3 },
+            { hue: "#5e00ff" },
+            { saturation: -85 },
+            { gamma: 1.16 },
+            { lightness: 13 }
+          ]
+        }
+      ];
+      var styledMap = new google.maps.StyledMapType(styles, {name: "Styled Map"});
+      var mapOptions = {
+        center: latlng,
+        zoom: 15,
+        mapTypeControlOptions: {
+          mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+        }
+      };
+      var map = new google.maps.Map(document.getElementById("map-canvas"),
+          mapOptions);
+      map.mapTypes.set('map_style', styledMap);
+      map.setMapTypeId('map_style');
+      var marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        title: 'Class location'
+    });
+    }
+  }
+
 
   //---END NAVIGATION
 
@@ -512,6 +555,20 @@ $(function(){
     clone.setMonth(instance_date.getMonth());
     clone.setDate(instance_date.getDate());
     return clone;
+  }
+  function make_money(valu, tryround){
+    if(/\d+\.\d{2}/.test(valu)){
+      return valu;
+    }else if(/\d+\.\d{1}/.test(valu)){
+      return valu+"0";
+    }else if(/^[1-9]\d*$/.test(valu)){
+      return valu+".00";
+    }else{
+      if(tryround){
+        return make_money(parseInt(valu).toFixed(2), false);
+      }
+      return false;
+    }
   }
   //---END LIBRARY-ISH
   init();

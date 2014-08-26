@@ -11,6 +11,7 @@ class LessonCostCalculator
       channel_rate_override: @elem.find("##{@resource_name}_channel_rate_override"),
       channel_fee:           @elem.find("##{@resource_name}_channel_fee"),
       chalkle_fee:           @elem.find("##{@resource_name}_chalkle_fee"),
+      processing_fee:        @elem.find("##{@resource_name}_processing_fee"),
     }
     @_attachHandlers()
 
@@ -33,9 +34,10 @@ class LessonCostCalculator
   ### PRIVATE ###
 
   _setData: (values) ->
-    @fields.cost.attr('value', values.cost).highlight_input()
-    @fields.channel_fee.attr('value', values.channel_fee).highlight_input()
-    @fields.chalkle_fee.attr('value', values.chalkle_fee).highlight_input()
+    @fields.cost.attr('value', '$'+parseFloat(values.cost).toFixed(2)).highlight_input()
+    @fields.channel_fee.attr('value', parseFloat(values.channel_fee).toFixed(2)).highlight_input()
+    @fields.chalkle_fee.attr('value', parseFloat(values.chalkle_fee).toFixed(2)).highlight_input()
+    @fields.processing_fee.attr('value', parseFloat(Math.round((values.cost - values.channel_fee - values.chalkle_fee - values.teacher_cost)*100)/100).toFixed(2)).highlight_input()
 
   _sourceData: ->
     result = {}

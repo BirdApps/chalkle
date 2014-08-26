@@ -19,7 +19,6 @@ $(function(){
     autocomplete = new google.maps.places.Autocomplete(
         /** @type {HTMLInputElement} */(document.getElementById('teaching_venue_address')),
         {  componentRestrictions: {country: "nz"} });
-    console.log*(autocomplete);
     // When the user selects an address from the dropdown,
     // populate the address fields in the form.
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
@@ -30,7 +29,6 @@ $(function(){
   function fillInAddress() {
     // Get the place details from the autocomplete object.
     var place = autocomplete.getPlace();
-    console.log(place.geometry.location['k']);
     for (var component in componentForm) {
       document.getElementById(componentForm[component]).value = '';
       document.getElementById(componentForm[component]).disabled = false;

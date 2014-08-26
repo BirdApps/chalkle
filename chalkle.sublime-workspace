@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"font-st",
+				"font-style"
+			],
+			[
+				"file",
+				"filename"
+			],
+			[
+				"show",
+				"show_error_for"
+			],
+			[
+				"wrapp",
+				"wrapper_html"
+			],
+			[
+				"remov",
+				"removeClass"
+			],
+			[
 				"target",
 				"target"
 			],
@@ -395,6 +415,46 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "app/views/v2/courses/new.html.erb",
+			"settings":
+			{
+				"buffer_size": 16487,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/inputs/currency_input.rb",
+			"settings":
+			{
+				"buffer_size": 310,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/inputs/styled_file_input.rb",
+			"settings":
+			{
+				"buffer_size": 330,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/assets/javascripts/v2/v2_course_new.js",
+			"settings":
+			{
+				"buffer_size": 18261,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/models/teaching.rb",
+			"settings":
+			{
+				"buffer_size": 8365,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -459,7 +519,29 @@
 	},
 	"file_history":
 	[
+		"/Users/jd/projects/chalkle/app/assets/javascripts/v2/geocoder.js",
+		"/Users/jd/projects/chalkle/app/models/channel.rb",
+		"/Users/jd/projects/chalkle/app/models/channel_teacher.rb",
+		"/Users/jd/projects/chalkle/app/models/course.rb",
+		"/Users/jd/projects/chalkle/app/assets/javascripts/v2/styled_file_input.js",
 		"/Users/jd/projects/chalkle/app/assets/stylesheets/v2.css.scss",
+		"/Users/jd/projects/chalkle/app/inputs/styled_file_input.rb",
+		"/Users/jd/projects/chalkle/app/inputs/currency_input.rb",
+		"/Users/jd/projects/chalkle/app/inputs/clock_input.rb",
+		"/Users/jd/projects/chalkle/app/models/chalkler.rb",
+		"/Users/jd/projects/chalkle/app/models/the_user.rb",
+		"/Users/jd/projects/chalkle/Gemfile",
+		"/Users/jd/projects/chalkle/app/models/channel_course.rb",
+		"/Users/jd/projects/chalkle/app/admin/channels.rb",
+		"/Users/jd/projects/chalkle/Capfile",
+		"/Users/jd/projects/chalkle/app/views/courses/_course_details.html.haml",
+		"/Users/jd/projects/chalkle/app/views/courses/_upcoming_courses_preview.html.haml",
+		"/Users/jd/projects/chalkle/app/views/v2/courses/_courses_weeks.html.erb",
+		"/Users/jd/projects/chalkle/app/views/v2/courses/_courses_week.html.erb",
+		"/Users/jd/projects/chalkle/app/views/admin/chalklers/_courses.html.haml",
+		"/Users/jd/projects/chalkle/app/admin/courses.rb",
+		"/Users/jd/projects/chalkle/app/assets/javascripts/skrollr.min.js",
+		"/Users/jd/projects/chalkle/script/delayed_job",
 		"/Users/jd/projects/chalkle/app/assets/javascripts/v2/v2_course_new.js",
 		"/Users/jd/projects/chalkle/app/views/v2/channels/show.html.erb",
 		"/Users/jd/projects/chalkle/app/views/v2/channels/_channel.html.erb",
@@ -468,16 +550,12 @@
 		"/Users/jd/projects/chalkle/config/initializers/simple_form_bootstrap3.rb",
 		"/Users/jd/projects/chalkle/app/views/v2/courses/new.html.erb",
 		"/Users/jd/projects/chalkle/app/helpers/course_helper.rb",
-		"/Users/jd/projects/chalkle/app/models/course.rb",
 		"/Users/jd/projects/chalkle/app/models/teaching.rb",
 		"/Users/jd/projects/chalkle/db/import/categories.csv",
 		"/Users/jd/projects/chalkle/spec/models/chalkler_stats_spec.rb",
 		"/Users/jd/projects/chalkle/app/admin/course_suggestions.rb",
-		"/Users/jd/projects/chalkle/app/models/the_user.rb",
 		"/Users/jd/projects/chalkle/app/views/v2/layouts/v2_application.html.erb",
 		"/Users/jd/projects/chalkle/app/views/v2/categories/show.html.erb",
-		"/Users/jd/projects/chalkle/app/assets/javascripts/skrollr.min.js",
-		"/Users/jd/projects/chalkle/script/delayed_job",
 		"/Users/jd/projects/chalkle/config/initializers/simple_form_bootstrap.rb",
 		"/Users/jd/projects/chalkle/app/assets/stylesheets/plugins/bootstrap-timepicker.min.css",
 		"/Users/jd/projects/chalkle/app/assets/javascripts/plugins/bootstrap-timepicker.min.js",
@@ -492,16 +570,12 @@
 		"/Users/jd/projects/chalkle/app/views/layouts/home.html.haml",
 		"/Users/jd/projects/chalkle/app/helpers/application_helper.rb",
 		"/Users/jd/projects/chalkle/app/views/courses/_course_medium.html.haml",
-		"/Users/jd/projects/chalkle/Capfile",
 		"/Users/jd/projects/chalkle/app/controllers/v2/channels_controller.rb",
 		"/Users/jd/projects/chalkle/app/inputs/calendar_input.rb",
 		"/Users/jd/projects/chalkle/app/assets/stylesheets/chalklers.css.scss",
 		"/Users/jd/projects/chalkle/app/logic/querying/courses_for_time.rb",
 		"/Users/jd/projects/chalkle/app/views/v2/courses/_course.html.erb",
-		"/Users/jd/projects/chalkle/app/views/v2/courses/_courses_weeks.html.erb",
 		"/Users/jd/projects/chalkle/app/assets/stylesheets/front_end/front_end.css.scss",
-		"/Users/jd/projects/chalkle/app/views/v2/courses/_courses_week.html.erb",
-		"/Users/jd/projects/chalkle/app/admin/courses.rb",
 		"/Users/jd/projects/chalkle/app/assets/javascripts/front_end/front_end.js",
 		"/Users/jd/projects/chalkle/app/logic/finance/class_cost_calculators/flat_rate_markup.rb",
 		"/Users/jd/projects/chalkle/.git/FETCH_HEAD",
@@ -513,7 +587,6 @@
 		"/Users/jd/projects/chalkle/features/step_definitions/category_steps.rb",
 		"/Users/jd/projects/chalkle/features/admin/channel_admin/step_definitions/admin_courses_steps.rb",
 		"/Users/jd/projects/chalkle/app/admin/chalklers.rb",
-		"/Users/jd/projects/chalkle/app/models/chalkler.rb",
 		"/Users/jd/projects/chalkle/coverage/assets/0.7.1/application.css",
 		"/Users/jd/projects/chalkle/spec/controllers/application_controller_spec.rb",
 		"/Users/jd/projects/chalkle/app/controllers/application_controller.rb",
@@ -532,15 +605,12 @@
 		"/Users/jd/projects/chalkle/app/controllers/v2/base_controller.rb",
 		"/Users/jd/projects/chalkle/app/helpers/current_user_helper.rb",
 		"/Users/jd/projects/chalkle/app/views/v2/layouts/_header.html.erb",
-		"/Users/jd/projects/chalkle/app/inputs/currency_input.rb",
 		"/Users/jd/projects/chalkle/app/uploaders/course_upload_image_uploader.rb",
 		"/Users/jd/projects/chalkle/app/assets/javascripts/chalklers.js",
 		"/Users/jd/projects/chalkle/app/views/chalklers/teachings/_chalkler_teaching.html.haml",
 		"/Users/jd/projects/chalkle/coverage/index.html",
 		"/Users/jd/projects/chalkle/log/development.log",
 		"/Users/jd/projects/chalkle/spec/models/teaching_spec.rb",
-		"/Users/jd/projects/chalkle/app/assets/javascripts/v2/geocoder.js",
-		"/Users/jd/projects/chalkle/Gemfile",
 		"/Users/jd/projects/chalkle/log/RAILS_ENV=test.log",
 		"/Users/jd/projects/chalkle/spec/models/course_stats_spec.rb",
 		"/Users/jd/projects/chalkle/features/frontend/step_definitions/filtering_courses_steps.rb",
@@ -550,10 +620,7 @@
 		"/Users/jd/projects/chalkle/app/views/chalklers/dashboard/classes.html.haml",
 		"/Users/jd/projects/chalkle/features/frontend/class_booking.feature",
 		"/Users/jd/projects/chalkle/app/uploaders/channel_logo_uploader.rb",
-		"/Users/jd/projects/chalkle/app/models/channel.rb",
 		"/Users/jd/projects/chalkle/app/controllers/v2/people/teachers_controller.rb",
-		"/Users/jd/projects/chalkle/app/models/channel_teacher.rb",
-		"/Users/jd/projects/chalkle/app/admin/channels.rb",
 		"/Users/jd/projects/chalkle/app/controllers/channels_controller.rb",
 		"/Users/jd/projects/chalkle/features/frontend/step_definitions/chalkler_login_steps.rb",
 		"/Users/jd/projects/chalkle/app/assets/javascripts/v2/currency_input.js",
@@ -566,7 +633,6 @@
 		"/Users/jd/projects/chalkle/spec/models/venue_spec.rb",
 		"/Users/jd/projects/chalkle/app/views/chalklers/course_suggestions/new.html.haml",
 		"/Users/jd/projects/chalkle/app/views/course_suggestions/new.html.haml",
-		"/Users/jd/projects/chalkle/app/inputs/clock_input.rb",
 		"/Users/jd/projects/chalkle/app/models/admin_user.rb",
 		"/Users/jd/projects/chalkle/app/models/channel_admin.rb",
 		"/Users/jd/projects/chalkle/db/migrate/20140819015650_add_channel_admin_id_to_channel_admin.rb",
@@ -580,13 +646,7 @@
 		"/Users/jd/projects/chalkle/db/migrate/20140708040822_add_courses.rb",
 		"/Users/jd/projects/chalkle/app/assets/stylesheets/tabs.css.scss",
 		"/Users/jd/projects/chalkle/config/initializers/simple_form.rb",
-		"/Users/jd/projects/chalkle/app/assets/stylesheets/back_end/forms.css.scss",
-		"/Users/jd/projects/chalkle/app/assets/stylesheets/forms.css.scss",
-		"/Users/jd/projects/chalkle/features/frontend/following_channels.feature",
-		"/Users/jd/projects/chalkle/extras/swipe_wrapper.rb",
-		"/Users/jd/projects/chalkle/config/initializers/wrap_parameters.rb",
-		"/Users/jd/projects/chalkle/lib/week.rb",
-		"/Users/jd/projects/chalkle/.gitignore"
+		"/Users/jd/projects/chalkle/app/assets/stylesheets/back_end/forms.css.scss"
 	],
 	"find":
 	{
@@ -638,6 +698,26 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"summary_teach",
+			"summary_teag",
+			"_opt",
+			"apply_",
+			"calculate_class_times",
+			"calculate",
+			"styled_upload",
+			"@media",
+			"fake",
+			"fakefilename",
+			"form",
+			"wrapper",
+			"form-",
+			"form",
+			"form-",
+			"html",
+			"attach",
+			"teacher",
+			"WAIVE",
+			"validate_off",
 			"teacher payment",
 			"teacher",
 			"venue_address",
@@ -745,27 +825,7 @@
 			"class_times",
 			"summary",
 			"show_class_opts",
-			"coursify",
-			"part_change",
-			"$(function(){",
-			"show_class_opts",
-			"target_class_count",
-			"teaching_times_summary",
-			"form",
-			"class-count",
-			"coursify",
-			"key_word",
-			"key_wo",
-			"class-count",
-			"current_user",
-			"@the_user",
-			"the_user",
-			"@the_user",
-			"repeat_count",
-			"repeat_times",
-			"{ venue",
-			"{venue}",
-			"channel_teachers"
+			"coursify"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -835,8 +895,161 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "app/views/v2/courses/new.html.erb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16487,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13924,
+								13924
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ERB Autocomplete/erb.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4847.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/inputs/currency_input.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 310,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								221,
+								221
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/inputs/styled_file_input.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 330,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								304,
+								304
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"file": "app/assets/javascripts/v2/v2_course_new.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18261,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12387,
+								12387
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4020.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/models/teaching.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8365,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1558,
+								1558
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -857,11 +1070,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -895,12 +1115,36 @@
 				"app/assets/stylesheets/v2.css.scss"
 			],
 			[
-				"teac",
+				"course",
+				"app/models/course.rb"
+			],
+			[
+				"channel_teac",
+				"app/models/channel_teacher.rb"
+			],
+			[
+				"teach",
 				"app/models/teaching.rb"
+			],
+			[
+				"geocode",
+				"app/assets/javascripts/v2/geocoder.js"
+			],
+			[
+				"channel.",
+				"app/models/channel.rb"
+			],
+			[
+				"coursesnewhtml",
+				"app/views/v2/courses/new.html.erb"
 			],
 			[
 				"v2js",
 				"app/assets/javascripts/v2/v2_course_new.js"
+			],
+			[
+				"teac",
+				"app/models/teaching.rb"
 			],
 			[
 				"bootstra",
@@ -909,10 +1153,6 @@
 			[
 				"course_helper",
 				"app/helpers/course_helper.rb"
-			],
-			[
-				"course",
-				"app/models/course.rb"
 			],
 			[
 				"courses_wee",
@@ -951,24 +1191,12 @@
 				"app/views/v2/courses/new.html.erb"
 			],
 			[
-				"teach",
-				"app/models/teaching.rb"
-			],
-			[
 				"new.erb",
 				"app/views/v2/courses/new.html.erb"
 			],
 			[
-				"geocode",
-				"app/assets/javascripts/v2/geocoder.js"
-			],
-			[
 				"chalkler",
 				"app/models/chalkler.rb"
-			],
-			[
-				"channel_teac",
-				"app/models/channel_teacher.rb"
 			],
 			[
 				"chal",
