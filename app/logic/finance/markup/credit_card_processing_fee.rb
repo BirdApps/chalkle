@@ -1,7 +1,7 @@
 module Finance
   module Markup
     class CreditCardProcessingFee
-      MARKUP_RATE = 0.0275
+      MARKUP_RATE = 0.04
 
       def initialize(rate = MARKUP_RATE)
         @rate = rate
