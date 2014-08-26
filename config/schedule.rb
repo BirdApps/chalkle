@@ -1,6 +1,6 @@
 # Use this file to easily define all of your cron jobs.
 
-set :output, '~/production/shared/log/cron.log'
+set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 
 # every :hour, :at => 15 do
 #   rake "chalkle:load_all"
