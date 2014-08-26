@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.19'
-gem 'pg', '~> 0.15.1'
+gem 'pg', '~> 0.17.1'
 
 # Authentication
 gem 'devise',           '~> 2.2.4'
@@ -114,7 +114,7 @@ group :test, :development do
   gem 'rspec-rails'
 
   gem 'pry-rails'
-  gem 'pry-debugger'
+  gem 'pry-byebug'
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
 end

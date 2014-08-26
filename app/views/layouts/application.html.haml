@@ -3,13 +3,16 @@
   %head
     = analytics_init if Rails.env.production?
     %meta{ charset: 'utf-8' }
-    %title= content_for?(:title) ? yield(:title) : 'chalkle°'
+    %meta{ property: "og:title", content: title_content }
+    %meta{ property: "og:description", content: "description" }
+    %meta{ property: "og:image", content: thumbnail_image }
+
+    %title= title_content
     <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
     = csrf_meta_tag
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag "application"
     = google_webfonts_init(google: 'Shadows Into Light Two')
-    = content_for?(:header) ? yield(:header) : ""
 
   %body{ class: body_class }
     = render 'layouts/navigation'
