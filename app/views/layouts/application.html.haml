@@ -2,11 +2,7 @@
 %html
   %head
     = analytics_init if Rails.env.production?
-    %meta{ charset: 'utf-8' }
-    %meta{ property: "og:title", content: title_content }
-    %meta{ property: "og:description", content: "description" }
-    %meta{ property: "og:image", content: thumbnail_image }
-
+    = render 'layouts/meta'
     %title= title_content
     <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
     = csrf_meta_tag

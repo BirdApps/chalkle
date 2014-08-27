@@ -1,6 +1,8 @@
 - title @course.name
 - content_for :fb_thumbnail do
-   @course.course_upload_image.url(:large).to_s
+  = @course.course_upload_image.url(:large).to_s
+- content_for :fb_description do 
+  = @course.do_during_class
 
 .page_header_panel
   .container
