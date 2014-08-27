@@ -3,7 +3,7 @@
   %head
     = analytics_init if Rails.env.production?
     = render 'layouts/meta'
-    %title= title_content
+    %title= content_for?(:title) ? yield(:title) : 'chalkle°'
     <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
     = csrf_meta_tag
     = stylesheet_link_tag "application", media: "all"

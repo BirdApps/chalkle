@@ -2,3 +2,4 @@
 %meta{ property: "og:title", content: content_for?(:title) ? yield(:title) : 'chalkle°' }
 %meta{ property: "og:description", content: content_for?(:fb_description) ? yield(:fb_description) : "No Description" }
 %meta{ property: "og:image", content: content_for?(:fb_thumbnail) ? yield(:fb_thumbnail) : asset_path('partners/chalkle@2x.png') }
+%meta{ property: "og:url", content: request.original_url }
