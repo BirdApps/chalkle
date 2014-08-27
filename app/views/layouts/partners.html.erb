@@ -1,12 +1,11 @@
 <html>
   <head>
     <%= analytics_init if Rails.env.production? %>
-    <meta charset='utf-8' />
-
+    <%= render 'layouts/meta' %>
     <meta name="viewport" content="width=device-width, user-scalable=no">
 
     <title>
-      <%= title_content %>
+      Chalkle° – Partners
     </title>
     <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
     <%= csrf_meta_tag %>
