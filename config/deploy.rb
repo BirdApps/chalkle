@@ -90,7 +90,6 @@ after "deploy:update", "deploy:cleanup"
 
 after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
 after 'deploy:restart', 'unicorn:restart'   # app preloaded
-after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
 
 require './config/boot'
 load 'deploy/assets'

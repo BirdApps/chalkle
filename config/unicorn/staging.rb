@@ -5,7 +5,7 @@ stderr_path '/apps/chalkle/staging/current/log/unicorn.log'
 stdout_path '/apps/chalkle/staging/current/log/unicorn.log'
 
 #sockets
-listen '/tmp/unicorn.chalkle.sock'
+listen 8080
 
 #workers
 worker_processes 4
