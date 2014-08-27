@@ -1,6 +1,6 @@
 - title @course.name
 - content_for :fb_thumbnail do
-  = @course.course_upload_image.url(:large).to_s
+  = URI.join(request.url, @course.course_upload_image.url(:large))
 - content_for :fb_description do 
   = @course.do_during_class
 
