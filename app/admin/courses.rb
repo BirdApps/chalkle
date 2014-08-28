@@ -24,6 +24,7 @@ ActiveAdmin.register Course  do
 
   controller do
     load_resource :except => :index
+    resource_class.includes :location
   end
 
   scope :published, default: true
@@ -45,7 +46,6 @@ ActiveAdmin.register Course  do
 
   controller do
     def scoped_collection
-      super.includes :lessons
       end_of_association_chain.accessible_by(current_ability)
     end
     helper CourseHelper
@@ -85,7 +85,9 @@ ActiveAdmin.register Course  do
     column :name
     column :attendance, sortable: false
     column :region
-    column :channel_name
+    column :channel_name, :channel, sortable: 'channels.name' do |course|
+      course.channel.name
+    end
     column :category_name, sortable: false
     column :teacher
     column :cost do |course|
@@ -96,11 +98,19 @@ ActiveAdmin.register Course  do
         number_to_currency course.uncollected_turnover, sortable: false
      end
     end
-    #column :start_at
-    column(:start_at) {|course| course.lessons.empty? ? nil : course.start_at.strftime("%B %d, %Y %H:%M") }
-      
+
+    column :start_at, :lessons, sortable: 'lessons.start_at' do |course| 
+      course.lessons.empty? ? nil :
+      course.lessons.first.start_at.strftime("%B %d, %Y %H:%M")
+    end
 
     default_actions
+  end
+
+  controller do
+    def scoped_collection
+      resource_class.includes(:channel, :lessons)
+    end
   end
 
   show title: :name do |course|
