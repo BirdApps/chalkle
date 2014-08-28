@@ -1,6 +1,6 @@
 require "capistrano-rbenv"
 require "bundler/capistrano"
-require 'capistrano-unicorn'
+# require 'capistrano-unicorn'
 set :bundle_flags, "--deployment --quiet --binstubs"
 
 
@@ -87,9 +87,13 @@ end
 after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs", "deploy:migrate"
 after "deploy:update", "deploy:cleanup"
 
+namespace :unicorn do 
+  desc "unicorn things"
+  task :stop, :roles => :app do 
+    run "killall -u chalkle unicorn"
+  end
+end
 
-after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
-after 'deploy:restart', 'unicorn:restart'   # app preloaded
 
 require './config/boot'
 load 'deploy/assets'
