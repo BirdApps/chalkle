@@ -121,9 +121,9 @@ ActiveAdmin.register Course  do
       end
       row :teacher
       row "Teacher's email" do |course|
-        if course.teacher_id.present?
-          if Chalkler.find(course.teacher_id).email?
-            Chalkler.find(course.teacher_id).email
+        if course.teacher
+          if course.teacher.email?
+            course.teacher.email
           else
             status_tag( "Please click on teacher above and enter their email", :error )
           end
@@ -212,7 +212,7 @@ ActiveAdmin.register Course  do
         number_to_currency course.material_cost
       end
       row :duration do
-        pluralize(course.duration / 60 / 60, "hour") if course.duration
+        pluralize(course.duration.to_f / 60 / 60, "hour") if course.duration
       end
       row :max_attendee
       row "Minimum Attendee" do

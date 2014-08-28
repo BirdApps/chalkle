@@ -126,9 +126,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-webkit (1.1.0)
-      capybara (~> 2.0, >= 2.0.2)
-      json
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -568,7 +565,6 @@ DEPENDENCIES
   capistrano (~> 2.14.1)
   capistrano-ext (~> 1.2.1)
   capybara
-  capybara-webkit
   carrierwave
   chosen-rails (~> 0.9.11.1)
   chronic (~> 0.9.0)

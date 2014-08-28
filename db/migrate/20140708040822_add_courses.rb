@@ -2,7 +2,7 @@ class AddCourses < ActiveRecord::Migration
   def up
       lesson_start_times = Hash.new
       Lesson.all.each do |c|
-        lesson_start_times[c.id] = [ c.start_at, c.duration ]
+        lesson_start_times[c.id] = [ c.start_at, (c.duration.nil? || c.duration<1) ? 1*60*60 : c.duration ]
       end
 
       rename_table :lessons, :courses
@@ -14,9 +14,15 @@ class AddCourses < ActiveRecord::Migration
       end
 
       Lesson.reset_column_information
+      Course.reset_column_information
 
       lesson_start_times.each do |course_id, params|
-        Lesson.create start_at: params[0], duration: params[1], course_id: course_id
+        if params[0].nil? && Course.find(course_id).status == "Published"
+          c = Course.find(course_id)
+          c.assign_attributes :status => "On-hold"
+        else
+          Lesson.create start_at: params[0], duration: params[1], course_id: course_id
+        end
       end
     
 
