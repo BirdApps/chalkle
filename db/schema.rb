@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140819015929) do
+ActiveRecord::Schema.define(:version => 20140828003654) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -215,7 +215,6 @@ ActiveRecord::Schema.define(:version => 20140819015929) do
     t.boolean  "visible",                                                              :default => true
     t.decimal  "teacher_payment",                        :precision => 8, :scale => 2
     t.string   "course_type"
-    t.text     "teacher_bio"
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
@@ -242,6 +241,12 @@ ActiveRecord::Schema.define(:version => 20140819015929) do
     t.decimal  "channel_rate_override",                  :precision => 8, :scale => 4
     t.integer  "repeat_course_id"
     t.string   "url_name"
+    t.string   "street_number"
+    t.string   "street_name"
+    t.string   "city"
+    t.string   "postal_code"
+    t.float    "longitude"
+    t.float    "latitude"
   end
 
   create_table "delayed_jobs", :force => true do |t|
