@@ -15,11 +15,18 @@ class V2::CoursesController < V2::BaseController
 
   def new
     @no_search = true
-    @teaching = Teaching.new current_user.chalkler
+    @teaching = Teaching.new current_user
   end
 
   def create
-
+    @teaching = Teaching.new current_user
+    if params[:teaching_agreeterms] == 'on' && @teaching.submit(params[:teaching])
+      channel = Channel.find(params[:teaching][:channel_id]) unless params[:teaching][:channel_id].blank?
+      session[:teachings_channel_email] = (channel && channel.email?) ? channel.email : 'learn@chalkle.com'
+      redirect_to success_chalklers_teachings_url, notice: 'Class submitted! Your class will be reviewed and published shortly.'
+    else
+      render 'new'
+    end
   end
 
   def edit

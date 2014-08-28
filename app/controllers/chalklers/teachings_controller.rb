@@ -1,10 +1,10 @@
 class Chalklers::TeachingsController < Chalklers::BaseController
   def new
-    @chalkler_teaching = Teaching.new(current_chalkler)
+    @chalkler_teaching = Teaching.new(current_user)
   end
 
   def create
-  	@chalkler_teaching = Teaching.new(current_chalkler)
+  	@chalkler_teaching = Teaching.new(current_user)
   	if @chalkler_teaching.submit(params[:teaching])
       channel = Channel.find(params[:teaching][:channel_id]) unless params[:teaching][:channel_id].blank?
       session[:teachings_channel_email] = (channel && channel.email?) ? channel.email : 'learn@chalkle.com'

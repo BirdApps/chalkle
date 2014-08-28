@@ -578,10 +578,9 @@ body.v2 {
         label{
           font-weight: normal;
         }
-        small.small.grey{
+        .small.grey{
           font-family: ProximaNova-Light;
-          font-size: 0.8em;
-          padding: 5px;
+          font-size: 80%;
         }
         .teaching_times_summary{
           font-weight: normal;
@@ -615,7 +614,7 @@ body.v2 {
             margin-bottom: 40px;
           }
           .fee-summary{
-            #teaching_cost{
+            #teaching_cost, #summary_fixed_cost{
               margin-left: 0;
               font-size:1.5em;
               width:100px;
@@ -628,7 +627,7 @@ body.v2 {
             input{
               border: 0;
               text-align: right;
-              width:50px;
+              width:55px;
               margin-left:10px;
               background: transparent;
               font-family: ProximaNova-Light;

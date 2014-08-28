@@ -45,6 +45,10 @@ class Channel < ActiveRecord::Base
     channel.map { |c| [c.name, c.id] }
   end
 
+  def fee
+    channel_rate_override
+  end
+
   #Channel performances
   def channel_stats(start, period)
     ChannelStats.new(start, period, self)

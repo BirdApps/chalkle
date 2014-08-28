@@ -4,8 +4,8 @@ $(function(){
   var repeating  = "";
   var repeat_count  = "";
   var weekdays = ["Sun","Mon", "Tues", "Wed", "Thurs","Fri","Sat"];
-  var parts = ['#type','#details','#learning','#teaching','#summary'];
-  var validate_off = true;
+  var parts = ['#type','#details','#learning','#teaching','#summary','#submit'];
+  var validate_off = false;
 
   /* initilizes on page load */
   function init(){
@@ -225,7 +225,7 @@ $(function(){
           date_lapse.setMonth(instance_date.getMonth() + parseInt(repeat_count) - 1);
           date_lapse.setDate(1);
           var target_nth = nth_day_instance_date(instance_date);
-          var end_date = nth_day_of(target_nth, wday, date_lapse);
+          var end_date = nth_day_of(target_nth, wday, date_lapse, instance_date);
           class_time_summary += ordinal(target_nth)+" "+weekdays[wday]+" of every month from "+instance_date.toDateString()+" until "+end_date.toDateString();
         }else if(repeating && !monthly){
           //weekly
@@ -308,14 +308,24 @@ $(function(){
         }else{
           $(target).html(val);
         }
+        calculate_costs();
       }
     });
     $("#summary_times_summary").empty();
     $('.teaching_times_summary').each(function(){
-      $("#summary_times_summary").append($(this).clone());
+      var summary_time = $("#summary_times_summary").append($(this).clone());
+      $(summary_time).addClass('no-validate');
     });
   }
 
+  function calculate_costs(){
+    var cost = 0.00;
+    var ven_cost = $('#summary_venue_cost').val();
+    if(!isNaN(ven_cost)){
+      cost = parseFloat(ven_cost)+cost;
+    }
+    $('#summary_fixed_cost').val('$'+cost.toFixed(2));
+  }
 
 
   //---START NAVIGATION 
@@ -372,12 +382,13 @@ $(function(){
     valid_basics = validate_basics('#details');
     //validate the datetime pickers by their output
     $('.teaching_times_summary').each(function(){
-      if($(this).text() == "" || $(this).text().trim() == 'Invalid class time'){
+      if(($(this).text() == "" || $(this).text().trim() == 'Invalid class time') 
+        && $(this).hasClass('no-validate')){
         valid = false;
         show_error_for(this,'Select a valid date, time, and duration for this class');
       }
     });
-    return valid & valid_basics;
+    return valid && valid_basics;
   }
 
   function validate_learning(){
@@ -392,7 +403,17 @@ $(function(){
       valid = false;
       show_error_for($('#teaching_venue_address'));
     }
-    return valid & valid_basics;
+    return valid && valid_basics;
+  }
+
+  function validation_submit(){
+    var valid = true;
+    if(!$('#teaching_agreeterms input').is(':checked'))
+    {
+      valid = false;
+      show_error_for($('#teaching_agreeterms'));
+    }
+    return valid;
   }
 
   function validate_part(location){
@@ -405,14 +426,16 @@ $(function(){
     if(valid){ valid = validate_learning(); }
     if(parts.indexOf(location) <= parts.indexOf('#teaching')){ return valid; }
     if(valid){ valid = validate_teaching(); }
-    if(parts.indexOf(location) <= '#teaching'){ return valid; }
+    if(parts.indexOf(location) <= parts.indexOf('#summary')){ return valid; }
+    if(valid){ valid = validation_submit(); }
     return valid;
   }
 
   /* shows the part of the form that matches the location anchor */
   function part_change( location, keep_errors ){
     location = (typeof location == 'undefined') ? window.location.hash : location;
-    if(validate_part(location) || validate_off){
+    var valid = validate_part(location);
+    if(valid || validate_off){
       if(!keep_errors){
         $('.form-error').remove();
       }
@@ -423,6 +446,10 @@ $(function(){
       if(location == '#summary'){
         summarize();
       }
+      if(location == '#submit'){
+        $('#new_teaching').submit();
+      }
+      $("html, body").animate({ scrollTop: 0 }, "slow");
     }else{
       navigate_to_invalid(location);
     }
@@ -439,14 +466,14 @@ $(function(){
     part_change( '#details' );
     var key_word = $($(this).text().split(/[ ]+/)).last()[0];
     if(key_word == "class"){
-      inputs_to_array(false);
+     // inputs_to_array(false);
       $('.course_only').hide();
       $('.class_only').show();
       show_class_opts(1);
     }else{
       repeating = false;
       $('.teaching_times_summary').empty();
-      inputs_to_array(true);
+     // inputs_to_array(true);
       $('.class_only').hide();
       $('.course_only').show();
       $('#teaching_repeating').val('once-off');
@@ -520,7 +547,7 @@ $(function(){
   }
 
   /* returns the nth weekday after a day */
-  function nth_day_of(target_nth, wday, date_lapse){
+  function nth_day_of(target_nth, wday, date_lapse, instance_date){
     var nth = 0;
     while(nth != target_nth){
       if(date_lapse.getDay() == instance_date.getDay()){
@@ -555,20 +582,6 @@ $(function(){
     clone.setMonth(instance_date.getMonth());
     clone.setDate(instance_date.getDate());
     return clone;
-  }
-  function make_money(valu, tryround){
-    if(/\d+\.\d{2}/.test(valu)){
-      return valu;
-    }else if(/\d+\.\d{1}/.test(valu)){
-      return valu+"0";
-    }else if(/^[1-9]\d*$/.test(valu)){
-      return valu+".00";
-    }else{
-      if(tryround){
-        return make_money(parseInt(valu).toFixed(2), false);
-      }
-      return false;
-    }
   }
   //---END LIBRARY-ISH
   init();

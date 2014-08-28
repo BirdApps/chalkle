@@ -6,10 +6,10 @@ class Course < ActiveRecord::Base
   include Gst
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_cost
   ]
 
-  attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :venue_cost, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
+  attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
 
   #Course statuses
   STATUS_5 = "Processing"
@@ -22,7 +22,7 @@ class Course < ActiveRecord::Base
   belongs_to :repeat_course
   belongs_to :region
   belongs_to :channel
-  belongs_to :teacher, class_name: "Chalkler"
+  belongs_to :teacher, class_name: "ChannelTeacher"
   belongs_to :category
   has_many  :lessons
   has_many  :bookings
