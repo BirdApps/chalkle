@@ -8,11 +8,12 @@ class V2::ChannelsController < V2::BaseController
 
   def show
     not_found if !@channel
+    @courses = @channel.courses.displayable
   end
 
   def series 
     not_found if !@channel
-    @courses = @channel.courses.where url_name: params[:course_url_name]
+    @courses = @channel.courses.displayable.where url_name: params[:course_url_name]
   end
 
   def new
