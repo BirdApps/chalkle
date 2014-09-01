@@ -36,7 +36,7 @@ class Ability
       cannot [:update, :destroy], [AdminUser, Channel]
       cannot :destroy, CourseImage
       cannot :manage, PartnerInquiry
-      can [:manage], AdminUser, :id => user.id
+      cannot [:manage], AdminUser
     end
   end
 end
