@@ -121,6 +121,14 @@ Your Chalkle Administrator")
     end
   end
 
+  def course_call_to_action(course)
+    availability = course_availability course
+    if availability == 'No booking limit'
+      availability = 'Join'
+    end
+    availability
+  end
+
   def course_attendance(course)
     ""
   end
