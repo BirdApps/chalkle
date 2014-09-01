@@ -46,6 +46,9 @@ body.v2 {
     font-weight: 100;
     font-family: ProximaNova-Light;
   }
+  .upper{
+    text-transform: uppercase;
+  }
   .styled-file{
     position: relative;
     cursor: pointer;
@@ -108,6 +111,24 @@ body.v2 {
   .flush{
     padding:0;
     margin:0;
+  }
+  .btn-3d{
+    -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.18);
+    box-shadow:         1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.18);
+  }
+  .btn-3d:hover{
+    position:relative;
+    bottom: 1px;
+    right: 1px;
+    -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 3px 3px 0px 0px rgba(0,0,0,0.18);
+    box-shadow:         1px 1px 0px 0px #FFFFFF, 3px 3px 0px 0px rgba(0,0,0,0.18);
+  }
+  .btn-3d:active{
+    position:relative;
+    bottom: -1px;
+    right: -1px;
+    -moz-box-shadow:    1px 1px 0px 0px rgba(0,0,0,0.18);
+    box-shadow:         1px 1px 0px 0px rgba(0,0,0,0.18);
   }
   .btn-default{
     background: #F9F9F9;
@@ -265,6 +286,11 @@ body.v2 {
       left: 0;
       z-index: 20;
       .navbar{
+        .navbar-header{
+          @media screen and (max-width: $col-sm) {
+            margin: auto 0;
+          }
+        }
         background: $primary-color;
         .navbar-brand img.logo {
           padding-top: 8px;
@@ -302,11 +328,18 @@ body.v2 {
 
     .secondary-nav {
       min-height: 50px;
+      position: relative;
+      top:20px;
       .navbar-text{
-        text-align: left;
         font-family: ProximaNova-Light;
         margin-left: 0;
         margin-right: 30px;
+        @media screen and (max-width: $col-sm) {
+          width: 32%;
+          text-align: center;
+          display: inline-block;
+          margin:0;
+        }
       }
     }
 
@@ -336,6 +369,11 @@ body.v2 {
     font-family: ProximaNova-Regular;
     letter-spacing: 1.5px;
     .course{
+      position: relative;
+      >div{
+        position: static;
+      }
+      margin: 50px auto;
       .title{
         @include text-shadow(1px, 1px, 0px, #FFF, 2px, 2px, 0px, rgba(0,0,0,0.17));
         font-family: ProximaNova-Semibold;
@@ -344,8 +382,9 @@ body.v2 {
         letter-spacing: 2px;
         text-transform: uppercase;
         text-decoration: none;
-        margin: 0 0 5px;
         border: 0;
+        margin: 0 132px 0 0;
+        overflow: hidden;
       }
       .cost{
         float: right;
@@ -360,22 +399,23 @@ body.v2 {
         font-size: 11px;
         line-height: 13px;
         text-transform: uppercase;
-        margin-bottom:5px;
+        margin: 0 0 5px;
       }
       .porthole{
         background: rgba(0, 0, 0, 0.05);
         border: solid 1px rgba(0, 0, 0, 0.05);
-        margin: 20px auto 10px;
-        @include border-radius(300px);
+        margin: auto;
         overflow: hidden;
         max-width: 100%;
         max-height: 100%;
         width:145px;
         height:145px;
         @media screen and (max-width: $col-sm) {
-          width: 284px;
-          height:124px;
-          @include border-radius(0);
+          width: 100%;
+          height:200px;
+        }
+        .course_image{
+          width: 100%;
         }
         .img {
           position: relative;
@@ -390,13 +430,11 @@ body.v2 {
       .porthole.square{
         width: 284px;
         height:124px;
-        @include border-radius(0);
       }
       .porthole.round{
         @media screen and (max-width: $col-sm) {
           width:145px;
           height:145px;
-          @include border-radius(300px);
         }
       }
       .description{
@@ -404,34 +442,75 @@ body.v2 {
         font-size: 14px;
         line-height: 20px;
       }
+      .availability-wrapper{
+        position: absolute;
+        top: 3px;
+        right: 15px;
+        padding-left:10px;
+        background-color: #fff;
+
+        @media screen and (max-width: $col-sm) {
+          right: 0;
+          top: -10px;
+          background-color: transparent;
+        }
+      }
       .availability{
         border-radius: 6px;
-        -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.18);
-        box-shadow:         1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.18);
         font-size: 18px;
         color: #FFFFFF;
         padding: 10px;
         letter-spacing: 1px;
         white-space: nowrap;
         background: #c7c7c7;
+        min-width: 80px;
+        display: inline-block;
+        text-align: center;
       }
       .reviews{
+        float: right;
+        margin-top: 7px;
         .fa-heart{
           color: #D1616F;
         }
       }
       .details{
-        padding: 15px;
-        font-size: 0.75em;
-        line-height: 1.7em;
-        max-width: 300px;
+        margin: 14px 0;
+        .channel-img{
+          height: 45px;
+          width: 45px;
+          background: #ccc;
+        }
+        .vertical-seperator{
+          border-left: 1px solid #D8D8D8;
+          height: 45px;
+        }
+        .pull-left{
+          margin-right: 10px;
+          .smaller{
+            margin-top: 5px;
+          }
+        }
       }
       .details>*{
         padding: 0;
       }
+      footer{
+         .fa-map-marker{
+          margin-left:20px;
+        }
+      }
     }
     .grey{
         color: #696969;
+    }
+    .small{
+      font-size: 80%;
+      font-family: ProximaNova-Light;
+    }
+    .smaller{
+      font-size:60%;
+      font-family: ProximaNova-Light;
     }
     .new_course_form_wrapper{
       #map-canvas{
@@ -552,6 +631,10 @@ body.v2 {
           position: relative;
           top:5px;
         }
+        select{
+          background: url(/assets/chevron-down.png) #F1F1F1 no-repeat right 10px top 16px !important;
+          background-size: 13px 7px !important;
+        }
         input[type=text],input[type=number],textarea,select{
           border: 0px;
           border-radius: 4px;
@@ -577,10 +660,6 @@ body.v2 {
         }
         label{
           font-weight: normal;
-        }
-        .small.grey{
-          font-family: ProximaNova-Light;
-          font-size: 80%;
         }
         .teaching_times_summary{
           font-weight: normal;
