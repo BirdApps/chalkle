@@ -15,13 +15,11 @@
               %td#header{:valign => 'top', :width => '600px', colspan: 3 }
                 %img#logo{ :src=> "#{root_url}logo.gif", :width => '600', :height => '70', :alt => 'chalkle° : six degrees of education.'}
             %tr
-              %td{ width: "50%"}
               %td#content{:valign => 'top'}
                 %table#content-padding
                   %tr
                     %td
                       = yield
-              %td{ width: "50%"}
             %tr
               %td#footer{:valign =>'top', :width => '600px',  colspan: 3}
                 = link_to 'Change your email settings', chalklers_preferences_url
