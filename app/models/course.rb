@@ -75,7 +75,7 @@ class Course < ActiveRecord::Base
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
   scope :by_date, joins(:lessons).order('lessons.start_at')
-  scope :in_month, lambda {|month| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", month.first_day.to_datetime.change(offset: "+12:00").utc.to_s(:db), month.last_day.to_datetime.change(offset: "+12:00").utc.to_s(:db))}
+  scope :in_month, lambda {|month| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", month.first_day.to_datetime.change(offset: "+12:00").to_s(:db), month.last_day.to_datetime.change(offset: "+12:00").to_s(:db))}
   scope :in_week, lambda {|week| in_month(week)}
   scope :displayable, lambda { published.visible }
   scope :upcoming_or_today, lambda { joins(:lessons).where("start_at >= ?", Time.now.utc.to_date.to_time) }
