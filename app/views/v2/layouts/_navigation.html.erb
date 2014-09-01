@@ -22,7 +22,7 @@
             <a href="//blog.chalkle.com">About</a>
           </li>
           <% if chalkler_signed_in? %>
-            <li class="dropdown">
+            <li class="dropdown hidden-xs">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name %> <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li>
@@ -32,6 +32,13 @@
                   <%= link_to 'Logout', destroy_chalkler_session_url, method: 'delete' %>
                 </li>
               </ul>
+            </li>
+            <li class="divider visible-xs"></li>
+            <li class="visible-xs">
+              <%= link_to 'Account Settings', chalklers_preferences_path %>
+            </li>
+            <li class="visible-xs">
+              <%= link_to 'Logout', destroy_chalkler_session_url, method: 'delete' %>
             </li>
           <% else %>
             <li>
