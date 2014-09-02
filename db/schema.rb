@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140828003654) do
+ActiveRecord::Schema.define(:version => 20140902001511) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(:version => 20140828003654) do
 
   create_table "channel_admins", :force => true do |t|
     t.integer "channel_id",    :null => false
-    t.integer "admin_user_id", :null => false
+    t.integer "admin_user_id"
     t.integer "chalkler_id"
   end
 
@@ -247,6 +247,7 @@ ActiveRecord::Schema.define(:version => 20140828003654) do
     t.string   "postal_code"
     t.float    "longitude"
     t.float    "latitude"
+    t.string   "venue_address"
   end
 
   create_table "delayed_jobs", :force => true do |t|

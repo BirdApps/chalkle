@@ -14,7 +14,6 @@ class V2::CoursesController < V2::BaseController
   end
 
   def new
-    @no_search = true
     @teaching = Teaching.new current_user
   end
 
@@ -22,27 +21,44 @@ class V2::CoursesController < V2::BaseController
     @teaching = Teaching.new current_user
     if params[:teaching_agreeterms] == 'on'
       new_course_ids =  @teaching.submit params[:teaching]
-      if new_course_ids
-        binding.pry
-        redirect_to v2_course_url new_course_ids[0]
-      end
     end
-    render 'new'
+    if new_course_ids
+      redirect_to v2_course_url new_course_ids[0]
+    else
+      render 'new'
+    end
   end
 
   def edit
-
+    course = Course.find params[:id]
+    @teaching = Teaching.new current_user
+    if course.course?
+      @teaching.course_to_teaching course
+    else
+      @teaching.class_to_teaching course
+    end
   end
 
   def update
-
+    course = Course.find params[:id]
+    @teaching = Teaching.new current_user
+    if params[:teaching_agreeterms] == 'on'
+      new_course_ids =  @teaching.update params[:teaching]
+    end
+    if new_course_ids
+      redirect_to v2_course_url new_course_ids[0]
+    else
+      render 'new'
+    end
   end
 
   def destroy
 
   end
   
- 
+  def change_status
+   
+  end
 
   private
 

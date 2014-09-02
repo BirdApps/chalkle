@@ -49,6 +49,7 @@ Chalkle::Application.routes.draw do
     resources :metrics
     resources :resources
 
+    get 'search', to: 'search#index', as: :search
     get 'categories', to: 'categories#index', as: :categories
     get 'categories/:category_url_name', to: 'categories#show', as: :category_show
     get ':channel_url_name/:course_url_name', to: 'channels#series', as: :course_series

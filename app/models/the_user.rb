@@ -3,8 +3,8 @@ class TheUser
   def initialize current_chalkler, current_admin_user = nil
     @chalkler = current_chalkler
     @admin_user = current_admin_user
-    @admin_user = AdminUser.find_by_email chalkler.email if @admin_user.nil? && !@chalkler.nil?
-    @chalkler = Chalkler.find_by_email admin_user.email if @chalkler.nil? && !@admin_user.nil?
+    @admin_user = AdminUser.find_by_email chalkler.email if @admin_user.nil? && @chalkler.present?
+    @chalkler = Chalkler.find_by_email admin_user.email if @chalkler.nil? && @admin_user.present?
   end
 
   def authenticated?
@@ -33,6 +33,14 @@ class TheUser
 
   def admin_user
     @admin_user
+  end
+
+  def relation_to(course)
+    relationships = []
+    relationships << 'channel_admin' if chalkler? && chalkler.channel_admins.where(channel_id: course.channel.id).present?
+    relationships << 'teacher' if course.teacher.chalkler.id == chalkler
+    relationships << 'attendee' if chalkler? && course.bookings.where( chalkler_id: chalkler.id)
+    relationships
   end
 
   def channels

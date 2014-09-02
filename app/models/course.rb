@@ -6,14 +6,14 @@ class Course < ActiveRecord::Base
   include Gst
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_cost
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_cost, :venue_address
   ]
 
   attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
 
   #Course statuses
   STATUS_5 = "Processing"
-  STATUS_4 = "Approved"
+  STATUS_4 = "Completed"
   STATUS_3 = "Unreviewed"
   STATUS_2 = "On-hold"
   STATUS_1 = "Published"
@@ -76,7 +76,7 @@ class Course < ActiveRecord::Base
   scope :paid, where("cost > 0")
   scope :by_date, joins(:lessons).order('lessons.start_at')
   scope :in_month, lambda {|month| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", month.first_day.to_s(:db), month.last_day.to_s(:db))}
-  scope :in_week, lambda {|week| in_month(week)}
+  scope :in_week, lambda {|week| where{ |course| week.include? course.start_at.to_date } }
   scope :displayable, lambda { published.visible }
   scope :upcoming_or_today, lambda { joins(:lessons).where("start_at >= ?", Time.now.to_date.to_time) }
   scope :previous, lambda { joins(:lessons).where("start_at < ?", Time.now.to_date.to_time) }
@@ -94,6 +94,18 @@ class Course < ActiveRecord::Base
   def self.upcoming(limit = nil)
     return published.joins(:lessons).where("start_at > ?", Time.now.utc) if limit.nil?
     published.joins(:lessons).where("start_at > ?", Time.now.utc).where("start_at < ?", limit)
+  end
+
+  def repeating_class?
+    true if repeat_course.present?
+  end
+
+  def course?
+    true if lessons.count > 1
+  end
+
+  def single_class
+    true if lessons.count == 1
   end
 
   def first_lesson
@@ -328,8 +340,16 @@ class Course < ActiveRecord::Base
   end
   alias_method :end_on, :end_at
 
+  def reviews
+    []
+  end
+
   def has_reviews
-    false
+    true
+  end
+
+  def review_percent
+    100
   end
 
   def venue_truncated
@@ -340,6 +360,10 @@ class Course < ActiveRecord::Base
   end
 
   private
+  def class_or_course
+    return 'class' if lessons.count < 2
+    'course'
+  end
 
   def save_first_lesson
     @first_or_new_lesson.save if @first_or_new_lesson

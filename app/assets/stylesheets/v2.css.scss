@@ -330,6 +330,7 @@ body.v2 {
       min-height: 50px;
       position: relative;
       top:20px;
+      margin-bottom: 20px;
       .navbar-text{
         font-family: ProximaNova-Light;
         margin-left: 0;
@@ -359,15 +360,22 @@ body.v2 {
     }
   }
   .container{
+    font-family: ProximaNova-Regular;
+    letter-spacing: 1.5px;
     h1,h2,h3,h4,h5,h6{
       font-weight: normal;
     }
     .image-preview{
       width: 100%;
     }
-    
-    font-family: ProximaNova-Regular;
-    letter-spacing: 1.5px;
+    .course-show{
+      margin-top:20px;
+      .admin-bar{
+        padding: 5px 10px;
+        display: block;
+        text-align: left;
+      }
+    }
     .course{
       position: relative;
       >div{
@@ -737,8 +745,10 @@ body.v2 {
     .fa{
       display: block;
       position: relative;
-      left: 10px;
-      font-size: 18px;
+      left: 7px;
+      top:2px;
+      padding:2px;
+      font-size: 13px;
     }
     .control-wrapper{
       float: left;

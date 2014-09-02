@@ -25,11 +25,9 @@ $(function(){
     part_change("#type");
     apply_inline_validation();
     get_teacher_list();
-    $('.class-count').each(function(){
-      apply_start_at_controls(this);
-    });
+    init_start_at();
     image_preview();
-    $('#teaching_image').change(image_preview);
+    $('#teaching_course_upload_image').change(image_preview);
     $('.new_course_form_wrapper').fadeIn();
   }
 
@@ -41,7 +39,7 @@ $(function(){
 
   /* updates the image preview from local file */
   function image_preview(){
-    var input = $('#teaching_image')[0];
+    var input = $('#teaching_course_upload_image')[0];
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -76,51 +74,27 @@ $(function(){
     if(isNaN(target_class_count)){
       target_class_count = $('.update_class_count input').val();
     }
-    if(target_class_count < 1){
-      $('.update_class_count input').val('1');
-    }else{
-      if(target_class_count > 20){
-        $('.update_class_count input').val('20');
-        target_class_count = 20;
-        alert('Maximum 20 classes to a course at the moment. Contact Chalkle if this is an issue');
-      } 
-      var existing_class_count = $('.class-count').length;
-      var difference = target_class_count - existing_class_count;
+    var existing_class_count = $('.class-count').length;
+    var difference = target_class_count - existing_class_count;
 
-      /* add div.class-count that should exist */
-      for(var i = 0; i < difference; i++){
-        $($('.class-count')[0]).clone().insertBefore('.class-count-bumper');
-        var inserted_element = $('.class-count-bumper').prev();
-        //set the title to the class number
-        $(inserted_element).find('.class-count-num').text(i+existing_class_count+1);
-        $(inserted_element).find('.teaching_times_summary').hide();
-        $(inserted_element).find('.number_picker').val(0);
-        number_picker(inserted_element);
-        apply_start_at_controls(inserted_element);
-      }
-
-      /* remove div.class-count that shouldn't exist */
-      $('.class-count').each(function(index){
-        if(index+1 > target_class_count){
-          $(this).remove();
-        }
-      });
+    /* add div.class-count that should exist */
+    for(var i = 0; i < difference; i++){
+      $($('.class-count-bumper').prev()).clone().insertBefore('.class-count-bumper');
+      var inserted_element = $('.class-count-bumper').prev();
+      //set the title to the class number
+      $(inserted_element).find('.class-count-num').text(i+existing_class_count+1);
+      $(inserted_element).find('.teaching_times_summary').hide();
+      number_picker(inserted_element);
+      apply_start_at_controls(inserted_element, true);
     }
-  }
 
-  /* when course is selected over class, make the class time input into an array */
-  function inputs_to_array(is_course){
-    $('.class-count input').each(function(){
-      var new_name = $(this).attr('name');
-      if(new_name != ''){
-        if(is_course){
-          new_name+='[]';
-        }else{
-          new_name = new_name.split('[]')[0];
-        }
-        $(this).attr('name', new_name);
+    /* remove div.class-count that shouldn't exist */
+    $('.class-count').each(function(index){
+      if(index+1 > target_class_count){
+        $(this).remove();
       }
-    }); 
+    });
+    
   }
 
   /* Retrieves list of teachers for a given channel and populates select element */
@@ -156,7 +130,7 @@ $(function(){
   }
 
   /* initializes a div.class-count (a set of time and duration controls) */
-  function apply_start_at_controls(scope){
+  function apply_start_at_controls(scope, clear_calender){
     var instance_time = "";
     var instance_date = "";
     var duration_hours  = "";
@@ -175,24 +149,39 @@ $(function(){
 
     /* initializes the datepicker and time picker */
     function date_time_picker_init() {
+      update_durations();
       //date picker
       var date_picker = $(scope).find('.date-picker')[0];
-      $(date_picker).empty();
+      if(clear_calender != undefined){
+        $(date_picker).empty();
+      }
       $(date_picker).datepicker({
-        startDate: new Date(), todayHighlight: true
+        startDate: new Date()
       }).on('changeDate', function(e){
         instance_date = e.date;
-
         //update next datepicker to be minimum this date
         var next_date_picker = $(scope).next().find('.date-picker');
         if(next_date_picker.length){
           $(next_date_picker[0]).datepicker('setStartDate', e.date);
         }
-
         update_teaching_start_at();
       });
-      saved_datepick = $(scope).find('#teaching_start_at').val();
-      $(date_picker).datepicker('setDate', (saved_datepick=='')?new Date(+new Date + 12096e5) : saved_datepick);
+      var saved_datepick = $(scope).find('#teaching_start_at').data('init-date');
+      if(saved_datepick){
+        saved_datepick = new Date(saved_datepick);
+      }else{
+        saved_datepick = new Date(+new Date + 12096e5);
+      }
+      $(date_picker).datepicker('setDate', saved_datepick);
+      var highlight_text = saved_datepick.getDate();
+      var highlight_element = $(date_picker).find('td.day:contains('+highlight_text+')').filter(function(){
+          return $(this).text() == highlight_text;
+      });
+      highlight_element.each(function(){
+        if(!$(this).hasClass('old') && !$(this).hasClass('new')){
+          $(this).addClass('active')
+        }
+      });
       instance_date = $(scope).find('.date-picker').datepicker('getDate');
 
       //time picker
@@ -211,6 +200,7 @@ $(function(){
 
     /* if there is acceptable information to make a class, displays human readable explanation of that classe's scheduled time */
     function calculate_class_times(ignore_invalid) {
+      console.log("1: "+instance_date +", 2: "+ instance_time+", 3: "+  duration_hours +", 4: "+  duration_minutes );
       if(instance_date && instance_time && ( duration_hours || duration_minutes )){
         var start_time = make_time(instance_date.getHours(), instance_date.getMinutes(),0,0);
         var end_time = make_time(instance_date.getHours(), instance_date.getMinutes(), duration_hours, duration_minutes);

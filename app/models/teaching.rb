@@ -1,37 +1,85 @@
+require 'carrierwave'
+require 'course_upload_image_uploader'
+
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :teacher, :channel, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :free_course, :teacher_cost, :max_attendee, :min_attendee,
-  :availabilities, :prerequisites, :additional_comments, :venue, :category_primary_id, :channels, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :override_channel_fee, :longitude, :latitude, :venue_address, :image, :agreeterms
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing
 
-  validates :title, :presence => { :message => "Title of class can not be blank" }
-  validates :teacher_id, :presence => { :message => "You must be registered with chalkle first" }
-  validates :do_during_class, :presence => { :message => "What we will do during the class can not be blank" }
-  validates :learning_outcomes, :presence => { :message => "What we will learn from this class can not be blank" }
-  validates :channel_id, :presence => { :message => "You must select a channel" }
-
-
+  validates :title, :presence => { :message => "Class name can not be blank" }
+  validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
+  validates :learning_outcomes, :presence => { :message => "Learning outcomes cannot be blank" }
   validates :repeat_count, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Repeat classes must be 1 or more"}
-  validates :category_primary_id, :allow_blank => false, :numericality => { :greater_than => 0, :message => "You must select a primary category"}
-  validates :channel_id, :allow_blank => false, :numericality => { :greater_than => 0, :message => "You must select a channel"}
-  validates :teacher_cost, :allow_blank => true, :numericality => {:equal_to => 0, :message => "You can not be paid for a free class" }, :if => "self.free_course=='1'"
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
+    validates :venue_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
   validates :repeat_count, presence: true, if: :repeating?
   validates :repeat_frequency, presence: true, if: :repeating?
 
   def initialize(current_user)
   	@current_user = current_user
-    if @current_user.channels.length > 0
-      @channels = @current_user.channels
-    else
-      @channels = Channel.visible
+    @channels = current_user.channels
+    @start_at = [ Time.new.advance(weeks: 1) ]
+    @duration_hours = [1]
+    @duration_minutes = [0]
+    @editing = false
+  end
+
+  def class_to_teaching(editing_class)
+    @course_class_type = 'class'
+    @class_count = editing_class.lessons.count
+    args_to_teaching editing_class
+  end
+
+  def course_to_teaching(editing_course)
+    @course_class_type = 'course'
+    args_to_teaching editing_course
+  end
+
+  def args_to_teaching(args)
+    #can only edit each course seperately at this point
+    @repeating = 'once-off'
+    
+    @title = args.name
+    @category_id = args.category_id
+    @course_skill = args.course_skill
+    @do_during_class = args.do_during_class
+    @learning_outcomes = args.learning_outcomes
+    @suggested_audience = args.suggested_audience
+    @prerequisites = args.prerequisites
+    @additional_comments = args.additional_comments
+    @street_number = args.street_number
+    @street_name = args.street_name
+    @city = args.city
+    @region = args.region
+    @postal_code = args.postal_code
+    @longitude = args.longitude
+    @latitude = args.latitude
+    @venue = args.venue
+    @channel_id = args.channel_id
+    @teacher_id = args.teacher_id unless args.teacher.blank?
+    @min_attendee = args.min_attendee
+    @max_attendee = args.max_attendee
+    @cost = args.cost
+    @venue_cost = args.venue_cost
+    @teacher_cost = args.teacher_cost
+    @availabilities = args.availabilities
+    @venue_address = args.venue_address
+    @course_upload_image = args.course_upload_image
+    @start_at = []
+    @duration_hours = []
+    @duration_minutes = []
+    args.lessons.each do |lesson|
+      @start_at << lesson.start_at
+      @duration_hours << lesson.duration/60/60
+      @duration_minutes << lesson.duration%60
     end
+    @editing = true
   end
 
   def course_args
     {
       name: @title,
-      category: @category,
+      category_id: @category_id,
       course_skill: @course_skill,
       do_during_class: @do_during_class,
       learning_outcomes: @learning_outcomes,
@@ -46,15 +94,16 @@ class Teaching
       longitude: @longitude,
       latitude: @latitude,
       venue: @venue,
-      channel: @channel,
-      teacher: @teacher,
+      channel_id: @channel_id,
+      teacher_id: @teacher_id,
       min_attendee: @min_attendee.to_i,
       max_attendee: @max_attendee.to_i,
       cost: @cost,
       venue_cost: @venue_cost,
       teacher_cost: @teacher_cost,
-      course_upload_image: @image,
       availabilities: @availabilities,
+      venue_address: @venue_address,
+      course_upload_image: @course_upload_image
     }
   end
 
@@ -65,13 +114,21 @@ class Teaching
     }
   end
 
+  def update(params)
+    if check_valid_input(params)
+      if course?
+
+      else
+
+      end
+    end
+  end
+
   def submit(params)
-    course = repeat_course = new_course_ids = nil
+    course = repeat_course = nil
+    new_course_ids = []
     nth = 0
     if check_valid_input(params)
-      if !@image
-        @image = upload_image
-      end
       if course?
         #create single course with lots of lessons on it
         course = Course.new course_args
@@ -80,7 +137,7 @@ class Teaching
           course.lessons << lesson
         end
         course.save
-        new_course_ids = course.id
+        new_course_ids << course.id
       else
         if once_off?
           @repeat_count = 1
@@ -91,7 +148,7 @@ class Teaching
         #create as many repeating classes as needed
         @repeat_count.to_i.times do |i|
           #create a new course
-          course = Course.new(course_args)
+          course = Course.new course_args
           lesson = Lesson.create lesson_args i
           course.lessons << lesson
           if repeating?
@@ -103,7 +160,6 @@ class Teaching
               if i == 0
                 nth = nth_wday_of(Time.parse start_at[i])
               end
-              binding.pry
               @start_at[i+1] = nth_day_in(Time.parse(start_at[i].to_s), nth)
             end
             @duration_hours[i+1] = @duration_hours[i]
@@ -113,7 +169,7 @@ class Teaching
           else
             #this will only happen is repeat_count == 1, but it is in the loop to avoid verbosity
             course.save
-            new_course_ids = course.id
+            new_course_ids << course.id
           end
         end
         if repeating?
@@ -121,7 +177,6 @@ class Teaching
           new_course_ids = repeat_course.courses.map &:id
         end
       end
-      binding.pry
       new_course_ids
     end
   end
@@ -129,7 +184,7 @@ class Teaching
 
   private
   def once_off?
-    @repeating == "once-off" || @repeat_count.to_i < 2
+    @repeating.blank? || @repeating == "once-off"
   end
 
   def repeating?
@@ -184,11 +239,6 @@ class Teaching
     nth
   end
 
-  def upload_image
-    #TODO: upload image
-    @image
-  end
-
   def check_valid_input(params)
     @course_class_type = params[:course_class_type]
     if params[:name].nil?
@@ -196,10 +246,12 @@ class Teaching
     else
       @title = params[:name]
     end
-    @category_primary_id = params[:category_primary_id].to_i unless params[:category_primary_id].nil?
+    @category_id = get_category_id params[:category_id]
     @course_skill = params[:course_skill]
     @repeating = params[:repeating]
+    @repeating = "once-off" if @repeating.blank?
     @repeat_frequency = params[:repeat_frequency]
+    @repeat_frequency = "weekly" if @repeat_frequency.blank?
     @repeat_count = params[:repeat_count]
     @class_count = params[:class_count]
     @start_at = params[:start_at]
@@ -220,21 +272,20 @@ class Teaching
     @latitude = params[:latitude]
     @longitude = params[:longitude]
     @venue = params[:venue]
-    @channel = get_channel params[:channel_id]
-    @channel_id = @channel.id
-    @teacher = get_teacher params[:teacher_id]
-    @teacher_id = @teacher.id
+    @channel_id = get_channel_id params[:channel_id]
+    @teacher_id = get_teacher_id params[:teacher_id]
     @min_attendee = params[:min_attendee]
     @max_attendee = params[:max_attendee]
     @venue_cost = params[:venue_cost]
     @teacher_cost = params[:teacher_cost]
-    @image = params[:image]
     @availabilities = params[:availabilities]
     @cost = calculate_cost
+    @venue_address = params[:venue_address]
+    @course_upload_image = params[:course_upload_image]
     self.valid?
   end
 
-  def get_teacher(teacher_id)
+  def get_teacher_id(teacher_id)
     if @channel.channel_teachers.count == 1
       teacher = @channel.channel_teachers[0]
     elsif teacher_id.nil?
@@ -242,31 +293,40 @@ class Teaching
     else
       teacher = @channel.channel_teachers.find teacher_id
     end
+    teacher.id
   end
 
-  def get_channel(channel_id)
+  def get_channel_id(channel_id)
     if channel_id.nil?
       #no channel
-      if @current_user.channels.empty?
+      if @channels.empty?
         #create a personal channel and grant user all permissions
         channel = Channel.create name: @current_user.name, regions: [ region ], channel_rate_override: 0, teacher_percentage: 1, email: @current_user.email, visible: true
         channel_admin = ChannelAdmin.create channel: channel, chalkler: @current_user.chalkler
         channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.chalkler.name
       else
-        if @current_user.channels.count == 1
-          channel = @current_user.channels[0]
+        if @channels.count == 1
+          channel = @channels[0]
         end
       end
     else
-      channel = @current_user.channels.select{ |channel| channel.id == channel_id.to_i }[0]
+      channel = @channels.select{ |channel| channel.id == channel_id.to_i }[0]
     end
-    channel
+    @channel = channel
+    channel.id
+  end
+
+  def get_category_id(category_id)
+    if category_id.present?
+      category = Category.find category_id.to_i
+      category.id unless category.nil?
+    end
   end
 
   def get_region(region_name)
     region_name = region_name || @city
     region = Region.find_by_name(region_name)
-    if(region.nil?)
+    if region.nil?
       region = Region.create name: region_name, url_name: region_name.parameterize
     end
     region

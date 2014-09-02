@@ -1,0 +1,402 @@
+<%=
+  config.wrappers :small do |b|
+    b.use :placeholder
+    b.use :label_input
+  end
+ %>
+<div class="new_course_form_wrapper" style="display:none;">
+  <div class="col-md-2">
+    <%= link_to "< Upcoming Classes", v2_courses_path, {:class => "small grey"} %>
+  </div>
+  <div class="col-md-9">
+    <ol class="breadcrumb">
+      <li class="active"><a class="part_link" href="#type" id="type-link">Class Type</a></li>
+      <li><a href="#details" class="part_link" id="details-link"><span class="class_only">Class</span><span class="course_only">Course</span> Details</a></li>
+      <li><a href="#learning" class="part_link" id="learning-link">Learning</a></li>
+      <li><a href="#teaching" class="part_link" id="teaching-link">Teacher & Venue</a></li>
+      <li><a href="#summary" class="part_link" id="summary-link">Summary & Submit</a></li>
+    </ol>
+    <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: v2_courses_path, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+      
+      <div id="type" class="parts center">
+        <div class="fancy-header">
+          <h3>Class Type</h3>
+          <hr />
+        </div>
+        
+        <% if f.object.editing %>
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-default"><%= f.radio_button :course_class_type, f.object.course_class_type , class: :'course-class-radio' %>Edit <%= f.object.course_class_type.capitalize %></label>
+          </div>
+          <p class="col-sm-12 center"><small class="">You cannot change between class or course once the <%= f.object.course_class_type %> is published. </small></p>
+        <% else %>
+          <p>Do you want to create a class, or a course with many classes?</p>
+          <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class', class: :'course-class-radio' %>Create class</label>
+          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course', class: :'course-class-radio' %>Create a course</label>
+          </div>
+          <p class="col-sm-6 text-right"><small class="">Classes are for learning that is all in the one class</small></p>
+          <p class="col-sm-6 text-left"><small class="small grey">Courses are for learning across multiple classes</small></p>
+        <% end %>
+      </div>
+
+      <div id="details" class="parts">
+        <div class="fancy-header">
+          <h3><span class="class_only">Class</span><span class="course_only">Course</span> Info</h3>
+          <hr />
+        </div>
+
+        <%= f.input :title, label: "Give your <span class='class_only'>class</span><span class='course_only'>course</span> a <strong>name</strong>", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizonal %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">ie. Gardening for beginniers. The <span class="class_only">class</span><span class="course_only">course</span>  name should be short, decriptive and clear</p>
+        </div>
+
+        <%= f.input :category_id, as: :select, collection: Category.select_options,label: "Select a <strong>Category</strong> for this <span class='class_only'>class</span><span class='course_only'>course</span>", wrapper: :horizonal %>
+
+        <%= f.input :course_skill, as: :select, :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }, wrapper: :horizonal, label: "What is the <strong>skill level</strong>?" %>
+        
+        <div class="class_only">
+          <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizonal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
+          
+          <div class="repeating-options" style="display:none;">
+            <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the class take place", input_html: { :class => 'form-control update_class_time' }, wrapper: :horizonal %>
+
+            <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the class be held?", wrapper_html: { class: :'update_repeat_count' }, input_html: { :'data-min' => '2', value: f.object.repeat_count || 2, class: :'update_class_time' }, wrapper: :horizonal %>
+         
+            <div class="col-xs-12 info">
+              Attendees can sign up for any repeating class, and pay for each one individually. 
+            </div>
+          </div>
+        </div>
+        <div class="course_only" >
+          <%= f.input :class_count, as: :number_picker, label: "<strong>How many classes</strong> will be in the course?", input_html: { value: f.object.class_count || '2', :'data-min' => '2', :'data-max' => '20', :'data-max-error' => 'Maximum 20 classes to a course, if you need more contact Chalkle.', :'data-min-error' =>  'Courses need at least 2 classes. Did you mean to make a class?'}, wrapper_html: { class: :'update_class_count' }, wrapper: :horizonal %>
+        </div>
+        
+        <% f.object.start_at.count.times do |i| %>
+          <%
+            start_at = f.object.start_at[i]
+            date_temp = start_at.to_date
+            time_temp = start_at.strftime('%l:%M %p')
+            hours_temp = f.object.duration_hours[i]
+            minutes_temp = f.object.duration_minutes[i]
+           %>
+          <div class="class-count">
+            <div class="class-count-title fancy-header">
+              <h3>Class <span class="class_only">Time</span><span class="course_only class-count-num"><%= i+1 %></span></h3>
+              <hr />
+            </div>
+              
+            <div class="col-sm-12">
+              <div class="info teaching_times_summary" style="display: none;">
+                Invalid class time
+              </div>
+            </div>
+            
+
+            <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the class be on?", input_html: { :'data-init-date' => date_temp , value: date_temp ,name: 'teaching[start_at][]' }, wrapper: :horizonal %>
+            
+            <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the class start?", wrapper: :horizonal, input_html: { value: time_temp  ,  id: 'saved_timepick', name: '' } %>
+            
+            <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizonal, input_html: { name: 'teaching[duration_hours][]', value: hours_temp, :'data-min' => '0', class: 'update_class_time'  }  %>
+            
+            <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizonal, input_html: {name: 'teaching[duration_minutes][]', value: minutes_temp, :'data-min' => '0', class: :'update_class_time'   } %>
+          </div>
+        <% end %>
+        <div class="class-count-bumper"></div>
+
+        <div class="row prevnext">
+          <div class="col-xs-5 prev">
+            <a href="#type" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+          </div>
+          <div class="col-xs-7 next">
+            <a href="#learning" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="learning" class="parts">
+        <div class="fancy-header">
+          <h3><span class="class_only">Class</span><span class="course_only">Course</span>  Details</h3>
+          <hr />
+        </div>
+        <%= f.input :do_during_class, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Activities</strong>", wrapper: :horizonal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">What activities can learners expect from this <span class="class_only">class</span><span class="course_only">course</span>?</p>
+        </div>
+        
+        <%= f.input :learning_outcomes, as: :text, label: "Learning <strong>Outcomes</strong>", wrapper: :horizonal, input_html: { :'data-error-message' => 'You must specify learning outcomes' } %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">What should learners come away with at the end of the <span class="class_only">class</span><span class="course_only">course</span>?</p>
+        </div>
+
+        <%= f.input :suggested_audience, as: :text, label: "<strong>Who</strong> is the <span class='class_only'>class</span><span class='course_only'>course</span> for?", wrapper: :horizonal %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">Describe the ideal attendee your <span class="class_only">class</span><span class="course_only">course</span> is designed for. If it would work for everyone, leave it blank.</p>
+        </div>
+
+        <%= f.input :prerequisites, as: :text, label: "What should learners <strong>bring</strong> along?", wrapper: :horizonal %>
+
+        <%= f.input :additional_comments, as: :text, label: "Any other comments?", wrapper: :horizonal %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">Is there anything else that learners should know before coming?</p>
+        </div>
+        
+        <div class="row prevnext">
+          <div class="col-xs-5 prev">
+            <a href="#details" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+          </div>
+          <div class="col-xs-7 next">
+            <a href="#teaching" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
+          </div>
+        </div>
+      </div>
+
+      <div id="teaching" class="parts">
+
+        <div class="fancy-header">
+          <h3>Venue Information</h3>
+          <hr />
+        </div>
+
+        <%= f.input :venue_address, label: '<abbr title="required">*</abbr>Venue <strong>Address</strong>', wrapper: :horizonal, input_html: { :'data-error-message' => "Sorry, we couldn't understand that address" } %>
+        <%= f.input :street_number, as: :hidden %>
+        <%= f.input :street_name, as: :hidden %>
+        <%= f.input :city, as: :hidden %>
+        <%= f.input :region, as: :hidden %>
+        <%= f.input :country, as: :hidden %>
+        <%= f.input :postal_code, as: :hidden %>
+        <%= f.input :longitude, as: :hidden %>
+        <%= f.input :latitude, as: :hidden%>
+       
+        <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizonal %>
+
+        <%# if not multiple channel will be inferred %>
+        <% if current_user.channels.count > 0 %>
+          <div class="fancy-header">
+            <h3>Presented by</h3>
+            <hr />
+          </div>
+            <%= f.input :channel_id, :label => "Associated <strong>Channel</strong>", :collection => current_user.channels, wrapper: :horizonal, input_html: {:'data-error-message'=>'Please select a channel'} %>
+        <% end %>
+
+        <%# if no channel or single channel having 1 or 0 teachers, teacher is inferred %>
+        <% if current_user.channels.count > 0  %>
+          <div class="teacher-select">
+            <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a channel first'}, wrapper: :horizonal %>
+          </div>
+        <% end %>
+      
+      <div class="fancy-header">
+        <h3>Costs & Counts</h3>
+        <hr />
+      </div>
+
+       <%= f.input :min_attendee, as: :number_picker, label: "<strong>Minimum</strong> Attendees", wrapper: :horizonal %>
+       <%= f.input :max_attendee, as: :number_picker, label: "<strong>Maximum</strong> Attendees", wrapper: :horizonal %>
+       <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">If the number of attendees is above the maximum, or below the minimum, the <span class="class_only">class</span><span class="course_only">course</span> will be cancelled. </p>
+        </div>
+        
+        <%= f.input :venue_cost, as: :currency, :label => "<strong>Venue</strong> costs", wrapper: :horizonal, input_html: { value: f.object.venue_cost || '0.00' } %>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">Any fixed costs associated with the venue, i.e. space hire</p>
+        </div>
+         
+
+        <%= f.input :teacher_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal, input_html: {:'data-error-message'=>'Specify the teacher fee (this is the base cost for an attendee)', value: f.object.venue_cost || '0.00'} %>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">How much money the teacher will make per attendee</p>
+        </div>
+        
+
+
+        <div class="row prevnext">
+          <div class="col-xs-5 prev">
+            <a href="#learning" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+          </div>
+          <div class="col-xs-7 next">
+            <a href="#summary" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
+          </div>
+        </div>
+      </div>
+
+      <div id="summary" class="parts">
+        <div class="fancy-header">
+          <h3>Summary</h3>
+          <hr />
+        </div>
+        <div class="center row summary-part">
+          <h2 id="summary_title"></h2>
+          <p class="light">The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> will run</p>
+          <p id="summary_times_summary"></p>
+        </div>
+        <div class="row summary-part fee-summary">
+          <div class="col-xs-6 text-right light teaching_cost">
+            The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> is priced at:
+          </div>
+          <div class="col-xs-6">
+            <input id="teaching_cost" disabled="disabled">
+          </div>
+
+          <div class="col-md-3">
+          </div>
+          <div class="col-md-6">
+            <hr />
+          </div>
+          <div class="col-md-3">
+          </div>
+          
+          <div class="col-xs-6 text-right light small grey">
+           Teacher payment 
+          </div>
+          <div class="col-xs-6">
+            <input id="summary_teacher_cost" disabled="disabled" />
+          </div>
+          <div class="col-xs-6 text-right light small grey">
+           <span  id="summary_channel_id">Channel</span> fee
+          </div>
+          <div class="col-xs-6">
+            <input id="teaching_channel_fee" disabled="disabled" />
+          </div>
+          <% if current_user.channels.count > 1 || current_user.channels.count == 1 && !current_user.channels[0].fee  %>
+            <div class="col-xs-6 text-right light small grey">
+             Chalkle fee
+            </div>
+            <div class="col-xs-6">
+              <input id="teaching_chalkle_fee" disabled="disabled">
+            </div>
+          <% end %>
+          <div class="col-xs-6 text-right light small grey">
+           Processing fee
+          </div>
+          <div class="col-xs-6">
+            <input id="teaching_processing_fee" disabled="disabled">
+          </div>
+          <% if current_user.channels.count > 1  %>
+            <% f.input :override_channel_fee, as: :boolean, label: "Waive the channel fee", wrapper: :horizonal %>
+            <%# TODO: only channel admins can waive fee %>
+          <% end %>
+        </div>
+
+        <div class="row fee-summary summary-part">
+          <div class="col-xs-6 text-right light teaching_cost">
+           The <strong>fixed costs</strong> are:
+          </div>
+          <div class="col-xs-6">
+            <input id="summary_fixed_cost" disabled="disabled">
+          </div>
+
+          <div class="col-md-3">
+          </div>
+          <div class="col-md-6">
+            <hr />
+          </div>
+          <div class="col-md-3">
+          </div>
+
+          <div class="col-xs-6 text-right light small grey">
+             Venue Costs
+          </div>
+          <div class="col-xs-6">
+            <input id="summary_venue_cost" disabled="disabled">
+          </div>
+        </div>
+
+      
+
+        <div class="row summary-part">
+          <div class="col-sm-6">
+            <div id="map-canvas"></div>
+            <div class="text-right">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="col-sm-5 text-right">
+              <span class="light">Taught by</span>
+            </div>
+            <div class="col-sm-7">
+              <span id="summary_teacher_id" class="center">You</span>
+            </div>
+            <div class="col-sm-5 text-right">
+              <span class="light">at</span>
+            </div>
+            <div class="col-sm-7">
+              <p id="summary_venue_address" class="light grey"></p>
+            </div>
+            <div class="col-sm-5 text-right">
+              <span class="light">Details</span>
+            </div>
+            <div class="col-sm-7">
+              <p id="summary_venue" class="light grey"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="fancy-header">
+          <h3>Photo</h3>
+          <hr />
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+          <% image_url = f.object.course_upload_image.nil? ? "/images/no-course-img.png" : f.object.course_upload_image  %>
+            <div class="course center">
+              <p class="small grey">Your image will look like this</p>
+              <div class="porthole round image-preview">
+                <div class="img" style="background-image: url(<%= image_url %>);"></div>
+              </div>
+               <p class="small grey">and like this</p>
+              <div class="porthole square image-preview">
+                <div class="img" style="background-image: url(<%= image_url %>);"></div>
+              </div>
+               <p class="small grey">We recommend an image at least 300px by 300px, and preferable containly no text (it gets chopped off and looks really messy!)</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <%= f.input :course_upload_image, as: :styled_file, input_html: { value: "", class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
+          </div>
+        </div>
+        <br class="clear" /><br />
+        <br /><br />
+        <div class="prevnext">
+          
+          <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6 next">
+              <div class="checkbox center">
+              <label id="teaching_agreeterms" data-error-message="You must agree in order to continue">
+                <input type="checkbox" name="teaching_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms">Terms and Conditions</a></span>
+              </label>
+            </div>
+              <a href="#submit" class="submit_btn col-xs-12 part_link btn btn-primary">Submit <span class="class_only">Class</span><span class="course_only">Course</span></a>
+            </div>
+            <div class="col-md-3">
+            </div>
+          </div>
+          <div class="row prev">
+            <a href="#teaching" class="part_link block center"><span class="fa fa-angle-double-left"></span>Previous</a>
+          </div>
+        </div>
+
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-1">
+  </div>
+  <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+  <%= javascript_include_tag *Dir[Rails.root.join("app/assets/javascripts/v2/*.js")] %>
+</div>
