@@ -52,7 +52,10 @@ class V2::CoursesController < V2::BaseController
   end
   
   def change_status
-   
+    course = Course.find params[:id]
+    course.status = params[:course][:status]
+    course.save
+    redirect_to v2_course_url course.id
   end
 
   private

@@ -44,7 +44,11 @@ Chalkle::Application.routes.draw do
       resources :chalklers
     end
 
-    resources :courses, path: 'classes'
+    resources :courses, path: 'classes' do
+      collection do
+        put 'change_status/:id', to: 'courses#change_status', as: :change_status
+      end
+    end
     resources :channels
     resources :metrics
     resources :resources
