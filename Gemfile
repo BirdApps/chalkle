@@ -11,6 +11,7 @@ gem 'omniauth-facebook'
 
 # Authorisation
 gem 'cancan'
+gem 'pundit'
 
 # Time / Date
 gem 'monthify', require: 'monthify'
@@ -38,6 +39,7 @@ gem 'foreigner'
 gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
 gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
 gem 'sendgrid'
+gem "geocoder"
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'
