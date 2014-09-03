@@ -11,6 +11,7 @@ $(function(){
   function init(){
     $('#teaching_channel_id').change(get_teacher_list);
     $("#type .btn-group label").click(course_class_select);
+
     $('.update_class_count .number-picker-up').click(show_class_opts);
     $('.update_class_count .number-picker-down').click(show_class_opts);
     $('.update_class_count .number-picker-input').change(show_class_opts);
@@ -83,7 +84,7 @@ $(function(){
       var inserted_element = $('.class-count-bumper').prev();
       //set the title to the class number
       $(inserted_element).find('.class-count-num').text(i+existing_class_count+1);
-      $(inserted_element).find('.teaching_times_summary').hide();
+      $(inserted_element).find('.teaching_times_summary').text("");
       number_picker(inserted_element);
       apply_start_at_controls(inserted_element, true);
     }
@@ -100,6 +101,10 @@ $(function(){
   /* Retrieves list of teachers for a given channel and populates select element */
   function get_teacher_list(){
     var channel_id = $('#teaching_channel_id').val();
+    var selected_val = -1;
+    if($('#saved_teacher_id').length){
+      selected_val = $('#saved_teacher_id').val();
+    }
     $.getJSON('/v2/people/teachers.json?channel_id='+channel_id, function(data){
         $('#teaching_teacher_id').empty();
         if(data.length < 2){
@@ -108,9 +113,13 @@ $(function(){
             $('.teacher-select').show();  
         }
         $.each(data, function(index,item) {
+          if(item.id == selected_val){
+           $('#teaching_teacher_id').append('<option selected="selected" value=' + item.id + '>' + item.name + '</option>');
+          }else{
            $('#teaching_teacher_id').append('<option value=' + item.id + '>' + item.name + '</option>');
+          }
         });
-      });
+    });
   }
 
   /* returns count of that weekday in the month preceeding a date, including that date */
@@ -147,25 +156,41 @@ $(function(){
        calculate_class_times(true);
     }
 
+    function change_date_picker(e){
+        instance_date = e.date;
+        //update the minimum date of next datepicker to be this instance_date
+        var next_date_picker = $(scope).next().find('.date-picker');
+        if(next_date_picker.length){
+          $(next_date_picker[0]).datepicker('setStartDate', e.date);
+          //ensures the next class datetime cannot have a lesser number and be considered valid
+          var next_hidden_start_at = $(scope).next().find('#teaching_start_at')[0];
+          var next_hidden_date = new Date($(next_hidden_start_at).val());
+          if(next_hidden_date < e.date){
+            $(next_hidden_start_at).val("");
+            var next_visible_date = $(next_date_picker).datepicker('getDate');
+            if(next_visible_date == "Invalid Date" || next_visible_date < e.date){
+              $(next_date_picker).datepicker('setDate', e.date);
+              highlight_date_in_picker(next_date_picker);
+            }
+            $(scope).next().find('.teaching_times_summary').text("");
+          }
+        }
+        update_teaching_start_at();
+    }
+
     /* initializes the datepicker and time picker */
     function date_time_picker_init() {
       update_durations();
-      //date picker
+      /*INIT DATE PICKER*/
       var date_picker = $(scope).find('.date-picker')[0];
       if(clear_calender != undefined){
         $(date_picker).empty();
       }
       $(date_picker).datepicker({
         startDate: new Date()
-      }).on('changeDate', function(e){
-        instance_date = e.date;
-        //update next datepicker to be minimum this date
-        var next_date_picker = $(scope).next().find('.date-picker');
-        if(next_date_picker.length){
-          $(next_date_picker[0]).datepicker('setStartDate', e.date);
-        }
-        update_teaching_start_at();
-      });
+      }).on('changeDate', change_date_picker);
+
+      //sets the initial date of the picker
       var saved_datepick = $(scope).find('#teaching_start_at').data('init-date');
       if(saved_datepick){
         saved_datepick = new Date(saved_datepick);
@@ -173,18 +198,12 @@ $(function(){
         saved_datepick = new Date(+new Date + 12096e5);
       }
       $(date_picker).datepicker('setDate', saved_datepick);
-      var highlight_text = saved_datepick.getDate();
-      var highlight_element = $(date_picker).find('td.day:contains('+highlight_text+')').filter(function(){
-          return $(this).text() == highlight_text;
-      });
-      highlight_element.each(function(){
-        if(!$(this).hasClass('old') && !$(this).hasClass('new')){
-          $(this).addClass('active')
-        }
-      });
+      highlight_date_in_picker(date_picker);
+      
+      //sets the scoped variable to match the picker
       instance_date = $(scope).find('.date-picker').datepicker('getDate');
 
-      //time picker
+      /*INIT TIME PICKER*/
       var time_picker = $(scope).find('.time-picker')[0];
       $(time_picker).timepicker({
                   minuteStep: 5,
@@ -198,14 +217,30 @@ $(function(){
       $(time_picker).timepicker('setTime', (saved_timepick==''?'6:00 PM':saved_timepick)); 
     }
 
+    /* issue with plugin is when you set date it doesn't highlight - this is fix */
+    function highlight_date_in_picker(date_picker){
+      var date = $(date_picker).datepicker('getDate');
+      if(date instanceof Date){
+        highlight_text = date.getDate();
+        var highlight_element = $(date_picker).find('td.day:contains('+highlight_text+')').filter(function(){
+            return $(this).text() == highlight_text;
+        });
+        highlight_element.each(function(){
+          if(!$(this).hasClass('old') && !$(this).hasClass('new')){
+            $(this).addClass('active')
+          }
+        });
+
+      }
+    }
+
     /* if there is acceptable information to make a class, displays human readable explanation of that classe's scheduled time */
     function calculate_class_times(ignore_invalid) {
-      console.log("1: "+instance_date +", 2: "+ instance_time+", 3: "+  duration_hours +", 4: "+  duration_minutes );
-      if(instance_date && instance_time && ( duration_hours || duration_minutes )){
+      var teaching_time_summary = $(scope).find('.teaching_times_summary')[0];
+      if(instance_date && instance_time && ( duration_hours != 0 || duration_minutes != 0 )){
         var start_time = make_time(instance_date.getHours(), instance_date.getMinutes(),0,0);
         var end_time = make_time(instance_date.getHours(), instance_date.getMinutes(), duration_hours, duration_minutes);
         var class_time_summary = "";
-        var teaching_time_summary = $(scope).find('.teaching_times_summary')[0];
         repeating = repeating && repeat_count > 1
         if(repeating && monthly) {
           //monthly
@@ -239,10 +274,8 @@ $(function(){
         class_time_summary += " between "+start_time;
         class_time_summary += " and "+end_time;
         $(teaching_time_summary).html(class_time_summary);
-        $(teaching_time_summary).show();
       } else {
-        var error_msg = ignore_invalid ? '' : 'Invalid class time';
-        $(teaching_time_summary).html(error_msg);
+        $(teaching_time_summary).empty();
       }
       $(teaching_time_summary).siblings('.form-error').remove();
     }
@@ -268,7 +301,18 @@ $(function(){
     function update_teaching_start_at() {
       if(instance_date!=null){
         if(instance_time != null){
-          var start_hours = instance_time.meridian=="AM"?instance_time.hours:instance_time.hours+12;
+          var start_hours = instance_time.hours;
+          if(instance_time.meridian == "PM"){
+            start_hours += 12;
+          }
+          if(start_hours == 24){
+            start_hours = 12;
+          }
+          if(start_hours == 0){
+            start_hours = 12;
+          }else if(start_hours == 12 ){
+            start_hours = 0;
+          }
           var start_minutess = instance_time.minutes;
           instance_date.setHours(start_hours,start_minutess,0,0);  
         }
@@ -372,10 +416,9 @@ $(function(){
     valid_basics = validate_basics('#details');
     //validate the datetime pickers by their output
     $('.teaching_times_summary').each(function(){
-      if(($(this).text() == "" || $(this).text().trim() == 'Invalid class time') 
-        && $(this).hasClass('no-validate')){
+      if($(this).text() == ""){
         valid = false;
-        show_error_for(this,'Select a valid date, time, and duration for this class');
+        show_error_for(this,'Ensure a valid date, time, and duration for this class');
       }
     });
     return valid && valid_basics;
@@ -454,7 +497,7 @@ $(function(){
   /* handles changing between course or class on the first form part */
   function course_class_select(){
     part_change( '#details' );
-    var key_word = $($(this).text().split(/[ ]+/)).last()[0];
+    var key_word = $($(this).children('input')[0]).val();
     if(key_word == "class"){
      // inputs_to_array(false);
       $('.course_only').hide();
@@ -462,7 +505,6 @@ $(function(){
       show_class_opts(1);
     }else{
       repeating = false;
-      $('.teaching_times_summary').empty();
      // inputs_to_array(true);
       $('.class_only').hide();
       $('.course_only').show();
@@ -517,7 +559,7 @@ $(function(){
     hours = parseInt(hours.toString())+parseInt(add_hours.toString());
     minutes = parseInt(minutes.toString())+parseInt(add_minutes.toString());
     var meridian = "AM";
-    if(hours >= 12) {
+    if(hours%24 >= 12) {
       meridian = "PM";
     }
     if(hours > 12) {

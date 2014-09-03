@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
@@ -21,24 +21,18 @@ class Teaching
     @start_at = [ Time.new.advance(weeks: 1) ]
     @duration_hours = [1]
     @duration_minutes = [0]
-    @editing = false
   end
 
-  def class_to_teaching(editing_class)
-    @course_class_type = 'class'
-    @class_count = editing_class.lessons.count
-    args_to_teaching editing_class
-  end
-
-  def course_to_teaching(editing_course)
-    @course_class_type = 'course'
-    args_to_teaching editing_course
-  end
-
-  def args_to_teaching(args)
-    #can only edit each course seperately at this point
+  def course_to_teaching(args)
+    #TODO: can only edit each course seperately at this point
     @repeating = 'once-off'
-    
+    if(args.course?)
+      @course_class_type = 'course'
+    else
+      @course_class_type = 'class'
+    end
+
+    @class_count = args.lessons.count
     @title = args.name
     @category_id = args.category_id
     @course_skill = args.course_skill
@@ -57,6 +51,8 @@ class Teaching
     @venue = args.venue
     @channel_id = args.channel_id
     @teacher_id = args.teacher_id unless args.teacher.blank?
+    @channel = args.channel
+    @teacher = args.teacher
     @min_attendee = args.min_attendee
     @max_attendee = args.max_attendee
     @cost = args.cost
@@ -73,7 +69,7 @@ class Teaching
       @duration_hours << lesson.duration/60/60
       @duration_minutes << lesson.duration%60
     end
-    @editing = true
+    @editing_id = args.id
   end
 
   def course_args
@@ -114,13 +110,21 @@ class Teaching
     }
   end
 
-  def update(params)
-    if check_valid_input(params)
-      if course?
-
-      else
-
+  def update(course, params)
+    course_to_teaching course
+    if check_valid_input params
+      course.update_attributes course_args
+      class_count.to_i.times do |i|
+        lesson = course.lessons[i]
+        if lesson.present?
+          lesson.update_attributes lesson_args i
+          lesson.save
+        else
+          lesson = Lesson.create lesson_args i
+          course.lessons << lesson
+        end
       end
+      course.save
     end
   end
 
@@ -181,6 +185,9 @@ class Teaching
     end
   end
 
+  def editing?
+    true if editing_id
+  end
 
   private
   def once_off?

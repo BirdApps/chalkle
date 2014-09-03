@@ -8,7 +8,8 @@ class V2::ChannelsController < V2::BaseController
 
   def show
     not_found if !@channel
-    @courses = @channel.courses.displayable
+    #@courses = @channel.courses.displayable.
+    @courses_weeks = courses_for_time.load_upcoming_week_courses get_current_week
   end
 
   def series 
@@ -41,6 +42,6 @@ class V2::ChannelsController < V2::BaseController
   private 
 
   def load_channel
-    @channel = Channel.includes(:courses).find_by_url_name params[:channel_url_name] if params[:channel_url_name]
+    @channel = Channel.find_by_url_name params[:channel_url_name] if params[:channel_url_name]
   end
 end

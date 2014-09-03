@@ -1,5 +1,5 @@
 class V2::BaseController < ApplicationController
-  
+  include Filters::FilterHelpers
   layout 'v2/layouts/v2_application'
   
   before_filter :nav_links

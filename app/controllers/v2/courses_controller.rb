@@ -1,5 +1,4 @@
 class V2::CoursesController < V2::BaseController
-  include Filters::FilterHelpers
   before_filter :load_course, only: [:show]
   before_filter :course_nav_links, except: [:new]
   before_filter :authenticate_chalkler!, only: [:new]
@@ -32,21 +31,17 @@ class V2::CoursesController < V2::BaseController
   def edit
     course = Course.find params[:id]
     @teaching = Teaching.new current_user
-    if course.course?
-      @teaching.course_to_teaching course
-    else
-      @teaching.class_to_teaching course
-    end
+    @teaching.course_to_teaching course
   end
 
   def update
     course = Course.find params[:id]
     @teaching = Teaching.new current_user
     if params[:teaching_agreeterms] == 'on'
-      new_course_ids =  @teaching.update params[:teaching]
+      success = @teaching.update course, params[:teaching]
     end
-    if new_course_ids
-      redirect_to v2_course_url new_course_ids[0]
+    if success
+      redirect_to v2_course_url course.id
     else
       render 'new'
     end
