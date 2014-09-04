@@ -1,0 +1,12 @@
+<div class="header" style="background-image: url( <%= @header_bg ? @header_bg : '/assets/header_bg.jpg' %> )">
+  <% if @channel %>
+    <div class="container header_content">
+      <h1>
+        <%= @channel.name %>
+      </h1>
+    </div>
+  <% end %>
+  <% if current_user.admin? %>
+    <%= render "layouts/navigation_admin" %>
+  <% end %>
+</div>

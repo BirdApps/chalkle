@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <%= analytics_init if Rails.env.production? %>
+    <meta charset="utf-8" />
+    <title> 
+      <%= content_for?(:title) ? yield(:title) : 'chalkle°' %>
+    </title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <%= csrf_meta_tag %>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= google_webfonts_init(google: 'Shadows Into Light Two') %>
+    <script type="text/javascript" src="//use.typekit.net/bzi6yvd.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  </head>
+
+  <body class="<%= body_class %> v2" role="document">
+    <header>
+      <%= render 'layouts/navigation' %>
+      <%= render 'layouts/header' %>
+      <%= render 'layouts/navigation_secondary' %>
+    </header>
+    <div class="container" role="main">
+      <%= render 'layouts/messages' %>
+      <%= yield %>
+    </div>
+    <% #render 'layouts/footer' %> 
+  </body>
+  </html>

@@ -105,7 +105,7 @@ $(function(){
     if($('#saved_teacher_id').length){
       selected_val = $('#saved_teacher_id').val();
     }
-    $.getJSON('/v2/people/teachers.json?channel_id='+channel_id, function(data){
+    $.getJSON('/people/teachers.json?channel_id='+channel_id, function(data){
         $('#teaching_teacher_id').empty();
         if(data.length < 2){
           $('.teacher-select').hide();

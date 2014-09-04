@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row secondary-nav">
+    <div class="col-sm-7 col-md-9">
+      <% if @nav_links %>
+        <% @nav_links.each do |link| %>
+          <p class="navbar-text navbar-left">
+            <a href="<%= link[:target] %>" class="navbar-link">
+              <%= link[:text] %>
+            </a>
+          </p>
+        <% end %> 
+      <% end %>
+    </div> 
+    <div class="col-sm-5 col-md-3">
+      <% unless @no_search %>
+        <form class="navbar-form navbar-right search-form" method="get" action="<%= search_path %>" role="search">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <span class="fa fa-search"></span>
+            </span>
+            <input type="text" name="q" class="form-control">
+          </div>
+        </form>
+      <% end %>
+    </div>
+  </div>
+</div>

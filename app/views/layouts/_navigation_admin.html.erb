@@ -1,0 +1,66 @@
+<%= javascript_include_tag "nav_admin" %>
+<%  
+  controller_parts = request.path_parameters[:controller].split("/")
+
+  
+  if controller_parts.index("resources")
+    active_link = "resources"
+  elsif controller_parts.index("metrics")
+    active_link = "metrics"
+  elsif controller_parts.index("chalklers")
+    active_link = "people"
+  else
+    active_link = "courses"
+  end
+
+  nav_links = [
+    {
+      img_name: "bolt",
+      link: courses_path,
+      active: active_link == "courses",
+      title: "Classes"
+    },
+    {
+      img_name: "people",
+      link: chalklers_path,
+      active: active_link == "people",
+      title: "People"
+    },
+    {
+      img_name: "metrics",
+      link: metrics_path,
+      active: active_link == "metrics",
+      title: "Metrics"
+    },
+    {
+      img_name: "book",
+      link: resources_path,
+      active: active_link == "resources",
+      title: "Resources"
+    }
+  ]
+%>
+<div class="admin_nav_wrapper">
+  <div class="flex">
+    <div class="nav-bumper">&nbsp;</div>
+    <nav class="container flush">
+      <ul>
+        <% nav_links.each do |nav_link| %>
+          <li class="<%= "active" if nav_link[:active] %>" >
+            <a href="<%= nav_link[:link] %>" title="<%= nav_link[:title] %>">
+              <div class="img-wrapper">
+                <%= image_tag(asset_path(nav_link[:img_name]+".png"), { class: "reg" }) %>
+                <%= image_tag(asset_path(nav_link[:img_name]+"-alt.png"), { class: "alt" }) %>
+                <div class="title">
+                  <%= nav_link[:title] %>
+                </div>
+              </div>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+    <div class="nav-bumper nav-bumper2">&nbsp;</div>
+    <br style="clear:both" />
+  </div>
+</div>

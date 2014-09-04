@@ -8,13 +8,8 @@ class Chalkler < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
     :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
-  attr_accessible :bio, :email, :name, :password, :password_confirmation,
-    :remember_me, :email_frequency, :email_categories,
-    :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable
-  attr_accessible :bio, :email, :name, :password,
-    :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
-    :email_frequency, :email_categories, :phone_number, :channel_admins, :channels_adminable,
-    :join_channels, :email_regions, :email_region_ids, :as => :admin
+  attr_accessible :bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible
+  attr_accessible :bio, :email, :name, :password, :password_confirmation, :remember_me, :channel_ids, :provider, :uid, :email_frequency, :email_categories, :phone_number, :channel_admins, :channels_adminable, :visible, :join_channels, :email_regions, :email_region_ids, :as => :admin
 
   attr_accessor :join_channels, :set_password_token
 
@@ -42,6 +37,7 @@ class Chalkler < ActiveRecord::Base
 
   after_create :create_channel_associations
 
+  scope :visible, where(visible: true)
   scope :teachers, joins(:courses_taught).uniq
   scope :with_email_region_id, 
     lambda {|region| 
