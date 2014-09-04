@@ -36,17 +36,16 @@ gem 'inherited_resources'
 gem 'foreigner'
 
 #apis
-gem 'rMeetup',   :git => "git://github.com/kiesia/rmeetup.git",  :require => "rmeetup"
-gem 'xeroizer',  :git => "git://github.com/kiesia/xeroizer.git"
+gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'
+gem 'xeroizer'
 gem 'sendgrid'
-gem "geocoder"
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml', '~> 4.0.5'
 gem 'haml-rails',    '~> 0.4.0'
 #gem 'simple_form'
-gem 'simple_form', git: 'git://github.com/zlx/simple_form_bootstrap3', branch: 'rails_3'
+gem 'simple_form', github: 'zlx/simple_form_bootstrap3', branch: 'rails_3'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 gem 'google-webfonts-rails'
@@ -65,7 +64,7 @@ gem 'omni_avatar', path: 'vendor/gems/omni_avatar'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails',        '~> 3.2.2'
-  gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', git: 'git://github.com/anjlab/bootstrap-rails'
+  gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
   gem 'font-awesome-rails'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.16'
