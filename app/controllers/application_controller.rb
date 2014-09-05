@@ -1,14 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   include Filters::FilterHelpers
+  
   layout 'layouts/application'
-  before_filter :nav_links
-  after_filter :store_location
 
   def not_found object="Page"
     raise ActionController::RoutingError.new("#{object} could not be found")
   end
-
 
   def current_ability
     @current_ability ||= Ability.new(current_admin_user)
@@ -31,7 +29,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_register_path_for(resource)
-    session[:previous_url] || root_path
+    stored_location_for(resource) || params[:redirect_to]  || root_path
   end
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -40,65 +38,76 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def authenticate_chalkler!
-    session[:user_return_to] = request.fullpath
-    super
-  end
-
-  def previous_url
-    session[:previous_url] unless session[:previous_url].split('/')[1] == "chalklers"
-  end
-
-  def not_found
-    raise ActionController::RoutingError.new('Not Found')
-  end
-
-  private
-
-  def store_location
-    session[:previous_url] = request.fullpath unless request=~ /\/chalklers/
-  end
-
-  def current_user
-    if @current_user.nil?
-      @current_user = TheUser.new current_chalkler, current_admin_user
+    def authenticate_chalkler!
+      session[:user_return_to] = request.fullpath
+      super
     end
-    return @current_user 
-  end
 
-  def nav_links
-    @nav_links = []
-  end
-  
-  def course_nav_links
-    @nav_links = [{text: "Classes", target: courses_path }, {text: "Categories", target: categories_path }, {text: "Providers", target: channels_path }]
-  end
-
-  def courses_for_time
-    @courses_for_time ||= Querying::CoursesForTime.new courses_base_scope
-  end
-
-  def courses_base_scope
-    apply_filter start_of_association_chain.published.by_date
-  end
-
-  def start_of_association_chain
-    @channel ? @channel.courses : Course
-  end
-
-  def current_date
-    return @current_date if @current_date.present?
-    if params[:day]
-      @current_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
-    else
-      @current_date = DateTime.now
+    def current_user
+      if @current_user.nil?
+        @current_user = TheUser.new current_chalkler, current_admin_user
+      end
+      return @current_user 
     end
-    @current_date
-  end
 
-  def get_current_week( start_date = Date.today )
-    Week.containing current_date
-  end
+    def not_found
+      raise ActionController::RoutingError.new('Not Found')
+    end
 
+    def load_country
+      if country_code
+        if country_code != 'nz'
+          raise ActiveRecord::RecordNotFound
+        end
+      end
+    end
 
+    def country_code
+      params[:country_code] unless params[:country_code].blank?
+    end
+
+    def load_region
+      if region_name
+        @region = Region.find_by_url_name(region_name)
+        raise ActiveRecord::RecordNotFound unless @region
+      end
+    end
+
+    def region_name
+      params[:region] unless params[:region].blank?
+    end
+
+    def courses_for_time
+      @courses_for_time ||= Querying::CoursesForTime.new courses_base_scope
+    end
+
+    def courses_base_scope
+      apply_filter start_of_association_chain.published.by_date
+    end
+
+    def start_of_association_chain
+      @channel ? @channel.courses : Course
+    end
+
+    def current_date
+      return @current_date if @current_date.present?
+      if params[:day]
+        @current_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+      else
+        @current_date = DateTime.now
+      end
+      @current_date
+    end
+
+    def get_current_week( start_date = Date.today )
+      Week.containing current_date
+    end
+
+    def get_current_month
+      @month = if params[:year] && params[:month]
+        Month.new(params[:year].to_i, params[:month].to_i)
+      else
+        Month.current
+      end
+    end
 end

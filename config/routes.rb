@@ -13,6 +13,7 @@ Chalkle::Application.routes.draw do
     match '/' => 'channels#show'
   end
 
+
   root to: 'courses#index'
   
   resources :channel_teachers, path: 'teachers'
@@ -26,6 +27,9 @@ Chalkle::Application.routes.draw do
     end
     member do
       put 'change_status', to: 'courses#change_status', as: :change_status
+    end
+    collection do
+      get 'calculate_cost'
     end
   end
 
@@ -43,13 +47,12 @@ Chalkle::Application.routes.draw do
       get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: :meetup_email_settings
 
       delete '/preferences/destroy_chalkler/:id' => 'preferences#destroy', as: :delete
-
       get  '/data_collection/:action', as: 'data_collection', controller: :data_collection_form
       post '/data_collection/:action', as: 'data_collection_update', controller: :data_collection_form
     end
   end
 
-  resources :channels, path: 'providers', only: [:index] do
+  resources :channels, path: 'providers', only: [:index, :teachers] do
     resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
     resources :subscriptions, only: [:create, :destroy], path: 'follow'
   end
@@ -77,17 +80,18 @@ Chalkle::Application.routes.draw do
   get 'classes/:year/:month/:day', to: 'classes#index', as: :classes_in_week
 
   #TODO: find an easier way of doing these channel routes!
+  get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
   get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
   get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :channel_course
-  get ':channel_url_name/teachers', to: 'providers#teachers', as: :channel_channel_teachers
-  get ':channel_url_name/teacher/:id', to: 'providers#teachers', as: :channel_channel_teacher
+  get ':channel_url_name/teachers', to: 'channels#teachers', as: :channel_channel_teachers
+  get ':channel_url_name/teacher/:id', to: 'channels#teachers', as: :channel_channel_teacher
   get ':channel_url_name/edit', to: 'channels#edit', as: :channel_edit
   get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
   get ':channel_url_name/followers', to: 'channels#followers', as: :channel_followers
   get ':channel_url_name', to: 'channels#show', as: :channel
 
-constraints(MainDomain) do
+  #TODO: will never be hit because of channel_course_series
+  constraints(MainDomain) do
     get ':country_code/:region_name', to: 'courses#index', constraints: {country_code: /[a-zA-Z]{2}/}
   end
-
 end

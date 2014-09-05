@@ -9,7 +9,7 @@ describe CoursesController do
       before { get :show, channel_id: channel.id, id: course.id }
 
       it "redirects to the chalkler dashboard" do
-        expect(response).to redirect_to(chalklers_root_url)
+        expect(response).to redirect_to(root_url)
       end
 
       it "shows a flash message" do

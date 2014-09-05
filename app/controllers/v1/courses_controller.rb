@@ -78,7 +78,7 @@ class CoursesController < ApplicationController
     def check_course_visibility
       unless @course.published?
         flash[:notice] = "This class is no longer available."
-        redirect_to chalklers_root_url
+        redirect_to root_url
         return false
       end
     end

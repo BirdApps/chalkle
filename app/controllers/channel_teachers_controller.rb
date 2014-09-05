@@ -1,6 +1,6 @@
 class ChannelTeachersController < ApplicationController
   def index
-    @teachers = ChannelTeacher.where(channel_id: params[:channel_id]).compact
+    @teachers = ChannelTeacher.all
     respond_to do |format|
       format.json { render json: @teachers.to_json(only: [:id, :name]) }
       format.html { render @teachers }

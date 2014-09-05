@@ -105,7 +105,10 @@ $(function(){
     if($('#saved_teacher_id').length){
       selected_val = $('#saved_teacher_id').val();
     }
-    $.getJSON('/people/teachers.json?channel_id='+channel_id, function(data){
+    if(channel_id == ""){
+      channel_id = 0;
+    }
+    $.getJSON('/providers/'+channel_id+'/teachers.json', function(data){
         $('#teaching_teacher_id').empty();
         if(data.length < 2){
           $('.teacher-select').hide();

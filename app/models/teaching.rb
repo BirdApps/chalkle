@@ -332,7 +332,6 @@ class Teaching
   end
 
   def get_region(region_name)
-    binding.pry
     region_name = region_name || @city
     region = Region.find_by_name(region_name)
     if region.nil?

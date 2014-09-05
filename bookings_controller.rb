@@ -105,7 +105,7 @@ class BookingsController < ApplicationController
 
   def check_course_visibility
     unless @course.published?
-      redirect_to chalklers_root_url, notice: "This class is no longer available."
+      redirect_to root_url, notice: "This class is no longer available."
       return false
     end
   end

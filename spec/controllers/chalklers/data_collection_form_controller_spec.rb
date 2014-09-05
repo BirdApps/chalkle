@@ -31,7 +31,7 @@ describe Chalklers::DataCollectionFormController do
     it "redirects to the chalkler root path if successful" do
       Chalkler::DataCollection::EmailForm.stub(:new) { form }
       post :update_email, form_args
-      expect(response).to redirect_to(chalklers_root_url)
+      expect(response).to redirect_to(root_url)
     end
 
     it "renders the email form if unsuccessful" do
