@@ -6,7 +6,7 @@ class Course < ActiveRecord::Base
   include Gst
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_cost, :venue_address
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_cost, :venue_address, :first_lesson_start_at
   ]
 
   attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
@@ -62,11 +62,24 @@ class Course < ActiveRecord::Base
   validate :max_teacher_cost
   validate :image_size
 
-  scope :start_at_between, lambda {|from,to| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", from.to_s(:db), to.to_s(:db))}
+
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :recent, visible.joins(:lessons).where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
-  scope :last_week, joins(:lessons).visible.where("start_at > current_date - #{WEEK} AND start_at < current_date")
+  scope :displayable, lambda { published.visible }
+
+  scope :start_at_between, lambda{ |from,to| where(:start_at => from.beginning_of_day..to.end_of_day) }
+  scope :recent, visible.start_at_between(DateTime.now.advance(days: PAST), DateTime.now.advance(days: IMMEDIATE_FUTURE))
+  scope :last_week, visible.start_at_between(DateTime.now.advance(weeks: -1), DateTime.now)
+  scope :in_month, lambda{|month| start_at_between(month.first_day, month.last_day) }
+  scope :in_week, lambda {|week| start_at_between(week.first_day, week.last_day) }
+  scope :on_date, lambda {|date| start_at_between(date, date) }
+  scope :in_future, lambda { where( "start_at >= ?", DateTime.now.beginning_of_day) }
+  scope :previous, lambda { where("start_at < ?", DateTime.now.beginning_of_day) }
+  #TODO: replace references to previous with in_past - time consuming because previous is common word
+  scope :in_past, previous
+  scope :by_date, order(:start_at)
+  scope :by_date_desc, order('start_at DESC')
+
   scope :unreviewed, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
   scope :approved, visible.where(status: STATUS_4)
@@ -74,16 +87,10 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-  scope :by_date, joins(:lessons).order('lessons.start_at')
-  scope :in_month, lambda {|month| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", month.first_day.to_s(:db), month.last_day.to_s(:db))}
-  scope :in_week, lambda {|week| where{ |course| week.include? course.start_at.to_date } }
-  scope :displayable, lambda { published.visible }
-  scope :upcoming_or_today, lambda { joins(:lessons).where("start_at >= ?", Time.now.to_date.to_time) }
-  scope :previous, lambda { joins(:lessons).where("start_at < ?", Time.now.to_date.to_time) }
   scope :not_meetup, where("meetup_url IS NULL")
-  scope :only_with_region, lambda {|region| where(region_id: region.id) }
-  scope :only_with_channel, lambda {|channel| where(channel_id: channel.id) }
-  scope :with_base_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
+  scope :in_region, lambda {|region| where(region_id: region.id) }
+  scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
+  scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
 
   # CRAIG: This is a bit of a hack. Replace this system with a state machine.
@@ -116,7 +123,7 @@ class Course < ActiveRecord::Base
     @first_or_new_lesson ||= ( first_lesson || Lesson.new(course_id: id) )
   end
 
-  def start_at
+  def first_lesson_start_at
     first_lesson.try :start_at if first_lesson
   end
 
@@ -125,7 +132,7 @@ class Course < ActiveRecord::Base
     false
   end
 
-  def start_at=(lesson_start)
+  def first_lesson_start_at=(lesson_start)
     first_or_new_lesson.update_attribute :start_at, lesson_start
   end
 

@@ -4,7 +4,7 @@ module Filters
   module Rules
     class SingleCategory < SingleRelation
       def apply_to(scope)
-        scope.with_base_category(relation)
+        scope.in_category(relation)
       end
 
 

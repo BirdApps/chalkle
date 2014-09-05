@@ -34,7 +34,7 @@ module Filters
       end
 
       def apply_to(scope)
-        scope.only_with_region(relation)
+        scope.in_region(relation)
       end
 
       def clear_name
