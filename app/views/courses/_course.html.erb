@@ -47,12 +47,12 @@
         </div>
       </header>
       <div class="details clearfix">
-        <a href="<%= channel_show_path(course.channel.url_name) %>" title="<%= course.channel.name %>" >
+        <a href="<%= channel_path(course.channel.url_name) %>" title="<%= course.channel.name %>" >
           <img class="channel-img pull-left" />
         </a>
         <div class="pull-left">
           <div class="grey upper smaller">Provided By</div>
-          <%= link_to course.channel.name, channel_show_path(course.channel.url_name) %>
+          <%= link_to course.channel.name, channel_path(course.channel) %>
         </div>
         <div class="vertical-seperator pull-left"></div>
         <div class="pull-left">

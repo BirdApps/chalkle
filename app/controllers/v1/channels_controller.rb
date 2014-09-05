@@ -1,5 +1,4 @@
 class ChannelsController < ApplicationController
-  after_filter :store_location
   layout 'new'
 
   before_filter :load_channel

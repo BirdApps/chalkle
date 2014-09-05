@@ -1,7 +1,5 @@
 class CoursesController < ApplicationController
   include Filters::FilterHelpers
-
-  after_filter :store_location, only: [:show, :index]
   before_filter :load_channel
   before_filter :load_course, only: :show
   before_filter :check_course_visibility, only: :show

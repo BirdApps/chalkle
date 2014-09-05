@@ -10,7 +10,7 @@ module Filters::Rules
     describe "#apply_to" do
       it "applies the region to the scope" do
         subject.relation = region
-        expect(scope).to receive(:only_with_region).with(region)
+        expect(scope).to receive(:in_region).with(region)
         subject.apply_to(scope)
       end
     end

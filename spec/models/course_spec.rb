@@ -96,7 +96,7 @@ describe Course do
     end
   end
 
-  describe ".upcoming_or_today" do
+  describe ".in_future" do
     it "includes course published earlier today" do
       day_start = Time.new(2013,1,1,0,5)
       day_middle = Time.new(2013,1,1,12,0)
@@ -105,7 +105,7 @@ describe Course do
       course = FactoryGirl.create(:course, lessons: [lesson])
 
       Timecop.freeze(day_middle) do
-        Course.upcoming_or_today.should include(course)
+        Course.in_future.should include(course)
       end
     end
 
@@ -117,7 +117,7 @@ describe Course do
       course = FactoryGirl.create(:course, lessons: [lesson])
 
       Timecop.freeze(day_start) do
-        Course.upcoming_or_today.should include(course)
+        Course.in_future.should include(course)
       end
     end
   end

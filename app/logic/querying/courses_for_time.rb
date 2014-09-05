@@ -46,7 +46,7 @@ module Querying
     end
 
     def courses_for_week(week)
-      visible_scope.upcoming_or_today.in_week(week)
+      visible_scope.in_future.in_week(week)
     end
 
     def visible_scope

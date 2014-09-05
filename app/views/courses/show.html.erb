@@ -24,7 +24,7 @@
       <h2>
         <%= @course.name %>
       </h2>
-      <%= link_to @course.channel.name, channel_show_path(@course.channel.url_name) %>
+      <%= link_to @course.channel.name, channel_path(@course.channel.url_name) %>
     </div>
   </div>
 </div>

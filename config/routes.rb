@@ -74,6 +74,8 @@ Chalkle::Application.routes.draw do
   get 'categories', to: 'categories#index', as: :categories
   get 'categories/:category_url_name', to: 'categories#show', as: :category
 
+  get 'classes/:year/:month/:day', to: 'classes#index', as: :classes_in_week
+
   #TODO: find an easier way of doing these channel routes!
   get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
   get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :channel_course

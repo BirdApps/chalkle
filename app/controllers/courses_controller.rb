@@ -5,7 +5,7 @@ class CoursesController < ApplicationController
 
   def index
     #@courses_weeks = courses_for_time.load_upcoming_week_courses get_current_week
-    #@courses_weeks = Course.in_week get_current_week
+    @courses = Course.in_week(Week.containing(current_date)).by_date
   end
 
   def show
