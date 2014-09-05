@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   include Filters::FilterHelpers
   layout 'layouts/application'
   before_filter :nav_links
+  after_filter :store_location
 
   def not_found object="Page"
     raise ActionController::RoutingError.new("#{object} could not be found")
@@ -19,14 +20,14 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     return admin_root_path if resource.is_a?(AdminUser)
-
+    
     original_path = stored_location_for(resource)
     default_path  = root_path
     options       = { original_path: original_path, default_path: default_path }
 
     Chalkler::DataCollection.new(resource, options).path
 
-    return params[:redirect_to] if params[:redirect_to]
+    original_path || params[:redirect_to]  || root_path
   end
 
   def after_register_path_for(resource)
@@ -38,6 +39,15 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  def authenticate_chalkler!
+    session[:user_return_to] = request.fullpath
+    super
+  end
+
+  def previous_url
+    session[:previous_url] unless session[:previous_url].split('/')[1] == "chalklers"
+  end
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
@@ -76,12 +86,19 @@ class ApplicationController < ActionController::Base
     @channel ? @channel.courses : Course
   end
 
-  def get_current_week( start_date = Date.today )
+  def current_date
+    return @current_date if @current_date.present?
     if params[:day]
-      Week.containing Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+      @current_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
     else
-      Week.containing start_date
+      @current_date = DateTime.now
     end
+    @current_date
   end
+
+  def get_current_week( start_date = Date.today )
+    Week.containing current_date
+  end
+
 
 end
