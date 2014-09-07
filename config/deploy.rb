@@ -1,10 +1,19 @@
-require "rvm/capistrano"
+require "capistrano-rbenv"
 require "bundler/capistrano"
+# require 'capistrano-unicorn'
+set :bundle_flags, "--deployment --quiet --binstubs"
 
-set :rvm_type, :system
+
+set :default_environment, {
+  'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
+}
+
+set :rbenv_ruby_version, "1.9.3-p545"
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
+set :rbenv_setup_default_environment, false
+
 
 set :application, "chalkle"
 set :repository,  "git@github.com:enspiral/#{application}.git"
@@ -19,10 +28,10 @@ set :whenever_environment, defer { rails_env }
 set :whenever_identifier, defer { "#{application}_#{rails_env}" }
 
 task :staging do
-  set :domain,    "my.chalkle.com"
-  set :branch,    "staging"
+  set :domain,    "chalklestaging.cloudapp.net"
+  set :branch,    "feature/heroku"
   set :rails_env, "staging"
-  set :deploy_to, "/home/#{user}/staging"
+  set :deploy_to, "/apps/chalkle/staging"
   set :bundle_without, [:development, :test]
 
   role :web, domain
@@ -73,11 +82,21 @@ namespace :dragonfly do
   end
 end
 
+
+
 after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs", "deploy:migrate"
 after "deploy:update", "deploy:cleanup"
+
+namespace :unicorn do 
+  desc "unicorn things"
+  task :stop, :roles => :app do 
+    run "killall -u chalkle unicorn"
+  end
+end
+
 
 require './config/boot'
 load 'deploy/assets'
 require 'bundler/capistrano'
 require 'airbrake/capistrano'
-require 'whenever/capistrano'
+# require 'whenever/capistrano'

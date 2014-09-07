@@ -38,6 +38,9 @@
 
 :coffeescript
 
+  $("table.month_calendar_view").each ->
+    $(this).monthlyCalendar()
+    
   $('#js-subscribe').tooltip({
     placement: "bottom"
   })

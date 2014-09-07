@@ -24,7 +24,8 @@ class Booking < ActiveRecord::Base
   scope :billable, joins(:course).where{ (courses.cost > 0) & (status == 'yes') & ((chalkler_id != courses.teacher_id) | (guests > 0)) }
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :upcoming, joins(:course).where{ courses.start_at.utc > Time.now.utc && courses.visible }
+  scope :course_visible, joins(:course).where('courses.visible = ?', true)
+  scope :upcoming, course_visible.joins(:course => :lessons).where( 'start_at > ?', Time.now )
 
   before_validation :set_free_course_attributes
 

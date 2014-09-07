@@ -1,7 +1,13 @@
 source 'https://rubygems.org'
 
+if RUBY_VERSION =~ /1.9/
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
+end
+
 gem 'rails', '3.2.19'
 gem 'pg', '~> 0.15.1'
+gem 'unicorn-rails'
 
 # Authentication
 gem 'devise',           '~> 2.2.4'
@@ -88,7 +94,8 @@ group :development do
   # Deployment
   gem 'capistrano',      '~> 2.14.1',  require: false
   gem 'capistrano-ext',  '~> 1.2.1',   require: false
-  gem 'rvm-capistrano'
+  gem 'capistrano-rbenv', '~> 1.0'
+  gem 'capistrano-unicorn', :require => false
 
   # Helpful Rails Generators
   gem 'nifty-generators',  '~> 0.4.6',  require: false
