@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140904221504) do
+ActiveRecord::Schema.define(:version => 20140905032520) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -101,6 +101,9 @@ ActiveRecord::Schema.define(:version => 20140904221504) do
     t.string   "phone_number"
     t.text     "email_region_ids"
     t.boolean  "visible",                :default => true
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "address"
   end
 
   create_table "channel_admins", :force => true do |t|

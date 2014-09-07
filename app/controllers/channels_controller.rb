@@ -1,6 +1,9 @@
 class ChannelsController < ApplicationController
   before_filter :load_channel, except: :index
 
+
+  after_filter :check_presence_of_courses, only: [:show, :series]
+
   def index
     @channels = Channel.visible
   end

@@ -1,27 +1,33 @@
-<div class="container">
-  <div class="row secondary-nav">
-    <div class="col-sm-7 col-md-9">
-      <% if @nav_links %>
-        <% @nav_links.each do |link| %>
-          <p class="navbar-text navbar-left">
-            <a href="<%= link[:target] %>" class="navbar-link">
-              <%= link[:text] %>
-            </a>
-          </p>
-        <% end %> 
-      <% end %>
-    </div> 
-    <div class="col-sm-5 col-md-3">
-      <% unless @no_search %>
-        <form class="navbar-form navbar-right search-form" method="get" action="<%= search_path %>" role="search">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <span class="fa fa-search"></span>
-            </span>
-            <input type="text" name="q" class="form-control">
-          </div>
-        </form>
-      <% end %>
+<div class="row secondary-nav">
+  <div class="col-xs-4 col-sm-3">
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="locationDropDown" data-toggle="dropdown">
+        Location
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="locationDropDown">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">New Zealand</a></li>
+        <li role="presentation" class="divider"></li>
+        <% Region.with_classes.each do |region| %>        
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><%= region.name %></a></li>
+        <% end %>
+      </ul>
     </div>
+  </div> 
+   <div class="col-xs-4 col-sm-3">
+    Topics
+  </div> 
+   <div class="col-xs-4 col-sm-3">
+    Providers
+  </div> 
+  <div class="col-xs-12 col-sm-3">
+    <form class="navbar-form navbar-right search-form" method="get" action="<%= search_path %>" role="search">
+      <div class="input-group">
+        <span class="input-group-addon">
+          <span class="fa fa-search"></span>
+        </span>
+        <input type="text" name="q" class="form-control">
+      </div>
+    </form>
   </div>
 </div>

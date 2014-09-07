@@ -68,13 +68,15 @@ class ApplicationController < ActionController::Base
 
     def load_region
       if region_name
-        @region = Region.find_by_url_name(region_name)
-        raise ActiveRecord::RecordNotFound unless @region
+        @region = Region.find_by_url_name region_name.downcase
       end
     end
 
     def region_name
-      params[:region] unless params[:region].blank?
+      session[:region] = params[:region] unless params[:region].blank?
+      request_region = request.location.data["region_name"]
+      request_region = nil unless request_region != ""
+      session[:region] || request_region
     end
 
     def courses_for_time
@@ -83,6 +85,12 @@ class ApplicationController < ActionController::Base
 
     def courses_base_scope
       apply_filter start_of_association_chain.published.by_date
+    end
+
+    def check_presence_of_courses
+      unless @courses.present?
+        flash[:notice] = "There are no courses that match the current filter"
+      end
     end
 
     def start_of_association_chain
@@ -110,4 +118,6 @@ class ApplicationController < ActionController::Base
         Month.current
       end
     end
+
+
 end

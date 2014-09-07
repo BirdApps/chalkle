@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Course < ActiveRecord::Base
   include Categorizable
   include Gst
-
+  
   attr_accessible *BASIC_ATTR = [
     :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_cost, :venue_address, :first_lesson_start_at
   ]
@@ -107,6 +107,10 @@ class Course < ActiveRecord::Base
     true if repeat_course.present?
   end
 
+  def address
+    venue_address
+  end
+
   def course?
     true if lessons.count > 1
   end
@@ -136,8 +140,12 @@ class Course < ActiveRecord::Base
     first_or_new_lesson.update_attribute :start_at, lesson_start
   end
 
-  def duration
+  def learning_hours
     lessons.inject(0){|sum, l| l.duration ? sum += l.duration : sum }
+  end
+
+  def duration
+    first_or_new_lesson.duration
   end
 
   def duration=(first_lesson_duration)

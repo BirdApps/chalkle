@@ -1,10 +1,19 @@
 class CoursesController < ApplicationController
   before_filter :load_course, only: [:show]
+  before_filter :load_region, only: [:index]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
 
+  after_filter :check_presence_of_courses, only: [:index]
+
   def index
-    @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
+    if region_name.nil?
+      @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
+      @region = Region.new name: "New Zealand"
+    else 
+      @courses = Course.displayable.in_region(@region).in_week(Week.containing(current_date)).by_date
+    end
+    @header_bg = @region.hero
   end
 
   def show
@@ -66,7 +75,7 @@ class CoursesController < ApplicationController
   private
   
   def load_course
-      @course = start_of_association_chain.displayable.find(params[:id]).decorate
+      @course = start_of_association_chain.find(params[:id]).decorate
   end
  
   def geography_filter
@@ -83,10 +92,12 @@ class CoursesController < ApplicationController
     end
 
     def check_course_visibility
-      unless @course.published?
-        flash[:notice] = "This class is no longer available."
-        redirect_to root_url
-        return false
+      if !current_user.has_relation(@course, [:channel_admin, :teacher])
+        unless @course.published?
+          flash[:notice] = "This class is no longer available."
+          redirect_to root_url
+          return false
+        end
       end
     end
 
@@ -108,8 +119,6 @@ class CoursesController < ApplicationController
     def courses_base_scope
       apply_filter(start_of_association_chain.published.by_date)
     end
-
-    
 
     def get_current_week(start_date = Date.today)
       if params[:day]
