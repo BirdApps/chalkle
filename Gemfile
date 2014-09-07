@@ -39,6 +39,7 @@ gem 'foreigner'
 gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'
 gem 'xeroizer'
 gem 'sendgrid'
+gem "geocoder"
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'
