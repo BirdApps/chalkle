@@ -26,6 +26,7 @@ class Ability
       can [:read, :update, :send_reset_password_mail], Chalkler, :id => user.chalkler_ids
       can :manage, CourseSuggestion
       # TODO: Do this with a single database join
+      cannot :manage, Course
       can [:read, :update, :meetup_template, :copy_course, :hide, :unhide], Course, :id => user.course_ids
       can :create, Course
       can :create, Booking
