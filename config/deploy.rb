@@ -29,7 +29,7 @@ set :whenever_identifier, defer { "#{application}_#{rails_env}" }
 
 task :staging do
   set :domain,    "chalklestaging.cloudapp.net"
-  set :branch,    "feature/heroku"
+  set :branch,    "feature/New_Admin"
   set :rails_env, "staging"
   set :deploy_to, "/apps/chalkle/staging"
   set :bundle_without, [:development, :test]
