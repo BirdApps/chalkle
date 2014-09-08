@@ -75,9 +75,11 @@ Chalkle::Application.routes.draw do
   get 'search', to: 'search#index', as: :search
 
   get 'categories', to: 'categories#index', as: :categories
-  get 'categories/:category_url_name', to: 'categories#show', as: :category
+  get 'categories/:category_url_name', to: 'courses#index', as: :category
 
-  get 'classes/:year/:month/:day', to: 'classes#index', as: :classes_in_week
+  get 'classes/:year/:month/:day', to: 'courses#index', as: :classes_in_week
+
+  get '/regions/:region_url_name', to: 'courses#index', as: :region
 
   #TODO: find an easier way of doing these channel routes!
   get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
@@ -89,6 +91,7 @@ Chalkle::Application.routes.draw do
   get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
   get ':channel_url_name/followers', to: 'channels#followers', as: :channel_followers
   get ':channel_url_name', to: 'channels#show', as: :channel
+
 
   #TODO: will never be hit because of channel_course_series
   constraints(MainDomain) do

@@ -3,7 +3,9 @@ require 'channel_logo_uploader'
 class Channel < ActiveRecord::Base
   mount_uploader :logo, ChannelLogoUploader
 
-  attr_accessible :name, :channel_teachers, :url_name, :region_ids, :regions, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :as => :admin
+  attr_accessible *BASIC_ATTR = [:name ]
+
+  attr_accessible *BASIC_ATTR, :channel_teachers, :url_name, :region_ids, :regions, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :as => :admin
 
   validates_presence_of :name
   validates :channel_rate_override, numericality: true, allow_blank: true

@@ -1,7 +1,5 @@
 class ChannelsController < ApplicationController
-  before_filter :load_channel, except: :index
-
-
+  before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
 
   def index
@@ -52,14 +50,6 @@ class ChannelsController < ApplicationController
   end
 
   private 
-
-  def load_channel
-    @channel = find_channel_by_subdomain || Channel.find_by_url_name(params[:channel_url_name])
-  end
-
-  def find_channel_by_subdomain
-    Channel.find_by_url_name(request.subdomain) if request.subdomain.present?
-  end
 
   def redirect_meetup_channels
     #if @channel.meetup_url.present?

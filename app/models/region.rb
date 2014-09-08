@@ -6,9 +6,15 @@ class Region < ActiveRecord::Base
   after_create :set_url_name
 
   has_many :courses
-  scope :with_classes, where( courses: nil)
+  scope :with_classes, includes(:courses).where("COUNT(courses.id) > 0")
 
-
+  def self.with_displable_classes_in_future
+    regions = []
+    Region.all.each do |region|
+      regions << region if region.courses.in_future.displayable.count > 0
+    end
+    regions
+  end
 
   def set_url_name
     url_name = name.parameterize
@@ -18,5 +24,9 @@ class Region < ActiveRecord::Base
 
   def hero
     '/assets/partners/index-hero.jpg'
+  end
+
+  def hero_blurred
+    '/assets/partners/index-hero-invert.jpg'
   end
 end

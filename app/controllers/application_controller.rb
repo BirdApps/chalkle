@@ -4,6 +4,10 @@ class ApplicationController < ActionController::Base
   
   layout 'layouts/application'
 
+  before_filter :load_region
+  before_filter :load_channel
+  before_filter :load_category
+
   def not_found object="Page"
     raise ActionController::RoutingError.new("#{object} could not be found")
   end
@@ -38,6 +42,12 @@ class ApplicationController < ActionController::Base
 
   protected
 
+    def expire_filter_cache
+      expire_fragment('category_filter_list')
+      expire_fragment('region_filter_list')
+      expire_fragment('channel_filter_list')
+    end
+
     def authenticate_chalkler!
       session[:user_return_to] = request.fullpath
       super
@@ -70,13 +80,33 @@ class ApplicationController < ActionController::Base
       if region_name
         @region = Region.find_by_url_name region_name.downcase
       end
+      if @region.nil?
+        @region = Region.new name: "New Zealand", courses: Course.all
+      end
     end
 
     def region_name
-      session[:region] = params[:region] unless params[:region].blank?
+      session[:region] = params[:region_url_name] unless params[:region_url_name].blank?
       request_region = request.location.data["region_name"]
       request_region = nil unless request_region != ""
       session[:region] || request_region
+    end
+
+    def load_category
+      if params[:category_url_name]
+        @category = Category.find_by_url_name params[:category_url_name].downcase
+      end
+      if @category.nil?
+        @category = Category.new name: 'All Topics'
+      end
+    end
+
+    def load_channel
+      @channel = find_channel_by_subdomain || Channel.find_by_url_name(params[:channel_url_name]) || Channel.new(name: "All Providers")
+    end
+
+    def find_channel_by_subdomain
+      Channel.find_by_url_name(request.subdomain) if request.subdomain.present?
     end
 
     def courses_for_time
@@ -89,8 +119,16 @@ class ApplicationController < ActionController::Base
 
     def check_presence_of_courses
       unless @courses.present?
-        flash[:notice] = "There are no courses that match the current filter"
+        add_response_notice(notice)
       end
+    end
+
+    def add_response_notice(notice)
+        if response[:notices].nil?
+          response[:notices] = []
+        end
+        response[:notices] << "There are no courses that match the current filter"
+      
     end
 
     def start_of_association_chain

@@ -6,3 +6,13 @@
     </div>
   <% end %>
 <% end %>
+<% if response[:notices].present? %>
+  <% response[:notices].each do |notice| %>
+    <% if notice.is_a?(String) && !notice.blank? %>
+      <div class="alert alert-info">
+        <a class="close" data-dismiss="alert">×</a>
+        <%= content_tag :div, notice %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

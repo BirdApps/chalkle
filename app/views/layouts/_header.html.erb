@@ -1,15 +1,20 @@
 <%
-  if @channel
+  if @courses
+   subtitle = 'Classes in'
+  elsif @channel.name != "All Providers"
     subtitle = 'Classes from'
   else
-    subtitle = 'Classes in'
+    subtitle = ''
   end
-  title = (@channel || @region || @course || Course.new(name: "Chalkle") ).name
+  title = (@channel || @region || @course).name
  %>
 <div class="header" style="background-image: url( <%= @header_bg ? @header_bg : '/assets/header_bg.jpg' %> )">
   
   <div class="container header_content col-xs-12">
-  
+    <div class="header_content_bg_wrapper">
+      <div class="header_content_bg" style="background-image: url( <%= @header_blur_bg ? @header_blur_bg : '/assets/header_bg.jpg' %> )">
+      </div>
+    </div>
     <% if title %>
       <div class="title col-sm-offset-2 col-sm-10">
         <em><%= subtitle %></em>
@@ -22,7 +27,6 @@
   
   </div>
 
-  <% if current_user.admin? %>
-    <%= render "layouts/navigation_admin" %>
-  <% end %>
+  <%= render "layouts/navigation_admin" %>
+
 </div>

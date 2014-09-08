@@ -1,19 +1,20 @@
 class CoursesController < ApplicationController
   before_filter :load_course, only: [:show]
-  before_filter :load_region, only: [:index]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
-
-  after_filter :check_presence_of_courses, only: [:index]
+  before_filter :expire_filter_cache, only: [:create, :update, :destroy]
 
   def index
-    if region_name.nil?
-      @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
-      @region = Region.new name: "New Zealand"
-    else 
-      @courses = Course.displayable.in_region(@region).in_week(Week.containing(current_date)).by_date
+    @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
+    if @region.id.present?
+      @courses = @courses.in_region @region
+    end
+    if @category.id.present?
+      @courses = @courses.in_category @category
     end
     @header_bg = @region.hero
+    @header_blur_bg = @region.hero_blurred
+    check_presence_of_courses
   end
 
   def show
@@ -73,7 +74,7 @@ class CoursesController < ApplicationController
   end
 
   private
-  
+
   def load_course
       @course = start_of_association_chain.find(params[:id]).decorate
   end
@@ -130,10 +131,6 @@ class CoursesController < ApplicationController
 
     def decorate(courses)
       CourseDecorator.decorate_collection(courses)
-    end
-
-    def load_channel
-      @channel ||= Channel.find(params[:channel_id]) if params[:channel_id]
     end
 
 end

@@ -28,6 +28,7 @@ module Chalkle
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
     config.active_record.observers = :chalkler_observer
 
+    config.cache_store = :memory_store
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = 'Auckland'

@@ -41,6 +41,8 @@
   ]
 %>
 <div class="admin_nav_wrapper">
+
+  <% if current_user.admin? %>
   <div class="flex">
     <div class="nav-bumper">&nbsp;</div>
     <nav class="container flush">
@@ -63,4 +65,5 @@
     <div class="nav-bumper nav-bumper2">&nbsp;</div>
     <br style="clear:both" />
   </div>
+  <% end  %>
 </div>
