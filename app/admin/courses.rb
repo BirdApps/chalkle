@@ -1,6 +1,17 @@
 require 'carrierwave'
 require 'course_upload_image_uploader'
 
+# module MetaSearch::Searches
+#   class Course
+#     def start_at_gte
+#       binding.pry
+#     end
+#     def start_at_lte
+#       binding.pry
+#     end
+#   end
+#end
+
 ActiveAdmin.register Course  do
   csv do
     column :id
@@ -27,11 +38,15 @@ ActiveAdmin.register Course  do
     :collection => proc{ Category.all.collect{ |c| [c.name, c.name] }}
   filter :teacher, as: :select, :collection => proc{ Chalkler.accessible_by(current_ability).order("LOWER(name) ASC") }
   filter :cost
-  filter :start_at
   filter :venue
+  filter :lessons_start_at,
+    :as => :date_range,
+    :label => 'Start between',
+    :collection => proc { Course.lessons(:start_at) }
 
   controller do
     def scoped_collection
+      super.includes :lessons
       end_of_association_chain.accessible_by(current_ability)
     end
     helper CourseHelper
@@ -97,9 +112,9 @@ ActiveAdmin.register Course  do
       end
       row :teacher
       row "Teacher's email" do |course|
-        if course.teacher_id.present?
-          if Chalkler.find(course.teacher_id).email?
-            Chalkler.find(course.teacher_id).email
+        if course.teacher
+          if course.teacher.email?
+            course.teacher.email
           else
             status_tag( "Please click on teacher above and enter their email", :error )
           end
@@ -188,7 +203,7 @@ ActiveAdmin.register Course  do
         number_to_currency course.material_cost
       end
       row :duration do
-        pluralize(course.duration / 60 / 60, "hour") if course.duration
+        pluralize(course.duration.to_f / 60 / 60, "hour") if course.duration
       end
       row :max_attendee
       row "Minimum Attendee" do

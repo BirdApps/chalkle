@@ -11,7 +11,7 @@
           %p.details
             = course.category_name
             = "| #{course.channel_name}"
-            = "| Starts: #{course.start_at.strftime("%l:%M%p %a %B %d")}" if course.start_at?
+            = "| Starts: #{course.start_at.strftime("%l:%M%p %a %B %d")}" if course.start_at
           %p= truncate(course.do_during_class, length: 250, separator: ' ')
           %p= link_to course.join_chalklers, course.url
 
@@ -25,7 +25,7 @@
           %p.details
             = course.category_name
             = "| #{course.channel_name}"
-            = "| Starts: #{course.start_at.strftime("%l:%M%p %a %B %d")}" if course.start_at?
+            = "| Starts: #{course.start_at.strftime("%l:%M%p %a %B %d")}" if course.start_at
           %p= truncate(course.do_during_class, length: 250, separator: ' ')
           %p= link_to course.join_chalklers, course.url
 
