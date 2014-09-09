@@ -18,8 +18,10 @@ module LayoutHelper
         subtitle += @category.name+' '  if @category.id.present?
         subtitle += ' classes from'
       elsif @category.id.present?
-        @category.name
+        subtitle += @region.name+' '    if @region.id.present?
+        subtitle += ' classes in'
       else 
+        subtitle += ' classes in'
         @region.name
       end
     end
