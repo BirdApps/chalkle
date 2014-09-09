@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   include Filters::FilterHelpers
   
   layout 'layouts/application'
-
   before_filter :load_region
   before_filter :load_channel
   before_filter :load_category
@@ -42,6 +41,18 @@ class ApplicationController < ActionController::Base
 
   protected
 
+    def check_clear_filters
+      if @region.id.blank?
+        session[:region] = nil
+      end
+      if @category.id.blank?
+        session[:topic] = nil
+      end
+      if @channel.id.blank?
+        session[:provider] = nil
+      end
+    end
+
     def expire_filter_cache
       expire_fragment('category_filter_list')
       expire_fragment('region_filter_list')
@@ -75,38 +86,44 @@ class ApplicationController < ActionController::Base
     def country_code
       params[:country_code] unless params[:country_code].blank?
     end
-
-    def load_region
-      if region_name
-        @region = Region.find_by_url_name region_name.downcase
-      end
-      if @region.nil?
-        @region = Region.new name: "New Zealand", courses: Course.all
-      end
-    end
-
+    
     def region_name
-      session[:region] = params[:region_url_name] unless params[:region_url_name].blank?
+      session[:region] = params[:region] unless params[:region].blank?
       request_region = request.location.data["region_name"]
       request_region = nil unless request_region != ""
       session[:region] || request_region
     end
 
-    def load_category
-      if params[:category_url_name]
-        @category = Category.find_by_url_name params[:category_url_name].downcase
+    def channel_name
+      params[:provider]
+    end
+
+    def category_name
+      params[:topic]
+    end
+
+    def load_region
+      if @region.nil?
+        @region = Region.new name: "New Zealand"
       end
+    end
+
+    def load_category
       if @category.nil?
         @category = Category.new name: 'All Topics'
       end
     end
 
     def load_channel
-      @channel = find_channel_by_subdomain || Channel.find_by_url_name(params[:channel_url_name]) || Channel.new(name: "All Providers")
+      if @channel.nil?
+        @channel = Channel.new(name: "All Providers")
+      end
     end
 
-    def find_channel_by_subdomain
-      Channel.find_by_url_name(request.subdomain) if request.subdomain.present?
+    def redirect_to_subdomain
+      if request.subdomain.present?
+        redirect_to base_url+'/'+request.subdomain
+      end
     end
 
     def courses_for_time
@@ -128,7 +145,6 @@ class ApplicationController < ActionController::Base
           response[:notices] = []
         end
         response[:notices] << "There are no courses that match the current filter"
-      
     end
 
     def start_of_association_chain
@@ -157,5 +173,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-
+    def base_url
+      request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}")
+    end
 end

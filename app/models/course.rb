@@ -99,8 +99,20 @@ class Course < ActiveRecord::Base
   before_save :save_first_lesson
 
   def self.upcoming(limit = nil)
-    return published.joins(:lessons).where("start_at > ?", Time.now.utc) if limit.nil?
+    return  published.joins(:lessons).where("start_at > ?", Time.now.utc) if limit.nil?
     published.joins(:lessons).where("start_at > ?", Time.now.utc).where("start_at < ?", limit)
+  end
+
+  def self.search(query, course_set = nil)
+    if query.present?
+      courses = Course.arel_table
+      query_parts = query.split.map {|part| "%#{part}%" }
+      if course_set
+        course_set.where courses[:name].matches_any(query_parts)
+      else
+        Course.where courses[:name].matches_any(query_parts)
+      end
+    end
   end
 
   def repeating_class?

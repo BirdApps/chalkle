@@ -16,11 +16,11 @@
         </div>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="locationDropDown">
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= region_path 'all' %>">All of New Zealand</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('region','all')) %>">All of New Zealand</a></li>
         <li role="presentation" class="divider"></li>
         <% cache('region_filter_list') do %>
           <% Region.with_displable_classes_in_future.each do |region| %>        
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= region_path region.url_name %>"><%= region.name %></a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('region',region.url_name)) %>"><%= region.name %></a></li>
           <% end %>
         <% end %>
       </ul>
@@ -40,11 +40,11 @@
         </div>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="topicDropDown">
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path %>">All Topics</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic','all')) %>">All Topics</a></li>
         <li role="presentation" class="divider"></li>
         <% cache('category_filter_list') do %>
           <% Category.ordered_with_classes.each do |category| %>        
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= category_path category.url_name %>"><%= category.name %></a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic', category.url_name)) %>"><%= category.name %></a></li>
           <% end %>
         <% end %>
       </ul>
@@ -64,23 +64,29 @@
         </div>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="providerDropDown">
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= channels_path %>">All Providers</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', 'all')) %>">All Providers</a></li>
         <li role="presentation" class="divider"></li>
         <% cache('channel_filter_list') do %>
-          <% Channel.all.each do |channel| %>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= channel_path channel.url_name %>"><%= channel.name %></a></li>
+          <% Channel.with_displable_classes_in_future.each do |channel| %>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', channel.url_name)) %>"><%= channel.name %></a></li>
           <% end %>
         <% end %>
       </ul>
     </div>
   </div> 
   <div class="col-xs-12 col-sm-3 search-wrapper">
-    <form class="navbar-form navbar-right search-form" method="get" action="<%= search_path %>" role="search">
+    <form class="navbar-form navbar-right search-form" method="get" action="<%= root_path params %>" role="search">
       <div class="input-group">
         <span class="input-group-addon">
           <span class="fa fa-search"></span>
         </span>
-        <input type="text" name="q" class="form-control" placeholder="Search">
+        <input type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search">
+        <% params.each do |key,value| %>
+          <% unless %w(controller action search).include? key %>
+            <input type="hidden" name="<%= key %>" value="<%= value %>" />
+          <% end  %>
+        <% end %>
+
       </div>
     </form>
   </div>

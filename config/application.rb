@@ -28,7 +28,6 @@ module Chalkle
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
     config.active_record.observers = :chalkler_observer
 
-    config.cache_store = :memory_store
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = 'Auckland'
@@ -56,6 +55,9 @@ module Chalkle
     # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
     # parameters by using an attr_accessible or attr_protected declaration.
     config.active_record.whitelist_attributes = true
+
+    config.action_controller.perform_caching = true
+    #config.cache_store = :memory_store
 
     # Enable the asset pipeline
     config.assets.enabled = true
