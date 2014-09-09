@@ -36,6 +36,7 @@ class CoursesController < ApplicationController
 
   def edit
     course = Course.find params[:id]
+    authorize course
     @teaching = Teaching.new current_user
     @teaching.course_to_teaching course
   end
@@ -59,6 +60,7 @@ class CoursesController < ApplicationController
   
   def change_status
     course = Course.find params[:id]
+    authorize course
     course.status = params[:course][:status]
     course.save
     redirect_to course_url course.id
@@ -159,14 +161,6 @@ class CoursesController < ApplicationController
 
     def courses_for_time
       @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
-    end
-
-    def start_of_association_chain
-      @channel ? @channel.courses : Course
-    end
-
-    def courses_base_scope
-      apply_filter(start_of_association_chain.published.by_date)
     end
 
     def get_current_week(start_date = Date.today)
