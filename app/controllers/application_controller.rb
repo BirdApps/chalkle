@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Pundit
   protect_from_forgery
   include Filters::FilterHelpers
   
@@ -148,7 +149,7 @@ class ApplicationController < ActionController::Base
     end
 
     def start_of_association_chain
-      @channel ? @channel.courses : Course
+      @channel.id.present? ? @channel.courses : Course
     end
 
     def current_date
