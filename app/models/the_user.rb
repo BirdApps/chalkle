@@ -1,10 +1,10 @@
 class TheUser
 
   def initialize current_chalkler, current_admin_user = nil
-    @chalkler = current_chalkler
-    @admin_user = current_admin_user
-    @admin_user = AdminUser.find_by_email chalkler.email if @admin_user.nil? && @chalkler.present?
-    @chalkler = Chalkler.find_by_email admin_user.email if @chalkler.nil? && @admin_user.present?
+    @chalkler = current_chalkler || Chalkler.new
+    @admin_user = current_admin_user || AdminUser.new
+    @admin_user = AdminUser.find_by_email chalkler.email if @admin_user.id.nil? && @chalkler.id.present?
+    @chalkler = Chalkler.find_by_email admin_user.email if @chalkler.id.nil? && @admin_user.id.present?
   end
 
   def authenticated?
