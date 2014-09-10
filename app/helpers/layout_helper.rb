@@ -1,12 +1,16 @@
 module LayoutHelper
 
   def page_title
-    if @channel.id.present?
-      @channel.name
-    elsif @category.id.present?
-      @category.name
-    else 
-      @region.name
+    if @courses
+      if @channel.id.present?
+        @channel.name
+      elsif @category.id.present?
+        @category.name
+      else 
+        @region.name
+      end
+    else
+      meta_title.gsub '|', ''
     end
   end
 
@@ -26,6 +30,20 @@ module LayoutHelper
       end
     end
     subtitle
+  end
+
+  def meta_title
+    return @meta_title if @meta_title.present?
+    meta_title = ''
+    if params[:action] == 'index' && params[:controller] == 'courses'
+      meta_title = page_subtitle+' '+page_title
+    elsif params[:action] == 'show' && params[:controller] == 'channels'
+      meta_title = @channel.name
+    elsif params[:action] == 'new'
+      meta_title = 'New '+ params[:controller].singularize
+    end
+    meta_title += ' |' if meta_title.present?
+    meta_title.downcase.gsub('course', 'class')
   end
 
   def page_hero

@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery
   include Filters::FilterHelpers
-  
   layout 'layouts/application'
   before_filter :load_region
   before_filter :load_channel
@@ -45,7 +44,6 @@ class ApplicationController < ActionController::Base
     def authorize(record)
       super record unless current_user.admin_user.super?
     end
-
 
     def check_clear_filters
       if @region.id.blank?

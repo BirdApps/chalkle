@@ -2,7 +2,7 @@ class CoursePolicy < ApplicationPolicy
   attr_reader :user, :course
 
   def initialize(user, course)
-    raise Pundit::NotAuthorizedError, "You do not have the required permissions"
+    #raise Pundit::NotAuthorizedError, "You do not have the required permissions"
     @user = user
     @course = course
   end
