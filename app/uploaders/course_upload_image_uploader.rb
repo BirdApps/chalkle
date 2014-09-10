@@ -11,4 +11,9 @@ class CourseUploadImageUploader < ChalkleBaseImageUploader
   version :large do
     process :resize_to_fill => [200, 200]
   end
+
+  version :blurred do 
+    process :blur => 10
+  end
+
 end

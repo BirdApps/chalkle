@@ -135,6 +135,18 @@ ActiveRecord::Schema.define(:version => 20140905032520) do
 
   add_index "channel_courses", ["channel_id", "course_id"], :name => "index_channel_courses_on_channel_id_and_course_id", :unique => true
 
+  create_table "channel_lesson_suggestions", :id => false, :force => true do |t|
+    t.integer "channel_id",           :null => false
+    t.integer "lesson_suggestion_id", :null => false
+  end
+
+  create_table "channel_lessons", :id => false, :force => true do |t|
+    t.integer "channel_id", :null => false
+    t.integer "lesson_id",  :null => false
+  end
+
+  add_index "channel_lessons", ["channel_id", "lesson_id"], :name => "index_channel_lessons_on_channel_id_and_lesson_id", :unique => true
+
   create_table "channel_photos", :force => true do |t|
     t.integer  "channel_id"
     t.string   "image"
@@ -289,6 +301,24 @@ ActiveRecord::Schema.define(:version => 20140905032520) do
     t.integer  "chalkler_id"
     t.datetime "created_at"
     t.string   "view_type",   :default => "weeks"
+  end
+
+  create_table "lesson_images", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "lesson_id"
+    t.string   "image_uid"
+    t.string   "image_name"
+  end
+
+  create_table "lesson_suggestions", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "category_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "chalkler_id"
   end
 
   create_table "lessons", :force => true do |t|

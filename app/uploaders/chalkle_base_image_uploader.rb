@@ -2,7 +2,7 @@
 require 'chalkle_base_uploader'
 
 class ChalkleBaseImageUploader < ChalkleBaseUploader
-  include CarrierWave::RMagick
+  include CarrierWave::MiniMagick
 
   def extension_white_list
     %w(jpg jpeg gif png)

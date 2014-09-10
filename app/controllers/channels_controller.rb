@@ -8,6 +8,10 @@ class ChannelsController < ApplicationController
 
   def show
     not_found if !@channel
+
+    @header_bg = @channel.logo
+    @header_blur_bg = @channel.logo.blurred
+
     @courses = @channel.courses.displayable.in_week(Week.containing(current_date)).by_date
   end
 

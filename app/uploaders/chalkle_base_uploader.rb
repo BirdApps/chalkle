@@ -2,6 +2,9 @@
 require 'chalkle_carrierwave'
 
 class ChalkleBaseUploader < CarrierWave::Uploader::Base
+
+
+
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
   # include Sprockets::Helpers::RailsHelper
   # include Sprockets::Helpers::IsolatedHelper
@@ -41,4 +44,5 @@ class ChalkleBaseUploader < CarrierWave::Uploader::Base
   def extension_white_list
     %w(jpg jpeg gif png)
   end
+
 end
