@@ -35,6 +35,7 @@ class CoursesController < ApplicationController
   end
 
   def edit
+    @page_subtitle = 'Editing'
     course = Course.find params[:id]
     authorize course
     @teaching = Teaching.new current_user

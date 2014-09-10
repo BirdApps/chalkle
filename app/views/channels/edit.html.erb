@@ -1,0 +1,5 @@
+  <%= bootstrap_form_for(@channel, wrapper: :simple_bootstrap3, url: channel_settings_path, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+    <input type="hidden" value="put" name="_method" />
+    
+
+  <% end %>

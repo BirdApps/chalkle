@@ -1,7 +1,7 @@
 class ChannelsController < ApplicationController
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
-  before_filter :load_channel, only: [:show]
+  before_filter :load_channel, only: [:show, :edit, :update, :teachers]
 
   def index
     @channels = Channel.visible
@@ -29,9 +29,9 @@ class ChannelsController < ApplicationController
     
   end
 
-
   def edit
-    
+    @page_subtitle = 'Settings'
+    not_found if !@channel
   end
 
   def update
@@ -47,7 +47,7 @@ class ChannelsController < ApplicationController
   end
 
   def teachers
-    @teachers = ChannelTeacher.where(channel_id: params[:channel_id]).compact
+    @teachers = ChannelTeacher.where(channel_id: @channel.id).compact
     respond_to do |format|
       format.json { render json: @teachers.to_json(only: [:id, :name]) }
       format.html { render @teachers }
@@ -66,9 +66,14 @@ class ChannelsController < ApplicationController
     if !@channel
       if channel_name 
         @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
-      else
-        @channel = Channel.new(name: "All Providers")
+      elsif params[:id].present?
+        @channel = Channel.find(params[:id])
+      elsif params[:channel_id].present?
+        @channel = Channel.find(params[:channel_id])
       end
+    end
+    if !@channel
+      @channel = Channel.new(name: "All Providers")
     end
   end
 

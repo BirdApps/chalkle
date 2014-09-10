@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery
-  include Filters::FilterHelpers
   layout 'layouts/application'
   before_filter :load_region
   before_filter :load_channel

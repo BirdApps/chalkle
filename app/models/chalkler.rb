@@ -25,7 +25,6 @@ class Chalkler < ActiveRecord::Base
   validates_presence_of :email, :if => :email_required?
   validates_associated :subscriptions, :channels
 
-  has_one  :course_filter, class_name: 'Filters::Filter', dependent: :destroy
   has_many :subscriptions
   has_many :channels, through: :subscriptions, source: :channel
   has_many :channel_teachers

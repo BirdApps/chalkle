@@ -4,7 +4,7 @@ class Channel < ActiveRecord::Base
   mount_uploader :logo, ChannelLogoUploader
   mount_uploader :hero, ChannelHeroUploader
 
-  attr_accessible *BASIC_ATTR = [:name]
+  attr_accessible *BASIC_ATTR = [:name, :channel_plan]
 
   attr_accessible *BASIC_ATTR, :channel_teachers, :url_name, :region_ids, :regions, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :hero, :as => :admin
 
