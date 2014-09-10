@@ -20,6 +20,14 @@
   transform: $transform;
 }
 
+@mixin filter($args){
+  filter: $args;
+  -webkit-filter: $args;
+  -moz-filter: $args;
+  -o-filter: $args;
+  -ms-filter: $args;
+}
+
 @mixin placeholder($color){
   input::-webkit-input-placeholder {
     color: $color;
@@ -234,7 +242,6 @@ body.v2 {
       padding-bottom:15px;
       position:relative;
       top:15px;
-      border: 1px solid rgba(200,200,200,0.05);
       border-bottom: 0px;
       @media screen and (max-width: $col-sm) {
         margin-top: 0;
@@ -247,6 +254,7 @@ body.v2 {
         left:0;
         height:100%;
         width:100%;
+        border: 1px solid rgba(255,255,255,0.16);
         .header_content_bg {
           height:100%;
         }
@@ -264,6 +272,9 @@ body.v2 {
           font-size: 3em;
           color: #EAEAEA;
           @include text-shadow(1px, 1px, 0px, #000);
+        }
+        h1.limit-size{
+          font-size: 25px;
         }
       }
     }

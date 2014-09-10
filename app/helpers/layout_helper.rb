@@ -1,6 +1,7 @@
 module LayoutHelper
 
   def page_title
+    return @page_title if @page_title.present?
     if @courses
       if @channel.id.present?
         @channel.name
@@ -14,7 +15,12 @@ module LayoutHelper
     end
   end
 
+  def title_size_class(title)
+    'limit-size' if title.length > 25
+  end
+
   def page_subtitle
+    return @page_subtitle if @page_subtitle.present?
     subtitle = ''
     if @courses
       if @channel.id.present?
@@ -37,21 +43,21 @@ module LayoutHelper
     meta_title = ''
     if params[:action] == 'index' && params[:controller] == 'courses'
       meta_title = page_subtitle+' '+page_title
-    elsif params[:action] == 'show' && params[:controller] == 'channels'
+    elsif @channel.id.present? && params[:controller] == 'channels'
       meta_title = @channel.name
     elsif params[:action] == 'new'
       meta_title = 'New '+ params[:controller].singularize
+    elsif @course && @course.id.present?
+      meta_title = @course.name
+    elsif @teaching && @teaching.editing_id.present?
+      meta_title = @teaching.title
     end
     meta_title += ' |' if meta_title.present?
     meta_title.downcase.gsub('course', 'class')
   end
 
   def page_hero
-    @header_bg ? @header_bg : '/assets/header_bg.jpg'
-  end
-
-  def page_hero_blur
-    @header_blur_bg ? @header_blur_bg : '/assets/header_bg_blur.jpg'
+    @header_bg ? @header_bg : '/assets/partners/partners-hero.jpg'
   end
 
   def filter_params(type, value)

@@ -1,13 +1,13 @@
 <div class="header" style="background-image: url( <%= page_hero %> )">
   <div class="container header_content col-xs-12">
     <div class="header_content_bg_wrapper">
-      <div class="header_content_bg" style="background-image: url( <%= page_hero_blur %> )">
+      <div class="header_content_bg" style="background-image: url( <%= page_hero %> )">
       </div>
     </div>
     <% if title = page_title %>
       <div class="title col-sm-offset-2 col-sm-10">
         <em><%= page_subtitle %></em>
-        <h1>
+        <h1 class="<%= title_size_class title %>">
           <%= title %>
         </h1>
       </div>
