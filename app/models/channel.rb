@@ -30,7 +30,6 @@ class Channel < ActiveRecord::Base
   has_many :channel_regions, dependent: :destroy
   has_many :regions, through: :channel_regions
   has_many :channel_teachers
-  belongs_to :cost_model
 
   accepts_nested_attributes_for :photos
 
@@ -125,7 +124,7 @@ class Channel < ActiveRecord::Base
   end
 
   def cost_calculator
-    (cost_model || CostModel.default).cost_calculator(channel: self, rates: {channel_fee: channel_rate_override})
+    
   end
 
   def region_names

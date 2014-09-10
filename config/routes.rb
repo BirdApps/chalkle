@@ -85,13 +85,14 @@ Chalkle::Application.routes.draw do
 
   #TODO: find an easier way of doing these channel routes!
   get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
-  get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
-  get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :channel_course
   get ':channel_url_name/teachers', to: 'channels#teachers', as: :channel_channel_teachers
   get ':channel_url_name/teacher/:id', to: 'channels#teachers', as: :channel_channel_teacher
-  get ':channel_url_name/edit', to: 'channels#edit', as: :channel_edit
+  get ':channel_url_name/settings', to: 'channels#edit', as: :channel_settings
+  put ':channel_url_name/settings', to: 'channels#update', as: :channel_settings
   get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
   get ':channel_url_name/followers', to: 'channels#followers', as: :channel_followers
+    get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
+  get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :channel_course
   get ':channel_url_name', to: 'channels#show', as: :channel
 
   #TODO: will never be hit because of channel_course_series

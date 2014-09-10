@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140910023224) do
+ActiveRecord::Schema.define(:version => 20140910050652) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -135,18 +135,6 @@ ActiveRecord::Schema.define(:version => 20140910023224) do
 
   add_index "channel_courses", ["channel_id", "course_id"], :name => "index_channel_courses_on_channel_id_and_course_id", :unique => true
 
-  create_table "channel_lesson_suggestions", :id => false, :force => true do |t|
-    t.integer "channel_id",           :null => false
-    t.integer "lesson_suggestion_id", :null => false
-  end
-
-  create_table "channel_lessons", :id => false, :force => true do |t|
-    t.integer "channel_id", :null => false
-    t.integer "lesson_id",  :null => false
-  end
-
-  add_index "channel_lessons", ["channel_id", "lesson_id"], :name => "index_channel_lessons_on_channel_id_and_lesson_id", :unique => true
-
   create_table "channel_photos", :force => true do |t|
     t.integer  "channel_id"
     t.string   "image"
@@ -185,7 +173,6 @@ ActiveRecord::Schema.define(:version => 20140910023224) do
     t.string   "logo"
     t.string   "meetup_url"
     t.string   "short_description"
-    t.integer  "cost_model_id"
     t.string   "hero"
   end
 
@@ -193,10 +180,6 @@ ActiveRecord::Schema.define(:version => 20140910023224) do
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "cost_models", :force => true do |t|
-    t.string "calculator_class_name"
   end
 
   create_table "course_images", :force => true do |t|
@@ -290,36 +273,6 @@ ActiveRecord::Schema.define(:version => 20140910023224) do
     t.datetime "completed_at"
     t.string   "state",        :default => "new"
     t.string   "error"
-  end
-
-  create_table "filter_rules", :force => true do |t|
-    t.string  "strategy_name"
-    t.string  "value"
-    t.integer "filter_id"
-  end
-
-  create_table "filters", :force => true do |t|
-    t.integer  "chalkler_id"
-    t.datetime "created_at"
-    t.string   "view_type",   :default => "weeks"
-  end
-
-  create_table "lesson_images", :force => true do |t|
-    t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "lesson_id"
-    t.string   "image_uid"
-    t.string   "image_name"
-  end
-
-  create_table "lesson_suggestions", :force => true do |t|
-    t.string   "name"
-    t.text     "description"
-    t.integer  "category_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-    t.integer  "chalkler_id"
   end
 
   create_table "lessons", :force => true do |t|
@@ -430,12 +383,6 @@ ActiveRecord::Schema.define(:version => 20140910023224) do
   add_foreign_key "channel_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
   add_foreign_key "channel_teachers", "channels", name: "channel_teachers_channel_id_fk"
 
-  add_foreign_key "channels", "cost_models", name: "channels_cost_model_id_fk"
-
   add_foreign_key "courses", "regions", name: "courses_region_id_fk"
-
-  add_foreign_key "filter_rules", "filters", name: "filter_rules_filter_id_fk"
-
-  add_foreign_key "filters", "chalklers", name: "filters_chalkler_id_fk"
 
 end

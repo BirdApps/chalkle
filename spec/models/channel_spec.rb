@@ -83,20 +83,5 @@ describe Channel do
   	end
   end
 
-  describe ".cost_calculator_class" do
-    before do
-      CostModel.create!(calculator_class_name: 'flat_rate_markup')
-    end
-
-    it "returns the default cost calculator if no model is specified" do
-      subject.cost_model = nil
-      expect(subject.cost_calculator).to be_a(Finance::ClassCostCalculators::FlatRateMarkup)
-    end
-
-    it "returns the cost calculator for this channel's cost model" do
-      subject.cost_model = CostModel.create!(calculator_class_name: 'percentage_commission')
-      expect(subject.cost_calculator).to be_a(Finance::ClassCostCalculators::PercentageCommission)
-    end
-  end
 
 end

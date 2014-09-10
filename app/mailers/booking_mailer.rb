@@ -6,7 +6,7 @@ class BookingMailer < ActionMailer::Base
   	#this email is sent both when a new confirmed booking is made, unless it is made less than 3 days from start of class
   	@chalkler = chalkler
   	@course = course
-    @cost = Finance::Tax::NzGst.new.apply_to course.cost
+    #@cost = Finance::Tax::NzGst.new.apply_to course.cost
   	mail(to: chalkler.email, subject: chalkler.name + " - " + course.name)
   end
 

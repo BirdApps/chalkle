@@ -101,14 +101,6 @@ class CoursesController < ApplicationController
     def load_course
       @course = start_of_association_chain.find(params[:id]).decorate
     end     
- 
-    def geography_filter
-      if @region
-        filter = Filters::Filter.new
-        filter.rules.build(strategy_name: 'single_region', value: @region)
-        filter
-      end
-    end
 
     def load_geography_override
       load_country
