@@ -36,6 +36,7 @@ class CoursesController < ApplicationController
 
   def edit
     course = Course.find params[:id]
+    binding.pry
     authorize course
     @teaching = Teaching.new current_user
     @teaching.course_to_teaching course
@@ -143,7 +144,7 @@ class CoursesController < ApplicationController
     end
 
     def check_course_visibility
-      if !current_user.has_relation(@course, [:channel_admin, :teacher])
+      unless policy(@course).edit?
         unless @course.published?
           flash[:notice] = "This class is no longer available."
           redirect_to root_url

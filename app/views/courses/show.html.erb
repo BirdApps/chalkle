@@ -1,6 +1,5 @@
-<% relationships = current_user.relation_to @course %>
 <div class="course-show">
-  <% if relationships.include? :channel_admin  %>
+  <% if policy(@course).edit?  %>
     <div class="alert alert-danger clearfix" role="alert">
       <div class="pull-left">
         <% if @course.status != 'Published' %>
