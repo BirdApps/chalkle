@@ -2,6 +2,7 @@ class CoursePolicy < ApplicationPolicy
   attr_reader :user, :course
 
   def initialize(user, course)
+    raise Pundit::NotAuthorizedError, "You do not have the required permissions"
     @user = user
     @course = course
   end
@@ -11,7 +12,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update?
-    @user.chalkler.channel_teachers.include? @course.teacher or @user.chalkler.channel_admins.where(channel_id: @course.channel_id).present? or @user.admin_user.super?
+    @user.chalkler.channel_teachers.include? @course.teacher or @user.chalkler.channel_admins.where(channel_id: @course.channel_id).present?
   end
 
   def change_status?

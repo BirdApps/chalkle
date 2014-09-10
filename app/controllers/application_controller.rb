@@ -42,6 +42,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
+    def authorize(record)
+      super record unless current_user.admin_user.super?
+    end
+
+
     def check_clear_filters
       if @region.id.blank?
         session[:region] = nil

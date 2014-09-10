@@ -36,7 +36,6 @@ class CoursesController < ApplicationController
 
   def edit
     course = Course.find params[:id]
-    binding.pry
     authorize course
     @teaching = Teaching.new current_user
     @teaching.course_to_teaching course
