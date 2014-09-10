@@ -20,4 +20,8 @@ module ApplicationHelper
     end
   end
   
+  def base_url
+    request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}")
+  end
+
 end

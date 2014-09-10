@@ -1,6 +1,7 @@
 class ChannelsController < ApplicationController
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
+  before_filter :load_channel, only: [:show]
 
   def index
     @channels = Channel.visible
@@ -54,6 +55,22 @@ class ChannelsController < ApplicationController
   end
 
   private 
+
+  def channel_name
+    params[:provider] = params[:channel_url_name]
+
+  end
+
+  def load_channel
+    redirect_to_subdomain
+    if !@channel
+      if channel_name 
+        @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
+      else
+        @channel = Channel.new(name: "All Providers")
+      end
+    end
+  end
 
   def redirect_meetup_channels
     #if @channel.meetup_url.present?

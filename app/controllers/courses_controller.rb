@@ -3,18 +3,15 @@ class CoursesController < ApplicationController
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
+  before_filter :check_clear_filters, only: [:index]
 
   def index
     @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
-    if @region.id.present?
-      @courses = @courses.in_region @region
-    end
-    if @category.id.present?
-      @courses = @courses.in_category @category
-    end
+
+    filter_courses
+
     @header_bg = @region.hero
     @header_blur_bg = @region.hero_blurred
-    check_presence_of_courses
   end
 
   def show
@@ -39,6 +36,7 @@ class CoursesController < ApplicationController
 
   def edit
     course = Course.find params[:id]
+    authorize course
     @teaching = Teaching.new current_user
     @teaching.course_to_teaching course
   end
@@ -62,6 +60,7 @@ class CoursesController < ApplicationController
   
   def change_status
     course = Course.find params[:id]
+    authorize course
     course.status = params[:course][:status]
     course.save
     redirect_to course_url course.id
@@ -75,11 +74,34 @@ class CoursesController < ApplicationController
 
   private
 
-  def load_course
+    def filter_courses
+      if @region.id.present? && @category.id.present? && @channel.id.present?
+        @courses = @courses.in_region(@region).in_category(@category).in_channel(@channel)
+      elsif @region.id.present? && @category.id.present? && @channel.id.nil?    
+        @courses = @courses.in_region(@region).in_category(@category) 
+      elsif @region.id.present? && @category.id.nil? && @channel.id.present?
+        @courses = @courses.in_region(@region).in_channel(@channel)
+      elsif @region.id.nil? && @category.id.present? && @channel.id.present?  
+        @courses = @courses.in_category(@category).in_channel(@channel)
+      elsif @region.id.nil? && @category.id.nil? && @channel.id.present?  
+        @courses = @courses.in_channel(@channel)
+      elsif @region.id.nil? && @category.id.present? && @channel.id.nil? 
+        @courses = @courses.in_category(@category)   
+      elsif @region.id.present? && @category.id.nil? && @channel.id.nil?
+        @courses = @courses.in_region(@region)
+      end
+      if params[:search].present?
+        @courses = Course.search params[:search], @courses
+      end
+
+      check_presence_of_courses
+    end
+
+    def load_course
       @course = start_of_association_chain.find(params[:id]).decorate
-  end
+    end     
  
-  def geography_filter
+    def geography_filter
       if @region
         filter = Filters::Filter.new
         filter.rules.build(strategy_name: 'single_region', value: @region)
@@ -92,8 +114,36 @@ class CoursesController < ApplicationController
       load_region
     end
 
+    def load_region
+      if region_name
+        @region = Region.find_by_url_name region_name.downcase
+      end
+      if @region.nil?
+        @region = Region.new name: "New Zealand", courses: Course.all
+      end
+    end
+
+    def load_category
+      if category_name
+        @category = Category.find_by_url_name category_name.downcase
+      end
+      if @category.nil?
+        @category = Category.new name: 'All Topics'
+      end
+    end
+
+    def load_channel
+      if !@channel
+        if channel_name 
+          @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
+        else
+          @channel = Channel.new(name: "All Providers")
+        end
+      end
+    end
+
     def check_course_visibility
-      if !current_user.has_relation(@course, [:channel_admin, :teacher])
+      unless policy(@course).edit?
         unless @course.published?
           flash[:notice] = "This class is no longer available."
           redirect_to root_url
@@ -111,14 +161,6 @@ class CoursesController < ApplicationController
 
     def courses_for_time
       @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
-    end
-
-    def start_of_association_chain
-      @channel ? @channel.courses : Course
-    end
-
-    def courses_base_scope
-      apply_filter(start_of_association_chain.published.by_date)
     end
 
     def get_current_week(start_date = Date.today)

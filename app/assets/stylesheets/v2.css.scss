@@ -221,7 +221,7 @@ body.v2 {
     background-size: cover !important;
     width: 100%;
     background-attachment: fixed;
-    background-position: center center !important;
+    background-position: center bottom !important;
   }
   .header{
     background-color: #ccc;
@@ -230,11 +230,11 @@ body.v2 {
       color:#fff; 
       text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
       margin-top: 200px;
-      max-width: 1150px;
+      max-width: 1158px;
       padding-bottom:15px;
       position:relative;
       top:15px;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(200,200,200,0.05);
       border-bottom: 0px;
       @media screen and (max-width: $col-sm) {
         margin-top: 0;
@@ -393,7 +393,7 @@ body.v2 {
     
     .secondary-nav {
       >*{
-        padding-left:5px;
+        padding: 0;
         background-color: rgba(255,255,255,0.6);
         border-left: 1px solid rgba(0,0,0,0.2) !important;
       }
@@ -402,6 +402,7 @@ body.v2 {
           color: #000;
         }
         .btn{
+          padding: 6px 8px 6px 22px;
           background: transparent;
           text-align: left;
           width:100%;
@@ -440,7 +441,7 @@ body.v2 {
         .dropdown-menu{
           @include border-radius(0);
           font-family: ProximaNova-Light;
-          left: -6px;
+          left: -1px;
           background: #dfdfdf;
           text-shadow: none;
           font-weight: 100;
@@ -546,6 +547,9 @@ body.v2 {
     letter-spacing: 1.5px;
     h1,h2,h3,h4,h5,h6{
       font-weight: normal;
+    }
+    .messages{
+      margin-top:20px;
     }
     .image-preview{
       width: 100%;
