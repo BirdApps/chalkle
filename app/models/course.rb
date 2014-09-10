@@ -191,13 +191,11 @@ class Course < ActiveRecord::Base
            :channel_percentage, :teacher_percentage, to: :cost_calculator
 
   def cost_calculator
-    result = channel ? channel.cost_calculator : CostModel.default.cost_calculator
-    result.course = self
-    result
+    channel ? channel.cost_calculator : ChannelPlan.default.cost_calculator
   end
 
   def update_costs
-    cost_calculator.update_costs(self)
+    cost_calculator.apply_costs_to self
   end
 
   #Class incomes

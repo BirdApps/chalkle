@@ -18,6 +18,8 @@ Chalkle::Application.routes.draw do
   
   resources :channel_teachers, path: 'teachers'
 
+  resources :channel_plans, path: 'plans'
+
   resources :courses, path: 'classes' do
     resources :notices
     resources :bookings do

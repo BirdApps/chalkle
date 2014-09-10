@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140910220554) do
+ActiveRecord::Schema.define(:version => 20140910234705) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -144,11 +144,12 @@ ActiveRecord::Schema.define(:version => 20140910220554) do
 
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
-    t.string   "admin_logins"
-    t.string   "class_attendee_cost"
-    t.string   "course_attendee_cost"
-    t.string   "max_free_class_attendees"
-    t.string   "annual_cost"
+    t.integer  "max_admin_logins"
+    t.integer  "max_free_class_attendees"
+    t.decimal  "class_attendee_cost"
+    t.decimal  "course_attendee_cost"
+    t.decimal  "annual_cost"
+    t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
   end
@@ -185,6 +186,7 @@ ActiveRecord::Schema.define(:version => 20140910220554) do
     t.string   "meetup_url"
     t.string   "short_description"
     t.string   "hero"
+    t.integer  "channel_plan_id"
   end
 
   create_table "cities", :force => true do |t|

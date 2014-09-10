@@ -4,7 +4,7 @@ class Channel < ActiveRecord::Base
   mount_uploader :logo, ChannelLogoUploader
   mount_uploader :hero, ChannelHeroUploader
 
-  attr_accessible *BASIC_ATTR = [:name, :channel_plan]
+  attr_accessible *BASIC_ATTR = [:name,:channel_plan, :plan_name, :plan_max_admin_logins, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee]
 
   attr_accessible *BASIC_ATTR, :channel_teachers, :url_name, :region_ids, :regions, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :hero, :as => :admin
 
@@ -30,6 +30,8 @@ class Channel < ActiveRecord::Base
   has_many :channel_regions, dependent: :destroy
   has_many :regions, through: :channel_regions
   has_many :channel_teachers
+  
+  belongs_to :channel_plan
 
   accepts_nested_attributes_for :photos
 
@@ -38,11 +40,6 @@ class Channel < ActiveRecord::Base
   scope :has_logo, where("logo IS NOT NULL")
   scope :has_hero, where("hero IS NOT NULL")
   scope :chalkler_can_teach, lambda { |chalkler| joins(:channel_teachers).where("chalkler_id = ?", chalkler.id) }
-
-  #absolute minimum percentage of revenue paid to chalkle
-  CHALKLE_PERCENTAGE = 0.125
-
-  delegate :chalkle_percentage, to: :cost_calculator
 
   def self.select_options(channel)
     channel.map { |c| [c.name, c.id] }
@@ -55,7 +52,6 @@ class Channel < ActiveRecord::Base
     end
     channels
   end
-
 
   def fee
     channel_rate_override
@@ -124,7 +120,16 @@ class Channel < ActiveRecord::Base
   end
 
   def cost_calculator
-    
+    if channel_plan.nil?
+      ChannelPlan.default.cost_calculator self
+    else
+      channel_plan.clone.apply_custom(self).cost_calculator
+    end
+  end
+
+  def plan
+    plan = channel_plan.clone
+
   end
 
   def region_names
