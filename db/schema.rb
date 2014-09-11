@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140911023447) do
+ActiveRecord::Schema.define(:version => 20140911041518) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -144,7 +144,7 @@ ActiveRecord::Schema.define(:version => 20140911023447) do
 
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
-    t.integer  "max_admin_logins"
+    t.integer  "max_channel_admins"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(:version => 20140911023447) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -188,12 +189,13 @@ ActiveRecord::Schema.define(:version => 20140911023447) do
     t.string   "hero"
     t.integer  "channel_plan_id"
     t.string   "plan_name"
-    t.integer  "plan_max_admin_logins"
+    t.integer  "plan_max_channel_admins"
     t.integer  "plan_max_free_class_attendees"
     t.decimal  "plan_class_attendee_cost"
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
+    t.integer  "plan_max_teachers"
   end
 
   create_table "cities", :force => true do |t|
