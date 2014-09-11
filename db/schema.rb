@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140910234705) do
+ActiveRecord::Schema.define(:version => 20140911023447) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -172,14 +172,14 @@ ActiveRecord::Schema.define(:version => 20140910234705) do
 
   create_table "channels", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                                                             :null => false
-    t.datetime "updated_at",                                                             :null => false
+    t.datetime "created_at",                                                                     :null => false
+    t.datetime "updated_at",                                                                     :null => false
     t.string   "url_name"
     t.string   "email"
-    t.decimal  "channel_rate_override", :precision => 8, :scale => 4
-    t.decimal  "teacher_percentage",    :precision => 8, :scale => 4, :default => 0.75
+    t.decimal  "channel_rate_override",         :precision => 8, :scale => 4
+    t.decimal  "teacher_percentage",            :precision => 8, :scale => 4, :default => 0.75
     t.string   "account"
-    t.boolean  "visible",                                             :default => false
+    t.boolean  "visible",                                                     :default => false
     t.text     "description"
     t.string   "website_url"
     t.string   "logo"
@@ -187,6 +187,13 @@ ActiveRecord::Schema.define(:version => 20140910234705) do
     t.string   "short_description"
     t.string   "hero"
     t.integer  "channel_plan_id"
+    t.string   "plan_name"
+    t.integer  "plan_max_admin_logins"
+    t.integer  "plan_max_free_class_attendees"
+    t.decimal  "plan_class_attendee_cost"
+    t.decimal  "plan_course_attendee_cost"
+    t.decimal  "plan_annual_cost"
+    t.decimal  "plan_processing_fee_percent"
   end
 
   create_table "cities", :force => true do |t|

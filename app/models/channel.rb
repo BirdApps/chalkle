@@ -9,6 +9,7 @@ class Channel < ActiveRecord::Base
   attr_accessible *BASIC_ATTR, :channel_teachers, :url_name, :region_ids, :regions, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :hero, :as => :admin
 
   validates_presence_of :name
+   validates_presence_of :channel_plan
   validates :channel_rate_override, numericality: true, allow_blank: true
   validates :teacher_percentage, presence: true, numericality: {less_than_or_equal_to: 1, message: "Teacher percentage of revenue must be less than or equal to 1"}
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
@@ -55,6 +56,11 @@ class Channel < ActiveRecord::Base
 
   def fee
     channel_rate_override
+  end
+
+  def remaining_free_class_attendees
+    #TODO work out the remaining
+    2
   end
 
   #Channel performances

@@ -15,7 +15,7 @@ class CreateChannelPlan < ActiveRecord::Migration
     ChannelPlan.reset_column_information
     ChannelPlan.create(name: 'Community', max_admin_logins: 2,max_free_class_attendees: 20, class_attendee_cost: 2, course_attendee_cost: 6, annual_cost: 0, processing_fee_percent: 0.4 )
     ChannelPlan.create(name: 'Standard',max_admin_logins: 2,max_free_class_attendees: 0,class_attendee_cost: 4,course_attendee_cost: 10,annual_cost: 0,processing_fee_percent: 0.4 )
-    ChannelPlan.create( name: 'Enterprise',max_admin_logins: 4,max_free_class_attendees: 0,class_attendee_cost: 4,course_attendee_cost: 10, annual_cost: 3000,processing_fee_percent: 0.4 )
+    ChannelPlan.create( name: 'Enterprise',max_admin_logins: 4,max_free_class_attendees: nil,class_attendee_cost: 4,course_attendee_cost: 10, annual_cost: 3000,processing_fee_percent: 0.4 )
   end
 
   def down
