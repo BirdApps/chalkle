@@ -1,9 +1,9 @@
 class ChannelPlan < ActiveRecord::Base
-  attr_accessible *BASIC_ATTR = [ :name, :max_admin_logins, :class_attendee_cost, :course_attendee_cost, :max_free_class_attendees, :annual_cost, :processing_fee_percent ]
+  attr_accessible *BASIC_ATTR = [ :name, :max_channel_admins, :max_teachers, :class_attendee_cost, :course_attendee_cost, :max_free_class_attendees, :annual_cost, :processing_fee_percent ]
   has_many :channels
 
-  def default
-    ChannelPlan.first
+  def self.default
+    ChannelPlan.where name: 'Community'
   end
 
   def cost_calculator
@@ -11,18 +11,22 @@ class ChannelPlan < ActiveRecord::Base
   end
 
   def apply_custom(channel)
-    name = channel.plan_name if channel.plan_name.present?
+    self.id = nil
+    self.name = channel.plan_name if channel.plan_name.present?
 
-    admin_logins = channel.plan_admin_logins if channel.plan_admin_logins.present?
+    self.admin_logins = channel.plan_max_channel_admins if channel.plan_max_channel_admins.present?
 
-    class_attendee_cost = channel.plan_class_attendee_cost if channel.plan_class_attendee_cost.present?
+    self.class_attendee_cost = channel.plan_class_attendee_cost if channel.plan_class_attendee_cost.present?
 
-    course_attendee_cost = channel.plan_course_attendee_cost if channel.plan_course_attendee_cost.present?
+    self.course_attendee_cost = channel.plan_course_attendee_cost if channel.plan_course_attendee_cost.present?
 
-    max_free_class_attendees = channel.plan_max_free_class_attendees if  channel.plan_max_free_class_attendees.present?
+    self.max_free_class_attendees = channel.plan_max_free_class_attendees if  channel.plan_max_free_class_attendees.present?
 
-    annual_cost = channel.plan_annual_cost if channel.plan_annual_cost.present?
+    self.annual_cost = channel.plan_annual_cost if channel.plan_annual_cost.present?
 
-    processing_fee_percent = channel.plan_processing_fee_percent if channel.plan_processing_fee_percent.present?
+    self.processing_fee_percent = channel.plan_processing_fee_percent if channel.plan_processing_fee_percent.present?
+
+    self.max_teachers = channel.plan_max_teachers if channel.plan_max_teachers.present?
+    self
   end
 end

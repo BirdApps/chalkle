@@ -4,12 +4,16 @@ class Channel < ActiveRecord::Base
   mount_uploader :logo, ChannelLogoUploader
   mount_uploader :hero, ChannelHeroUploader
 
-  attr_accessible *BASIC_ATTR = [:name,:channel_plan, :plan_name, :plan_max_admin_logins, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee]
+  def self.DEFAULT_FEE
+    0
+  end
+
+  attr_accessible *BASIC_ATTR = [:name,:channel_plan, :plan_name, :plan_max_channel_admins, :plan_max_teachers, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee]
 
   attr_accessible *BASIC_ATTR, :channel_teachers, :url_name, :region_ids, :regions, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :hero, :as => :admin
 
   validates_presence_of :name
-   validates_presence_of :channel_plan
+  validates_presence_of :channel_plan
   validates :channel_rate_override, numericality: true, allow_blank: true
   validates :teacher_percentage, presence: true, numericality: {less_than_or_equal_to: 1, message: "Teacher percentage of revenue must be less than or equal to 1"}
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
@@ -55,7 +59,7 @@ class Channel < ActiveRecord::Base
   end
 
   def fee
-    channel_rate_override
+    channel_rate_override || Channel.DEFAULT_FEE
   end
 
   def remaining_free_class_attendees
@@ -134,8 +138,12 @@ class Channel < ActiveRecord::Base
   end
 
   def plan
-    plan = channel_plan.clone
-
+    if channel_plan.present?
+      plan = channel_plan.clone
+    else
+      plan = ChannelPlan.default
+    end
+    plan.apply_custom(self)
   end
 
   def region_names

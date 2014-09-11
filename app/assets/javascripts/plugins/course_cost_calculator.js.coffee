@@ -37,7 +37,8 @@ class LessonCostCalculator
     @fields.cost.attr('value', '$'+parseFloat(values.cost).toFixed(2)).highlight_input()
     @fields.channel_fee.attr('value', parseFloat(values.channel_fee).toFixed(2)).highlight_input()
     @fields.chalkle_fee.attr('value', parseFloat(values.chalkle_fee).toFixed(2)).highlight_input()
-    @fields.processing_fee.attr('value', parseFloat(Math.round((values.cost - values.channel_fee - values.chalkle_fee - values.teacher_cost)*100)/100).toFixed(2)).highlight_input()
+    #@fields.processing_fee.attr('value', parseFloat(Math.round((values.cost - values.channel_fee - values.chalkle_fee - values.teacher_cost)*100)/100).toFixed(2)).highlight_input()
+    @fields.processing_fee.attr('value', parseFloat(values.processing_fee).toFixed(2)).highlight_input()
 
   _sourceData: ->
     result = {}

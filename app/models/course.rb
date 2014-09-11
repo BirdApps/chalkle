@@ -193,9 +193,18 @@ class Course < ActiveRecord::Base
     cached_channel_fee
   end
 
+   def channel_fee=(value)
+    cached_channel_fee = value
+  end
+
   def chalkle_fee
     cached_chalkle_fee
   end
+
+  def chalkle_fee=(value)
+    cached_chalkle_fee = value
+  end
+
 
   def cost_calculator
     channel ? channel.cost_calculator : ChannelPlan.default.cost_calculator
