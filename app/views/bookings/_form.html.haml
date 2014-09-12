@@ -1,7 +1,7 @@
 = f.error_notification
 - if @course.cost? && @course.cost > 0
-  - payment_methods = @course.cost_calculator.payment_methods
-  = f.input :payment_method, :type => :select, collection: payment_methods, value_method: :name, label_method: :label, selected: f.object.payment_method || payment_methods.first
+  - payment_methods = Finance::payment_methods
+  = f.input :payment_method, :type => :select, collection: payment_methods, value_method: :name, label_method: :label, selected: f.object.payment_method || Finance::payment_methods.first
 = f.input :guests, :type => :select, collection: @course.guest_values, :label => 'Attendees', :selected => 0
 = f.input :course_id, :as => :hidden, :input_html => { :value => @course.id }
 - if f.object.new_record?

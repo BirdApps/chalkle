@@ -33,7 +33,7 @@
           <h3>Class Type</h3>
           <hr />
         </div>
-        
+        <input type="hidden" id="teaching_course_class_type" value="<%= f.object.course_class_type %>" />
         <% if f.object.editing? %>
           <input type="hidden" name="_method" value="put" />
           <div class="btn-group" data-toggle="buttons">
@@ -233,6 +233,12 @@
         <div class="col-sm-7">
           <p class="small grey">Any fixed costs associated with the venue, i.e. space hire</p>
         </div>
+
+         <%= f.input :fixed_overhead_cost, as: :currency, :label => "<strong>Other </strong> costs", wrapper: :horizonal, input_html: { value: f.object.venue_cost || '0.00' } %>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">Any other fixed costs not affected by how many people attend</p>
+        </div>
          
 
         <%= f.input :teacher_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal, input_html: {:'data-error-message'=>'Specify the teacher fee (this is the base cost for an attendee)', value: f.object.venue_cost || '0.00'} %>
@@ -316,7 +322,7 @@
            The <strong>fixed costs</strong> are:
           </div>
           <div class="col-xs-6">
-            <input id="summary_fixed_cost" disabled="disabled">
+            <input id="teaching_fixed_cost" disabled="disabled">
           </div>
 
           <div class="col-md-3">
@@ -333,7 +339,37 @@
           <div class="col-xs-6">
             <input id="summary_venue_cost" disabled="disabled">
           </div>
+
+          <div class="col-xs-6 text-right light small grey">
+             Other Costs
+          </div>
+          <div class="col-xs-6">
+            <input id="summary_fixed_overhead_cost" disabled="disabled">
+          </div>
+
         </div>
+
+        <div class="row income-summary summary-part">
+          <div class="col-sm-6"> 
+            <div class="col-xs-6 col-sm-12 center light">
+              <strong>Minimum</strong> income
+            </div>
+            <hr />
+            <div class="col-xs-6 col-sm-12 center">
+              <input id="teaching_min_income" disabled="disabled">
+            </div>
+          </div>
+          <div class="col-sm-6"> 
+            <div class="col-xs-6 col-sm-12 center light">
+             <strong>Maximum</strong> income
+            </div>
+            <hr />
+            <div class="col-xs-6 col-sm-12 center">
+              <input id="teaching_max_income" disabled="disabled">
+            </div>
+          </div>
+        </div>
+
 
       
 

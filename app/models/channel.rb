@@ -129,14 +129,6 @@ class Channel < ActiveRecord::Base
     course_ran(start_date,end_date).paid
   end
 
-  def cost_calculator
-    if channel_plan.nil?
-      ChannelPlan.default.cost_calculator self
-    else
-      channel_plan.clone.apply_custom(self).cost_calculator
-    end
-  end
-
   def plan
     if channel_plan.present?
       plan = channel_plan.clone

@@ -345,7 +345,7 @@ $(function(){
         }else{
           $(target).html(val);
         }
-        calculate_costs();
+        //calculate_costs();
       }
     });
     $("#summary_times_summary").empty();
@@ -356,12 +356,12 @@ $(function(){
   }
 
   function calculate_costs(){
-    var cost = 0.00;
-    var ven_cost = $('#summary_venue_cost').val();
-    if(!isNaN(ven_cost)){
-      cost = parseFloat(ven_cost)+cost;
-    }
-    $('#summary_fixed_cost').val('$'+cost.toFixed(2));
+    // var cost = 0.00;
+    // var ven_cost = $('#summary_venue_cost').val();
+    // if(!isNaN(ven_cost)){
+    //   cost = parseFloat(ven_cost)+cost;
+    // }
+    // $('#summary_fixed_cost').val('$'+cost.toFixed(2));
   }
 
 
@@ -501,6 +501,7 @@ $(function(){
   function course_class_select(){
     part_change( '#details' );
     var key_word = $($(this).children('input')[0]).val();
+    $('#teaching_course_class_type').val(key_word);
     if(key_word == "class"){
      // inputs_to_array(false);
       $('.course_only').hide();

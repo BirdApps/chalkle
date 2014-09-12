@@ -897,8 +897,8 @@ body.v2 {
           .summary-part{
             margin-bottom: 40px;
           }
-          .fee-summary{
-            #teaching_cost, #summary_fixed_cost{
+          .fee-summary,.income-summary{
+            #teaching_cost, #teaching_fixed_cost{
               margin-left: 0;
               font-size:1.5em;
               width:100px;
@@ -910,11 +910,16 @@ body.v2 {
             }
             input{
               border: 0;
-              text-align: right;
-              width:55px;
+              text-align: center;
               margin-left:10px;
               background: transparent;
               font-family: ProximaNova-Light;
+            }
+          }
+          .fee-summary{
+            input{
+              text-align: right;
+              width: 55px;
             }
           }
         }

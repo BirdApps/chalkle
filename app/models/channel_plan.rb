@@ -3,11 +3,7 @@ class ChannelPlan < ActiveRecord::Base
   has_many :channels
 
   def self.default
-    ChannelPlan.where name: 'Community'
-  end
-
-  def cost_calculator
-    Finance::ChannelPlanCalculator.new self
+    ChannelPlan.where(name: 'Community').first
   end
 
   def apply_custom(channel)

@@ -67,10 +67,9 @@ class CoursesController < ApplicationController
     redirect_to course_url course.id
   end
 
-   def calculate_cost
+  def calculate_cost
     @course = Course.new(params[:course], as: :admin)
-    @course.update_costs
-    render json: @course.as_json(methods: [:channel_fee, :chalkle_fee])
+    render json: @course.as_json(methods: [:channel_fee, :chalkle_fee, :max_income, :min_income, :processing_fee, :fixed_costs, :calculate_cost])
   end
 
   private
