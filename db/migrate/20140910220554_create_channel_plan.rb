@@ -14,9 +14,9 @@ class CreateChannelPlan < ActiveRecord::Migration
     end
 
     ChannelPlan.reset_column_information
-    community_plan = ChannelPlan.create(name: 'Community', max_admin_logins: 1,max_free_class_attendees: 20, class_attendee_cost: 2, course_attendee_cost: 6, annual_cost: 0, processing_fee_percent: 0.4, max_teachers: 1 )
-    ChannelPlan.create(name: 'Standard',max_admin_logins: 2,max_free_class_attendees: 0,class_attendee_cost: 4,course_attendee_cost: 10,annual_cost: 0,processing_fee_percent: 0.4, max_teachers: 10 )
-    ChannelPlan.create( name: 'Enterprise',max_admin_logins: 2, max_teachers: 10, max_free_class_attendees: nil,class_attendee_cost: 4,course_attendee_cost: 10, annual_cost: 3000,processing_fee_percent: 0.4 )
+    community_plan = ChannelPlan.create(name: 'Community', max_admin_logins: 1,max_free_class_attendees: 20, class_attendee_cost: 2, course_attendee_cost: 6, annual_cost: 0, processing_fee_percent: 0.04, max_teachers: 1 )
+    ChannelPlan.create(name: 'Standard',max_admin_logins: 2,max_free_class_attendees: 0,class_attendee_cost: 4,course_attendee_cost: 10,annual_cost: 0,processing_fee_percent: 0.04, max_teachers: 10 )
+    ChannelPlan.create( name: 'Enterprise',max_admin_logins: 2, max_teachers: 10, max_free_class_attendees: nil,class_attendee_cost: 4,course_attendee_cost: 10, annual_cost: 3000,processing_fee_percent: 0.04 )
 
     add_column :channels, :channel_plan_id, :integer
     add_column :channels, :plan_name, :string
