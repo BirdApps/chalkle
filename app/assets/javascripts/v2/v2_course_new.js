@@ -42,21 +42,13 @@ $(function(){
   }
 
   function set_attendee_summary(){
-    switch($('#teaching_max_attendee').val().trim()){
+    var min_max = $('#teaching_max_attendee').val()+$('#teaching_min_attendee').val();
+    switch(min_max.trim()){
       case "":
-        $('.max-summary').hide();
+        $('.min-max-attendee-summary').hide();
         break;
       default:
-        $('.max-summary').show();
-        break;
-    }
-    
-    switch($('#teaching_min_attendee').val().trim()){
-      case "":
-        $('.min-summary').hide();
-        break;
-      default:
-        $('.min-summary').show();
+        $('.min-max-attendee-summary').show();
         break;
     }
   }
@@ -412,6 +404,7 @@ $(function(){
       $(element).after('<div class="info form-error">'+error_msg+'</div>');
       $(element).parent().removeClass('hidden');
     }
+    $(element).focus();
   }
 
   function validate_type(){   
@@ -422,7 +415,7 @@ $(function(){
   function validate_basics(location){
     var valid = true;
     $(location).find('[data-error-message]').each(function(){ 
-      if(!!!$(this).val()){
+      if(!!!$(this).val() && !$(this).is("div")){
         show_error_for(this);
         valid = false;
       }
@@ -466,6 +459,35 @@ $(function(){
     {
       valid = false;
       show_error_for($('#teaching_venue_address'));
+    }
+    var min_a = $('#teaching_min_attendee').val();
+    var max_a = $('#teaching_max_attendee').val();
+    if(!isNaN(min_a) && !isNaN(max_a) && min_a > max_a)
+    {
+      valid = false;
+      show_error_for($('.min-max-error'));
+    }
+    if(!isNaN(min_a) && min_a < 0)
+    {
+      valid = false;
+      show_error_for($('.min-max-error'), "Minimum attendee cannot be negative");
+    }
+     if(!isNaN(max_a) && max_a < 0)
+    {
+      valid = false;
+      show_error_for($('.min-max-error'), "Maximum attendee cannot be negative");
+    }
+    var teaching_cost = $('#teaching_cost').val();
+    if(isNaN(teaching_cost) || teaching_cost < 0)
+    {
+      valid = false;
+      show_error_for($('#teaching_cost'), "Advertised price cannot be less than 0");
+    }
+    var teacher_cost = $("#teaching_teacher_cost").val();
+    if(teacher_cost < 0)
+    {
+      valid = false;
+      show_error_for($('#teaching_teacher_cost'), "Teacher fee cannot be less than 0");
     }
     return valid && valid_basics;
   }

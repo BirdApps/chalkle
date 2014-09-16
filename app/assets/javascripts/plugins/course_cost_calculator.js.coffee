@@ -31,6 +31,14 @@ class LessonCostCalculator
       error: @onRecomputeError
     }
 
+  check_positive: =>
+    for k,v of @fields
+      console.log(v)
+      amount = $(v).val()
+      amount = amount.replace("$","")
+      $(v).addClass('text-danger') if !isNaN(amount) && amount < 0
+
+
   ### HANDLERS ###
 
   onRecomputeSuccess: (data, textStatus) =>
@@ -42,15 +50,16 @@ class LessonCostCalculator
   ### PRIVATE ###
 
   _setData: (values) ->
-    @fields.channel_fee.attr('value', parseFloat(values.channel_fee).toFixed(2)).highlight_input()
     @fields.chalkle_fee.attr('value', parseFloat(values.chalkle_fee).toFixed(2)).highlight_input()
     @fields.processing_fee.attr('value', parseFloat(values.processing_fee).toFixed(2)).highlight_input()
+    @fields.teacher_pay_flat.attr('value', '$'+parseFloat(values.teacher_pay_flat).toFixed(2)).highlight_input()
+    @fields.teacher_pay_variable.attr('value', parseFloat(values.teacher_pay_variable).toFixed(2)).highlight_input()
+    @fields.channel_fee.attr('value', parseFloat(values.channel_fee).toFixed(2)).highlight_input()
     @fields.teacher_min_income.attr('value', '$'+parseFloat(values.teacher_min_income).toFixed(2)).highlight_input()
     @fields.teacher_max_income.attr('value', '$'+parseFloat(values.teacher_max_income).toFixed(2)).highlight_input()
     @fields.channel_min_income.attr('value', '$'+parseFloat(values.channel_min_income).toFixed(2)).highlight_input()
     @fields.channel_max_income.attr('value', '$'+parseFloat(values.channel_max_income).toFixed(2)).highlight_input()
-    @fields.teacher_pay_flat.attr('value', '$'+parseFloat(values.teacher_pay_flat).toFixed(2)).highlight_input()
-    @fields.teacher_pay_variable.attr('value', parseFloat(values.teacher_pay_variable).toFixed(2)).highlight_input()
+    @check_positive()
 
   _sourceData: ->
     result = {}

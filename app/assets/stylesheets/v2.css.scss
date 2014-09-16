@@ -84,6 +84,33 @@ body.v2 {
   .text-danger{
     color: #D3253A;
   }
+  .table input{
+    border: 0px;
+    display:inline;
+    background:none;
+    padding:0;
+    margin:0;
+    font-family: ProximaNova-Light;
+    text-align: center;
+  }
+  .table {
+    font-family: ProximaNova-Light;
+    font-weight:100;
+    tr{
+      td.left, th.left{
+        border-left: 1px solid #dddddd;
+      }
+      th{
+          border-bottom: 1px solid #dddddd;
+      }
+      td{
+        text-align: center;
+      }
+    }
+  }
+  .odd{
+    background-color: #F6F6F6;
+  }
   .styled-file{
     position: relative;
     cursor: pointer;

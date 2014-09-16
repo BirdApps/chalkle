@@ -4,14 +4,13 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
   validates :learning_outcomes, :presence => { :message => "Learning outcomes cannot be blank" }
   validates :repeat_count, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Repeat classes must be 1 or more"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
-    validates :venue_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
   validates :repeat_count, presence: true, if: :repeating?
   validates :repeat_frequency, presence: true, if: :repeating?
 
@@ -56,7 +55,6 @@ class Teaching
     @min_attendee = args.min_attendee
     @max_attendee = args.max_attendee
     @cost = args.cost
-    @venue_cost = args.venue_cost
     @teacher_cost = args.teacher_cost
     @availabilities = args.availabilities
     @venue_address = args.venue_address
@@ -95,7 +93,6 @@ class Teaching
       min_attendee: @min_attendee.to_i,
       max_attendee: @max_attendee.to_i,
       cost: @cost,
-      venue_cost: @venue_cost,
       teacher_cost: @teacher_cost,
       availabilities: @availabilities,
       venue_address: @venue_address,
