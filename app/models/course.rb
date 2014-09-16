@@ -11,6 +11,10 @@ class Course < ActiveRecord::Base
 
   attr_accessible  *BASIC_ATTR, :description, :teacher_payment, :published_at, :course_image_attributes, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
 
+  #chalkle fee is cached without GST
+  #channel fee is specified inc. GST so is cached including it
+
+
   #Course statuses
   STATUS_5 = "Processing"
   STATUS_4 = "Completed"
@@ -175,6 +179,7 @@ class Course < ActiveRecord::Base
     end
   end
 
+  #placeholder for when we go international
   def country_code
     :nz
   end
@@ -196,14 +201,10 @@ class Course < ActiveRecord::Base
     cost - variable_costs - processing_fee - chalkle_fee
   end
 
-  # def channel_fee=(value)
-  #   self.cached_channel_fee = value
-  # end
-
   def chalkle_fee(incl_tax = true)
     single = course_class_type.nil? ? single_class? : course_class_type == 'course'
-    no_tax_fee = single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost;
-    Finance.apply_sales_tax_to(no_tax_fee, country_code) if incl_tax
+    no_tax_fee = cached_chalkle_fee || (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
+    incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
   end
 
   def chalkle_fee=(value)
@@ -268,16 +269,6 @@ class Course < ActiveRecord::Base
     else
       0
     end
-  end
-
-  def update_costs
-    self.cached_chalkle_fee = chalkle_fee
-    self.cached_channel_fee = channel_fee
-  end
-
-   def update_costs!
-    update_costs
-    save
   end
 
   #Class incomes
@@ -469,18 +460,19 @@ class Course < ActiveRecord::Base
     price/(1 + GST)
   end
 
-  # def fee(teacher_price, teacher_percentage, channel_cut)
-  #   return 0 unless teacher_percentage > 0
-  #   teacher_price / teacher_percentage * channel_cut * (1 + GST)
-  # end
-
   def update_published_at
     self.published_at ||= Time.now
   end
 
   before_create :set_url_name
+  before_create :cache_costs
   before_save :check_url_name
   
+  def cache_costs
+    self.cached_chalkle_fee = chalkle_fee
+    self.cached_channel_fee = channel_fee
+  end
+
   def set_url_name
     self.url_name = name.parameterize
   end

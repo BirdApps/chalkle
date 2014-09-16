@@ -59,6 +59,7 @@ class Teaching
     @availabilities = args.availabilities
     @venue_address = args.venue_address
     @course_upload_image = args.course_upload_image
+    @teacher_pay_type = args.teacher_pay_type
     @start_at = []
     @duration_hours = []
     @duration_minutes = []
@@ -97,7 +98,8 @@ class Teaching
       availabilities: @availabilities,
       venue_address: @venue_address,
       course_upload_image: @course_upload_image,
-      start_at: @start_at[0]
+      start_at: @start_at[0],
+      teacher_pay_type: @teacher_pay_type
     }
   end
 
@@ -281,12 +283,13 @@ class Teaching
     @teacher_id = get_teacher_id params[:teacher_id]
     @min_attendee = params[:min_attendee]
     @max_attendee = params[:max_attendee]
-    @venue_cost = params[:venue_cost]
     @teacher_cost = params[:teacher_cost]
     @availabilities = params[:availabilities]
     @cost = calculate_cost
     @venue_address = params[:venue_address]
     @course_upload_image = params[:course_upload_image]
+    @teacher_pay_type = params[:teacher_pay_type]
+    @cost = params[:cost]
     self.valid?
   end
 
