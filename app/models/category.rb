@@ -14,6 +14,10 @@ class Category < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name
 
+  def hero
+    nil
+  end
+
   #TODO: Move into a presenter class like Draper sometime
   #FIXME: Data should be enforced in some convention so lowercase conversion is not required here (probably all lowercase)
   def self.select_options(indent = '+-- ')

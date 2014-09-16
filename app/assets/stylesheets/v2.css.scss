@@ -78,6 +78,12 @@ body.v2 {
   .upper{
     text-transform: uppercase;
   }
+  .text-success{
+    color: #8DBF55;
+  }
+  .text-danger{
+    color: #D3253A;
+  }
   .styled-file{
     position: relative;
     cursor: pointer;
@@ -96,7 +102,6 @@ body.v2 {
     .fakebtn{
       position: absolute;
       top: 0;
-      right: 20px;
       z-index: 1;
       cursor: pointer;
     }
@@ -106,7 +111,7 @@ body.v2 {
     font-style: italic;
     text-align:center;
     background: #F1F1F1;
-    margin: 10px 20px;
+    margin-bottom: 10px;
   }
 
   .fancy-header{
@@ -565,6 +570,17 @@ body.v2 {
     .image-preview{
       width: 100%;
     }
+    .img {
+        position: relative;
+        background-color: #F1F1F1;
+        background-repeat: no-repeat;
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
     .course-show{
       margin-top:20px;
       .admin-bar{
@@ -621,15 +637,6 @@ body.v2 {
         }
         .course_image{
           width: 100%;
-        }
-        .img {
-          position: relative;
-          background-position: center center !important;
-          background-repeat: no-repeat !important;
-          background-size: cover !important;
-          overflow: hidden;
-          width: 100%;
-          height: 100%;
         }
       }
       .porthole.square{
@@ -717,10 +724,31 @@ body.v2 {
       font-size:60%;
       font-family: ProximaNova-Light;
     }
-    .new_course_form_wrapper{
+    .new_form_wrapper{
+      .hero.image-preview{
+        height: 175px;
+        width:100%;
+        max-width:600px;
+        margin:0 auto 10px;
+      }
+      .provider-logo.image-preview{
+        height: 200px;
+        width:200px;
+        max-width:100%;
+        margin:0 auto 10px;
+      }
       #map-canvas{
         height: 300px;
         width: 100%;
+      }
+      .styled_file{
+        max-width:600px;
+        margin: 0 auto;
+        .styled-file{
+          .btn{
+            width:100%;
+          }
+        }
       }
       .form_errors, .form-error{
         padding: .2em .6em .1em;
@@ -898,7 +926,7 @@ body.v2 {
             margin-bottom: 40px;
           }
           .fee-summary,.income-summary{
-            #teaching_cost, #teaching_fixed_cost{
+            #teaching_cost, #teaching_fixed_cost,#summary_cost,{
               margin-left: 0;
               font-size:1.5em;
               width:100px;

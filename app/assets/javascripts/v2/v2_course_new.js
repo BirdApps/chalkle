@@ -21,14 +21,17 @@ $(function(){
     $(".new_course_form_wrapper .parts").hide();
     $(".part_link").click(link_part_change);
     $('#teaching_repeat_frequency').change(set_monthly);
+    $('#teaching_teacher_pay_type').change(set_teacher_pay_type);
+    set_teacher_pay_type();
+    $('#teaching_max_attendee').change(set_attendee_summary);
+    $('#teaching_min_attendee').change(set_attendee_summary);
+    set_attendee_summary();
     $('#teaching_repeating').change(set_repeating);
     $('form#new_teaching').courseCostCalculator({resource_name: 'teaching'});
     part_change("#type");
     apply_inline_validation();
     get_teacher_list();
     init_start_at();
-    image_preview();
-    $('#teaching_course_upload_image').change(image_preview);
     $('.new_course_form_wrapper').fadeIn();
   }
 
@@ -38,15 +41,47 @@ $(function(){
     });
   }
 
-  /* updates the image preview from local file */
-  function image_preview(){
-    var input = $('#teaching_course_upload_image')[0];
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('.image-preview .img').css('background-image', 'url('+e.target.result+')');
-        }
-        reader.readAsDataURL(input.files[0]);
+  function set_attendee_summary(){
+    switch($('#teaching_max_attendee').val().trim()){
+      case "":
+        $('.max-summary').hide();
+        break;
+      default:
+        $('.max-summary').show();
+        break;
+    }
+    
+    switch($('#teaching_min_attendee').val().trim()){
+      case "":
+        $('.min-summary').hide();
+        break;
+      default:
+        $('.min-summary').show();
+        break;
+    }
+  }
+
+  function set_teacher_pay_type(){
+    switch($('#teaching_teacher_pay_type').val()){
+      case "Flat fee":
+        $('.teaching_fee_summary').hide();
+        $('.teaching_fee_wrapper').show();
+        $('.teaching_flat_fee_summary').show();
+
+        $('.teacher_fee_label').text('Teacher flat fee');
+        break;
+      case "Fee per attendee":
+        $('.teaching_flat_fee_summary').hide();
+        $('.teaching_fee_wrapper').show();
+        $('.teaching_fee_summary').show();
+
+        $('.teacher_fee_label').text('Teacher fee per attendee');
+        break;
+      default:
+        $('.teaching_fee_wrapper').hide();
+        $('.teaching_flat_fee_summary').hide();
+        $('.teaching_fee_summary').hide();
+        break;
     }
   }
 
@@ -341,11 +376,14 @@ $(function(){
         var target = this.id.split('teaching_')[1];
         var target = '#summary_'+this.id.split('teaching_')[1];
         if($(target).is('input')){
-          $(target).val(val);
+          if($(target).hasClass('currency')){
+            $(target).val('$'+val);
+          }else{
+            $(target).val(val); 
+          }
         }else{
           $(target).html(val);
         }
-        //calculate_costs();
       }
     });
     $("#summary_times_summary").empty();
@@ -354,16 +392,6 @@ $(function(){
       $(summary_time).addClass('no-validate');
     });
   }
-
-  function calculate_costs(){
-    // var cost = 0.00;
-    // var ven_cost = $('#summary_venue_cost').val();
-    // if(!isNaN(ven_cost)){
-    //   cost = parseFloat(ven_cost)+cost;
-    // }
-    // $('#summary_fixed_cost').val('$'+cost.toFixed(2));
-  }
-
 
   //---START NAVIGATION 
   function navigate_to_invalid(location){

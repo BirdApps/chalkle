@@ -57,7 +57,7 @@ module LayoutHelper
   end
 
   def page_hero
-    @header_bg ? @header_bg : '/assets/partners/partners-hero.jpg'
+    @header_bg ? @header_bg : find_hero
   end
 
   def filter_params(type, value)
@@ -74,5 +74,29 @@ module LayoutHelper
       end
     end
     params_copy
+  end
+
+  def find_hero
+    if @channel.hero.present?
+        {
+          default: @channel.hero,
+          blurred: @channel.hero.blurred
+        }
+      elsif @category.hero.present?
+        {
+          default: @category.hero,
+          blurred: @category.hero.blurred
+        }
+      elsif @region.hero.present?
+        {
+          default: @region.hero,
+          blurred: @region.hero.blurred
+        }
+      else
+        {
+          default: '/assets/partners/index-hero.jpg',
+          blurred: '/assets/partners/index-hero-invert.jpg'
+        }
+      end
   end
 end
