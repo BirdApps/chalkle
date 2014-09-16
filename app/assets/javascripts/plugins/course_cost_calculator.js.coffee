@@ -36,7 +36,10 @@ class LessonCostCalculator
       console.log(v)
       amount = $(v).val()
       amount = amount.replace("$","")
-      $(v).addClass('text-danger') if !isNaN(amount) && amount < 0
+      if !isNaN(amount) && amount < 0
+        $(v).addClass('text-danger') 
+      else
+          $(v).removeClass('text-danger') 
 
 
   ### HANDLERS ###
