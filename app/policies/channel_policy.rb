@@ -10,7 +10,7 @@ class ChannelPolicy < ApplicationPolicy
   end
 
   def update?
-    @user.admin_user.super? or @user.chalkler.channels_adminable.include? @channel
+    @user.super? or @user.chalkler.channels_adminable.include? @channel
   end
 
   class Scope < Scope

@@ -6,7 +6,7 @@ class ChannelPlanPolicy < ApplicationPolicy
   end
 
   def index?
-    if @user.admin_user.super?
+    if @user.super?
       true 
     else
       false

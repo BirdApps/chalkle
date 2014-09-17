@@ -27,12 +27,20 @@ class TheUser
     chalkler.name ? chalkler.name : admin_user.name if authenticated?
   end 
 
+  def email
+    chalkler.email ? chalkler.email : admin_user.email if authenticated?
+  end
+
   def chalkler
     @chalkler
   end
 
   def admin_user
     @admin_user
+  end
+
+  def super?
+    admin_user.present? ? @user.admin_user.super? : false
   end
 
   def channels
