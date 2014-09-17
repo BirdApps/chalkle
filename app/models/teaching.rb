@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :new_channel_bank_number
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
@@ -273,7 +273,7 @@ class Teaching
     @street_name = params[:street_name]
     @city = params[:city]
     @region = get_region params[:region]
-    @region_id = @region.id
+    @region_id = @region.present? ? @region.id : nil
     @country = params[:country]
     @postal_code = params[:postal_code]
     @latitude = params[:latitude]
@@ -290,6 +290,8 @@ class Teaching
     @course_upload_image = params[:course_upload_image]
     @teacher_pay_type = params[:teacher_pay_type]
     @cost = params[:cost]
+    @new_channel_bank_number = params[:new_channel_bank_number]
+    @new_channel_tax_number = params[:new_channel_tax_number]
     self.valid?
   end
 
@@ -309,9 +311,9 @@ class Teaching
       #no channel
       if @channels.empty?
         #create a personal channel and grant user all permissions
-        channel = Channel.create name: @current_user.name, regions: [ region ], channel_rate_override: 0, teacher_percentage: 1, email: @current_user.email, visible: true
+        channel = Channel.create({name: @current_user.name, regions: [ region ], email: @current_user.email, account: @new_channel_bank_number, tax_number: @new_channel_tax_number, visible: true, channel_plan: ChannelPlan.default}, as: :admin)
         channel_admin = ChannelAdmin.create channel: channel, chalkler: @current_user.chalkler
-        channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.chalkler.name
+        channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.chalkler.name, account: @new_channel_bank_number, tax_number: @new_channel_tax_number
       else
         if @channels.count == 1
           channel = @channels[0]
@@ -332,9 +334,9 @@ class Teaching
   end
 
   def get_region(region_name)
-    region_name = region_name || @city
+    region_name = region_name.present? ? region_name : @city
     region = Region.find_by_name(region_name)
-    if region.nil? && region.name.present?
+    if region.nil? && region_name.present?
       region = Region.create name: region_name, url_name: region_name.parameterize
     end
     region

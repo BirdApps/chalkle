@@ -235,20 +235,38 @@
         <p class="small grey">If the number of attendees is above the maximum, or below the minimum, the <span class="class_only">class</span><span class="course_only">course</span> will not run. </p>
       </div>
 
-      <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , :label => "How does the <strong>teacher fee calculated</strong>?", wrapper: :horizonal %>
-      <div class="col-sm-5"></div>
-      <div class="col-sm-7">
-        <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
-      </div>
-
-      
-      <div class="teaching_fee_wrapper">
-        <%= f.input :teacher_cost, as: :currency, :label => "<strong class='teacher_fee_label'>Teacher Fee</strong>", wrapper: :horizonal, input_html: {:'data-error-message'=>'Specify the teacher fee', value: f.object.teacher_cost || '0.00'} %>
+      <% if current_user.channels.count > 0  %>
+          
+        <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , :label => "How does the <strong>teacher fee calculated</strong>?", wrapper: :horizonal %>
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
-          <p class="small grey">How much should we pay the teacher?</p>
+          <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
         </div>
-      </div>
+
+        
+        <div class="teaching_fee_wrapper">
+          <%= f.input :teacher_cost, as: :currency, :label => "<strong class='teacher_fee_label'>Teacher Fee</strong>", wrapper: :horizonal, input_html: {:'data-error-message'=>'Specify the teacher fee', value: f.object.teacher_cost || '0.00'} %>
+          <div class="col-sm-5"></div>
+          <div class="col-sm-7">
+            <p class="small grey">How much should we pay the teacher?</p>
+          </div>
+        </div>
+
+      <% else  %>
+        <%= f.input :new_channel_bank_number, label: "Bank account", wrapper: :horizonal %>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">The bank account you would like Chalkle to pay money to</p>
+        </div>
+
+        <%= f.input :new_channel_tax_number, label: "GST Number, if applicable", wrapper: :horizonal %>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">Only include a GST number if it GST applies at the standard rate. This will show on your attendee's receipt.</p>
+        </div>
+
+      <% end  %>
+          
 
      
 

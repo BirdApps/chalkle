@@ -65,6 +65,7 @@ body.v2 {
     padding-bottom:75px;
     position:relative;
     z-index:1;
+    background-color: #fff;
   }
   .no-label{
     label{
@@ -220,6 +221,10 @@ body.v2 {
     right: 0;
     left: 0;
     z-index: 20;
+    #primary-naviation{
+      font-weight: 100 !important;
+      font-family: ProximaNova-Light;
+    }
     .navbar{
       background: $primary-color;
       @media(max-width: $col-sm){

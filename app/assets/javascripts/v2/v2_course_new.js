@@ -462,7 +462,7 @@ $(function(){
     }
     var min_a = $('#teaching_min_attendee').val();
     var max_a = $('#teaching_max_attendee').val();
-    if(!isNaN(min_a) && !isNaN(max_a) && min_a > max_a)
+    if(!isNaN(min_a) && !isNaN(max_a) && parseInt(min_a) > parseInt(max_a))
     {
       valid = false;
       show_error_for($('.min-max-error'));
