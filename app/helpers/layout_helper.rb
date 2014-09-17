@@ -131,11 +131,11 @@ module LayoutHelper
 
     nav_links << {
                   img_name: "people",
-                  link: channel_channel_teachers_path(@channel.url_name),
+                  link: channels_teachers_path(@channel.url_name),
                   active: active_link == "people",
                   title: "People"
                 }
-      if policy(@channel).metrics?           
+      if policy(@channel).metrics?
         nav_links  << {
                         img_name: "metrics",
                         link: metrics_path,
@@ -143,7 +143,7 @@ module LayoutHelper
                         title: "Metrics"
                       }
       end
-      if policy(@channel).resources? 
+      if policy(@channel).resources?
         nav_links <<  {
                         img_name: "book",
                         link: resources_path,

@@ -40,7 +40,7 @@ class TheUser
   end
 
   def super?
-    admin_user.present? ? @user.admin_user.super? : false
+    admin_user.present? ? admin_user.super? : false
   end
 
   def channels
