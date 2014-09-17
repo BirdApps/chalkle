@@ -17,5 +17,7 @@
       <%= render 'layouts/navigation_secondary' %>
     <% end %>
   </div>
-  <%= render "layouts/navigation_admin" %>
+  <% if current_user.channels.count > 0 %>
+    <%= render "layouts/navigation_admin" %>
+  <% end %>
 </div>
