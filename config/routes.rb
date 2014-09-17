@@ -86,8 +86,8 @@ Chalkle::Application.routes.draw do
   get '/search', to: 'courses#index', as: :search_courses
 
   #TODO: find an easier way of doing these channel routes!
+  get ':channel_url_name/teachers', to: 'channels#teachers', as: :channels_teachers
   get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
-  get ':channel_url_name/teachers', to: 'channels#teachers', as: :channel_channel_teachers
   get ':channel_url_name/teacher/:id', to: 'channels#teachers', as: :channel_channel_teacher
   get ':channel_url_name/settings', to: 'channels#edit', as: :channel_settings
   put ':channel_url_name/settings', to: 'channels#update', as: :channel_settings

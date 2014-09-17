@@ -1,7 +1,7 @@
 class ChannelsController < ApplicationController
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
-  before_filter :load_channel, only: [:show, :edit, :update]
+  before_filter :load_channel, only: [:show, :edit, :update,:teachers]
 
   def index
     @channels = Channel.visible
@@ -53,10 +53,10 @@ class ChannelsController < ApplicationController
   end
 
   def teachers
-    @teachers = ChannelTeacher.where(channel_id: params[:channel_id]).compact
+    @teachers = ChannelTeacher.where channel_id:  @channel.id
     respond_to do |format|
       format.json { render json: @teachers.to_json(only: [:id, :name]) }
-      format.html { render @teachers }
+      format.html
     end
   end
 
