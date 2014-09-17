@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140911230213) do
+ActiveRecord::Schema.define(:version => 20140917005939) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -169,6 +169,8 @@ ActiveRecord::Schema.define(:version => 20140911230213) do
     t.string  "bio"
     t.string  "pseudo_chalkler_email"
     t.boolean "can_make_classes",      :default => false
+    t.string  "tax_number"
+    t.string  "account"
   end
 
   create_table "channels", :force => true do |t|
@@ -196,6 +198,7 @@ ActiveRecord::Schema.define(:version => 20140911230213) do
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
     t.integer  "plan_max_teachers"
+    t.string   "tax_number"
   end
 
   create_table "cities", :force => true do |t|
@@ -224,43 +227,34 @@ ActiveRecord::Schema.define(:version => 20140911230213) do
 
   create_table "courses", :force => true do |t|
     t.integer  "teacher_id"
-    t.integer  "meetup_id"
     t.string   "name"
-    t.string   "status",                                                               :default => "Unreviewed"
+    t.string   "status",                                            :default => "Unreviewed"
     t.text     "description"
-    t.decimal  "cost",                                   :precision => 8, :scale => 2
-    t.text     "meetup_data"
-    t.datetime "created_at",                                                                                     :null => false
-    t.datetime "updated_at",                                                                                     :null => false
-    t.decimal  "teacher_cost",                           :precision => 8, :scale => 2
-    t.decimal  "venue_cost",                             :precision => 8, :scale => 2
-    t.boolean  "visible",                                                              :default => true
-    t.decimal  "teacher_payment",                        :precision => 8, :scale => 2
+    t.decimal  "cost",                :precision => 8, :scale => 2
+    t.datetime "created_at",                                                                  :null => false
+    t.datetime "updated_at",                                                                  :null => false
+    t.decimal  "teacher_cost",        :precision => 8, :scale => 2
+    t.boolean  "visible",                                           :default => true
+    t.decimal  "teacher_payment",     :precision => 8, :scale => 2
     t.string   "course_type"
     t.text     "do_during_class"
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
-    t.integer  "min_attendee",                                                         :default => 2
+    t.integer  "min_attendee",                                      :default => 2
     t.text     "availabilities"
     t.text     "prerequisites"
     t.text     "additional_comments"
-    t.boolean  "donation",                                                             :default => false
     t.string   "course_skill"
     t.text     "venue"
     t.datetime "published_at"
-    t.decimal  "deprecated_channel_percentage_override", :precision => 8, :scale => 2
-    t.decimal  "deprecated_chalkle_percentage_override", :precision => 8, :scale => 2
-    t.decimal  "material_cost",                          :precision => 8, :scale => 2, :default => 0.0
     t.text     "suggested_audience"
-    t.string   "meetup_url"
-    t.decimal  "chalkle_payment",                        :precision => 8, :scale => 2
+    t.decimal  "chalkle_payment",     :precision => 8, :scale => 2
     t.string   "course_upload_image"
     t.integer  "category_id"
-    t.decimal  "cached_channel_fee",                     :precision => 8, :scale => 2
-    t.decimal  "cached_chalkle_fee",                     :precision => 8, :scale => 2
+    t.decimal  "cached_channel_fee",  :precision => 8, :scale => 2
+    t.decimal  "cached_chalkle_fee",  :precision => 8, :scale => 2
     t.integer  "channel_id"
     t.integer  "region_id"
-    t.decimal  "channel_rate_override",                  :precision => 8, :scale => 4
     t.integer  "repeat_course_id"
     t.string   "url_name"
     t.string   "street_number"
@@ -271,7 +265,8 @@ ActiveRecord::Schema.define(:version => 20140911230213) do
     t.float    "latitude"
     t.string   "venue_address"
     t.datetime "start_at"
-    t.decimal  "fixed_overhead_cost"
+    t.string   "teacher_pay_type"
+    t.string   "course_class_type"
   end
 
   create_table "delayed_jobs", :force => true do |t|

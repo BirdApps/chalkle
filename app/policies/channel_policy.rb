@@ -2,7 +2,7 @@ class ChannelPolicy < ApplicationPolicy
 
   def initialize(user, channel)
     @user = user
-    @course = channel
+    @channel = channel
   end
 
   def edit?
@@ -10,12 +10,15 @@ class ChannelPolicy < ApplicationPolicy
   end
 
   def update?
-    @user.admin_user.super? or @user.chalkler.channels_adminable.include? @channel
+    @user.super? or @user.chalkler.channels_adminable.include? @channel
   end
 
-  class Scope < Scope
-    def resolve
-      scope
-    end
+  def metrics?
+    update?
   end
+
+  def resources?
+    update?
+  end
+
 end

@@ -1,7 +1,6 @@
 <%= javascript_include_tag "nav_admin" %>
 <%  
   controller_parts = request.path_parameters[:controller].split("/")
-
   
   if controller_parts.index("resources")
     active_link = "resources"
@@ -40,9 +39,7 @@
     }
   ]
 %>
-<div class="admin_nav_wrapper">
-
-  <% if current_user.admin? %>
+<div class="context_nav_wrapper">
   <div class="flex">
     <div class="nav-bumper">&nbsp;</div>
     <nav class="container flush">
@@ -65,5 +62,4 @@
     <div class="nav-bumper nav-bumper2">&nbsp;</div>
     <br style="clear:both" />
   </div>
-  <% end  %>
 </div>

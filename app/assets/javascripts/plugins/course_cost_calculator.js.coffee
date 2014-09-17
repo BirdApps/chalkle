@@ -2,24 +2,24 @@ class LessonCostCalculator
   constructor: (element, options = {}) ->
     @elem = $(element)
     @resource_name = options.resource_name || 'course'
-    @input_field_names = ['teacher_cost', 'material_cost', 'channel_id', 'channel_rate_override', 'course_class_type', 'fixed_overhead_cost', 'venue_cost','min_attendee','max_attendee']
+    @input_field_names = ['teacher_cost','cost','channel_id', 'course_class_type','min_attendee','max_attendee','teacher_pay_type']
     @fields = {
       teacher_cost:          @elem.find("##{@resource_name}_teacher_cost"),
-      material_cost:         @elem.find("##{@resource_name}_material_cost"),
-      venue_cost:            @elem.find("##{@resource_name}_venue_cost"),
       channel_id:            @elem.find("##{@resource_name}_channel_id"),
       cost:                  @elem.find("##{@resource_name}_cost"),
-      fixed_cost:            @elem.find("##{@resource_name}_fixed_cost"),
-      channel_rate_override: @elem.find("##{@resource_name}_channel_rate_override"),
       channel_fee:           @elem.find("##{@resource_name}_channel_fee"),
       chalkle_fee:           @elem.find("##{@resource_name}_chalkle_fee"),
       processing_fee:        @elem.find("##{@resource_name}_processing_fee"),
       course_class_type:     @elem.find("##{@resource_name}_course_class_type"), 
-      fixed_overhead_cost:   @elem.find("##{@resource_name}_fixed_overhead_cost"),
       max_attendee:          @elem.find("##{@resource_name}_max_attendee"),
       min_attendee:          @elem.find("##{@resource_name}_min_attendee"),
-      max_income:            @elem.find("##{@resource_name}_max_income"),
-      min_income:            @elem.find("##{@resource_name}_min_income"),
+      teacher_max_income:    @elem.find("##{@resource_name}_teacher_max_income"),
+      teacher_min_income:    @elem.find("##{@resource_name}_teacher_min_income"),
+      channel_max_income:    @elem.find("##{@resource_name}_channel_max_income"),
+      channel_min_income:    @elem.find("##{@resource_name}_channel_min_income"),
+      teacher_pay_type:      @elem.find("##{@resource_name}_teacher_pay_type"),
+      teacher_pay_flat:      @elem.find("##{@resource_name}_teacher_pay_flat"),
+      teacher_pay_variable:  @elem.find("##{@resource_name}_teacher_pay_variable")
     }
     @_attachHandlers()
 
@@ -30,6 +30,17 @@ class LessonCostCalculator
       success: @onRecomputeSuccess,
       error: @onRecomputeError
     }
+
+  check_positive: =>
+    for k,v of @fields
+      console.log(v)
+      amount = $(v).val()
+      amount = amount.replace("$","")
+      if !isNaN(amount) && amount < 0
+        $(v).addClass('text-danger') 
+      else
+          $(v).removeClass('text-danger') 
+
 
   ### HANDLERS ###
 
@@ -42,13 +53,16 @@ class LessonCostCalculator
   ### PRIVATE ###
 
   _setData: (values) ->
-    @fields.cost.attr('value', '$'+parseFloat(values.calculate_cost).toFixed(2)).highlight_input()
-    @fields.fixed_cost.attr('value', '$'+parseFloat(values.fixed_costs).toFixed(2)).highlight_input()
-    @fields.channel_fee.attr('value', parseFloat(values.channel_fee).toFixed(2)).highlight_input()
     @fields.chalkle_fee.attr('value', parseFloat(values.chalkle_fee).toFixed(2)).highlight_input()
     @fields.processing_fee.attr('value', parseFloat(values.processing_fee).toFixed(2)).highlight_input()
-    @fields.min_income.attr('value', '$'+parseFloat(values.min_income).toFixed(2)).highlight_input()
-    @fields.max_income.attr('value', '$'+parseFloat(values.max_income).toFixed(2)).highlight_input()
+    @fields.teacher_pay_flat.attr('value', '$'+parseFloat(values.teacher_pay_flat).toFixed(2)).highlight_input()
+    @fields.teacher_pay_variable.attr('value', parseFloat(values.teacher_pay_variable).toFixed(2)).highlight_input()
+    @fields.channel_fee.attr('value', parseFloat(values.channel_fee).toFixed(2)).highlight_input()
+    @fields.teacher_min_income.attr('value', '$'+parseFloat(values.teacher_min_income).toFixed(2)).highlight_input()
+    @fields.teacher_max_income.attr('value', '$'+parseFloat(values.teacher_max_income).toFixed(2)).highlight_input()
+    @fields.channel_min_income.attr('value', '$'+parseFloat(values.channel_min_income).toFixed(2)).highlight_input()
+    @fields.channel_max_income.attr('value', '$'+parseFloat(values.channel_max_income).toFixed(2)).highlight_input()
+    @check_positive()
 
   _sourceData: ->
     result = {}

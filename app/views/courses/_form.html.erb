@@ -11,7 +11,7 @@
     b.use :label_input
   end
  %>
-<div class="new_course_form_wrapper" style="display:none;">
+<div class="new_form_wrapper new_course_form_wrapper" style="display:none;">
   <div class="col-md-2">
     <%= link_to "< Upcoming Classes", courses_path, {:class => "small grey"} %>
   </div>
@@ -23,8 +23,6 @@
       <li><a href="#teaching" class="part_link" id="teaching-link">Teacher & Venue</a></li>
       <li><a href="#summary" class="part_link" id="summary-link">Summary & Submit</a></li>
     </ol>
-    
-
 
     <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: submit_url, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
       
@@ -217,37 +215,60 @@
         <% end %>
       
       <div class="fancy-header">
-        <h3>Costs & Counts</h3>
+        <h3>Pricing</h3>
         <hr />
       </div>
 
-       <%= f.input :min_attendee, as: :number_picker, label: "<strong>Minimum</strong> Attendees", wrapper: :horizonal %>
-       <%= f.input :max_attendee, as: :number_picker, label: "<strong>Maximum</strong> Attendees", wrapper: :horizonal %>
-       <div class="col-sm-5"></div>
+       <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizonal, input_html: { value: f.object.cost || '0.00', :'data-error-message' => "Negative values are not valid" } %>
+        <div class="col-sm-5"></div>
         <div class="col-sm-7">
-          <p class="small grey">If the number of attendees is above the maximum, or below the minimum, the <span class="class_only">class</span><span class="course_only">course</span> will be cancelled. </p>
+          <p class="small grey">
+            How much will attendees pay to attend the class? This will include any material costs, etc.
+          </p>
         </div>
+
+      <%= f.input :min_attendee, as: :number_picker, label: "<strong>Minimum</strong> Attendees", wrapper: :horizonal %> 
+      <%= f.input :max_attendee, as: :number_picker, label: "<strong>Maximum</strong> Attendees", wrapper: :horizonal %>
+      <div class="col-sm-5"></div>
+      <div class="col-sm-7">
+        <div class="min-max-error" data-error-message="Minimum must be smaller than Maximum"></div>
+        <p class="small grey">If the number of attendees is above the maximum, or below the minimum, the <span class="class_only">class</span><span class="course_only">course</span> will not run. </p>
+      </div>
+
+      <% if current_user.channels.count > 0  %>
+          
+        <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , :label => "How does the <strong>teacher fee calculated</strong>?", wrapper: :horizonal %>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
+        </div>
+
         
-        <%= f.input :venue_cost, as: :currency, :label => "<strong>Venue</strong> costs", wrapper: :horizonal, input_html: { value: f.object.venue_cost || '0.00' } %>
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">Any fixed costs associated with the venue, i.e. space hire</p>
+        <div class="teaching_fee_wrapper">
+          <%= f.input :teacher_cost, as: :currency, :label => "<strong class='teacher_fee_label'>Teacher Fee</strong>", wrapper: :horizonal, input_html: {:'data-error-message'=>'Specify the teacher fee', value: f.object.teacher_cost || '0.00'} %>
+          <div class="col-sm-5"></div>
+          <div class="col-sm-7">
+            <p class="small grey">How much should we pay the teacher?</p>
+          </div>
         </div>
 
-         <%= f.input :fixed_overhead_cost, as: :currency, :label => "<strong>Other </strong> costs", wrapper: :horizonal, input_html: { value: f.object.venue_cost || '0.00' } %>
+      <% else  %>
+        <%= f.input :new_channel_bank_number, label: "Bank account", wrapper: :horizonal %>
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
-          <p class="small grey">Any other fixed costs not affected by how many people attend</p>
+          <p class="small grey">The bank account you would like Chalkle to pay money to</p>
         </div>
-         
 
-        <%= f.input :teacher_cost, as: :currency, :label => "<strong>Teacher Fee</strong> per attendee", wrapper: :horizonal, input_html: {:'data-error-message'=>'Specify the teacher fee (this is the base cost for an attendee)', value: f.object.venue_cost || '0.00'} %>
+        <%= f.input :new_channel_tax_number, label: "GST Number, if applicable", wrapper: :horizonal %>
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
-          <p class="small grey">How much money the teacher will make per attendee</p>
+          <p class="small grey">Only include a GST number if it GST applies at the standard rate. This will show on your attendee's receipt.</p>
         </div>
-        
 
+      <% end  %>
+          
+
+     
 
         <div class="row prevnext">
           <div class="col-xs-5 prev">
@@ -274,104 +295,105 @@
             The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> is priced at:
           </div>
           <div class="col-xs-6">
-            <input id="teaching_cost" disabled="disabled">
+            <input id="summary_cost" class="currency" disabled="disabled">
           </div>
 
           <div class="col-md-3">
           </div>
           <div class="col-md-6">
-            <hr />
+            <hr style="margin-top: 0" />
           </div>
           <div class="col-md-3">
           </div>
           
           <div class="col-xs-6 text-right light small grey">
-           Teacher payment 
-          </div>
-          <div class="col-xs-6">
-            <input id="summary_teacher_cost" disabled="disabled" />
-          </div>
-          <div class="col-xs-6 text-right light small grey">
-           <span  id="summary_channel_id">Provider</span> fee
+            <span id="summary_channel_id">Provider</span> portion
           </div>
           <div class="col-xs-6">
             <input id="teaching_channel_fee" disabled="disabled" />
           </div>
-          <% if current_user.channels.count > 1 || current_user.channels.count == 1 && !current_user.channels[0].fee  %>
-            <div class="col-xs-6 text-right light small grey">
-             Chalkle fee
-            </div>
-            <div class="col-xs-6">
-              <input id="teaching_chalkle_fee" disabled="disabled">
-            </div>
-          <% end %>
+
+
+          <div class="col-xs-6 text-right light small grey teaching_fee_summary">
+           Teacher portion 
+          </div>
+          <div class="col-xs-6 teaching_fee_summary">
+            <input id="teaching_teacher_pay_variable" disabled="disabled" />
+          </div>
+
           <div class="col-xs-6 text-right light small grey">
            Processing fee
           </div>
           <div class="col-xs-6">
             <input id="teaching_processing_fee" disabled="disabled">
           </div>
-          <% if current_user.channels.count > 1  %>
-            <% f.input :override_channel_fee, as: :boolean, label: "Waive the provider fee", wrapper: :horizonal %>
-            <%# TODO: only channel admins can waive fee %>
-          <% end %>
-        </div>
-
-        <div class="row fee-summary summary-part">
-          <div class="col-xs-6 text-right light teaching_cost">
-           The <strong>fixed costs</strong> are:
-          </div>
-          <div class="col-xs-6">
-            <input id="teaching_fixed_cost" disabled="disabled">
-          </div>
-
-          <div class="col-md-3">
-          </div>
-          <div class="col-md-6">
-            <hr />
-          </div>
-          <div class="col-md-3">
-          </div>
 
           <div class="col-xs-6 text-right light small grey">
-             Venue Costs
+           Chalkle fee
           </div>
           <div class="col-xs-6">
-            <input id="summary_venue_cost" disabled="disabled">
+            <input id="teaching_chalkle_fee" disabled="disabled">
           </div>
 
-          <div class="col-xs-6 text-right light small grey">
-             Other Costs
-          </div>
-          <div class="col-xs-6">
-            <input id="summary_fixed_overhead_cost" disabled="disabled">
-          </div>
+          
 
-        </div>
-
-        <div class="row income-summary summary-part">
-          <div class="col-sm-6"> 
-            <div class="col-xs-6 col-sm-12 center light">
-              <strong>Minimum</strong> income
+          <div class="min-max-attendee-summary">
+            <div class="col-md-3">
             </div>
-            <hr />
-            <div class="col-xs-6 col-sm-12 center">
-              <input id="teaching_min_income" disabled="disabled">
+            <div class="col-md-6">
+              <hr />
             </div>
-          </div>
-          <div class="col-sm-6"> 
-            <div class="col-xs-6 col-sm-12 center light">
-             <strong>Maximum</strong> income
-            </div>
-            <hr />
-            <div class="col-xs-6 col-sm-12 center">
-              <input id="teaching_max_income" disabled="disabled">
+            <div class="col-md-3">
             </div>
           </div>
         </div>
+        
+        <div class="min-max-attendee-summary">
+          <br /><br/><br />
+          <table class="table">
+            <thead>
+              <tr>
+                <td width="30"></td>
+                <td width="30" class="left">
+                  <span>Minimum attendees: </span>
+                  <span id="summary_min_attendee" disabled="disabled"></span>
+                </td>
+                <td width="30" class="left">
+                  <span>Maximum attendees: </span>
+                  <span id="summary_max_attendee" disabled="disabled"></span>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="odd">
+                <td class="teaching_flat_fee_summary teaching_fee_summary">Teacher will earn</td>
+                <td class="left teaching_flat_fee_summary" style="text-align:right !important">
+                  <input id="teaching_teacher_pay_flat" style="text-align:right !important" class="text-right" disabled="disabled" />
+                </td>
+                <td class="teaching_flat_fee_summary"></td>
 
+                <td class="left text-right teaching_fee_summary">
+                  <input id="teaching_teacher_min_income" disabled="disabled" />
+                </td>
+                <td class="left teaching_fee_summary">
+                  <input id="teaching_teacher_max_income" disabled="disabled" />
+                </td>
 
-      
+              </tr>
+              <tr>
+                <td>Provider will earn</td>
+                <td class="left">
+                  <input id="teaching_channel_min_income" disabled="disabled" />
+                </td>
+                <td class="left">
+                  <input id="teaching_channel_max_income" disabled="disabled" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br /><br/><br />
+        </div>
+
 
         <div class="row summary-part">
           <div class="col-sm-6">
@@ -454,4 +476,5 @@
   </div>
   <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
   <%= javascript_include_tag *Dir[Rails.root.join("app/assets/javascripts/v2/*.js")] %>
+  <%= javascript_include_tag *Dir[Rails.root.join("app/assets/javascripts/inputs/*.js")] %>
 </div>

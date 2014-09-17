@@ -6,7 +6,9 @@ class Region < ActiveRecord::Base
   after_create :set_url_name
 
   has_many :courses
+  
   scope :with_classes, includes(:courses).where("COUNT(courses.id) > 0")
+  scope :alphabetical, order(:name)
 
   def self.with_displable_classes_in_future
     regions = []
@@ -23,10 +25,7 @@ class Region < ActiveRecord::Base
   end
 
   def hero
-    '/assets/partners/index-hero.jpg'
+    nil
   end
 
-  def hero_blurred
-    '/assets/partners/index-hero-invert.jpg'
-  end
 end

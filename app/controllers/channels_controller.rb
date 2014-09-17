@@ -10,9 +10,6 @@ class ChannelsController < ApplicationController
   def show
     not_found if !@channel
 
-    @header_bg = @channel.hero
-    @header_blur_bg = @channel.hero.blurred
-
     @courses = @channel.courses.displayable.in_week(Week.containing(current_date)).by_date
   end
 
@@ -35,7 +32,16 @@ class ChannelsController < ApplicationController
   end
 
   def update
-    
+    channel_params = params[:channel]
+    @channel = Channel.find params[:channel_id]
+    if params[:channel_agreeterms] == 'on'
+      success = @channel.update_attributes channel_params
+    end
+    if success
+      redirect_to channel_path @channel.url_name
+    else
+      render 'edit'
+    end
   end
 
 

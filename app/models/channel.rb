@@ -8,16 +8,16 @@ class Channel < ActiveRecord::Base
     0
   end
 
-  attr_accessible *BASIC_ATTR = [:name,:channel_plan, :plan_name, :plan_max_channel_admins, :plan_max_teachers, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee]
+  attr_accessible *BASIC_ATTR = [:name,:channel_plan, :plan_name, :plan_max_channel_admins, :plan_max_teachers, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee, :logo, :hero, :region_ids, :regions,:channel_teachers, :url_name,:account, :tax_number,:description, :website_url ]
 
-  attr_accessible *BASIC_ATTR, :channel_teachers, :url_name, :region_ids, :regions, :channel_rate_override, :teacher_percentage, :email, :account, :visible, :short_description, :description, :website_url, :logo, :photos_attributes, :hero, :as => :admin
+  attr_accessible *BASIC_ATTR, :channel_rate_override, :teacher_percentage, :email, :visible, :short_description, :photos_attributes, :as => :admin
 
   validates_presence_of :name
   validates_presence_of :channel_plan
   validates :channel_rate_override, numericality: true, allow_blank: true
   validates :teacher_percentage, presence: true, numericality: {less_than_or_equal_to: 1, message: "Teacher percentage of revenue must be less than or equal to 1"}
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
-  validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, message: "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
+  #validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, message: "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
   validates_uniqueness_of :name, allow_blank: true
   validates_uniqueness_of :url_name, allow_blank: true
   validates :short_description, length: { maximum: 250 }

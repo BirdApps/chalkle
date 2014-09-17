@@ -4,14 +4,13 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :venue_cost, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :new_channel_bank_number
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
   validates :learning_outcomes, :presence => { :message => "Learning outcomes cannot be blank" }
   validates :repeat_count, :allow_blank => true, :numericality => { :greater_than_or_equal_to => 0, :message => "Repeat classes must be 1 or more"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
-    validates :venue_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
   validates :repeat_count, presence: true, if: :repeating?
   validates :repeat_frequency, presence: true, if: :repeating?
 
@@ -56,11 +55,11 @@ class Teaching
     @min_attendee = args.min_attendee
     @max_attendee = args.max_attendee
     @cost = args.cost
-    @venue_cost = args.venue_cost
     @teacher_cost = args.teacher_cost
     @availabilities = args.availabilities
     @venue_address = args.venue_address
     @course_upload_image = args.course_upload_image
+    @teacher_pay_type = args.teacher_pay_type
     @start_at = []
     @duration_hours = []
     @duration_minutes = []
@@ -95,12 +94,12 @@ class Teaching
       min_attendee: @min_attendee.to_i,
       max_attendee: @max_attendee.to_i,
       cost: @cost,
-      venue_cost: @venue_cost,
       teacher_cost: @teacher_cost,
       availabilities: @availabilities,
       venue_address: @venue_address,
       course_upload_image: @course_upload_image,
-      start_at: @start_at[0]
+      start_at: @start_at[0],
+      teacher_pay_type: @teacher_pay_type
     }
   end
 
@@ -274,22 +273,25 @@ class Teaching
     @street_name = params[:street_name]
     @city = params[:city]
     @region = get_region params[:region]
-    @region_id = @region.id
+    @region_id = @region.present? ? @region.id : nil
     @country = params[:country]
     @postal_code = params[:postal_code]
     @latitude = params[:latitude]
     @longitude = params[:longitude]
     @venue = params[:venue]
+    @new_channel_bank_number = params[:new_channel_bank_number]
+    @new_channel_tax_number = params[:new_channel_tax_number]
     @channel_id = get_channel_id params[:channel_id]
     @teacher_id = get_teacher_id params[:teacher_id]
     @min_attendee = params[:min_attendee]
     @max_attendee = params[:max_attendee]
-    @venue_cost = params[:venue_cost]
     @teacher_cost = params[:teacher_cost]
     @availabilities = params[:availabilities]
     @cost = calculate_cost
     @venue_address = params[:venue_address]
     @course_upload_image = params[:course_upload_image]
+    @teacher_pay_type = params[:teacher_pay_type]
+    @cost = params[:cost]
     self.valid?
   end
 
@@ -309,9 +311,9 @@ class Teaching
       #no channel
       if @channels.empty?
         #create a personal channel and grant user all permissions
-        channel = Channel.create name: @current_user.name, regions: [ region ], channel_rate_override: 0, teacher_percentage: 1, email: @current_user.email, visible: true
+        channel = Channel.create({name: @current_user.name, regions: [ region ], email: @current_user.email, account: @new_channel_bank_number, tax_number: @new_channel_tax_number, visible: true, channel_plan: ChannelPlan.default}, as: :admin)
         channel_admin = ChannelAdmin.create channel: channel, chalkler: @current_user.chalkler
-        channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.chalkler.name
+        channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.chalkler.name, account: @new_channel_bank_number, tax_number: @new_channel_tax_number
       else
         if @channels.count == 1
           channel = @channels[0]
@@ -332,9 +334,9 @@ class Teaching
   end
 
   def get_region(region_name)
-    region_name = region_name || @city
+    region_name = region_name.present? ? region_name : @city
     region = Region.find_by_name(region_name)
-    if region.nil?
+    if region.nil? && region_name.present?
       region = Region.create name: region_name, url_name: region_name.parameterize
     end
     region

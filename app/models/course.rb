@@ -6,13 +6,14 @@ class Course < ActiveRecord::Base
   GST = 0.15
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :first_lesson_start_at, :cost, :venue_cost, :teacher_cost, :fixed_overhead_cost, :max_income, :min_income, :course_class_type, :processing_fee, :fixed_costs
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :first_lesson_start_at, :cost, :teacher_cost, :course_class_type, :processing_fee, :teacher_pay_type
   ]
 
-  attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
+  attr_accessible  *BASIC_ATTR, :description, :teacher_payment, :published_at, :course_image_attributes, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
 
-  #not persisted fields
-  attr_accessor :course_class_type
+  #chalkle fee is cached without GST
+  #channel fee is specified inc. GST so is cached including it
+
 
   #Course statuses
   STATUS_5 = "Processing"
@@ -50,17 +51,14 @@ class Course < ActiveRecord::Base
   IMMEDIATE_FUTURE= 5
   WEEK = 7
 
-  validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
   validates_presence_of :lessons, if: :published?
   validates_presence_of :channel
   validates_numericality_of :teacher_payment, allow_nil: true
-  validates_numericality_of :material_cost, allow_nil: false
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
-  validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
-  validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Advertised price must be positive" }
+  validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher fee must be positive" }
+  validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Class price must be positive" }
   validates :lessons, :length => { minimum: 1 }, if: :published?
-  validate :max_teacher_cost
   validate :image_size
 
 
@@ -88,7 +86,6 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-  scope :not_meetup, where("meetup_url IS NULL")
   scope :in_region, lambda {|region| where(region_id: region.id) }
   scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
@@ -114,10 +111,6 @@ class Course < ActiveRecord::Base
         Course.where courses[:name].matches_any(query_parts)
       end
     end
-  end
-
-  def fixed_costs
-    venue_cost + fixed_overhead_cost
   end
 
   def repeating_class?
@@ -176,14 +169,6 @@ class Course < ActiveRecord::Base
   # kaminari
   paginates_per 10
 
-  def max_teacher_cost
-    return unless teacher_cost and cost
-    if (teacher_cost > cost)
-      errors.add(:teacher_cost, "Payment to teacher must be less than advertised price")
-      errors.add(:cost, "Payment to teacher must be less than advertised price")
-    end
-  end
-
   def image_size
     return unless course_upload_image.present?
     begin
@@ -194,6 +179,7 @@ class Course < ActiveRecord::Base
     end
   end
 
+  #placeholder for when we go international
   def country_code
     :nz
   end
@@ -208,27 +194,21 @@ class Course < ActiveRecord::Base
   end
 
   def channel_fee
-    channel ? channel.fee : Channel.DEFAULT_FEE
+    cached_channel_fee || calc_channel_fee
   end
 
-   def channel_fee=(value)
-    self.cached_channel_fee = value
+  def calc_channel_fee
+    cost - variable_costs - processing_fee - chalkle_fee
   end
 
   def chalkle_fee(incl_tax = true)
     single = course_class_type.nil? ? single_class? : course_class_type == 'course'
-    no_tax_fee = single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost;
-    Finance.apply_sales_tax_to(no_tax_fee, country_code) if incl_tax
+    no_tax_fee = cached_chalkle_fee || (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
+    incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
   end
 
   def chalkle_fee=(value)
     self.cached_chalkle_fee = value
-  end
-
-  def calculate_cost(incl_processing_fee = true)
-    temp_cost = chalkle_fee+channel_fee+teacher_cost
-    temp_cost = temp_cost + processing_fee if incl_processing_fee
-    temp_cost
   end
 
   def processing_fee
@@ -239,35 +219,56 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def self.teacher_pay_types
+    [ 'Flat fee', 'Fee per attendee', 'Not paid through chalkle']
+  end
+
+  def teacher_pay_variable
+    teacher_pay_type == Course.teacher_pay_types[1] ? teacher_cost : 0
+  end
+
+  def teacher_pay_flat
+    teacher_pay_type == Course.teacher_pay_types[0] ? teacher_cost : 0 
+  end
+
+  def variable_costs
+    teacher_pay_variable
+  end
+
   def fixed_costs
-    (venue_cost||0) + (fixed_overhead_cost||0)
+    teacher_pay_flat
   end
 
-  def max_income
-    if max_attendee
-      max_income = (cost || calculate_cost) * max_attendee - fixed_costs
+  def channel_max_income
+     if max_attendee.present?
+      channel_fee * max_attendee - fixed_costs
     else
-      max_income = 0
+      0
     end
   end
 
-  def min_income
-    if min_attendee
-      min_income = (cost || calculate_cost) * min_attendee - fixed_costs
+  def channel_min_income
+    if min_attendee.present?
+      channel_fee * min_attendee - fixed_costs
     else
-      min_income = 0
+      0
     end
   end
 
-  def update_costs
-    self.cached_chalkle_fee = chalkle_fee
-    self.cached_channel_fee = channel_fee
-    self.cost = calculate_cost
+  def teacher_max_income
+    if max_attendee.present?
+      teacher_pay_variable * max_attendee
+    else
+      0
+    end
   end
 
-   def update_costs!
-    update_costs
-    save
+  def teacher_min_income
+    if min_attendee.present?
+      teacher_pay_variable * min_attendee
+    else
+      0
+    end
   end
 
   #Class incomes
@@ -293,7 +294,7 @@ class Course < ActiveRecord::Base
 
   def total_cost
     if teacher_payment.present? && chalkle_payment.present?
-      teacher_payment + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 ) + chalkle_payment
+      teacher_payment + cash_payment + chalkle_payment
     else
       attendance*( (teacher_cost.present? ? teacher_cost : 0) + chalkle_fee)
     end
@@ -345,7 +346,7 @@ class Course < ActiveRecord::Base
   end
 
   def complete_details?
-    teacher_id.present? && start_at.present? && channel && do_during_class.present? && teacher_cost.present? && venue_cost.present? && venue.present?
+    teacher_id.present? && start_at.present? && channel && do_during_class.present? && teacher_cost.present? && venue.present?
   end
 
   def class_may_cancel
@@ -382,16 +383,6 @@ class Course < ActiveRecord::Base
     return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
   end
 
-  def meetup_data
-    data = read_attribute(:meetup_data)
-    if data.present?
-      event = JSON.parse(data)
-      event["event"]
-    else
-      {}
-    end
-  end
-
   def set_name(name)
     return name.strip unless name.include?(':')
     parts = name.split(':')
@@ -399,7 +390,7 @@ class Course < ActiveRecord::Base
   end
 
   def copy_course
-    except = %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment visible}
+    except = %w{id created_at updated_at status start_at teacher_payment published_at chalkle_payment visible}
     copy_attributes = self.attributes.reject { |attr| except.include?(attr) || attr.starts_with?('deprecated_') }
     new_course = Course.new(copy_attributes, :as => :admin)
     new_course.category = self.category
@@ -469,18 +460,19 @@ class Course < ActiveRecord::Base
     price/(1 + GST)
   end
 
-  # def fee(teacher_price, teacher_percentage, channel_cut)
-  #   return 0 unless teacher_percentage > 0
-  #   teacher_price / teacher_percentage * channel_cut * (1 + GST)
-  # end
-
   def update_published_at
     self.published_at ||= Time.now
   end
 
   before_create :set_url_name
+  before_create :cache_costs
   before_save :check_url_name
   
+  def cache_costs
+    self.cached_chalkle_fee = chalkle_fee
+    self.cached_channel_fee = channel_fee
+  end
+
   def set_url_name
     self.url_name = name.parameterize
   end

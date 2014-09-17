@@ -9,9 +9,6 @@ class CoursesController < ApplicationController
     @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
 
     filter_courses
-
-    @header_bg = @region.hero
-    @header_blur_bg = @region.hero_blurred
   end
 
   def show
@@ -68,8 +65,8 @@ class CoursesController < ApplicationController
   end
 
   def calculate_cost
-    @course = Course.new(params[:course], as: :admin)
-    render json: @course.as_json(methods: [:channel_fee, :chalkle_fee, :max_income, :min_income, :processing_fee, :fixed_costs, :calculate_cost])
+    @course = Course.new params[:course]
+    render json: @course.as_json(methods: [:channel_fee, :chalkle_fee, :processing_fee, :teacher_max_income, :teacher_min_income, :channel_min_income, :channel_max_income, :teacher_pay_variable, :teacher_pay_flat])
   end
 
   private
