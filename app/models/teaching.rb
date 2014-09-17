@@ -334,7 +334,7 @@ class Teaching
   def get_region(region_name)
     region_name = region_name || @city
     region = Region.find_by_name(region_name)
-    if region.nil?
+    if region.nil? && region.name.present?
       region = Region.create name: region_name, url_name: region_name.parameterize
     end
     region
