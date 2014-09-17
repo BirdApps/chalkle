@@ -73,7 +73,7 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.6)
-    airbrake (3.1.17)
+    airbrake (4.0.0)
       builder
       multi_json
     analytical (3.0.12)
@@ -667,7 +667,7 @@ PLATFORMS
 DEPENDENCIES
   active_attr (~> 0.7.0)
   activeadmin (~> 0.6.3)
-  airbrake (~> 3.1.6)
+  airbrake (~> 4.0.0)
   analytical (~> 3.0.12)
   anjlab-bootstrap-rails!
   better_errors
