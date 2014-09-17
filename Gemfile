@@ -23,7 +23,7 @@ gem 'pundit'
 gem 'monthify', require: 'monthify'
 gem 'chronic',       '~> 0.9.0'
 
-gem 'airbrake',      '~> 3.1.6'
+gem 'airbrake',      '~> 4.0.0'
 gem 'activeadmin',   '~> 0.6.3'
 gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails',  '~> 2.1.4'
