@@ -8,16 +8,40 @@
       </div>
     </div>
     <% if title = page_title %>
-      <div class="title col-sm-offset-2 col-sm-10">
-        <em><%= page_subtitle %></em>
-        <h1 class="<%= title_size_class title %>">
-          <%= title %>
-        </h1>
+      <div class="title col-sm-12 clearfix">
+        <div class="col-xs-3 col-sm-2 col-md-1 page_title_logo">
+          <% if page_title_logo.present? %>
+            <img src="<%= page_title_logo %>" />
+          <% end %>
+        </div>
+        <div class="col-xs-9 col-sm-6 ">
+          <em class="hidden-xs"><%= page_subtitle %></em>
+          <h1 class="<%= title_size_class title %>">
+            <%= title %>
+          </h1>
+        </div>
+        <div class="col-xs-12 col-sm-4 context_nav_wrapper">
+          <nav>
+            <ul>
+              <% page_context_links.each do |nav_link| %>
+                <li class="<%= "active" if nav_link[:active] %>" >
+                  <a href="<%= nav_link[:link] %>" title="<%= nav_link[:title] %>">
+                    <div class="img-wrapper">
+                      <%= image_tag(asset_path(nav_link[:img_name]+".png"), { class: "reg" }) %>
+                      <%= image_tag(asset_path(nav_link[:img_name]+"-alt.png"), { class: "alt" }) %>
+                      <div class="title">
+                        <%= nav_link[:title] %>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              <% end %>
+            </ul>
+          </nav>
+        </div>
       </div>
+
       <%= render 'layouts/navigation_secondary' %>
     <% end %>
   </div>
-  <% if current_user.channels.count > 0 %>
-    <%= render "layouts/navigation_admin" %>
-  <% end %>
 </div>

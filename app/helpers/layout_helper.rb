@@ -19,6 +19,12 @@ module LayoutHelper
     'limit-size' if title.length > 25
   end
 
+  def page_title_logo
+    if @channel.logo.present?
+      @channel.logo
+    end
+  end
+
   def page_subtitle
     return @page_subtitle if @page_subtitle.present?
     subtitle = ''
@@ -98,5 +104,54 @@ module LayoutHelper
           blurred: '/assets/partners/index-hero-invert.jpg'
         }
       end
+  end
+
+  def page_context_links 
+     controller_parts = request.path_parameters[:controller].split("/")
+    
+    if controller_parts.index("resources")
+      active_link = "resources"
+    elsif controller_parts.index("metrics")
+      active_link = "metrics"
+    elsif controller_parts.index("chalklers")
+      active_link = "people"
+    else
+      active_link = "courses"
+    end
+
+    nav_links = []
+
+    if @channel.id.present?
+          nav_links << {
+                  img_name: "bolt",
+                  link: channel_path(@channel.url_name),
+                  active: active_link == "courses",
+                  title: "Classes"
+                }
+
+    nav_links << {
+                  img_name: "people",
+                  link: channel_channel_teachers_path(@channel.url_name),
+                  active: active_link == "people",
+                  title: "People"
+                }
+      if policy(@channel).metrics?           
+        nav_links  << {
+                        img_name: "metrics",
+                        link: metrics_path,
+                        active: active_link == "metrics",
+                        title: "Metrics"
+                      }
+      end
+      if policy(@channel).resources? 
+        nav_links <<  {
+                        img_name: "book",
+                        link: resources_path,
+                        active: active_link == "resources",
+                        title: "Resources"
+                      }
+      end
+    end
+    nav_links
   end
 end
