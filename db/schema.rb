@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140915232651) do
+ActiveRecord::Schema.define(:version => 20140917005939) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -169,6 +169,8 @@ ActiveRecord::Schema.define(:version => 20140915232651) do
     t.string  "bio"
     t.string  "pseudo_chalkler_email"
     t.boolean "can_make_classes",      :default => false
+    t.string  "tax_number"
+    t.string  "account"
   end
 
   create_table "channels", :force => true do |t|

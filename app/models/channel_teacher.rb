@@ -1,5 +1,5 @@
 class ChannelTeacher < ActiveRecord::Base
-  attr_accessible :channel, :channel_id, :chalkler, :chalkler_id, :name, :bio, :pseudo_chalkler_email, :can_make_classes
+  attr_accessible :channel, :channel_id, :chalkler, :chalkler_id, :name, :bio, :pseudo_chalkler_email, :can_make_classes, :tax_number, :account
 
   belongs_to :channel
   belongs_to :chalkler
