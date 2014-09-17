@@ -279,6 +279,8 @@ class Teaching
     @latitude = params[:latitude]
     @longitude = params[:longitude]
     @venue = params[:venue]
+    @new_channel_bank_number = params[:new_channel_bank_number]
+    @new_channel_tax_number = params[:new_channel_tax_number]
     @channel_id = get_channel_id params[:channel_id]
     @teacher_id = get_teacher_id params[:teacher_id]
     @min_attendee = params[:min_attendee]
@@ -290,8 +292,6 @@ class Teaching
     @course_upload_image = params[:course_upload_image]
     @teacher_pay_type = params[:teacher_pay_type]
     @cost = params[:cost]
-    @new_channel_bank_number = params[:new_channel_bank_number]
-    @new_channel_tax_number = params[:new_channel_tax_number]
     self.valid?
   end
 
