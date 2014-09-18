@@ -139,6 +139,14 @@ module LayoutHelper
           title: "Resources"
         }
       end
+      if policy(@channel).edit?
+        nav_links <<  {
+          img_name: "settings",
+          link: channel_settings_path(@channel.url_name),
+          active: action_parts.include?("resources"),
+          title: "Settings"
+        }
+      end
     end
     nav_links
   end

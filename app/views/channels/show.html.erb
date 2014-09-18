@@ -2,8 +2,5 @@
   <h3><%= @channel.name %></h3>
   <hr />
 </div>
-<% if policy(@channel).edit? %>
-  <%= link_to 'Settings', channel_settings_path(@channel.url_name), { class: 'btn btn-default'} %>
-<% end  %>
 <%= render @courses %>
 
