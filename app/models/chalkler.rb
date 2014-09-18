@@ -1,7 +1,7 @@
-require 'omni_avatar/has_avatar'
+require 'avatar_uploader'
 
 class Chalkler < ActiveRecord::Base
-  include OmniAvatar::HasAvatar
+  mount_uploader :avatar, AvatarUploader
 
   # geocoded_by :address
   # reverse_geocoded_by :latitude, :longitude
@@ -14,7 +14,7 @@ class Chalkler < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
     :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
-  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude ]
+  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :avatar ]
   attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :as => :admin
 
   attr_accessor :join_channels, :set_password_token

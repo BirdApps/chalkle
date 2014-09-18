@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140917005939) do
+ActiveRecord::Schema.define(:version => 20140918040143) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20140917005939) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "address"
+    t.string   "avatar"
   end
 
   create_table "channel_admins", :force => true do |t|
@@ -171,6 +172,7 @@ ActiveRecord::Schema.define(:version => 20140917005939) do
     t.boolean "can_make_classes",      :default => false
     t.string  "tax_number"
     t.string  "account"
+    t.string  "avatar"
   end
 
   create_table "channels", :force => true do |t|

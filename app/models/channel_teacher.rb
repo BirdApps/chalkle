@@ -1,5 +1,9 @@
+require 'avatar_uploader'
+
 class ChannelTeacher < ActiveRecord::Base
-  attr_accessible :channel, :channel_id, :chalkler, :chalkler_id, :name, :bio, :pseudo_chalkler_email, :can_make_classes, :tax_number, :account
+  mount_uploader :avatar, AvatarUploader
+
+  attr_accessible :channel, :channel_id, :chalkler, :chalkler_id, :name, :bio, :pseudo_chalkler_email, :can_make_classes, :tax_number, :account, :avatar
 
   belongs_to :channel
   belongs_to :chalkler
