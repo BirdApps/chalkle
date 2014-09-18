@@ -1,1 +1,20 @@
-<%= render @teachers %>
+<div class="people">
+  <%= render 'people_nav' %>
+  <h1>
+    Teachers
+  </h1>
+  <div class="row hidden-xs">
+    <div class="col-sm-4">
+      
+    </div>
+    <div class="col-sm-4">
+      Taught Classes
+    </div>
+    <div class="col-sm-4">
+      <% if policy(@channel).admin? %>
+        Permissions
+      <% end %>
+    </div>
+  </div>
+  <%= render @teachers %>
+</div>

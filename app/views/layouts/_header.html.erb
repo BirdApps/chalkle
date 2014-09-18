@@ -2,46 +2,50 @@
   current_hero = page_hero
 %>
 <div class="header" style="background-image: url( <%= current_hero[:default] %> )">
-  <div class="container header_content col-xs-12">
+  <div class="container header_content">
     <div class="header_content_bg_wrapper">
       <div class="header_content_bg" style="background-image: url( <%= current_hero[:blurred] %> )">
       </div>
     </div>
-    <% if title = page_title %>
-      <div class="title col-sm-12 clearfix">
-        <div class="col-xs-3 col-sm-2 col-md-1 page_title_logo">
-          <% if page_title_logo.present? %>
-            <img src="<%= page_title_logo %>" />
-          <% end %>
+    <div class="header_content_fg">
+      <% if title = page_title %>
+        <div class="title-wrapper nowrap">
+          <div class="page_title_logo">
+            <% if page_title_logo.present? %>
+              <img src="<%= page_title_logo %>" />
+            <% end %>
+          </div>
+          <div class="title">
+            <em class="hidden-xs"><%= page_subtitle %></em>
+            <h1 class="<%= title_size_class title %>">
+              <%= title %>
+            </h1>
+          </div>
         </div>
-        <div class="col-xs-9 col-sm-6 ">
-          <em class="hidden-xs"><%= page_subtitle %></em>
-          <h1 class="<%= title_size_class title %>">
-            <%= title %>
-          </h1>
-        </div>
-        <div class="col-xs-12 col-sm-4 context_nav_wrapper">
+        <div class="context_nav_wrapper">
           <nav>
             <ul>
-              <% page_context_links.each do |nav_link| %>
-                <li class="<%= "active" if nav_link[:active] %>" >
+            <% 
+              links = page_context_links
+              col_width = 12 / links.count if links.count > 0
+              links.each do |nav_link| %>
+                <li class="<%= "active" if nav_link[:active] %> col-xs-<%= col_width %> " >
                   <a href="<%= nav_link[:link] %>" title="<%= nav_link[:title] %>">
-                    <div class="img-wrapper">
-                      <%= image_tag(asset_path(nav_link[:img_name]+".png"), { class: "reg" }) %>
-                      <%= image_tag(asset_path(nav_link[:img_name]+"-alt.png"), { class: "alt" }) %>
-                      <div class="title">
-                        <%= nav_link[:title] %>
-                      </div>
-                    </div>
+                    <span class="img-wrapper">
+                      <%= image_tag(asset_path("icons/"+nav_link[:img_name]+".png?v=1"), { class: "reg" }) %>
+                      <%= image_tag(asset_path("icons/"+nav_link[:img_name]+"-alt.png?v=1"), { class: "alt" }) %>
+                    </span>
+                    <span class="link_title">
+                      <%= nav_link[:title] %>
+                    </span>
                   </a>
                 </li>
               <% end %>
             </ul>
           </nav>
         </div>
-      </div>
-
+      <% end %>
       <%= render 'layouts/navigation_secondary' %>
-    <% end %>
+    </div>
   </div>
 </div>

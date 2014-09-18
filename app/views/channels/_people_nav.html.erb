@@ -1,0 +1,10 @@
+<nav class="page-menu">
+  <ul>
+    <li>
+      <%= link_to 'Teachers', channels_teachers_path(@channel.url_name) %>
+    </li>
+    <li>
+      <%= link_to 'Followers', channel_followers_path(@channel.url_name) %>
+    </li>
+  </ul>
+</nav>

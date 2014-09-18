@@ -43,6 +43,10 @@ class TheUser
     admin_user.present? ? admin_user.super? : false
   end
 
+  def channels_adminable
+    chalkler.id.present? ? chalkler.channels_adminable : []
+  end
+
   def channels
     channels = []
     channels = channels.concat admin_user.channels if admin?

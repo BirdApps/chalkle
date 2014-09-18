@@ -6,19 +6,27 @@ class ChannelPolicy < ApplicationPolicy
   end
 
   def edit?
-    update?
+    admin?
   end
 
   def update?
-    @user.super? or @user.chalkler.channels_adminable.include? @channel
+    admin?
   end
 
   def metrics?
-    update?
+    admin?
   end
 
   def resources?
-    update?
+    teach?
+  end
+
+  def teach?
+    @user.super? or @user.channels.include? @channel
+  end
+
+  def admin?
+    @user.super? or @user.channels_adminable.include? @channel
   end
 
 end

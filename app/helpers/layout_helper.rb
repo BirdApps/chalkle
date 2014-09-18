@@ -107,49 +107,37 @@ module LayoutHelper
   end
 
   def page_context_links 
-     controller_parts = request.path_parameters[:controller].split("/")
-    
-    if controller_parts.index("resources")
-      active_link = "resources"
-    elsif controller_parts.index("metrics")
-      active_link = "metrics"
-    elsif controller_parts.index("chalklers")
-      active_link = "people"
-    else
-      active_link = "courses"
-    end
-
+    controller_parts = request.path_parameters[:controller].split("/")
+    action_parts = request.path_parameters[:action].split("/")
     nav_links = []
-
     if @channel.id.present?
-          nav_links << {
-                  img_name: "bolt",
-                  link: channel_path(@channel.url_name),
-                  active: active_link == "courses",
-                  title: "Classes"
-                }
-
-    nav_links << {
-                  img_name: "people",
-                  link: channels_teachers_path(@channel.url_name),
-                  active: active_link == "people",
-                  title: "People"
-                }
+      nav_links << {
+          img_name: "bolt",
+          link: channel_path(@channel.url_name),
+          active: action_parts.include?("show"),
+          title: "Classes"
+        }
+      nav_links << {
+          img_name: "people",
+          link: channels_teachers_path(@channel.url_name),
+          active: action_parts.include?("teachers"),
+          title: "People"
+        }
       if policy(@channel).metrics?
-        nav_links  << {
-                        img_name: "metrics",
-                        link: metrics_path,
-                        active: active_link == "metrics",
-                        title: "Metrics"
-                      }
+        nav_links << {
+          img_name: "metrics",
+          link: metrics_path,
+          active: action_parts.include?("metrics"),
+          title: "Metrics"
+        }
       end
       if policy(@channel).resources?
         nav_links <<  {
-                        img_name: "book",
-                        link: resources_path,
-                        active: active_link == "resources",
-                        title: "Resources"
-                      }
+          img_name: "book",
+          link: resources_path,
+          active: action_parts.include?("resources"),
+          title: "Resources"
+        }
       end
     end
     nav_links
