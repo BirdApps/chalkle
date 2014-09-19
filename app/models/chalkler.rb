@@ -33,7 +33,6 @@ class Chalkler < ActiveRecord::Base
   has_many :channels_adminable, through: :channel_admins, source: :channel
   has_many :bookings
   has_many :courses, :through => :bookings
-  has_many :courses_taught, class_name: "Course", foreign_key: "teacher_id"
   has_many :payments
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
     def for_provider(provider)
@@ -44,7 +43,6 @@ class Chalkler < ActiveRecord::Base
   after_create :create_channel_associations
 
   scope :visible, where(visible: true)
-  scope :teachers, joins(:courses_taught).uniq
   scope :with_email_region_id, 
     lambda {|region| 
       where("email_region_ids LIKE '%?%'", region)

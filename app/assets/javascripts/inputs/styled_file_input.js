@@ -12,7 +12,6 @@ $(function(){
     if (this.files && this.files[0]) {
       var reader = new FileReader();
       var previewer = $('.'+preview_class);
-      console.log(previewer);
       reader.onload = function (e) {
           $(previewer).css('background-image', 'url('+e.target.result+')');
       }

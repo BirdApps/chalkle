@@ -8,11 +8,9 @@ Utils.CheckBoxChecker.watchBoxes = ()->
   $('[data-toggle="checkboxes"] input[type=checkbox]').on 'change', ()->
     wrapper = $(@).closest('[data-toggle="checkboxes"]')
     if wrapper.find('input[type=checkbox]:checked').length
-      console.log "what"
       wrapper.find('a.checkbox-toggle-button').text("Deselect all")
       wrapper.removeClass("unchecked").addClass("checked")
     else
-      console.log "why"
       wrapper.find('a.checkbox-toggle-button').text("Select all")
       wrapper.removeClass("checked").addClass("unchecked")
   

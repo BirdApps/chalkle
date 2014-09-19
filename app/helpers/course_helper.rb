@@ -29,6 +29,16 @@ Your Chalkle Administrator")
     end
   end
 
+  def quick_date_time(date, use_relative_day = true)
+    return unless date
+    relative = relative_day_name date.to_date
+    if relative && use_relative_day
+      relative+" "+pretty_time(date)
+    else
+      date.strftime("%d %b")+" @ "+pretty_time(date)
+    end
+  end
+
   def day_ordinal_month(date, use_relative_day = true)
     return unless date
     relative = relative_day_name date.to_date

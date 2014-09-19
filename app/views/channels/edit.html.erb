@@ -19,8 +19,25 @@
           <h3>Provider Details</h3>
           <hr />
         </div>
-        <input type="hidden" name="channel_id" value="<%= f.object.id %>" />
+        <input type="hidden" id="channel_id" name="channel_id" value="<%= f.object.id %>" />
         <%= f.input :name, label: "Name", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizonal %>
+        
+        <div class="form-group url required channel_url_name">
+          <div class="control-label col-sm-5">
+            <label class="url required" for="channel_url_name">
+              <abbr title="required">*</abbr> Web Address
+            </label>
+          </div>
+          <div class="col-sm-7">
+            <div class="input-group">  
+              <%= f.text_field :url_name, class: 'form-control', :'data-error-message' => 'That subdomain is not available'  %>
+              <div class="input-group-addon">.chalkle.com</div>
+            </div>
+            <input value="" class="bg form-control" style="display: none" disabled="disabled"/>
+          </div>
+        </div>
+
+
 
         <%= f.input :description, as: :text, label: "Caption", wrapper: :horizonal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
         
@@ -158,5 +175,6 @@
 
   <% end %>
 </div>
+<%= javascript_include_tag Rails.root.join("app/assets/javascripts/v2/v2_channel_form.js") %>
 <%= javascript_include_tag *Dir[Rails.root.join("app/assets/javascripts/inputs/*.js")] %>
   

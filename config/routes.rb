@@ -16,7 +16,7 @@ Chalkle::Application.routes.draw do
 
   root to: 'courses#index'
   
-  resources :channel_teachers, path: 'teachers'
+  resources :channel_teachers, path: 'teachers', except: [:new] 
 
   resources :channel_plans, path: 'plans'
 
@@ -88,7 +88,9 @@ Chalkle::Application.routes.draw do
   #TODO: find an easier way of doing these channel routes!
   get ':channel_url_name/teachers', to: 'channels#teachers', as: :channels_teachers
   get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
-  get ':channel_url_name/teacher/:id', to: 'channels#teachers', as: :channel_channel_teacher
+  get 'providers/:channel_id/url_available/:url_name', to: 'channels#url_available', as: :channel_url_available
+  get ':channel_url_name/teachers/new', to: 'channels#teacher_new', as: :new_channel_teacher
+  get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_channel_teacher
   get ':channel_url_name/settings', to: 'channels#edit', as: :channel_settings
   put ':channel_url_name/settings', to: 'channels#update', as: :channel_settings
   get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact

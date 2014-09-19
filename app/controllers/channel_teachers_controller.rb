@@ -1,4 +1,6 @@
 class ChannelTeachersController < ApplicationController
+  before_filter :load_teacher, only: [:show]
+
   def index
     @teachers = ChannelTeacher.all
     respond_to do |format|
@@ -8,6 +10,11 @@ class ChannelTeachersController < ApplicationController
   end
 
   def show
-    #TODO: get chalkler and show all their channel_teachers
+    
   end
+
+  private
+    def load_teacher
+      @teacher = ChannelTeacher.find params[:id]
+    end
 end

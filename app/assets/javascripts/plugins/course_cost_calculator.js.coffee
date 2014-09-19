@@ -33,7 +33,6 @@ class LessonCostCalculator
 
   check_positive: =>
     for k,v of @fields
-      console.log(v)
       amount = $(v).val()
       amount = amount.replace("$","")
       if !isNaN(amount) && amount < 0

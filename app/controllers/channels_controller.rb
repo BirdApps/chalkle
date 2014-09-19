@@ -1,7 +1,7 @@
 class ChannelsController < ApplicationController
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
-  before_filter :load_channel, only: [:show, :edit, :update,:teachers]
+  before_filter :load_channel, only: [:show, :edit, :update,:teachers, :channel_url_available]
 
   def index
     @channels = Channel.visible
@@ -60,11 +60,19 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def url_available
+    channels_with_url = Channel.where url_name:  params[:url_name]
+    if channels_with_url.empty? || channels_with_url.include?(@channel)
+      render json: params[:url_name].parameterize 
+    else
+      render json: -1
+    end
+  end
+
   private 
 
   def channel_name
     params[:provider] = params[:channel_url_name]
-
   end
 
   def load_channel

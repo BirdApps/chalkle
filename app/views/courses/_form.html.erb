@@ -475,6 +475,7 @@
   <div class="col-md-1">
   </div>
   <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-  <%= javascript_include_tag *Dir[Rails.root.join("app/assets/javascripts/v2/*.js")] %>
+  <%= javascript_include_tag Rails.root.join("app/assets/javascripts/v2/v2_course_form.js") %>
+   <%= javascript_include_tag Rails.root.join("app/assets/javascripts/v2/geocoder.js") %>
   <%= javascript_include_tag *Dir[Rails.root.join("app/assets/javascripts/inputs/*.js")] %>
 </div>

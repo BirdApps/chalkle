@@ -1,15 +1,18 @@
 <div class="people">
   <%= render 'people_nav' %>
-  <h1>
-    Teachers
-  </h1>
+  <div class="row">
+    <div class="col-xs-8">
+      <h2 class="flush">
+        Teachers
+      </h2>
+    </div>
+    <div class="col-xs-2 text-right">
+       <% if policy(@channel).admin? %>
+          <%= link_to "Add Teacher", new_channel_teacher_path(@channel.url_name), { class: 'btn btn-warning'} %>
+        <% end %>
+    </div>
+  </div>
   <div class="row headings">
-    <div class="col-xs-12 col-sm-4">
-
-    </div>
-    <div class="col-sm-4 hidden-xs">
-      Taught Classes
-    </div>
     <div class="col-sm-4 hidden-xs">
       <% if policy(@channel).admin? %>
         Permissions
