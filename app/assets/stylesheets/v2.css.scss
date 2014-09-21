@@ -168,13 +168,13 @@ body.v2 {
           border: 0;
           position: relative;
           top: 35px;
-          margin:60px auto 0;
-          padding:0 20px;
-          width:300px;
+          margin: 60px auto 0;
+          padding: 0 20px;
+          width: 300px;
           background-color: #fff;
         }
         hr{
-          margin-bottom:40px;
+          margin-bottom: 40px;
           border-color: #BDBDBD;
         }
   }
@@ -765,6 +765,11 @@ body.v2 {
         width:100%;
         max-width:600px;
         margin:0 auto 10px;
+      }
+      .form-label{
+        display:block;
+        margin: 5px 0;
+        padding:6px 0;
       }
       .provider-logo.image-preview{
         height: 200px;
