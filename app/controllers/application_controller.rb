@@ -98,7 +98,7 @@ class ApplicationController < ActionController::Base
     end
 
     def channel_name
-      params[:provider]
+      params[:provider] || params[:channel_url_name]
     end
 
     def category_name
@@ -118,7 +118,17 @@ class ApplicationController < ActionController::Base
     end
 
     def load_channel
-      if @channel.nil?
+      redirect_to_subdomain
+      if !@channel
+        if channel_name 
+          @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
+        elsif params[:id].present?
+          @channel = Channel.find(params[:id])
+        elsif params[:channel_id].present?
+          @channel = Channel.find(params[:channel_id])
+        end
+      end
+      if !@channel
         @channel = Channel.new(name: "All Providers")
       end
     end

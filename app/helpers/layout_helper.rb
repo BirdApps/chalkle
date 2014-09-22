@@ -107,6 +107,7 @@ module LayoutHelper
   end
 
   def page_context_links 
+    return @page_context_links if @page_context_links.present?
     controller_parts = request.path_parameters[:controller].split("/")
     action_parts = request.path_parameters[:action].split("/")
     nav_links = []
@@ -120,7 +121,7 @@ module LayoutHelper
       nav_links << {
           img_name: "people",
           link: channels_teachers_path(@channel.url_name),
-          active: action_parts.include?("teachers"),
+          active: action_parts.include?("teachers") || controller_parts.include?("channel_teachers") ,
           title: "People"
         }
       if policy(@channel).metrics?

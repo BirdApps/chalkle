@@ -40,7 +40,7 @@
                 %p Please ensure payment before your class begins.
 
         .col-md-6
-          = bootstrap_form_for(@booking, url: channel_course_bookings_path) do |f|
+          = bootstrap_form_for(@booking, url: course_bookings_path) do |f|
             %h3 Enter booking details
             = render partial: 'form', locals: { f: f }
             :coffeescript

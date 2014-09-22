@@ -13,6 +13,13 @@ class ChannelTeachersController < ApplicationController
     
   end
 
+  def new
+      authorize @channel
+      @page_subtitle = "Create a New"
+      @page_title = "Teacher"
+      @channel_teacher = ChannelTeacher.new channel_id: @channel.id
+  end
+
   private
     def load_teacher
       @teacher = ChannelTeacher.find params[:id]

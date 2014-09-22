@@ -37,7 +37,7 @@ class BookingsController < ApplicationController
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
       else
         flash[:notice] = 'Booking created!'
-        redirect_to booking_path @booking
+        redirect_to course_booking_path @booking.course, @booking
       end
     else
       delete_any_unpaid_credit_card_booking
@@ -61,10 +61,10 @@ class BookingsController < ApplicationController
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
-      redirect_to channel_course_path(params[:channel_id], params[:course_id])
+      redirect_to = course_path(params[:course_id])
     else
       flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
-      redirect_to new_channel_course_booking_url(params[:channel_id], params[:course_id], params[:booking_id])
+      redirect_to new_course_booking_url(params[:channel_id], params[:course_id], params[:booking_id])
     end
   end
 

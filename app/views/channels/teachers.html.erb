@@ -6,7 +6,7 @@
         Teachers
       </h2>
     </div>
-    <div class="col-xs-2 text-right">
+    <div class="col-xs-4 text-right">
        <% if policy(@channel).admin? %>
           <%= link_to "Add Teacher", new_channel_teacher_path(@channel.url_name), { class: 'btn btn-warning'} %>
         <% end %>

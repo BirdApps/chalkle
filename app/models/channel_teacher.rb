@@ -10,7 +10,8 @@ class ChannelTeacher < ActiveRecord::Base
   has_many :courses, class_name: "Course", foreign_key: "teacher_id"
 
   validates_uniqueness_of :chalkler_id, :scope => :channel_id
-  validates_presence_of :channel
+  validates_presence_of :channel_id
+  validates_presence_of :email
 
 
   def email
@@ -19,6 +20,10 @@ class ChannelTeacher < ActiveRecord::Base
     else
       pseudo_chalkler_email
     end
+  end
+
+  def email=(value)
+    pseudo_chalkler_email = value
   end
 
   def next_class

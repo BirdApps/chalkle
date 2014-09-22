@@ -4,7 +4,6 @@ $line-height: $navbar-height - ($vertical-padding * 2);
 
 .navbar {
   font-weight: bold;
-  background: #222222 asset-url("front_end/home/header_background.jpg", image) left top repeat;
   border-bottom: none;
   padding: $vertical-padding 0px;
   font-size: 20px;

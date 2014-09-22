@@ -47,7 +47,7 @@ Chalkle::Application.routes.draw do
   resources :chalklers, path: 'people' do
     collection do
       get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: :meetup_email_settings
-
+      post 'exists'
       delete '/preferences/destroy_chalkler/:id' => 'preferences#destroy', as: :delete
       get  '/data_collection/:action', as: 'data_collection', controller: :data_collection_form
       post '/data_collection/:action', as: 'data_collection_update', controller: :data_collection_form
@@ -89,7 +89,7 @@ Chalkle::Application.routes.draw do
   get ':channel_url_name/teachers', to: 'channels#teachers', as: :channels_teachers
   get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
   get 'providers/:channel_id/url_available/:url_name', to: 'channels#url_available', as: :channel_url_available
-  get ':channel_url_name/teachers/new', to: 'channels#teacher_new', as: :new_channel_teacher
+  get ':channel_url_name/teachers/new', to: 'channel_teachers#new', as: :new_channel_teacher
   get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_channel_teacher
   get ':channel_url_name/settings', to: 'channels#edit', as: :channel_settings
   put ':channel_url_name/settings', to: 'channels#update', as: :channel_settings
