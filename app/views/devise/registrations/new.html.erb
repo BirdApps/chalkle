@@ -1,0 +1,24 @@
+<% @page_title = 'Sign Up' %>
+<div class="row">
+  <div class="hidden-xs col-md-4">
+  </div>
+  <div class="col-xs-12 col-md-5">
+    <div class="well">
+      <%= bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= f.error_notification %>
+        <div class="form-inputs">
+          <%= f.input :name, :autofocus => true %>
+          <%= f.input :email, :required => true %>
+          <%= f.input :password, :required => true %>
+          <%= f.input :password_confirmation, :required => true %>
+        </div>
+        <div class="form-actions">
+          <input type="submit" name="commit" class="btn btn-primary" value="Sign up" />
+        </div>
+      <% end %>
+    </div> 
+    <%= render partial: '/devise/sessions/omniauth_buttons' %>
+  </div>
+  <div class="hidden-xs col-md-4">
+  </div>
+</div>

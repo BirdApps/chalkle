@@ -531,7 +531,6 @@ body.v2 {
           em{
             font-family: ProximaNova-Light;
             color: #E8E8E8;
-            min-height:11px;
             @media screen and (max-width: $col-md) {
               padding-top:4px;
             }
@@ -630,6 +629,9 @@ body.v2 {
     }
     .messages{
       margin-top:20px;
+      .alert{
+        text-align: center;
+      }
     }
     .image-preview{
       width: 100%;

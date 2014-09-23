@@ -62,7 +62,7 @@ module LayoutHelper
     elsif @channel.id.present? && params[:controller] == 'channels'
       meta_title = @channel.name
     elsif params[:action] == 'new'
-      meta_title = 'New '+ params[:controller].singularize
+      meta_title = 'New '+ page_title
     elsif @course && @course.id.present?
       meta_title = @course.name
     elsif @teaching && @teaching.editing_id.present?

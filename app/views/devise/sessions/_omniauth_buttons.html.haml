@@ -1,5 +1,0 @@
-- if devise_mapping.omniauthable?
-  .social-media-buttons
-    - resource_class.omniauth_providers.each do |provider|
-      .button_container
-        = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), class: "btn btn-social-media btn-#{provider} btn-large login"
