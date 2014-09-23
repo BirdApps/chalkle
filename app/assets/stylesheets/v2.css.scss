@@ -279,12 +279,15 @@ body.v2 {
           border-radius: 0px;
           border: 0px;
           margin-top:10px;
+          li{
+            a{
+              padding: 10px 20px !important;
+              color: #fff;
+              text-align: right;
+            }
+          }
           li:hover{
             background-color: transparent;
-          }
-          a{
-            color: #fff;
-            text-align: right;
           }
         }
         .navbar-brand:hover{

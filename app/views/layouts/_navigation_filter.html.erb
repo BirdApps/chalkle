@@ -4,13 +4,11 @@
       <div class="dropdown">
         <button class="btn dropdown-toggle" type="button" id="locationDropDown" data-toggle="dropdown">
           <div class="col-1">
-            <img class="hidden-xs" src="/assets/map-pin.png" />
+            <img src="/assets/map-pin.png" />
           </div>
-          <div class="col-2" style="padding:2px 0;">
-            <div class="sub hidden-xs"><%= @region.name == "New Zealand" ? 'More specific' : 'Not in '+@region.name %>?</div>
-            <div class="sub visible-xs">Change</div>
-            <span class="visible-xs">Location</span>
-            <span class="hidden-xs">Change Location</span> 
+          <div class="col-2 hidden-xs" style="padding:2px 0;">
+            <div class="sub"><%= @region.name == "New Zealand" ? 'More specific' : 'Not in '+@region.name %>?</div>
+            <span>Change Location</span> 
           </div>
           <div class="col-3">
             <img class="hidden-xs" src="/assets/caret-down.png" />
@@ -31,9 +29,9 @@
       <div class="dropdown">
         <button class="btn dropdown-toggle" type="button" id="topicDropDown" data-toggle="dropdown">
           <div class="col-1">
-            <img class="hidden-xs" src="/assets/tag.png" />
+            <img src="/assets/tag.png" />
           </div>
-          <div class="col-2">
+          <div class="col-2  hidden-xs">
             <%= @category.name %>
           </div>
           <div class="col-3">
@@ -55,9 +53,9 @@
           <div class="dropdown">
         <button class="btn dropdown-toggle" type="button" id="providerDropDown" data-toggle="dropdown">
           <div class="col-1">
-            <img class="hidden-xs" src="/assets/unfolded-paper-plane.png" />
+            <img src="/assets/unfolded-paper-plane.png" />
           </div>
-          <div class="col-2">
+          <div class="col-2 hidden-xs">
             <%= @channel.name %>
           </div>
           <div class="col-3">
