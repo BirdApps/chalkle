@@ -30,7 +30,7 @@
                     <%= link_to 'Settings', me_preferences_path %>
                   </li>
                   <li>
-                    <%= link_to 'Logout', destroy_chalkler_session_url, method: 'delete' %>
+                    <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
                   </li>
                 </ul>
               </li>
@@ -39,7 +39,7 @@
                 <%= link_to 'Account Settings', me_preferences_path %>
               </li>
               <li class="visible-xs">
-                <%= link_to 'Logout', destroy_chalkler_session_url, method: 'delete' %>
+                <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
               </li>
             <% else %>
               <li>

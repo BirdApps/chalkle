@@ -7,7 +7,6 @@ class CoursesController < ApplicationController
 
   def index
     @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
-
     filter_courses
   end
 

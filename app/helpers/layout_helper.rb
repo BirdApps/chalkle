@@ -8,10 +8,10 @@ module LayoutHelper
       @channel.name
     elsif @category.id.present?
       @category.name
-    elsif @category.id.present? 
+    elsif @region.id.present? || @region.name == "New Zealand"
       @region.name
     else
-      meta_title.gsub '|', ''
+      'Chalkle'
     end
   end
 
@@ -46,6 +46,8 @@ module LayoutHelper
       elsif @region.id.present? || @region.name == "New Zealand"
         subtitle += ' classes in'
         @region.name
+      else
+        ''
       end
     end
     subtitle
