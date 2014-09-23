@@ -1,6 +1,23 @@
-<div class="teacher">
-  <img class="avatar" src="<%= @teacher.avatar %>">
-  <%= @teacher.name %>
-  <br />
-  <%=  link_to @teacher.channel.name, channel_path(@teacher.channel.url_name) %>
+
+<br /> <br />
+<% if @teacher.bio.present? %>
+  <p class="center light">
+     <%= @teacher.bio %>
+  </p>
+<% else %>
+  <p class="center light">
+    <%= @teacher.name %> is a teacher for <%= @teacher.channel.name %>
+  </p>
+<% end %>
+
+<div class="fancy-header">
+  <h3>Upcoming Courses</h3>
+  <hr />
 </div>
+
+<%= render @courses %>
+<% unless @courses.present? %>
+  <p class="center light">
+    There are no upcoming courses for <%= @teacher.name %>
+  </p>
+<% end %>

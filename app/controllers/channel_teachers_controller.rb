@@ -1,5 +1,5 @@
 class ChannelTeachersController < ApplicationController
-  before_filter :load_teacher, only: [:show]
+  before_filter :load_teacher, only: [:show,:update,:edit]
 
   def index
     @teachers = ChannelTeacher.all
@@ -10,7 +10,15 @@ class ChannelTeachersController < ApplicationController
   end
 
   def show
-    
+    @courses = Course.where(teacher_id: @teacher.id).in_future.displayable.by_date
+  end
+
+  def edit
+    @page_subtitle = "editing"
+  end
+
+  def update
+    @page_subtitle = "editing"
   end
 
   def new
@@ -32,7 +40,7 @@ class ChannelTeachersController < ApplicationController
         @channel_teacher.name = @channel_teacher.email.split('@')[0]
         result = @channel_teacher.save
       end
-      
+
       if result
         redirect_to channel_teacher_path(@channel_teacher.id)
       else

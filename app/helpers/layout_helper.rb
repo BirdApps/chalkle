@@ -2,14 +2,14 @@ module LayoutHelper
 
   def page_title
     return @page_title if @page_title.present?
-    if @courses
-      if @channel.id.present?
-        @channel.name
-      elsif @category.id.present?
-        @category.name
-      else 
-        @region.name
-      end
+    if @teacher.present?
+      @teacher.name
+    elsif @channel.id.present?
+      @channel.name
+    elsif @category.id.present?
+      @category.name
+    elsif @category.id.present? 
+      @region.name
     else
       meta_title.gsub '|', ''
     end
@@ -20,7 +20,12 @@ module LayoutHelper
   end
 
   def page_title_logo
-    if @channel.logo.present?
+    return @page_title_logo if @page_title_logo.present?
+    if @teacher.present? 
+      if @teacher.avatar.present?
+        @teacher.avatar
+      end
+    elsif @channel.logo.present?
       @channel.logo
     end
   end
@@ -29,14 +34,16 @@ module LayoutHelper
     return @page_subtitle if @page_subtitle.present?
     subtitle = ''
     if @courses
-      if @channel.id.present?
+      if @teacher.present?
+        subtitle = link_to @teacher.channel.name, channel_path(@teacher.channel.url_name)
+      elsif @channel.id.present?
         subtitle += @region.name+' '    if @region.id.present?
         subtitle += @category.name+' '  if @category.id.present?
         subtitle += ' classes from'
       elsif @category.id.present?
         subtitle += @region.name+' '    if @region.id.present?
         subtitle += ' classes in'
-      else 
+      elsif @region.id.present? || @region.name == "New Zealand"
         subtitle += ' classes in'
         @region.name
       end
@@ -83,7 +90,14 @@ module LayoutHelper
   end
 
   def find_hero
-    if @channel.hero.present?
+    if @teacher.present?
+      if @teacher.channel.hero.present?
+        {
+          default: @teacher.channel.hero,
+          blurred: @teacher.channel.hero.blurred
+        }
+      end
+    elsif @channel.hero.present?
         {
           default: @channel.hero,
           blurred: @channel.hero.blurred
@@ -111,7 +125,22 @@ module LayoutHelper
     controller_parts = request.path_parameters[:controller].split("/")
     action_parts = request.path_parameters[:action].split("/")
     nav_links = []
-    if @channel.id.present?
+    if @teacher.present?
+      if policy(@teacher).edit?
+        nav_links << {
+          img_name: "bolt",
+          link: channel_teacher_path(@teacher.id),
+          active: action_parts.include?("show"),
+          title: "Upcoming Classes"
+        }
+        nav_links <<  {
+          img_name: "settings",
+          link: edit_channel_teacher_path(@teacher.id),
+          active: action_parts.include?("edit"),
+          title: "Edit"
+        }
+      end
+    elsif @channel.id.present?
       nav_links << {
           img_name: "bolt",
           link: channel_path(@channel.url_name),

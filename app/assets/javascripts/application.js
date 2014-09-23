@@ -27,4 +27,6 @@
 //= require month_calendar_view
 //= require bootstrap-datepicker/core
 //= require plugins/bootstrap-timepicker.min
+//= require_tree ./v2
+//= require_tree ./inputs
 
