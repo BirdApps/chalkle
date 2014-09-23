@@ -86,11 +86,12 @@ end
 
 after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs", "deploy:migrate"
 after "deploy:update", "deploy:cleanup"
+after "deploy", "unicorn:restart"
 
 namespace :unicorn do 
   desc "unicorn things"
-  task :stop, :roles => :app do 
-    run "killall -u chalkle unicorn"
+  task :restart, :roles => :app do 
+    run "#{sudo} service unicorn restart"
   end
 end
 
