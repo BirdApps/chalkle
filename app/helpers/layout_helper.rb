@@ -9,7 +9,9 @@ module LayoutHelper
     elsif @category.id.present?
       @category.name
     elsif @region.id.present? || @region.name == "New Zealand"
-      @region.name
+      if @courses.present?
+        @region.name
+      end
     else
       'Chalkle'
     end
@@ -45,7 +47,6 @@ module LayoutHelper
         subtitle += ' classes in'
       elsif @region.id.present? || @region.name == "New Zealand"
         subtitle += ' classes in'
-        @region.name
       else
         ''
       end

@@ -4,16 +4,16 @@ class ChannelPlansController < ApplicationController
     @page_subtitle = 'Channel'
     @page_title = 'Plans'
     @channel_plans = ChannelPlan.all
-    authorize nil
+    authorize ChannelPlan.new
   end
 
   def show
-    authorize nil
+    authorize ChannelPlan.new
     not_found if @channel_plans.nil?
   end
 
   def edit
-    authorize nil
+    authorize ChannelPlan.new
     not_found if @channel_plans.nil?
   end
 

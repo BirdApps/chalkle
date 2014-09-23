@@ -1,17 +1,26 @@
 class ChannelPlanPolicy < ApplicationPolicy
 
-  def initialize(user)
-    raise Pundit::NotAuthorizedError, "You do not have the required permissions"
+  def initialize(user, channel_plan)
     @user = user
+    @channel_plan = channel_plan
   end
 
   def index?
-    if @user.super?
-      true 
-    else
-      false
-    end
+    admin?
   end
+
+  def show?
+    admin?
+  end
+
+  def edit?
+    admin?
+  end
+
+  def update?
+    admin?
+  end
+
 
   class Scope < Scope
     def resolve
