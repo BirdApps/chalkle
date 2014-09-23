@@ -1,4 +1,6 @@
 <div class="teacher">
   <img class="avatar" src="<%= @teacher.avatar %>">
   <%= @teacher.name %>
+  <br />
+  <%=  link_to @teacher.channel.name, channel_path(@teacher.channel.url_name) %>
 </div>

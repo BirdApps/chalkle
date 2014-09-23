@@ -122,8 +122,6 @@ class ApplicationController < ActionController::Base
       if !@channel
         if channel_name 
           @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
-        elsif params[:id].present?
-          @channel = Channel.find(params[:id])
         elsif params[:channel_id].present?
           @channel = Channel.find(params[:channel_id])
         end
@@ -153,11 +151,11 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def add_response_notice(notice)
+    def add_response_notice(notice = nil)
         if response[:notices].nil?
           response[:notices] = []
         end
-        response[:notices] << "There are no courses that match the current filter"
+        response[:notices] << notice || "There are no courses that match the current filter"
     end
 
     def start_of_association_chain

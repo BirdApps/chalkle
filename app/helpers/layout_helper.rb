@@ -124,22 +124,22 @@ module LayoutHelper
           active: action_parts.include?("teachers") || controller_parts.include?("channel_teachers") ,
           title: "People"
         }
-      if policy(@channel).metrics?
-        nav_links << {
-          img_name: "metrics",
-          link: metrics_path,
-          active: action_parts.include?("metrics"),
-          title: "Metrics"
-        }
-      end
-      if policy(@channel).resources?
-        nav_links <<  {
-          img_name: "book",
-          link: resources_path,
-          active: action_parts.include?("resources"),
-          title: "Resources"
-        }
-      end
+      # if policy(@channel).metrics?
+      #   nav_links << {
+      #     img_name: "metrics",
+      #     link: metrics_path,
+      #     active: action_parts.include?("metrics"),
+      #     title: "Metrics"
+      #   }
+      # end
+      # if policy(@channel).resources?
+      #   nav_links <<  {
+      #     img_name: "book",
+      #     link: resources_path,
+      #     active: action_parts.include?("resources"),
+      #     title: "Resources"
+      #   }
+      # end
       if policy(@channel).edit?
         nav_links <<  {
           img_name: "settings",
