@@ -70,11 +70,7 @@ class ChannelsController < ApplicationController
   end
 
   private 
-
-  def channel_name
-    params[:provider] = params[:channel_url_name]
-  end
-
+  
   def load_channel
     redirect_to_subdomain
     if !@channel

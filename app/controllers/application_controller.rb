@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
     end
 
     def channel_name
-      params[:provider] || params[:channel_url_name]
+      (params[:provider] || params[:channel_url_name]).parameterize
     end
 
     def category_name

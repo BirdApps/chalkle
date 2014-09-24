@@ -97,8 +97,8 @@ class Course < ActiveRecord::Base
   before_save :save_first_lesson
 
   def self.upcoming(limit = nil)
-    return  published.joins(:lessons).where("start_at > ?", Time.now.utc) if limit.nil?
-    published.joins(:lessons).where("start_at > ?", Time.now.utc).where("start_at < ?", limit)
+    return  published.where("start_at > ?", Time.now.utc) if limit.nil?
+    published.where("start_at > ?", Time.now.utc).where("start_at < ?", limit)
   end
 
   def self.search(query, course_set = nil)
