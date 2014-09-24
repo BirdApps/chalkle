@@ -9,6 +9,7 @@ class Booking < ActiveRecord::Base
   belongs_to :course
   belongs_to :chalkler
   has_one :payment
+  has_one :channel, through: :course
 
   validates_presence_of :course_id, :chalkler_id, :status
   validates_presence_of :payment_method, :unless => :free?
@@ -25,7 +26,7 @@ class Booking < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
-  scope :upcoming, course_visible.joins(:course => :lessons).where( 'start_at > ?', Time.now )
+  scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.now ).order('courses.start_at')
 
   before_validation :set_free_course_attributes
 

@@ -1,6 +1,8 @@
-<div class="_channel col-xs-12 col-sm-6 col-md-4">
-  <a href="<%= channel_path(channel.url_name) %>">
-  <%= image_tag(channel.logo, class: 'channel-img') %>
-  <%= channel.name %>
-  </a>
+<div class="col-xs-12 col-sm-6">
+  <div class="_channel">
+    <a href="<%= channel_path(channel.url_name) %>">
+    <%= image_tag(channel.logo, class: 'channel-img') %>
+    <%= channel.name %>
+    </a>
+  </div>
 </div>

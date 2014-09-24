@@ -35,6 +35,10 @@ class TheUser
     @chalkler
   end
 
+  def avatar
+    chalkler.avatar
+  end
+
   def admin_user
     @admin_user
   end

@@ -86,6 +86,8 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
+
+  scope :from_teacher, lambda {|teacher| where(teacher: teacher.id) }
   scope :in_region, lambda {|region| where(region_id: region.id) }
   scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }

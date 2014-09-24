@@ -658,7 +658,6 @@ body.v2 {
     }
     ._channel{
      background: #efefef;
-     padding-left: 0;
      .channel-img{
         height: 45px;
         width: 45px;
@@ -697,6 +696,12 @@ body.v2 {
         line-height: 13px;
         text-transform: uppercase;
         margin: 0 0 5px;
+      }
+      .category_image{
+        max-height: 100%;
+        background: #fff;
+        max-width: 100%;
+        border: solid 1px rgba(0, 0, 0, 0.05);
       }
       .porthole{
         background: rgba(0, 0, 0, 0.05);
@@ -1044,7 +1049,11 @@ body.v2 {
       background: rgba(100, 100, 100, 0.2);
       float:left;
       margin-right:10px;
-    }  
+    }
+    .avatar64{
+      height: 64px;
+      width: 64px;
+    }
     .people{
       .headings{
         font-family: ProximaNova-Light;
@@ -1072,6 +1081,15 @@ body.v2 {
           opacity: 0.6;
         }
         border-top: solid rgba(100, 100, 100, 0.2) 1px;
+      }
+    }
+    .dashboard{
+      .course{
+        margin: 5px 0;
+        .title{
+          font-size: 16px;
+          margin:0;
+        }
       }
     }
   }

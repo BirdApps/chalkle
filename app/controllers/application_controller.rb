@@ -102,7 +102,8 @@ class ApplicationController < ActionController::Base
     end
 
     def channel_name
-      (params[:provider] || params[:channel_url_name]).parameterize
+      name = params[:provider] || params[:channel_url_name]
+      name.parameterize if name.present?
     end
 
     def category_name
