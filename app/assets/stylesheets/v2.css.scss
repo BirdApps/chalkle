@@ -635,6 +635,7 @@ body.v2 {
     }
     .image-preview{
       width: 100%;
+      background: rgba(100, 100, 100, 0.2);
     }
     .img {
         position: relative;
@@ -653,6 +654,15 @@ body.v2 {
         padding: 5px 10px;
         display: block;
         text-align: left;
+      }
+    }
+    ._channel{
+     background: #efefef;
+     padding-left: 0;
+     .channel-img{
+        height: 45px;
+        width: 45px;
+        background: #ccc;
       }
     }
     .course{
@@ -790,7 +800,6 @@ body.v2 {
       font-family: ProximaNova-Light;
     }
     .new_form_wrapper{
-
       .hero.image-preview{
         height: 175px;
         width:100%;
@@ -940,7 +949,7 @@ body.v2 {
           background: url(/assets/chevron-down.png) #F1F1F1 no-repeat right 10px top 16px !important;
           background-size: 13px 7px !important;
         }
-        input[type=text],input[type=number],input[type=email],textarea,select{
+        input[type=text],input[type=number],input[type=email],input[type=tel],textarea,select{
           border: 0px;
           background: #F1F1F1;
           box-shadow: none;
@@ -1029,15 +1038,13 @@ body.v2 {
         }
       }
     }
-    .teacher{
-      .avatar{
-          height:128px;
-          width:128px;
-          background: rgba(100, 100, 100, 0.2);
-          float:left;
-          margin-right:10px;
-        }
-    }
+    .avatar{
+      height:128px;
+      width:128px;
+      background: rgba(100, 100, 100, 0.2);
+      float:left;
+      margin-right:10px;
+    }  
     .people{
       .headings{
         font-family: ProximaNova-Light;

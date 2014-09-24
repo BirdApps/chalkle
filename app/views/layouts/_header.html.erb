@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="header_content_fg">
-      <% if title = page_title %>
+      <% if (title = page_title).present? %>
         <div class="title-wrapper nowrap">
           <div class="page_title_logo hidden-xs">
             <% if page_title_logo.present? %>

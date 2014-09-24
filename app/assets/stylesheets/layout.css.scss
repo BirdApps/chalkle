@@ -14,10 +14,8 @@ body.modal-open {
 
 .jumbotron {
   font-family: $font_family_chalk;
-  background: #222222 asset-url("texture-chalkboard.jpg", image) left top repeat;
-  color: white;
+  background: #e2e2e2;
   padding: 20px 60px;
-  border: solid 2px #222;
   h2 {
     font-family: $font_family_chalk;
     font-weight: normal;

@@ -34,6 +34,10 @@ class ApplicationController < ActionController::Base
     stored_location_for(resource) || params[:redirect_to]  || root_path
   end
 
+  def about
+
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to admin_dashboard_path, :alert => exception.message
   end

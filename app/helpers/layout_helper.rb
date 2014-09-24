@@ -3,18 +3,17 @@ module LayoutHelper
   def page_title
     return @page_title if @page_title.present?
     if @teacher.present?
-      @teacher.name
+      title = @teacher.name
     elsif @channel.id.present?
-      @channel.name
+      title = @channel.name
     elsif @category.id.present?
-      @category.name
+      title = @category.name
     elsif @region.id.present? || @region.name == "New Zealand"
       if @courses.present?
-        @region.name
+        title = @region.name
       end
-    else
-      'Chalkle'
     end
+    title || ''
   end
 
   def title_size_class(title)
@@ -47,11 +46,9 @@ module LayoutHelper
         subtitle += ' classes in'
       elsif @region.id.present? || @region.name == "New Zealand"
         subtitle += ' classes in'
-      else
-        ''
       end
     end
-    subtitle
+    subtitle || ''
   end
 
   def meta_title

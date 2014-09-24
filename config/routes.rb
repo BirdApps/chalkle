@@ -16,6 +16,9 @@ Chalkle::Application.routes.draw do
 
   root to: 'courses#index'
   
+
+  get '/about' => 'application#about', as: :about
+
   resources :channel_teachers, path: 'teachers', except: [:new] 
 
   resources :channel_plans, path: 'plans'

@@ -3,7 +3,7 @@ class Me::PreferencesController < Me::BaseController
    	@chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
 
     if @chalkler_email_preferences.update_attributes(params[:chalkler_preferences])
-      redirect_to root_path, notice: 'Your preferences have been saved.'
+      redirect_to me_preferences_path, notice: 'Your preferences have been saved.'
     else
       render template: 'me/dashboard/index'
     end
