@@ -126,13 +126,13 @@ module LayoutHelper
     action_parts = request.path_parameters[:action].split("/")
     nav_links = []
     if @teacher.present?
+      nav_links << {
+        img_name: "bolt",
+        link: channel_teacher_path(@teacher.id),
+        active: action_parts.include?("show"),
+        title: "Upcoming Classes"
+      }
       if policy(@teacher).edit?
-        nav_links << {
-          img_name: "bolt",
-          link: channel_teacher_path(@teacher.id),
-          active: action_parts.include?("show"),
-          title: "Upcoming Classes"
-        }
         nav_links <<  {
           img_name: "settings",
           link: edit_channel_teacher_path(@teacher.id),
