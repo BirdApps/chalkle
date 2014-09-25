@@ -43,6 +43,10 @@ class TheUser
     @admin_user
   end
 
+  def following
+    chalkler.channels
+  end
+
   def super?
     admin_user.present? ? admin_user.super? : false
   end

@@ -1,7 +1,7 @@
 class ChannelsController < ApplicationController
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
-  before_filter :load_channel, only: [:show, :edit, :update,:teachers, :channel_url_available]
+  before_filter :load_channel, only: [:show, :edit, :update,:teachers, :channel_url_available, :followers]
 
   def index
     @channels = Channel.visible
@@ -27,11 +27,13 @@ class ChannelsController < ApplicationController
   end
 
   def edit
+    authorize @channel
     @page_subtitle = 'Settings'
     not_found if !@channel
   end
 
   def update
+    authorize @channel
     channel_params = params[:channel]
     @channel = Channel.find params[:channel_id]
     if params[:channel_agreeterms] == 'on'
@@ -45,11 +47,15 @@ class ChannelsController < ApplicationController
   end
 
 
+
   def destroy
-    
   end
 
   def contact
+  end
+
+  def followers
+    @chalklers = @channel.chalklers
   end
 
   def teachers
