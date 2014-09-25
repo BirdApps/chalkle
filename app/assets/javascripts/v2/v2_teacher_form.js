@@ -11,7 +11,6 @@ $(function(){
         data: {email: email},
         complete: function(data) {
           $('#exists_result').parent().show();
-          console.log(data.responseText);
           if(data.status == 200 && data.responseText == "true"){
             $('.exists-warning').hide();
             $('.exists-success').show();

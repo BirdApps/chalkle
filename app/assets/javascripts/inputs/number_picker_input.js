@@ -59,7 +59,6 @@ function number_picker(scope){
   $(scope).find('.number-picker-input').change(function (){
     $(this).val(validate_picker_val(this));
   });
-
   $(scope).find('.number-picker-up').click(function(){
     change_num($(this).parent().siblings('input'), true);
   });
@@ -69,6 +68,8 @@ function number_picker(scope){
   });
 };
 
-$('.number-picker').each(function(){
-  number_picker(this);
+$(function(){
+  $('.number-picker').each(function(){
+    number_picker(this);
+  });
 });

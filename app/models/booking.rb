@@ -1,20 +1,22 @@
 class Booking < ActiveRecord::Base
   PAYMENT_METHODS = Finance::payment_methods
-  attr_accessible :course_id, :guests, :payment_method, :terms_and_conditions
-  attr_accessible :chalkler_id, :chalkler, :course_id, :course, :meetup_data, :status, :guests, :meetup_id, :cost_override, :paid, :payment_method, :visible, :reminder_last_sent_at, :as => :admin
+  attr_accessible *BASIC_ATTR = [:course_id, :guests, :payment_method, :terms_and_conditions, :booking ]
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :meetup_data, :status, :meetup_id, :cost_override, :paid, :visible, :reminder_last_sent_at, :as => :admin
 
   attr_accessor :terms_and_conditions
   attr_accessor :enforce_terms_and_conditions
 
   belongs_to :course
   belongs_to :chalkler
+  belongs_to :booking
+  has_many :bookings, as: :guests_bookings
   has_one :payment
   has_one :channel, through: :course
 
-  validates_presence_of :course_id, :chalkler_id, :status
+  validates_presence_of :course_id, :status
   validates_presence_of :payment_method, :unless => :free?
   validates_acceptance_of :terms_and_conditions, :message => 'please read and agree', :if => :enforce_terms_and_conditions
-  validates_uniqueness_of :chalkler_id, scope: :course_id
+  validates_uniqueness_of :chalkler_id, scope: :course_id, allow_blank: true
 
   scope :paid, where{ paid == true }
   scope :unpaid, where{ paid == false }
