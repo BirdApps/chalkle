@@ -1,12 +1,12 @@
 
 <br /> <br />
-<% if @teacher.bio.present? %>
+<% if @channel_teacher.bio.present? %>
   <p class="center light">
-     <%= @teacher.bio %>
+     <%= @channel_teacher.bio %>
   </p>
 <% else %>
   <p class="center light">
-    <%= @teacher.name %> is a teacher for <%= @teacher.channel.name %>
+    <%= @channel_teacher.name %> is a teacher for <%= @channel_teacher.channel.name %>
   </p>
 <% end %>
 
@@ -18,6 +18,6 @@
 <%= render @courses %>
 <% unless @courses.present? %>
   <p class="center light">
-    There are no upcoming courses for <%= @teacher.name %>
+    There are no upcoming courses for <%= @channel_teacher.name %>
   </p>
 <% end %>

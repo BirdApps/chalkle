@@ -5,6 +5,10 @@ class ChannelTeacherPolicy < ApplicationPolicy
     @channel_teacher = channel_teacher
   end
 
+  def new?
+    @user.super? or @user.channels_adminable.include? @channel_teacher.channel
+  end
+
   def show?
     true #TODO: implement incognito
   end

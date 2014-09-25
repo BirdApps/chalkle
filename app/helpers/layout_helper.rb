@@ -2,8 +2,8 @@ module LayoutHelper
 
   def page_title
     return @page_title if @page_title.present?
-    if @teacher.present?
-      title = @teacher.name
+    if @channel_teacher.present? && @channel_teacher.id.present?
+      title = @channel_teacher.name
     elsif @channel.id.present?
       title = @channel.name
     elsif @category.id.present?
@@ -22,9 +22,9 @@ module LayoutHelper
 
   def page_title_logo
     return @page_title_logo if @page_title_logo.present?
-    if @teacher.present? 
-      if @teacher.avatar.present?
-        @teacher.avatar
+    if @channel_teacher.present? && @channel_teacher.id.present? 
+      if @channel_teacher.avatar.present?
+        @channel_teacher.avatar
       end
     elsif @channel.logo.present?
       @channel.logo
@@ -35,8 +35,8 @@ module LayoutHelper
     return @page_subtitle if @page_subtitle.present?
     subtitle = ''
     if @courses
-      if @teacher.present?
-        subtitle = link_to @teacher.channel.name, channel_path(@teacher.channel.url_name)
+      if @channel_teacher.present? && @channel_teacher.id.present?
+        subtitle = link_to @channel_teacher.channel.name, channel_path(@channel_teacher.channel.url_name)
       elsif @channel.id.present?
         subtitle += @region.name+' '    if @region.id.present?
         subtitle += @category.name+' '  if @category.id.present?
@@ -90,11 +90,11 @@ module LayoutHelper
   end
 
   def find_hero
-    if @teacher.present?
-      if @teacher.channel.hero.present?
+    if @channel_teacher.present? && @channel_teacher.id.present?
+      if @channel_teacher.channel.hero.present?
         {
-          default: @teacher.channel.hero,
-          blurred: @teacher.channel.hero.blurred
+          default: @channel_teacher.channel.hero,
+          blurred: @channel_teacher.channel.hero.blurred
         }
       end
     elsif @channel.hero.present?
@@ -125,17 +125,17 @@ module LayoutHelper
     controller_parts = request.path_parameters[:controller].split("/")
     action_parts = request.path_parameters[:action].split("/")
     nav_links = []
-    if @teacher.present?
+    if @channel_teacher.present? && @channel_teacher.id.present?
       nav_links << {
         img_name: "bolt",
-        link: channel_teacher_path(@teacher.id),
+        link: channel_teacher_path(@channel_teacher.id),
         active: action_parts.include?("show"),
         title: "Upcoming Classes"
       }
-      if policy(@teacher).edit?
+      if policy(@channel_teacher).edit?
         nav_links <<  {
           img_name: "settings",
-          link: edit_channel_teacher_path(@teacher.id),
+          link: edit_channel_teacher_path(@channel_teacher.id),
           active: action_parts.include?("edit"),
           title: "Edit"
         }

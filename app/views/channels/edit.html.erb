@@ -148,6 +148,11 @@
        <%= f.input :account, label: "Bank account number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizonal %>
 
        <%= f.input :tax_number, label: "GST number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizonal %>
+    <div class="col-sm-7 col-sm-offset-5">
+      <p class="small grey center">
+        Only include a GST Number if you are GST registered
+      </p>
+     </div>
     </div>
     <br /><br /><br />
     <div class="row">
