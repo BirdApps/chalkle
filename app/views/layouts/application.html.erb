@@ -14,9 +14,8 @@
     <%= csrf_meta_tag %>
     <%= stylesheet_link_tag "application", media: "all" %>
     <%= javascript_include_tag "application" %>
-    <%= google_webfonts_init(google: 'Shadows Into Light Two') %>
-    <script type="text/javascript" src="//use.typekit.net/bzi6yvd.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <%= typekit_includes %>
   </head>
 
   <body class="<%= body_class %> v2" role="document">

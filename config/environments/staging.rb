@@ -67,14 +67,15 @@ Chalkle::Application.configure do
 
   config.action_mailer.default_url_options = { host: "chalklestaging.cloudapp.net" }
 
-  config.action_dispatch.tld_length = 2
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  :user_name => '228272f807b6c93e7',
+  :password => 'c7695e1be3c830',
+  :address => 'mailtrap.io',
+  :domain => 'mailtrap.io',
+  :port => '2525',
+  :authentication => :cram_md5,
+  :enable_starttls_auto => true
+}
 
-  ActionMailer::Base.delivery_method = :smtp
-	ActionMailer::Base.smtp_settings = {
-	  :user_name => 'chalkle-24b10ef389f7e02b',
-	  :password => '05a8b4efeb8d5955',
-	  :address => 'mailtrap.io',
-	  :port => '2525',
-	  :authentication => :plain,
-	}
 end
