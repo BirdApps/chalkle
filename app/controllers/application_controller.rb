@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
   protected
 
     def authorize(record)
-      super record unless current_user.admin_user.super?
+      super record unless current_user.super?
     end
 
     def check_clear_filters
