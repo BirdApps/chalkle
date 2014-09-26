@@ -4,19 +4,20 @@
 #
 # Examples:
 #
-# Create some cities
-  %w(Chicago Copenhagen).each do |city_name|
-    city = City.new
-    city.name = city_name
-    city.save
-    puts "City created: #{city.name}"
-  end
+# Create some channel plans
+
+ community_plan = ChannelPlan.create(name: 'Community', max_channel_admins: 1,max_free_class_attendees: 20, class_attendee_cost: 2, course_attendee_cost: 6, annual_cost: 0, processing_fee_percent: 0.04, max_teachers: 1 )
+ChannelPlan.create(name: 'Standard',max_channel_admins: 2,max_free_class_attendees: 0,class_attendee_cost: 4,course_attendee_cost: 10,annual_cost: 0,processing_fee_percent: 0.04, max_teachers: 10 )
+ChannelPlan.create( name: 'Enterprise',max_channel_admins: 2, max_teachers: 10, max_free_class_attendees: nil,class_attendee_cost: 4,course_attendee_cost: 10, annual_cost: 3000,processing_fee_percent: 0.04 )
+ChannelPlan.all.each do |channel_plan|
+  puts 'Channel plan created: #{channel_plan.name}'
+end
 
 # Create some Channels
 [
-  { name: 'Wellington',
-    url_name: "sixdegrees",
-    email: "wellington@chalkle.com" },
+  { name: 'Enspiral',
+    url_name: "enspiral",
+    email: "enspiral@chalkle.com" },
   { name: 'Horowhenua',
     url_name: "horowhenua",
     email: "horowhenua@chalkle.com" },
@@ -47,16 +48,16 @@ Category.create([{name: 'one'}, {name: 'two'}, {name: 'three'}], as: :admin)
 Category.all.map {|category| puts "Category Created: #{category.name}"}
 
 #Create some lessons
-lessons = Lesson.create([{name: 'Lesson 1'}, {name: 'Lesson 2'}, {name: 'Lesson 3'}], as: :admin)
-lessons.each {|lesson| puts "Create Lesson: #{lesson.name}"}
+courses = Course.create([{name: 'Lesson 1'}, {name: 'Lesson 2'}, {name: 'Lesson 3'}], as: :admin)
+courses.each {|course| puts "Create course: #{course.name}"}
 
-lessons.each do |l|
+courses.each do |l|
  l.category = Category.all[rand(0..Category.all.count-1)]
  l.save
  puts "Set category for #{l.name} to: #{l.category.name}"
 end
 
-channel_admin.channels << Channel.find_by_name("Wellington")
+channel_admin.channels << Channel.find_by_name("Enspiral")
 puts "Channel Admin \"#{channel_admin.name}\" belongs to channel: #{channel_admin.channels.name}"
 
 
