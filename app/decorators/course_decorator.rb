@@ -26,7 +26,8 @@ class CourseDecorator < ApplicationDecorator
   end
 
   def guest_values
-    [['Just me', 0], [2, 1], [3, 2], [4, 3], [5, 4]]
+    [['0 guests', 0], ['1 guest', 1], ['2 guests', 2], ['3 guests', 3], ['4 guests', 4]].take(source.spaces_left - 1)
+
   end
 
   def url

@@ -12,7 +12,7 @@ function number_picker(scope){
     if(increment){
       new_val = prev_val+1;
     }else{
-      new_val = prev_val-1; 
+      new_val = prev_val-1;
     }
     $(element).val(validate_picker_val(element, new_val));
   }

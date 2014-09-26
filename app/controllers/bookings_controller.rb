@@ -8,13 +8,12 @@ class BookingsController < ApplicationController
   end
 
   def new
+    @course = Course.find(params[:course_id]).decorate
     if current_chalkler.courses.where{ bookings.status.eq 'yes' }.exists? params[:course_id]
-      flash[:notice] = 'You are already attending this class'
-      redirect_to :back
+      redirect_to @course.path
     end
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
-    @course = Course.find(params[:course_id]).decorate
     return false if check_course_visibility
   end
 
@@ -27,18 +26,18 @@ class BookingsController < ApplicationController
     destroy_cancelled_booking
 
     if @booking.save
-      if @booking.payment_method == 'credit_card'
-        @booking.update_attribute(:status, 'pending')
-        wrapper = SwipeWrapper.new
-        identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
-                                                      amount: @booking.cost,
-                                                      return_url: channel_course_booking_payment_callback_url(params[:channel_id], @booking.course_id, @booking.id),
-                                                      description: @booking.name)
-        redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
-      else
-        flash[:notice] = 'Booking created!'
-        redirect_to course_booking_path @booking.course, @booking
-      end
+      # if @booking.payment_method == 'credit_card'
+      @booking.update_attribute(:status, 'pending')
+      wrapper = SwipeWrapper.new
+      identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
+                                                    amount: @booking.cost,
+                                                    return_url: channel_course_booking_payment_callback_url(params[:channel_id], @booking.course_id, @booking.id),
+                                                    description: @booking.name)
+      redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
+      # else
+      #   flash[:notice] = 'Booking created!'
+      #   redirect_to course_booking_path @booking.course, @booking
+      # end
     else
       delete_any_unpaid_credit_card_booking
       @course = Course.find(params[:course_id]).decorate

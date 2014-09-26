@@ -16,4 +16,8 @@ class Lesson < ActiveRecord::Base
   validate do |lesson|
     errors.add(:duration, "Duration cannot be negative") if lesson.duration && lesson.duration < 0
   end
+
+  def end_at
+    start_at+duration
+  end
 end

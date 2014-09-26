@@ -56,6 +56,7 @@ class TheUser
   end
 
   def channels
+    return Channel.all if super?
     channels = []
     channels = channels.concat admin_user.channels if admin?
     channels = channels.concat chalkler.channels_teachable if chalkler?
