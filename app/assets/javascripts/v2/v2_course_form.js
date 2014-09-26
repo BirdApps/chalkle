@@ -133,7 +133,7 @@ $(function(){
       if($('#saved_teacher_id').length){
         selected_val = $('#saved_teacher_id').val();
       }
-      if(channel_id != ""){
+      if(!isNaN(channel_id)){
         $.getJSON('/providers/'+channel_id+'/teachers.json', function(data){
             $('#teaching_teacher_id').empty();
             if(data.length < 2){
