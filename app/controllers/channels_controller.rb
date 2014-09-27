@@ -8,8 +8,7 @@ class ChannelsController < ApplicationController
   end
 
   def show
-    not_found if !@channel
-
+    not_found if @channel.id.blank?
     @courses = @channel.courses.displayable.in_week(Week.containing(current_date)).by_date
   end
 

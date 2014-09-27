@@ -55,6 +55,10 @@ class TheUser
     chalkler.id.present? ? chalkler.channels_adminable : []
   end
 
+  def subscriptions
+    chalkler.present? ? chalkler.subscriptions : []
+  end
+
   def channels
     return Channel.all if super?
     channels = []

@@ -5,7 +5,7 @@
     </p>
   </div>
   <div class="col-xs-2 text-right">
-    <% subscription = current_chalkler.subscriptions.where(channel_id: @channel.id) %>
+    <% subscription = current_user.subscriptions.where(channel_id: @channel.id) %>
     <% unless subscription.present? %>
       <%= bootstrap_form_for(Subscription.new, url: channel_subscriptions_path(@channel.id), html: { method: :post }) do |f| %>
         <input value="Follow" type="submit" class="btn btn-success" /> 
