@@ -177,6 +177,19 @@ module LayoutHelper
           title: "Settings"
         }
       end
+    elsif controller_parts.include?("me")
+       nav_links << {
+          img_name: "bolt",
+          link: me_root_path,
+          active: action_parts.include?("index"),
+          title: "Dashboard"
+        }
+      nav_links << {
+        img_name: "settings",
+          link: me_preferences_path,
+          active: action_parts.include?("show"),
+          title: "Settings"
+      }
     end
     nav_links
   end
