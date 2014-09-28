@@ -1,6 +1,10 @@
 class Me::DashboardController < Me::BaseController
 
   def index
+  @page_title = current_user.name
+  @page_subtitle = 'Dashboard'
+  @page_title_logo = current_user.avatar
+
     
   end
 

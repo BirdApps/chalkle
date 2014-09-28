@@ -1,41 +1,31 @@
-<%  
-  @page_title = current_user.name
-  @page_subtitle = 'Dashboard'
-  @page_title_logo = current_user.avatar
-  following = current_chalkler.channels.order('name ASC')
-  adminable = current_user.channels_adminable
-  bookings = current_chalkler.bookings.limit(5)
-
-  teaching = []
-  current_chalkler.channel_teachers.each do |teacher|
-    teaching = teaching + teacher.courses
-  end
-%>
 <div class="row dashboard">
   <div class="col-xs-12 col-md-6">
-      <% if bookings.present? %>
+      <% if current_chalkler.bookings.any? %>
       <div class="fancy-header">
         <h3>Upcoming Bookings</h3>
         <hr />
       </div>
       <div class="row col-xs-12">
-        <%= render bookings %>  
+        <%= render current_chalkler.bookings.limit(5) %>  
       </div>
     <% end %>
 
-    <% if following.present? %>
+    <% if current_chalkler.channels.any? %>
       <div class="fancy-header">
         <h3>Following</h3>
         <hr />
       </div>
       <div class="row col-xs-12">
-        <%= render following %>  
+        <%= render current_chalkler.channels.order('name ASC') %>  
       </div>
     <% end %>
   </div>
 
   <div class="col-xs-12 col-md-6">
-    <% if teaching.present? %>
+    <% 
+    teaching = current_chalkler.channel_teachers.map(&:courses).flatten
+    if teaching.any?
+    %>
       <div class="fancy-header">
         <h3>Classes you are Teaching</h3>
         <hr />
@@ -46,7 +36,7 @@
     <% end %>
 
    
-     <% if current_chalkler.channel_teachers.present? %>
+     <% if current_chalkler.channel_teachers.any? %>
       <div class="fancy-header">
         <h3>Your Teacher Profiles</h3>
         <hr />
@@ -56,13 +46,13 @@
       </div>
     <% end %>
 
-   <% if adminable.present? %>
+   <% if current_user.channels_adminable.any? %>
       <div class="fancy-header">
         <h3>Your Providers</h3>
         <hr />
       </div>
       <div class="row col-xs-12">
-        <%= render adminable %>  
+        <%= render current_user.channels_adminable %>  
       </div>
     <% end %>
 
