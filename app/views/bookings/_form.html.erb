@@ -1,32 +1,36 @@
 <% noun = @course.course? ? 'Course' : 'Class' %>
 <%= f.error_notification %>
-  
-<% if @course.spaces_left > 1 %>
+<% if @course.spaces_left? %>
   <%= f.input :guests, :type => :select, collection: @course.guest_values, :label => 'Bring a friend! (or two)', :selected => 0, wrapper: :horizonal  %>
 <% end %>
 
 <%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
-  <div class="center">
-    The <strong><%= noun %></strong> runs on 
-    <ul>
-      <% @course.lessons.each do |lesson| %>
-        <li>
-          <%= day_ordinal_month(lesson.start_at, true, false) %>,
-          <%= pretty_time_range(lesson.start_at, lesson.end_at) %>
-        </li>
-      <% end %>
-    </ul>
-
+<div class="center">
   <div class="col-xs-12">
+      <span class="light"> 
+        The <span class="strong em"><%= noun %></span> will run 
+      </span>
+      <ul>
+        <% @course.lessons.each do |lesson| %>
+          <li class="strong em x1-25">
+            <%= day_ordinal_month(lesson.start_at, true, false) %>,
+            <%= pretty_time_range(lesson.start_at, lesson.end_at) %>
+          </li>
+        <% end %>
+      </ul>
+  </div>
+  <br />
+  <div class="col-xs-12 light">
     <% if @course.cost? && @course.cost > 0 %>
-      The cost to attend is $<%= number_with_precision(@course.cost, precision: 2) %>
+      The cost to attend is <span class="x1-25">$<%= number_with_precision(@course.cost, precision: 2) %></span>
     <% else %>
-      This <%= noun %> is free to attend  
+      This <%= noun %> is <strong>free to attend</strong>  
     <% end %>
   </div>
-  <div class="col-xs-12">
+  <br />
+  <div class="col-xs-12 light">
     <br />
-    The <%= noun %> is run by <strong><%= @course.channel.name %></strong>
+    The <%= noun %> is provided by <strong><%= @course.channel.name %></strong>
   </div>
 
   <% if @course.address.present? %>
@@ -68,8 +72,10 @@
       </div>
     </div>
   <% else %>
-    <em>at</em> <br />
-    <%= @course.venue %>
+    <p class="light">
+      <em>at</em> <br />
+      <strong> <%= @course.venue %> </strong>
+    </p>
   <% end %>
 
 
@@ -80,7 +86,7 @@
     <% if f.object.new_record? %>
       <div class="checkbox center">
         <label id="teaching_agreeterms" data-error-message="You must agree in order to continue">
-          <input type="checkbox" id="booking_terms_and_conditions" name="booking[terms_and_conditions]"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms">Terms and Conditions</a></span>
+          <input type="checkbox" id="booking_terms_and_conditions" name="booking[terms_and_conditions]"><span style="position:relative; bottom:10px;"> I agree to the <a data-toggle="modal" href="#termsModal">Terms and Conditions</a></span>
         </label>
       </div>
     <% end %>
@@ -88,3 +94,5 @@
   </div>
   <div class="col-md-3 hidden-xs">
   </div>
+
+</div>

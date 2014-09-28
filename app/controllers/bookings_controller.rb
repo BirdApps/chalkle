@@ -1,6 +1,7 @@
 class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!
   before_filter :redirect_on_paid, :only => [:edit, :update]
+  before_filter :class_finished, :only => [:edit, :update, :new]
 
   def index
     @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
@@ -15,6 +16,10 @@ class BookingsController < ApplicationController
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
     return false if check_course_visibility
+
+    @page_title = @course.name
+    @page_subtitle = "Booking for"
+    @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
   end
 
   def create
@@ -101,6 +106,18 @@ class BookingsController < ApplicationController
   end
 
   private
+  def class_finished
+    if params[:course_id].present?
+      @course = Course.find(params[:course_id]).decorate
+    elsif @booking.present? 
+      @course = @booking.course
+    else
+      return
+    end
+    if @course.start_at < DateTime.now
+      redirect_to @course.path, notice: "This class has already starting, and bookings cannot be created or altered"
+    end
+  end
 
   def check_course_visibility
     unless @course.published?

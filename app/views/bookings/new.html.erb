@@ -1,27 +1,19 @@
-<% 
-  @page_title = @course.name
-  @page_subtitle = "Book to attend"
-  @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
-%>
-
-    <p><%= @course.do_during_class %></p>
-<div class="new_form_wrapper">
+<p><%= @course.do_during_class %></p>
+<div class="new_form_wrapper row">
   <div class="col-md-2 hidden-xs">
   </div> 
   <div class="col-md-8 col-xs-12">
     <div class="fancy-header">
       <h3>Booking for <%= current_user.name %></h3>
       <hr />
-    </div>
-    
+    </div>  
     <%= bootstrap_form_for(@booking, url: course_bookings_path,html: { method: :post, class: 'form-horizontal', role: 'form'}) do |f| %>
       <%= render partial: 'form', locals: { f: f } %>
     <% end %>
-
   </div>
   <div class="col-md-2 hidden-xs">
   </div>
 </div>
 
 </div>
-<%= render partial: 'terms' %>
+<%= render 'terms' %>

@@ -81,6 +81,18 @@ body.v2 {
     font-family: ProximaNova-Light;
     color: #888;
   }
+  .strong{
+    font-family: ProximaNova-Semibold;
+  }
+  .em{
+    font-style: italic;
+  }
+  .x2{
+    font-size:2em;
+  }
+  .x1-25{
+    font-size: 1.25em;
+  }
   .vertical-borders{
     border-top: 1px solid rgba(0,0,0,0.16);
     border-bottom: 1px solid rgba(0,0,0,0.16);

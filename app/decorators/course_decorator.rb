@@ -26,8 +26,9 @@ class CourseDecorator < ApplicationDecorator
   end
 
   def guest_values
-    [['0 guests', 0], ['1 guest', 1], ['2 guests', 2], ['3 guests', 3], ['4 guests', 4]].take(source.spaces_left - 1)
-
+    guest_vals = [['No friends', 0], ['1 friend', 1], ['2 friends', 2], ['3 friends', 3], ['4 friends', 4]]
+    guest_vals = guest_vals.take(source.spaces_left - 1) if source.limited_spaces?
+    guest_vals
   end
 
   def url

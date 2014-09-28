@@ -7,6 +7,7 @@ class CoursesController < ApplicationController
 
   def index
     @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
+    @courses = Course.displayable.by_date if @courses.blank?
     filter_courses
   end
 
@@ -94,7 +95,7 @@ class CoursesController < ApplicationController
     end
 
     def load_course
-      @course = start_of_association_chain.find(params[:id]).decorate
+      @course = Course.find(params[:id]).decorate
     end     
 
     def load_geography_override
