@@ -6,9 +6,14 @@ class CoursesController < ApplicationController
   before_filter :check_clear_filters, only: [:index]
 
   def index
-    @courses = Course.displayable.in_week(Week.containing(current_date)).by_date
-    @courses = Course.displayable.by_date if @courses.blank?
+    @courses = Course.displayable.in_fortnight(Week.containing(current_date)).by_date
     filter_courses
+    count = 0
+    while @courses.blank? do
+      count+=1
+      @courses = Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
+      filter_courses
+    end
   end
 
   def show

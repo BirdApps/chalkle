@@ -71,6 +71,8 @@ class Course < ActiveRecord::Base
   scope :last_week, visible.start_at_between(DateTime.now.advance(weeks: -1), DateTime.now)
   scope :in_month, lambda{|month| start_at_between(month.first_day, month.last_day) }
   scope :in_week, lambda {|week| start_at_between(week.first_day, week.last_day) }
+  scope :in_fortnight, lambda {|week| start_at_between(week.first_day, (week+1).last_day) }
+  
   scope :on_date, lambda {|date| start_at_between(date, date) }
   scope :in_future, lambda { where( "start_at >= ?", DateTime.now.beginning_of_day) }
   scope :previous, lambda { where("start_at < ?", DateTime.now.beginning_of_day) }
