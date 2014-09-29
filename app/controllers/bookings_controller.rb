@@ -2,6 +2,7 @@ class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!
   before_filter :redirect_on_paid, :only => [:edit, :update]
   before_filter :class_available, :only => [:edit, :update, :new]
+  before_filter :load_booking, :only => [:payment_callback, :show, :edit, :update, :cancel]
 
   def index
     @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
@@ -27,14 +28,13 @@ class BookingsController < ApplicationController
 
     # this should handle invalid @bookings before doing anything
     destroy_cancelled_booking
-    binding.pry
     if @booking.save
       # if @booking.payment_method == 'credit_card'
       @booking.update_attribute(:status, 'pending')
       wrapper = SwipeWrapper.new
       identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
                                                     amount: @booking.cost,
-                                                    return_url: channel_course_booking_payment_callback_url(params[:channel_id], @booking.course_id, @booking.id),
+                                                    return_url:course_booking_payment_callback(@booking.course_id, @booking.id),
                                                     description: @booking.name)
       redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
       # else
@@ -49,7 +49,6 @@ class BookingsController < ApplicationController
   end
 
   def payment_callback
-    load_booking
     payment_successful = (params[:result] =~ /accepted/i) && !(params[:result] =~ /test/i)
     if payment_successful
       #should I set it to yes?
@@ -71,17 +70,14 @@ class BookingsController < ApplicationController
   end
 
   def show
-    load_booking
   end
 
   def edit
-    load_booking
     redirect_edit_on_paid(@booking) if @booking.paid?
     @course = @booking.course.decorate
   end
 
   def update
-    load_booking
     @booking.update_attributes params[:booking]
     if @booking.save
       redirect_to booking_path @booking
@@ -92,7 +88,6 @@ class BookingsController < ApplicationController
   end
 
   def cancel
-    load_booking
     @booking.status = 'no'
     if @booking.save
       flash[:notice] = "Your booking is cancelled. Please contact accounts@chalkle.com quote booking id #{@booking.id} if you require a refund."

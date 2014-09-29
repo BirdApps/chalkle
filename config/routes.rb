@@ -26,6 +26,7 @@ Chalkle::Application.routes.draw do
   resources :courses, path: 'classes' do
     resources :notices
     resources :bookings do
+      get :payment_callback
       member do
         put 'cancel'
       end
