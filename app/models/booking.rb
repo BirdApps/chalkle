@@ -1,7 +1,7 @@
 class Booking < ActiveRecord::Base
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [:course_id, :guests, :payment_method, :terms_and_conditions, :booking ]
-  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :meetup_data, :status, :meetup_id, :cost_override, :paid, :visible, :reminder_last_sent_at, :as => :admin
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :as => :admin
 
   attr_accessor :terms_and_conditions
   attr_accessor :enforce_terms_and_conditions
@@ -32,30 +32,16 @@ class Booking < ActiveRecord::Base
 
   before_validation :set_free_course_attributes
 
-  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :meetup_url, :cose, to: :course, prefix: true
+  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
   delegate :free?, to: :course, allow_nil: true
 
   BOOKING_STATUSES = %w(yes waitlist no pending no-show)
 
   def name
     if course.present? && chalkler.present?
-      if course.meetup_id.present?
-        "#{course.name} (#{course.meetup_id}) - #{chalkler.name}"
-      else
         "#{course.name} - #{chalkler.name}"
-      end
     else
       id
-    end
-  end
-
-  def meetup_data
-    data = read_attribute(:meetup_data)
-    if data.present?
-      rsvp = JSON.parse(data)
-      rsvp["rsvp"]
-    else
-      {}
     end
   end
 
@@ -63,11 +49,6 @@ class Booking < ActiveRecord::Base
     return cost_override unless cost_override.nil?
     seats = guests.present? ? guests + 1 : 1
     course.cost.present? ? (course.cost * seats) : nil
-  end
-
-  def answers
-    return if meetup_data.empty? || (meetup_data["answers"][0] == "" && meetup_data["answers"].length == 1)
-    meetup_data["answers"]
   end
 
   def refundable?

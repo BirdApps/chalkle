@@ -38,10 +38,10 @@ class CoursesController < ApplicationController
 
   def edit
     @page_subtitle = 'Editing'
-    course = Course.find params[:id]
-    authorize course
+    @course = Course.find params[:id]
+    authorize @course
     @teaching = Teaching.new current_user
-    @teaching.course_to_teaching course
+    @teaching.course_to_teaching @course
   end
 
   def update

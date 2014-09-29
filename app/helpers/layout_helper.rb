@@ -4,6 +4,8 @@ module LayoutHelper
     return @page_title if @page_title.present?
     if @channel_teacher.present? && @channel_teacher.id.present?
       title = @channel_teacher.name
+    elsif @course.present? && @course.id.present?
+      title = link_to @course.name, @course.path
     elsif @channel.id.present?
       title = @channel.name
     elsif @category.id.present?
@@ -16,16 +18,14 @@ module LayoutHelper
     title || ''
   end
 
-  def title_size_class(title)
-    'limit-size' if title.length > 25
-  end
-
   def page_title_logo
     return @page_title_logo if @page_title_logo.present?
     if @channel_teacher.present? && @channel_teacher.id.present? 
       if @channel_teacher.avatar.present?
         @channel_teacher.avatar
       end
+    elsif @course.present? && @course.id.present?
+      @course.course_upload_image
     elsif @channel.logo.present?
       @channel.logo
     end
@@ -34,10 +34,14 @@ module LayoutHelper
   def page_subtitle
     return @page_subtitle if @page_subtitle.present?
     subtitle = ''
-    if @courses
-      if @channel_teacher.present? && @channel_teacher.id.present?
+    if @channel_teacher.present? && @channel_teacher.id.present?
         subtitle = link_to @channel_teacher.channel.name, channel_path(@channel_teacher.channel.url_name)
-      elsif @channel.id.present?
+    elsif @course.present? && @course.id.present?
+        subtitle = link_to @course.channel.name, channel_path(@course.channel.url_name)
+    elsif @teaching.present?
+      binding.pry
+    elsif @courses
+      if @channel.id.present?
         subtitle += @region.name+' '    if @region.id.present?
         subtitle += @category.name+' '  if @category.id.present?
         subtitle += ' classes from'
@@ -136,6 +140,23 @@ module LayoutHelper
         nav_links <<  {
           img_name: "settings",
           link: edit_channel_teacher_path(@channel_teacher.id),
+          active: action_parts.include?("edit"),
+          title: "Edit"
+        }
+      end
+    elsif @course.present? && @course.id.present?
+      if @course.spaces_left?
+        nav_links << {
+          img_name: "bolt",
+          link: new_course_booking_path(@course.id),
+          active: action_parts.include?("new"),
+          title: "Join"
+        }
+      end
+      if policy(@course).edit?
+        nav_links << {
+          img_name: "settings",
+          link: edit_course_path(@course.id),
           active: action_parts.include?("edit"),
           title: "Edit"
         }

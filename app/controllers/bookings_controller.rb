@@ -15,8 +15,6 @@ class BookingsController < ApplicationController
     end
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
-
-    @page_title = @course.name
     @page_subtitle = "Booking for"
     @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
   end
@@ -28,15 +26,16 @@ class BookingsController < ApplicationController
 
     # this should handle invalid @bookings before doing anything
     destroy_cancelled_booking
+    binding.pry
     if @booking.save
       # if @booking.payment_method == 'credit_card'
       @booking.update_attribute(:status, 'pending')
       wrapper = SwipeWrapper.new
       identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
                                                     amount: @booking.cost,
-                                                    return_url:course_booking_payment_callback(@booking.course_id, @booking.id),
+                                                    return_url:course_booking_payment_callback_url(@booking.course_id, @booking.id),
                                                     description: @booking.name)
-      redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
+      return redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
       # else
       #   flash[:notice] = 'Booking created!'
       #   redirect_to course_booking_path @booking.course, @booking
@@ -44,7 +43,7 @@ class BookingsController < ApplicationController
     else
       delete_any_unpaid_credit_card_booking
       @course = Course.find(params[:course_id]).decorate
-      render action: 'new'
+      return render action: 'new'
     end
   end
 
