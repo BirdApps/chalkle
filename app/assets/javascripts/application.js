@@ -30,3 +30,23 @@
 //= require_tree ./v2
 //= require_tree ./inputs
 
+$(function() {
+  function text_to_fit(){
+    if($('.text-to-fit').length > 0){
+      var text = $('.text-to-fit');
+      var limit = $('.text-to-fit').parent().width();
+      var fontSize = parseInt(text.css('font-size'));
+      do {
+          fontSize--;
+          text.css('font-size', fontSize.toString() + 'px');
+      } while (text.width() >= limit);
+       do {
+          fontSize++;
+          text.css('font-size', fontSize.toString() + 'px');
+      } while (text.width() <= limit-10);
+    }
+  }
+
+  text_to_fit();
+  window.addEventListener("resize", text_to_fit);
+});
