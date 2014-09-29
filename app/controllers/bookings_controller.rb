@@ -1,7 +1,7 @@
 class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!
   before_filter :redirect_on_paid, :only => [:edit, :update]
-  before_filter :class_finished, :only => [:edit, :update, :new]
+  before_filter :class_available, :only => [:edit, :update, :new]
 
   def index
     @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
@@ -9,13 +9,11 @@ class BookingsController < ApplicationController
   end
 
   def new
-    @course = Course.find(params[:course_id]).decorate
-    if current_chalkler.courses.where{ bookings.status.eq 'yes' }.exists? params[:course_id]
+    if current_chalkler.courses.where{ bookings.status.eq 'yes' }.exists? @course.id
       redirect_to @course.path
     end
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
-    return false if check_course_visibility
 
     @page_title = @course.name
     @page_subtitle = "Booking for"
@@ -29,7 +27,7 @@ class BookingsController < ApplicationController
 
     # this should handle invalid @bookings before doing anything
     destroy_cancelled_booking
-
+    binding.pry
     if @booking.save
       # if @booking.payment_method == 'credit_card'
       @booking.update_attribute(:status, 'pending')
@@ -106,7 +104,8 @@ class BookingsController < ApplicationController
   end
 
   private
-  def class_finished
+  def class_available
+    valid = true
     if params[:course_id].present?
       @course = Course.find(params[:course_id]).decorate
     elsif @booking.present? 
@@ -114,16 +113,16 @@ class BookingsController < ApplicationController
     else
       return
     end
-    if @course.start_at < DateTime.now
-      redirect_to @course.path, notice: "This class has already starting, and bookings cannot be created or altered"
-    end
-  end
-
-  def check_course_visibility
     unless @course.published?
       redirect_to root_url, notice: "This class is no longer available."
-      return false
     end
+    unless @course.start_at > DateTime.now
+      redirect_to @course.path, notice: "This class has already starting, and bookings cannot be created or altered"
+    end
+    unless @course.spaces_left?
+      redirect_to @course.path, notice: "The class is full"
+    end
+
   end
 
   def load_booking

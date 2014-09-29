@@ -40,10 +40,13 @@ $(function(){
       setMap();
     }
 
-    $("#booking_guests").change(function(){
-      console.log($(this).val());
-    })
-
+    // $("#booking_guests").change(function(){
+    //   var friend_invite = $($('.booking_bookings')[0]).clone();
+    //   $('#friend_pen').html('<br />');
+    //   for(var i = 0; i < $(this).val(); i++){
+    //     $('#friend_pen br').before(friend_invite);
+    //   }
+    // })
 
   }
 });

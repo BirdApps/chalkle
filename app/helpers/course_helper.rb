@@ -126,7 +126,11 @@ Your Chalkle Administrator")
   def course_availability(course)
     if course.limited_spaces?
       if course.spaces_left?
-        pluralize(course.spaces_left, 'spot') + ' left'
+        if course.spaces_left < 5
+          pluralize(course.spaces_left, 'spot') + ' left'
+        else
+          'Join'
+        end
       else
         'Fully booked'
       end

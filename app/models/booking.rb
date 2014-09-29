@@ -131,6 +131,8 @@ class Booking < ActiveRecord::Base
     if course && free?
       self.payment_method = 'free'
       self.paid = true
+    elsif course
+      self.payment_method = 'credit_card'
     end
   end
 end
