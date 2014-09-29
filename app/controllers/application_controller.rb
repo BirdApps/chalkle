@@ -96,7 +96,9 @@ class ApplicationController < ActionController::Base
     
     def region_name
       session[:region] = params[:region] unless params[:region].blank?
-      request_region = request.location.data["region_name"]
+      if request && request.location && request.location.data
+        request_region = request.location.data["region_name"]
+      end
       request_region = nil unless request_region != ""
       session[:region] || request_region
     end
