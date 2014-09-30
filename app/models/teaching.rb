@@ -135,7 +135,7 @@ class Teaching
     if check_valid_input(params)
       if course?
         #create single course with lots of lessons on it
-        course = Course.new course_args
+        course = Course.create course_args
         class_count.to_i.times do |i|
           lesson = Lesson.create lesson_args i
           course.lessons << lesson
