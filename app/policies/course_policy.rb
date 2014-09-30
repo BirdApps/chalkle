@@ -11,7 +11,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update?
-    @user.chalkler.channel_teachers.include? @course.teacher or @user.chalkler.channel_admins.where(channel_id: @course.channel_id).present? or @user.super?
+    @user.channel_teachers.include? @course.teacher or @user.channel_admins.where(channel_id: @course.channel_id).present? or @user.super?
   end
 
   def change_status?

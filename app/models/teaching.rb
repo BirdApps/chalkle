@@ -299,7 +299,7 @@ class Teaching
     if @channel.channel_teachers.count == 1
       teacher = @channel.channel_teachers[0]
     elsif teacher_id.nil?
-      teacher = ChannelTeacher.create chalkler: @current_user.chalkler, channel: @channel, name: @current_user.chalkler.name
+      teacher = ChannelTeacher.create chalkler: @current_user.chalkler, channel: @channel, name: @current_user.name
     else
       teacher = @channel.channel_teachers.find teacher_id
     end
@@ -313,7 +313,7 @@ class Teaching
         #create a personal channel and grant user all permissions
         channel = Channel.create({name: @current_user.name, regions: [ region ], email: @current_user.email, account: @new_channel_bank_number, tax_number: @new_channel_tax_number, visible: true, channel_plan: ChannelPlan.default}, as: :admin)
         channel_admin = ChannelAdmin.create channel: channel, chalkler: @current_user.chalkler
-        channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.chalkler.name, account: @new_channel_bank_number, tax_number: @new_channel_tax_number
+        channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.name, account: @new_channel_bank_number, tax_number: @new_channel_tax_number
       else
         if @channels.count == 1
           channel = @channels[0]
