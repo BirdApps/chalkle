@@ -19,7 +19,7 @@ class Channel < ActiveRecord::Base
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   #validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, message: "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
   validates_uniqueness_of :name, allow_blank: true
-  validates_uniqueness_of :url_name, allow_blank: true
+  validates_uniqueness_of :url_name, allow_blank: false
   validates :short_description, length: { maximum: 250 }
 
   has_many :channel_admins
@@ -147,11 +147,19 @@ class Channel < ActiveRecord::Base
     'New Zealand'
   end
 
+
+  after_save :check_url_name
   after_create :set_url_name
   def set_url_name
     url_name = name.parameterize
     self.url_name = Channel.find_by_url_name(url_name).nil? ? url_name : url_name+self.id.to_s
     save
+  end
+
+  def check_url_name
+    if self.url_name.nil?
+      set_url_name
+    end
   end
 
 end
