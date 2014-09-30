@@ -67,6 +67,10 @@ class TheUser
     chalkler.id.present? ? chalkler.channel_teachers : ChannelTeacher.none
   end
 
+   def channel_teachers
+    chalkler.channel_teachers if chalkler.id
+  end
+
   def channels
     return Channel.all if super?
     channels = []
