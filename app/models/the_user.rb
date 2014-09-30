@@ -60,11 +60,11 @@ class TheUser
   end
 
   def channel_admins
-    chalkler.id.present? ? chalkler.channel_admins
+    chalkler.channel_admins if chalkler.id
   end
 
    def channel_teachers
-    chalkler.id.present? ? chalkler.channel_teachers
+    chalkler.channel_teachers if chalkler.id
   end
 
   def channels
