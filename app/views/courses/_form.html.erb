@@ -191,7 +191,7 @@
         <%= f.input :street_number, as: :hidden %>
         <%= f.input :street_name, as: :hidden %>
         <%= f.input :city, as: :hidden %>
-        <%= f.input :region, as: :hidden, input_html: { value: f.object.region.name } %>
+        <%= f.input :region, as: :hidden, input_html: { value: (f.object.region.present? ? f.object.region.name : '') } %>
         <%= f.input :country, as: :hidden %>
         <%= f.input :postal_code, as: :hidden %>
         <%= f.input :longitude, as: :hidden %>

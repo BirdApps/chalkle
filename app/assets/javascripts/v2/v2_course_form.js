@@ -187,7 +187,9 @@ $(function(){
       }
 
       function change_date_picker(e){
+        if(e.date != undefined){
           instance_date = e.date;
+          console.log(instance_date);
           //update the minimum date of next datepicker to be this instance_date
           var next_date_picker = $(scope).next().find('.date-picker');
           if(next_date_picker.length){
@@ -206,6 +208,7 @@ $(function(){
             }
           }
           update_teaching_start_at();
+        }
       }
 
       /* initializes the datepicker and time picker */
@@ -216,23 +219,21 @@ $(function(){
         if(clear_calender != undefined){
           $(date_picker).empty();
         }
-        $(date_picker).datepicker({
-          startDate: new Date()
-        }).on('changeDate', change_date_picker);
 
-        //sets the initial date of the picker
         var saved_datepick = $(scope).find('#teaching_start_at').data('init-date');
         if(saved_datepick){
           saved_datepick = new Date(saved_datepick);
         }else{
           saved_datepick = new Date(+new Date + 12096e5);
         }
-        $(date_picker).datepicker('setDate', saved_datepick);
+        instance_date = saved_datepick;
+
+        $(date_picker).datepicker({
+          startDate: instance_date
+        }).on('changeDate', change_date_picker);
+
         highlight_date_in_picker(date_picker);
         
-        //sets the scoped variable to match the picker
-        instance_date = $(scope).find('.date-picker').datepicker('getDate');
-
         /*INIT TIME PICKER*/
         var time_picker = $(scope).find('.time-picker')[0];
         $(time_picker).timepicker({
@@ -250,6 +251,9 @@ $(function(){
       /* issue with plugin is when you set date it doesn't highlight - this is fix */
       function highlight_date_in_picker(date_picker){
         var date = $(date_picker).datepicker('getDate');
+        if(date == 'Invalid Date'){
+          date = instance_date
+        }
         if(date instanceof Date){
           highlight_text = date.getDate();
           var highlight_element = $(date_picker).find('td.day:contains('+highlight_text+')').filter(function(){
@@ -303,7 +307,9 @@ $(function(){
           }
           class_time_summary += " between "+start_time;
           class_time_summary += " and "+end_time;
-          $(teaching_time_summary).html(class_time_summary);
+          //if(class_time_summary.indexOf('Invalid Date') == -1){
+            $(teaching_time_summary).html(class_time_summary);
+          //}
         } else {
           $(teaching_time_summary).empty();
         }
