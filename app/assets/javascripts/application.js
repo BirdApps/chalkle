@@ -53,3 +53,12 @@ $(function() {
   text_to_fit();
   window.addEventListener("resize", text_to_fit);
 });
+
+$(function(){
+  $('.facebook-share').click(function(){
+    FB.ui({
+        method: 'share',
+        href: window.location.href,
+      }, function(response){});
+  });
+});

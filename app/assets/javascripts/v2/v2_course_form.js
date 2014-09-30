@@ -29,10 +29,17 @@ $(function(){
       set_attendee_summary();
       $('#teaching_repeating').change(set_repeating);
       $('form#new_teaching').courseCostCalculator({resource_name: 'teaching'});
-      part_change("#type");
+      if($('input[name=_method]').val() == "put"){
+        part_change( '#details' );
+      }else{
+        part_change("#type");
+      }
       apply_inline_validation();
       get_teacher_list();
       init_start_at();
+
+
+
       $('.new_course_form_wrapper').fadeIn();
     }
 

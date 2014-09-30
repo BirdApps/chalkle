@@ -5,10 +5,7 @@
     submit_url = courses_path
   end
 
-  if @teaching.editing?
-    @page_subtitle = "Editing"
-    @page_title = @teaching.title
-  else
+  if !@teaching.editing?
     @page_subtitle = "New"
     @page_title = "Class"
   end

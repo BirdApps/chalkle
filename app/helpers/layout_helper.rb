@@ -39,7 +39,7 @@ module LayoutHelper
     elsif @course.present? && @course.id.present?
         subtitle = link_to @course.channel.name, channel_path(@course.channel.url_name)
     elsif @teaching.present?
-      binding.pry
+      
     elsif @courses
       if @channel.id.present?
         subtitle += @region.name+' '    if @region.id.present?
