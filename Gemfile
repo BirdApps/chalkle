@@ -6,7 +6,7 @@ Encoding.default_internal = Encoding::UTF_8
 end
 
 gem 'rails', '3.2.19'
-gem 'pg', '~> 0.15.1'
+gem 'pg', '~> 0.17.1'
 gem 'unicorn-rails'
 
 # Authentication
