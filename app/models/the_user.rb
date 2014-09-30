@@ -52,19 +52,19 @@ class TheUser
   end
 
   def channels_adminable
-    chalkler.id.present? ? chalkler.channels_adminable : []
+    chalkler.id.present? ? chalkler.channels_adminable : Channel.none
   end
 
   def subscriptions
-    chalkler.present? ? chalkler.subscriptions : []
+    chalkler.present? ? chalkler.subscriptions : Subscription.none
   end
 
   def channel_admins
-    chalkler.id.present? ? chalkler.channel_admins
+    chalkler.id.present? ? chalkler.channel_admins : ChannelAdmin.none
   end
 
    def channel_teachers
-    chalkler.id.present? ? chalkler.channel_teachers
+    chalkler.id.present? ? chalkler.channel_teachers : ChannelTeacher.none
   end
 
   def channels
