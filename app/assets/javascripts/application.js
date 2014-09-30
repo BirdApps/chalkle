@@ -42,6 +42,9 @@ $(function() {
       } while (text.width() >= limit);
        do {
           fontSize++;
+          if(fontSize > 50){
+            break;
+          }
           text.css('font-size', fontSize.toString() + 'px');
       } while (text.width() <= limit-10);
     }

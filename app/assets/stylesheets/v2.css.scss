@@ -696,17 +696,23 @@ body.v2 {
         position: static;
       }
       margin: 50px auto;
-      .title{
-        @include text-shadow(1px, 1px, 0px, #FFF, 2px, 2px, 0px, rgba(0,0,0,0.17));
-        font-family: ProximaNova-Semibold;
-        font-size: 24px;
-        line-height: 29px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        text-decoration: none;
-        border: 0;
-        margin: 0 132px 0 0;
-        overflow: hidden;
+      .title-wrapper{
+        position:relative;
+        .title{
+          @include text-shadow(1px, 1px, 0px, #FFF, 2px, 2px, 0px, rgba(0,0,0,0.17));
+          font-family: ProximaNova-Semibold;
+          font-size: 24px;
+          line-height: 29px;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          text-decoration: none;
+          border: 0;
+          margin: 0;
+          overflow: hidden;
+          @media screen and (max-width: $col-sm) {
+            width: 100%;
+          }
+        }
       }
       .cost{
         float: right;
@@ -762,15 +768,12 @@ body.v2 {
         line-height: 20px;
       }
       .availability-wrapper{
-        position: absolute;
-        top: 3px;
-        right: 15px;
-        padding-left:10px;
         background-color: #fff;
-
+        float:right;
         @media screen and (max-width: $col-sm) {
-          right: 0;
-          top: -10px;
+          right: 8px;
+          top: -52px;
+          position: absolute;
           background-color: transparent;
         }
       }
