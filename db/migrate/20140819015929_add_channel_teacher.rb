@@ -18,7 +18,7 @@ class AddChannelTeacher < ActiveRecord::Migration
       next if channel_admin.admin_user.nil?
   
       #ensure a chalkler exists with the same email as the channel admin
-      chalkler = Chalkler.find_by_email channel_admin.admin_user.email
+      chalkler = Chalkler.where("LOWER(chalklers.email) = LOWER('#{channel_admin.admin_user.email}')" ).first
 
       if chalkler.nil?
         password = SecureRandom.hex(8)
