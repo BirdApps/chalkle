@@ -1,5 +1,5 @@
 <div class="navbar-wrapper">
-  <nav class="navbar navbar-fixed-top" role="navigation" style="background-image: url( <%= page_hero[:blurred] %> )">
+  <nav class="navbar navbar-fixed-top" role="navigation" style="background-image: url( <%= page_hero[:blurred] if page_hero.present? %> )">
     <div class="coloring">
       <div class="container">
         <div class="navbar-header">

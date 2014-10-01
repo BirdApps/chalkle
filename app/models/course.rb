@@ -178,6 +178,17 @@ class Course < ActiveRecord::Base
     start_at.strftime("%y%m%d")+self.id.to_s
   end
 
+  def publish!
+    self.visible = true
+    self.status = "Published"
+    self.save
+  end
+
+  def publish
+    self.visible = true
+    self.status = "Published"
+  end
+
   # kaminari
   paginates_per 10
 
