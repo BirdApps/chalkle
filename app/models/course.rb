@@ -125,6 +125,10 @@ class Course < ActiveRecord::Base
     venue_address
   end
 
+  def address_formatted
+    venue_address.gsub(',',',<br />').html_safe if venue_address.present?
+  end
+
   def course?
     true if lessons.count > 1
   end
@@ -160,6 +164,10 @@ class Course < ActiveRecord::Base
 
   def duration
     first_or_new_lesson.duration
+  end
+
+  def hours
+    self.duration/3600
   end
 
   def duration=(first_lesson_duration)

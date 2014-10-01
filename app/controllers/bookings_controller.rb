@@ -11,7 +11,7 @@ class BookingsController < ApplicationController
 
   def new
     if current_chalkler.courses.where{ bookings.status.eq 'yes' }.exists? @course.id
-      redirect_to @course.path
+      return redirect_to @course.path
     end
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
@@ -61,10 +61,10 @@ class BookingsController < ApplicationController
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
-      redirect_to = course_path(params[:course_id])
+      return redirect_to = course_path(params[:course_id])
     else
       flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
-      redirect_to new_course_booking_url(params[:channel_id], params[:course_id], params[:booking_id])
+      return redirect_to new_course_booking_url(params[:channel_id], params[:course_id], params[:booking_id])
     end
   end
 
@@ -72,14 +72,14 @@ class BookingsController < ApplicationController
   end
 
   def edit
-    redirect_edit_on_paid(@booking) if @booking.paid?
+    return redirect_edit_on_paid(@booking) if @booking.paid?
     @course = @booking.course.decorate
   end
 
   def update
     @booking.update_attributes params[:booking]
     if @booking.save
-      redirect_to booking_path @booking
+      return redirect_to booking_path @booking
     else
       @course = @booking.course.decorate
       render action: 'edit'
@@ -90,10 +90,10 @@ class BookingsController < ApplicationController
     @booking.status = 'no'
     if @booking.save
       flash[:notice] = "Your booking is cancelled. Please contact accounts@chalkle.com quote booking id #{@booking.id} if you require a refund."
-      redirect_to bookings_path
+      return redirect_to bookings_path
     else
       flash[:alert] = 'Your booking cannot be cancelled. Please contact your Channel Curator for further information'
-      redirect_to :back
+      return redirect_to :back
     end
   end
 
@@ -108,13 +108,13 @@ class BookingsController < ApplicationController
       return
     end
     unless @course.published?
-      redirect_to root_url, notice: "This class is no longer available."
+      return redirect_to root_url, notice: "This class is no longer available."
     end
     unless @course.start_at > DateTime.now
-      redirect_to @course.path, notice: "This class has already starting, and bookings cannot be created or altered"
+      return redirect_to @course.path, notice: "This class has already starting, and bookings cannot be created or altered"
     end
     unless @course.spaces_left?
-      redirect_to @course.path, notice: "The class is full"
+      return redirect_to @course.path, notice: "The class is full"
     end
 
   end
@@ -127,7 +127,7 @@ class BookingsController < ApplicationController
     booking = Booking.find(params[:id])
     if booking.paid?
       flash[:alert] = 'You cannot edit a paid booking'
-      redirect_to booking_path booking
+      return redirect_to booking_path booking
     end
   end
 

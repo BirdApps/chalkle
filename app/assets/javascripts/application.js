@@ -38,6 +38,9 @@ $(function() {
       var fontSize = parseInt(text.css('font-size'));
       do {
           fontSize--;
+          if(fontSize < 15){
+            break;
+          }
           text.css('font-size', fontSize.toString() + 'px');
       } while (text.width() >= limit);
        do {

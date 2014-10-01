@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, only: [:show]
+  before_filter :load_course, only: [:show, :tiny_url]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
@@ -17,7 +17,12 @@ class CoursesController < ApplicationController
   end
 
   def show
-    not_found if !@course
+    return not_found if !@course
+  end
+
+  def tiny_url
+    return not_found if !@course
+    return redirect_to @course.path
   end
 
   def new
