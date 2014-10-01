@@ -10,8 +10,10 @@ class BookingsController < ApplicationController
   end
 
   def new
-    if current_chalkler.courses.where{ bookings.status.eq 'yes' }.exists? @course.id
-      return redirect_to @course.path
+    unless policy(@course).edit?
+      if current_chalkler.courses.where{ bookings.status.eq 'yes' }.exists? @course.id
+        return redirect_to @course.path
+      end
     end
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
@@ -111,7 +113,7 @@ class BookingsController < ApplicationController
       return redirect_to root_url, notice: "This class is no longer available."
     end
     unless @course.start_at > DateTime.now
-      return redirect_to @course.path, notice: "This class has already starting, and bookings cannot be created or altered"
+      return redirect_to @course.path, notice: "This class has already started, and bookings cannot be created or altered"
     end
     unless @course.spaces_left?
       return redirect_to @course.path, notice: "The class is full"
