@@ -10,7 +10,7 @@
     </div>
     <div class="header_content_fg">
       <% if (title = page_title).present? %>
-        <div class="title-wrapper nowrap" <%= 'style=width:85%' if links.empty?  %>>
+        <div class="title-wrapper" <%= 'style=width:85%' if links.empty?  %>>
           <div class="page_title_logo img hidden-xs" style="background-image: url(<%= page_title_logo.present? ? page_title_logo : ''%>)">
           </div>
           <div class="title">

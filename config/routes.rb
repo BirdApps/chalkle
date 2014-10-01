@@ -39,6 +39,8 @@ Chalkle::Application.routes.draw do
     end
   end
 
+  get '/c/:id' => 'courses#tiny_url', as: :course_tiny
+
   namespace :me do
     root to: 'dashboard#index'
     get '/bookings' => 'dashboard#bookings', as: :bookings

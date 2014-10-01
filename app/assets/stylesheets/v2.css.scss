@@ -65,6 +65,9 @@ body.v2 {
     padding-bottom:75px;
     background-color: #fff;
   }
+  .pad-top{
+    padding-top:10px;
+  }
   .social-links{
     background: #F3F3F3;
     border-radius: 8px;
@@ -523,9 +526,6 @@ body.v2 {
         margin-top: 97px;
         border: 0;
       }
-      .pad-top{
-        padding-top:10px;
-      }
       .page_title_logo{
         float: left;
         width: 15%;
@@ -682,14 +682,68 @@ body.v2 {
       }
     .course-show{
       margin-top:20px;
-      .join-link{
-        padding: 20px 0;
-        a{
-          padding:35px;
-          border-radius: 6px;
-          color: #fff;
-          border: 0px;
+      .map-wrap{
+        position:relative;
+        .map-overlay{
+           @media screen and (min-width: $col-sm) {
+            background-image: url(/assets/grad-horo-white-trans.png);
+            background-repeat: horizontal;
+            background-size: 145% auto;
+            position:absolute;
+            top:0;
+            left:14px;
+            z-index:1;
+            height:250px;
+            padding:50px 0;
+          }
         }
+        #map-canvas{
+          height: 250px;
+        }
+      }
+      .right-col{
+        padding-left:20px;
+        float: right;
+        text-align: right;
+        .join-link{
+          padding: 20px 0;
+          a{
+            padding:26px;
+            border-radius: 6px;
+            color: #fff;
+            border: 0px;
+          }
+        }
+        .meta{
+          .reviews{
+            display: inline-block;
+            vertical-align: middle;
+          }
+          .cost{
+            display:inline-block;
+            vertical-align: middle;
+            line-height: 15px;
+            color: #fff;
+            padding: 8px 10px;
+            margin-left: 10px;
+            @include border-radius(2px);
+            background: #C7C7C7;
+          }
+        }
+      }
+      .teacher{
+        .img{
+          height:70px;
+          width: 70px;
+          float:left;
+          background-color: rgba(0, 0, 0, 0.05);
+          border: solid 1px rgba(0, 0, 0, 0.05);
+        }
+        div{
+          padding-top: 15px;
+          margin-right:10px;
+        }
+        line-height: 1.2em;
       }
     }
     ._channel{
