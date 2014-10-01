@@ -10,7 +10,7 @@ listen 8080
 #workers
 worker_processes 4
 
-timeout 30
+timeout 64
 
 
 preload_app true
