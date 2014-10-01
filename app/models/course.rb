@@ -490,7 +490,14 @@ class Course < ActiveRecord::Base
   before_create :set_url_name
   before_create :cache_costs
   before_save :check_url_name
+  before_save :check_start_at
   
+  def check_start_at
+    if first_lesson.present?
+      self.start_at = first_lesson.start_at
+    end
+  end
+
   def cache_costs
     self.cached_chalkle_fee = chalkle_fee
     self.cached_channel_fee = channel_fee
