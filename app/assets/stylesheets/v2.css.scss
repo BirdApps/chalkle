@@ -101,15 +101,16 @@ body.v2 {
   }
   .light{
     font-weight: 100;
-    font-family: ProximaNova-Light;
+    font-family: "proxima-nova",sans-serif;
     color: #888;
   }
   .inline{
     display: inline-block;
   }
   .strong{
-    font-family: ProximaNova-Semibold;
-  }
+    font-family: "proxima-nova",sans-serif;  
+    font-weight: 800;
+}
   .em{
     font-style: italic;
   }
@@ -123,7 +124,7 @@ body.v2 {
     border-top: 1px solid rgba(0,0,0,0.16);
     border-bottom: 1px solid rgba(0,0,0,0.16);
     text-align: center;
-    font-family: ProximaNova-Light;
+    font-family: "proxima-nova", sans-serif;
     font-weight: 100;
     display: block;
     padding:20px;
@@ -132,7 +133,7 @@ body.v2 {
     ul{
       -webkit-padding-start:0;
       font-weight: 100;
-      font-family: ProximaNova-Light;
+      font-family: "proxima-nova", sans-serif;
       li{
         list-style: none;
         display:inline;
@@ -145,7 +146,7 @@ body.v2 {
     ul{
       -webkit-padding-start:0;
       font-weight: 100;
-      font-family: ProximaNova-Light;
+      font-family: "proxima-nova", sans-serif;
       li{
         list-style: none;
         display:inline;
@@ -154,7 +155,7 @@ body.v2 {
   }
   .light{
     font-weight: 100;
-    font-family: ProximaNova-Light;
+    font-family: "proxima-nova",sans-serif;
   }
   .upper{
     text-transform: uppercase;
@@ -171,11 +172,12 @@ body.v2 {
     background:none;
     padding:0;
     margin:0;
-    font-family: ProximaNova-Light;
+    font-family: "proxima-nova", sans-serif;
+    font-weight: 100;
     text-align: center;
   }
   .table {
-    font-family: ProximaNova-Light;
+    font-family: "proxima-nova", sans-serif;
     font-weight:100;
     tr{
       td.left, th.left{
@@ -303,7 +305,7 @@ body.v2 {
     z-index: 20;
     #primary-naviation{
       font-weight: 100 !important;
-      font-family: ProximaNova-Light;
+      font-family: "proxima-nova",sans-serif;
     }
     .navbar{
       padding: 0;
@@ -368,28 +370,28 @@ body.v2 {
           margin: 10px auto;
           input::-webkit-input-placeholder {
             color: #dfdfdf;
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif;
             font-style: italic;
             font-weight: 100;
           }
           input::-moz-placeholder {
             color: #dfdfdf;
             opacity: 1;
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif;
             font-style: italic;
             font-weight: 100;
           }
           input:-moz-placeholder {   /* Older versions of Firefox */
             color: #dfdfdf;
             opacity: 1;
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif;
             font-style: italic;
             font-weight: 100;
           }
           input:-ms-input-placeholder { 
             color: #dfdfdf;
             opacity: 1;
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif; 
             font-style: italic;
             font-weight: 100;
           }
@@ -451,7 +453,7 @@ body.v2 {
           }
           .col-2 {
             font-weight: 100;
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif;
             line-height: 1em;
             font-style: italic;
             width: 75%;
@@ -473,7 +475,7 @@ body.v2 {
         }
         .dropdown-menu{
           @include border-radius(0);
-          font-family: ProximaNova-Light;
+          font-family: "proxima-nova",sans-serif; 
           left: -1px;
           background: #dfdfdf;
           text-shadow: none;
@@ -574,15 +576,17 @@ body.v2 {
             text-align: center;
           }
           em{
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif;
             color: #E8E8E8;
+            font-weight: 100;
             @media screen and (max-width: $col-md) {
               padding-top:4px;
             }
           }
           h1{
             margin: 0;
-            font-family: ProximaNova-Semibold;
+            font-family: "proxima-nova",sans-serif;
+            font-weight: 600;
             color: #EAEAEA;
             @include text-shadow(1px, 1px, 0px, #000);
           }
@@ -605,7 +609,8 @@ body.v2 {
           padding:0;
           margin:0;
           li{
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif;
+            font-weight: 100;
             float: left;
             list-style: none;
             text-align: center;
@@ -658,10 +663,11 @@ body.v2 {
     }
   }
   .container{
-    font-family: ProximaNova-Regular;
+    font-family: "proxima-nova",sans-serif;
+
     letter-spacing: 1.5px;
     h1,h2,h3,h4,h5,h6{
-      font-weight: normal;
+      font-weight: 500;
     }
     .messages{
       margin-top:20px;
@@ -767,7 +773,8 @@ body.v2 {
         position:relative;
         .title{
           @include text-shadow(1px, 1px, 0px, #FFF, 2px, 2px, 0px, rgba(0,0,0,0.17));
-          font-family: ProximaNova-Semibold;
+          font-family: "proxima-nova",sans-serif;
+          font-weight: 600;
           font-size: 24px;
           line-height: 29px;
           letter-spacing: 2px;
@@ -894,11 +901,13 @@ body.v2 {
     }
     .small{
       font-size: 80%;
-      font-family: ProximaNova-Light;
+      font-family: "proxima-nova",sans-serif;
+      font-weight: 100;
     }
     .smaller{
       font-size:60%;
-      font-family: ProximaNova-Light;
+      font-family: "proxima-nova",sans-serif;
+      font-weight: 100; 
     }
     .new_form_wrapper{
       .hero.image-preview{
@@ -954,7 +963,8 @@ body.v2 {
       }
       ol.breadcrumb{
         margin: 0 auto 10px auto;
-        font-family: ProximaNova-Light;
+        font-family: "proxima-nova",sans-serif;
+        font-weight: 100;
         background: transparent;
         padding: 0;
         overflow-y:hidden;
@@ -1030,7 +1040,8 @@ body.v2 {
           }
           .prev{
             text-align: right;
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif;
+            font-weight: 100;
             a{
               padding: 9px 0px;
             }
@@ -1054,7 +1065,8 @@ body.v2 {
           border: 0px;
           background: #F1F1F1;
           box-shadow: none;
-          font-family: ProximaNova-Light ;
+          font-family: "proxima-nova",sans-serif;
+          font-weight: 100;
           letter-spacing: 1px;
           -webkit-appearance:none;
         }
@@ -1104,7 +1116,7 @@ body.v2 {
           .teaching_times_summary{
             color: #4E4E4E;
             letter-spacing: 1.2px;
-            font-family: ProximaNova-Light;
+            font-family: "proxima-nova",sans-serif;
             font-weight:100;
             line-height: 31px;
           }
@@ -1127,7 +1139,8 @@ body.v2 {
               text-align: center;
               margin-left:10px;
               background: transparent;
-              font-family: ProximaNova-Light;
+              font-family: "proxima-nova",sans-serif;
+              font-weight: 100;
             }
           }
           .fee-summary{
@@ -1152,7 +1165,8 @@ body.v2 {
     }
     .people{
       .headings{
-        font-family: ProximaNova-Light;
+        font-family: "proxima-nova",sans-serif;
+        font-weight: 100;
         margin-top:20px;
       }
       .teacher{
