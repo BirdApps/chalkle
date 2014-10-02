@@ -2,10 +2,10 @@
   current_hero = page_hero
   links = page_context_links
 %>
-<div class="header" style="background-image: url( <%= current_hero[:default] %> )">
+<div class="header" style="background-image: url( <%= current_hero[:default] if current_hero.present? %> )">
   <div class="container header_content">
     <div class="header_content_bg_wrapper">
-      <div class="header_content_bg" style="background-image: url( <%= current_hero[:blurred] %> )">
+      <div class="header_content_bg" style="background-image: url( <%= current_hero[:blurred] if current_hero.present? %> )">
       </div>
     </div>
     <div class="header_content_fg">
