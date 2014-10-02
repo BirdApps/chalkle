@@ -51,6 +51,10 @@ class Booking < ActiveRecord::Base
     course.cost.present? ? (course.cost * seats) : nil
   end
 
+  def cost_formatted
+    sprintf('%.2f', cost)
+  end
+
   def refundable?
     course_start_at > (Time.now + 3.days)
   end

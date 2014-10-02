@@ -16,7 +16,6 @@ class ChannelTeacher < ActiveRecord::Base
   validates_presence_of :email, message: 'Email cannot be blank'
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
 
-
   def email
     unless chalkler.nil?
       chalkler.email
@@ -32,5 +31,11 @@ class ChannelTeacher < ActiveRecord::Base
 
   def next_class
     courses.in_future.displayable.order(:start_at).first
+  end
+
+  before_save :check_name
+
+  def check_name
+    self.name = chalkler.name if self.name.blank?
   end
 end

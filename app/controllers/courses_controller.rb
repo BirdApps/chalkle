@@ -1,12 +1,12 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, only: [:show, :tiny_url]
+  before_filter :load_course, only: [:show, :tiny_url, :update, :edit]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   before_filter :check_clear_filters, only: [:index]
 
   def index
-    @courses = Course.displayable.in_fortnight(Week.containing(current_date)).by_date
+    @courses = Course.displayable.start_at_between(current_date, current_date+14.days).by_date
     filter_courses
     count = 0
     while @courses.blank? do
@@ -43,14 +43,13 @@ class CoursesController < ApplicationController
 
   def edit
     @page_subtitle = 'Editing'
-    @course = Course.find params[:id]
     authorize @course
     @teaching = Teaching.new current_user
     @teaching.course_to_teaching @course
   end
 
   def update
-    course = Course.find params[:id]
+    authorize @course
     @teaching = Teaching.new current_user
     if params[:teaching_agreeterms] == 'on'
       success = @teaching.update course, params[:teaching]
@@ -72,6 +71,10 @@ class CoursesController < ApplicationController
     course.status = params[:course][:status]
     course.save
     redirect_to course_url course.id
+  end
+
+  def bookings
+
   end
 
   def calculate_cost
@@ -106,7 +109,7 @@ class CoursesController < ApplicationController
 
     def load_course
       @course = Course.find(params[:id]).decorate
-    end     
+    end  
 
     def load_geography_override
       load_country

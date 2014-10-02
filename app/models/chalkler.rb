@@ -19,7 +19,7 @@ class Chalkler < ActiveRecord::Base
 
   attr_accessor :join_channels, :set_password_token
 
-  validates_presence_of :name
+  validates_presence_of :name, :visible
   validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }
   validates_uniqueness_of :email, { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
@@ -56,6 +56,11 @@ class Chalkler < ActiveRecord::Base
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_reset_password_token
+  before_create :set_visible
+
+  def set_visible
+    self.visible = true
+  end
 
   class << self
     #TODO: Move into a presenter class like Draper sometime
