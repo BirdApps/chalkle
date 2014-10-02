@@ -10,6 +10,7 @@ class CoursesController < ApplicationController
     filter_courses
     count = 0
     while @courses.blank? do
+      break if count > 52
       count+=1
       @courses = Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
       filter_courses
