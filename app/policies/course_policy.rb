@@ -11,6 +11,11 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update?
+    #cannot update if there are bookings unless you are an admin
+    ((@user.channel_teachers.where(id: @course.teacher_id).present? or @user.channel_admins.where(channel_id: @course.channel_id).present?) and @course.bookings.empty? ) or @user.super?
+  end
+
+  def admin?
     @user.channel_teachers.where(id: @course.teacher_id).present? or @user.channel_admins.where(channel_id: @course.channel_id).present? or @user.super?
   end
 

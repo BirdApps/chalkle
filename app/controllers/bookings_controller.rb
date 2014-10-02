@@ -5,6 +5,12 @@ class BookingsController < ApplicationController
   before_filter :load_booking, :only => [:payment_callback, :show, :edit, :update, :cancel]
 
   def index
+    @course = Course.find params[:course_id]
+    raise "not authorized" unless CoursePolicy.new(current_user, @course).admin?
+    @bookings = @course.bookings if @course.present?
+  end
+
+  def my_bookings
     @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
     @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming.decorate
   end
@@ -28,20 +34,18 @@ class BookingsController < ApplicationController
 
     # this should handle invalid @bookings before doing anything
     destroy_cancelled_booking
-    binding.pry
     if @booking.save
-      # if @booking.payment_method == 'credit_card'
-      @booking.update_attribute(:status, 'pending')
-      wrapper = SwipeWrapper.new
-      identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
-                                                    amount: @booking.cost,
-                                                    return_url:course_booking_payment_callback_url(@booking.course_id, @booking.id),
-                                                    description: @booking.name)
-      return redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
-      # else
-      #   flash[:notice] = 'Booking created!'
-      #   redirect_to course_booking_path @booking.course, @booking
-      # end
+      if @booking.free?
+         redirect_to course_booking_path @booking.course, @booking
+      else
+        @booking.update_attribute(:status, 'pending')
+        wrapper = SwipeWrapper.new
+        identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
+                                                      amount: @booking.cost,
+                                                      return_url:course_booking_payment_callback_url(@booking.course_id, @booking.id),
+                                                      description: @booking.name)
+        return redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
+      end
     else
       delete_any_unpaid_credit_card_booking
       @course = Course.find(params[:course_id]).decorate
@@ -71,6 +75,7 @@ class BookingsController < ApplicationController
   end
 
   def show
+    return redirect_to @booking.course.path
   end
 
   def edit
@@ -99,7 +104,6 @@ class BookingsController < ApplicationController
     end
   end
 
-  private
   def class_available
     valid = true
     if params[:course_id].present?
