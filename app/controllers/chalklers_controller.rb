@@ -4,7 +4,11 @@ class ChalklersController < ApplicationController
   end
 
   def show
-    @chalkler = Chalkler.visible.find params[:id]
+    @chalkler = Chalkler.find params[:id]
+    authorize @chalkler
+    @page_subtitle = '<a href="/people">Chalklers</a>'.html_safe
+    @page_title = @chalkler.name
+    @page_title_logo = @chalkler.avatar
   end
 
   def exists
