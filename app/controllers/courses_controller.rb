@@ -52,10 +52,10 @@ class CoursesController < ApplicationController
     authorize @course
     @teaching = Teaching.new current_user
     if params[:teaching_agreeterms] == 'on'
-      success = @teaching.update course, params[:teaching]
+      success = @teaching.update @course, params[:teaching]
     end
     if success
-      redirect_to course_url course.id
+      redirect_to course_path @course.id
     else
       render 'new'
     end
