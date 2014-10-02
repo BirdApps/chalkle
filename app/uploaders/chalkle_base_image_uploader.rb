@@ -14,9 +14,17 @@ protected
   def blur(radius=16)
     manipulate! do |img|
       img.blur "0x#{radius}"
-      img.modulate "92,125,100"
+     # img.modulate "92,125,100"
       img = yield(img) if block_given?
       img
+    end
+  end
+
+  def average_color
+    @averagecolor ||= manipulate! do |img|
+      img.scale "1x1\!"
+      /^srgb\((\d+)\,(\d+)\,(\d+)\)$/ =~ img["%[pixel:s]"]
+      return "##{ $1.to_i.to_s(16) }#{ $2.to_i.to_s(16) }#{ $3.to_i.to_s(16) }"
     end
   end
 

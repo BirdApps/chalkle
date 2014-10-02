@@ -40,6 +40,7 @@ gem 'kaminari'
 gem 'httparty'
 gem 'inherited_resources'
 gem 'foreigner'
+gem 'color'
 
 #apis
 gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'

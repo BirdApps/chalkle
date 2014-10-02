@@ -31,4 +31,13 @@ module ApplicationHelper
     render 'layouts/typekit_includes'
   end
 
+  def header_color
+    if @channel && @channel.header_color || @course && @course.channel.header_color
+      (@channel || @course.channel).header_color
+    else
+      nil
+    end
+  end
+
+
 end

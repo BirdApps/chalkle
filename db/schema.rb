@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140930021025) do
+ActiveRecord::Schema.define(:version => 20141001233437) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(:version => 20140930021025) do
     t.decimal  "plan_processing_fee_percent"
     t.integer  "plan_max_teachers"
     t.string   "tax_number"
+    t.string   "average_hero_color"
   end
 
   create_table "cities", :force => true do |t|
