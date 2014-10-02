@@ -1,0 +1,56 @@
+<% if policy(@course).admin?  %>
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+        <% if @course.status == 'Published' && policy(@course).change_status? %>
+          <div class="alert alert-warning clearfix" role="alert"> 
+            <span class="pad-top inline">   
+              <strong><%= @course.status+'!' %></strong> 
+              <% if @course.bookings.empty?  %>
+                You can still unpublish while there are no bookings
+              <% else %>
+                Beware there are <%= @course.bookings.count %> bookings already
+              <% end %>
+            </span>
+            <button class="btn btn-default pull-right" onclick="document.getElementById('publish_course').submit()">Unpublish</button>           
+            <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
+              <input name="_method" type="hidden" value="put" />
+               <%= f.input :status, as: :hidden, input_html: { value: 'Unreviewed' } %>
+            <% end %>
+          </div>
+        <% elsif @course.status == 'Published' && !policy(@course).change_status? %>
+
+          <div class="alert alert-success clearfix" role="alert"> 
+            <span class="inline">   
+              <strong>Great job!</strong>  There are <%= @course.bookings.count %> attendees booked in
+            </span>
+          </div>
+        
+        <% elsif @course.status == 'Unreviewed' && policy(@course).change_status?  %>
+        
+          <div class="alert alert-danger clearfix" role="alert"> 
+            <span class="pad-top inline">   
+              <strong><%= @course.status+'!' %></strong> Would you like to publish? 
+            </span>
+            <button class="btn btn-default pull-right" onclick="document.getElementById('publish_course').submit()">Publish</button>           
+            <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
+              <input name="_method" type="hidden" value="put" />
+               <%= f.input :status, as: :hidden, input_html: { value: 'Published' } %>
+            <% end %>
+        
+          </div>
+        <% end %>
+      </div>
+    </div>
+      <% if @course.bookings? %>
+        <div class="row">
+          <div class="text-right col-xs-12 col-sm-10 col-sm-offset-1">
+            This <%= @course.type %> has <strong><%= @course.bookings.count %></strong> bookings
+            <br />
+            <strong>
+              <%= link_to 'more details', course_bookings_path(@course.id)  %>
+            </strong>
+            <hr />
+          </div>
+        </div>
+      <% end %>
+  <% end %>

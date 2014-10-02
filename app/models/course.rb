@@ -117,8 +117,16 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def classes
+    lessons.order(:start_at)
+  end
+
   def repeating_class?
     true if repeat_course.present?
+  end
+
+  def bookings?
+    bookings.present?
   end
 
   def address
@@ -131,6 +139,10 @@ class Course < ActiveRecord::Base
 
   def course?
     true if lessons.count > 1
+  end
+
+  def class?
+    !course?
   end
 
   def single_class?
@@ -270,6 +282,14 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def type
+    if course_class_type.present?
+      course_class_type
+    else
+      course? ? 'course' : 'class'
+    end
+  end
+
   def channel_min_income
     if min_attendee.present?
       channel_fee * min_attendee - fixed_costs
@@ -374,6 +394,12 @@ class Course < ActiveRecord::Base
 
   def class_may_cancel
     class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
+  end
+
+  def attendees_include?(chalkler)
+    if bookings.present?
+      chalkler.bookings & bookings
+    end
   end
 
   def flag_warning

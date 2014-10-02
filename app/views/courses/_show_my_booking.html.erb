@@ -1,0 +1,39 @@
+<% if (booking = @course.attendees_include?(current_chalkler)).present?  %>
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-8"> 
+      <% booking.each do |booking|%>
+        <div class="fancy-header">
+          <h3>Your Booking</h3>
+          <hr />
+        </div>  
+        <div class="col-xs-12 x1-25 center light">
+          <div class="strong"> <%= booking.chalkler.name %> </div>
+          <div class="col-xs-12 center light">
+            <span class="grey inline vmid">
+              Booking cost:
+            </span>
+            <span class="x1-25 inline vmid">
+              $<%= booking.cost_formatted %>
+            </span> 
+          </div>
+          <% if @course.class? %>
+            <%= quick_date_time @course.start_at %>
+          <% else %>
+          <% count = 0 %>
+            <% @course.classes.each do |lesson| %>
+              <span class="strong">
+                Class <%= count+=1 %> -
+              </span>
+              <%= quick_date_time lesson.start_at %><br />
+            <% end %>
+          <% end %>
+        </div> 
+      <% end %>
+      <div class="clearfix">
+        <hr class="dark" />
+      </div>
+    </div>
+    <div class="col-sm-2">
+    </div>
+  <% end %>

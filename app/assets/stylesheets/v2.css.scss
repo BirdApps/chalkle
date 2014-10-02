@@ -68,6 +68,9 @@ body.v2 {
   .pad-top{
     padding-top:10px;
   }
+  .pad-top-5{
+    padding-top:5px;
+  }
   .social-links{
     background: #F3F3F3;
     border-radius: 8px;
@@ -109,8 +112,8 @@ body.v2 {
   }
   .strong{
     font-family: "proxima-nova",sans-serif;  
-    font-weight: 800;
-}
+    font-weight: 500;
+  }
   .em{
     font-style: italic;
   }
@@ -119,6 +122,12 @@ body.v2 {
   }
   .x1-25{
     font-size: 1.25em;
+  }
+  .vmid{
+    vertical-align: middle;
+  }
+   hr.dark{
+    border-color: #BDBDBD;
   }
   .vertical-borders{
     border-top: 1px solid rgba(0,0,0,0.16);

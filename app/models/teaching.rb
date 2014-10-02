@@ -25,10 +25,14 @@ class Teaching
   def course_to_teaching(args)
     #TODO: can only edit each course seperately at this point
     @repeating = 'once-off'
-    if(args.course?)
-      @course_class_type = 'course'
-    else
-      @course_class_type = 'class'
+    
+    @course_class_type = args.course_class_type
+    if @course_class_type.nil?
+      if args.course?
+        @course_class_type = 'course'
+      else
+        @course_class_type = 'class'
+      end
     end
 
     @class_count = args.lessons.count
@@ -99,7 +103,8 @@ class Teaching
       venue_address: @venue_address,
       course_upload_image: @course_upload_image,
       start_at: @start_at[0],
-      teacher_pay_type: @teacher_pay_type
+      teacher_pay_type: @teacher_pay_type,
+      course_class_type: @course_class_type
     }
   end
 
@@ -311,7 +316,7 @@ class Teaching
       #no channel
       if @channels.empty?
         #create a personal channel and grant user all permissions
-        channel = Channel.create({name: @current_user.name, regions: [ region ], email: @current_user.email, account: @new_channel_bank_number, tax_number: @new_channel_tax_number, visible: true, channel_plan: ChannelPlan.default}, as: :admin)
+        channel = Channel.create({name: @current_user.name+" Classes", regions: [ region ], email: @current_user.email, account: @new_channel_bank_number, tax_number: @new_channel_tax_number, visible: true, channel_plan: ChannelPlan.default}, as: :admin)
         channel_admin = ChannelAdmin.create channel: channel, chalkler: @current_user.chalkler
         channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.name, account: @new_channel_bank_number, tax_number: @new_channel_tax_number
       else
