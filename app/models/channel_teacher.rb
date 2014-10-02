@@ -24,6 +24,10 @@ class ChannelTeacher < ActiveRecord::Base
     end
   end
 
+  def students
+    courses.collect{ |course| course.chalklers }.flatten
+  end
+
   def email=(email)
     self.chalkler = Chalkler.find_by_email email
     self.pseudo_chalkler_email = email unless chalkler.present?
