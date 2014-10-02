@@ -50,6 +50,16 @@ $(function() {
           }
           text.css('font-size', fontSize.toString() + 'px');
       } while (text.width() <= limit-10);
+
+
+      var vert_limit = $('.text-to-fit').parent().height();
+      do {
+          fontSize--;
+          if(fontSize < 15){
+            break;
+          }
+          text.css('font-size', fontSize.toString() + 'px');
+      } while ($('.text-to-fit').parent().height() > 108);
     }
   }
 
