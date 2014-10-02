@@ -6,7 +6,11 @@ $(function(){
     var repeat_count  = "";
     var weekdays = ["Sun","Mon", "Tues", "Wed", "Thurs","Fri","Sat"];
     var parts = ['#type','#details','#learning','#teaching','#summary','#submit'];
-    var validate_off = true;
+    var validate_off = false;
+
+    if(validate_off){
+      alert("Warning: Validation is off");
+    }
 
     /* initilizes on page load */
     function init(){
