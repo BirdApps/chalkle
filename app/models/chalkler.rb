@@ -19,7 +19,7 @@ class Chalkler < ActiveRecord::Base
 
   attr_accessor :join_channels, :set_password_token
 
-  validates_presence_of :name, :visible
+  validates_presence_of :name
   validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }
   validates_uniqueness_of :email, { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
@@ -57,9 +57,18 @@ class Chalkler < ActiveRecord::Base
 
   before_create :set_reset_password_token
   before_create :set_visible
+  before_save :check_visible
 
   def set_visible
     self.visible = true
+  end
+
+  def check_visible
+    set_visible if visible.nil?
+  end
+
+  def courses_teaching
+    channel_teachers.collect{ |channel_teacher| channel_teacher.courses }.flatten
   end
 
   class << self
