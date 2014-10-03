@@ -1,4 +1,4 @@
-<% if (booking = @course.attendees_include?(current_chalkler)).present?  %>
+<% if booking = @course.booking_for current_chalkler  %>
     <div class="col-sm-2">
     </div>
     <div class="col-sm-8"> 

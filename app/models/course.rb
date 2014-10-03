@@ -396,9 +396,11 @@ class Course < ActiveRecord::Base
     class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
   end
 
-  def attendees_include?(chalkler)
-    if bookings.present?
+  def booking_for(chalkler)
+    if bookings.any?
       chalkler.bookings & bookings
+    else
+      nil
     end
   end
 
