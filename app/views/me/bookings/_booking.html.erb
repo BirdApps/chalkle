@@ -2,7 +2,7 @@
 <div class="col-xs-12">
   <div class="_booking clearfix">
     <a href="<%= booking.course.path %>">
-      <%= image_tag(booking.course.course_upload_image, class: 'avatar avatar64 img', alt: '') %>
+      <%= image_tag(booking.course.course_upload_image, class: 'avatar avatar64 img', alt: '') if booking.course.course_upload_image %>
       <%= booking.course.name %>
     </a>
   </div>
