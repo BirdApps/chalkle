@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141002023017) do
+ActiveRecord::Schema.define(:version => 20141003025310) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -54,14 +54,24 @@ ActiveRecord::Schema.define(:version => 20141002023017) do
     t.integer  "chalkler_id"
     t.string   "status",                                              :default => "yes"
     t.integer  "guests",                                              :default => 0
-    t.boolean  "paid",                                                :default => false
     t.text     "meetup_data"
     t.datetime "created_at",                                                             :null => false
     t.datetime "updated_at",                                                             :null => false
     t.boolean  "visible",                                             :default => true
-    t.decimal  "cost_override",         :precision => 8, :scale => 2
+    t.decimal  "paid",                  :precision => 8, :scale => 2
     t.string   "payment_method"
     t.datetime "reminder_last_sent_at"
+    t.decimal  "chalkle_fee"
+    t.decimal  "chalkle_gst"
+    t.string   "chalkle_gst_number"
+    t.decimal  "teacher_fee"
+    t.decimal  "teacher_gst"
+    t.string   "teacher_gst_number"
+    t.decimal  "provider_fee"
+    t.decimal  "provider_gst"
+    t.string   "provider_gst_number"
+    t.decimal  "processing_fee"
+    t.decimal  "processing_gst"
   end
 
   create_table "categories", :force => true do |t|
