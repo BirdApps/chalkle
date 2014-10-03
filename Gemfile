@@ -47,6 +47,7 @@ gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'
 gem 'xeroizer'
 gem 'sendgrid'
 gem "geocoder"
+gem 'newrelic_rpm'
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'

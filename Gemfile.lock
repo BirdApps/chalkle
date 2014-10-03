@@ -357,6 +357,7 @@ GEM
     net-ssh (2.9.1)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    newrelic_rpm (3.9.5.251)
     nifty-generators (0.4.6)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
@@ -724,6 +725,7 @@ DEPENDENCIES
   mini_magick
   mocha (>= 0.14.0)
   monthify
+  newrelic_rpm
   nifty-generators (~> 0.4.6)
   omni_avatar!
   omniauth (~> 1.1.4)
