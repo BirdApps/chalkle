@@ -144,6 +144,7 @@ module LayoutHelper
           title: "Edit"
         }
       end
+    elsif @booking.present?
     elsif @course.present? && @course.id.present?
       if @course.spaces_left?
         nav_links << {
