@@ -56,16 +56,6 @@ class Chalkler < ActiveRecord::Base
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_reset_password_token
-  before_create :set_visible
-  before_save :check_visible
-
-  def set_visible
-    self.visible = true
-  end
-
-  def check_visible
-    set_visible if visible.nil?
-  end
 
   def courses_teaching
     channel_teachers.collect{ |channel_teacher| channel_teacher.courses }.flatten

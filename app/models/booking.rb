@@ -1,7 +1,7 @@
 class Booking < ActiveRecord::Base
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [:course_id, :guests, :payment_method, :terms_and_conditions, :booking ]
-  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :as => :admin
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee, :provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   attr_accessor :terms_and_conditions
   attr_accessor :enforce_terms_and_conditions
@@ -42,6 +42,34 @@ class Booking < ActiveRecord::Base
         "#{course.name} - #{chalkler.name}"
     else
       id
+    end
+  end
+
+  def processing_gst_number
+    chalkle_gst_number
+  end
+
+  def waive_chalkle_fee
+    true
+  end
+
+  def apply_fees
+    chalkle_gst_number = processing_gst_number =  Finance::CHALKLE_GST_NUMBER
+    chalkle_fee = course.chalkle_fee false
+    chalkle_gst = course.chalkle_fee(true) - chalkle_fee
+    
+    if course.teacher_pay_type == Course.teacher_pay_types[1]
+      teacher_fee = course.teacher_cost
+      if course.teacher.tax_number
+        teacher_gst = teacher_fee*3/23
+        teacher_gst_number = course.teacher.tax_number
+      end
+    end
+
+    provider_fee = course.channel_fee
+    if channel.tax_number
+      provider_gst_number = channel.tax_number
+      provider_gst = course.channel_fee*3/23
     end
   end
 

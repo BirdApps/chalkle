@@ -64,8 +64,13 @@ class Channel < ActiveRecord::Base
   end
 
   def remaining_free_class_attendees
-    #TODO work out the remaining
-    2
+    plan.max_free_class_attendees - used_free_class_attendees
+  end
+
+  def used_free_class_attendees
+    0
+    #TO IMPLEMENT AFTER WE HAVE SOLUTION ON WHAT TO DO WHEN THEY RUN OUT OF FEE WAIVERS
+    #free_attendees_used = courses.in_month(Date.today.at_beginning_of_month..Date.today.at_end_of_month).collect{|course| course.bookings}.flatten.where(chalkle_fee: nil).count
   end
 
   #Channel performances

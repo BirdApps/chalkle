@@ -60,6 +60,8 @@ class Course < ActiveRecord::Base
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Class price must be positive" }
   validates :lessons, :length => { minimum: 1 }, if: :published?
   validate :image_size
+  validate :check_start_at
+  validate :check_url_name
 
 
   scope :hidden, where(visible: false)
@@ -95,9 +97,9 @@ class Course < ActiveRecord::Base
   scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
 
-  # CRAIG: This is a bit of a hack. Replace this system with a state machine.
+  before_create :set_url_name
+  before_create :cache_costs
   before_save :update_published_at
-
   before_save :save_first_lesson
 
   def self.upcoming(limit = nil)
@@ -179,7 +181,7 @@ class Course < ActiveRecord::Base
   end
 
   def hours
-    self.duration/3600
+    (self.duration || 0)/3600 
   end
 
   def duration=(first_lesson_duration)
@@ -514,11 +516,6 @@ class Course < ActiveRecord::Base
   def update_published_at
     self.published_at ||= Time.now
   end
-
-  before_create :set_url_name
-  before_create :cache_costs
-  before_save :check_url_name
-  before_save :check_start_at
   
   def check_start_at
     if first_lesson.present?

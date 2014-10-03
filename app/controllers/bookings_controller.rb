@@ -32,6 +32,8 @@ class BookingsController < ApplicationController
     @booking.chalkler = current_chalkler
     @booking.enforce_terms_and_conditions = true
 
+    @booking.apply_fees
+
     # this should handle invalid @bookings before doing anything
     destroy_cancelled_booking
     if @booking.save

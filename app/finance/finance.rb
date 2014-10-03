@@ -1,4 +1,6 @@
 module Finance
+  CHALKLE_GST_NUMBER = "109-389-226"
+
   def self.sales_tax_for(country_code)
     case country_code
       when :nz
