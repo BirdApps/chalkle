@@ -56,20 +56,20 @@ module LayoutHelper
   end
 
   def meta_title
-    return @meta_title if @meta_title.present?
+    return @meta_title if @meta_title
     meta_title = ''
     if params[:action] == 'index' && params[:controller] == 'courses'
       meta_title = page_subtitle+' '+page_title
-    elsif @channel.id.present? && params[:controller] == 'channels'
+    elsif !@channel.new_record? && params[:controller] == 'channels'
       meta_title = @channel.name
     elsif params[:action] == 'new'
       meta_title = 'New '+ page_title
-    elsif @course && @course.id.present?
+    elsif @course && !@course.new_record?
       meta_title = @course.name
-    elsif @teaching && @teaching.editing_id.present?
+    elsif @teaching && @teaching.editing_id
       meta_title = @teaching.title
     end
-    meta_title += ' |' if meta_title.present?
+    meta_title += ' |' if meta_title
     meta_title.downcase.gsub('course', 'class')
   end
 
