@@ -3,9 +3,6 @@ require 'chalkle_base_image_uploader'
 
 class CourseUploadImageUploader < ChalkleBaseImageUploader
 
-  after :store, :cache_average_color
-
-
   version :mini do
     process :resize_to_fill => [65, 65]
   end
