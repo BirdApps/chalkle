@@ -1,25 +1,25 @@
-#partners-page{
+#partners-page {
   /*  PARTNERS   */
-  .partners-index #header {
+  &.partners-index #header {
     background-image: image-url('partners/index-hero.jpg');
   }
-  .partners-index #footer {
+  &.partners-index #footer {
     background-image: image-url('partners/index-bottom.jpg');
   }
 
   /*  TEAM PAGE  */
-  .partners-team #header {
+  &.partners-team #header {
     background-image: image-url('partners/team-hero.jpg');
   }
-  .partners-team #footer {
+  &.partners-team #footer {
     background-image: image-url('partners/team-bottom.jpg');
   }
 
   /*  SAY HI PAGE  */
-  .partners-say_hello #header, .partners-said_hello #header  {
+  &.partners-say_hello #header, .partners-said_hello #header  {
     background-image: image-url('partners/say-hello-hero.jpg');
   }
-  .partners-say_hello #footer, .partners-said_hello #footer {
+  &.partners-say_hello #footer, .partners-said_hello #footer {
     background-image: image-url('partners/say-hello-bottom.jpg');
   }
 
