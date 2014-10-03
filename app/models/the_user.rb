@@ -63,8 +63,12 @@ class TheUser
     chalkler.id.present? ? chalkler.channel_admins : ChannelAdmin.none
   end
 
-   def channel_teachers
+  def channel_teachers
     chalkler.id.present? ? chalkler.channel_teachers : ChannelTeacher.none
+  end
+
+  def courses_teaching
+    chalkler.id.present? ? chalkler.courses_teaching : Course.none
   end
 
   def channels
