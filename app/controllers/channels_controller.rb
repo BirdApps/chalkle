@@ -10,6 +10,12 @@ class ChannelsController < ApplicationController
   def show
     not_found if @channel.id.blank?
     @courses = @channel.courses.displayable.in_week(Week.containing(current_date)).by_date
+    count = 0
+    while @courses.blank? do
+      break if count > 52
+      count+=1
+      @courses = @channel.courses.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
+    end
   end
 
   def series 
