@@ -58,6 +58,9 @@ class Booking < ActiveRecord::Base
     chalkle_fee = course.chalkle_fee false
     chalkle_gst = course.chalkle_fee(true) - chalkle_fee
     
+    processing_fee = course.processing_fee
+    processing_gst = course.processing_fee*3/23
+
     if course.teacher_pay_type == Course.teacher_pay_types[1]
       teacher_fee = course.teacher_cost
       if course.teacher.tax_number
@@ -71,12 +74,15 @@ class Booking < ActiveRecord::Base
       provider_gst_number = channel.tax_number
       provider_gst = course.channel_fee*3/23
     end
+
+
   end
 
   def cost
-    return cost_override unless cost_override.nil?
-    seats = guests.present? ? guests + 1 : 1
-    course.cost.present? ? (course.cost * seats) : nil
+    (chalkle_fee||0)    + (chalkle_gst||0)   +
+    (teacher_fee||0)    + (teacher_gst||0)   +
+    (provider_fee||0)   + (provider_gst||0)  +
+    (processing_fee||0) + (processing_gst||0)
   end
 
   def cost_formatted
