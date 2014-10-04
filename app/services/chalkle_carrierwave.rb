@@ -8,8 +8,13 @@ if Rails.env.test? or Rails.env.cucumber?
 else
   #require 'chalkle_s3'
   CarrierWave.configure do |config|
+    config.storage = :file
     config.root = Rails.root.join('public')
     #config.enable_processing = false
+    config.cache_dir = Rails.root.join 'tmp','uploads'
+
+
+
   end
 
 end

@@ -3,12 +3,11 @@ require 'chalkle_carrierwave'
 
 class ChalkleBaseUploader < CarrierWave::Uploader::Base
 
-  storage :file
 
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
-  # include Sprockets::Helpers::RailsHelper
-  # include Sprockets::Helpers::IsolatedHelper
+  include Sprockets::Helpers::RailsHelper
+  include Sprockets::Helpers::IsolatedHelper
 
   # Choose what kind of storage to use for this uploader:
   # storage :file
