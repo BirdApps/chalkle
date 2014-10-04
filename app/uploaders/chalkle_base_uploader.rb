@@ -3,6 +3,7 @@ require 'chalkle_carrierwave'
 
 class ChalkleBaseUploader < CarrierWave::Uploader::Base
 
+  storage :file
 
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
@@ -16,11 +17,7 @@ class ChalkleBaseUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    if Rails.env.test? or Rails.env.cucumber?
-      "uploads/test/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-    else
-      "#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-    end
+    "system/uploads/#{Rails.env}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
 
