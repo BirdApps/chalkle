@@ -170,11 +170,15 @@ class Channel < ActiveRecord::Base
   def header_color
     return nil unless average_hero_color
     @header_color ||= (
-      hsl = Color::RGB.from_html(read_attribute(:average_hero_color)).to_hsl
-      hsl.s = hsl.s * 2
-      hsl.l = 0.65 unless hsl.l < 0.65
-      rgb = hsl.to_rgb
-      "rgba(#{rgb.red.to_i}, #{rgb.green.to_i}, #{rgb.blue.to_i}, 0.8)"
+      begin
+        hsl = Color::RGB.from_html(read_attribute(:average_hero_color)).to_hsl
+        hsl.s = hsl.s * 2
+        hsl.l = 0.65 unless hsl.l < 0.65
+        rgb = hsl.to_rgb
+        "rgba(#{rgb.red.to_i}, #{rgb.green.to_i}, #{rgb.blue.to_i}, 0.8)"
+      rescue ArgumentError => error
+        nil
+      end
     )
 
   end
