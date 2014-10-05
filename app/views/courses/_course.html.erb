@@ -83,7 +83,8 @@
           <%= pretty_time_range course.start_at, course.end_at %>
           <%# pretty_time course.start_at %>
           <span class="fa fa-map-marker"></span>
-          <%= course.venue_truncated %>
+          <%= course.venue_address
+          binding.pry %>
         </span>
         <div class="cost pull-right hidden-xs">
           <% if course.cost? %>
