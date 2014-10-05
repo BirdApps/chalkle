@@ -110,7 +110,7 @@ class Course < ActiveRecord::Base
   def self.search(query, course_set = nil)
     if query.present?
       courses = Course.arel_table
-      query_parts = query.split.map {|part| "%#{part}%" }
+      query_parts = query.split.map {|part| "%#{ sanitize(part) }%" }
       if course_set
         course_set.where courses[:name].matches_any(query_parts)
       else

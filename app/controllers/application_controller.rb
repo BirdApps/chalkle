@@ -6,10 +6,6 @@ class ApplicationController < ActionController::Base
   before_filter :load_channel
   before_filter :load_category
 
-  def not_found object="Page"
-    raise ActionController::RoutingError.new("#{object} could not be found")
-  end
-
   def current_ability
     @current_ability ||= Ability.new(current_admin_user)
   end
@@ -79,7 +75,8 @@ class ApplicationController < ActionController::Base
     end
 
     def not_found
-      raise ActionController::RoutingError.new('Not Found')
+      # raise ActionController::RoutingError.new('Not Found')
+      render :file => 'public/404.html', :status => :not_found, :layout => false
     end
 
     def load_country
@@ -104,7 +101,11 @@ class ApplicationController < ActionController::Base
     end
 
     def channel_name
+      begin 
       (params[:provider] || params[:channel_url_name]).encode("UTF-8", "ISO-8859-1").parameterize if (params[:provider] || params[:channel_url_name]).present?
+      rescue ArgumentError 
+        nil
+      end
     end
 
     def category_name

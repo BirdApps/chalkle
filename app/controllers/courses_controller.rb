@@ -109,7 +109,8 @@ class CoursesController < ApplicationController
     end
 
     def load_course
-      @course = Course.find(params[:id]).decorate
+      @course = Course.find_by_id(params[:id]).try :decorate
+      ActiveRecord::RecordNotFound if @course.nil?
     end  
 
     def load_geography_override
@@ -146,7 +147,7 @@ class CoursesController < ApplicationController
     end
 
     def check_course_visibility
-      unless policy(@course).edit?
+      unless !@course || policy(@course).edit?
         unless @course.published?
           flash[:notice] = "This class is no longer available."
           redirect_to root_url
