@@ -8,7 +8,7 @@ class ChannelsController < ApplicationController
   end
 
   def show
-    not_found if @channel.id.blank?
+    not_found unless @channel
     @courses = @channel.courses.displayable.in_week(Week.containing(current_date)).by_date
     count = 0
     while @courses.blank? do
@@ -19,7 +19,7 @@ class ChannelsController < ApplicationController
   end
 
   def series 
-    not_found if !@channel
+    return not_found if !@channel
     @courses = @channel.courses.displayable.where url_name: params[:course_url_name]
   end
 
