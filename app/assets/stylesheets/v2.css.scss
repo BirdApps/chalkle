@@ -75,6 +75,7 @@ body.v2 {
     background: #F3F3F3;
     border-radius: 8px;
     display: inline-block;
+    overflow: hidden;
     a{
       text-align: center;
       width:43px;
@@ -82,6 +83,9 @@ body.v2 {
       display:inline-block;
       img{
         height: 16px;
+      }
+      &:hover {
+        background: #e3e3e3; 
       }
     }
   }
@@ -266,28 +270,32 @@ body.v2 {
     margin:0 !important;
   }
   .btn-3d{
-    -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.18);
-    box-shadow:         1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.18);
+    -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.08);
+    box-shadow:         1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.08);
+    -webkit-transition: all 200ms ease-out;
+    -moz-transition: all 200ms ease-out;
+    -ms-transition: all 200ms ease-out;
+    -o-transition: all 200ms ease-out;
+    transition: all 200ms ease-out;
   }
   .btn-3d:hover{
     position:relative;
-    bottom: 1px;
-    right: 1px;
-    -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 3px 3px 0px 0px rgba(0,0,0,0.18);
-    box-shadow:         1px 1px 0px 0px #FFFFFF, 3px 3px 0px 0px rgba(0,0,0,0.18);
+    -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.15);
+    box-shadow:         1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.15);
   }
   .btn-3d:active{
     position:relative;
     bottom: -1px;
     right: -1px;
-    -moz-box-shadow:    1px 1px 0px 0px rgba(0,0,0,0.18);
-    box-shadow:         1px 1px 0px 0px rgba(0,0,0,0.18);
+    -moz-box-shadow:    1px 1px 0px 0px rgba(0,0,0,0.08);
+    box-shadow:         1px 1px 0px 0px rgba(0,0,0,0.08);
   }
   .btn-default{
-    background: #F9F9F9;
+    background: #999;
     border: 2px solid #EAEAEA;
     color: #4B4B4B;
     box-shadow: none;
+    letter-spacing: 0.1em;
   }
   .btn-default:hover{
     background-color: #f2f3f3;
@@ -868,11 +876,14 @@ body.v2 {
         font-size: 18px;
         color: #FFFFFF;
         padding: 10px;
-        letter-spacing: 1px;
-        background: #c7c7c7;
+        letter-spacing: 0.1em;
+        background: #999;
         min-width: 80px;
         display: inline-block;
         text-align: center;
+        &:hover {
+        background: #777;
+        }
       }
       .reviews{
         float: right;
