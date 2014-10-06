@@ -25,10 +25,8 @@ module ApplicationHelper
     request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}")
   end
 
-
-
   def typekit_includes
-    render 'layouts/typekit_includes'
+    render 'layouts/typekit_includes' unless Rails.env.development?
   end
 
   def header_color
