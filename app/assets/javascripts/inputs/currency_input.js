@@ -6,7 +6,6 @@ $(function(){
   $('.currency-input').change(function(){
     var valu = $(this).val();
     valur = parseFloat(valu).toFixed(2);
-    console.log(valu);
     if(isNaN(valu)){
       $(this).val(prev_val);
     }else{
