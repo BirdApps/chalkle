@@ -5,6 +5,7 @@ class BookingsController < ApplicationController
   before_filter :load_booking, :only => [:payment_callback, :show, :edit, :update, :cancel]
 
   def index
+    @page_subtitle = "Bookings for"
     @course = Course.find params[:course_id]
     raise "not authorized" unless CoursePolicy.new(current_user, @course).admin?
     @bookings = @course.bookings if @course.present?

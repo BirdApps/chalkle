@@ -6,7 +6,7 @@ class Course < ActiveRecord::Base
   GST = 0.15
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :first_lesson_start_at, :cost, :teacher_cost, :course_class_type, :processing_fee, :teacher_pay_type
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :first_lesson_start_at, :cost, :teacher_cost, :course_class_type, :processing_fee, :teacher_pay_type, :note_to_attendees
   ]
 
   attr_accessible  *BASIC_ATTR, :description, :teacher_payment, :published_at, :course_image_attributes, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
@@ -19,7 +19,7 @@ class Course < ActiveRecord::Base
   STATUS_5 = "Processing"
   STATUS_4 = "Completed"
   STATUS_3 = "Unreviewed"
-  STATUS_2 = "On-hold"
+  STATUS_2 = "Cancelled"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
 
@@ -117,6 +117,14 @@ class Course < ActiveRecord::Base
         Course.where courses[:name].matches_any(query_parts)
       end
     end
+  end
+
+  def cancel
+    
+  end
+
+  def can_be_cancelled?
+    (start_at > DateTime.now.advance(hours: 24) || !bookings? ) ? true : false
   end
 
   def classes
@@ -363,11 +371,11 @@ class Course < ActiveRecord::Base
   end
 
   def spaces_left
-    [(max_attendee.to_i - attendance), 0].max
+    [(max_attendee.to_i - attendance), 0].max if limited_spaces?
   end
 
   def limited_spaces?
-    !!max_attendee
+    true if max_attendee > 0
   end
 
   def published?

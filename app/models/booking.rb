@@ -1,10 +1,18 @@
 class Booking < ActiveRecord::Base
   PAYMENT_METHODS = Finance::payment_methods
-  attr_accessible *BASIC_ATTR = [:course_id, :guests, :payment_method, :terms_and_conditions, :booking ]
+  attr_accessible *BASIC_ATTR = [:course_id, :guests, :payment_method, :terms_and_conditions, :booking, :note_to_teacher ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee, :provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   attr_accessor :terms_and_conditions
   attr_accessor :enforce_terms_and_conditions
+
+  #booking statuses
+  STATUS_4 = "no-show"
+  STATUS_3 = "waitlist"
+  STATUS_2 = "no"
+  STATUS_1 = "yes"
+  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4]
+  BOOKING_STATUSES = %w(yes waitlist no pending no-show)
 
   belongs_to :course
   belongs_to :chalkler
@@ -20,10 +28,10 @@ class Booking < ActiveRecord::Base
 
   scope :paid, where{ paid == true }
   scope :unpaid, where{ paid == false }
-  scope :confirmed, where(status: 'yes')
-  scope :waitlist, where(status: 'waitlist')
-  scope :status_no, where(status: 'no')
-  scope :interested, where{ (status == 'yes') | (status == 'waitlist') | (status == 'no-show') }
+  scope :confirmed, where(status: STATUS_1)
+  scope :waitlist, where(status: STATUS_3)
+  scope :status_no, where(status: STATUS_2)
+  scope :interested, where{ (status == STATUS_1) | (status == STATUS_3) | (status == STATUS_4) }
   scope :billable, joins(:course).where{ (courses.cost > 0) & (status == 'yes') & ((chalkler_id != courses.teacher_id) | (guests > 0)) }
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -35,8 +43,7 @@ class Booking < ActiveRecord::Base
   delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
   delegate :free?, to: :course, allow_nil: true
 
-  BOOKING_STATUSES = %w(yes waitlist no pending no-show)
-
+ 
   def name
     if course.present? && chalkler.present?
         "#{course.name} - #{chalkler.name}"

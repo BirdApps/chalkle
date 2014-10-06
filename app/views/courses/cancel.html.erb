@@ -1,0 +1,38 @@
+<%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: cancel_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
+  <input name="_method" type="hidden" value="put" />
+  <input type="submit" value="Confirm Cancel" class="pull-right btn btn-danger" />
+  <h2>Are you sure you want to cancel this <%= @course.type %>?</h2>
+  
+<% end %>
+<ul>
+  <% if @course.bookings? %>
+    <% if @course.free? %>
+      <li>
+        The <%= @course.type %> will be removed from search results
+      </li>
+      <li>
+        All bookings will be cancelled
+      </li>
+      <li> 
+        All attendees will be notified
+      </li>
+    <% else %>
+      <li>
+        The <%= @course.type %> will be removed from search results
+      </li>
+      <li>
+        All bookings will be refunded
+      </li>
+      <li>
+        All attendees will be notified
+      </li>
+    <% end %>
+  <% else %>
+    <li>
+      The <%= @course.type %> will be removed from search results
+    </li>
+    <li>
+      No bookings will be able to be created
+    </li>
+  <% end %> 
+</ul>

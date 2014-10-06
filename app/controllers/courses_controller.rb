@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, only: [:show, :tiny_url, :update, :edit]
+  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :warn_cancel, :cancel]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
@@ -59,6 +59,19 @@ class CoursesController < ApplicationController
       redirect_to course_path @course.id
     else
       render 'new'
+    end
+  end
+
+  def warn_cancel
+    authorize @course
+    return render 'cancel'
+  end
+
+  def cancel
+    authorize @course
+    @course.status = 'Cancelled'
+    @course.bookings.each do |booking|
+      booking.cancel
     end
   end
 

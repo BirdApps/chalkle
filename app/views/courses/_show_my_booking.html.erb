@@ -28,6 +28,13 @@
               <%= quick_date_time lesson.start_at %><br />
             <% end %>
           <% end %>
+          <% if @course.note_to_attendees %>
+            <div class="">
+              <br />
+              <div class="small light">Special note for attendees</div>
+              <%= @course.note_to_attendees %>
+            </div>
+          <% end %>
         </div> 
       <% end %>
       <div class="clearfix">

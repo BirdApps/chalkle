@@ -83,11 +83,14 @@
       <strong> <%= @course.venue %> </strong>
     </p>
   <% end %>
-
-
+  
   <div class="col-md-3 hidden-xs">
   </div>
   <div class="col-md-6 col-xs-12 center">
+    <br />
+    <div class="text-left">
+      <%= f.input :note_to_teacher, as: :text, label: '<span class="small light grey">Note to Teacher</small>' %>
+    </div>
     <br /><br />
     <% if f.object.new_record? %>
       <div class="checkbox center">
