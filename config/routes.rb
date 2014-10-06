@@ -25,14 +25,15 @@ Chalkle::Application.routes.draw do
 
   resources :courses, path: 'classes' do
     member do
-      get 'cancel', to: 'courses#warn_cancel', as: :cancel
-      put 'cancel', to: 'courses#cancel', as: :cancel
+      get 'cancel', to: 'courses#cancel', as: :cancel
+      put 'cancel', to: 'courses#confirm_cancel', as: :cancel
     end
     resources :notices
     resources :bookings do
       get :payment_callback
       member do
-        put 'cancel'
+        get 'cancel'
+        put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
       end
     end
     member do
