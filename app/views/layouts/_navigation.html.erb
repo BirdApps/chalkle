@@ -14,10 +14,10 @@
         <div id="primary-naviation" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li>
-              <%= link_to "Learn", courses_path %>
+              <%= link_to "Learn#{ nav_badge_format { current_user.learn_menu_badge_count }}", courses_path %>
             </li>
             <li>
-              <%= link_to "Teach", new_course_path %>
+              <%= link_to "Teach#{ nav_badge_format { current_user.teach_menu_badge_count }}", new_course_path %>
             </li>
             <li>
               <%= link_to "About", about_path %>
