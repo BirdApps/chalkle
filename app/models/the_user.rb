@@ -80,11 +80,11 @@ class TheUser
   end
 
   def learn_menu_badge_count
-    chalkler ? @chalkler.bookings.upcoming.count : 0
+    @learn_menu_badge_count ||= chalkler ? chalkler.bookings.upcoming.count : 0
   end
 
   def teach_menu_badge_count
-    chalkler ? @chalkler.channels_adminable.inject(0) {|sum, c| sum + c.courses.upcoming.count } + courses_teaching.count : 0
+    @teach_menu_badge_count ||= chalkler ? chalkler.channels_adminable.inject(0) {|sum, c| sum + c.courses.upcoming.count } + (courses_teaching-chalkler.channels_adminable).count : 0
   end
 
 end
