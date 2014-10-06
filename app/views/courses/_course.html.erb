@@ -39,7 +39,7 @@
           </h3>
           <h5 class="category">
             <% unless course.category.nil? %>
-              <%= link_to course.category.name, category_path(course.category.url_name), { :class => "colour"+course.best_colour_num.to_s } %>
+              <%= link_to course.category.name, root_path(filter_params('topic', course.category.url_name)), { :class => "colour"+course.best_colour_num.to_s } %>
             <% else %>
               <br />
             <% end %>

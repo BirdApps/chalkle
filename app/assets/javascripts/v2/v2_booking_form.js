@@ -1,5 +1,6 @@
 $(function(){
   if($("#new_booking").length > 0){
+
     if($("#map-canvas").length > 0){
       function setMap() {
         var lat = $('#latitude').val();
@@ -39,6 +40,13 @@ $(function(){
       }
       setMap();
     }
+
+    $('#new_booking').submit(function(event){
+      if($('#booking_terms_and_conditions:checked').length == 0){
+        alert("You must agree to the terms and conditions to continue");
+        event.preventDefault();
+      }
+    });
 
     // $("#booking_guests").change(function(){
     //   var friend_invite = $($('.booking_bookings')[0]).clone();

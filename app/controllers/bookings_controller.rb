@@ -2,7 +2,7 @@ class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!
   before_filter :redirect_on_paid, :only => [:edit, :update]
   before_filter :class_available, :only => [:edit, :update, :new]
-  before_filter :load_booking, :only => [:payment_callback, :show, :edit, :update, :cancel]
+  before_filter :load_booking, :only => [:payment_callback, :show, :edit, :update, :cancel, :confirm_cancel]
 
   def index
     @page_subtitle = "Bookings for"
@@ -17,29 +17,29 @@ class BookingsController < ApplicationController
   end
 
   def new
-    unless policy(@course).edit?
-      if current_chalkler.courses.where{ bookings.status.eq 'yes' }.exists? @course.id
-        return redirect_to @course.path
-      end
-    end
     delete_any_unpaid_credit_card_booking
     @booking = Booking.new
+    @booking.name = current_user.name unless @course.bookings_for(current_user).present?
     @page_subtitle = "Booking for"
     @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
   end
 
   def create
     @booking = Booking.new params[:booking]
-    @booking.chalkler = current_chalkler
-    @booking.enforce_terms_and_conditions = true
-
+    @booking.name = current_user.name unless @booking.name.present?
+    @booking.chalkler = current_chalkler #unless @booking.chalkler
     @booking.apply_fees
+    @booking.paid = 0
+
+    unless current_user.bookings.where(course_id: @booking.course.id, name: @booking.name ).empty?
+      return redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course'
+    end
 
     # this should handle invalid @bookings before doing anything
-    destroy_cancelled_booking
+    #destroy_cancelled_booking
     if @booking.save
       if @booking.free?
-         redirect_to course_booking_path @booking.course, @booking
+        return redirect_to course_booking_path @booking.course, @booking
       else
         @booking.update_attribute(:status, 'pending')
         wrapper = SwipeWrapper.new
@@ -52,7 +52,8 @@ class BookingsController < ApplicationController
     else
       delete_any_unpaid_credit_card_booking
       @course = Course.find(params[:course_id]).decorate
-      return render action: 'new'
+      flash[:notice] = 'Could not create booking at this time'
+      render 'new'
     end
   end
 
@@ -97,14 +98,15 @@ class BookingsController < ApplicationController
   end
 
   def cancel
-    @booking.status = 'no'
-    if @booking.save
-      flash[:notice] = "Your booking is cancelled. Please contact accounts@chalkle.com quote booking id #{@booking.id} if you require a refund."
-      return redirect_to bookings_path
-    else
-      flash[:alert] = 'Your booking cannot be cancelled. Please contact your Channel Curator for further information'
-      return redirect_to :back
-    end
+    @page_subtitle = "Cancel booking"
+    @page_title = ('<a href="'+@booking.course.path+'">'+@booking.course.name+'</a>').html_safe
+    render 'cancel'
+  end
+
+  def confirm_cancel
+    authorize @booking
+    @booking.cancel!
+    return redirect_to @booking.course.path
   end
 
   def class_available
@@ -129,7 +131,7 @@ class BookingsController < ApplicationController
   end
 
   def load_booking
-    @booking = current_chalkler.bookings.find(params[:booking_id] || params[:id]).decorate
+    @booking = current_user.bookings.find(params[:booking_id] || params[:id]).decorate
   end
 
   def redirect_on_paid

@@ -119,8 +119,12 @@ class Course < ActiveRecord::Base
     end
   end
 
-  def cancel
-    
+  def cancel!
+    status = STATUS_2
+    bookings.each do |booking|
+      booking.cancel!
+    end
+    save
   end
 
   def can_be_cancelled?
@@ -247,6 +251,7 @@ class Course < ActiveRecord::Base
   end
 
   def chalkle_fee(incl_tax = true)
+    return 0 if free?
     single = course_class_type.nil? ? single_class? : course_class_type == 'course'
     no_tax_fee = cached_chalkle_fee || (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
     incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
@@ -375,7 +380,7 @@ class Course < ActiveRecord::Base
   end
 
   def limited_spaces?
-    true if max_attendee > 0
+    true if max_attendee && max_attendee > 0
   end
 
   def published?
@@ -406,7 +411,7 @@ class Course < ActiveRecord::Base
     class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
   end
 
-  def booking_for(chalkler)
+  def bookings_for(chalkler)
     if bookings.any?
       chalkler.bookings & bookings
     else

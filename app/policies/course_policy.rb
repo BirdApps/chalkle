@@ -23,7 +23,7 @@ class CoursePolicy < ApplicationPolicy
     update?
   end
 
-  def warn_cancel?
+  def confirm_cancel?
     admin?
   end
 

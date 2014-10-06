@@ -2,39 +2,44 @@
     <div class="row">
       <div class="col-xs-12 col-sm-10 col-sm-offset-1">
         <% if @course.status == 'Published' %>
-          <div class="alert alert-warning clearfix" role="alert"> 
+          <div class="alert alert-warning clearfix text-right" role="alert"> 
             <% if @course.bookings.empty?  %>
-              <span class="pad-top inline">   
+              <span class="pad-top inline pull-left">   
                 <strong><%= @course.status+'!' %></strong> 
-                  You can unpublish while there are no bookings
+                You can unpublish while there are no bookings
               </span>
-              <button class="btn btn-default pull-right" onclick="document.getElementById('publish_course').submit()">Unpublish</button>
               <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
                 <input name="_method" type="hidden" value="put" />
                  <%= f.input :status, as: :hidden, input_html: { value: 'Unreviewed' } %>
               <% end #form %>
+               <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Unpublish</button>
             <% else #elsif no? bookings%>
-              <span class="inline pad-top">   
+              <span class="inline pad-top pull-left">   
                 <strong>Great job!</strong>  There are <%= @course.bookings.count %> attendees booked in
               </span>
             <% end #end if bookings?%>
               <% if @course.can_be_cancelled? %>
-                <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger pull-right' %>
+                <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
               <% else %>
-                <small class="pull-right text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
+                <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
               <% end %>
           </div>
         
         <% elsif @course.status == 'Unreviewed' && policy(@course).change_status?  %>
         
-          <div class="alert alert-danger clearfix" role="alert"> 
-            <span class="pad-top inline">   
+          <div class="alert alert-danger clearfix text-right" role="alert"> 
+            <span class="pad-top inline pull-left">   
               <strong>Your class is a Draft!</strong> No one else can see it. Would you like to publish?
-            </span>
-            <button class="btn btn-default pull-right" onclick="document.getElementById('publish_course').submit()">Publish</button>           
+            </span>           
             <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
               <input name="_method" type="hidden" value="put" />
                <%= f.input :status, as: :hidden, input_html: { value: 'Published' } %>
+            <% end %>
+            <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Publish</button>
+            <% if @course.can_be_cancelled? %>
+              <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
+            <% else %>
+              <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
             <% end %>
           </div>
         <% end %>

@@ -1,14 +1,15 @@
-<% if current_chalkler && (booking = @course.booking_for(current_chalkler)) %>
+<% if current_chalkler && (bookings = @course.bookings_for(current_chalkler)) %>
     <div class="col-sm-2">
     </div>
     <div class="col-sm-8"> 
-      <% booking.each do |booking|%>
-        <div class="fancy-header">
-          <h3>Your Booking</h3>
-          <hr />
-        </div>  
-        <div class="col-xs-12 x1-25 center light">
-          <div class="strong"> <%= booking.chalkler.name %> </div>
+      <div class="fancy-header">
+        <h3>Your Booking<%= 's' if bookings.count > 1 %></h3>
+        <hr />
+      </div>  
+
+      <div class="col-xs-12 x1-25 center light">
+      <% bookings.each do |booking|%>
+          <div class="strong"> <%= booking.name %> </div>
           <div class="col-xs-12 center light">
             <span class="grey inline vmid">
               Booking cost:
@@ -17,29 +18,40 @@
               $<%= booking.cost_formatted %>
             </span> 
           </div>
-          <% if @course.class? %>
-            <%= quick_date_time @course.start_at %>
-          <% else %>
-          <% count = 0 %>
-            <% @course.classes.each do |lesson| %>
-              <span class="strong">
-                Class <%= count+=1 %> -
-              </span>
-              <%= quick_date_time lesson.start_at %><br />
+          <% if booking.status == 'yes' %>
+            <% if @course.class? %>
+              <%= quick_date_time @course.start_at %>
+            <% else %>
+            <% count = 0 %>
+              <%  booking.course.classes.each do |lesson| %>
+                <span class="strong">
+                  Class <%= count+=1 %> -
+                </span>
+                <%= quick_date_time lesson.start_at %><br />
+              <% end %>
             <% end %>
+            <br />
+            <%= link_to "Cancel booking", cancel_course_booking_path(booking.course.id, booking.id), class: 'text-danger' %>
+          <% elsif booking.status == 'no' %>
+            <span class="text-danger small light">Booking has been cancelled</span>
+          <% elsif booking.status == 'refund_pending' %>
+            Booking is pending refund
+          <% elsif booking.status == 'refund_complete' %>
+            Booking has been refunded
           <% end %>
-          <% if @course.note_to_attendees %>
-            <div class="">
-              <br />
-              <div class="small light">Special note for attendees</div>
-              <%= @course.note_to_attendees %>
-            </div>
-          <% end %>
-        </div> 
+          <br />
+          <div class="clearfix">
+            <hr class="dark" />
+          </div>
       <% end %>
-      <div class="clearfix">
-        <hr class="dark" />
-      </div>
+      <% if bookings && bookings.first.course.note_to_attendees.present? %>
+          <div class="">
+            <br />
+            <div class="small light">Special note for attendees</div>
+            <%= bookings.first.course.note_to_attendees %>
+          </div>
+        <% end %>
+      </div> 
     </div>
     <div class="col-sm-2">
     </div>

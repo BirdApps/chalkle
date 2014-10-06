@@ -62,12 +62,12 @@ class CoursesController < ApplicationController
     end
   end
 
-  def warn_cancel
+  def cancel
     authorize @course
     return render 'cancel'
   end
 
-  def cancel
+  def confirm_cancel
     authorize @course
     @course.status = 'Cancelled'
     @course.bookings.each do |booking|

@@ -1,4 +1,4 @@
-<%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: cancel_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
+<%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: cancel_course_path(@course.id)) do |f| %>
   <input name="_method" type="hidden" value="put" />
   <input type="submit" value="Confirm Cancel" class="pull-right btn btn-danger" />
   <h2>Are you sure you want to cancel this <%= @course.type %>?</h2>
