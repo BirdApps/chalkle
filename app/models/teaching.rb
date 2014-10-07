@@ -73,6 +73,7 @@ class Teaching
       @duration_hours << lesson.duration/60/60
       @duration_minutes << lesson.duration%60
     end
+    start_at << Time.now.advance(month: 1) if @start_at.empty?
     @editing_id = args.id
   end
 
@@ -121,6 +122,7 @@ class Teaching
     course_to_teaching course
     if check_valid_input params
       course.update_attributes course_args
+      class_count = 1 if !class_count ||class_count == 0
       class_count.to_i.times do |i|
         lesson = course.lessons[i]
         if lesson.present?
@@ -143,6 +145,7 @@ class Teaching
       if course?
         #create single course with lots of lessons on it
         course = Course.create course_args
+        class_count = 1 if !class_count ||class_count == 0
         class_count.to_i.times do |i|
           lesson = Lesson.create lesson_args i
           course.lessons << lesson

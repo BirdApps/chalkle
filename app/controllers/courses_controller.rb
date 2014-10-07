@@ -90,7 +90,7 @@ class CoursesController < ApplicationController
     course = Course.find params[:id]
     authorize course
     course.status = params[:course][:status]
-    course.save
+    flash[:notice] = "Course not ready to publish. Please edit it to fix any issues" if !course.save
     redirect_to course_url course.id
   end
 
