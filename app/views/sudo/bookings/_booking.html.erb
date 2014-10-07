@@ -1,0 +1,20 @@
+<hr />
+<div class="row odd">
+  <div class="col-sm-3 col-xs-6">
+    <% binding.pry if booking.course.nil? %>
+    <%= booking.name %>
+  </div>
+  <div class="col-sm-3 col-xs-6">
+    <%= booking.course.name %>
+  </div>
+  <div class="col-sm-3 col-xs-6">
+    <%= booking.status %>
+  </div>
+  <div class="col-sm-3 col-xs-6">
+    <% if booking.payment %>
+      <%= link_to 'Payment', sudo_payment_path(booking.payment.id), class: 'btn btn-default' %>
+    <% else %>
+      <button disabled="disabled" class="btn btn-default">No Payment</button>
+    <% end %>
+  </div>
+</div>

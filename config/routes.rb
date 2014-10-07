@@ -56,6 +56,20 @@ Chalkle::Application.routes.draw do
     put '/enter_email' => 'preferences#enter_email', as: :enter_email
   end
 
+  namespace :sudo do
+    root to: 'silvias#index'
+    resources :payments
+    resources :bookings do
+      collection do
+        get 'pending_refunds'
+        get 'completed_refunds'
+      end
+      member do
+        get 'refund'
+      end
+    end
+  end
+
   resources :chalklers, path: 'people', only: [:index, :show, :exists]
     # collection do
     #   get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: :meetup_email_settings
