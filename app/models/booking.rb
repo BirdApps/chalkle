@@ -18,7 +18,7 @@ class Booking < ActiveRecord::Base
   has_one :payment
   has_one :channel, through: :course
 
-  validates_presence_of :course_id, :status
+  validates_presence_of :course_id, :status, :name
   validates_presence_of :payment_method, :unless => :free?
 
   scope :paid, where{ cost <= paid }
@@ -31,6 +31,7 @@ class Booking < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
+  scope :by_date, order(:created_at)
   scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.now ).order('courses.start_at')
 
   before_validation :set_free_course_attributes
@@ -59,6 +60,10 @@ class Booking < ActiveRecord::Base
 
   def waive_chalkle_fee
     true
+  end
+
+  def remove_fees
+    chalkle_fee = chalkle_gst = teacher_fee = teacher_gst = provider_fee = provider_gst = 0
   end
 
   def apply_fees
