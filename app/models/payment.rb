@@ -16,6 +16,7 @@ class Payment < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :cash, where(cash_payment: true)
+  scope :by_date, order(:created_at)
 
   before_create :set_metadata
 
