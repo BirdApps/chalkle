@@ -23,7 +23,12 @@ Chalkle::Application.routes.draw do
 
   resources :channel_plans, path: 'plans'
 
+  match '/teach' => 'courses#teach'
+
   resources :courses, path: 'classes' do
+    collection do
+      get :teach
+    end
     resources :notices
     resources :bookings do
       get :payment_callback

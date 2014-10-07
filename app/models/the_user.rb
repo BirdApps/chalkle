@@ -84,7 +84,13 @@ class TheUser
   end
 
   def teach_menu_badge_count
-    @teach_menu_badge_count ||= chalkler ? chalkler.channels_adminable.inject(0) {|sum, c| sum + c.courses.upcoming.count } + (courses_teaching-chalkler.channels_adminable).count : 0
+    return @teach_menu_badge_count if @teach_menu_badge_count
+    return 0 unless chalkler
+    (chalkler.channels_adminable.map {|c| c.courses.upcoming(nil, include_unpublished: false) }.flatten + courses_teaching).uniq.count
+
+
   end
+
+
 
 end

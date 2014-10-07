@@ -21,6 +21,10 @@ class CoursesController < ApplicationController
     return not_found if !@course
   end
 
+  def teach
+    render 'teach'
+  end
+
   def tiny_url
     return not_found if !@course
     return redirect_to @course.path

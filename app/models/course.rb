@@ -102,9 +102,14 @@ class Course < ActiveRecord::Base
   before_save :update_published_at
   before_save :save_first_lesson
 
-  def self.upcoming(limit = nil)
-    return  published.where("start_at > ?", Time.now.utc) if limit.nil?
-    published.where("start_at > ?", Time.now.utc).where("start_at < ?", limit)
+  def self.upcoming(limit=nil, options={:include_unpublished => false})
+    unless options[:include_unpublished] 
+      return published.in_future if limit.nil?
+      published.in_future.where("start_at < ?", limit)
+    else
+      return in_future if limit.nil?
+      in_future.where("start_at < ?", limit)
+    end
   end
 
   def self.search(query, course_set = nil)
