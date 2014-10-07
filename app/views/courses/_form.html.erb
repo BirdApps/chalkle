@@ -89,7 +89,6 @@
         <div class="course_only" >
           <%= f.input :class_count, as: :number_picker, label: "<strong>How many classes</strong> will be in the course?", input_html: { value: f.object.class_count || '2', :'data-min' => '2', :'data-max' => '20', :'data-max-error' => 'Maximum 20 classes to a course, if you need more contact Chalkle.', :'data-min-error' =>  'Courses need at least 2 classes. Did you mean to make a class?'}, wrapper_html: { class: :'update_class_count' }, wrapper: :horizonal %>
         </div>
-        
         <% f.object.start_at.count.times do |i| %>
           <%
             start_at = f.object.start_at[i]
