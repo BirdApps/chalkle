@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141003064926) do
+ActiveRecord::Schema.define(:version => 20141006070341) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -72,6 +72,8 @@ ActiveRecord::Schema.define(:version => 20141003064926) do
     t.string   "provider_gst_number"
     t.decimal  "processing_fee"
     t.decimal  "processing_gst"
+    t.string   "note_to_teacher"
+    t.string   "name"
   end
 
   create_table "categories", :force => true do |t|
@@ -156,6 +158,7 @@ ActiveRecord::Schema.define(:version => 20141003064926) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
+    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -163,7 +166,6 @@ ActiveRecord::Schema.define(:version => 20141003064926) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -209,9 +211,9 @@ ActiveRecord::Schema.define(:version => 20141003064926) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
-    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
   end
 
   create_table "cities", :force => true do |t|
@@ -280,6 +282,7 @@ ActiveRecord::Schema.define(:version => 20141003064926) do
     t.datetime "start_at"
     t.string   "teacher_pay_type"
     t.string   "course_class_type"
+    t.string   "note_to_attendees"
   end
 
   create_table "delayed_jobs", :force => true do |t|

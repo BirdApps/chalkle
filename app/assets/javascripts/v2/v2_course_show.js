@@ -2,7 +2,6 @@ $(function(){
   if($(".course-show").length > 0){
     if($("#map-canvas").length > 0){
       function setMap() {
-        console.log('asd');
         var lat = $('#latitude').val();
         var lng = $('#longitude').val();
         var latlng = new google.maps.LatLng(lat, lng);

@@ -109,9 +109,9 @@ ActiveAdmin.register Booking do
     booking.payment_method = 'free'
     desired_xero_id = "CASH-Class#{booking.course_id}-Chalkler#{booking.chalkler_id}"
     payment = Payment.find_or_initialize_by_xero_id desired_xero_id
-    payment.reference = booking.course.meetup_id? ? "#{booking.course.meetup_id} #{booking.chalkler.name}" : "CourseID#{booking.course_id} #{booking.chalkler.name}"
-    payment.xero_contact_id = booking.chalkler.name
-    payment.xero_contact_name = booking.chalkler.name
+    payment.reference = booking.course.meetup_id? ? "#{booking.course.meetup_id} #{booking.name}" : "CourseID#{booking.course_id} #{booking.name}"
+    payment.xero_contact_id = booking.name
+    payment.xero_contact_name = booking.name
     payment.date = Date.today()
     payment.booking_id = booking.id
     payment.reconciled = true
@@ -120,7 +120,7 @@ ActiveAdmin.register Booking do
     payment.total = booking.cost
     payment.visible = true
     if booking.save! && payment.save!
-      flash[:notice] = "Service desk payment of $#{(booking.cost).round(2)} was paid by #{booking.chalkler.name}"
+      flash[:notice] = "Service desk payment of $#{(booking.cost).round(2)} was paid by #{booking.name}"
     else
       flash[:warn] = "Service desk payment could not be recorded"
     end

@@ -1,14 +1,14 @@
 class ChannelsController < ApplicationController
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
-  before_filter :load_channel, only: [:show, :edit, :update,:teachers, :channel_url_available, :followers]
+  before_filter :load_channel
 
   def index
     @channels = Channel.visible
   end
 
   def show
-    not_found if @channel.id.blank?
+    not_found if @channel.new_record?
     @courses = @channel.courses.displayable.in_week(Week.containing(current_date)).by_date
     count = 0
     while @courses.blank? do
@@ -19,8 +19,10 @@ class ChannelsController < ApplicationController
   end
 
   def series 
-    not_found if !@channel
+    return not_found if @channel.new_record?
     @courses = @channel.courses.displayable.where url_name: params[:course_url_name]
+    return not_found if @courses.empty?
+    @courses
   end
 
   def new

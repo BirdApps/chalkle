@@ -132,7 +132,7 @@ module LayoutHelper
     if @channel_teacher.present? && @channel_teacher.id.present?
       nav_links << {
         img_name: "bolt",
-        link: channel_teacher_path(@channel_teacher.id),
+        link: channel_channel_teacher_path(@channel_teacher.id),
         active: action_parts.include?("show"),
         title: "Upcoming Classes"
       }

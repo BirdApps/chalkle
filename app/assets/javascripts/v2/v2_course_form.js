@@ -1,5 +1,4 @@
 $(function(){
-
   if($('.new_course_form_wrapper').length > 0){
     var monthly  = "";
     var repeating  = "";
@@ -7,7 +6,7 @@ $(function(){
     var weekdays = ["Sun","Mon", "Tues", "Wed", "Thurs","Fri","Sat"];
     var parts = ['#type','#details','#learning','#teaching','#summary','#submit'];
     var validate_off = false;
-
+    var ready_to_submit = false;
     if(validate_off){
       alert("Warning: Validation is off");
     }
@@ -38,12 +37,11 @@ $(function(){
       }else{
         part_change("#type");
       }
+      hijack_navigation();
       apply_inline_validation();
       get_teacher_list();
+      bind_agree_terms();
       init_start_at();
-
-
-
       $('.new_course_form_wrapper').fadeIn();
     }
 
@@ -519,6 +517,10 @@ $(function(){
       return valid;
     }
 
+    function bind_agree_terms(){
+      $('input[name=teaching_agreeterms]').change(validation_submit);
+    }
+
     function validate_part(location){
       var valid = true;
       if(location == '#type'){ return valid; }
@@ -550,6 +552,7 @@ $(function(){
           summarize();
         }
         if(location == '#submit'){
+          ready_to_submit = true;
           $('#new_teaching').submit();
         }
         $("html, body").animate({ scrollTop: 0 }, "slow");
@@ -621,6 +624,17 @@ $(function(){
       }
     }
 
+    function get_location(){
+      return $('.breadcrumb li.active a').attr('href');
+    }
+
+    function hijack_navigation(){
+      window.onbeforeunload = function () {
+        if(!ready_to_submit){
+          return "The class has not been saved.";
+        }        
+      }
+    }
 
     //---END NAVIGATION
 
@@ -686,6 +700,7 @@ $(function(){
       clone.setDate(instance_date.getDate());
       return clone;
     }
+
     //---END LIBRARY-ISH
     init();
   }

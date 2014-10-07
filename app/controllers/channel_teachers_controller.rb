@@ -60,7 +60,7 @@ class ChannelTeachersController < ApplicationController
       end
 
       if result
-        redirect_to channel_teacher_path(@channel_teacher.id)
+        redirect_to channel_channel_teacher_path(@channel_teacher.id)
       else
         @channel_teacher.errors.each do |attr,error|
           add_response_notice error

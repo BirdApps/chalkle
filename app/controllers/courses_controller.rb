@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, only: [:show, :tiny_url, :update, :edit]
+  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :warn_cancel, :cancel]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
@@ -66,6 +66,19 @@ class CoursesController < ApplicationController
     end
   end
 
+  def cancel
+    authorize @course
+    return render 'cancel'
+  end
+
+  def confirm_cancel
+    authorize @course
+    @course.status = 'Cancelled'
+    @course.bookings.each do |booking|
+      booking.cancel
+    end
+  end
+
   def destroy
 
   end
@@ -113,7 +126,8 @@ class CoursesController < ApplicationController
     end
 
     def load_course
-      @course = Course.find(params[:id]).decorate
+      @course = Course.find_by_id(params[:id]).try :decorate
+      ActiveRecord::RecordNotFound if @course.nil?
     end  
 
     def load_geography_override
@@ -150,7 +164,7 @@ class CoursesController < ApplicationController
     end
 
     def check_course_visibility
-      unless policy(@course).edit?
+      unless !@course || policy(@course).edit?
         unless @course.published?
           flash[:notice] = "This class is no longer available."
           redirect_to root_url

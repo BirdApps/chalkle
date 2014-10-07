@@ -71,6 +71,14 @@ class TheUser
     chalkler.id.present? ? chalkler.courses_teaching : Course.none
   end
 
+  def bookings
+    chalkler.id.present? ? chalkler.bookings : Booking.none
+  end
+
+  def courses
+    chalkler.id.present? ? chalkler.courses : Course.none
+  end
+
   def channels
     return Channel.all if super?
     channels = []

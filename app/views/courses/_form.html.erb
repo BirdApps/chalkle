@@ -451,6 +451,13 @@
             <%= f.input :course_upload_image, as: :styled_file, input_html: { value: "", class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
           </div>
         </div>
+        <div class="fancy-header">
+          <h3>Extras</h3>
+          <hr />
+        </div>
+        <div class="row">
+            <%= f.input :note_to_attendees, as: :text, label: 'Special note only to attendees <div class="small light grey">Only visible once their booking is complete</div>', wrapper: :horizonal %>
+        </div>
         <br class="clear" /><br />
         <br /><br />
         <div class="prevnext">
