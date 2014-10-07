@@ -13,7 +13,7 @@
       </div>
     <% end %>
 
-    <% if current_chalkler.channels.any? %>
+    <% if current_chalkler && current_chalkler.channels.any? %>
       <div class="fancy-header">
         <h3>Following</h3>
         <hr />

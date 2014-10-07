@@ -23,7 +23,9 @@ class AddChannelTeacher < ActiveRecord::Migration
       if chalkler.nil?
         password = SecureRandom.hex(8)
         params = { name: channel_admin.admin_user.name, email: channel_admin.admin_user.email, password: password }  
-        chalkler = Chalkler.create params
+        Chalkler.observers.disable :all do
+          chalkler = Chalkler.create! params
+        end
         new_chalklers << params
       end
 
