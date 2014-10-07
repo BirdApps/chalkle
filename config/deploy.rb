@@ -39,8 +39,8 @@ task :staging do
   role :db,  domain, :primary => true
 end
 
-task :staging do
-  set :domain,    "168.63.238.32"
+task :production do
+  set :domain,    "chalkleprod.cloudapp.net"
   set :branch,    "feature/New_Admin"
   set :rails_env, "production"
   set :deploy_to, "/apps/chalkle/production"
