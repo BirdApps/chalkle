@@ -37,5 +37,9 @@ module ApplicationHelper
     end
   end
 
+  def nav_badge_format()
+    yield < 1 ? "" : " (#{yield})"
+  end
+
 
 end

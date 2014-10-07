@@ -1,0 +1,169 @@
+<div class="row">
+
+  <div class="col-md-10 text-center">
+    Already know what you are doing?  <%= link_to "Create a Class", new_course_path, html_class: "btn" %>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <% if current_user.channels_adminable.any? %>
+    <div class="fancy-header">
+      <h3>Your Providers</h3>
+      <hr />
+    </div>
+    <div class="row col-xs-12">
+      <%= render partial: '/me/channels/channel', collection: current_user.channels_adminable %>  
+    </div>
+  <% end %>
+
+</div>
+
+
+<div class="row">
+
+  <div class="col-xs-12 col-md-6">
+    <% 
+    teaching = current_chalkler.channel_teachers.map(&:courses).flatten
+    if teaching.any?
+    %>
+      <div class="fancy-header">
+        <h3>Classes you are Teaching</h3>
+        <hr />
+      </div>
+      <div class="row col-xs-12">
+        <%= render partial: '/me/courses/course', collection: teaching %>  
+      </div>
+    <% end %>
+  </div>
+  <% if current_chalkler.channel_teachers.any? %>
+    <div class="col-xs-12 col-md-6">
+
+      <div class="fancy-header">
+        <h3>Your Teacher Profiles</h3>
+        <hr />
+      </div>
+      <div class="row col-xs-12">
+        <%= render partial: '/me/channel_teachers/channel_teacher', collection: current_chalkler.channel_teachers %>  
+      </div>
+    </div>
+  <% end %>
+
+
+</div>
+
+
+
+
+<section id="who" class="row">
+  <h1 class="col-md-12 text-center">Who uses Chalkle?</h1>
+
+  <div class="who col-xs-12 col-md-3">
+    <h1>Teachers</h1>
+    <div class="teacher-hero"></div>
+    <h3>Brandon’s Ukes</h3>
+    <p>
+      Brandon is a ukulele teacher in Wellington who has used Chalkle to grow a community of learners and a personal brand around these ukulele classes.
+    </p>
+  </div>
+
+  <div class="who col-xs-12 col-md-3">
+    <h1>Community Groups</h1>
+    <div class="community-hero"></div>
+
+    <h3>Innermost Gardens</h3>
+    <p>
+      Innermost Gardens hosts local food production, preparation and natural building workshops through Chalkle to a growing community of learners.
+    </p>
+  </div>
+
+  <div class="who col-xs-12 col-md-3">
+  <h1>Small Business</h1>
+    <div class="business-hero"></div>
+    <h3>Enspiral</h3>
+    <p>
+      Enspiral hosts highly practical Social Entrepreneurship development classes, delivered by a network of practicing Entrepreneurs.
+    </p>
+  </div>
+
+  <div class="who col-xs-12 col-md-3">
+  <h1>Libraries</h1>
+    <div class="library-hero"></div>
+
+    <h3>Te Takere</h3>
+    <p>
+      Te Takere is a Cultural Community Centre and Library in Horowhenua. They use Chalkle to manage and promote their classes and run a huge range of lifelong learning opportunities.
+    </p>
+  </div>
+</section>
+
+
+<section id="benefits" class="row">
+  <h1 class="col-xs-12 col-md-12 text-center">Chalkle will help you:</h1>
+
+  <div class="benefits col-xs-12 col-md-6 benefits-community benefits-top">
+    <h2>Meet new people and grow your community</h2>
+      Launch your own channel on Chalkle.com and promote your classes to a wider audience.
+  </div>
+
+  <div class="benefits col-xs-12 col-md-6 benefits-revenue benefits-top benefits-right">
+    <h2>Earn revenue and save money</h2>
+      Set your own prices for your classes, set your own rates for paying teachers and community organisers.
+  </div>
+  <div class="clear"></div>
+  <div class="benefits col-xs-12 col-md-6 benefits-organise benefits-bottom">
+    <h2>Make organising classes easy</h2>
+      We make it easy to manage your bookings, and connect with your learners and give you access to resources to help you get started running great classes.
+  </div>
+
+  <div class="benefits col-xs-12 col-md-6  benefits-classes benefits-bottom benefits-right">
+    
+    <h2>Deliver great classes to lifelong learners!</h2>
+      We take away the stress so you can focus on what you do best; <strong>teach great classes</strong>.
+  </div>
+
+</section>
+
+<section id="getting_started" class="row">
+  <div class="fancy-header">
+    <h3 class="">Getting Started on Chalkle </h3><hr />
+  </div>
+
+  <dl class="col-xs-12 col-md-8 col-offset-md-2">
+    <dt>1</dt>
+    <dd>
+      <h4>Create your first Class or Course</h4>
+      <p>
+        When you create your first class, your chalkle account becomes a provider account on the community plan.
+      </p>
+      <p>
+        Your classes will be listed on chalkle.com for all users in your region to see. 
+      </p>
+    </dd>
+
+    <dt>2</dt>
+    <dd>
+      <h4>Create your first Class or Course</h4>
+      <p>
+        Learners sign up and pay for your class through chalkle.com. They get all the information they need automatically. You can monitor progress  
+      </p>
+    </dd>
+
+    <dt>3</dt>
+    <dd>
+      <h4>Run your class!</h4>
+      <p>
+        If you have any questions, we are here to help
+      </p>
+      <p>
+        [link to contact] [link to ABL network]
+      </p>
+    </dd>
+  </dl>
+
+</section>
+
+
+
+

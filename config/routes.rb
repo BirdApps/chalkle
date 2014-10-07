@@ -21,12 +21,14 @@ Chalkle::Application.routes.draw do
 
   resources :channel_plans, path: 'plans'
 
+  match '/teach' => 'courses#teach'
+
   resources :courses, path: 'classes' do
+    #resources :notices
     member do
       get 'cancel', to: 'courses#cancel', as: :cancel
       put 'cancel', to: 'courses#confirm_cancel', as: :cancel
     end
-    #resources :notices
     resources :bookings do
       get :payment_callback
       member do

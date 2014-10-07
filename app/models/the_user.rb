@@ -86,4 +86,19 @@ class TheUser
     channels = channels.concat chalkler.channels_teachable if chalkler?
     channels.uniq
   end
+
+  def learn_menu_badge_count
+    @learn_menu_badge_count ||= chalkler ? chalkler.bookings.upcoming.count : 0
+  end
+
+  def teach_menu_badge_count
+    return @teach_menu_badge_count if @teach_menu_badge_count
+    return 0 unless chalkler
+    (chalkler.channels_adminable.map {|c| c.courses.upcoming(nil, include_unpublished: false) }.flatten + courses_teaching).uniq.count
+
+
+  end
+
+
+
 end
