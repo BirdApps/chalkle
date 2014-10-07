@@ -39,11 +39,11 @@ task :staging do
   role :db,  domain, :primary => true
 end
 
-task :production do
-  set :domain,    "my.chalkle.com"
-  set :branch,    "master"
+task :staging do
+  set :domain,    "168.63.238.32"
+  set :branch,    "feature/New_Admin"
   set :rails_env, "production"
-  set :deploy_to, "/home/#{user}/production"
+  set :deploy_to, "/apps/chalkle/production"
   set :bundle_without, [:development, :test]
 
   role :web, domain
