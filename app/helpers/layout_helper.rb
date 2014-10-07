@@ -139,7 +139,7 @@ module LayoutHelper
       if policy(@channel_teacher).edit?
         nav_links <<  {
           img_name: "settings",
-          link: edit_channel_teacher_path(@channel_teacher.id),
+          link: edit_channel_teacher_path(@channel_teacher),
           active: action_parts.include?("edit"),
           title: "Edit"
         }
@@ -157,7 +157,7 @@ module LayoutHelper
       if policy(@course).edit?
         nav_links << {
           img_name: "settings",
-          link: edit_course_path(@course.id),
+          link: edit_course_path(@course),
           active: action_parts.include?("edit"),
           title: "Edit"
         }

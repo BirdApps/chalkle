@@ -790,8 +790,16 @@ body.v2 {
       position: relative;
       >div {
         position: static;
+        margin: 25px inherit;
       }
-      margin: 50px auto;
+      
+      &:hover {
+        background: rgba(76,126,147,0.15);
+      }
+
+      margin: 5px auto;
+      transition: all 150ms ease-in;
+
       .title-wrapper {
         position:relative;
         .title {
