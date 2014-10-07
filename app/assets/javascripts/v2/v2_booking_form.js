@@ -43,7 +43,7 @@ $(function(){
 
     $('#new_booking').submit(function(event){
       if($('#booking_terms_and_conditions:checked').length == 0){
-        alert("You must agree to the terms and conditions to continue");
+        alert($('#teaching_agreeterms').data('error-message'));
         event.preventDefault();
       }
     });
