@@ -17,7 +17,7 @@ Chalkle::Application.routes.draw do
   
   get '/about' => 'application#about', as: :about
 
-  #resources :channel_teachers, path: 'teachers', except: [:new] 
+  resources :channel_teachers, path: 'teachers', except: [:new, :show, :index] 
 
   resources :channel_plans, path: 'plans'
 
