@@ -13,7 +13,7 @@
     <%= csrf_meta_tag %>
     <%= stylesheet_link_tag "application", media: "all" %>
     <%= javascript_include_tag "application" %>
-
+    <%= typekit_includes %>
   </head>
 
   <body class="<%= body_class %> v2" role="document">
@@ -46,7 +46,6 @@
     <% #render 'layouts/footer' %> 
     <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     
-    <%= typekit_includes %>
 
   </body>
   </html>
