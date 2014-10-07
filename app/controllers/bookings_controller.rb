@@ -17,7 +17,7 @@ class BookingsController < ApplicationController
   end
 
   def new
-    delete_any_unpaid_credit_card_booking
+    flash[:notice] = "Removed bookings with pending payments" if(delete_any_unpaid_credit_card_booking.present?)
     @booking = Booking.new
     @booking.name = current_user.name unless @course.bookings_for(current_user).present?
     @page_subtitle = "Booking for"
@@ -29,8 +29,10 @@ class BookingsController < ApplicationController
     @booking.name = current_user.name unless @booking.name.present?
     @booking.chalkler = current_chalkler #unless @booking.chalkler
     @booking.apply_fees
+    if policy(@booking.course).admin? && params[:remove_fees] == '1'
+      @booking.remove_fees
+    end
     @booking.paid = 0
-
     unless current_user.bookings.where(course_id: @booking.course.id, name: @booking.name ).empty?
       return redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course'
     end
@@ -147,10 +149,6 @@ class BookingsController < ApplicationController
   end
 
   def delete_any_unpaid_credit_card_booking
-    if booking = current_chalkler.bookings.where(course_id: params[:course_id], payment_method: 'credit_card').first
-      if booking.payment.nil?
-        booking.destroy
-      end
-    end
+    current_chalkler.bookings.where(course_id: params[:course_id], payment_method: 'credit_card', status: 'pending').where{|booking| booking.payment.nil? }.destroy_all
   end
 end

@@ -23,21 +23,23 @@
               <%= quick_date_time @course.start_at %>
             <% else %>
             <% count = 0 %>
-              <%  booking.course.classes.each do |lesson| %>
-                <span class="strong">
-                  Class <%= count+=1 %> -
-                </span>
-                <%= quick_date_time lesson.start_at %><br />
-              <% end %>
+            <%  booking.course.classes.each do |lesson| %>
+              <span class="strong">
+                Class <%= count+=1 %> -
+              </span>
+              <%= quick_date_time lesson.start_at %><br />
             <% end %>
-            <br />
-            <%= link_to "Cancel booking", cancel_course_booking_path(booking.course.id, booking.id), class: 'text-danger' %>
+          <% end %>
+          <br />
+          <%= link_to "Cancel booking", cancel_course_booking_path(booking.course.id, booking.id), class: 'text-danger small light' %>
           <% elsif booking.status == 'no' %>
-            <span class="text-danger small light">Booking has been cancelled</span>
+            <span class="small light text-danger">Cancelled</span>
           <% elsif booking.status == 'refund_pending' %>
-            Booking is pending refund
+            <span class="small light text-info">Pending Refund</span>
           <% elsif booking.status == 'refund_complete' %>
-            Booking has been refunded
+            <span class="small light text-success">Refund Complete</span>
+           <% elsif booking.status == 'pending' %>
+            <span class="small light text-warning">Pending Payment</span>
           <% end %>
           <br />
           <div class="clearfix">

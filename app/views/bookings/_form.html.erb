@@ -92,11 +92,25 @@
      <%= f.input :name, label: '<span class="small light grey">Attendee Name</small>' %>
       <%= f.input :note_to_teacher, as: :text, label: '<span class="small light grey">Note to Teacher</small>' %>
     </div>
+    <% if policy(@course).admin? %>
+      <br/><br />
+      <div class="alert-danger alert clearfix">
+        <div class="light small col-xs-6">
+          Admin options
+        </div>
+        <div class="checkbox col-xs-6">
+          <label id="wavefees">
+            <input type="checkbox" id="wavefees" name="remove_fees" value="1" />
+            <span style="position:relative; bottom:10px;">Waive fees</span>
+          </label>
+        </div>
+      </div>
+    <% end %>
     <br /><br />
     <% if f.object.new_record? %>
       <div class="checkbox center">
-        <label id="teaching_agreeterms" data-error-message="You must agree in order to continue">
-          <input type="checkbox" id="booking_terms_and_conditions" value="1">
+        <label id="teaching_agreeterms" data-error-message="You must agree to the terms and conditions to continue">
+          <input type="checkbox" id="booking_terms_and_conditions" value="1" />
           <span style="position:relative; bottom:10px;"> I agree to the <a data-toggle="modal" href="#termsModal">Terms and Conditions</a></span>
         </label>
       </div>
