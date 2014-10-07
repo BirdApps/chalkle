@@ -238,7 +238,7 @@ body.v2 {
   }
 
   .fancy-header {
-      font-family: "proxima-nova",sans-serif;
+      font-family: "proxima-nova", sans-serif;
       text-align: center;
       h3 {
           display: inline;
@@ -250,7 +250,7 @@ body.v2 {
           width: 300px;
           background-color: #fff;
           letter-spacing: 0.1em;
-          font-weight: 100; 
+          font-weight: 200 !important; 
         }
         hr {
           margin-bottom: 40px;
@@ -690,7 +690,7 @@ body.v2 {
 
     letter-spacing: 1.5px;
     h1,h2,h3,h4,h5,h6 {
-      font-weight: 500;
+      font-weight: 300;
     }
     .messages {
       margin-top:20px;
@@ -795,9 +795,9 @@ body.v2 {
       .title-wrapper {
         position:relative;
         .title {
-          @include text-shadow(1px, 1px, 0px, #FFF, 2px, 2px, 0px, rgba(0,0,0,0.17));
+          @include text-shadow(1px, 1px, 0px, #FFF, 2px, 2px, 0px, rgba(0,0,0,0.1));
           font-family: "proxima-nova",sans-serif;
-          font-weight: 600;
+          font-weight: 500;
           font-size: 24px;
           line-height: 29px;
           letter-spacing: 2px;
@@ -1273,7 +1273,7 @@ body.v2 {
   h1 {
     font-weight: 500;
     font-size: 38px;
-    color: #015B28;
+    color: rgba(76, 126, 147, 1);
     line-height: 46px;
     padding: 2em 0;
     text-align: center;
@@ -1295,7 +1295,7 @@ body.v2 {
   .benefits-bottom {  border-top: solid #DCDCDC 1px; }
 
   h2 {
-    font-weight: 600;    font-size: 20px;
+    font-weight: 200;    font-size: 20px;
     color: #2D2D2C;
     line-height: 34px;
     letter-spacing: 0px;
@@ -1312,14 +1312,6 @@ body.v2 {
 
 
 #who, #plans-and-pricing {
-  h1 {
-    font-weight: 500;
-    font-size: 38px;
-    color: #015B28;
-    line-height: 46px;
-    padding: 2em 0 1em 0;
-    text-align: center;
-  }
   p {
     font-weight: 500;
     font-size: 15px;
@@ -1330,14 +1322,6 @@ body.v2 {
 }
 #who {
 
-  .who h1 { 
-    display: block;
-    position: relative;
-    height: 125px;
-    padding: 1em 0 0 0;
-    vertical-align: bottom;
-  }
-  
   h2 {
     text-align: center;
     font-weight: 600;    font-size: 23px;
@@ -1346,12 +1330,6 @@ body.v2 {
   }
   
   h3 {
-    text-align: center;
-    font-weight: 600;    font-size: 19px;
-    color: #333333;
-    line-height: 23px;
-    letter-spacing: 0px;
-    border: none; text-decoration: none;
   }
 
   .teacher-hero, .community-hero, .business-hero, .library-hero {
@@ -1373,34 +1351,39 @@ body.v2 {
 #getting_started {
 
   dl {
+    margin-top: 2em;
     dt {
+      font-family: 'Helvetica', sans-serif;
       height: 42px;
       width: 42px;
-      display: block;
+      display: inline-block;
       float: left;
-      clear: both;
       text-align: center;
-      margin: 0 1em 2em;
+      margin: -10px -42px 0 0;
       font-weight: 100;
-      font-size: 34px;
-      color: #fff;
-      letter-spacing: -3px;
-      line-height: 44px;
+      font-size: 24px;
+      color: rgba(76, 126, 147, 1);
+      letter-spacing: -1px;
+      line-height: 42px;
+      border: solid 1px rgba(76, 126, 147, 0.65);
 
-      background: #777; 
       @include border-radius( 50px );
 
     }
     dd {
-        margin-top: 2em;
+        margin-bottom: 3em;
+        margin-left: 60px;
+        margin-top: 0;
 
-      p { margin-bottom: 0.5em; margin-left: 4em; }
+      p { letter-spacing: 0; font-weight: 100;}
       h4 {
         font-style: italic;
         font-size: 20px;
         color: #555555;
         line-height: 24px;
         letter-spacing: 1px;
+        font-weight: 300;
+        margin-top: 0;
       }
     }
   }

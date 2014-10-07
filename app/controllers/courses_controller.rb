@@ -24,6 +24,9 @@ class CoursesController < ApplicationController
   def teach
     render 'teach'
   end
+  def learn
+    render 'learn'
+  end
 
   def tiny_url
     return not_found if !@course

@@ -1,7 +1,10 @@
+
+<% if current_user && current_user.teach_menu_badge_count > 0 %>
+
 <div class="row">
 
-  <div class="col-md-10 text-center">
-    Already know what you are doing?  <%= link_to "Create a Class", new_course_path, html_class: "btn" %>
+  <div class="col-md-12 text-center">
+    <%= link_to "Create a Class", new_course_path, class: "btn btn-default" %>
   </div>
 
 </div>
@@ -54,13 +57,20 @@
 </div>
 
 
+<% else %>
 
+  <div class="col-md-12 text-center">
+    Ready to set up your first class? <%= link_to "Create a Class", new_course_path, class: "btn btn-default" %>
+  </div>
 
 <section id="who" class="row">
-  <h1 class="col-md-12 text-center">Who uses Chalkle?</h1>
+  <div class="fancy-header col-md-12 ">
+    <h3 class="">Who uses Chalkle?</h3>
+    <hr />
+  </div>
 
-  <div class="who col-xs-12 col-md-3">
-    <h1>Teachers</h1>
+  <div class="who col-xs-12 col-md-3 text-center">
+    <h4 class='text-center'>Teachers</h4>
     <div class="teacher-hero"></div>
     <h3>Brandon’s Ukes</h3>
     <p>
@@ -68,8 +78,8 @@
     </p>
   </div>
 
-  <div class="who col-xs-12 col-md-3">
-    <h1>Community Groups</h1>
+  <div class="who col-xs-12 col-md-3 text-center">
+    <h4 class='text-center'>Community Groups</h4>
     <div class="community-hero"></div>
 
     <h3>Innermost Gardens</h3>
@@ -78,8 +88,8 @@
     </p>
   </div>
 
-  <div class="who col-xs-12 col-md-3">
-  <h1>Small Business</h1>
+  <div class="who col-xs-12 col-md-3 text-center">
+  <h4 class='text-center'>Small Business</h4>
     <div class="business-hero"></div>
     <h3>Enspiral</h3>
     <p>
@@ -87,8 +97,8 @@
     </p>
   </div>
 
-  <div class="who col-xs-12 col-md-3">
-  <h1>Libraries</h1>
+  <div class="who col-xs-12 col-md-3 text-center">
+  <h4 class='text-center'>Libraries</h4>
     <div class="library-hero"></div>
 
     <h3>Te Takere</h3>
@@ -100,7 +110,10 @@
 
 
 <section id="benefits" class="row">
-  <h1 class="col-xs-12 col-md-12 text-center">Chalkle will help you:</h1>
+  <div class="fancy-header col-md-12 ">
+    <h3 class="">Chalkle will help you:</h3>
+    <hr />
+  </div>
 
   <div class="benefits col-xs-12 col-md-6 benefits-community benefits-top">
     <h2>Meet new people and grow your community</h2>
@@ -125,12 +138,17 @@
 
 </section>
 
+
+<% end %> 
+
+
 <section id="getting_started" class="row">
   <div class="fancy-header">
     <h3 class="">Getting Started on Chalkle </h3><hr />
   </div>
 
-  <dl class="col-xs-12 col-md-8 col-offset-md-2">
+  <dl class="col-xs-12 col-md-8 col-md-offset-2">
+
     <dt>1</dt>
     <dd>
       <h4>Create your first Class or Course</h4>
@@ -141,6 +159,7 @@
         Your classes will be listed on chalkle.com for all users in your region to see. 
       </p>
     </dd>
+    <div class="clear"></div>
 
     <dt>2</dt>
     <dd>
@@ -149,6 +168,7 @@
         Learners sign up and pay for your class through chalkle.com. They get all the information they need automatically. You can monitor progress  
       </p>
     </dd>
+    <div class="clear"></div>
 
     <dt>3</dt>
     <dd>
