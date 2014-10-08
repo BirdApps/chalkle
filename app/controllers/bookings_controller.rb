@@ -18,6 +18,7 @@ class BookingsController < ApplicationController
 
   def new
     flash[:notice] = "Removed bookings with pending payments" if(delete_any_unpaid_credit_card_booking.present?)
+    @channel = Course.find(params[:course_id]).channel #Find channel for hero
     @booking = Booking.new
     @booking.name = current_user.name unless @course.bookings_for(current_user).present?
     @page_subtitle = "Booking for"

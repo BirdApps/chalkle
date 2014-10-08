@@ -106,6 +106,16 @@ module LayoutHelper
           default: @channel.hero,
           blurred: @channel.hero.blurred
         }
+    elsif @booking && !@booking.new_record? && @booking.course.channel.hero.present?
+        {
+          default: @booking.course.channel.hero,
+          blurred: @booking.course.channel.blurred
+        }
+    elsif @bookings && @bookings.first.course.channel.hero.present?
+        {
+          default: @bookings.first.course.channel.hero,
+          blurred: @bookings.first.course.channel.hero.blurred
+        }
       elsif @category.hero.present?
         {
           default: @category.hero,
