@@ -35,7 +35,7 @@ class BookingsController < ApplicationController
     end
     @booking.paid = 0
     unless current_user.bookings.where(course_id: @booking.course.id, name: @booking.name ).empty?
-      return redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course'
+      redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course'
     end
 
     # this should handle invalid @bookings before doing anything
@@ -74,15 +74,15 @@ class BookingsController < ApplicationController
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
-      return redirect_to = course_path(params[:course_id])
+      redirect_to course_path(params[:course_id])
     else
       flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
-      return redirect_to new_course_booking_path(params[:channel_id], params[:course_id], params[:booking_id])
+      redirect_to new_course_booking_path(params[:channel_id], params[:course_id], params[:booking_id])
     end
   end
 
   def show
-    return redirect_to @booking.course.path
+    redirect_to @booking.course.path
   end
 
   def edit
@@ -93,7 +93,7 @@ class BookingsController < ApplicationController
   def update
     @booking.update_attributes params[:booking]
     if @booking.save
-      return redirect_to booking_path @booking
+      redirect_to booking_path @booking
     else
       @course = @booking.course.decorate
       render action: 'edit'
@@ -109,7 +109,7 @@ class BookingsController < ApplicationController
   def confirm_cancel
     authorize @booking
     @booking.cancel!
-    return redirect_to @booking.course.path
+    redirect_to @booking.course.path
   end
 
   def class_available
@@ -141,7 +141,7 @@ class BookingsController < ApplicationController
     booking = Booking.find(params[:id])
     if booking.paid?
       flash[:alert] = 'You cannot edit a paid booking'
-      return redirect_to booking_path booking
+      redirect_to booking_path booking
     end
   end
 
