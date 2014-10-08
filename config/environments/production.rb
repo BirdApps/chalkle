@@ -70,7 +70,7 @@ Chalkle::Application.configure do
 
   config.action_controller.default_url_options = { :host => "chalkle.com", :port => 80 }
 
-  config.action_mailer.default_url_options = { host: "chalkle.com" }
+  config.action_mailer.default_url_options = { host: "chalkle.com", :port => 80 }
 
   # TODO: SWITCH TO SEND GRID WHEN SWITCHING TO PROD
   config.action_mailer.smtp_settings = {
