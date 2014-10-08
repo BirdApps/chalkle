@@ -9,10 +9,10 @@ class CoursesController < ApplicationController
     @courses = Course.displayable.start_at_between(current_date, current_date+14.days).by_date
     filter_courses
     count = 0
-    while @courses.blank? do
+    while @courses.count < 30 do
       break if count > 52/2
       count+=1
-      @courses = Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
+      @courses.merge Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
       filter_courses
     end
   end
