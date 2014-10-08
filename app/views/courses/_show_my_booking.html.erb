@@ -46,7 +46,7 @@
             <hr class="dark" />
           </div>
       <% end %>
-      <% if bookings && bookings.first.course.note_to_attendees.present? %>
+      <% if bookings.any?  && bookings.first.course.note_to_attendees.present? %>
           <div class="">
             <br />
             <div class="small light">Special note for attendees</div>
