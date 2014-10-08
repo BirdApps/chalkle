@@ -294,7 +294,7 @@ body.v2 {
     box-shadow:         1px 1px 0px 0px rgba(0,0,0,0.08);
   }
   .btn-default {
-    background: #999;
+     background-color: #eee;
     border: 2px solid #EAEAEA;
     color: #4B4B4B;
     box-shadow: none;
@@ -823,7 +823,7 @@ body.v2 {
         float: right;
         line-height: 15px;
         color: #fff;
-        padding: 3px 5px;
+        padding: 8px 5px 4px 5px;
         margin: 4px;
         @include border-radius(2px);
         background: #C7C7C7;
