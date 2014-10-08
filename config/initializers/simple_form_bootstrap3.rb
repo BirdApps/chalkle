@@ -20,7 +20,7 @@ SimpleForm.setup do |config|
     b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
   end
 
-  config.wrappers :horizonal, tag: 'div', class: 'form-group clearfix', error_class: 'error' do |b|
+  config.wrappers :horizontal, tag: 'div', class: 'form-group clearfix', error_class: 'error' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label, wrap_with: { :class => 'control-label col-sm-5' }

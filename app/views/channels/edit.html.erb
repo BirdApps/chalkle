@@ -20,7 +20,7 @@
           <hr />
         </div>
         <input type="hidden" id="channel_id" name="channel_id" value="<%= f.object.id %>" />
-        <%= f.input :name, label: "Name", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizonal %>
+        <%= f.input :name, label: "Name", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
         
         <div class="form-group url required channel_url_name">
           <div class="control-label col-sm-5">
@@ -39,9 +39,9 @@
 
 
 
-        <%= f.input :description, as: :text, label: "Caption", wrapper: :horizonal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
+        <%= f.input :description, as: :text, label: "Caption", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
         
-        <%= f.input :region_ids, collection: Region.alphabetical, label: "Region", wrapper: :horizonal, input_html: { value: f.object.regions.first, name: :'channel[region_ids][]', :'data-error-message' => 'You must specify class activities.' } %>
+        <%= f.input :region_ids, collection: Region.alphabetical, label: "Region", wrapper: :horizontal, input_html: { value: f.object.regions.first, name: :'channel[region_ids][]', :'data-error-message' => 'You must specify class activities.' } %>
       </div>
     </div>
 
@@ -145,9 +145,9 @@
     </div>
 
     <div class="row">
-       <%= f.input :account, label: "Bank account number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizonal %>
+       <%= f.input :account, label: "Bank account number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
 
-       <%= f.input :tax_number, label: "GST number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizonal %>
+       <%= f.input :tax_number, label: "GST number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
     <div class="col-sm-7 col-sm-offset-5">
       <p class="small grey center">
         Only include a GST Number if you are GST registered
