@@ -59,6 +59,15 @@ class ChannelsController < ApplicationController
   end
 
   def contact
+    @contact = ChannelContact.new channel: @channel
+    if params[:submit] == 'send'
+      @contact = ChannelContact.create from: params[:channel_contact][:from], subject: params[:channel_contact][:subject], message: params[:channel_contact][:message], channel: @channel, chalkler: current_chalkler
+      if @contact.errors.blank?
+        flash[:notice] = "Email has been sent"
+      else
+        flash[:notice] = "Email could not send, please check you've filled out all fields"
+      end
+    end
   end
 
   def followers
