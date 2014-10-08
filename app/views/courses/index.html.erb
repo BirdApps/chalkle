@@ -1,2 +1,8 @@
 <%# render 'courses_weeks', locals: {courses_weeks: @courses_weeks} %>
-<%= render @courses if @courses %>
+<% if @courses.empty?  %>
+   <div class="alert alert-warning center">
+      No classes match "<%= params["search"] %>"
+    </div>
+    <% @courses = Course.popular %>
+<% end %>
+<%= render @courses %>
