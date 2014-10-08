@@ -63,7 +63,6 @@ class Course < ActiveRecord::Base
   validate :check_start_at
   validate :check_url_name
 
-
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :displayable, lambda { published.visible }
@@ -96,6 +95,9 @@ class Course < ActiveRecord::Base
   scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
+
+
+  scope :popular, start_at_between(DateTime.now, DateTime.now.advance(days: 20))
 
   before_create :set_url_name
   before_create :cache_costs

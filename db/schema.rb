@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141007035306) do
+ActiveRecord::Schema.define(:version => 20141008002354) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -134,6 +134,18 @@ ActiveRecord::Schema.define(:version => 20141007035306) do
 
   add_index "channel_categories", ["channel_id", "category_id"], :name => "index_channel_categories_on_channel_id_and_category_id", :unique => true
 
+  create_table "channel_contacts", :force => true do |t|
+    t.integer  "channel_id"
+    t.integer  "chalkler_id"
+    t.string   "to"
+    t.string   "from"
+    t.string   "subject"
+    t.string   "message"
+    t.string   "status"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "channel_course_suggestions", :id => false, :force => true do |t|
     t.integer "channel_id",           :null => false
     t.integer "course_suggestion_id", :null => false
@@ -158,6 +170,7 @@ ActiveRecord::Schema.define(:version => 20141007035306) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
+    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -165,7 +178,6 @@ ActiveRecord::Schema.define(:version => 20141007035306) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -211,9 +223,9 @@ ActiveRecord::Schema.define(:version => 20141007035306) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
-    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
   end
 
   create_table "cities", :force => true do |t|
