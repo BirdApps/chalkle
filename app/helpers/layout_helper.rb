@@ -175,6 +175,12 @@ module LayoutHelper
           active: action_parts.include?("teachers") || controller_parts.include?("channel_teachers") ,
           title: "People"
         }
+      nav_links << {
+          img_name: "contact",
+          link: channel_contact_path(@channel.url_name),
+          active: action_parts.include?("contact"),
+          title: "contact"
+        }
       # if policy(@channel).metrics?
       #   nav_links << {
       #     img_name: "metrics",
