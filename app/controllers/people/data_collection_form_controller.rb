@@ -20,7 +20,7 @@ private
 
   def successful_update(form)
     flash[:notice] = "Everything has been successfully updated."
-    redirect_to root_url
+    redirect_to :root
   end
 
   def failed_update(form)

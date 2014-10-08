@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
       new_course_ids =  @teaching.submit params[:teaching]
     end
     if new_course_ids
-      redirect_to course_url new_course_ids[0]
+      redirect_to course_path new_course_ids[0]
     else
       render 'new'
     end
@@ -91,7 +91,7 @@ class CoursesController < ApplicationController
     authorize course
     course.status = params[:course][:status]
     flash[:notice] = "Course not ready to publish. Please edit it to fix any issues" if !course.save
-    redirect_to course_url course.id
+    redirect_to course_path(course)
   end
 
   def bookings
@@ -170,7 +170,7 @@ class CoursesController < ApplicationController
       unless !@course || policy(@course).edit?
         unless @course.published?
           flash[:notice] = "This class is no longer available."
-          redirect_to root_url
+          redirect_to :root
           return false
         end
       end

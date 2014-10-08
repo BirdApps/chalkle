@@ -111,7 +111,7 @@ Your Chalkle Administrator")
 
   def path_for_course(course)
     if (@channel || course.channel)
-      channel_course_url(@channel || course.channel, course)
+      channel_course_path(@channel || course.channel, course)
     end
   end
 

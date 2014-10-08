@@ -13,7 +13,7 @@ class Providers::CourseSuggestionsController < Me::BaseController
       @course_suggestion.join_channels = [ current_chalkler.channel_ids ]
     end
     if @course_suggestion.save
-      redirect_to root_url, notice: 'Thank you for your suggestion!'
+      redirect_to :root, notice: 'Thank you for your suggestion!'
     else
       render action: 'new'
     end

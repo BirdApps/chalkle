@@ -12,7 +12,7 @@ class People::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect(user)
     else
       flash[:error] = "Failed to log in with #{identity.provider}"
-      redirect_to new_chalkler_registration_url
+      redirect_to new_chalkler_registration_path
     end
   end
 

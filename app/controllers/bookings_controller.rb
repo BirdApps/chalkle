@@ -76,7 +76,7 @@ class BookingsController < ApplicationController
       return redirect_to = course_path(params[:course_id])
     else
       flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
-      return redirect_to new_course_booking_url(params[:channel_id], params[:course_id], params[:booking_id])
+      return redirect_to new_course_booking_path(params[:channel_id], params[:course_id], params[:booking_id])
     end
   end
 
@@ -121,7 +121,7 @@ class BookingsController < ApplicationController
       return
     end
     unless @course.published?
-      return redirect_to root_url, notice: "This class is no longer available."
+      return redirect_to :root, notice: "This class is no longer available."
     end
     unless @course.start_at > DateTime.now
       return redirect_to @course.path, notice: "This class has already started, and bookings cannot be created or altered"

@@ -26,7 +26,7 @@ class Me::PreferencesController < Me::BaseController
     else
       @chalkler.email = params[:chalkler][:email]
       if @chalkler.save
-        redirect_to root_url, notice: 'Welcome to chalkle! Sign in successful.'
+        redirect_to :root, notice: 'Welcome to chalkle! Sign in successful.'
       else
         render template: 'me/preferences/enter_email'
       end
