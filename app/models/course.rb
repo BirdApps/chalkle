@@ -180,6 +180,10 @@ class Course < ActiveRecord::Base
   def first_lesson
     lessons.order('start_at').limit(1).first
   end
+  def last_lesson
+    lessons.order('start_at DESC').limit(1).last
+  end
+
 
   def first_or_new_lesson
     @first_or_new_lesson ||= ( first_lesson || Lesson.new(course_id: id) )
@@ -502,7 +506,7 @@ class Course < ActiveRecord::Base
   alias_method :date, :start_on
 
   def end_at
-    start_at+duration if start_at && duration
+    last_lesson.start_at+duration if last_lesson.start_at && duration
   end
   alias_method :end_on, :end_at
 
@@ -512,10 +516,6 @@ class Course < ActiveRecord::Base
 
   def reviews
     []
-  end
-
-  def has_reviews
-    true
   end
 
   def review_percent
