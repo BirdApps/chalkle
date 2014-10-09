@@ -502,7 +502,7 @@ class Course < ActiveRecord::Base
 
   def lesson_in_progress
     if status == STATUS_1
-      lesson.each do |lesson|
+      lessons.each do |lesson|
         return lesson if lesson.between_start_and_end
       end
     end
