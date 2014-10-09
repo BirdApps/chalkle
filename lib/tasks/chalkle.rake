@@ -9,6 +9,28 @@ begin
       end
     end
 
+    desc "Migration tasks"
+    task "migrate_images" => :environment do 
+      # channel_photo 
+      #   -> "http://chalkle-production.s3.amazonaws.com/channel_photo/image/:id" 
+      #   channel_photo_uploader
+
+      channels = Channel.all.select{|c| c.logo.url =~ /amazonaws\.com.*/ }
+      channels.each_with_index do |channel, index|
+        channel.remote_logo_url = channel.logo.url.gsub("system/uploads/production/", "")
+        channel.save
+        puts "#{index+1}/#{channels.count} migrated image for: #{channel.id} - #{channel.name}\n" 
+      end
+
+      courses = Course.all.select{|c| c.course_upload_image.url =~ /amazonaws\.com.*/ }
+      courses.each_with_index do |course, index|
+        course.remote_course_upload_image_url = course.course_upload_image.url.gsub("system/uploads/production/", "")
+        course.save
+        puts "#{index+1}/#{courses.count} migrated image for: #{course.id} - #{course.name}\n" 
+      end
+
+    end
+
     desc "Pull all meetup data"
     task "load_all" => :environment do
       EventLog.log('load_all') do

@@ -82,7 +82,12 @@ namespace :dragonfly do
   end
 end
 
-
+namespace :chalkle do 
+  desc "migrate images"
+  task :migrate_images, :roles => [:app] do 
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake chalkle:migrate_images"
+  end
+end
 
 
 after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs", "deploy:migrate"

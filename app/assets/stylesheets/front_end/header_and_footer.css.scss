@@ -47,15 +47,20 @@ $line-height: $navbar-height - ($vertical-padding * 2);
       a {
         height: $line-height;
         line-height: $line-height;
-        color: white;
+        color: #eee;
         display: block;
         padding: 0 10px;
         text-decoration: none;
         font-weight: normal;
         background-color: transparent;
+        @include border-radius(4px);
 
-        &:hover {
-          text-decoration: underline;
+
+        &:hover, &.current {
+          color: #fff;
+          text-shadow: none;
+          text-decoration: none;
+          background-color: rgba(255,255,255,0.1);
         }
       }
       .dropdown-menu li a {

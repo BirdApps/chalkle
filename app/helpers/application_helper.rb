@@ -31,7 +31,8 @@ module ApplicationHelper
 
   def header_color
     if @channel && @channel.header_color || @course && @course.channel.header_color
-      (@channel || @course.channel).header_color
+      (@channel || @course.channel).header_color || @booking && @booking.course.channel.header_color
+      (@channel || @course.channel || @booking.course.channel).header_color
     else
       nil
     end
