@@ -8,19 +8,19 @@ class TheUser
   end
 
   def authenticated?
-    !!(chalkler || admin_user)
+    !!(chalkler.id.present? || admin_user.id.present?)
   end
 
   def admin?
-    !admin_user.nil?
+    admin_user.present? && admin_user.id.present?
   end
 
   def chalkler?
-    !chalkler.nil?
+    chalkler.present? && chalkler.id.present?
   end
 
   def role
-    admin_user.role if admin_user
+    admin_user.role if admin?
   end
 
   def name
