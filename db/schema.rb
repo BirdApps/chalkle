@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141009041345) do
+ActiveRecord::Schema.define(:version => 20141009231042) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -78,6 +78,9 @@ ActiveRecord::Schema.define(:version => 20141009041345) do
     t.boolean  "reminder_mailer_sent",                                        :default => false
     t.boolean  "booking_completed_mailer_sent",                               :default => false
   end
+
+  add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
+  add_index "bookings", ["course_id"], :name => "index_bookings_on_course_id"
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -301,6 +304,11 @@ ActiveRecord::Schema.define(:version => 20141009041345) do
     t.string   "cancelled_reason"
   end
 
+  add_index "courses", ["region_id"], :name => "index_courses_on_region_id"
+  add_index "courses", ["start_at"], :name => "index_courses_on_start_at"
+  add_index "courses", ["status"], :name => "index_courses_on_status"
+  add_index "courses", ["url_name"], :name => "index_courses_on_url_name"
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -331,6 +339,9 @@ ActiveRecord::Schema.define(:version => 20141009041345) do
     t.integer  "duration"
     t.boolean  "cancelled", :default => false
   end
+
+  add_index "lessons", ["course_id"], :name => "index_lessons_on_course_id"
+  add_index "lessons", ["start_at"], :name => "index_lessons_on_start_at"
 
   create_table "omni_avatar_avatars", :force => true do |t|
     t.integer "owner_id"
