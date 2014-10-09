@@ -22,8 +22,7 @@ class ApplicationController < ActionController::Base
     options       = { original_path: original_path, default_path: default_path }
 
     Chalkler::DataCollection.new(resource, options).path
-
-    original_path || params[:redirect_to]  || root_path
+    original_path  || session[:user_return_to] || params[:redirect_to] || root_path
   end
 
   def after_register_path_for(resource)
