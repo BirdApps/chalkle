@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141009022902) do
+ActiveRecord::Schema.define(:version => 20141009041345) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -52,13 +52,13 @@ ActiveRecord::Schema.define(:version => 20141009022902) do
     t.integer  "meetup_id"
     t.integer  "course_id"
     t.integer  "chalkler_id"
-    t.string   "status",                                              :default => "yes"
-    t.integer  "guests",                                              :default => 0
+    t.string   "status",                                                      :default => "yes"
+    t.integer  "guests",                                                      :default => 0
     t.text     "meetup_data"
-    t.datetime "created_at",                                                             :null => false
-    t.datetime "updated_at",                                                             :null => false
-    t.boolean  "visible",                                             :default => true
-    t.decimal  "paid",                  :precision => 8, :scale => 2
+    t.datetime "created_at",                                                                     :null => false
+    t.datetime "updated_at",                                                                     :null => false
+    t.boolean  "visible",                                                     :default => true
+    t.decimal  "paid",                          :precision => 8, :scale => 2
     t.string   "payment_method"
     t.datetime "reminder_last_sent_at"
     t.decimal  "chalkle_fee"
@@ -75,7 +75,8 @@ ActiveRecord::Schema.define(:version => 20141009022902) do
     t.string   "note_to_teacher"
     t.string   "name"
     t.string   "cancelled_reason"
-    t.boolean  "reminder_mailer_sent",                                :default => false
+    t.boolean  "reminder_mailer_sent",                                        :default => false
+    t.boolean  "booking_completed_mailer_sent",                               :default => false
   end
 
   create_table "categories", :force => true do |t|

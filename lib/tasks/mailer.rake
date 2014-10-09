@@ -12,6 +12,17 @@ begin
       end
     end
 
+    desc "Send BookingMailer#booking_completed notices"
+    task "booking_completed", [:frequency] => :environment do
+      EventLog.log("class_completed") do
+        bookings = Booking.needs_booking_completed_mailer
+        bookings.each do |booking|
+          BookingMailer.booking_completed(booking).deliver!
+          booking.update_column :booking_completed_mailer_sent, true
+        end
+      end
+    end
+
 
 
     desc "Send chalkler digest"

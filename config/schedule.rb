@@ -17,6 +17,9 @@ end
 every :day, :at => '02:00am' do
   rake "mailer:booking_reminder"
 end
+every :day, :at => '02:30am' do
+  rake "mailer:booking_completed"
+end
 
 every :monday, :at => '01:30am' do
   rake "mailer:chalkler_digest['weekly']"

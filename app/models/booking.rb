@@ -42,6 +42,10 @@ class Booking < ActiveRecord::Base
   before_validation :set_free_course_attributes
 
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
+
+  def self.needs_booking_completed_mailer
+    course_visible.where('booking_completed_mailer_sent != true').select{|b| b.course.end_at > Date.today && b.course.status=="Published"}
+  end
   
   def free?
     cost == 0
@@ -57,7 +61,6 @@ class Booking < ActiveRecord::Base
   end
 
   def cancel!(reason = nil)
-    #TODO: notify teacher and chalkler
     self.status = 'no'
     self.cancelled_reason = reason if reason
     if refundable?
@@ -66,6 +69,7 @@ class Booking < ActiveRecord::Base
       end
     end
     save
+    BookingMailer.booking_cancelled(self).deliver!
   end
 
   def cancelled?
