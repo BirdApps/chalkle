@@ -23,8 +23,6 @@ begin
       end
     end
 
-
-
     desc "Send chalkler digest"
     task "chalkler_digest", [:frequency] => :environment do |t, args|
       EventLog.log("chalkler_digest_#{args.frequency}") do
