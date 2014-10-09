@@ -147,6 +147,14 @@ class Course < ActiveRecord::Base
     true if repeat_course.present?
   end
 
+  def repeating?
+    repeating_class?
+  end
+
+  def next_class
+    repeat_course.courses[repeat_course.courses.index(repeat_course.courses.find(id))+1] if repeat_course.present?
+  end
+
   def bookings?
     bookings.present?
   end
@@ -499,6 +507,10 @@ class Course < ActiveRecord::Base
     start_at+duration if start_at && duration
   end
   alias_method :end_on, :end_at
+
+  def reviews?
+    reviews.present?
+  end
 
   def reviews
     []

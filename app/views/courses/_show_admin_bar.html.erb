@@ -42,7 +42,7 @@
               <% else %>
                 <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
               <% end %>
-            <% else %>
+            <% elsif @course.status != 'Unreviewed' %>
                 Class is <%= @course.status %>
             <% end %>
           </div>

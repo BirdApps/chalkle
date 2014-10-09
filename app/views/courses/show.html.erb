@@ -23,10 +23,10 @@
         </div>
         <br />
         <div class="meta clearfix">
-          <% if false #@course.has_reviews %> 
+          <% if @course.reviews? %> 
             <div class="reviews small grey">
               <span class="fa fa-heart"></span>
-              <span class=" text-right">
+              <span class="text-right">
                 <%= @course.review_percent || '?' %>%
               </span>
               <div class="small">
@@ -41,6 +41,16 @@
               FREE
             <% end %>
           </div>
+          <% if @course.next_class.present? && (@course.status != 'Unreviewed' || policy(@course).admin?) %>
+            <div class="col-xs-12 center small grey class-repeats">
+              <br />
+              <div class="upper">CLASS REPEATS</div>
+              <div>- next class -</div>
+              <div>
+                <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
       <%= @course.do_during_class %>
