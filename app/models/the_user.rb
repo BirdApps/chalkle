@@ -88,9 +88,7 @@ class TheUser
   end
 
   def courses_adminable
-    courses = channels_adminable.collect{|c|c.courses}
-    courses << courses_teaching
-    courses
+    chalkler.id.present? ? chalkler.adminable_courses : Course.none
   end
 
   def learn_menu_badge_count

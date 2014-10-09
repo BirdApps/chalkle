@@ -4,19 +4,23 @@ class CoursesController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
   before_filter :check_clear_filters, only: [:index]
-
+ 
   def index
-    @courses = Course.displayable.start_at_between(current_date, current_date+14.days).by_date
-    
-    @courses.merge current_user.courses_adminable
-    filter_courses
-    count = 0
-    while @courses.count < 30 do
-      break if count > 52/2
-      count+=1
-      @courses.merge Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
-      filter_courses
+    if current_user.authenticated?
+      @courses = filter_courses(Course.homepage(current_date)) +
+                 filter_courses(Course.taught_by_chalkler(current_chalkler))+
+                 filter_courses(Course.adminable_by(current_chalkler))
+    else
+      @courses = filter_courses(Course.homepage(current_date))
     end
+    #TODO: three redirects on load? what?!
+    #binding.pry
+    # count = 0
+    # while @courses.count < 30 do
+    #   break if count > 52/2
+    #   count+=1
+    #   @courses.merge Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
+    # end
   end
 
   def show
@@ -112,27 +116,26 @@ class CoursesController < ApplicationController
 
   private
 
-    def filter_courses
+    def filter_courses(courses)
       if @region.id.present? && @category.id.present? && @channel.id.present?
-        @courses = @courses.in_region(@region).in_category(@category).in_channel(@channel)
+        courses = courses.in_region(@region).in_category(@category).in_channel(@channel)
       elsif @region.id.present? && @category.id.present? && @channel.id.nil?    
-        @courses = @courses.in_region(@region).in_category(@category) 
+        courses = courses.in_region(@region).in_category(@category) 
       elsif @region.id.present? && @category.id.nil? && @channel.id.present?
-        @courses = @courses.in_region(@region).in_channel(@channel)
+        courses = courses.in_region(@region).in_channel(@channel)
       elsif @region.id.nil? && @category.id.present? && @channel.id.present?  
-        @courses = @courses.in_category(@category).in_channel(@channel)
+        courses = courses.in_category(@category).in_channel(@channel)
       elsif @region.id.nil? && @category.id.nil? && @channel.id.present?  
-        @courses = @courses.in_channel(@channel)
+        courses = courses.in_channel(@channel)
       elsif @region.id.nil? && @category.id.present? && @channel.id.nil? 
-        @courses = @courses.in_category(@category)   
+        courses = courses.in_category(@category)   
       elsif @region.id.present? && @category.id.nil? && @channel.id.nil?
-        @courses = @courses.in_region(@region)
+        courses = courses.in_region(@region)
       end
       if params[:search].present?
-        @courses = Course.search params[:search], @courses
+        courses = Course.search params[:search], courses
       end
-
-      check_presence_of_courses
+      courses
     end
 
     def load_course

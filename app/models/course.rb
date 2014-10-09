@@ -67,6 +67,8 @@ class Course < ActiveRecord::Base
   scope :visible, where(visible: true)
   scope :displayable, lambda { published.visible }
 
+  scope :homepage, lambda{ |current_date| displayable.start_at_between(current_date, current_date+14.days).by_date }
+
   scope :start_at_between, lambda{ |from,to| where(:start_at => from.beginning_of_day..to.end_of_day) }
   scope :recent, visible.start_at_between(DateTime.now.advance(days: PAST), DateTime.now.advance(days: IMMEDIATE_FUTURE))
   scope :last_week, visible.start_at_between(DateTime.now.advance(weeks: -1), DateTime.now)
@@ -89,13 +91,13 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-  scope :from_teacher, lambda {|teacher| where(teacher: teacher.id) }
+  scope :taught_by_chalkler, lambda {|chalkler| joins(:teacher).where('channel_teachers.chalkler_id = ?', chalkler.id) }
   scope :in_region, lambda {|region| where(region_id: region.id) }
   scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
-
   scope :popular, start_at_between(DateTime.now, DateTime.now.advance(days: 20))
+  scope :adminable_by, lambda {|chalkler| joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
 
   before_create :set_url_name
   before_save :update_published_at
