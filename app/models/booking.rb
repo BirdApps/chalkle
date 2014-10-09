@@ -61,7 +61,6 @@ class Booking < ActiveRecord::Base
   end
 
   def cancel!(reason = nil)
-    #TODO: notify teacher and chalkler
     self.status = 'no'
     self.cancelled_reason = reason if reason
     if refundable?
@@ -70,6 +69,7 @@ class Booking < ActiveRecord::Base
       end
     end
     save
+    BookingMailer.booking_cancelled(self).deliver!
   end
 
   def cancelled?

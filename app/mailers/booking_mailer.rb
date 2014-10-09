@@ -13,9 +13,17 @@ class BookingMailer < BaseChalkleMailer
     end
   end
 
+  def booking_cancelled(booking)
+    @booking = booking
+    @chalkler = booking.chalkler
+    @course = booking.course
+    mail(to: @chalkler.email, subject: "#{@chalkler.name}, your booking has been cancelled.") do |format| 
+      format.text { render layout: 'standard_mailer' }
+      format.html { render layout: 'standard_mailer' }
+    end
+  end
 
   def booking_reminder(booking)
-    
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
@@ -23,7 +31,6 @@ class BookingMailer < BaseChalkleMailer
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
-
   end
 
   def booking_completed(booking)
