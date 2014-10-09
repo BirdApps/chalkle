@@ -1,4 +1,35 @@
-<%= link_to 'Booking', sudo_booking_path(@payment.booking.id), class: 'btn btn-default' %>
-<br />
-Payment ID: 
-<%= @payment.id %>
+<%= link_to 'Back to Booking '+@payment.booking.id.to_s, sudo_booking_path(@payment.booking.id), class: 'btn btn-default' %>
+<br /><br />
+<div class="row">
+  <div class="col-xs-6 col-sm-2"> 
+    Payment ID:
+  </div>
+  <div class="col-xs-6 col-sm-10">
+    <%= @payment.id %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6 col-sm-2"> 
+    Date:
+  </div> 
+  <div class="col-xs-6 col-sm-10">
+    <%= @payment.created_at %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6 col-sm-2"> 
+    Amount: 
+  </div>
+  <div class="col-xs-6 col-sm-10">
+    $<%= @payment.total %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6 col-sm-2"> 
+    Learner:
+  </div>
+  <div class="col-xs-6 col-sm-10">
+    <%= @payment.chalkler.email %>
+    <%= link_to "Profile", chalkler_path(@payment.chalkler.id), class: 'btn btn-primary' %>
+  </div>
+</div>
