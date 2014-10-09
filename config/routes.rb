@@ -133,4 +133,5 @@ Chalkle::Application.routes.draw do
   # constraints(MainDomain) do
   #   get ':country_code/:region_name', to: 'courses#index', constraints: {country_code: /[a-zA-Z]{2}/}
   # end
+  match '*a', :to => 'application#not_found'
 end

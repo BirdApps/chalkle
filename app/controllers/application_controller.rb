@@ -74,8 +74,7 @@ class ApplicationController < ActionController::Base
     end
 
     def not_found
-      # raise ActionController::RoutingError.new('Not Found')
-      render :file => 'public/404.html', :status => :not_found, :layout => false
+      render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
     end
 
     def load_country
