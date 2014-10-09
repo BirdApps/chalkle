@@ -100,7 +100,6 @@ class Course < ActiveRecord::Base
   scope :popular, start_at_between(DateTime.now, DateTime.now.advance(days: 20))
 
   before_create :set_url_name
-  before_create :cache_costs
   before_save :update_published_at
   before_save :save_first_lesson
 
@@ -252,7 +251,7 @@ class Course < ActiveRecord::Base
   end
 
   def channel_fee
-    cached_channel_fee || calc_channel_fee
+    calc_channel_fee
   end
 
   def calc_channel_fee
@@ -262,7 +261,7 @@ class Course < ActiveRecord::Base
   def chalkle_fee(incl_tax = true)
     return 0 if free?
     single = course_class_type.nil? ? single_class? : course_class_type == 'course'
-    no_tax_fee = cached_chalkle_fee || (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
+    no_tax_fee = (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
     incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
   end
 
