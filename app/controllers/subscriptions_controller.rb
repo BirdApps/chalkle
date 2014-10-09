@@ -4,6 +4,7 @@ class SubscriptionsController < ApplicationController
 	belongs_to :channel
 	respond_to :js
   before_filter [:load_channel]
+  before_filter :authenticate_chalkler!
 
   def create
     Subscription.create channel_id: @channel.id, chalkler_id: current_chalkler.id
