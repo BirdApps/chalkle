@@ -372,7 +372,7 @@ class Course < ActiveRecord::Base
     end
   end
 
-  def income
+  def incomeco
     excl_gst(collected_turnover - total_cost)
   end
 
@@ -382,7 +382,7 @@ class Course < ActiveRecord::Base
 
   # this should be a scope
   def bookable?
-    spaces_left? && start_at < DateTime.now && status == STATUS_1
+    spaces_left? && start_at > DateTime.now && status == STATUS_1
   end
 
   def spaces_left?
@@ -496,6 +496,19 @@ class Course < ActiveRecord::Base
     "/#{channel.url_name}/#{url_name}"
   end
 
+  def lesson_in_progress
+    if status == STATUS_1
+      lesson.each do |lesson|
+        return lesson if lesson.between_start_and_end
+      end
+    end
+    nil
+  end
+
+  def between_start_and_end
+    start_at < DateTime.now && end_at > DateTime.now
+  end
+
   def start_on
     start_at.to_date if start_at
   end
@@ -529,6 +542,12 @@ class Course < ActiveRecord::Base
     truncated
   end
 
+  def start_at!
+    check_start_at
+    save
+  end
+
+
   private
   def class_or_course
     return 'class' if lessons.count < 2
@@ -549,9 +568,7 @@ class Course < ActiveRecord::Base
   end
   
   def check_start_at
-    if first_lesson.present?
-      self.start_at = first_lesson.start_at
-    end
+    self.start_at = first_lesson.start_at if first_lesson.present?
   end
 
   def cache_costs

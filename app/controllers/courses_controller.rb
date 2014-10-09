@@ -9,7 +9,6 @@ class CoursesController < ApplicationController
     @courses = Course.displayable.start_at_between(current_date, current_date+14.days).by_date
     
     @courses.merge current_user.courses_adminable
-    binding.pry
     filter_courses
     count = 0
     while @courses.count < 30 do

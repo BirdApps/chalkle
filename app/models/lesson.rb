@@ -17,6 +17,10 @@ class Lesson < ActiveRecord::Base
     errors.add(:duration, "Duration cannot be negative") if lesson.duration && lesson.duration < 0
   end
 
+  def between_start_and_end
+    start_at < DateTime.now && end_at > DateTime.now
+  end
+
   def end_at
     start_at+duration
   end
