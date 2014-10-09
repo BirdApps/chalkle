@@ -89,7 +89,6 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-
   scope :from_teacher, lambda {|teacher| where(teacher: teacher.id) }
   scope :in_region, lambda {|region| where(region_id: region.id) }
   scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
@@ -101,8 +100,6 @@ class Course < ActiveRecord::Base
   before_create :set_url_name
   before_save :update_published_at
   before_save :save_first_lesson
-
-
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 

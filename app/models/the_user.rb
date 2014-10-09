@@ -87,6 +87,12 @@ class TheUser
     channels.uniq
   end
 
+  def courses_adminable
+    courses = channels_adminable.collect{|c|c.courses}
+    courses << courses_teaching
+    courses
+  end
+
   def learn_menu_badge_count
     @learn_menu_badge_count ||= chalkler ? chalkler.bookings.upcoming.count : 0
   end
@@ -95,10 +101,5 @@ class TheUser
     return @teach_menu_badge_count if @teach_menu_badge_count
     return 0 unless chalkler
     (chalkler.channels_adminable.map {|c| c.courses.upcoming(nil, include_unpublished: false) }.flatten + courses_teaching).uniq.count
-
-
   end
-
-
-
 end

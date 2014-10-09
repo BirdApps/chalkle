@@ -7,6 +7,9 @@ class CoursesController < ApplicationController
 
   def index
     @courses = Course.displayable.start_at_between(current_date, current_date+14.days).by_date
+    
+    @courses.merge current_user.courses_adminable
+    binding.pry
     filter_courses
     count = 0
     while @courses.count < 30 do
@@ -87,7 +90,14 @@ class CoursesController < ApplicationController
   def change_status
     course = Course.find params[:id]
     authorize course
-    course.status = params[:course][:status]
+    new_status = params[:course][:status]
+    if new_status == 'publish_series'
+      new_status = 'Published'
+      course.repeat_course.courses.each do |series_course|
+        series_course.publish! if series_course.status == 'Unreviewed'
+      end
+    end
+    course.status = new_status
     flash[:notice] = "Course not ready to publish. Please edit it to fix any issues" if !course.save
     redirect_to course_path(course)
   end
