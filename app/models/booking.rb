@@ -1,6 +1,8 @@
 class Booking < ActiveRecord::Base
   PAYMENT_METHODS = Finance::payment_methods
-  attr_accessible *BASIC_ATTR = [:course_id, :guests, :payment_method, :booking, :name, :note_to_teacher ]
+  attr_accessible *BASIC_ATTR = [
+    :course_id, :guests, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
+  ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee , :provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   #booking statuses
@@ -19,7 +21,7 @@ class Booking < ActiveRecord::Base
   has_one :payment
   has_one :channel, through: :course
 
-  validates_presence_of :course_id, :status, :name
+  validates_presence_of :course_id, :status, :name, :chalkler
   validates_presence_of :payment_method, :unless => :free?
 
   scope :paid, where{ cost <= paid }
@@ -33,25 +35,40 @@ class Booking < ActiveRecord::Base
   scope :visible, where(visible: true)
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
   scope :by_date, order(:created_at)
+  scope :by_date_desc, order('created_at DESC')
   scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.now ).order('courses.start_at')
 
   before_validation :set_free_course_attributes
 
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
-  #delegate :free?, to: :course, allow_nil: true
+  
   def free?
     cost == 0
   end
 
-  def cancel!
-    #TODO: notify teacher
+  def refund!
+    self.status = STATUS_4
+    save
+  end
+
+  def confirmed?
+    true if status == STATUS_1
+  end
+
+  def cancel!(reason = nil)
+    #TODO: notify teacher and chalkler
     self.status = 'no'
+    self.cancelled_reason = reason if reason
     if refundable?
-      if paid && paid > 0
+      if paid? && paid > 0
         self.status = 'refund_pending'
       end
     end
     save
+  end
+
+  def cancelled?
+    true if status == STATUS_1 || status == STATUS_5
   end
 
   def paid?

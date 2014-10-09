@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :warn_cancel, :cancel]
+  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_filter_cache, only: [:create, :update, :destroy]
@@ -76,10 +76,8 @@ class CoursesController < ApplicationController
 
   def confirm_cancel
     authorize @course
-    @course.status = 'Cancelled'
-    @course.bookings.each do |booking|
-      booking.cancel
-    end
+    @course.cancel!(params[:course][:cancelled_reason])
+    return redirect_to @course.path
   end
 
   def destroy
@@ -95,7 +93,7 @@ class CoursesController < ApplicationController
   end
 
   def bookings
-
+    authorize @course
   end
 
   def calculate_cost

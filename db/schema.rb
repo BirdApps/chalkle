@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141008002354) do
+ActiveRecord::Schema.define(:version => 20141009000314) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20141008002354) do
     t.decimal  "processing_gst"
     t.string   "note_to_teacher"
     t.string   "name"
+    t.string   "cancelled_reason"
   end
 
   create_table "categories", :force => true do |t|
@@ -295,6 +296,7 @@ ActiveRecord::Schema.define(:version => 20141008002354) do
     t.string   "teacher_pay_type"
     t.string   "course_class_type"
     t.string   "note_to_attendees"
+    t.string   "cancelled_reason"
   end
 
   create_table "delayed_jobs", :force => true do |t|

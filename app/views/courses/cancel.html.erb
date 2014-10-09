@@ -1,38 +1,47 @@
-<%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: cancel_course_path(@course.id)) do |f| %>
-  <input name="_method" type="hidden" value="put" />
-  <input type="submit" value="Confirm Cancel" class="pull-right btn btn-danger" />
-  <h2>Are you sure you want to cancel this <%= @course.type %>?</h2>
-  
-<% end %>
-<ul>
-  <% if @course.bookings? %>
-    <% if @course.free? %>
-      <li>
-        The <%= @course.type %> will be removed from search results
-      </li>
-      <li>
-        All bookings will be cancelled
-      </li>
-      <li> 
-        All attendees will be notified
-      </li>
+<div class="new_form_wrapper">
+  <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: cancel_course_path(@course.id)) do |f| %>
+    <input name="_method" type="hidden" value="put" />
+    <input type="submit" value="Confirm Cancel" class="pull-right btn btn-danger" />
+    <h2>What is your reason for cancelling this <%= @course.type %>?</h2>
+    <%= f.input :cancelled_reason, label: 'Reason', as: :text, class: 'form-control', required: true %>
+  <% end %>
+  <h4>If you cancel the <%= @course.type %></h4>
+  <ul>
+    <% if @course.bookings? %>
+      <% if @course.free? %>
+        <li>
+          The <%= @course.type %> will be removed from search results
+        </li>
+        <li>
+          All bookings will be cancelled
+        </li>
+        <li> 
+          All attendees will be notified
+        </li>
+      <% else %>
+        <li>
+          The <%= @course.type %> will be removed from search results
+        </li>
+        <li>
+          All bookings will be refunded
+        </li>
+        <li>
+          All attendees will be notified
+        </li>
+      <% end %>
     <% else %>
       <li>
         The <%= @course.type %> will be removed from search results
       </li>
       <li>
-        All bookings will be refunded
-      </li>
-      <li>
-        All attendees will be notified
+        No bookings will be able to be created
       </li>
     <% end %>
-  <% else %>
-    <li>
-      The <%= @course.type %> will be removed from search results
-    </li>
-    <li>
-      No bookings will be able to be created
-    </li>
-  <% end %> 
-</ul>
+    <% if @course.type == 'course' %>
+      <li>All classes in the course will be cancelled</li>
+    <% end %>
+     <% if @course.repeating_class? %>
+      <li>All other <%= @course.type %>s in this series will be unaffected, only the class on <%= day_ordinal_month @course.start_at %> will be cancelled</li>
+    <% end %>
+  </ul>
+</div>

@@ -15,7 +15,7 @@
                <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Unpublish</button>
             <% else #elsif no? bookings%>
               <span class="inline pad-top pull-left">   
-                <strong>Great job!</strong>  There are <%= @course.bookings.count %> attendees booked in
+                <strong><%= pluralize(@course.bookings.confirmed.count,'booking','bookings') %></strong> confirmed
               </span>
             <% end #end if bookings?%>
               <% if @course.can_be_cancelled? %>
