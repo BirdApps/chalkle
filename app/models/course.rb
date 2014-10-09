@@ -96,12 +96,13 @@ class Course < ActiveRecord::Base
   scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
 
-
   scope :popular, start_at_between(DateTime.now, DateTime.now.advance(days: 20))
 
   before_create :set_url_name
   before_save :update_published_at
   before_save :save_first_lesson
+
+
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 
@@ -180,7 +181,7 @@ class Course < ActiveRecord::Base
   end
 
   def first_lesson
-    lessons.order('start_at desc').limit(1).first
+    lessons.order('start_at').limit(1).first
   end
 
   def first_or_new_lesson
@@ -384,7 +385,7 @@ class Course < ActiveRecord::Base
 
   # this should be a scope
   def bookable?
-    spaces_left?
+    spaces_left? && start_at < DateTime.now && status == STATUS_1
   end
 
   def spaces_left?

@@ -17,7 +17,7 @@
         The <span class="strong em"><%= noun %></span> will run 
       </span>
       <ul>
-        <% @course.lessons.each do |lesson| %>
+        <% @course.classes.each do |lesson| %>
           <li class="strong em x1-25">
             <%= day_ordinal_month(lesson.start_at, true, false) %>,
             <%= pretty_time_range(lesson.start_at, lesson.end_at) %>

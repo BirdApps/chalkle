@@ -10,12 +10,20 @@
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
       <div class="right-col">
-        <%= render 'social_links' %>      
-        <div class="join-link">
-          <a href="<%= new_course_booking_path @course.id %>" class="bg-colour<%= @course.best_colour_num %> btn btn-default">
-            JOIN NOW
-          </a>
-        </div>
+        <%= render 'social_links' %>
+        <% if @course.bookable? %>    
+          <div class="join-link">
+            <a href="<%= new_course_booking_path @course.id %>" class="bg-colour<%= @course.best_colour_num %> btn btn-default">
+              JOIN NOW
+            </a>
+          </div>
+        <% else %>
+          <div class="join-link">
+            <a href="#" class="btn btn-default">
+              Not Bookable
+            </a>
+          </div>
+        <% end %>
         <div class=" small light grey">
           <% if @course.limited_spaces?  %>
             <%= @course.spaces_left? ? @course.spaces_left.to_s+" spots left" : "Booked out" %> 
@@ -49,6 +57,18 @@
               <div>
                 <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
               </div>
+            </div>
+          <% end %>
+          <% if @course.course? %>
+            <div class="col-xs-12 center small grey class-repeats">
+              <br />
+              <div class="upper">MULTIPLE CLASSES</div>
+              <div>- dates -</div>
+              <% @course.classes.each do |lesson| %>
+                 <div>
+                  <%= quick_date_time lesson.start_at %>
+                </div>
+              <% end %>
             </div>
           <% end %>
         </div>

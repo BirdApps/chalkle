@@ -35,7 +35,7 @@ Your Chalkle Administrator")
     if relative && use_relative_day
       relative+" "+pretty_time(date)
     else
-      date.strftime("%d %b")+" @ "+pretty_time(date)
+      date.strftime("%d %b")+" — "+pretty_time(date)
     end
   end
 
