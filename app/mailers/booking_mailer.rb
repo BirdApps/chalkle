@@ -26,4 +26,14 @@ class BookingMailer < BaseChalkleMailer
 
   end
 
+  def booking_completed(booking)
+    @booking = booking
+    @chalkler = booking.chalkler
+    @course = booking.course
+    mail(to: @chalkler.email, subject: "#{@chalkler.name}, we hope you enjoyed your class!") do |format| 
+      format.text { render layout: 'standard_mailer' }
+      format.html { render layout: 'standard_mailer' }
+    end
+  end
+
 end
