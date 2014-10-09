@@ -42,6 +42,7 @@ class BookingsController < ApplicationController
     #destroy_cancelled_booking
     if @booking.save
       if @booking.free?
+        BookingMailer.booking_confirmation(@booking).deliver!
         return redirect_to course_booking_path @booking.course, @booking
       else
         @booking.update_attribute(:status, 'pending')
@@ -74,6 +75,7 @@ class BookingsController < ApplicationController
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
+      BookingMailer.booking_confirmation(@booking).deliver!
       redirect_to course_path(params[:course_id])
     else
       flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
