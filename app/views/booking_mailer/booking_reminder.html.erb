@@ -1,0 +1,25 @@
+<h3 style="border-bottom: solid 1px #ececec; padding-bottom: 5px;">
+  Hello <%= @chalkler.name %>,
+</h3>
+Thanks! You are all booked in for the course! 
+<br/>
+Your confirmed details are:
+<br/>
+<%= @booking.name %>
+<br/>
+<%= @course.name %>
+<br/>
+The course will be delivered by <%= @course.channel.name %>
+<br/>
+<br/>
+<%= day_ordinal_month @course.start_at %><br />
+<%= pretty_time_range @course.start_at, @course.end_at %><br />
+<%= @course.address %> <br />
+<%= @course.venue %><br />
+<br />
+If you have any questions please contact the course provider directly. <br />
+<br />
+You should have also received a payment receipt separately. <br />
+<br />
+Happy learning!<br />
+<br />

@@ -1,6 +1,19 @@
 begin
   namespace :mailer do
 
+    desc "Send BookingMailer#course_reminder notices"
+    task "booking_reminder", [:frequency] => :environment do
+      EventLog.log("course_reminder") do
+        bookings = Booking.needs_reminder
+        bookings.each do |booking|
+          BookingMailer.booking_reminder(booking).deliver!
+          booking.update_column :reminder_mailer_sent, true
+        end
+      end
+    end
+
+
+
     desc "Send chalkler digest"
     task "chalkler_digest", [:frequency] => :environment do |t, args|
       EventLog.log("chalkler_digest_#{args.frequency}") do
