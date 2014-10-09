@@ -36,10 +36,14 @@
                <%= f.input :status, as: :hidden, input_html: { value: 'Published' } %>
             <% end %>
             <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Publish</button>
-            <% if @course.can_be_cancelled? %>
-              <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
+            <% if @course.status == 'Published' %>
+              <% if @course.can_be_cancelled? %>
+                <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
+              <% else %>
+                <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
+              <% end %>
             <% else %>
-              <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
+                Class is <%= @course.status %>
             <% end %>
           </div>
         <% end %>
