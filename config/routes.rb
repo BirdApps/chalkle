@@ -65,6 +65,7 @@ Chalkle::Application.routes.draw do
         get 'completed_refunds'
       end
       member do
+        get 'set_status'
         get 'refund'
       end
     end
