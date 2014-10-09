@@ -64,7 +64,7 @@
             No teacher assigned
           <% end %>
         </div>
-        <% if false #course.has_reviews %> 
+        <% if course.reviews? %> 
           <div class="reviews small grey">
             <span class="fa fa-heart"></span>
             <span class="pull-right text-right">
