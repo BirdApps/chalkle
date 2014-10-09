@@ -14,20 +14,20 @@
   <% elsif @course.status == 'Published' %>
     <% if @course.between_start_and_end %>
       <% if @course.lesson_in_progress %>
-        <div class="alert alert-warning clearfix">
-          <h3 class="flush">In Progress</h3>
-          <p>
-          <%= @course.type.capitalize %> finishes at <%= pretty_time @course.lesson_in_progress.end_at %>
-          </p>
-        </div>
-      <% else %>
-        <div class="alert alert-warning clearfix">
-          <h3 class="flush">Course In Progress</h3>
+          <div class="alert alert-warning clearfix">
+            <h3 class="flush">In Progress</h3>
+            <p>
+              Class finishes at <%= pretty_time @course.lesson_in_progress.end_at %>
+            </p>
+        <% else %>
+            <h3 class="flush">Course In Progress</h3>
+        <% end %>
+        <% if @course.course? %>
           <p>
             The classes in this course have already started. <%= link_to "Check out the provider's other courses as it may run again", channel_path(@course.channel.url_name)  %>
           </p>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     <% end %>
   <% end %>
   <%= render 'show_admin_bar' %>

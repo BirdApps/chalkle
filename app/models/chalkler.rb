@@ -31,6 +31,7 @@ class Chalkler < ActiveRecord::Base
   has_many :channels_teachable, through: :channel_teachers, source: :channel
   has_many :channel_admins
   has_many :channels_adminable, through: :channel_admins, source: :channel
+  has_many :courses_adminable, through: :channels_adminable, source: :courses
   has_many :bookings
   has_many :courses, :through => :bookings
   has_many :payments
@@ -39,6 +40,7 @@ class Chalkler < ActiveRecord::Base
       where(provider: provider).first
     end
   end
+  has_many :courses_teaching, through: :channel_teachers, source: :courses
 
   after_create :create_channel_associations
 
@@ -57,11 +59,13 @@ class Chalkler < ActiveRecord::Base
 
   before_create :set_reset_password_token
 
-  def courses_teaching
-    channel_teachers.collect{ |channel_teacher| channel_teacher.courses }.flatten
+
+  def adminable_courses
+    courses_adminable.merge courses_teaching    
   end
 
   class << self
+
     #TODO: Move into a presenter class like Draper sometime
     def email_frequency_select_options
       EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
