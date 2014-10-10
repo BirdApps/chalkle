@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141010001553) do
+ActiveRecord::Schema.define(:version => 20141010005018) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -176,7 +176,6 @@ ActiveRecord::Schema.define(:version => 20141010001553) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
-    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -184,6 +183,7 @@ ActiveRecord::Schema.define(:version => 20141010001553) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -204,6 +204,8 @@ ActiveRecord::Schema.define(:version => 20141010001553) do
     t.string  "account"
     t.string  "avatar"
   end
+
+  add_index "channel_teachers", ["channel_id", "chalkler_id"], :name => "index_channel_teachers_on_channel_id_and_chalkler_id"
 
   create_table "channels", :force => true do |t|
     t.string   "name"
@@ -229,9 +231,9 @@ ActiveRecord::Schema.define(:version => 20141010001553) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
+    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
-    t.integer  "plan_max_teachers"
   end
 
   create_table "cities", :force => true do |t|

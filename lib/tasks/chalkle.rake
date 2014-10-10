@@ -1,7 +1,7 @@
 begin
   namespace :chalkle do
 
-    desc "I got 99 problems and caching expiery is handled by this"
+    desc "I got 99 problems and cache invalidation is handled by this"
     task "expire_caches" => :environment do 
       EventLog.log('expire_caches') do
         ApplicationController.expire_cache!
