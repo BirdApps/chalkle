@@ -88,7 +88,7 @@ class Booking < ActiveRecord::Base
   end
 
   def remove_fees
-    chalkle_fee = chalkle_gst = teacher_fee = teacher_gst = provider_fee = provider_gst = 0
+    self.chalkle_fee = self.processing_fee = self.chalkle_gst = self.teacher_fee = self.teacher_gst = self.provider_fee = self.processing_gst = self.provider_gst = 0
   end
 
   def apply_fees
