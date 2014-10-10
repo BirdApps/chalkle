@@ -205,7 +205,7 @@ class CoursesController < ApplicationController
       @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
     end
 
-    def get_current_week(start_date = Date.today)
+    def get_current_week(start_date = Date.current)
       if params[:day]
         Week.containing(Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i))
       else

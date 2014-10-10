@@ -1,7 +1,7 @@
 <%#-*- coding: UTF-8 -*-%>
 Hello <%= @chalkler.name.split[0] %>,
 
-Here is your chalkle° <%= @chalkler.email_frequency %> digest for <%= Date.today.strftime("%A %B #{Date.today.day.ordinalize}") %>.
+Here is your chalkle° <%= @chalkler.email_frequency %> digest for <%= Date.current.strftime("%A %B #{Date.current.day.ordinalize}") %>.
 
 <% if @new_courses.any? %>
 New chalkles:

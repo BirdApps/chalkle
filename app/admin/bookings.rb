@@ -112,7 +112,7 @@ ActiveAdmin.register Booking do
     payment.reference = booking.course.meetup_id? ? "#{booking.course.meetup_id} #{booking.name}" : "CourseID#{booking.course_id} #{booking.name}"
     payment.xero_contact_id = booking.name
     payment.xero_contact_name = booking.name
-    payment.date = Date.today()
+    payment.date = Date.current()
     payment.booking_id = booking.id
     payment.reconciled = true
     payment.complete_record_downloaded = true

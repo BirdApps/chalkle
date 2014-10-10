@@ -173,12 +173,12 @@ class ApplicationController < ActionController::Base
       if params[:day]
         @current_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
       else
-        @current_date = DateTime.now
+        @current_date = DateTime.current
       end
       @current_date
     end
 
-    def get_current_week( start_date = Date.today )
+    def get_current_week( start_date = Date.current )
       Week.containing current_date
     end
 

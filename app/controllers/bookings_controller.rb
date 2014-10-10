@@ -126,7 +126,7 @@ class BookingsController < ApplicationController
     unless @course.published?
       return redirect_to :root, notice: "This class is no longer available."
     end
-    unless @course.start_at > DateTime.now
+    unless @course.start_at > DateTime.current
       return redirect_to @course.path, notice: "This class has already started, and bookings cannot be created or altered"
     end
     unless @course.spaces_left?

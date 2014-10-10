@@ -14,7 +14,7 @@ class ChalklerMailer < ActionMailer::Base
     @chalkler = ChalklerDecorator.decorate(chalkler)
   	@new_courses = CourseDecorator.decorate_collection(new_courses)
   	@open_courses = CourseDecorator.decorate_collection(open_courses)
-    subject = "chalkle° - #{@chalkler.email_frequency.titleize} digest for #{Date.today.to_formatted_s(:long)}"
+    subject = "chalkle° - #{@chalkler.email_frequency.titleize} digest for #{Date.current.to_formatted_s(:long)}"
   	mail(to: @chalkler.email, subject: subject) do |format|
       format.text { render :layout => 'standard_mailer' }
       format.html { render :layout => 'standard_mailer' }

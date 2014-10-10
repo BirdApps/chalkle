@@ -1,5 +1,5 @@
 %p Hello #{@chalkler.name.split[0]},
-%p Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.today.strftime("%A %B #{Date.today.day.ordinalize}")}.
+%p Here is your chalkle&deg; #{@chalkler.email_frequency} digest for #{Date.current.strftime("%A %B #{Date.current.day.ordinalize}")}.
 
 - if @new_courses.any?
   %h2 New classes:
