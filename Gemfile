@@ -8,6 +8,7 @@ end
 gem 'rails', '3.2.19'
 gem 'pg', '~> 0.17.1'
 gem 'unicorn-rails'
+gem 'unicorn-worker-killer'
 
 # Authentication
 gem 'devise',           '~> 2.2.4'
