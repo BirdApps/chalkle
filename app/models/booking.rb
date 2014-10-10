@@ -3,7 +3,7 @@ class Booking < ActiveRecord::Base
   attr_accessible *BASIC_ATTR = [
     :course_id, :guests, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
   ]
-  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee , :provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   #booking statuses
   STATUS_5 = "pending" #payment pending
@@ -21,8 +21,8 @@ class Booking < ActiveRecord::Base
   has_one :payment
   has_one :channel, through: :course
   
-  has_one :teacher_payment, class_name: 'OutgoingPayment'
-  has_one :channel_payment, class_name: 'OutgoingPayment'
+  belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
+  belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
 
   validates_presence_of :course_id, :status, :name, :chalkler
   validates_presence_of :payment_method, :unless => :free?

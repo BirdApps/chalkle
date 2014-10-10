@@ -101,7 +101,9 @@ class Course < ActiveRecord::Base
   scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
   scope :adminable_by, lambda {|chalkler| joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
 
-  scope :need_outgoing_payments, joins(:bookings).where("courses.status = '#{STATUS_4}' AND courses.end_at < '#{DateTime.current.advance(weeks:-2).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
+  scope :need_outgoing_payments, paid.joins(:bookings).where("courses.status = '#{STATUS_4}' AND courses.end_at < '#{DateTime.current.advance(weeks:-2).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
+
+  scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
   before_create :set_url_name
   before_save :update_published_at
@@ -139,6 +141,18 @@ class Course < ActiveRecord::Base
       booking.cancel!(reason)
     end
     save
+  end
+
+  def complete!
+    #TODO: run at midnight everynight on scope Course.needs_completing
+    if end_at < DateTime.current
+      if bookings.present?
+        self.status = STATUS_4
+      else
+        self.status = STATUS_3
+      end
+      save
+    end
   end
 
   def can_be_cancelled?

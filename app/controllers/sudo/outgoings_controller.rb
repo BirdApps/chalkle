@@ -6,11 +6,11 @@ class Sudo::OutgoingsController < Sudo::BaseController
   end
 
   def pending
-    #@outgoings = Outgoing.
+    @outgoings = OutgoingPayment.where status == OutgoingPayment::STATUS_1
   end
 
   def complete
-
+    
   end
 
   def show
