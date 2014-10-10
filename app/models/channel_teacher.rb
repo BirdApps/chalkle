@@ -31,6 +31,7 @@ class ChannelTeacher < ActiveRecord::Base
   def email=(email)
     self.chalkler = Chalkler.find_by_email email
     self.pseudo_chalkler_email = email unless chalkler.present?
+    #TODO: email chalkler or non-chalkler to tell them they are a teacher
   end
 
   def next_class
