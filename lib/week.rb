@@ -38,7 +38,7 @@ module Weekify
       end
 
       def current
-        containing(Date.today)
+        containing(Date.current)
       end
     end
 

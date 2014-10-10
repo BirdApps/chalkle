@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_cache!, only: [:create, :update, :destroy, :confirm_cancel, :change_status]
   before_filter :check_clear_filters, only: [:index]
-  before_filter :take_me_to
+  before_filter :take_me_to, only: [:index]
  
   def index
     if current_user.authenticated?
@@ -148,6 +148,7 @@ class CoursesController < ApplicationController
 
     def load_course
       @course = Course.find_by_id(params[:id]).try :decorate
+      authorize @course
       ActiveRecord::RecordNotFound if @course.nil?
     end  
 

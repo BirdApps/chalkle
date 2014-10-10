@@ -78,15 +78,15 @@ Chalkle::Application.routes.draw do
     end
   end
 
-  resources :chalklers, path: 'people', only: [:index, :show, :exists]
-    # collection do
+  resources :chalklers, path: 'people', only: [:index, :show] do
+    collection do
     #   get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: :meetup_email_settings
-    #   post 'exists'
+       post 'exists'
     #   delete '/preferences/destroy_chalkler/:id' => 'preferences#destroy', as: :delete
     #   get  '/data_collection/:action', as: 'data_collection', controller: :data_collection_form
     #   post '/data_collection/:action', as: 'data_collection_update', controller: :data_collection_form
-    # end
-  #end
+    end
+  end
 
   resources :channels, path: 'providers', only: [:index, :teachers] do
     #resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'

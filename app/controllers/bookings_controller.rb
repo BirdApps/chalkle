@@ -30,12 +30,13 @@ class BookingsController < ApplicationController
     @booking.name = current_user.name unless @booking.name.present?
     @booking.chalkler = current_chalkler #unless @booking.chalkler
     @booking.apply_fees
+
     if policy(@booking.course).admin? && params[:remove_fees] == '1'
       @booking.remove_fees
     end
     @booking.paid = 0
     unless current_user.bookings.where(course_id: @booking.course.id, name: @booking.name ).empty?
-      redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course'
+      redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course' and return
     end
 
     # this should handle invalid @bookings before doing anything
@@ -43,7 +44,7 @@ class BookingsController < ApplicationController
     if @booking.save
       if @booking.free?
         BookingMailer.booking_confirmation(@booking).deliver!
-        return redirect_to course_booking_path @booking.course, @booking
+        redirect_to @booking.course.path and return
       else
         @booking.update_attribute(:status, 'pending')
         wrapper = SwipeWrapper.new
@@ -51,7 +52,7 @@ class BookingsController < ApplicationController
                                                       amount: @booking.cost,
                                                       return_url:course_booking_payment_callback_url(@booking.course_id, @booking.id),
                                                       description: @booking.name)
-        return redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}"
+        redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
     else
       delete_any_unpaid_credit_card_booking

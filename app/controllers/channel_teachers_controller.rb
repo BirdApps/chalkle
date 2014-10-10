@@ -35,7 +35,7 @@ class ChannelTeachersController < ApplicationController
       end
     end
     @channel_teacher.update_attributes params[:channel_teacher]
-    render 'edit'
+    redirect_to edit_channel_teacher_path(@channel_teacher.id), notice: 'Teacher has been updated'
   end
 
   def new

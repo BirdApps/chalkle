@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery
+  rescue_from Pundit::NotAuthorizedError, with: :permission_denied
+
   layout 'layouts/application'
   before_filter :load_region
   before_filter :load_channel
@@ -76,6 +78,15 @@ class ApplicationController < ActionController::Base
 
     def not_found
       render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
+    end
+
+    def permission_denied
+      flash[:notice] = "You do not have permission to view that page"
+      unless current_user.authenticated?
+        authenticate_chalkler!
+      else
+        redirect_to root_url
+      end
     end
 
     def load_country
