@@ -27,10 +27,10 @@
               col_width = 100 / links.count if links.count > 0
               links.each do |nav_link| %>
                 <li class="<%= "active" if nav_link[:active] %>" style="width:<%= col_width %>%">
-                  <%= link_to nav_link[:link], title: nav_link[:title] do %>
+                  <%= link_to nav_link[:link], title: nav_link[:title], class: 'nav_links' do %>
                     <span class="img-wrapper">
-                      <%= image_tag(asset_path("icons/"+nav_link[:img_name]+".png"), { class: "reg" }) %>
-                      <%= image_tag(asset_path("icons/"+nav_link[:img_name]+"-alt.png"), { class: "alt" }) %>
+                      <%= image_tag(asset_path("icons/"+nav_link[:img_name]+"-alt.png"), { class: "reg" }) %>
+                      <%= image_tag(asset_path("icons/"+nav_link[:img_name]+".png"), { class: "alt" }) %>
                     </span>
                     <span class="link_title">
                       <%= nav_link[:title] %>
