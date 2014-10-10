@@ -1,9 +1,13 @@
-<% cache "courses_index_#{current_user.id}", skip_digest: true do %>
+<% cache "courses_index_#{current_user.id}_#{params[:region]}_#{params[:topic]}_#{params[:provider]}_#{params[:search]}", skip_digest: true do %>
   <% if @courses.empty?  %>
      <div class="alert alert-warning center">
-        No classes match "<%= params["search"] %>"
+        <% if params[:search].present? %>
+          No classes match "<%= params["search"] %>"
+        <% else %>
+          No classes match your search
+        <% end %>
       </div>
-      <% @courses = Course.popular %>
+      <%# @courses = Course.popular %>
   <% end %>
   <%= render @courses %>
 <% end %>
