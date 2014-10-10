@@ -1,7 +1,7 @@
 <div class="hidden-xs col-sm-2">
 </div>
 <div class="new_form_wrapper col-xs-12 col-sm-8">
-  <%= bootstrap_form_for(@channel_teacher, wrapper: :simple_bootstrap3, html: { method:  :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+  <%= bootstrap_form_for(@channel_teacher, wrapper: :simple_bootstrap3, url: '/teachers/'+@channel_teacher.id.to_s, html: { method:  :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
     <div class="fancy-header">
       <h3>Photo</h3>
       <hr />
