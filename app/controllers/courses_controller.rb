@@ -162,7 +162,7 @@ class CoursesController < ApplicationController
         @region = Region.find_by_url_name region_name.downcase
       end
       if @region.nil?
-        @region = Region.new name: "New Zealand", courses: Course.all
+        @region = Region.new name: "New Zealand", courses: Course.upcoming
       end
     end
 
