@@ -102,6 +102,8 @@ class Course < ActiveRecord::Base
   before_create :set_url_name
   before_save :update_published_at
   before_save :save_first_lesson
+  before_save :check_start_at
+  before_save :check_end_at
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 
@@ -515,16 +517,6 @@ class Course < ActiveRecord::Base
     start_at < DateTime.now && end_at > DateTime.now
   end
 
-  def start_on
-    start_at.to_date if start_at
-  end
-  alias_method :date, :start_on
-
-  def end_at
-    last_lesson.start_at+duration if last_lesson.start_at && duration
-  end
-  alias_method :end_on, :end_at
-
   def reviews?
     reviews.present?
   end
@@ -549,6 +541,10 @@ class Course < ActiveRecord::Base
     save
   end
 
+  def end_at!
+    check_end_at
+    save
+  end
 
   private
   def class_or_course
@@ -569,6 +565,10 @@ class Course < ActiveRecord::Base
     self.published_at ||= Time.now
   end
   
+  def check_end_at
+    self.end_at = last_lesson.end_at if last_lesson.present?
+  end
+
   def check_start_at
     self.start_at = first_lesson.start_at if first_lesson.present?
   end

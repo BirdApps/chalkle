@@ -4,6 +4,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :expire_cache!, only: [:create, :update, :destroy, :confirm_cancel, :change_status]
   before_filter :check_clear_filters, only: [:index]
+  before_filter :take_me_to
  
   def index
     if current_user.authenticated?
@@ -114,6 +115,14 @@ class CoursesController < ApplicationController
   end
 
   private
+
+    def take_me_to
+      if params[:search].present?
+        try_id = params[:search] 
+        course = Course.find_by_id try_id
+        return redirect_to course.path if course.present?
+      end
+    end
 
     def filter_courses(courses)
       if @region.id.present? && @category.id.present? && @channel.id.present?
