@@ -503,12 +503,7 @@ class Course < ActiveRecord::Base
   end
 
   def lesson_in_progress
-    if status == STATUS_1
-      lessons.each do |lesson|
-        return lesson if lesson.between_start_and_end
-      end
-    end
-    nil
+    @lesson_in_progress ||= lessons.map {|lesson| lesson.between_start_and_end ? lesson : nil  }.compact.first if status == STATUS_1
   end
 
   def between_start_and_end
@@ -521,7 +516,7 @@ class Course < ActiveRecord::Base
   alias_method :date, :start_on
 
   def end_at
-    last_lesson.start_at+duration if last_lesson.start_at && duration
+    @end_at ||= last_lesson.start_at+duration if last_lesson.start_at && duration
   end
   alias_method :end_on, :end_at
 
