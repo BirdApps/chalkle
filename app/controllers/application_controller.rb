@@ -56,9 +56,8 @@ class ApplicationController < ActionController::Base
     end
 
     def expire_filter_cache
-      expire_fragment('category_filter_list')
-      expire_fragment('region_filter_list')
-      expire_fragment('channel_filter_list')
+      expire_fragment('filter_list')
+      expire_fragment(/courses_index_.*/)
     end
 
     def authenticate_chalkler!

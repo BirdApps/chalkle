@@ -7,6 +7,10 @@ class TheUser
     @chalkler = Chalkler.find_by_email admin_user.email if @chalkler.id.nil? && @admin_user.id.present?
   end
 
+  def id
+    chalkler? ? chalkler.id : -1
+  end
+
   def authenticated?
     !!(chalkler.id.present? || admin_user.id.present?)
   end

@@ -2,25 +2,24 @@ class CoursesController < ApplicationController
   before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
-  before_filter :expire_filter_cache, only: [:create, :update, :destroy]
+  before_filter :expire_filter_cache, only: [:create, :update, :destroy, :confirm_cancel, :change_status]
   before_filter :check_clear_filters, only: [:index]
  
   def index
     if current_user.authenticated?
-      @courses = filter_courses(Course.homepage(current_date)) +
-                 filter_courses(Course.taught_by_chalkler(current_chalkler))+
-                 filter_courses(Course.adminable_by(current_chalkler))
+      @courses =  filter_courses(Course.homepage(current_date)) +
+                  filter_courses(Course.taught_by_chalkler(current_chalkler))+
+                  filter_courses(Course.adminable_by(current_chalkler))
     else
-      @courses = filter_courses(Course.homepage(current_date))
+      @courses = filter_courses(Course.homepage(current_date))          
     end
-    #TODO: three redirects on load? what?!
-    #binding.pry
-    # count = 0
-    # while @courses.count < 30 do
-    #   break if count > 52/2
-    #   count+=1
-    #   @courses.merge Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
-    # end
+
+    count = 0
+    while @courses.count < 30 do
+      break if count > 52/2
+      count+=1
+      @courses += filter_courses(Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date) 
+    end
   end
 
   def show

@@ -1,8 +1,9 @@
-<%# render 'courses_weeks', locals: {courses_weeks: @courses_weeks} %>
-<% if @courses.empty?  %>
-   <div class="alert alert-warning center">
-      No classes match "<%= params["search"] %>"
-    </div>
-    <% @courses = Course.popular %>
+<% cache "courses_index_#{current_user.id}", skip_digest: true do %>
+  <% if @courses.empty?  %>
+     <div class="alert alert-warning center">
+        No classes match "<%= params["search"] %>"
+      </div>
+      <% @courses = Course.popular %>
+  <% end %>
+  <%= render @courses %>
 <% end %>
-<%= render @courses %>
