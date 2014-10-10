@@ -1,9 +1,11 @@
 <h3 style="border-bottom: solid 1px #ececec; padding-bottom: 5px;">
-Hello <%= @chalkler.name %>,
+  Hello <%= @chalkler.name %>,
 </h3>
-Just a friendly reminder, your course is coming up really soon.
+Thanks! You are all booked in for the course! 
 <br/>
-The  booking is for <%= @booking.name %>
+Your confirmed details are:
+<br/>
+<%= @booking.name %>
 <br/>
 <%= @course.name %>
 <br/>
@@ -15,9 +17,9 @@ The course will be delivered by <%= @course.channel.name %>
 <%= @course.address %> <br />
 <%= @course.venue %><br />
 <br />
-Check out the class noticeboard to make sure you have everything you need. If you have any questions please contact the course provider directly. 
+If you have any questions please contact the course provider directly. <br />
 <br />
-Enjoy your class!
+You should have also received a payment receipt separately. <br />
 <br />
-Cheers! 
+Happy learning!<br />
 <br />

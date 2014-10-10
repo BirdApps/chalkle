@@ -1,7 +1,7 @@
 <% if params[:view] == "grid" %>
   <%# grid view %>
   <div class="course col-sm-6">
-    <%= link_to course.name, channel_course_path(course.channel.url_name,course.url_name,course.id) %>
+    <%= link_to course.name, channel_course_path(course.channel.url_name, course.url_name,course) %>
   </div>
 
 <% else %>
