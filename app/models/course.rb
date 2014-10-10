@@ -69,8 +69,6 @@ class Course < ActiveRecord::Base
   scope :visible, where(visible: true)
   scope :displayable, lambda { published.visible }
 
-  scope :homepage, lambda{ |current_date| displayable.start_at_between(current_date, current_date+14.days).by_date }
-
   scope :start_at_between, lambda{ |from,to| where(:start_at => from.beginning_of_day..to.end_of_day) }
   scope :recent, visible.start_at_between(DateTime.current.advance(days: PAST), DateTime.current.advance(days: IMMEDIATE_FUTURE))
   scope :last_week, visible.start_at_between(DateTime.current.advance(weeks: -1), DateTime.current)

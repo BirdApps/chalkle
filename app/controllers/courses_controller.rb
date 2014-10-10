@@ -5,22 +5,18 @@ class CoursesController < ApplicationController
   before_filter :expire_cache!, only: [:create, :update, :destroy, :confirm_cancel, :change_status]
   before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
- 
+  before_filter :skip_cache, only: [:index]
+
   def index
     if current_user.authenticated?
-      @courses =  filter_courses(Course.homepage(current_date)) +
-                  filter_courses(Course.taught_by_chalkler(current_chalkler))+
-                  filter_courses(Course.adminable_by(current_chalkler))
+      @courses =  filter_courses(Course.displayable.start_at_between(current_date, current_date+1.year).by_date) +
+                  filter_courses(Course.taught_by_chalkler(current_chalkler).in_future.by_date)+
+                  filter_courses(Course.adminable_by(current_chalkler).in_future.by_date)
     else
-      @courses = filter_courses(Course.homepage(current_date))          
+      @courses = filter_courses(Course.homepage(current_date).by_date)
     end
-
-    count = 0
-    while @courses.count < 30 do
-      break if count > 52/2
-      count+=1
-      @courses += filter_courses(Course.displayable.in_fortnight((Week.containing(current_date)+count)).by_date) 
-    end
+    
+    @courses = @courses.sort_by(&:start_at).uniq
   end
 
   def show
@@ -122,6 +118,10 @@ class CoursesController < ApplicationController
         course = Course.find_by_id try_id
         return redirect_to course.path if course.present?
       end
+    end
+
+    def skip_cache
+      expire_cache! if params[:skip_cache].present? ||  params[:page].present? ||  params[:take].present?
     end
 
     def filter_courses(courses)

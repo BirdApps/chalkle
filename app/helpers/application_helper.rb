@@ -42,7 +42,34 @@ module ApplicationHelper
     yield < 1 ? "" : " (#{yield})"
   end
 
+  def paginate_position
+    @paginate_position ||= paginate_pos
+  end
 
+  def paginate_count
+    @paginate_count ||= (@courses.count / paginate_take) + 1
+  end
 
+  def paginate_take
+    @paginate_take ||= params[:take].to_i > 0 ? params[:take].to_i : 15
+  end
+
+  def paginate_skip
+    @paginate_skip ||= paginate_position*paginate_take
+  end
+
+  def paginate_courses(courses)
+    courses.drop(paginate_skip).take(paginate_take)
+  end
+
+  private
+    def paginate_pos
+      page_num = params[:page].to_i > 0 ? params[:page].to_i-1 : 0 
+      if page_num > paginate_count
+        paginate_count 
+      else
+        page_num
+      end
+    end
 
 end
