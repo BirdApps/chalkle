@@ -10,6 +10,10 @@ every :hour, :at => 30 do
   rake "chalkle:load_payments"
 end
 
+every :day, :at => '12:01am' do 
+  rake "chalkle:expire_caches"
+end
+
 every :day, :at => '01:00am' do
   rake "mailer:chalkler_digest['daily']"
 end

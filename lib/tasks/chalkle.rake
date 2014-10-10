@@ -1,6 +1,14 @@
 begin
   namespace :chalkle do
 
+    desc "I got 99 problems and caching expiery is handled by this"
+    task "expire_caches" => :environment do 
+      EventLog.log('expire_caches') do
+        ApplicationController.expire_cache!
+      end
+    end
+
+
     desc "Load all payments from xero"
     task "load_payments" => :environment do
       EventLog.log('load_payments') do
