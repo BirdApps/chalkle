@@ -2,7 +2,7 @@ class EventLog < ActiveRecord::Base
   attr_protected []
 
   def self.log(name)
-    record = self.create!(name: name, started_at: Time.now)
+    record = self.create!(name: name, started_at: Time.current)
     begin
       yield
     rescue Exception => e
@@ -19,14 +19,14 @@ class EventLog < ActiveRecord::Base
 
   def succeeded!
     self.state = 'succeeded'
-    self.completed_at = Time.now
+    self.completed_at = Time.current
     save!
   end
 
   def failed!(error = nil)
     self.state = 'failed'
     self.error = error.class.name if error
-    self.completed_at = Time.now
+    self.completed_at = Time.current
     save!
   end
 end

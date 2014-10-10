@@ -18,7 +18,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def between_start_and_end
-    start_at < DateTime.now && end_at > DateTime.now
+    start_at < DateTime.current && end_at > DateTime.current
   end
 
   def end_at

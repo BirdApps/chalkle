@@ -15,7 +15,7 @@
   <div class="week_calendar_view">
     <% week.each do |day| %>
       <div class="<%= [relative_date_class(day), ('has_classes' if courses[day].present?)] %> day">
-        <% if day >= Date.today %>
+        <% if day >= Date.current %>
           <h4 class="day_title">
             <div class="day_title_inner">
               <%= relative_day_title(day) %>

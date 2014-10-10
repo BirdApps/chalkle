@@ -36,15 +36,15 @@ class Booking < ActiveRecord::Base
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
   scope :by_date, order(:created_at)
   scope :by_date_desc, order('created_at DESC')
-  scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.now ).order('courses.start_at')
-  scope :needs_reminder, course_visible.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.now, (Time.now + 2.days) ).where(" courses.status='Published'")
+  scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at')
+  scope :needs_reminder, course_visible.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
 
   before_validation :set_free_course_attributes
 
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
 
   def self.needs_booking_completed_mailer
-    course_visible.where('booking_completed_mailer_sent != true').select{|b| b.course.end_at > Date.today && b.course.status=="Published"}
+    course_visible.where('booking_completed_mailer_sent != true').select{|b| b.course.end_at > Date.current && b.course.status=="Published"}
   end
   
   def free?
@@ -121,7 +121,7 @@ class Booking < ActiveRecord::Base
   end
 
   def refundable?
-    course_start_at > (Time.now + no_refund_period_in_days.days)
+    course_start_at > (Time.current + no_refund_period_in_days.days)
   end
 
   def no_refund_period_in_days

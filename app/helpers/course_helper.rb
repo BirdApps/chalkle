@@ -74,13 +74,13 @@ Your Chalkle Administrator")
     parts.join('').html_safe
   end
 
-  def relative_date_class(date, current = Date.today)
+  def relative_date_class(date, current = Date.current)
     return "past" if date < current
     return "present" if date == current
     "future"
   end
 
-  def relative_day_name(day, current = Date.today)
+  def relative_day_name(day, current = Date.current)
     return "Yesterday" if day == current - 1
     return "Today" if day == current
     return "Tomorrow" if day == current + 1

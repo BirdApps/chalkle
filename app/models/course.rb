@@ -54,6 +54,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :lessons, if: :published?
   validates_presence_of :channel
+  validates_presence_of :teacher 
   validates_numericality_of :teacher_payment, allow_nil: true
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher fee must be positive" }
@@ -70,15 +71,15 @@ class Course < ActiveRecord::Base
   scope :homepage, lambda{ |current_date| displayable.start_at_between(current_date, current_date+14.days).by_date }
 
   scope :start_at_between, lambda{ |from,to| where(:start_at => from.beginning_of_day..to.end_of_day) }
-  scope :recent, visible.start_at_between(DateTime.now.advance(days: PAST), DateTime.now.advance(days: IMMEDIATE_FUTURE))
-  scope :last_week, visible.start_at_between(DateTime.now.advance(weeks: -1), DateTime.now)
+  scope :recent, visible.start_at_between(DateTime.current.advance(days: PAST), DateTime.current.advance(days: IMMEDIATE_FUTURE))
+  scope :last_week, visible.start_at_between(DateTime.current.advance(weeks: -1), DateTime.current)
   scope :in_month, lambda{|month| start_at_between(month.first_day, month.last_day) }
   scope :in_week, lambda {|week| start_at_between(week.first_day, week.last_day) }
   scope :in_fortnight, lambda {|week| start_at_between(week.first_day, (week+1).last_day) }
   
   scope :on_date, lambda {|date| start_at_between(date, date) }
-  scope :in_future, lambda { where( "start_at >= ?", DateTime.now.beginning_of_day) }
-  scope :previous, lambda { where("start_at < ?", DateTime.now.beginning_of_day) }
+  scope :in_future, lambda { where( "start_at >= ?", DateTime.current.beginning_of_day) }
+  scope :previous, lambda { where("start_at < ?", DateTime.current.beginning_of_day) }
   #TODO: replace references to previous with in_past - time consuming because previous is common word
   scope :in_past, previous
   scope :by_date, order(:start_at)
@@ -96,7 +97,7 @@ class Course < ActiveRecord::Base
   scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
-  scope :popular, start_at_between(DateTime.now, DateTime.now.advance(days: 20))
+  scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
   scope :adminable_by, lambda {|chalkler| joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
 
   before_create :set_url_name
@@ -138,7 +139,7 @@ class Course < ActiveRecord::Base
   end
 
   def can_be_cancelled?
-    (start_at > DateTime.now.advance(hours: 24) || !bookings? ) && status==STATUS_1 ? true : false
+    (start_at > DateTime.current.advance(hours: 24) || !bookings? ) && status==STATUS_1 ? true : false
   end
 
   def classes
@@ -390,7 +391,7 @@ class Course < ActiveRecord::Base
 
   # this should be a scope
   def bookable?
-    spaces_left? && start_at && start_at > DateTime.now && status == STATUS_1
+    spaces_left? && start_at && start_at > DateTime.current && status == STATUS_1
   end
 
   def spaces_left?
@@ -418,11 +419,11 @@ class Course < ActiveRecord::Base
   end
 
   def class_not_done
-    ((start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
+    ((start_at.present? ? start_at.to_datetime : Date.current()) - Date.current() > -1)
   end
 
   def class_coming_up
-    class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 7)
+    class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.current()) - Date.current() < 7)
   end
 
   def complete_details?
@@ -460,15 +461,15 @@ class Course < ActiveRecord::Base
   end
 
   def todo_attendee_list
-    return (start_at > DateTime.now()) && (start_at <= DateTime.tomorrow() + 1) && pay_involved
+    return (start_at > DateTime.current()) && (start_at <= DateTime.tomorrow + 1) && pay_involved
   end
 
   def todo_pay_reminder
-    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.now() + 4 )
+    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.current() + 4 )
   end
 
   def todo_payment_summary
-    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
+    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.current() ) && ( start_at > DateTime.current() - 2)
   end
 
   def set_name(name)
@@ -509,7 +510,7 @@ class Course < ActiveRecord::Base
   end
 
   def between_start_and_end
-    start_at < DateTime.now && end_at > DateTime.now
+    start_at < DateTime.current && end_at > DateTime.current
   end
 
   def reviews?
@@ -557,7 +558,7 @@ class Course < ActiveRecord::Base
   end
 
   def update_published_at
-    self.published_at ||= Time.now
+    self.published_at ||= Time.current
   end
   
   def check_end_at

@@ -15,7 +15,7 @@
         %th % Change profit
 
     %tbody
-      -first_day = StatsPolicy.new(Date.today().midnight - num_weeks*period).stats_begin_date
+      -first_day = StatsPolicy.new(Date.current().midnight - num_weeks*period).stats_begin_date
       -financial_table = c.financial_table(first_day,1.week,num_weeks)
 
       -financial_table.each do |x|
