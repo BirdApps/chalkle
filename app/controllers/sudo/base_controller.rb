@@ -17,8 +17,8 @@ class Sudo::BaseController < ApplicationController
       },
       {
         img_name: "people",
-        link: pending_refunds_sudo_bookings_path,
-        active: controller_parts.include?("bookings") && action_parts.include?("pending_refunds") ,
+        link: sudo_outgoings_path,
+        active: controller_parts.include?("outgoings"),
         title: "Outgoings"
       }
     ]

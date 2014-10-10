@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141010001553) do
+ActiveRecord::Schema.define(:version => 20141010024852) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -77,6 +77,8 @@ ActiveRecord::Schema.define(:version => 20141010001553) do
     t.string   "cancelled_reason"
     t.boolean  "reminder_mailer_sent",                                        :default => false
     t.boolean  "booking_completed_mailer_sent",                               :default => false
+    t.integer  "teacher_payment_id"
+    t.integer  "channel_payment_id"
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -203,6 +205,7 @@ ActiveRecord::Schema.define(:version => 20141010001553) do
     t.string  "tax_number"
     t.string  "account"
     t.string  "avatar"
+    t.decimal "balance"
   end
 
   create_table "channels", :force => true do |t|
@@ -232,6 +235,7 @@ ActiveRecord::Schema.define(:version => 20141010001553) do
     t.string   "tax_number"
     t.string   "average_hero_color"
     t.integer  "plan_max_teachers"
+    t.decimal  "balance"
   end
 
   create_table "cities", :force => true do |t|
@@ -364,6 +368,20 @@ ActiveRecord::Schema.define(:version => 20141010001553) do
   add_index "omniauth_identities", ["email"], :name => "index_omniauth_identities_on_email"
   add_index "omniauth_identities", ["provider", "uid"], :name => "index_omniauth_identities_on_provider_and_uid"
   add_index "omniauth_identities", ["user_id"], :name => "index_omniauth_identities_on_user_id"
+
+  create_table "outgoing_payments", :force => true do |t|
+    t.integer  "teacher_id"
+    t.integer  "channel_id"
+    t.datetime "paid_date"
+    t.decimal  "fee"
+    t.decimal  "tax"
+    t.string   "status"
+    t.string   "reference"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "bank_account"
+    t.string   "tax_number"
+  end
 
   create_table "partner_inquiries", :force => true do |t|
     t.string   "name"

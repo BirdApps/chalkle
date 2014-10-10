@@ -20,6 +20,9 @@ class Booking < ActiveRecord::Base
   has_many :bookings, as: :guests_bookings
   has_one :payment
   has_one :channel, through: :course
+  
+  has_one :teacher_payment, class_name: 'OutgoingPayment'
+  has_one :channel_payment, class_name: 'OutgoingPayment'
 
   validates_presence_of :course_id, :status, :name, :chalkler
   validates_presence_of :payment_method, :unless => :free?

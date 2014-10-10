@@ -59,6 +59,13 @@ Chalkle::Application.routes.draw do
   namespace :sudo do
     root to: 'silvias#index'
     resources :payments
+    resources :outgoings do
+      collection do 
+        get 'pending'
+        get 'complete'
+      end
+    end
+
     resources :bookings do
       collection do
         get 'pending_refunds'

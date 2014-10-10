@@ -37,6 +37,7 @@ class Course < ActiveRecord::Base
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
 
+
   mount_uploader :course_upload_image, CourseUploadImageUploader
 
   accepts_nested_attributes_for :course_image
@@ -98,6 +99,8 @@ class Course < ActiveRecord::Base
   scope :not_repeat_course, where(repeat_course_id: nil)
   scope :popular, start_at_between(DateTime.now, DateTime.now.advance(days: 20))
   scope :adminable_by, lambda {|chalkler| joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
+
+  scope :need_outgoing_payments, joins(:bookings).where("courses.status = '#{STATUS_4}' AND courses.end_at < dateadd(ww,-2,getdate()) AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
 
   before_create :set_url_name
   before_save :update_published_at
