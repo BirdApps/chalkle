@@ -101,7 +101,7 @@ class Course < ActiveRecord::Base
   scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
   scope :adminable_by, lambda {|chalkler| joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
 
-  scope :need_outgoing_payments, joins(:bookings).where("courses.status = '#{STATUS_4}' AND courses.end_at < dateadd(ww,-2,getdate()) AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
+  scope :need_outgoing_payments, joins(:bookings).where("courses.status = '#{STATUS_4}' AND courses.end_at < '#{DateTime.current.advance(weeks:-2).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
 
   before_create :set_url_name
   before_save :update_published_at
@@ -413,6 +413,10 @@ class Course < ActiveRecord::Base
     status == STATUS_1
   end
 
+  def displayable?
+    status == STATUS_1 && visible == true
+  end
+
   def valid_statuses
     VALID_STATUSES
   end
@@ -421,20 +425,8 @@ class Course < ActiveRecord::Base
     bookings.confirmed.visible.count - bookings.confirmed.visible.paid.count
   end
 
-  def class_not_done
-    ((start_at.present? ? start_at.to_datetime : Date.current()) - Date.current() > -1)
-  end
-
-  def class_coming_up
-    class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.current()) - Date.current() < 7)
-  end
-
   def complete_details?
     teacher_id.present? && start_at.present? && channel && do_during_class.present? && teacher_cost.present? && venue.present?
-  end
-
-  def class_may_cancel
-    class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
   end
 
   def bookings_for(chalkler)
@@ -442,16 +434,6 @@ class Course < ActiveRecord::Base
       chalkler.bookings & bookings
     else
       nil
-    end
-  end
-
-  def flag_warning
-    if class_may_cancel
-      return "May cancel"
-    elsif !complete_details?
-      return "Missing details"
-    else
-      return false
     end
   end
 
@@ -464,15 +446,15 @@ class Course < ActiveRecord::Base
   end
 
   def todo_attendee_list
-    return (start_at > DateTime.current()) && (start_at <= DateTime.tomorrow + 1) && pay_involved
+    return (start_at > DateTime.current) && (start_at <= DateTime.tomorrow + 1) && pay_involved
   end
 
   def todo_pay_reminder
-    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.current() + 4 )
+    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.current + 4 )
   end
 
   def todo_payment_summary
-    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.current() ) && ( start_at > DateTime.current() - 2)
+    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.current ) && ( start_at > DateTime.current - 2)
   end
 
   def set_name(name)
@@ -530,7 +512,7 @@ class Course < ActiveRecord::Base
 
   def venue_truncated
     return if !venue || venue.empty?
-    truncated = venue.split()[0..venue[0..16].split(" ").count()-1].join(" ")
+    truncated = venue.split[0..venue[0..16].split(" ").count-1].join(" ")
     truncated[truncated.length-1] = truncated[truncated.length-1].gsub(/[^0-9A-Za-z]/, '')
     truncated
   end

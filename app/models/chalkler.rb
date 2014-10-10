@@ -155,7 +155,7 @@ class Chalkler < ActiveRecord::Base
     return unless self.set_password_token
     self.password = Chalkler.reset_password_token
     self.reset_password_token = Chalkler.reset_password_token
-    self.reset_password_sent_at = Time.now.utc
+    self.reset_password_sent_at = Time.current
   end
 
   def create_channel_associations  
