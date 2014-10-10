@@ -307,10 +307,12 @@ class Teaching
   end
 
   def get_teacher_id(teacher_id)
-    if @channel.channel_teachers.count == 1
-      teacher = @channel.channel_teachers[0]
-    elsif teacher_id.nil?
-      teacher = ChannelTeacher.create chalkler: @current_user.chalkler, channel: @channel, name: @current_user.name
+    if teacher_id.blank?
+      if @channel.channel_teachers.present?
+        teacher = @channel.channel_teachers.first
+      else
+        teacher = ChannelTeacher.create chalkler: @current_user.chalkler, channel: @channel, name: @current_user.name
+      end
     else
       teacher = @channel.channel_teachers.find teacher_id
     end
