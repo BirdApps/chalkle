@@ -1,5 +1,5 @@
 class ChannelsController < ApplicationController
-  before_filter :expire_filter_cache, only: [:create, :update, :destroy]
+  before_filter :expire_cache!, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
   before_filter :load_channel
 

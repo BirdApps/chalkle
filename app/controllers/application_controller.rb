@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def expire_filter_cache
+    def expire_cache!
       expire_fragment('filter_list')
       expire_fragment(/courses_index_.*/)
     end

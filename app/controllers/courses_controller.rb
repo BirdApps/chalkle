@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
-  before_filter :expire_filter_cache, only: [:create, :update, :destroy, :confirm_cancel, :change_status]
+  before_filter :expire_cache!, only: [:create, :update, :destroy, :confirm_cancel, :change_status]
   before_filter :check_clear_filters, only: [:index]
  
   def index
