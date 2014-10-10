@@ -208,6 +208,8 @@ ActiveRecord::Schema.define(:version => 20141010024852) do
     t.decimal "balance"
   end
 
+  add_index "channel_teachers", ["channel_id", "chalkler_id"], :name => "index_channel_teachers_on_channel_id_and_chalkler_id"
+
   create_table "channels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at",                                                                     :null => false

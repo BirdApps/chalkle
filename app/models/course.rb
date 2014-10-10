@@ -393,7 +393,7 @@ class Course < ActiveRecord::Base
 
   # this should be a scope
   def bookable?
-    spaces_left? && start_at > DateTime.now && status == STATUS_1
+    spaces_left? && start_at && start_at > DateTime.now && status == STATUS_1
   end
 
   def spaces_left?

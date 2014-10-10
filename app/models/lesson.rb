@@ -22,6 +22,6 @@ class Lesson < ActiveRecord::Base
   end
 
   def end_at
-    @end_at ||= start_at+duration
+    @end_at ||= start_at + duration 
   end
 end
