@@ -51,7 +51,7 @@ class Channel < ActiveRecord::Base
     channel.map { |c| [c.name, c.id] }
   end
 
-  def self.with_displable_classes_in_future
+  def self.with_displayable_classes_in_future
     channels = []
     Channel.all.each do |channel|
       channels << channel if channel.courses.in_future.displayable.count > 0

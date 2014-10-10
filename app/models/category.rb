@@ -43,10 +43,10 @@ class Category < ActiveRecord::Base
   end
 
   def self.ordered_with_classes
-    ordered & with_displable_classes_in_future
+    ordered & with_displayable_classes_in_future
   end
 
-  def self.with_displable_classes_in_future
+  def self.with_displayable_classes_in_future
     categories = []
     Category.all.each do |category|
       categories << category if category.courses.in_future.displayable.count > 0

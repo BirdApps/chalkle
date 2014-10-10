@@ -10,7 +10,7 @@ class Region < ActiveRecord::Base
   scope :with_classes, includes(:courses).where("COUNT(courses.id) > 0")
   scope :alphabetical, order(:name)
 
-  def self.with_displable_classes_in_future
+  def self.with_displayable_classes_in_future
     regions = []
     Region.all.each do |region|
       regions << region if region.courses.in_future.displayable.count > 0
