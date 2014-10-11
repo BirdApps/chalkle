@@ -178,7 +178,6 @@ ActiveRecord::Schema.define(:version => 20141011052119) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
-    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -186,6 +185,7 @@ ActiveRecord::Schema.define(:version => 20141011052119) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -234,9 +234,9 @@ ActiveRecord::Schema.define(:version => 20141011052119) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
+    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
-    t.integer  "plan_max_teachers"
     t.decimal  "balance"
   end
 
