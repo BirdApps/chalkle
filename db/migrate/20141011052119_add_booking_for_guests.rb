@@ -14,7 +14,7 @@ class AddBookingForGuests < ActiveRecord::Migration
           puts 'new guest booking for booking_id: '+booking.id.to_s
         end
         booking.guests = 0
-        booking.save
+        booking.save if booking.changed?
       end
     end
   end
