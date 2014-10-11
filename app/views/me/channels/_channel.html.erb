@@ -4,7 +4,10 @@
       <% if channel.logo.file %>
         <img src="<%= channel.logo.url %>" class='channel-img' > 
       <% end %>
-      <%= channel.name %>
+      <%= channel.name %> 
+      <%= if channel.courses.upcoming.count > 0  
+        "(#{channel.courses.upcoming.count})"
+      end %>
     <% end %>
   </div>
 </div>
