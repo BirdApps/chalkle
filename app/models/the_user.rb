@@ -96,7 +96,7 @@ class TheUser
   end
 
   def learn_menu_badge_count
-    @learn_menu_badge_count ||= chalkler ? chalkler.bookings.upcoming.count : 0
+    @learn_menu_badge_count ||= chalkler ? chalkler.bookings.confirmed.upcoming.count : 0
   end
 
   def teach_menu_badge_count

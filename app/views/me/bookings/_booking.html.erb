@@ -5,5 +5,9 @@
       <img src="<%= booking.course.course_upload_image -%>" class='avatar avatar64 img' alt='' />
       <%= booking.course.name %>
     </a>
+  <div class="small grey"><%= booking.confirmed? ? quick_date_time(booking.course.start_at) : "canceled" %></div>  
+
   </div>
+
+
 </div>
