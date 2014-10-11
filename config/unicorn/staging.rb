@@ -8,7 +8,7 @@ stdout_path '/apps/chalkle/staging/current/log/unicorn.log'
 listen 8080
 
 #workers
-worker_processes 4
+worker_processes 2
 
 timeout 64
 
