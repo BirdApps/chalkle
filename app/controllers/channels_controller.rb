@@ -9,12 +9,11 @@ class ChannelsController < ApplicationController
 
   def show
     not_found if @channel.new_record?
-    @courses = @channel.courses.displayable.in_week(Week.containing(current_date)).by_date
-    count = 0
-    while @courses.blank? do
-      break if count > 52
-      count+=1
-      @courses = @channel.courses.displayable.in_fortnight((Week.containing(current_date)+count)).by_date 
+    @courses =  @channel.courses.displayable.start_at_between(current_date, current_date+1.year).by_date
+    if current_user.authenticated?
+       @courses += @channel.courses.taught_by_chalkler(current_chalkler).in_future.by_date+
+                    @channel.courses.adminable_by(current_chalkler).in_future.by_date
+      @courses = @courses.sort_by(&:start_at).uniq
     end
   end
 
