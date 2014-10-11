@@ -9,7 +9,7 @@ class ChangeTeacherIdFromChalklerFKtoChannelTeacherFkOnCourses < ActiveRecord::M
             teacher = ChannelTeacher.create channel_id: course.channel_id, chalkler_id: course.teacher_id, name: chalkler.name
           end
           if !teacher.nil?
-            course.update_attribute 'teacher_id', teacher.id
+            course.update_column 'teacher_id', teacher.id
           end
         end
       end
@@ -19,7 +19,7 @@ class ChangeTeacherIdFromChalklerFKtoChannelTeacherFkOnCourses < ActiveRecord::M
   def down
     Course.transaction do
       Course.all.each do |course|
-         course.update_attribute 'teacher_id', course.teacher.chalkler_id
+         course.update_column 'teacher_id', course.teacher.chalkler_id
       end
     end
   end

@@ -3,11 +3,11 @@ class AddCostsToBooking < ActiveRecord::Migration
     Booking.transaction do
       Booking.all.each do |booking|
         if !booking.paid 
-          booking.update_attribute(:cost_override, nil)  
+          booking.update_column(:cost_override, nil)  
           puts "#{booking.id}: not paid\n"
         else
           unless booking.cost_override
-            booking.update_attribute(:cost_override, booking.course.cost)
+            booking.update_column(:cost_override, booking.course.cost)
             puts "#{booking.id}: course cost not overriden: #{booking.course.cost} \n"
           end
         end

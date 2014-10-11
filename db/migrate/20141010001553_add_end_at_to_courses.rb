@@ -4,7 +4,7 @@ class AddEndAtToCourses < ActiveRecord::Migration
       Lesson.all.each do |l| 
         unless l.duration
           l.update_attribute :duration, 1*60*60  
-          puts "LESSON #{lesson.id} duration inferred at 1 hour.\n"
+          puts "LESSON #{l.id} duration inferred at 1 hour.\n"
         end
       end
     end
