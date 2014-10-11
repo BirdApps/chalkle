@@ -19,9 +19,7 @@
             <li>
               <%= link_to "Teach#{ nav_badge_format { current_user.teach_menu_badge_count }}", teach_path,  class: (current_page?(teach_path) ? "current": "") %>
             </li>
-            <li>
-              <%= link_to "About", partners_team_path,  class: (current_page?(partners_team_path) ? "current": "") %>
-            </li>
+
             <% if chalkler_signed_in? %>
               <li>
                 <%= link_to current_user.name, me_root_path, class: (current_page?(me_root_path) ? "current": "") %>

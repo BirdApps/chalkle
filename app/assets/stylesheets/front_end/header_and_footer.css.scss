@@ -109,26 +109,34 @@ $line-height: $navbar-height - ($vertical-padding * 2);
 
 footer.page-footer {
   padding-bottom: 2em;
-  background: $chalkboard-background;
-  color: #CCCCCC;
-
+  a{
+    color: #fff;
+  }
   h3, h4 {
-    color: #CCCCCC;
     text-decoration: none;
     border: none;
-    font-style: $chalky-font;
   }
 
   ul {
     list-style: none;
     padding-left: 0;
-
     li {
+      border-right: 1px #fff solid;
+      display: inline-block;
       margin-left: 0;
       margin-bottom: 10px;
+      padding:5px 20px;
+    }
+    .no-border{
+      border:0;
     }
   }
-
+  .social_media_links{
+    img{
+      height:27px;
+      padding: 0 15px;
+    }
+  }
   .email-list {
     li {
       margin-bottom: 0;
