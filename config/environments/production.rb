@@ -72,24 +72,12 @@ Chalkle::Application.configure do
 
   config.action_mailer.default_url_options = { host: "chalkle.com", :port => 80 }
 
-  # TODO: SWITCH TO SEND GRID WHEN SWITCHING TO PROD
-  config.action_mailer.smtp_settings = {
-    :user_name => '228272f807b6c93e7',
-    :password => 'c7695e1be3c830',
-    :address => 'mailtrap.io',
-    :domain => 'mailtrap.io',
-    :port => '2525',
-    :authentication => :cram_md5,
-    :enable_starttls_auto => true
+  ActionMailer::Base.smtp_settings = {
+    :address => "smtp.sendgrid.net",
+    :port => 25,
+    :domain => "chalkle.com",
+    :authentication => :plain,
+    :user_name => "chalkle",
+    :password => "dZAmm26aQsXmHU"
   }
-
-
-  # ActionMailer::Base.smtp_settings = {
-  #   :address => "smtp.sendgrid.net",
-  #   :port => 25,
-  #   :domain => "chalkle.com",
-  #   :authentication => :plain,
-  #   :user_name => "chalkle",
-  #   :password => "dZAmm26aQsXmHU"
-  # }
 end
