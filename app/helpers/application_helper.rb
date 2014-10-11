@@ -62,6 +62,42 @@ module ApplicationHelper
     courses.drop(paginate_skip).take(paginate_take)
   end
 
+  def filter_regions
+    courses = Course.displayable.in_future
+    if @category.id.present? && @channel.id.present?
+      courses = courses.in_category(@category).in_channel(@channel)
+    elsif @category.id.present? && @channel.id.nil?    
+      courses = courses.in_category(@category) 
+    elsif @category.id.nil? && @channel.id.present?
+      courses = courses.in_channel(@channel)
+    end
+    (courses.map &:region).uniq    
+  end
+
+  def filter_topics
+    courses = Course.displayable.in_future
+    if @region.id.present? && @channel.id.present?
+      courses = courses.in_region(@region).in_channel(@channel)
+    elsif @region.id.present? && @channel.id.nil?    
+      courses = courses.in_region(@region) 
+    elsif @region.id.nil? && @channel.id.present?
+      courses = courses.in_channel(@channel)
+    end
+    (courses.map &:category).uniq    
+  end
+
+  def filter_providers
+    courses = Course.displayable.in_future
+    if @category.id.present? && @region.id.present?
+      courses = courses.in_category(@category).in_region(@region)
+    elsif @category.id.present? && @region.id.nil?    
+      courses = courses.in_category(@category) 
+    elsif @category.id.nil? && @region.id.present?
+      courses = courses.in_region(@region)
+    end
+    (courses.map &:channel).uniq    
+  end
+
   private
     def paginate_pos
       page_num = params[:page].to_i > 0 ? params[:page].to_i-1 : 0 

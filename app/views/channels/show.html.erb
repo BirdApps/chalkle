@@ -19,10 +19,4 @@
     </div>
   <% end %>
 </div>
-<%= render @courses %>
-<% unless @courses.present? %>
-  <br />
-  <div class="alert alert-warning center">
-    No future classes from <%= @channel.name %>
-  </div>
-<% end %>
+<%= render 'paginate_courses' %>
