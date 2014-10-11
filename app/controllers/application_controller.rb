@@ -199,11 +199,13 @@ class ApplicationController < ActionController::Base
       request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}")
     end
 
+    def expire_cache!
+      expire_filter_cache!
+      expire_fragment(/_course.*/)
+    end
+
     def skip_cache!
-      if params[:skip_cache].present?
-        expire_filter_cache!
-        expire_fragment(/_course.*/)
-      end
+      expire_cache! if params[:skip_cache].present?
     end
 
     def expire_filter_cache!

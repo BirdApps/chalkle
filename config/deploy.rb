@@ -87,6 +87,10 @@ namespace :chalkle do
   task :migrate_images, :roles => [:app] do 
     run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake chalkle:migrate_images"
   end
+  desc "clear_chaches" 
+  task :clear_caches, :roles => [:app] do 
+    run 'cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake chalkle:expire_caches'
+  end
 end
 
 
