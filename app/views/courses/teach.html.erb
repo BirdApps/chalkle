@@ -28,7 +28,7 @@
 
   <div class="col-xs-12 col-md-6">
     <% 
-    teaching = current_chalkler.channel_teachers.map(&:courses).flatten
+    teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
     if teaching.any?
     %>
       <div class="fancy-header">

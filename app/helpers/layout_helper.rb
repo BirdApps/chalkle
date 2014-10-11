@@ -110,7 +110,7 @@ module LayoutHelper
           default: @booking.course.channel.hero,
           blurred: @booking.course.channel.hero.blurred
         }
-    elsif @bookings && @bookings.first.course.channel.hero.present?
+    elsif @bookings && @bookings.any? && @bookings.first.course.channel.hero.present?
         {
           default: @bookings.first.course.channel.hero,
           blurred: @bookings.first.course.channel.hero.blurred
