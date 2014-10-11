@@ -57,6 +57,12 @@
             No teacher assigned
           <% end %>
         </div>
+        <% unless course.published?  %>
+          <div class="vertical-seperator pull-left hidden-xs"></div>
+          <div class="alert alert-warning pull-left">
+            <h4 class="warn-unpublished">UNPUBLISHED</h4>
+          </div>
+        <% end %>
         <% if course.reviews? %> 
           <div class="reviews small grey">
             <span class="fa fa-heart"></span>

@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_region
   before_filter :load_channel
   before_filter :load_category
+  before_filter :skip_cache!
 
   def current_ability
     @current_ability ||= Ability.new(current_admin_user)
@@ -196,6 +197,13 @@ class ApplicationController < ActionController::Base
 
     def base_url
       request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}")
+    end
+
+    def skip_cache!
+      if params[:skip_cache].present?
+        expire_filter_cache!
+        expire_fragment(/_course.*/)
+      end
     end
 
     def expire_filter_cache!

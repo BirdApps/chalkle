@@ -817,7 +817,9 @@ body.v2 {
 
       margin: 5px auto;
       transition: all 150ms ease-in;
-
+      .warn-unpublished{
+        margin: 10px;
+      }
       .title-wrapper {
         position:relative;
         .title {
