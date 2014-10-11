@@ -1,26 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>You are not allowed to view this page (403)</title>
+  <title>You don't have permission to view this page (403)</title>
   <style type="text/css">
-    body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
-    div.dialog {
-      width: 25em;
-      padding: 0 4em;
-      margin: 4em auto 0 auto;
-      border: 1px solid #ccc;
-      border-right-color: #999;
-      border-bottom-color: #999;
+    html {
+      background: url( /assets/partners/index-hero.jpg ) no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
     }
-    h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
+ 
+    body { 
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(76, 126, 147, 0.75); 
+      height: 100%; 
+      color: #fff; 
+      text-align: center; 
+      font-family:'proxima-nova';
+      padding: 25% 0 0 0 ;
+      margin: 0;
+      font-size: 110%; color: #333; line-height: 1.2em; font-weight: 200;
+
+    }
+    div.dialog {
+      width: 100%;
+      padding: 1em 0;
+      margin: 4em auto 0 auto;
+      border: none;
+      letter-spacing: 0.08em;
+      color: #333;
+      background-color: rgba(255,255,255,0.7);
+    }
+    a {
+      color: #666;
+      font-weight: 500;
+      text-decoration: none;  
+    }
+    a:hover {
+      color: rgba(76, 126, 147, 1.0); 
+
+    }
+    h1 { 
+      font-size: 200%; 
+      color: rgba(76, 126, 147, 1.0); 
+      line-height: 1.2em; 
+      font-weight: 200; 
+      text-transform: uppercase; 
+      letter-spacing: 0.1em;
+    }
   </style>
+
+  <script type="text/javascript" src="//use.typekit.net/bzi6yvd.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
 </head>
 
 <body>
-  <!-- This file lives in public/403.html -->
+  <!-- This file lives in public/500.html -->
+
+
+  <img src="/assets/logo.png">
+
   <div class="dialog">
-    <h1>You don't have permission to view this resource.</h1>
-    <p>Perhaps you are logged in as the wrong user</p>
+    <h1>You don't have permission <br />to view this resource.</h1>
+    <p>You may have logged in as the wrong user. </p>
+    <a href="http://chalkle.com">Home</a> | <a href="javascript:history.back(-1)">Back</a>
   </div>
 </body>
 </html>
