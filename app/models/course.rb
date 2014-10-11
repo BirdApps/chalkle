@@ -77,8 +77,8 @@ class Course < ActiveRecord::Base
   scope :in_fortnight, lambda {|week| start_at_between(week.first_day, (week+1).last_day) }
   
   scope :on_date, lambda {|date| start_at_between(date, date) }
-  scope :in_future, lambda { where( "start_at >= ?", DateTime.current.beginning_of_day) }
-  scope :previous, lambda { where("start_at < ?", DateTime.current.beginning_of_day) }
+  scope :in_future, lambda { where( "end_at >= ?", DateTime.current) }
+  scope :previous, lambda { where("start_at < ?", DateTime.current) }
   #TODO: replace references to previous with in_past - time consuming because previous is common word
   scope :in_past, previous
   scope :by_date, order(:start_at)
