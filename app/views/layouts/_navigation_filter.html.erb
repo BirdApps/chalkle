@@ -19,7 +19,7 @@
             <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('region','all')) %>">All of New Zealand</a></li>
             <li role="presentation" class="divider"></li>
             <% cache "region_filter_list_#{@category.name}_#{@channel.name}", skip_digest: true do %>
-              <% Region.with_displayable_classes_in_future.each do |region| %>        
+              <% filter_regions.each do |region| %>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('region',region.url_name)) %>"><%= region.name %></a></li>
               <% end %>
             <% end %>
@@ -43,8 +43,8 @@
             <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic','all')) %>">All Topics</a></li>
             <li role="presentation" class="divider"></li>
             <% cache "category_filter_list_#{@region.name}_#{@channel.name}", skip_digest: true do %>
-              <% Category.ordered_with_classes.each do |category| %>        
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic', category.url_name)) %>"><%= category.name %></a></li>
+              <% filter_topics.each do |category| %>        
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic', category.url_name)) %>"><%= category.name.capitalize %></a></li>
               <% end %>
             <% end %>
           </ul>
@@ -67,7 +67,7 @@
             <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', 'all')) %>">All Providers</a></li>
             <li role="presentation" class="divider"></li>
             <% cache "channel_filter_list_#{@region.name}_#{@category.name}", skip_digest: true do %>
-              <% Channel.with_displayable_classes_in_future.each do |channel| %>
+              <% filter_providers.each do |channel| %>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', channel.url_name)) %>"><%= channel.name %></a></li>
               <% end %>
             <% end %>

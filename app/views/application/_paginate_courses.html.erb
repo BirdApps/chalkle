@@ -1,4 +1,17 @@
-<%= render paginate_courses(@courses) %>
+<% 
+  if @courses.empty?  
+    problem = "No classes match "
+    problem += '"'+params["region"]+'" ' if params[:region].present?
+    problem += '"'+params["topic"]+'" ' if params[:topic].present?
+    problem += '"'+params["provider"]+'" ' if params[:provider].present?
+    problem += '"'+params["search"]+'" ' if params[:search].present?
+  %>
+  <div class="alert alert-warning center">
+     <%= problem %>    
+  </div>
+<% else %>
+  <%= render paginate_courses(@courses) %>
+<% end %>
 
 <div class="row text-right">
   <ul class="pagination">

@@ -55,15 +55,7 @@ class Channel < ActiveRecord::Base
   def self.select_options(channel)
     channel.map { |c| [c.name, c.id] }
   end
-
-  def self.with_displayable_classes_in_future
-    channels = []
-    Channel.all.each do |channel|
-      channels << channel if channel.courses.in_future.displayable.count > 0
-    end
-    channels
-  end
-
+  
   def fee
     channel_rate_override || Channel.DEFAULT_FEE
   end

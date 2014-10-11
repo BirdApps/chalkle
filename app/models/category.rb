@@ -42,18 +42,6 @@ class Category < ActiveRecord::Base
     results
   end
 
-  def self.ordered_with_classes
-    ordered & with_displayable_classes_in_future
-  end
-
-  def self.with_displayable_classes_in_future
-    categories = []
-    Category.all.each do |category|
-      categories << category if category.courses.in_future.displayable.count > 0
-    end
-    categories
-  end
-
   def best_colour_num
     colour_num || parent_best_colour_num
   end
