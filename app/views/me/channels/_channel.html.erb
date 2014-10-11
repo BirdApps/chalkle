@@ -13,7 +13,7 @@
     <% if current_user.present? && channel.channel_teachers.map(&:chalkler).include?(current_user.chalkler) %>
       <div>
         <small>Teacher Profile</small>
-        <%= render partial: '/me/channel_teachers/channel_teacher', collection: channel.channel_teachers %>  
+        <%= render partial: '/me/channel_teachers/channel_teacher', collection: channel.channel_teachers.where(chalkler_id: current_user.chalkler.id ) %>  
       </div>
     <% end %>
 
