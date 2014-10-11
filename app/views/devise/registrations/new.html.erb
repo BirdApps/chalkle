@@ -14,12 +14,15 @@
           <%= f.input :email, :required => true %>
           <%= f.input :password, :required => true %>
           <%= f.input :password_confirmation, :required => true %>
+          
         </div>
+
         <div class="form-actions">
           <input type="submit" name="commit" class="btn btn-primary" value="Sign up" />
         </div>
       <% end %>
     </div> 
+    <div class="alert alert-warning" id="match_message" style="display:none"></div>
     <%= render partial: '/devise/sessions/omniauth_buttons' %>
   </div>
   <div class="hidden-xs col-md-4">
