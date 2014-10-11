@@ -14,16 +14,17 @@ class ChannelContact < ActiveRecord::Base
   STATUS_3 = "Archived"
 
   before_validation :set_defaults
-  after_create :send_email
+  after_create :send_email!
 
   def set_defaults
     self.to = channel.email if channel.present? && to.blank?
+    self.to = channel.channel_admins.first.email if channel.channel_admins.first.present? && to.blank?
     self.status = STATUS_1 if status.blank?
-    self.from = chalkler.email if chalkler.present? && from.blank?
+    self.from = chalkler.email if chalkler.present?
     true
   end
 
-  def send_email
-    #TODO: send contact email 
+  def send_email!
+    ChannelMailer.contact(self).deliver! unless to.blank?
   end
 end

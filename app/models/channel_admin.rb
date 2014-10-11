@@ -9,4 +9,8 @@ class ChannelAdmin < ActiveRecord::Base
   belongs_to :channel
   belongs_to :admin_user
   belongs_to :chalkler
+
+   def email
+    chalkler.email ? chalkler.email : admin_user.email
+  end
 end
