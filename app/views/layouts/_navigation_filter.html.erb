@@ -8,7 +8,7 @@
               <img src="/assets/map-pin.png" />
             </div>
             <div class="col-2 hidden-xs" style="padding:2px 0;">
-              <div class="sub"><%= @region.name == "New Zealand" ? 'More specific' : 'Not in '+@region.name %>?</div>
+              <div class="sub"><%= @region.name == "New Zealand" ? 'More specific' : 'Not in '+@region.name.titlecase %>?</div>
               <span>Change Location</span> 
             </div>
             <div class="col-3">
@@ -20,7 +20,7 @@
             <li role="presentation" class="divider"></li>
             <% cache "region_filter_list_#{@category.name}_#{@channel.name}", skip_digest: true do %>
               <% filter_regions.each do |region| %>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('region',region.url_name)) %>"><%= region.name %></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('region',region.url_name)) %>"><%= region.name.titlecase %></a></li>
               <% end %>
             <% end %>
           </ul>
@@ -33,7 +33,7 @@
               <img src="/assets/tag.png" />
             </div>
             <div class="col-2  hidden-xs">
-              <%= @category.name %>
+              <%= @category.name.titlecase %>
             </div>
             <div class="col-3">
               <img class="hidden-xs" src="/assets/caret-down.png" />
@@ -44,7 +44,7 @@
             <li role="presentation" class="divider"></li>
             <% cache "category_filter_list_#{@region.name}_#{@channel.name}", skip_digest: true do %>
               <% filter_topics.each do |category| %>        
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic', category.url_name)) %>"><%= category.name.capitalize %></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic', category.url_name)) %>"><%= category.name.titlecase %></a></li>
               <% end %>
             <% end %>
           </ul>
@@ -57,7 +57,7 @@
               <img src="/assets/unfolded-paper-plane.png" />
             </div>
             <div class="col-2 hidden-xs">
-              <%= @channel.name %>
+              <%= @channel.name.titlecase %>
             </div>
             <div class="col-3">
               <img class="hidden-xs" src="/assets/caret-down.png" />
@@ -68,7 +68,7 @@
             <li role="presentation" class="divider"></li>
             <% cache "channel_filter_list_#{@region.name}_#{@category.name}", skip_digest: true do %>
               <% filter_providers.each do |channel| %>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', channel.url_name)) %>"><%= channel.name %></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', channel.url_name)) %>"><%= channel.name.titlecase %></a></li>
               <% end %>
             <% end %>
           </ul>

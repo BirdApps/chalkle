@@ -71,7 +71,7 @@ module ApplicationHelper
     elsif @category.id.nil? && @channel.id.present?
       courses = courses.in_channel(@channel)
     end
-    (courses.map &:region).compact.uniq    
+    (courses.map &:region).compact.uniq.sort_by{|c| c.name.downcase } 
   end
 
   def filter_topics
@@ -83,7 +83,7 @@ module ApplicationHelper
     elsif @region.id.nil? && @channel.id.present?
       courses = courses.in_channel(@channel)
     end
-    (courses.map &:category).compact.uniq    
+    (courses.map &:category).compact.uniq.sort_by{|c| c.name.downcase } 
   end
 
   def filter_providers
@@ -95,7 +95,7 @@ module ApplicationHelper
     elsif @category.id.nil? && @region.id.present?
       courses = courses.in_region(@region)
     end
-    (courses.map &:channel).compact.uniq
+    (courses.map &:channel).compact.uniq.sort_by{|c| c.name.downcase }
   end
 
   private

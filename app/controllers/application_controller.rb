@@ -200,7 +200,7 @@ class ApplicationController < ActionController::Base
     end
 
     def expire_cache!
-      expire_filter_cache!
+      expire_fragment(/.*filter_list.*/)
       expire_fragment(/_course.*/)
     end
 
@@ -209,21 +209,7 @@ class ApplicationController < ActionController::Base
     end
 
     def expire_filter_cache!
-      expire_region_filter_cache!
-      expire_category_filter_cache!
-      expire_channel_filter_cache!
-    end
-
-    def expire_region_filter_cache!
-      expire_fragment(/region_filter_list.*/)
-    end
-
-    def expire_category_filter_cache!
-      expire_fragment(/region_category_list.*/)
-    end
-
-    def expire_channel_filter_cache!
-      expire_fragment(/region_channel_list.*/)
+      expire_fragment(/.*filter_list.*/)
     end
 
 end
