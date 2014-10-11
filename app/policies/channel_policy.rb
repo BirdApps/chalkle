@@ -21,6 +21,10 @@ class ChannelPolicy < ApplicationPolicy
     teach?
   end
 
+  def teachers?
+    true
+  end
+
   def teach?
     @user.super? or @user.channels.include? @channel
   end

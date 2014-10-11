@@ -122,8 +122,8 @@ class Teaching
     course_to_teaching course
     if check_valid_input params
       course.update_attributes course_args
-      class_count = 1 if !class_count ||class_count == 0
-      class_count.to_i.times do |i|
+      @class_count = 1 if !@class_count || @class_count == 0
+      @class_count.to_i.times do |i|
         lesson = course.lessons[i]
         if lesson.present?
           lesson.update_attributes lesson_args i
@@ -144,9 +144,9 @@ class Teaching
     if check_valid_input(params)
       if course?
         #create single course with lots of lessons on it
-        course = Course.create course_args
-        class_count = 1 if !class_count ||class_count == 0
-        class_count.to_i.times do |i|
+        course = Course.new course_args
+        @class_count = 1 if !@class_count || @class_count == 0
+        @class_count.to_i.times do |i|
           lesson = Lesson.create lesson_args i
           course.lessons << lesson
         end
@@ -179,6 +179,7 @@ class Teaching
             @duration_hours[i+1] = @duration_hours[i]
             @duration_minutes[i+1] = @duration_minutes[i]
             #add new course to RepeatCourse
+            course.save
             repeat_course.courses << course
           else
             #this will only happen is repeat_count == 1, but it is in the loop to avoid verbosity
