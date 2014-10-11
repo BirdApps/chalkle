@@ -8,6 +8,13 @@ begin
       end
     end
 
+    desc "Pending payments"
+    task "create_pending_payments" => :environment do 
+      EventLog.log('expire_caches') do
+        OutgoingPayment.create_pending_payments
+      end
+    end
+
 
     desc "Load all payments from xero"
     task "load_payments" => :environment do

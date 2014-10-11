@@ -12,6 +12,7 @@ end
 
 every :day, :at => '12:01am' do 
   rake "chalkle:expire_caches"
+  rake "chalkle:create_pending_payments"
 end
 
 every :day, :at => '01:00am' do
