@@ -12,7 +12,24 @@
         <div class="center">
           <%= @channel.name %> is a <strong><%= @channel.plan.name %> provider</strong>
           <br /><br />
-          <strong><%= @channel.remaining_free_class_attendees %></strong> free class attendees left this month
+          <strong>
+            <%# @channel.remaining_free_class_attendees.to_s+'free class attendees left this month' %>
+          </strong> 
+          <% if current_user.super? %>
+            <div class="alert alert-danger">
+              <h4>Super Admin only</h4>
+              <p>If this channel is affordanced special fees and limits enter them here</p>
+              <hr />
+              <%= f.input :channel_plan_id, collection: ChannelPlan.all, label: "Channel Plan", wrapper: :horizontal %>
+              <%= f.input :plan_class_attendee_cost, label: "Class fee Override, default: $"+@channel.plan.class_attendee_cost.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_course_attendee_cost, label: "Course fee Override, default: $"+@channel.plan.course_attendee_cost.to_s, wrapper: :horizontal %>
+               <%= f.input :plan_processing_fee_percent, label: "Processing fee, default: "+(@channel.plan.processing_fee_percent*100).to_s+'%', wrapper: :horizontal %>
+              <%= f.input :plan_max_teachers, label: "Maximum Teachers, default: "+@channel.plan.max_teachers.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_max_channel_admins, label: "Maximum Channel Admins, default: "+@channel.plan.max_channel_admins.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_max_free_class_attendees, label: "Monthly free class attendees, default: "+@channel.plan.max_free_class_attendees.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_annual_cost, label: "Annual Cost, default: $"+@channel.plan.annual_cost.to_s, wrapper: :horizontal %>
+            </div>
+          <% end %>
         </div>
 
         <div class="fancy-header">

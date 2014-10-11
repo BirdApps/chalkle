@@ -8,9 +8,9 @@ class Channel < ActiveRecord::Base
     0
   end
 
-  attr_accessible *BASIC_ATTR = [:name,:channel_plan, :plan_name, :plan_max_channel_admins, :plan_max_teachers, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee, :logo, :hero, :region_ids, :regions,:channel_teachers, :url_name,:account, :tax_number,:description, :website_url ]
+  attr_accessible *BASIC_ATTR = [:name, :logo, :hero, :region_ids, :regions,:channel_teachers, :url_name,:account, :tax_number,:description, :website_url ]
 
-  attr_accessible *BASIC_ATTR, :channel_rate_override, :teacher_percentage, :email, :visible, :short_description, :photos_attributes, :as => :admin
+  attr_accessible *BASIC_ATTR, :channel_rate_override, :teacher_percentage, :email, :visible, :short_description, :photos_attributes,:channel_plan, :channel_plan_id, :plan_name, :plan_max_channel_admins, :plan_max_teachers, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee_percent, :as => :admin
 
   validates_presence_of :name
   validates_presence_of :channel_plan
