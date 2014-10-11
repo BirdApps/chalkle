@@ -508,7 +508,9 @@ class Course < ActiveRecord::Base
   end
 
   def between_start_and_end
-    start_at < DateTime.current && end_at > DateTime.current
+    check_start_at
+    check_end_at
+    start_at < DateTime.current && end_at > DateTime.current if start_at.present? && end_at.present?
   end
 
   def reviews?
