@@ -51,7 +51,7 @@ module ApplicationHelper
   end
 
   def paginate_take
-    @paginate_take ||= params[:take].to_i > 0 ? params[:take].to_i : 15
+    @paginate_take ||= params[:take].to_i > 0 ? params[:take].to_i : 30
   end
 
   def paginate_skip
