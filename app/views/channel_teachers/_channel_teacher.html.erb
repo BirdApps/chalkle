@@ -13,9 +13,7 @@
               Next class: <span><%= quick_date_time channel_teacher.next_class.start_at %></span>
             </div>
             <div>
-              <a href="course_path(channel_teacher.next_class.id)" class="colour<%= channel_teacher.next_class.best_colour_num.to_s %>" >
-                <%= channel_teacher.next_class.name  %>
-              </a>
+              <%= link_to channel_teacher.next_class.name, course_path(channel_teacher.next_class), class: "colour#{ channel_teacher.next_class.best_colour_num.to_s}" %>
             </div>
           <% else %>
             <div>No scheduled classes</div>
