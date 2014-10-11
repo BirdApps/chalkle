@@ -94,13 +94,12 @@ module LayoutHelper
   end
 
   def find_hero
-    if @channel_teacher.present? && @channel_teacher.id.present?
-      if @channel_teacher.channel.hero.present?
+    if @channel_teacher.present? && @channel_teacher.id.present? && @channel_teacher.channel.hero.present?
         {
           default: @channel_teacher.channel.hero,
           blurred: @channel_teacher.channel.hero.blurred
         }
-      end
+
     elsif @channel.hero.present?
         {
           default: @channel.hero,
@@ -116,7 +115,7 @@ module LayoutHelper
           default: @bookings.first.course.channel.hero,
           blurred: @bookings.first.course.channel.hero.blurred
         }
-      elsif @category.hero.present?
+      elsif @category.hero.present? 
         {
           default: @category.hero,
           blurred: @category.hero.blurred
