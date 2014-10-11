@@ -16,7 +16,7 @@
     <%= typekit_includes %>
   </head>
 
-  <body class="<%= body_class %> v2" role="document">
+  <body class="<%= body_class %> v2" role="document" style="background-color: <%= header_color ? header_color : 'rgba(76, 126, 147, 1)' %>;">
      <script>
       window.fbAsyncInit = function() {
         FB.init({
@@ -39,9 +39,11 @@
       <%= render 'layouts/navigation' %>
       <%= render 'layouts/header' %>
     </header>
-    <div class="container" role="main">
-      <%= render 'layouts/messages' %>
-      <%= yield %>
+    <div id="wrapper">
+      <div class="container" role="main">
+        <%= render 'layouts/messages' %>
+        <%= yield %>
+      </div>
     </div>
     <% #render 'layouts/footer' %> 
     <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>

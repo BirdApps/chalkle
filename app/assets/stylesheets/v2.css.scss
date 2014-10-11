@@ -46,7 +46,7 @@
   }
 }
 
-$primary-color: rgba(76,126,147,0.75);
+$primary-color: rgba(76,126,147,0.85);
 $primary-color-opaque: rgba(76,126,147,1);
 $col-sm: 768px;
 $col-md: 992px;
@@ -58,7 +58,7 @@ html {
   height: auto;
 }
 body.v2 {
-  margin-bottom: 232px;
+  margin-bottom: 52px;
   height: auto;
   color: #727272;
   div[role=main] {
@@ -699,6 +699,9 @@ body.v2 {
         }
       }
     }
+  }
+  #wrapper {
+    width:100%; background-color:#fff; 
   }
   .container {
     font-family: "proxima-nova",sans-serif;
