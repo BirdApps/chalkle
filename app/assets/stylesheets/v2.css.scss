@@ -643,7 +643,7 @@ body.v2 {
           margin:0;
           li {
             font-family: "proxima-nova",sans-serif;
-            font-weight: 100;
+            font-weight: 300;
             float: left;
             list-style: none;
             text-align: center;
@@ -652,7 +652,7 @@ body.v2 {
             position: relative;
             .link_title {
               white-space: nowrap;
-              font-size:0.8em;
+              font-size: 0.9em;
               text-align: center;
               display: block;
               @media screen and (max-width: $col-sm) {
@@ -664,7 +664,7 @@ body.v2 {
               color: #333;
               padding: 30px 5px;
               width: 100%;
-              @include text-shadow(0px, 1px, 1px, rgba(255,255,255,1.0));
+              @include text-shadow(0px, 1px, 2px, rgba(255,255,255,1.0));
               @include transition( all 200ms ease-out );
 
               @media screen and (max-width: $col-md) {
