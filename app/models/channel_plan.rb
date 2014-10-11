@@ -11,7 +11,7 @@ class ChannelPlan < ActiveRecord::Base
     self.id = nil
     self.name = channel.plan_name if channel.plan_name.present?
 
-    self.admin_logins = channel.plan_max_channel_admins if channel.plan_max_channel_admins.present?
+    self.max_channel_admins = channel.plan_max_channel_admins if channel.plan_max_channel_admins.present?
 
     self.class_attendee_cost = channel.plan_class_attendee_cost if channel.plan_class_attendee_cost.present?
 

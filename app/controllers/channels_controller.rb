@@ -42,12 +42,19 @@ class ChannelsController < ApplicationController
     authorize @channel
     channel_params = params[:channel]
     @channel = Channel.find params[:channel_id]
-    if params[:channel_agreeterms] == 'on'
-      success = @channel.update_attributes channel_params
-    end
-    if success
-      redirect_to channel_path @channel.url_name
+    
+    if current_user.super?
+      success = @channel.update_attributes(channel_params,as: :admin)
     else
+      if params[:channel_agreeterms] == 'on'
+        success = @channel.update_attributes channel_params
+      end
+    end
+
+    if success
+      redirect_to channel_settings_path @channel.url_name, notice: 'Settings saved'
+    else
+      flash[:notice] = 'Settings could not be saved'
       render 'edit'
     end
   end
