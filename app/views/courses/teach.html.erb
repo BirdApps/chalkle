@@ -24,37 +24,26 @@
 </div>
 
 
-<div class="row">
+<% 
+teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
+if teaching.any?
+%>
 
-  <div class="col-xs-12 col-md-6">
-    <% 
-    teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
-    if teaching.any?
-    %>
-      <div class="fancy-header">
-        <h3>Classes you are Teaching</h3>
-        <hr />
-      </div>
-      <div class="row col-xs-12">
-        <%= render partial: '/me/courses/course', collection: teaching %>  
-      </div>
-    <% end %>
-  </div>
-  <% if current_chalkler.channel_teachers.any? %>
+  <div class="row">
+
+    <div class="fancy-header">
+      <h3>Classes you are Teaching</h3>
+      <hr />
+    </div>
+
     <div class="col-xs-12 col-md-6">
 
-      <div class="fancy-header">
-        <h3>Your Teacher Profiles</h3>
-        <hr />
-      </div>
-      <div class="row col-xs-12">
-        <%= render partial: '/me/channel_teachers/channel_teacher', collection: current_chalkler.channel_teachers %>  
-      </div>
+        <div class="row col-xs-12">
+          <%= render partial: '/me/courses/course', collection: teaching %>  
+        </div>
     </div>
-  <% end %>
-
-
-</div>
+  </div>
+<% end %>
 
 
 <% else %>
