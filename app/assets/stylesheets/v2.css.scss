@@ -301,7 +301,8 @@ body.v2 {
     letter-spacing: 0.1em;
   }
   .btn-default:hover {
-    background-color: #696969;
+    background-color: #ddd;
+
   }
   .btn-default.active, .btn-default:active, .btn-default:focus {
     background: #EAEAEA;
@@ -800,7 +801,6 @@ body.v2 {
       }
     }
     ._channel {
-     background: #efefef;
      .channel-img {
         height: 45px;
         width: 45px;
