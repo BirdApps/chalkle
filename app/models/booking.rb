@@ -44,6 +44,9 @@ class Booking < ActiveRecord::Base
 
   before_validation :set_free_course_attributes
 
+  after_save :expire_cache!
+  after_create :expire_cache!
+
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
 
   def self.needs_booking_completed_mailer
@@ -141,12 +144,15 @@ class Booking < ActiveRecord::Base
   end
 
   private
-
-  def set_free_course_attributes
-    if course && free?
-      self.payment_method = 'free'
-    elsif course
-      self.payment_method = 'credit_card'
+    def set_free_course_attributes
+      if course && free?
+        self.payment_method = 'free'
+      elsif course
+        self.payment_method = 'credit_card'
+      end
     end
-  end
+
+    def expire_cache!
+      course.expire_cache!
+    end
 end

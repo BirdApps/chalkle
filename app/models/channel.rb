@@ -47,6 +47,11 @@ class Channel < ActiveRecord::Base
   scope :has_hero, where("hero IS NOT NULL")
   scope :chalkler_can_teach, lambda { |chalkler| joins(:channel_teachers).where("chalkler_id = ?", chalkler.id) }
 
+
+  after_save :check_url_name
+  after_create :set_url_name
+  after_save :expire_cache!
+
   def self.select_options(channel)
     channel.map { |c| [c.name, c.id] }
   end
@@ -152,9 +157,6 @@ class Channel < ActiveRecord::Base
     'New Zealand'
   end
 
-
-  after_save :check_url_name
-  after_create :set_url_name
   def set_url_name
     url_name = name.parameterize
     self.url_name = Channel.find_by_url_name(url_name).nil? ? url_name : url_name+self.id.to_s
@@ -180,8 +182,11 @@ class Channel < ActiveRecord::Base
         nil
       end
     )
-
   end
 
-
+  def expire_cache!
+    courses.each do |course|
+      course.expire_cache!
+    end
+  end
 end

@@ -108,6 +108,7 @@ class Course < ActiveRecord::Base
   before_save :save_first_lesson
   before_save :check_start_at
   before_save :check_end_at
+  after_save :expire_cache!
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 
@@ -539,6 +540,10 @@ class Course < ActiveRecord::Base
     save
   end
 
+  def expire_cache!
+    ActionController::Base.new.expire_fragment("_course_#{id}")
+  end
+
   private
   def class_or_course
     return 'class' if lessons.count < 2
@@ -578,5 +583,5 @@ class Course < ActiveRecord::Base
   def check_url_name
     self.url_name = name.parameterize if self.url_name.nil?
   end
-  
+
 end

@@ -57,13 +57,6 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def expire_cache!
-      #expire_fragment('region_filter_list')
-      #expire_fragment('category_filter_list')
-      #expire_fragment('channel_filter_list')
-      expire_fragment(/courses_index_.*/)
-    end
-
     def authenticate_chalkler!
       session[:user_return_to] = request.fullpath
       super
@@ -204,4 +197,23 @@ class ApplicationController < ActionController::Base
     def base_url
       request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}")
     end
+
+    def expire_filter_cache!
+      expire_region_filter_cache!
+      expire_category_filter_cache!
+      expire_channel_filter_cache!
+    end
+
+    def expire_region_filter_cache!
+      expire_fragment(/region_filter_list.*/)
+    end
+
+    def expire_category_filter_cache!
+      expire_fragment(/region_category_list.*/)
+    end
+
+    def expire_channel_filter_cache!
+      expire_fragment(/region_channel_list.*/)
+    end
+
 end
