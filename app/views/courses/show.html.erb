@@ -140,7 +140,7 @@
         <div class="col-sm-6 col-xs-12 map-overlay">
           <div class="col-xs-12 xol-sm-10 col-sm-offset-2">
             <p class="grey light">
-              <%= @course.venue_truncated %>
+              <%= @course.venue_truncated(200) %>
             </p>
             <p class="grey light hidden-xs">
               <%= @course.address_formatted %>
