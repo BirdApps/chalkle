@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141011052119) do
+ActiveRecord::Schema.define(:version => 20141012030727) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(:version => 20141011052119) do
     t.integer "channel_id",                               :null => false
     t.integer "chalkler_id"
     t.string  "name"
-    t.string  "bio"
+    t.text    "bio"
     t.string  "pseudo_chalkler_email"
     t.boolean "can_make_classes",      :default => false
     t.string  "tax_number"
