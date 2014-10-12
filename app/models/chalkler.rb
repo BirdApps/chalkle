@@ -70,7 +70,7 @@ class Chalkler < ActiveRecord::Base
   end
 
   def upcoming_teaching
-    (courses_adminable.in_future+courses_teaching.in_future).uniq.sort &:start_at 
+    (courses_adminable.in_future+courses_teaching.in_future).uniq.sort_by(&:start_at) 
   end
 
   class << self

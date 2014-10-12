@@ -1,4 +1,8 @@
 <% if @upcoming_courses.present? %>
+ <div class="fancy-header">
+    <h3>Upcoming Bookings</h3>
+    <hr />
+  </div>
   <div class="row">
       <% @upcoming_courses.each do |course| %>
         <% bookings = course.bookings.confirmed.where(chalkler_id: current_user.id) %>
@@ -31,7 +35,7 @@
     <div class="fancy-header">
         <h3>Upcoming Bookings</h3>
         <hr />
-      </div>
+    </div>
     <div class="alert alert-warning center">
         You have no upcoming bookings! &nbsp;&nbsp;&nbsp; <%= link_to "Find a class?", root_path, class: 'btn btn-primary' %>
     </div>

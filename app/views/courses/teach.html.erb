@@ -1,50 +1,47 @@
 
 <% if current_user && current_user.teach_menu_badge_count > 0 %>
 
-<div class="row">
+  <div class="row">
 
-  <div class="col-md-12 text-center">
-    <%= link_to "Create a Class", new_course_path, class: "btn btn-default" %>
+    <div class="col-md-12 text-center">
+      <%= link_to "Create a Class", new_course_path, class: "btn btn-default" %>
+    </div>
+
   </div>
-
-</div>
-
-<div class="row">
-
-  <% if current_user.channels_adminable.any? %>
-    <div class="fancy-header">
-      <h3>Your Providers</h3>
-      <hr />
-    </div>
-    <div class="row col-xs-12">
-      <%= render partial: '/me/channels/channel', collection: current_user.channels_adminable %>  
-    </div>
-  <% end %>
-
-</div>
-
-
-<% 
-teaching = current_chalkler.upcoming_teaching
-#teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
-if teaching.any?
-%>
 
   <div class="row">
 
-    <div class="fancy-header">
-      <h3>Classes you are Teaching</h3>
-      <hr />
-    </div>
-
-    <div class="col-xs-12 col-md-6">
-
-        <div class="row col-xs-12">
-          <%= render partial: '/me/courses/course', collection: teaching %>  
-        </div>
-    </div>
+    <% if current_user.channels_adminable.any? %>
+      <div class="fancy-header">
+        <h3>Providers</h3>
+        <hr />
+      </div>
+      <div class="row col-xs-12">
+        <%= render partial: '/me/channels/channel', collection: current_user.channels_adminable %>  
+      </div>
+    <% end %>
   </div>
-<% end %>
+
+  <% 
+    teaching = current_chalkler.upcoming_teaching
+    #teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
+    if teaching.any?
+  %>
+
+    <div class="row">
+
+      <div class="fancy-header">
+        <h3>Upcoming Classes</h3>
+        <hr />
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+          <div class="row col-xs-12">
+            <%= render partial: '/me/courses/course', collection: teaching %>  
+          </div>
+      </div>
+    </div>
+  <% end %>
 
 
 <% else %>
