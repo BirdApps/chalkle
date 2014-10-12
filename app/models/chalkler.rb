@@ -64,6 +64,10 @@ class Chalkler < ActiveRecord::Base
     courses_adminable.merge courses_teaching    
   end
 
+  def join_psuedo_identities!
+    ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+  end
+
   class << self
 
     #TODO: Move into a presenter class like Draper sometime

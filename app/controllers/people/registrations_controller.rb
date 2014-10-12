@@ -6,6 +6,7 @@ class People::RegistrationsController < Devise::RegistrationsController
       render 'new' and return
     end
     if resource.save
+      resource.join_psuedo_identities!
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_navigational_format?
         sign_up(resource_name, resource)
