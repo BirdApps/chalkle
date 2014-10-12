@@ -347,19 +347,21 @@ $(function(){
         if(instance_date!=null){
           if(instance_time != null){
             var start_hours = instance_time.hours;
+            console.log(instance_time);
             if(instance_time.meridian == "PM"){
               start_hours += 12;
             }
             if(start_hours == 24){
               start_hours = 12;
             }
-            if(start_hours == 0){
-              start_hours = 12;
-            }else if(start_hours == 12 ){
-              start_hours = 0;
+            if(start_hours == 12){
+              if(instance_time.meridian == "AM"){
+                start_hours = 0;
+              }
             }
-            var start_minutess = instance_time.minutes;
-            instance_date.setHours(start_hours,start_minutess,0,0);  
+            var start_minutes = instance_time.minutes;
+            console.log(start_hours);
+            instance_date.setHours(start_hours,start_minutes,0,0);  
           }
           $(scope).find('#teaching_start_at').val(instance_date);
         }
