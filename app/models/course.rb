@@ -106,8 +106,8 @@ class Course < ActiveRecord::Base
   before_create :set_url_name
   before_save :update_published_at
   before_save :save_first_lesson
-  before_save :check_start_at
-  before_save :check_end_at
+  after_save :start_at!
+  after_save :end_at!
   after_save :expire_cache!
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
@@ -533,13 +533,13 @@ class Course < ActiveRecord::Base
   end
 
   def start_at!
-    check_start_at
-    save
+    new_start_at = first_lesson.start_at if first_lesson.present?
+    update_column(:start_at, new_start_at) if start_at != new_start_at
   end
 
   def end_at!
-    check_end_at
-    save
+    new_end_at = last_lesson.end_at if last_lesson.present? && last_lesson.valid?
+    update_column(:end_at, new_end_at) if end_at != new_end_at
   end
 
   def expire_cache!
