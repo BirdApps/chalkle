@@ -6,6 +6,10 @@
       <% end %>
         <h4 class="inline">
           <%= channel.name %> 
+            <%= if channel.courses.upcoming(nil, :include_unpublished => true).taught_by_chalkler(current_user).count > 0  
+              "(#{channel.courses.upcoming(nil, :include_unpublished => true).taught_by_chalkler(current_user).count})"
+          end %>
+
         </h4>
     <% end %>
   </div>

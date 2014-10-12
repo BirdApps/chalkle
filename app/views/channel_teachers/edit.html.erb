@@ -20,6 +20,7 @@
       <h3>Details </h3>
       <hr />
     </div>
+    <%= f.input :name, label: "Name", wrapper: :horizontal %>
 
     <% if @channel_teacher.chalkler.present? %>
       <p class="center light">
@@ -33,7 +34,6 @@
     <% else %>
       <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
     <% end %>
-
     <%= f.input :bio, as: :text, label: "About", wrapper: :horizontal %>
 
     <label class="vertical-borders exists-success" style="display:none">
