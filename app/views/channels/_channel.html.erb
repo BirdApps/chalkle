@@ -1,9 +1,12 @@
-<% if params[:view] == "grid" %>
-  <div class="channel col-sm-6">
-    <%= link_to channel.name, channel_path(channel.url_name) %>
+<div class="col-xs-12 col-sm-6">
+  <div class="_channel">
+    <%= link_to(channel_path(channel.url_name)) do %>
+      <% if channel.logo.file %>
+        <img src="<%= channel.logo.url %>" class='channel-img inline' > 
+      <% end %>
+        <h4 class="inline">
+          <%= channel.name %> 
+        </h4>
+    <% end %>
   </div>
-<% else %>
-  <div class="channel col-xs-12">
-    <%= link_to channel.name, channel_path(channel.url_name) %>
-  </div>
-<% end %>
+</div>

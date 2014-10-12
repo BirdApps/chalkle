@@ -1,103 +1,109 @@
-
-<% if current_user.bookings.present? %>
-
-<div class="row">
-
-  <div class="col-xs-12 col-md-12">
-      <div class="fancy-header">
-        <h3>Upcoming Bookings</h3>
-        <hr />
-      </div>
-      <div class="row col-xs-12">
-        <%= render partial: 'me/bookings/booking' ,collection: current_user.bookings %>  
-      </div>
-    <% end %>
-
+<% if @upcoming_courses.present? %>
+  <div class="row">
+      <% @upcoming_courses.each do |course| %>
+        <% bookings = course.bookings.confirmed.where(chalkler_id: current_user.id) %>
+          <% if bookings.present? %>
+            <div class="col-sm-10">
+              <%= render partial: 'me/bookings/booking', locals: {booking: bookings.first } %>
+            </div>
+            <div class="col-sm-2">
+              <a href="<%= course.path %>" class="block center alert alert-success small">
+                <%= bookings.count %>
+                <br /> <%= 'Booking'.pluralize(bookings.count) %>
+              </a>
+            </div>
+          <% end %>
+      <% end %>
+  </div>
+   <div class="row">
     <% if current_chalkler && current_chalkler.channels.any? %>
       <div class="fancy-header">
         <h3>Following</h3>
         <hr />
       </div>
-      <div class="row col-xs-12">
-        <%= render current_chalkler.channels.order('name ASC') %>  
+      <div class="col-xs-12">
+        <%= render partial: 'channels/channel', collection: current_chalkler.channels.order('name ASC') %>
       </div>
+    <% end %>
   </div>
-
-
 <% else %>
+  <% if current_user.authenticated? %>
+    <div class="fancy-header">
+        <h3>Upcoming Bookings</h3>
+        <hr />
+      </div>
+    <div class="alert alert-warning center">
+        You have no upcoming bookings! &nbsp;&nbsp;&nbsp; <%= link_to "Find a class?", root_path, class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+  <section id="who" class="row">
+    <div class="fancy-header col-md-12 ">
+      <h3 class="">Learn anything</h3>
+      <hr />
+    </div>
+    <div class="fancy-header col-md-12 ">
+      With courses from...
+    </div>
+    <div class="who col-xs-12 col-md-3 text-center">
+      <h4 class='text-center'>Independent Teachers</h4>
+      <div class="teacher-hero"></div>
+    </div>
 
-<section id="who" class="row">
-  <div class="fancy-header col-md-12 ">
-    <h3 class="">Learn anything</h3>
-    <hr />
-  </div>
-  <div class="fancy-header col-md-12 ">
-    With courses from...
-  </div>
-  <div class="who col-xs-12 col-md-3 text-center">
-    <h4 class='text-center'>Independent Teachers</h4>
-    <div class="teacher-hero"></div>
-  </div>
+    <div class="who col-xs-12 col-md-3 text-center">
+      <h4 class='text-center'>Community Groups</h4>
+      <div class="community-hero"></div>
+    </div>
 
-  <div class="who col-xs-12 col-md-3 text-center">
-    <h4 class='text-center'>Community Groups</h4>
-    <div class="community-hero"></div>
-  </div>
+    <div class="who col-xs-12 col-md-3 text-center">
+    <h4 class='text-center'>Small Business</h4>
+      <div class="business-hero"></div>
+    </div>
 
-  <div class="who col-xs-12 col-md-3 text-center">
-  <h4 class='text-center'>Small Business</h4>
-    <div class="business-hero"></div>
-  </div>
+    <div class="who col-xs-12 col-md-3 text-center">
+    <h4 class='text-center'>Libraries</h4>
+      <div class="library-hero"></div>
+    </div>
+  </section>
+<% end %>
 
-  <div class="who col-xs-12 col-md-3 text-center">
-  <h4 class='text-center'>Libraries</h4>
-    <div class="library-hero"></div>
-  </div>
-</section>
+<% unless current_user.authenticated? %>
+  <section id="getting_started" class="row">
+    <div class="fancy-header">
+      <h3 class="">Getting started on Chalkle </h3><hr />
+    </div>
 
+    <dl class="col-xs-12 col-md-8 col-md-offset-2">
 
-<% end %> 
+      <dt>1</dt>
+      <dd>
+        <h4><%= link_to 'Sign up', new_chalkler_registration_path  %> for chalkle</h4>
+        <p>
+           
+        </p>
+      </dd>
+      <div class="clear"></div>
 
+      <dt>2</dt>
+      <dd>
+        <h4><%= link_to 'Browse classes in your region', root_path %> </h4>
+        <p>
+          Join classes you are interested in!   
+        </p>
+      </dd>
+      <div class="clear"></div>
 
-<section id="getting_started" class="row">
-  <div class="fancy-header">
-    <h3 class="">Getting started on Chalkle </h3><hr />
-  </div>
-
-  <dl class="col-xs-12 col-md-8 col-md-offset-2">
-
-    <dt>1</dt>
-    <dd>
-      <h4><%= link_to 'Sign up', new_chalkler_registration_path  %> for chalkle</h4>
-      <p>
-         
-      </p>
-    </dd>
-    <div class="clear"></div>
-
-    <dt>2</dt>
-    <dd>
-      <h4><%= link_to 'Browse classes in your region', root_path %> </h4>
-      <p>
-        Join classes you are interested in!   
-      </p>
-    </dd>
-    <div class="clear"></div>
-
-    <dt>3</dt>
-    <dd>
-      <h4>Go to your class!</h4>
-      <p>
-        If you have any questions about your booking, contact the course provider directly, or for website questions, give us a shout. 
-      </p>
-      <p>
-        <%= link_to 'Contact Us', partners_say_hello_path %>
-      </p>
-    </dd>
-  </dl>
-
-</section>
-
-
+      <dt>3</dt>
+      <dd>
+        <h4>Go to your class!</h4>
+        <p>
+          If you have any questions about your booking, contact the course provider directly, or for website questions, give us a shout. 
+        </p>
+        <p>
+          <%= link_to 'Contact Us', partners_say_hello_path %>
+        </p>
+      </dd>
+    </dl>
+  </section>
+<% end %>
 
 

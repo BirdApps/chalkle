@@ -2,22 +2,11 @@
   <div class="_channel">
     <%= link_to(channel_path(channel.url_name)) do %>
       <% if channel.logo.file %>
-        <img src="<%= channel.logo.url %>" class='channel-img' > 
+        <img src="<%= channel.logo.url %>" class='channel-img inline' > 
       <% end %>
-      <h4><%= channel.name %> 
-      <%= if channel.courses.upcoming(nil, :include_unpublished => true).taught_by_chalkler(current_user).count > 0  
-        "(#{channel.courses.upcoming(nil, :include_unpublished => true).taught_by_chalkler(current_user).count})"
-      end %></h4>
+        <h4 class="inline">
+          <%= channel.name %> 
+        </h4>
     <% end %>
-
-    <% if current_user.present? && channel.channel_teachers.map(&:chalkler).include?(current_user.chalkler) %>
-      <div>
-        <small>Teacher Profile</small>
-        <%= render partial: '/me/channel_teachers/channel_teacher', collection: channel.channel_teachers.where(chalkler_id: current_user.chalkler.id ) %>  
-      </div>
-    <% end %>
-
-
-
   </div>
 </div>

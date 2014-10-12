@@ -25,6 +25,7 @@ class CoursesController < ApplicationController
     render 'teach'
   end
   def learn
+    @upcoming_courses = current_user.courses.in_future.by_date.uniq
     render 'learn'
   end
 
