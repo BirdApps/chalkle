@@ -20,12 +20,13 @@ Your Chalkle Administrator")
     date.strftime("%l:%M%P")
   end
 
+
   def pretty_time_range(start, finish)
     return unless start && finish
     if(finish - start < 24*3600)
       pretty_time(start)+" - "+pretty_time(finish)
     else
-      day_ordinal_month(start)+" "+pretty_time(start)+" "+day_ordinal_month(finish)+" "+pretty_time(finish)
+      day_ordinal_month(start)+" - "+day_ordinal_month(finish)
     end
   end
 

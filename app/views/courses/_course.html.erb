@@ -78,9 +78,10 @@
       <footer>
         <span class="small grey">
           <span class="fa fa-clock-o"></span>
-          <%= day_ordinal_month course.start_at %>
+          <% if course.class? %>
+            <%= day_ordinal_month course.start_at %>
+          <% end %>
           <%= pretty_time_range course.start_at, course.end_at %>
-          <%# pretty_time course.start_at %>
           <span class="fa fa-map-marker"></span>
           <%= course.venue_address %>
         </span>
