@@ -13,6 +13,10 @@ class ChannelTeacherPolicy < ApplicationPolicy
     true #TODO: implement incognito
   end
 
+  def create?
+    new?
+  end
+
   def edit?
     admin?
   end
