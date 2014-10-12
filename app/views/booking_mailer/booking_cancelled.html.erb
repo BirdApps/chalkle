@@ -1,9 +1,19 @@
 <h3 style="border-bottom: solid 1px #ececec; padding-bottom: 5px;">
 Hello <%= @chalkler.name %>,
 </h3>
-Unfortunately <%= @course.channel.name -%> has had to cancel <%= @course.name -%>. You should receive a full refund notification from Chalkle shortly.<br />
+<p>
+Your booking for <%= link_to @booking.course.name, channel_course_url(@booking.channel.url_name,@booking.course.url_name,@booking.course.id) -%> has been canceled
+<% if @booking.cancelled_reason.present? %>
+for the following reason: <br /> "<%= @booking.cancelled_reason %>"
+<% end %>
+</p>
+<% if @booking.status == "refund_pending" %>
+<p>
+Your payment will be reversed within the next 21 days
+</p>
+<% end %>
 <br/>
-If you have any questions, please contact the provider directly. <br />
+If you have any questions, please contact the <%= link_to 'provider', channel_url(@booking.channel.url_name) %>. <br />
 <br/>
 In the meantime, check out <%= link_to 'chalkle.com', root_url -%> for more classes.<br />
 <br />

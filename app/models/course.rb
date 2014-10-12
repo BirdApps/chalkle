@@ -137,7 +137,7 @@ class Course < ActiveRecord::Base
     self.status = STATUS_2
     self.cancelled_reason = reason if reason
     bookings.each do |booking|
-      booking.cancel!(reason)
+      booking.cancel!(reason, true)
     end
     save
   end
