@@ -525,9 +525,9 @@ class Course < ActiveRecord::Base
     100
   end
 
-  def venue_truncated
+  def venue_truncated(length=16)
     return if !venue || venue.empty?
-    truncated = venue.split[0..venue[0..16].split(" ").count-1].join(" ")
+    truncated = venue.split[0..venue[0..length].split(" ").count-1].join(" ")
     truncated[truncated.length-1] = truncated[truncated.length-1].gsub(/[^0-9A-Za-z]/, '')
     truncated
   end
