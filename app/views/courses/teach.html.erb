@@ -25,7 +25,8 @@
 
 
 <% 
-teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
+teaching = current_chalkler.upcoming_teaching
+#teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
 if teaching.any?
 %>
 

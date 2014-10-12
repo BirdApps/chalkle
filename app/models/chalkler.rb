@@ -32,6 +32,7 @@ class Chalkler < ActiveRecord::Base
   has_many :channel_admins
   has_many :channels_adminable, through: :channel_admins, source: :channel
   has_many :courses_adminable, through: :channels_adminable, source: :courses
+  has_many :courses_teaching, through: :channel_teachers, source: :courses
   has_many :bookings
   has_many :courses, :through => :bookings
   has_many :payments
@@ -66,6 +67,10 @@ class Chalkler < ActiveRecord::Base
 
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+  end
+
+  def upcoming_teaching
+    (courses_adminable.in_future+courses_teaching.in_future).uniq.sort &:start_at 
   end
 
   class << self

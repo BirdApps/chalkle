@@ -95,13 +95,19 @@ class TheUser
     chalkler.id.present? ? chalkler.adminable_courses : Course.none
   end
 
+  def courses_teaching
+    chalkler.id.present? ? chalkler.adminable_courses : Course.none
+  end
+
+  def upcoming_teaching
+    chalkler.id.present? ? chalkler.upcoming_teaching : Course.none
+  end
+
   def learn_menu_badge_count
     @learn_menu_badge_count ||= chalkler ? chalkler.bookings.confirmed.upcoming.count : 0
   end
 
   def teach_menu_badge_count
-    return @teach_menu_badge_count if @teach_menu_badge_count
-    return 0 unless chalkler
-    (chalkler.channels_adminable.map {|c| c.courses.upcoming(nil, include_unpublished: false) }.flatten + courses_teaching).uniq.count
+    @teach_menu_badge_count ||= chalkler ? chalkler.upcoming_teaching.count : 0
   end
 end
