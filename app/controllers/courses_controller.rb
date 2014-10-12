@@ -18,7 +18,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    return not_found if !@course
+    
   end
 
   def teach
@@ -86,6 +86,7 @@ class CoursesController < ApplicationController
   
   def change_status
     course = Course.find params[:id]
+    return not_found if !course
     authorize course
     new_status = params[:course][:status]
     if new_status == 'publish_series'
@@ -142,6 +143,7 @@ class CoursesController < ApplicationController
 
     def load_course
       @course = Course.find_by_id(params[:id]).try :decorate
+      return not_found if !@course
       authorize @course
       ActiveRecord::RecordNotFound if @course.nil?
     end  

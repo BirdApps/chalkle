@@ -18,7 +18,7 @@ class ChannelsController < ApplicationController
   end
 
   def series 
-    return not_found if @channel.new_record?
+    return not_found if !@channel || @channel.new_record?
     @courses = @channel.courses.displayable.where url_name: params[:course_url_name]
     return not_found if @courses.empty?
     @courses
@@ -33,12 +33,14 @@ class ChannelsController < ApplicationController
   end
 
   def edit
+    return not_found if !@channel
     authorize @channel
     @page_subtitle = 'Settings'
     not_found if !@channel
   end
 
   def update
+    return not_found if !@channel
     authorize @channel
     channel_params = params[:channel]
     @channel = Channel.find params[:channel_id]
@@ -65,6 +67,7 @@ class ChannelsController < ApplicationController
   end
 
   def contact
+    return not_found if !@channel
     @contact = ChannelContact.new channel: @channel
     if params[:submit] == 'send'
       @contact = ChannelContact.create from: params[:channel_contact][:from], subject: params[:channel_contact][:subject], message: params[:channel_contact][:message], channel: @channel, chalkler: current_chalkler
@@ -77,10 +80,12 @@ class ChannelsController < ApplicationController
   end
 
   def followers
+    return not_found if !@channel
     @chalklers = @channel.chalklers
   end
 
   def teachers
+    return not_found if !@channel
     @teachers = ChannelTeacher.where channel_id:  @channel.id
     respond_to do |format|
       format.json { render json: @teachers.to_json(only: [:id, :name]) }

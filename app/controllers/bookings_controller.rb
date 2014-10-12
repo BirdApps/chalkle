@@ -138,6 +138,7 @@ class BookingsController < ApplicationController
 
   def load_booking
     @booking = current_user.bookings.find(params[:booking_id] || params[:id]).decorate
+    return not_found if !@booking
   end
 
   def redirect_on_paid

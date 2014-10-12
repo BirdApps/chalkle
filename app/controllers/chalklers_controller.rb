@@ -5,6 +5,7 @@ class ChalklersController < ApplicationController
 
   def show
     @chalkler = Chalkler.find params[:id]
+    return not_found if !@chalkler
     authorize @chalkler
     @page_subtitle = '<a href="/people">Chalklers</a>'.html_safe
     @page_title = @chalkler.name

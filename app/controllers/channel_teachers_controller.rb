@@ -74,5 +74,6 @@ class ChannelTeachersController < ApplicationController
   private
     def load_teacher
       @channel_teacher = ChannelTeacher.find params[:id]
+      return not_found if !channel_teacher
     end
 end
