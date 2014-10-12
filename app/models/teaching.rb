@@ -71,7 +71,7 @@ class Teaching
     args.lessons.each do |lesson|
       @start_at << lesson.start_at
       @duration_hours << lesson.duration/60/60
-      @duration_minutes << lesson.duration%60
+      @duration_minutes << lesson.duration/60%60
     end
     start_at << Time.current.advance(month: 1) if @start_at.empty?
     @editing_id = args.id

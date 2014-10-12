@@ -13,11 +13,12 @@ Your Chalkle Administrator")
 
   def pretty_duration(course)
     # when above 24 this should cover periods greater than a day in a more elegent way than n hours  - Josh
+    duration = ""
     if course.duration.to_i/60 >= 60
-     (course.duration.to_i/60/60).to_s+" hours"
-    else
-      (course.duration.to_i/60).to_s+" minutes"
+     duration += (course.duration.to_i/60/60).to_s+" hrs "
     end
+    duration += (course.duration.to_i/60%30).to_s+" mins"
+    
   end
 
   def pretty_time(date)

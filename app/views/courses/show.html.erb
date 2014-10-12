@@ -130,7 +130,7 @@
       <%= day_ordinal_month @course.start_at %>
       <br />
       <span class="fa fa-clock-o"></span>
-      <%= @course.hours %> hours - 
+      <%= pretty_duration(@course) %> - 
       <%= pretty_time_range @course.start_at, @course.end_at %>
     </div>
   </div>
