@@ -23,8 +23,16 @@ class CoursePolicy < ApplicationPolicy
     @user.channel_teachers.where(id: @course.teacher_id).present? or @user.channel_admins.where(channel_id: @course.channel_id).present? or @user.super?
   end
 
+  def bookings?
+    admin?
+  end
+
   def change_status?
     update?
+  end
+
+  def tiny_url?
+    true
   end
 
   def confirm_cancel?
