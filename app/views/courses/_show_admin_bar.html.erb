@@ -36,7 +36,7 @@
                <%= f.input :status, as: :hidden, input_html: { value: 'Published' } %>
             <% end %>
             <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Publish</button>
-            <% if @course.repeating? %>
+            <% if false #TODO: publish repeat_course @course.repeating? %>
               <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_series'}) do |f| %>
                 <input name="_method" type="hidden" value="put" />
                  <%= f.input :status, as: :hidden, input_html: { value: 'publish_series' } %>
