@@ -32,7 +32,7 @@ class CourseDecorator < ApplicationDecorator
   end
 
   def url
-    h.channel_course_path(source.channel, source)
+   h.channel_course_path(source.channel.url_name,source.url_name,source.id)
   end
 
 end
