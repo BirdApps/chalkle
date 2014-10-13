@@ -320,6 +320,7 @@ class Teaching
     teacher.id
   end
 
+  #If a channel was specified: use that, Else if user has a channel: use that, Else: create a new channel.
   def get_channel_id(channel_id)
     if channel_id.present?
       channel = Channel.find_by_id channel_id
