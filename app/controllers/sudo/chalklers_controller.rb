@@ -14,7 +14,7 @@ class Sudo::ChalklersController < Sudo::BaseController
         Chalkler.where('created_at BETWEEN ? AND ?', (i+1).weeks.ago, i.weeks.ago ).count
       }.reverse )
 
-      f.chart({:defaultSeriesType=>"column"})
+      f.chart({:defaultSeriesType=>"area"})
     end
 
   end
