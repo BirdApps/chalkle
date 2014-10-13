@@ -12,7 +12,7 @@ class TermsController < ApplicationController
     end
     @meta_title = 'Channel Terms'
     @page_subtitle = 'Chalkle Website'
-    if @channel.name.present?
+    if false #TODO: customize terms per channel @channel.name.present?
       @page_title = @channel.name+': Terms and Conditions'
       @page_context_links = Hash.new
     else
