@@ -3,7 +3,8 @@ class Sudo::ChalklersController < Sudo::BaseController
   before_filter :set_titles
 
   def become
-    @chalklers = Chalkler.all.take(50)
+    sort_params = params[:order] || "name ASC"
+    @chalklers = Chalkler.order(sort_params).take(50)
   end
 
   def becoming
