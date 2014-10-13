@@ -46,7 +46,8 @@ class ChannelTeachersController < ApplicationController
   end
 
   def create
-      @channel_teacher = ChannelTeacher.new params[:channel_teacher]      
+      @channel_teacher = ChannelTeacher.new params[:channel_teacher]
+      @channel_teacher.email.to_s.strip!
       authorize @channel_teacher
 
       if @channel_teacher.email.blank?
