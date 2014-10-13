@@ -11,9 +11,9 @@ class ChannelsController < ApplicationController
     not_found if @channel.new_record?
 
     if current_user.super?
-      @courses =  @channel.courses.start_at_between(current_date, current_date+1.year).by_date
+      @courses =  @channel.courses.in_future.start_at_between(current_date, current_date+1.year).by_date
     else
-      @courses =  @channel.courses.displayable.start_at_between(current_date, current_date+1.year).by_date
+      @courses =  @channel.courses.in_future.displayable.start_at_between(current_date, current_date+1.year).by_date
       if current_user.authenticated?
         @courses += @channel.courses.taught_by_chalkler(current_chalkler).in_future.by_date+
                       @channel.courses.adminable_by(current_chalkler).in_future.by_date

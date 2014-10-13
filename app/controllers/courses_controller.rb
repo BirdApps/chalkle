@@ -8,16 +8,15 @@ class CoursesController < ApplicationController
 
   def index
     if current_user.super?
-      @courses = filter_courses(Course.start_at_between(current_date, current_date+1.year).by_date)
+      @courses = filter_courses(Course.in_future.start_at_between(current_date, current_date+1.year).by_date)
     else
-      @courses = filter_courses(Course.displayable.start_at_between(current_date, current_date+1.year).by_date)
+      @courses = filter_courses(Course.in_future..displayable.start_at_between(current_date, current_date+1.year).by_date)
       if current_user.chalkler?
         @courses += filter_courses(Course.taught_by_chalkler(current_user).in_future.by_date)+
                     filter_courses(Course.adminable_by(current_user).in_future.by_date)
         @courses = @courses.sort_by(&:start_at).uniq
       end
     end
-  
   end
 
   def show
