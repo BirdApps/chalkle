@@ -194,13 +194,6 @@ class CoursesController < ApplicationController
       end
     end
 
-    def redirect_meetup_courses
-      if @course.meetup_url.present?
-        redirect_to @course.meetup_url
-        return false
-      end
-    end
-
     def courses_for_time
       @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
     end
