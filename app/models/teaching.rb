@@ -321,7 +321,10 @@ class Teaching
   end
 
   def get_channel_id(channel_id)
-    if channel_id.nil?
+    if channel_id.present?
+      channel = @channels.find_by_id channel_id
+    end
+    if channel.blank?
       #no channel
       if @channels.empty?
         #create a personal channel and grant user all permissions
@@ -333,8 +336,6 @@ class Teaching
           channel = @channels[0]
         end
       end
-    else
-      channel = @channels.select{ |channel| channel.id == channel_id.to_i }[0]
     end
     @channel = channel
     channel.id
