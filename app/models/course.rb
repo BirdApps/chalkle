@@ -91,7 +91,7 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-  scope :taught_by_chalkler, lambda {|chalkler| joins(:teacher).where('channel_teachers.chalkler_id = ?', chalkler.id) }
+  scope :taught_by_chalkler, lambda {|chalkler| joins(:teacher).where('channel_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
   scope :in_region, lambda {|region| where(region_id: region.id) }
   scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
   scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
