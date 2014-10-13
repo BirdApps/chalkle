@@ -10,7 +10,7 @@
     <%= booking.id %>
   </div>
   <div class="col-sm-1 col-xs-2">
-    $<%= booking.cost %>
+    $<%= booking.cost_formatted %>
   </div>
   <div class="col-sm-4 col-xs-6">
     <%= link_to booking.chalkler.email, chalkler_path(booking.chalkler.id) if booking.chalkler %>

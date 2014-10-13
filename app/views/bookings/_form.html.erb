@@ -28,7 +28,7 @@
   <br />
   <div class="col-xs-12 light">
     <% if @course.cost? && @course.cost > 0 %>
-      The cost to attend is <span class="x1-25">$<%= number_with_precision(@course.cost, precision: 2) %></span>
+      The cost to attend is <span class="x1-25">$<%= @course.cost_formatted %></span>
     <% else %>
       This <%= noun %> is <strong>free to attend</strong>  
     <% end %>
