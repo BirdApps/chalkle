@@ -322,7 +322,8 @@ class Teaching
 
   def get_channel_id(channel_id)
     if channel_id.present?
-      channel = @channels.find_by_id channel_id
+      channel = Channel.find_by_id channel_id
+      channel = nil unless @channels.include? channel || current_user.super?
     end
     if channel.blank?
       #no channel
