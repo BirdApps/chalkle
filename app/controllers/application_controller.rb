@@ -18,7 +18,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    return admin_root_path if resource.is_a?(AdminUser)
     
     original_path = stored_location_for(resource)
     default_path  = root_path
@@ -176,7 +175,11 @@ class ApplicationController < ActionController::Base
     def current_date
       return @current_date if @current_date.present?
       if params[:day]
-        @current_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+        begin
+          @current_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+        rescue
+          @current_date = DateTime.current
+        end
       else
         @current_date = DateTime.current
       end
