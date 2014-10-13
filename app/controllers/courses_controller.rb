@@ -88,7 +88,7 @@ class CoursesController < ApplicationController
   end
   
   def change_status
-    course = Course.find params[:id]
+    course = Course.find_by_id params[:id]
     return not_found if !course
     authorize course
     new_status = params[:course][:status]
@@ -207,7 +207,11 @@ class CoursesController < ApplicationController
 
     def get_current_week(start_date = Date.current)
       if params[:day]
-        Week.containing(Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i))
+        begin
+          Week.containing(Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i))
+        rescue
+          Week.containing(start_date)
+        end
       else
         Week.containing(start_date)
       end
