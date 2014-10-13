@@ -10,7 +10,11 @@ New chalkles:
 <%= "#{course.channel.name}: #{course.name} - #{course.start_at.strftime("%l:%M %p %a %B %d") if course.start_at}" %>
 
 <%= truncate(course.do_during_class, length: 250, separator: ' ') %>
+<<<<<<< HEAD
 Join class: <%= course.url %>
+=======
+Join class: <%= course.url_name %>
+>>>>>>> 68125f8a09b25927a8cce82a700d146a15c4ca4e
 
 
   <% end %>
@@ -23,7 +27,11 @@ There is still time to sign up for these chalkles:
 <%= "#{course.channel.name}: #{course.name} - #{course.start_at.strftime("%l:%M %p %a %B %d") if course.start_at}" %>
 
 <%= truncate(course.do_during_class, length: 250, separator: ' ') %>
+<<<<<<< HEAD
 Join <%= course.attendance %> other chalklers: <%= course.url %>
+=======
+Join <%= course.attendance %> other chalklers: <%= course.url_name %>
+>>>>>>> 68125f8a09b25927a8cce82a700d146a15c4ca4e
 
 
   <% end %>
