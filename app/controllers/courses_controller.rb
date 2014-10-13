@@ -20,7 +20,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    
+    redirect_to @course.path unless request.path == @course.path and return
   end
 
   def teach
