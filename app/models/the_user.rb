@@ -88,6 +88,7 @@ class TheUser
     channels = []
     channels = channels.concat admin_user.channels if admin?
     channels = channels.concat chalkler.channels_teachable if chalkler?
+    channels = channels.concat chalkler.channels_adminable if chalkler?
     channels.uniq
   end
 
