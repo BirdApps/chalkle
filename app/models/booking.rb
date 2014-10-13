@@ -103,19 +103,29 @@ class Booking < ActiveRecord::Base
     
     self.processing_fee = course.processing_fee
     self.processing_gst = course.processing_fee*3/23
+    #processing_fee inclusive of gst
+    self.processing_fee = self.processing_fee-self.processing_gst
 
     if course.teacher_pay_type == Course.teacher_pay_types[1]
       self.teacher_fee = course.teacher_cost
-      if course.teacher.tax_number
+      if course.teacher.tax_number.present?
         self.teacher_gst = teacher_fee*3/23
         self.teacher_gst_number = course.teacher.tax_number
+      else
+        self.teacher_gst = 0
+        self.teacher_gst_number = nil
       end
     end
 
     self.provider_fee = course.channel_fee
-    if channel.tax_number
+    if channel.tax_number.present?
       self.provider_gst_number = channel.tax_number
       self.provider_gst = course.channel_fee*3/23
+      #processing_fee inclusive of gst
+      self.provider_fee = self.provider_fee-self.provider_gst
+    else
+      self.provider_gst_number = nil
+      self.provider_gst = 0
     end
     cost
   end
