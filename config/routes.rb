@@ -66,6 +66,13 @@ Chalkle::Application.routes.draw do
   namespace :sudo do
     root to: 'silvias#index'
     resources :payments
+    resources :chalklers do
+      collection do
+        get 'becoming/:id' => 'chalklers#becoming', as: :becoming
+        get 'become'
+      end
+    end
+    
     resources :outgoings do
       collection do 
         get 'pending'

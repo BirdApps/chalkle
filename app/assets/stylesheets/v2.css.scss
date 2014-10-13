@@ -65,6 +65,10 @@ body.v2 {
     padding-bottom:75px;
     background-color: #fff;
   }
+  .borders{
+    border: 1px solid rgba(0,0,0,0.16);
+    border-bottom: 0px;
+  }
   .pad-top {
     padding-top:10px;
   }
@@ -104,6 +108,11 @@ body.v2 {
   .no-label {
     label {
       display: none;
+    }
+  }
+  .no-list{
+    li{
+      list-style: none;
     }
   }
   .light {
@@ -1218,6 +1227,10 @@ body.v2 {
     .avatar64 {
       height: 64px;
       width: 64px;
+    }
+    .avatar32 {
+      height: 32px;
+      width: 32px;
     }
     .people {
       .headings {

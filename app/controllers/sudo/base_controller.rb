@@ -16,10 +16,16 @@ class Sudo::BaseController < ApplicationController
         title: "Bookings"
       },
       {
-        img_name: "people",
+        img_name: "book",
         link: sudo_outgoings_path,
         active: controller_parts.include?("outgoings"),
         title: "Outgoings"
+      },
+      {
+        img_name: "people",
+        link: become_sudo_chalklers_path,
+        active: controller_parts.include?("chalklers"),
+        title: "Psuedo Chalkler"
       }
     ]
   end
