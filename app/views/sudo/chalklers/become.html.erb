@@ -5,5 +5,8 @@
   <%= link_to "signup date", become_sudo_chalklers_path(order: "created_at DESC") %>
 </p>
 
+<%= high_chart 'signups', @signups_chart %>
+
 <p>Use this feature to sign in as any user</p>
 <%= render @chalklers %>
+

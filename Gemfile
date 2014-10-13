@@ -43,6 +43,8 @@ gem 'inherited_resources'
 gem 'foreigner'
 gem 'color'
 
+gem 'lazy_high_charts'
+
 #apis
 gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'
 gem 'xeroizer'

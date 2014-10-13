@@ -5,6 +5,18 @@ class Sudo::ChalklersController < Sudo::BaseController
   def become
     sort_params = params[:order] || "name ASC"
     @chalklers = Chalkler.order(sort_params).take(50)
+
+
+    @signups_chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(:text => "Weekly Signups")
+      f.xAxis(:categories => Array.new(15){|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
+      f.series(:name => "Signups", :yAxis => 0, :data => Array.new(15) {|i|
+        Chalkler.where('created_at BETWEEN ? AND ?', i.weeks.ago, (i+1).weeks.ago ).count
+      }.reverse )
+
+      f.chart({:defaultSeriesType=>"column"})
+    end
+
   end
 
   def becoming

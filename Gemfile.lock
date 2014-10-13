@@ -278,6 +278,7 @@ GEM
     has_scope (0.6.0.rc)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
+    hash-deep-merge (0.1.1)
     hashie (2.1.2)
     highline (1.6.21)
     hike (1.2.3)
@@ -308,6 +309,9 @@ GEM
     kgio (2.9.2)
     launchy (2.1.2)
       addressable (~> 2.3)
+    lazy_high_charts (1.5.4)
+      bundler (>= 1.0)
+      hash-deep-merge
     listen (2.7.9)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -721,6 +725,7 @@ DEPENDENCIES
   kalendae_assets (~> 0.2.1)
   kaminari
   launchy (~> 2.1.2)
+  lazy_high_charts
   mailcatcher (~> 0.5.10)
   maruku (~> 0.6.1)
   meta_request (~> 0.2.1)
