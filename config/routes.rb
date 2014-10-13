@@ -17,6 +17,13 @@ Chalkle::Application.routes.draw do
   
   get '/about' => 'application#about', as: :about
 
+  get '/terms' => 'terms#chalkler', as: :terms
+
+  get '/terms/provider' => 'terms#provider', as: :provider_terms
+
+  get '/terms/teacher' => 'terms#teacher', as: :teacher_terms
+
+
   resources :channel_teachers, path: 'teachers', except: [:new, :show, :index] 
 
   resources :channel_plans, path: 'plans'

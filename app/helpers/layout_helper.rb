@@ -134,7 +134,7 @@ module LayoutHelper
   end
 
   def page_context_links 
-    return @page_context_links if @page_context_links.present?
+    return @page_context_links if @page_context_links
     controller_parts = request.path_parameters[:controller].split("/")
     action_parts = request.path_parameters[:action].split("/")
     nav_links = []
