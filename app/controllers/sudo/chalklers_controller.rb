@@ -9,9 +9,9 @@ class Sudo::ChalklersController < Sudo::BaseController
 
     @signups_chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(:text => "Weekly Signups")
-      f.xAxis(:categories => Array.new(15){|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
-      f.series(:name => "Signups", :yAxis => 0, :data => Array.new(15) {|i|
-        Chalkler.where('created_at BETWEEN ? AND ?', i.weeks.ago, (i+1).weeks.ago ).count
+      f.xAxis(:categories => Array.new(30){|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
+      f.series(:name => "Signups", :yAxis => 0, :data => Array.new(30) {|i|
+        Chalkler.where('created_at BETWEEN ? AND ?', (i+1).weeks.ago, i.weeks.ago ).count
       }.reverse )
 
       f.chart({:defaultSeriesType=>"column"})
