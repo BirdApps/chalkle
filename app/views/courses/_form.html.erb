@@ -466,10 +466,19 @@
             </div>
             <div class="col-md-6 next">
               <div class="checkbox center">
-              <label id="teaching_agreeterms" data-error-message="You must agree in order to continue">
-                <input type="checkbox" name="teaching_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms">Terms and Conditions</a></span>
-              </label>
-            </div>
+                <label id="teaching_agreeterms" data-error-message="You must agree in order to continue">
+                  <input type="checkbox" name="teaching_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/teacher">Terms and Conditions for Teaching</a></span>
+                </label>
+              </div>
+
+              <% if current_user.channels.count == 0 %>
+              <div class="checkbox center">
+                <label id="providing_agreeterms" data-error-message="You must agree in order to continue">
+                  <input type="checkbox" name="providing_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/provider">Terms and Conditions for Providing Classes</a></span>
+                </label>
+              </div>
+              <% end %>
+
               <a href="#submit" class="submit_btn col-xs-12 part_link btn btn-primary">Submit <span class="class_only">Class</span><span class="course_only">Course</span></a>
             </div>
             <div class="col-md-3">

@@ -516,6 +516,13 @@ $(function(){
         valid = false;
         show_error_for($('#teaching_agreeterms'));
       }
+      if($('#providing_agreeterms').length > 0){
+        if(!$('#providing_agreeterms input').is(':checked'))
+        {
+          valid = false;
+          show_error_for($('#providing_agreeterms'));
+        }
+      }
       return valid;
     }
 
