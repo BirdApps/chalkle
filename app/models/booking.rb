@@ -40,7 +40,7 @@ class Booking < ActiveRecord::Base
   scope :by_date, order(:created_at)
   scope :by_date_desc, order('created_at DESC')
   scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at')
-  scope :needs_reminder, course_visible.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
+  scope :needs_reminder, course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
 
   before_validation :set_free_course_attributes
 
