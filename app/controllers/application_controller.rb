@@ -203,8 +203,7 @@ class ApplicationController < ActionController::Base
     end
 
     def expire_cache!
-      expire_fragment(/.*filter_list.*/)
-      expire_fragment(/_course.*/)
+      CacheManager.expire_cache!
     end
 
     def skip_cache!
