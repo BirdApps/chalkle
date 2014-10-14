@@ -1,17 +1,17 @@
-<% @page_subtitle = 'Teachers from' %>
+<% @page_subtitle = 'Admins from' %>
 <div class="people">
   <%= render 'people_nav' %>
   <div class="row">
     <div class="col-xs-8">
       <h2 class="flush">
-        Teachers
+        Admins
       </h2>
     </div>
     <div class="col-xs-4 text-right">
        <% if policy(@channel).admin? %>
-          <%= link_to "Add Teacher", new_channel_teacher_path(@channel.url_name), { class: 'btn btn-warning'} %>
+          <%= link_to "Add Admin", new_channel_admin_path(@channel.url_name), { class: 'btn btn-warning'} %>
         <% end %>
     </div>
   </div>
-  <%= render @teachers %>
+  <%= render @admins %>
 </div>

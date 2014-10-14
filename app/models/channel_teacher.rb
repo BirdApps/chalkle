@@ -16,7 +16,6 @@ class ChannelTeacher < ActiveRecord::Base
   validates_presence_of :email, message: 'Email cannot be blank'
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
 
-
   before_save :check_name
   after_save :expire_cache!
 

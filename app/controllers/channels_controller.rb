@@ -98,6 +98,17 @@ class ChannelsController < ApplicationController
     end
   end
 
+
+  def admins
+    return not_found if !@channel
+    authorize @channel
+    @admins = ChannelAdmin.where channel_id:  @channel.id
+    respond_to do |format|
+      format.json { render json: @admins.to_json(only: [:id, :name]) }
+      format.html
+    end
+  end
+
   def url_available
     channels_with_url = Channel.where url_name:  params[:url_name]
     if (channels_with_url.empty? || channels_with_url.include?(@channel)) &&  !RouteRecognizer.new.initial_path_segments.include?(params[:url_name])

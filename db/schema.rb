@@ -11,7 +11,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141013053424) do
+ActiveRecord::Schema.define(:version => 20141014030932) do
+
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
     t.string   "resource_type", :null => false
@@ -127,9 +128,10 @@ ActiveRecord::Schema.define(:version => 20141013053424) do
   end
 
   create_table "channel_admins", :force => true do |t|
-    t.integer "channel_id",    :null => false
+    t.integer "channel_id",            :null => false
     t.integer "admin_user_id"
     t.integer "chalkler_id"
+    t.string  "pseudo_chalkler_email"
   end
 
   add_index "channel_admins", ["channel_id", "admin_user_id"], :name => "index_channel_admins_on_channel_id_and_admin_user_id", :unique => true

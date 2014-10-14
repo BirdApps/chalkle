@@ -26,16 +26,16 @@ class Chalkler < ActiveRecord::Base
   validates_associated :subscriptions, :channels
 
   has_many :subscriptions
-  has_many :channels, through: :subscriptions, source: :channel
   has_many :channel_teachers
-  has_many :channels_teachable, through: :channel_teachers, source: :channel
+  has_many :bookings
   has_many :channel_admins
+  has_many :payments, through: :bookings
+  has_many :channels_teachable, through: :channel_teachers, source: :channel
   has_many :channels_adminable, through: :channel_admins, source: :channel
   has_many :courses_adminable, through: :channels_adminable, source: :courses
   has_many :courses_teaching, through: :channel_teachers, source: :courses
-  has_many :bookings
-  has_many :courses, :through => :bookings
-  has_many :payments
+  has_many :courses, through: :bookings
+  has_many :channels, through: :subscriptions, source: :channel
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
     def for_provider(provider)
       where(provider: provider).first

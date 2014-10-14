@@ -134,14 +134,18 @@ Chalkle::Application.routes.draw do
   #get '/providers/:provider', to: 'courses#show', as: :channel_filter
 
   #TODO: find an easier way of doing these channel routes!
+  get ':channel_url_name/admins', to: 'channels#admins', as: :channels_admins
+  get 'providers/:channel_id/admins', to: 'channels#admins', as: :channel_channel_admins
+  get ':channel_url_name/admins/new', to: 'channel_admins#new', as: :new_channel_admin
+  get ':channel_url_name/admin/:id', to: 'channel_admins#show', as: :channel_channel_admin
+  get ':channel_url_name/admin/:id', to: 'channel_admins#show', as: :channel_admin
+  
+  get 'providers/:channel_id/url_available/:url_name', to: 'channels#url_available', as: :channel_url_available
   get ':channel_url_name/teachers', to: 'channels#teachers', as: :channels_teachers
-  #get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
-  #get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_teachers
-  get 'providers/:channel_id/url_available/:url_name', to: 'channels#url_available', as: :channel_channel_teachers
-  get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_url_available
+  get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
   get ':channel_url_name/teachers/new', to: 'channel_teachers#new', as: :new_channel_teacher
   get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_channel_teacher
-    get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_teacher
+  get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_teacher
   get ':channel_url_name/settings', to: 'channels#edit', as: :channel_settings
   put ':channel_url_name/settings', to: 'channels#update', as: :channel_settings
   get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
