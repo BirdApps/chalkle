@@ -155,7 +155,11 @@ class Course < ActiveRecord::Base
   end
 
   def can_be_cancelled?
-    (start_at > DateTime.current.advance(hours: 24) || !bookings? ) && status==STATUS_1 ? true : false
+    can_be = false
+    can_be = true if min_attendee > bookings.confirmed.count
+    can_be = true if start_at > DateTime.current.advance(hours: 24)
+    can_be = true if !bookings?
+    can_be
   end
 
   def classes
