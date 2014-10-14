@@ -198,7 +198,6 @@ $(function(){
       function change_date_picker(e){
         if(e.date != undefined){
           instance_date = e.date;
-          console.log(instance_date);
           //update the minimum date of next datepicker to be this instance_date
           var next_date_picker = $(scope).next().find('.date-picker');
           if(next_date_picker.length){
@@ -238,7 +237,7 @@ $(function(){
         instance_date = saved_datepick;
 
         $(date_picker).datepicker({
-          startDate: instance_date
+          startDate: new Date() //instance_date
         }).on('changeDate', change_date_picker);
 
         highlight_date_in_picker(date_picker);
@@ -347,7 +346,6 @@ $(function(){
         if(instance_date!=null){
           if(instance_time != null){
             var start_hours = instance_time.hours;
-            console.log(instance_time);
             if(instance_time.meridian == "PM"){
               start_hours += 12;
             }
@@ -360,7 +358,6 @@ $(function(){
               }
             }
             var start_minutes = instance_time.minutes;
-            console.log(start_hours);
             instance_date.setHours(start_hours,start_minutes,0,0);  
           }
           $(scope).find('#teaching_start_at').val(instance_date);
