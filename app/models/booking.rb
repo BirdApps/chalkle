@@ -50,7 +50,7 @@ class Booking < ActiveRecord::Base
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
 
   def self.needs_booking_completed_mailer
-    course_visible.where('booking_completed_mailer_sent != true').select{|b| b.course.end_at > Date.current && b.course.status=="Published"}
+    course_visible.confirmed.where('booking_completed_mailer_sent != true').select{|b| b.course.end_at > Date.current && b.course.status=="Published"}
   end
   
   def free?
