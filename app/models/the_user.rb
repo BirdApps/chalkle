@@ -104,8 +104,14 @@ class TheUser
     chalkler.id.present? ? chalkler.upcoming_teaching : Course.none
   end
 
-  def learn_menu_badge_count
-    @learn_menu_badge_count ||= chalkler? ? chalkler.bookings.confirmed.upcoming.count : 0
+  def learn_menu_badge_count 
+    @learn_menu_badge_count ||= (
+      if chalkler?
+        chalkler.bookings.confirmed.upcoming.count
+      else
+        0
+      end
+    )
   end
 
   def teach_menu_badge_count

@@ -27,8 +27,6 @@ class Booking < ActiveRecord::Base
   validates_presence_of :course_id, :status, :name, :chalkler
   validates_presence_of :payment_method, :unless => :free?
 
-  scope :paid, where{ cost <= paid }
-  scope :unpaid, where{ cost > paid }
   scope :confirmed, where(status: STATUS_1)
   scope :waitlist, where(status: STATUS_3)
   scope :status_no, where(status: STATUS_2)
@@ -49,8 +47,19 @@ class Booking < ActiveRecord::Base
 
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
 
+
+  def self.paid
+   select{|booking| (booking.paid || 0) >= booking.cost}
+  end
+
+  def self.unpaid
+   select{|booking| (booking.paid || 0) < booking.cost}
+end
+
+
+
   def self.needs_booking_completed_mailer
-    course_visible.where('booking_completed_mailer_sent != true').select{|b| b.course.end_at > Date.current && b.course.status=="Published"}
+    course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| b.course.end_at > Date.current && b.course.status=="Published"}
   end
   
   def free?

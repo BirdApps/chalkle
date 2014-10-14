@@ -27,9 +27,6 @@
 //= require month_calendar_view
 //= require bootstrap-datepicker/core
 //= require plugins/bootstrap-timepicker.min
-//= require highcharts/highcharts                                                           
-//= require highcharts/highcharts-more                             
-//= require highcharts/highstock
 //= require_tree ./inputs
 //= require_tree ./v2
 

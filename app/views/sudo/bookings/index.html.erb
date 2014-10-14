@@ -1,3 +1,9 @@
+<% content_for :header do %>
+<%= javascript_include_tag "sudo" %>
+<% end %>
+
+
+
 <%= render 'sub_menu' %>
 <div class="row even hidden-xs">
    <div class="col-sm-1">
@@ -16,3 +22,6 @@
   </div>
 </div>
 <%= render @bookings %>
+
+
+<%= high_chart 'signups', @bookings_chart %>
