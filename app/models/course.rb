@@ -162,6 +162,10 @@ class Course < ActiveRecord::Base
     lessons.order(:start_at)
   end
 
+  def cost_formatted
+    sprintf('%.2f', cost)
+  end
+
   def repeating_class?
     true if repeat_course.present?
   end

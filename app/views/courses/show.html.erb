@@ -69,7 +69,7 @@
           <% end  %>
           <div class="cost">
             <% if @course.cost? %>
-              $<%= @course.cost %>
+              $<%= @course.cost_formatted %>
             <% else %>
               FREE
             <% end %>
