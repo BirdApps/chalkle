@@ -3,26 +3,37 @@
       <div class="col-xs-12 col-sm-10 col-sm-offset-1">
         <% if @course.status == 'Published' %>
           <div class="alert alert-warning clearfix text-right" role="alert"> 
+            
             <% if @course.bookings.empty?  %>
               <span class="pad-top inline pull-left">   
                 <strong><%= @course.status+'!' %></strong> 
                 You can unpublish while there are no bookings
               </span>
+              
               <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
                 <input name="_method" type="hidden" value="put" />
+              
                  <%= f.input :status, as: :hidden, input_html: { value: 'Unreviewed' } %>
+              
               <% end #form %>
-               <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Unpublish</button>
+              
+               <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">
+                  Unpublish
+                </button>
+            
             <% else #elsif no? bookings%>
+            
               <span class="inline pad-top pull-left">   
                 <strong><%= pluralize(@course.bookings.confirmed.count,'booking','bookings') %></strong> confirmed
               </span>
-            <% end #end if bookings?%>
-              <% if @course.can_be_cancelled? %>
-                <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
-              <% else %>
-                <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
-              <% end %>
+            
+            <% end %>
+            
+            <% if @course.can_be_cancelled? %>
+              <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
+            <% else %>
+              <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
+            <% end %>
           </div>
         
         <% elsif @course.status == 'Unreviewed' && policy(@course).change_status?  %>
