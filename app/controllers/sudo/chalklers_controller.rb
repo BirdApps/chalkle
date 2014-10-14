@@ -4,7 +4,7 @@ class Sudo::ChalklersController < Sudo::BaseController
 
   def become
     sort_params = params[:order] || "name ASC"
-    @chalklers = Chalkler.order(sort_params).take(50)
+    @chalklers = Chalkler.order(sort_params)
 
 
     @signups_chart = LazyHighCharts::HighChart.new('graph') do |f|
