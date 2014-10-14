@@ -2,9 +2,12 @@
 require 'chalkle_carrierwave'
 
 class ChalkleBaseUploader < CarrierWave::Uploader::Base
+
+
+
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
-  # include Sprockets::Helpers::RailsHelper
-  # include Sprockets::Helpers::IsolatedHelper
+  include Sprockets::Helpers::RailsHelper
+  include Sprockets::Helpers::IsolatedHelper
 
   # Choose what kind of storage to use for this uploader:
   # storage :file
@@ -13,11 +16,7 @@ class ChalkleBaseUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    if Rails.env.test? or Rails.env.cucumber?
-      "uploads/test/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-    else
-      "#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-    end
+    "system/uploads/#{Rails.env}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
 
@@ -41,4 +40,5 @@ class ChalkleBaseUploader < CarrierWave::Uploader::Base
   def extension_white_list
     %w(jpg jpeg gif png)
   end
+
 end

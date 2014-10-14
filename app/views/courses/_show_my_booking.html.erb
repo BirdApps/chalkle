@@ -1,0 +1,60 @@
+<% if current_chalkler && (bookings = @course.bookings_for(current_chalkler)).present? %>
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-8"> 
+      <div class="fancy-header">
+        <h3>Your Booking<%= 's' if bookings.count > 1 %></h3>
+        <hr />
+      </div>  
+
+      <div class="col-xs-12 x1-25 center light">
+      <% bookings.each do |booking|%>
+          <div class="strong"> <%= booking.name %> </div>
+          <div class="col-xs-12 center light">
+            <span class="grey inline vmid">
+              Booking cost:
+            </span>
+            <span class="x1-25 inline vmid">
+              $<%= booking.cost_formatted %>
+            </span> 
+          </div>
+          <% if booking.status == 'yes' %>
+            <% if @course.class? %>
+              <%= quick_date_time @course.start_at %>
+            <% else %>
+            <% count = 0 %>
+            <%  booking.course.classes.each do |lesson| %>
+              <span class="strong">
+                Class <%= count+=1 %> -
+              </span>
+              <%= quick_date_time lesson.start_at %><br />
+            <% end %>
+          <% end %>
+          <br />
+          <%= link_to "Cancel booking", cancel_course_booking_path(booking.course.id, booking.id), class: 'text-danger small light' %>
+          <% elsif booking.status == 'no' %>
+            <span class="small light text-danger">Cancelled</span>
+          <% elsif booking.status == 'refund_pending' %>
+            <span class="small light text-info">Pending Refund</span>
+          <% elsif booking.status == 'refund_complete' %>
+            <span class="small light text-success">Refund Complete</span>
+           <% elsif booking.status == 'pending' %>
+            <span class="small light text-warning">Pending Payment</span>
+          <% end %>
+          <br />
+          <div class="clearfix">
+            <hr class="dark" />
+          </div>
+      <% end %>
+      <% if bookings.any?  && bookings.first.course.note_to_attendees.present? %>
+          <div class="">
+            <br />
+            <div class="small light">Special note for attendees</div>
+            <%= bookings.first.course.note_to_attendees %>
+          </div>
+        <% end %>
+      </div> 
+    </div>
+    <div class="col-sm-2">
+    </div>
+  <% end %>

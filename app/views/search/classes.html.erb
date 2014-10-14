@@ -1,0 +1,5 @@
+<% if @courses.empty? %>
+  <h2>No results for '<%= params[:q] %>'</h2>
+<% else %>
+  <%= render @courses %>
+<% end %>

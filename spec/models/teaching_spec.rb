@@ -24,7 +24,7 @@ describe "Teachings" do
     region_id: region.id,
     repeating: false,
     repeat_frequency: '',
-    repeat_times: 1
+    repeat_count: 1
   } }
   let(:chalkler_teaching){ Teaching.new(chalkler) }
 

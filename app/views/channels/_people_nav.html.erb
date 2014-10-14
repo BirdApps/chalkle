@@ -1,0 +1,15 @@
+<nav class="page-menu">
+  <ul>
+    <% if policy(@channel).admin? %>
+      <li>
+        <%= link_to 'Admins', channels_admins_path(@channel.url_name) %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to 'Teachers', channels_teachers_path(@channel.url_name) %>
+    </li>
+    <li>
+      <%= link_to 'Followers', channel_followers_path(@channel.url_name) %>
+    </li>
+  </ul>
+</nav>

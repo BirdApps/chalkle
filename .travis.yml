@@ -15,7 +15,7 @@ addons:
 notifications:
   email:
     recipients:
-      - matthew@chalkle.com 
+      # - matthew@chalkle.com 
   hipchat:
     rooms: 3d318fc3e1f401238a50171784b534@Chalkle
     template: '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}'

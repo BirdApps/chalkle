@@ -1,0 +1,55 @@
+<% @page_title = current_user.name %>
+<% @page_subtitle = 'Settings' %>
+<% @page_title_logo = current_user.avatar %>
+
+<div class="col-md-2 hidden-xs"></div>
+<div class="col-xs-12 col-md-8 new_form_wrapper">
+<%= bootstrap_form_for(@chalkler_email_preferences, url: me_preferences_path, html: { method: :put, enctype: "multipart/form-data", class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+  <div class="fancy-header">
+    <h3>Photo</h3>
+    <hr />
+  </div>
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="avatar image-preview">
+        <div class="img avatar_preview" style="background-image: url(<%= f.object.avatar %>);"></div>
+      </div>
+    </div>
+    <div class="col-sm-7">
+      <%= f.input :avatar, as: :styled_file, input_html: { value: "", :'data-preview' => 'avatar_preview', class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
+    </div>
+  </div>
+
+  <div class="fancy-header">
+    <h3>Details</h3>
+    <hr />
+  </div>
+  <%= f.input :name, label: 'Name', wrapper: :horizontal %>
+  <%= f.input :email, label: 'Email Address', wrapper: :horizontal %>
+  <%= f.input :phone_number, label: 'Phone', wrapper: :horizontal %>
+  <%= f.input :bio, label: 'Bio', as: :text, wrapper: :horizontal %>
+
+  <div class="fancy-header">
+    <h3>Providers you are following</h3>
+    <hr />
+  </div>
+  <div class="row col-xs-12">
+    <%= render current_chalkler.channels.order('name ASC')  %>  
+  </div>
+  <br />
+  <%= f.input :email_frequency, label: 'Frequency of emails about providers you follow', :collection => Chalkler.email_frequency_select_options, include_blank: false, wrapper: :horizontal %>
+  <br />
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="center col-md-4">
+      <input class="btn btn-primary col-xs-12" value="Save" type="submit" />  
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+<% end %>
+</div>
+<div class="col-md-2 hidden-xs"></div>

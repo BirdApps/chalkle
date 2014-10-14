@@ -1,4 +1,4 @@
-$fe-heading-color:      #496337;
+$fe-heading-color:      rgba(76,126,147,1);
 $single-category-color: $category1;
 $chalky-font: 'Shadows Into Light Two', cursive;
 $chalkboard-background-color: #2B2B2B;
@@ -79,20 +79,36 @@ ul.simple-nav {
   }
 }
 
-a.colour1 {
+.colour1 {
   color: $category1;
 }
-a.colour2 {
+.colour2 {
   color: $category2;
 }
-a.colour3 {
+.colour3 {
   color: $category3;
 }
-a.colour4 {
+.colour4 {
   color: $category4;
 }
-a.colour5 {
+.colour5 {
   color: $category5;
+}
+
+.bg-colour1 {
+  background-color: $category1 !important;
+}
+.bg-colour2 {
+  background-color: $category2 !important;
+}
+.bg-colour3 {
+  background-color: $category3 !important;
+}
+.bg-colour4 {
+  background-color: $category4 !important;
+}
+.bg-colour5 {
+  background-color: $category5 !important;
 }
 
 .thumbnail {

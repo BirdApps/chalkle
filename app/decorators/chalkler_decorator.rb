@@ -6,7 +6,7 @@ class ChalklerDecorator < Draper::Decorator
       if c.url_name?
         url = "http://#{c.url_name}.chalkle.com/"
       else
-        url = h.channel_url(c)
+        url = h.channel_path(c)
       end
       h.link_to(c.name, url, { style: style })
     }.join(' | ')

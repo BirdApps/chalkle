@@ -1,0 +1,28 @@
+<div class="teacher row">
+  <div class="col-xs-12 col-sm-8">
+    <img class="avatar" src="<%= channel_teacher.avatar %>">
+    <div class="pull-left"> 
+      <div class="name">
+        <%= link_to channel_teacher.name, channel_channel_teacher_path(channel_teacher.channel.url_name, channel_teacher.id) %>
+      </div>
+      <div>
+        <%= image_tag(asset_path("icons/bolt-alt.png"),{ class: "context-img" })  %>
+        <div class="pull-left light">
+          <% if channel_teacher.next_class.present? %>
+            <div>
+              Next class: <span><%= quick_date_time channel_teacher.next_class.start_at %></span>
+            </div>
+            <div>
+              <%= link_to channel_teacher.next_class.name, course_path(channel_teacher.next_class), class: "colour#{ channel_teacher.next_class.best_colour_num.to_s}" %>
+            </div>
+          <% else %>
+            <div>No scheduled classes</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    
+  </div>
+</div>

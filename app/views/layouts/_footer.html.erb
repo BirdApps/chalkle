@@ -1,0 +1,25 @@
+<footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6">
+         <div class="social_media_links">
+          <%= link_to image_tag('/assets/icons/facebooky.png', alt: 'Facebook'), 'https://www.facebook.com/Chalkle' %>
+          <%= link_to image_tag('/assets/icons/tweetiebird.png', alt: 'Twitter'), 'https://twitter.com/ChalkleNZ/' %>
+        </div>
+      </div>
+      <div class="col-xs-6 text-right">
+       <ul class="email-list">
+          <li>
+            <%= link_to "contact", partners_say_hello_path %>
+          </li>
+          <li class="no-border">
+            <%= link_to "about", partners_team_path %>
+          </li>
+          <li class="no-border">
+            <%# link_to "faq", faq_path %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>

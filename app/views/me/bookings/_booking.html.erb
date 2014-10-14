@@ -1,0 +1,11 @@
+<div class="col-xs-12">
+  <div class="_booking clearfix">
+    <a href="<%= booking.course.path %>">
+      <img src="<%= booking.course.course_upload_image -%>" class='avatar avatar64 img' />
+      <%= booking.course.name %>
+    </a>
+    <div class="small grey">
+      <%= booking.confirmed? ? quick_date_time(booking.course.start_at) : "canceled" %>
+    </div>  
+  </div>
+</div>

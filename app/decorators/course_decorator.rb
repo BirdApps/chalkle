@@ -26,11 +26,13 @@ class CourseDecorator < ApplicationDecorator
   end
 
   def guest_values
-    [['Just me', 0], [2, 1], [3, 2], [4, 3], [5, 4]]
+    guest_vals = [['No friends', 0], ['1 friend', 1], ['2 friends', 2], ['3 friends', 3], ['4 friends', 4]]
+    guest_vals = guest_vals.take(source.spaces_left - 1) if source.limited_spaces?
+    guest_vals
   end
 
   def url
-    h.channel_course_url(source.channel, source)
+   h.channel_course_path(source.channel.url_name,source.url_name,source.id)
   end
 
 end

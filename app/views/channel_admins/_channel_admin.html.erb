@@ -1,0 +1,13 @@
+<div class="teacher row">
+  <div class="col-xs-12 col-sm-8">
+    <img class="avatar" src="<%= channel_admin.avatar %>">
+    <div class="pull-left"> 
+      <div class="name">
+        <%= link_to channel_admin.name, channel_channel_admin_path(channel_admin.channel.url_name, channel_admin.id) %>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    
+  </div>
+</div>

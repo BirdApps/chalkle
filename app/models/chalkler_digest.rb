@@ -3,7 +3,7 @@ class ChalklerDigest
     @chalkler = c
     @frequency = @chalkler.email_frequency
     @digest_period = (@chalkler.email_frequency == 'daily') ? 1.day : 7.days
-    @date_offset = Time.now.utc - @digest_period
+    @date_offset = Time.current - @digest_period
     @limit = (@chalkler.email_frequency == 'daily') ? 5 : 8
   end
 
@@ -46,7 +46,7 @@ class ChalklerDigest
        courses.published_at <= ? AND
        courses.do_during_class IS NOT NULL AND
        channels.visible=true",
-      Time.now.utc + 1.day, @date_offset)
+      Time.current + 1.day, @date_offset)
     scope = scope_courses_by_categories(scope)
     scope = scope_courses_by_channels(scope)
     scope = scope_courses_by_regions(scope)
@@ -62,7 +62,7 @@ class ChalklerDigest
        courses.published_at <= ? AND
        courses.do_during_class IS NOT NULL AND
        channels.visible=true",
-      Time.now.utc + 1.day, @date_offset)
+      Time.current + 1.day, @date_offset)
     scope = scope_courses_by_channels(scope)
     scope = scope_courses_by_regions(scope)
     courses = scope.uniq

@@ -1,20 +1,21 @@
-require 'omni_avatar/has_avatar'
+require 'avatar_uploader'
 
 class Chalkler < ActiveRecord::Base
-  include OmniAvatar::HasAvatar
+  mount_uploader :avatar, AvatarUploader
+
+  # geocoded_by :address
+  # reverse_geocoded_by :latitude, :longitude
+  # after_validation :reverse_geocode
+  # after_validation :geocode
+
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
     :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
-  attr_accessible :bio, :email, :name, :password, :password_confirmation,
-    :remember_me, :email_frequency, :email_categories,
-    :phone_number, :email_regions
-  attr_accessible :bio, :email, :name, :password,
-    :password_confirmation, :remember_me, :channel_ids, :provider, :uid,
-    :email_frequency, :email_categories, :phone_number,
-    :join_channels, :email_regions, :email_region_ids, :as => :admin
+  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :avatar ]
+  attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :as => :admin
 
   attr_accessor :join_channels, :set_password_token
 
@@ -24,22 +25,27 @@ class Chalkler < ActiveRecord::Base
   validates_presence_of :email, :if => :email_required?
   validates_associated :subscriptions, :channels
 
-  has_one  :course_filter, class_name: 'Filters::Filter', dependent: :destroy
   has_many :subscriptions
-  has_many :channels, through: :subscriptions, source: :channel
+  has_many :channel_teachers
   has_many :bookings
-  has_many :courses, :through => :bookings
-  has_many :courses_taught, class_name: "Course", foreign_key: "teacher_id"
-  has_many :payments
+  has_many :channel_admins
+  has_many :payments, through: :bookings
+  has_many :channels_teachable, through: :channel_teachers, source: :channel
+  has_many :channels_adminable, through: :channel_admins, source: :channel
+  has_many :courses_adminable, through: :channels_adminable, source: :courses
+  has_many :courses_teaching, through: :channel_teachers, source: :courses
+  has_many :courses, through: :bookings
+  has_many :channels, through: :subscriptions, source: :channel
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
     def for_provider(provider)
       where(provider: provider).first
     end
   end
+  has_many :courses_teaching, through: :channel_teachers, source: :courses
 
   after_create :create_channel_associations
 
-  scope :teachers, joins(:courses_taught).uniq
+  scope :visible, where(visible: true)
   scope :with_email_region_id, 
     lambda {|region| 
       where("email_region_ids LIKE '%?%'", region)
@@ -54,7 +60,21 @@ class Chalkler < ActiveRecord::Base
 
   before_create :set_reset_password_token
 
+
+  def adminable_courses
+    courses_adminable.merge courses_teaching    
+  end
+
+  def join_psuedo_identities!
+    ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+  end
+
+  def upcoming_teaching
+    (courses_adminable.in_future+courses_teaching.in_future).uniq.sort_by(&:start_at) 
+  end
+
   class << self
+
     #TODO: Move into a presenter class like Draper sometime
     def email_frequency_select_options
       EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
@@ -144,7 +164,7 @@ class Chalkler < ActiveRecord::Base
     return unless self.set_password_token
     self.password = Chalkler.reset_password_token
     self.reset_password_token = Chalkler.reset_password_token
-    self.reset_password_sent_at = Time.now.utc
+    self.reset_password_sent_at = Time.current
   end
 
   def create_channel_associations  

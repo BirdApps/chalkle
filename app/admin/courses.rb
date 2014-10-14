@@ -141,7 +141,7 @@ ActiveAdmin.register Course  do
       row :category_name
       row :channel_name
       row "Class Date" do |course|
-        if course.start_at.present?
+        if course.lessons.present?
           course.start_at
         else
           status_tag("This class must have a date and time", :error)

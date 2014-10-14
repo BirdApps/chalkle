@@ -15,7 +15,6 @@ h2 {
 
 h3 {
   font-family: $font_family_normal;
-  border-bottom: 1px solid $grayLighter
 }
 
 p.big {
@@ -45,10 +44,6 @@ ul, ol {
 ul.unstyled {
   list-style-type: none;
   margin-left: 0;
-}
-
-li {
-  margin-bottom: 0.75em;
 }
 
 .btn a {

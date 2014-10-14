@@ -1,0 +1,41 @@
+<div class="new_form_wrapper">
+  <%= bootstrap_form_for(@booking, wrapper: :simple_bootstrap3, url: cancel_course_booking_path(@booking.course.id, @booking.id), html: { id: ''}) do |f| %>
+    <input name="_method" type="hidden" value="put" />
+    <input type="submit" value="Confirm Cancel" class="pull-right btn btn-danger" />
+    <h2>What is your reason for cancelling this booking?</h2>
+     <%= f.input :cancelled_reason, label: 'Reason', as: :text, class: 'form-control', required: true %>
+  <% end %>
+  <h4>If you cancel this booking</h4>
+  <ul>
+    <% if @booking.paid && @booking.paid > 0 %>
+      <% if @booking.refundable? %>
+        <li>
+          The $<%= @booking.paid %> you have paid for this booking will be refunded within 21 days
+        </li>
+        <li>
+          You will not be able to attend this course
+        </li>
+        <li>
+          The teacher will be notified
+        </li>
+      <% else %>
+        <li>
+          The $<%= @booking.paid %> already paid is non-refundable because we are within <%= @booking.no_refund_period_in_days %> days of the class running
+        </li>
+        <li>
+          You will not be able to attend this course
+        </li>
+        <li>
+          The teacher will be notified
+        </li>
+      <% end %>
+    <% else %>
+      <li>
+        You will not be able to attend this course
+      </li>
+      <li>
+        The teacher will be notified
+      </li>
+    <% end %> 
+  </ul>
+</div>

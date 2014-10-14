@@ -1,6 +1,6 @@
 @import "_variables";
 @import "twitter/bootstrap";
-@import 'font-awesome';
+@import "font-awesome";
 @import "border-radius";
 @import "layout";
 @import "typography";
@@ -16,10 +16,20 @@
 @import "unsemantic/unsemantic-grid-responsive";
 @import "bootstrap-datepicker3";
 @import "plugins/bootstrap-timepicker";
+@import "v2";
 
 .center {
   text-align: center;
 }
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
 
 .row {
   margin-bottom: $line-height-base;

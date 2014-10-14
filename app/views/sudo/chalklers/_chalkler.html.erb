@@ -1,0 +1,10 @@
+<div class="chalkler row">
+  <div class="col-xs-12 col-sm-8">
+    <%= link_to becoming_sudo_chalklers_path(chalkler.id) do %>
+      <img class="avatar32 avatar inline" src="<%= chalkler.avatar %>">
+      <%= chalkler.id %>
+      <%= chalkler.name %>
+      <%= chalkler.email %>
+    <% end %>
+  </div>
+</div>

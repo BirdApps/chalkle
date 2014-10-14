@@ -4,7 +4,6 @@ $line-height: $navbar-height - ($vertical-padding * 2);
 
 .navbar {
   font-weight: bold;
-  background: #222222 asset-url("front_end/home/header_background.jpg", image) left top repeat;
   border-bottom: none;
   padding: $vertical-padding 0px;
   font-size: 20px;
@@ -48,15 +47,20 @@ $line-height: $navbar-height - ($vertical-padding * 2);
       a {
         height: $line-height;
         line-height: $line-height;
-        color: white;
+        color: #eee;
         display: block;
         padding: 0 10px;
         text-decoration: none;
         font-weight: normal;
         background-color: transparent;
+        @include border-radius(4px);
 
-        &:hover {
-          text-decoration: underline;
+
+        &:hover, &.current {
+          color: #fff;
+          text-shadow: none;
+          text-decoration: none;
+          background-color: rgba(0,0,0,0.15);
         }
       }
       .dropdown-menu li a {
@@ -105,26 +109,34 @@ $line-height: $navbar-height - ($vertical-padding * 2);
 
 footer.page-footer {
   padding-bottom: 2em;
-  background: $chalkboard-background;
-  color: #CCCCCC;
-
+  a{
+    color: #fff;
+  }
   h3, h4 {
-    color: #CCCCCC;
     text-decoration: none;
     border: none;
-    font-style: $chalky-font;
   }
 
   ul {
     list-style: none;
     padding-left: 0;
-
     li {
+      border-right: 1px #fff solid;
+      display: inline-block;
       margin-left: 0;
       margin-bottom: 10px;
+      padding:5px 20px;
+    }
+    .no-border{
+      border:0;
     }
   }
-
+  .social_media_links{
+    img{
+      height:27px;
+      padding: 0 15px;
+    }
+  }
   .email-list {
     li {
       margin-bottom: 0;

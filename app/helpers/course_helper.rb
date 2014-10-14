@@ -11,6 +11,52 @@ If it is cancelled, you will receive a notice from Meetup upon cancellation and 
 Your Chalkle Administrator")
   end
 
+  def pretty_duration(course)
+    # when above 24 this should cover periods greater than a day in a more elegent way than n hours  - Josh
+    duration = ""
+    if course.duration.to_i/60 >= 60
+     duration += (course.duration.to_i/60/60).to_s+" hrs "
+    end
+    duration += (course.duration.to_i/60%30).to_s+" mins"
+    
+  end
+
+  def pretty_time(date)
+    date.strftime("%l:%M%P")
+  end
+
+
+  def pretty_time_range(start, finish)
+    return unless start && finish
+    if(finish - start < 24*3600)
+      pretty_time(start)+" - "+pretty_time(finish)
+    else
+      day_ordinal_month(start)+" - "+day_ordinal_month(finish)
+    end
+  end
+
+  def quick_date_time(date, use_relative_day = true)
+    return unless date
+    relative = relative_day_name date.to_date
+    if relative && use_relative_day
+      relative+" "+pretty_time(date)
+    else
+      date.strftime("%d %b")+" — "+pretty_time(date)
+    end
+  end
+
+  def day_ordinal_month(date, use_relative_day = true, include_year = true)
+    return unless date
+    relative = relative_day_name date.to_date
+    return relative if relative && use_relative_day
+    ordinalDay = date.day.ordinalize
+    if include_year
+      date.strftime("%B #{ordinalDay}, %Y")
+    else
+      date.strftime("%B #{ordinalDay}")
+    end
+  end
+
   def relative_month_name(month)
     relative_time_name month, Month.current, 'Month'
   end
@@ -34,13 +80,13 @@ Your Chalkle Administrator")
     parts.join('').html_safe
   end
 
-  def relative_date_class(date, current = Date.today)
+  def relative_date_class(date, current = Date.current)
     return "past" if date < current
     return "present" if date == current
     "future"
   end
 
-  def relative_day_name(day, current = Date.today)
+  def relative_day_name(day, current = Date.current)
     return "Yesterday" if day == current - 1
     return "Today" if day == current
     return "Tomorrow" if day == current + 1
@@ -71,7 +117,7 @@ Your Chalkle Administrator")
 
   def path_for_course(course)
     if (@channel || course.channel)
-      channel_course_url(@channel || course.channel, course)
+      channel_course_path(@channel || course.channel, course)
     end
   end
 
@@ -84,17 +130,27 @@ Your Chalkle Administrator")
   end
 
   def course_availability(course)
-    content_tag :div, nil, class: 'availability' do
-      if course.limited_spaces?
-        if course.spaces_left?
-          icon(:check) + pluralize(course.spaces_left, 'spot') + ' left'
+    if course.limited_spaces?
+      if course.spaces_left?
+        if course.spaces_left < 5
+          pluralize(course.spaces_left, 'spot') + ' left'
         else
-          'fully booked!'
+          'Join'
         end
       else
-        icon(:check) + 'No size limit'
+        'Fully booked'
       end
+    else
+      'No booking limit'
     end
+  end
+
+  def course_call_to_action(course)
+    availability = course_availability course
+    if availability == 'No booking limit'
+      availability = 'Join'
+    end
+    availability
   end
 
   def course_attendance(course)

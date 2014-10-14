@@ -4,7 +4,7 @@ $(function() {
   var instance_date;
   var monthly;
   var repeating;
-  var repeat_times;
+  var repeat_count;
   var duration_hours;
   var duration_minutes;
   var weekdays = ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday","Friday","Saturday"];
@@ -81,14 +81,14 @@ $(function() {
       var start_time = make_time(instance_date.getHours(), instance_date.getMinutes(),0,0);
       var end_time = make_time(instance_date.getHours(), instance_date.getMinutes(), duration_hours, duration_minutes);
       var string_build = "Your class will be held ";
-      repeat_times = parseInt($("#teaching_repeat_times").val());
-      repeating = repeating && repeat_times > 1
+      repeat_count = parseInt($("#teaching_repeat_count").val());
+      repeating = repeating && repeat_count > 1
       if(repeating && monthly) {
         //monthly
         var wday = instance_date.getDay();
         var date_lapse = new Date();
         date_lapse.setYear(instance_date.getFullYear());
-        date_lapse.setMonth(instance_date.getMonth() + parseInt(repeat_times) - 1);
+        date_lapse.setMonth(instance_date.getMonth() + parseInt(repeat_count) - 1);
         date_lapse.setDate(1);
         var target_nth = nth_day_instance_date();
         var end_date = nth_day_of(target_nth, wday, date_lapse);
@@ -97,7 +97,7 @@ $(function() {
         //weekly
         var end_date = new Date();
         end_date.setMonth(instance_date.getMonth());
-        end_date.setDate(instance_date.getDate()+7*(repeat_times-1));
+        end_date.setDate(instance_date.getDate()+7*(repeat_count-1));
         string_build += " weekly from "+instance_date.toDateString()+" until "+end_date.toDateString();
       }else if(!repeating){
         //once-off
@@ -165,7 +165,7 @@ $(function() {
     calculate_class_times();
     $('#teaching_repeat_frequency').change(repeat_frequency_select);
     $('#teaching_repeating').change(repeating_course_select);
-    $('#teaching_repeat_times').change(calculate_class_times);
+    $('#teaching_repeat_count').change(calculate_class_times);
     $('#teaching_duration_minutes').change(calculate_class_times);
     $('#teaching_duration_hours').change(calculate_class_times);
   }

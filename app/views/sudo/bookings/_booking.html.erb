@@ -1,0 +1,45 @@
+<%
+  action_parts = request.path_parameters[:action].split("/")
+ %>
+<hr />
+<div class="row odd clearfix" id="<%= 'booking-'+booking.id.to_s %>">
+  <div class="col-sm-1 col-xs-2">
+    <%= day_ordinal_month booking.created_at, false, true %>
+  </div>
+  <div class="col-sm-1 col-xs-2">
+    <%= booking.id %>
+  </div>
+  <div class="col-sm-1 col-xs-2">
+    $<%= booking.cost_formatted %>
+  </div>
+  <div class="col-sm-4 col-xs-6">
+    <%= link_to booking.chalkler.email, chalkler_path(booking.chalkler.id) if booking.chalkler %>
+  </div>
+  <div class="col-sm-5 col-xs-12 text-right">
+    <% if action_parts.include?("pending_refunds") %>
+      <%= link_to 'Mark Refunded', refund_sudo_booking_path(booking.id), class: 'btn btn-primary' %>
+    <% else %>
+      <div class="pull-left dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+          Status: <%= booking.status.to_s %>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+          <% Booking::BOOKING_STATUSES.each do |status| %>
+            <li>
+              <%= link_to 'Mark as: '+status, set_status_sudo_booking_path(booking.id, status: status) %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if booking.payment %>
+      <%= link_to 'Payment', sudo_payment_path(booking.payment.id), class: 'btn btn-default' %>
+    <% else %>
+      <button disabled="disabled" class="btn btn-danger">! No Payment</button>
+    <% end %>
+
+    <%= link_to 'Booking', sudo_booking_path(booking.id), class: 'btn btn-default' %>
+  </div>
+</div>

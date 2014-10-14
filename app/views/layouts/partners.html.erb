@@ -15,11 +15,11 @@
     <%= javascript_include_tag "application" %>
     <%= javascript_include_tag "partners" %>
 
-    <script type="text/javascript" src="//use.typekit.net/hlu7uvf.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <%= typekit_includes %>
+  
   </head>
 
-  <body class="<%= body_class %> tk-proxima-nova">
+  <body class="<%= body_class %> tk-proxima-nova" id="partners-page">
 
 
     <header id="header" class="" >

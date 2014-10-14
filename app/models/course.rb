@@ -3,26 +3,30 @@ require 'course_upload_image_uploader'
 
 class Course < ActiveRecord::Base
   include Categorizable
-  include Gst
+  GST = 0.15
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :cost, :fee, :teacher_bio, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :donation, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience, :teacher_cost, :region_id, :region, :channel_rate_override, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration
+    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :first_lesson_start_at, :cost, :teacher_cost, :course_class_type, :processing_fee, :teacher_pay_type, :note_to_attendees, :cancelled_reason
   ]
 
-  attr_accessible  *BASIC_ATTR, :meetup_id, :meetup_url, :venue_cost, :meetup_data, :description, :teacher_payment, :published_at, :course_image_attributes, :material_cost, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
+  attr_accessible  *BASIC_ATTR, :description, :teacher_payment, :published_at, :course_image_attributes, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
+
+  #chalkle fee is cached without GST
+  #channel fee is specified inc. GST so is cached including it
+
 
   #Course statuses
   STATUS_5 = "Processing"
-  STATUS_4 = "Approved"
+  STATUS_4 = "Completed"
   STATUS_3 = "Unreviewed"
-  STATUS_2 = "On-hold"
+  STATUS_2 = "Cancelled"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
 
   belongs_to :repeat_course
   belongs_to :region
   belongs_to :channel
-  belongs_to :teacher, class_name: "Chalkler"
+  belongs_to :teacher, class_name: "ChannelTeacher"
   belongs_to :category
   has_many  :lessons
   has_many  :bookings
@@ -32,6 +36,7 @@ class Course < ActiveRecord::Base
   has_many  :bookings
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
+
 
   mount_uploader :course_upload_image, CourseUploadImageUploader
 
@@ -47,26 +52,38 @@ class Course < ActiveRecord::Base
   IMMEDIATE_FUTURE= 5
   WEEK = 7
 
-  GST = gst_rate_for :nz #GST for NZ
-  
-  validates_uniqueness_of :meetup_id, allow_nil: true
   validates_presence_of :name
   validates_presence_of :lessons, if: :published?
   validates_presence_of :channel
+  validates_presence_of :teacher 
   validates_numericality_of :teacher_payment, allow_nil: true
-  validates_numericality_of :material_cost, allow_nil: false
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
-  validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher income per attendee must be positive" }
-  validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Advertised price must be positive" }
+  validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher fee must be positive" }
+  validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Class price must be positive" }
   validates :lessons, :length => { minimum: 1 }, if: :published?
-  validate :max_teacher_cost
   validate :image_size
+  validate :check_start_at
+  validate :check_url_name
 
-  scope :start_at_between, lambda {|from,to| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", from.to_s(:db), to.to_s(:db))}
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :recent, visible.joins(:lessons).where("start_at > current_date - #{PAST} AND start_at < current_date + #{IMMEDIATE_FUTURE}")
-  scope :last_week, joins(:lessons).visible.where("start_at > current_date - #{WEEK} AND start_at < current_date")
+  scope :displayable, lambda { published.visible }
+
+  scope :start_at_between, lambda{ |from,to| where(:start_at => from.beginning_of_day..to.end_of_day) }
+  scope :recent, visible.start_at_between(DateTime.current.advance(days: PAST), DateTime.current.advance(days: IMMEDIATE_FUTURE))
+  scope :last_week, visible.start_at_between(DateTime.current.advance(weeks: -1), DateTime.current)
+  scope :in_month, lambda{|month| start_at_between(month.first_day, month.last_day) }
+  scope :in_week, lambda {|week| start_at_between(week.first_day, week.last_day) }
+  scope :in_fortnight, lambda {|week| start_at_between(week.first_day, (week+1).last_day) }
+  
+  scope :on_date, lambda {|date| start_at_between(date, date) }
+  scope :in_future, lambda { where( "end_at >= ?", DateTime.current) }
+  scope :previous, lambda { where("start_at < ?", DateTime.current) }
+  #TODO: replace references to previous with in_past - time consuming because previous is common word
+  scope :in_past, previous
+  scope :by_date, order(:start_at)
+  scope :by_date_desc, order('start_at DESC')
+
   scope :unreviewed, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
   scope :approved, visible.where(status: STATUS_4)
@@ -74,37 +91,134 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-  scope :by_date, joins(:lessons).order('lessons.start_at')
-  scope :in_month, lambda {|month| joins(:lessons).where("lessons.start_at BETWEEN ? AND ?", month.first_day.to_datetime.change(offset: "+12:00").to_s(:db), month.last_day.to_datetime.change(offset: "+12:00").to_s(:db))}
-  scope :in_week, lambda {|week| where{ |course| week.include? course.start_at.to_date } }
-  scope :displayable, lambda { published.visible }
-  scope :upcoming_or_today, lambda { joins(:lessons).where("start_at >= ?", Time.now.utc.to_date.to_time) }
-  scope :previous, lambda { joins(:lessons).where("start_at < ?", Time.now.utc.to_date.to_time) }
-  scope :not_meetup, where("meetup_url IS NULL")
-  scope :only_with_region, lambda {|region| where(region_id: region.id) }
-  scope :only_with_channel, lambda {|channel| where(channel_id: channel.id) }
-  scope :with_base_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
+  scope :taught_by_chalkler, lambda {|chalkler| joins(:teacher).where('channel_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
+  scope :in_region, lambda {|region| where(region_id: region.id) }
+  scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
+  scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
+  scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
+  scope :adminable_by, lambda {|chalkler| joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
 
-  # CRAIG: This is a bit of a hack. Replace this system with a state machine.
+  scope :need_outgoing_payments, paid.joins(:bookings).where("courses.status = '#{STATUS_4}' AND courses.end_at < '#{DateTime.current.advance(weeks:-2).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
+
+  scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
+
+  before_create :set_url_name
   before_save :update_published_at
-
   before_save :save_first_lesson
+  after_save :start_at!
+  after_save :end_at!
+  after_save :expire_cache!
 
-  def self.upcoming(limit = nil)
-    return published.joins(:lessons).where("start_at > ?", Time.now.utc) if limit.nil?
-    published.joins(:lessons).where("start_at > ?", Time.now.utc).where("start_at < ?", limit)
+  def self.upcoming(limit=nil, options={:include_unpublished => false})
+    unless options[:include_unpublished] 
+      return published.in_future if limit.nil?
+      published.in_future.where("start_at < ?", limit)
+    else
+      return in_future if limit.nil?
+      in_future.where("start_at < ?", limit)
+    end
+  end
+
+  def self.search(query, course_set = nil)
+    if query.present?
+      courses = Course.arel_table
+      query_parts = query.split(/\W+/).map {|part| "%#{part}%" }
+      if course_set
+        course_set.where courses[:name].matches_any(query_parts)
+      else
+        Course.where courses[:name].matches_any(query_parts)
+      end
+    end
+  end
+
+  def cancel!(reason = nil)
+    #TODO: notify chalklers
+    self.status = STATUS_2
+    self.cancelled_reason = reason if reason
+    bookings.each do |booking|
+      booking.cancel!(reason, true)
+    end
+    save
+  end
+
+  def complete!
+    #TODO: run at midnight everynight on scope Course.needs_completing
+    if end_at < DateTime.current
+      if bookings.present?
+        self.status = STATUS_4
+      else
+        self.status = STATUS_3
+      end
+      save
+    end
+  end
+
+  def can_be_cancelled?
+    can_be = false
+    can_be = true if min_attendee > bookings.confirmed.count
+    can_be = true if start_at > DateTime.current.advance(hours: 24)
+    can_be = true if !bookings?
+    can_be
+  end
+
+  def classes
+    lessons.order(:start_at)
+  end
+
+  def cost_formatted
+    sprintf('%.2f', cost)
+  end
+
+  def repeating_class?
+    true if repeat_course.present?
+  end
+
+  def repeating?
+    repeating_class?
+  end
+
+  def next_class
+    repeat_course.courses[repeat_course.courses.index(repeat_course.courses.find(id))+1] if repeat_course.present?
+  end
+
+  def bookings?
+    bookings.present?
+  end
+
+  def address
+    venue_address
+  end
+
+  def address_formatted
+    venue_address.gsub(',',',<br />').html_safe if venue_address.present?
+  end
+
+  def course?
+    true if lessons.count > 1
+  end
+
+  def class?
+    !course?
+  end
+
+  def single_class?
+    true if lessons.count == 1
   end
 
   def first_lesson
-    lessons.order('start_at desc').limit(1).first
+    lessons.order('start_at').limit(1).first
   end
+  def last_lesson
+    lessons.order('start_at DESC').limit(1).last
+  end
+
 
   def first_or_new_lesson
     @first_or_new_lesson ||= ( first_lesson || Lesson.new(course_id: id) )
   end
 
-  def start_at
+  def first_lesson_start_at
     first_lesson.try :start_at if first_lesson
   end
 
@@ -113,12 +227,20 @@ class Course < ActiveRecord::Base
     false
   end
 
-  def start_at=(lesson_start)
+  def first_lesson_start_at=(lesson_start)
     first_or_new_lesson.update_attribute :start_at, lesson_start
   end
 
-  def duration
+  def learning_hours
     lessons.inject(0){|sum, l| l.duration ? sum += l.duration : sum }
+  end
+
+  def duration
+    first_or_new_lesson.duration
+  end
+
+  def hours
+    (self.duration || 0)/3600 
   end
 
   def duration=(first_lesson_duration)
@@ -129,35 +251,129 @@ class Course < ActiveRecord::Base
     start_at.strftime("%y%m%d")+self.id.to_s
   end
 
+  def publish!
+    self.visible = true
+    self.status = "Published"
+    self.save
+  end
+
+  def publish
+    self.visible = true
+    self.status = "Published"
+  end
+
   # kaminari
   paginates_per 10
 
-  def max_teacher_cost
-    return unless teacher_cost and cost
-    if (teacher_cost > cost)
-      errors.add(:teacher_cost, "Payment to teacher must be less than advertised price")
-      errors.add(:cost, "Payment to teacher must be less than advertised price")
-    end
-  end
-
   def image_size
     return unless course_upload_image.present?
-    if course_upload_image.file.size.to_f/(1000*1000) > 4.to_f
-      errors.add(:course_upload_image, "You cannot upload an image greater than 4 MB")
+    begin
+      if course_upload_image.file.size.to_f/(1000*1000) > 4.to_f
+        errors.add(:course_upload_image, "You cannot upload an image greater than 4 MB")
+      end
+    rescue
     end
   end
 
-  delegate :channel_fee, :rounding, :chalkle_fee, :chalkle_percentage,
-           :channel_percentage, :teacher_percentage, to: :cost_calculator
-
-  def cost_calculator
-    result = channel ? channel.cost_calculator : CostModel.default.cost_calculator
-    result.course = self
-    result
+  #placeholder for when we go international
+  def country_code
+    :nz
   end
 
-  def update_costs
-    cost_calculator.update_costs(self)
+
+  ###
+  # Costings
+  ###
+
+  def channel_plan
+    (channel && channel.plan) ? channel.plan : ChannelPlan.default
+  end
+
+  def channel_fee
+    calc_channel_fee
+  end
+
+  def calc_channel_fee
+    cost - variable_costs - processing_fee - chalkle_fee
+  end
+
+  def chalkle_fee(incl_tax = true)
+    return 0 if free?
+    single = course_class_type.nil? ? single_class? : course_class_type == 'course'
+    no_tax_fee = (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
+    incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
+  end
+
+  def chalkle_fee=(value)
+    self.cached_chalkle_fee = value
+  end
+
+  def processing_fee
+    if cost.present?
+      cost * channel_plan.processing_fee_percent
+    else
+      calculate_cost(false) * channel_plan.processing_fee_percent
+    end
+  end
+
+  def self.teacher_pay_types
+    [ 'Flat fee', 'Fee per attendee', 'Not paid through chalkle']
+  end
+
+  def teacher_pay_variable
+    teacher_pay_type == Course.teacher_pay_types[1] ? teacher_cost : 0
+  end
+
+  def teacher_pay_flat
+    teacher_pay_type == Course.teacher_pay_types[0] ? teacher_cost : 0 
+  end
+
+  def variable_costs
+    teacher_pay_variable
+  end
+
+  def fixed_costs
+    teacher_pay_flat
+  end
+
+  def channel_max_income
+     if max_attendee.present?
+      channel_fee * max_attendee - fixed_costs
+    else
+      0
+    end
+  end
+
+  def type
+    if course_class_type.present?
+      course_class_type
+    else
+      course? ? 'course' : 'class'
+    end
+  end
+
+  def channel_min_income
+    if min_attendee.present?
+      channel_fee * min_attendee - fixed_costs
+    else
+      0
+    end
+  end
+
+  def teacher_max_income
+    if max_attendee.present?
+      teacher_pay_variable * max_attendee
+    else
+      0
+    end
+  end
+
+  def teacher_min_income
+    if min_attendee.present?
+      teacher_pay_variable * min_attendee
+    else
+      0
+    end
   end
 
   #Class incomes
@@ -183,13 +399,13 @@ class Course < ActiveRecord::Base
 
   def total_cost
     if teacher_payment.present? && chalkle_payment.present?
-      teacher_payment + cash_payment + ( venue_cost.present? ? venue_cost : 0 ) + ( material_cost.present? ? material_cost : 0 ) + chalkle_payment
+      teacher_payment + cash_payment + chalkle_payment
     else
       attendance*( (teacher_cost.present? ? teacher_cost : 0) + chalkle_fee)
     end
   end
 
-  def income
+  def incomeco
     excl_gst(collected_turnover - total_cost)
   end
 
@@ -199,7 +415,7 @@ class Course < ActiveRecord::Base
 
   # this should be a scope
   def bookable?
-    spaces_left?
+    spaces_left? && start_at && start_at > DateTime.current && status == STATUS_1
   end
 
   def spaces_left?
@@ -207,15 +423,19 @@ class Course < ActiveRecord::Base
   end
 
   def spaces_left
-    [(max_attendee.to_i - attendance), 0].max
+    [(max_attendee.to_i - attendance), 0].max if limited_spaces?
   end
 
   def limited_spaces?
-    !!max_attendee
+    true if max_attendee && max_attendee > 0
   end
 
   def published?
     status == STATUS_1
+  end
+
+  def displayable?
+    status == STATUS_1 && visible == true
   end
 
   def valid_statuses
@@ -226,29 +446,15 @@ class Course < ActiveRecord::Base
     bookings.confirmed.visible.count - bookings.confirmed.visible.paid.count
   end
 
-  def class_not_done
-    ((start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() > -1)
-  end
-
-  def class_coming_up
-    class_not_done && start_at.present? && ( (start_at.present? ? start_at.to_datetime : Date.today()) - Date.today() < 7)
-  end
-
   def complete_details?
-    teacher_id.present? && start_at.present? && channel && do_during_class.present? && teacher_cost.present? && venue_cost.present? && venue.present?
+    teacher_id.present? && start_at.present? && channel && do_during_class.present? && teacher_cost.present? && venue.present?
   end
 
-  def class_may_cancel
-    class_coming_up && ( attendance < (min_attendee.present? ? min_attendee : 2) )
-  end
-
-  def flag_warning
-    if class_may_cancel
-      return "May cancel"
-    elsif !complete_details?
-      return "Missing details"
+  def bookings_for(chalkler)
+    if bookings.any?
+      chalkler.bookings & bookings
     else
-      return false
+      nil
     end
   end
 
@@ -261,25 +467,15 @@ class Course < ActiveRecord::Base
   end
 
   def todo_attendee_list
-    return (start_at > DateTime.now()) && (start_at <= DateTime.tomorrow() + 1) && pay_involved
+    return (start_at > DateTime.current) && (start_at <= DateTime.tomorrow + 1) && pay_involved
   end
 
   def todo_pay_reminder
-    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.now() + 4 )
+    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.current + 4 )
   end
 
   def todo_payment_summary
-    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.now() ) && ( start_at > DateTime.now() - 2)
-  end
-
-  def meetup_data
-    data = read_attribute(:meetup_data)
-    if data.present?
-      event = JSON.parse(data)
-      event["event"]
-    else
-      {}
-    end
+    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.current ) && ( start_at > DateTime.current - 2)
   end
 
   def set_name(name)
@@ -289,7 +485,7 @@ class Course < ActiveRecord::Base
   end
 
   def copy_course
-    except = %w{id created_at updated_at meetup_id meetup_url status start_at meetup_data description teacher_payment published_at chalkle_payment visible}
+    except = %w{id created_at updated_at status start_at teacher_payment published_at chalkle_payment visible}
     copy_attributes = self.attributes.reject { |attr| except.include?(attr) || attr.starts_with?('deprecated_') }
     new_course = Course.new(copy_attributes, :as => :admin)
     new_course.category = self.category
@@ -304,12 +500,73 @@ class Course < ActiveRecord::Base
     cost == 0
   end
 
-  def start_on
-    start_at.to_date if start_at
+  def path
+    if channel.nil?
+      self.channel = Course.find(self.id).channel
+    end
+    "/#{channel.url_name}/#{url_name}/#{id}"
   end
-  alias_method :date, :start_on
+
+  def url
+    if channel.nil?
+      self.channel = Course.find(self.id).channel
+    end
+    "chalkle.com/#{channel.url_name}/#{url_name}/#{id}"
+  end
+
+
+  def path_series
+    "/#{channel.url_name}/#{url_name}"
+  end
+
+  def lesson_in_progress
+    @lesson_in_progress ||= lessons.map {|lesson| lesson.between_start_and_end ? lesson : nil  }.compact.first if status == STATUS_1
+  end
+
+  def between_start_and_end
+    check_start_at
+    check_end_at
+    start_at < DateTime.current && end_at > DateTime.current if start_at.present? && end_at.present?
+  end
+
+  def reviews?
+    reviews.present?
+  end
+
+  def reviews
+    []
+  end
+
+  def review_percent
+    100
+  end
+
+  def venue_truncated(length=16)
+    return if !venue || venue.empty?
+    truncated = venue.split[0..venue[0..length].split(" ").count-1].join(" ")
+    truncated[truncated.length-1] = truncated[truncated.length-1].gsub(/[^0-9A-Za-z]/, '')
+    truncated
+  end
+
+  def start_at!
+    new_start_at = first_lesson.start_at if first_lesson.present?
+    update_column(:start_at, new_start_at) if start_at != new_start_at
+  end
+
+  def end_at!
+    new_end_at = last_lesson.end_at if last_lesson.present? && last_lesson.valid?
+    update_column(:end_at, new_end_at) if end_at != new_end_at
+  end
+
+  def expire_cache!
+    ActionController::Base.new.expire_fragment("_course_#{id}")
+  end
 
   private
+  def class_or_course
+    return 'class' if lessons.count < 2
+    'course'
+  end
 
   def save_first_lesson
     @first_or_new_lesson.save if @first_or_new_lesson
@@ -320,13 +577,29 @@ class Course < ActiveRecord::Base
     price/(1 + GST)
   end
 
-  def fee(teacher_price, teacher_percentage, channel_cut)
-    return 0 unless teacher_percentage > 0
-    teacher_price / teacher_percentage * channel_cut * (1 + GST)
+  def update_published_at
+    self.published_at ||= Time.current
+  end
+  
+  def check_end_at
+    self.end_at = last_lesson.end_at if last_lesson.present? && last_lesson.valid?
   end
 
-  def update_published_at
-    self.published_at ||= Time.now
+  def check_start_at
+    self.start_at = first_lesson.start_at if first_lesson.present?
+  end
+
+  def cache_costs
+    self.cached_chalkle_fee = chalkle_fee
+    self.cached_channel_fee = channel_fee
+  end
+
+  def set_url_name
+    self.url_name = name.parameterize
+  end
+
+  def check_url_name
+    self.url_name = name.parameterize if self.url_name.nil?
   end
 
 end

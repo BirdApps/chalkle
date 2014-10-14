@@ -1,106 +1,163 @@
 require 'routing_constraints'
-
 Chalkle::Application.routes.draw do
 
-  ActiveAdmin.routes(self)
+  #ActiveAdmin.routes(self)
 
   match '(*any)' => redirect { |p, req| req.url.sub!('my.', '') } , :constraints => { :host => /^my\./ }
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
 
   devise_for :admin_users, ActiveAdmin::Devise.config
-  devise_for :chalklers, controllers: { omniauth_callbacks: 'chalklers/omniauth_callbacks', registrations: 'chalklers/registrations' }
+  devise_for :chalklers, controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations' }
   
   constraints(Subdomain) do
     match '/' => 'channels#show'
   end
 
-  constraints(MainDomain) do
-    get ':country_code/:region_name', to: 'courses#index', constraints: {country_code: /[a-zA-Z]{2}/}
-  end
+  root to: 'courses#index'
+  
+  get '/about' => 'application#about', as: :about
 
-  authenticated :chalkler do
-    root :to => "courses#index"
-  end
-  root to: 'chalklers/dashboard#index'
+  get '/terms' => 'terms#chalkler', as: :terms
 
-  resources :filters, only: [:update, :destroy] do
-    collection do
-      put :update_view
-      delete :clear
-    end
-  end
+  get '/terms/provider' => 'terms#provider', as: :provider_terms
 
-  resources :courses, only: [:show, :index], path: 'classes' do
-    resource :regions do
-    end
-    collection do
-      get :month, shallow: true
-      get 'month/:year/:month' => 'courses#month', as: :specific_month
-      get :week
-      get 'week/:year/:month/:day' => 'courses#week', as: :specific_week
-      get :calculate_cost
-    end
-  end
+  get '/terms/teacher' => 'terms#teacher', as: :teacher_terms
 
-  resources :channels, only: :show do
-    resource :subscriptions, only: [:create, :destroy] do
-    end
-    resources :courses, only: [:show, :index], path: 'classes' do
-      collection do
-        get :month, shallow: true
-        get 'month/:year/:month' => 'courses#month', as: :specific_month
-        get :week
-        get 'week/:year/:month/:day' => 'courses#week', as: :specific_week
-      end
 
-      resources :bookings, only: [:new, :create] do
-        get :payment_callback
-      end
-    end
-  end
+  resources :channel_teachers, path: 'teachers', except: [:new, :show, :index] 
 
-  resources :bookings, only: [:index, :show, :edit, :update] do
+  resources :channel_plans, path: 'plans'
+
+  match '/teach' => 'courses#teach'
+  match '/learn' => 'courses#learn'
+
+  resources :courses, path: 'classes' do
+    #resources :notices
     member do
-      put 'cancel'
+      get 'cancel', to: 'courses#cancel', as: :cancel
+      put 'cancel', to: 'courses#confirm_cancel', as: :cancel
+    end
+    resources :bookings do
+      get :payment_callback
+      member do
+        get 'cancel'
+        put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
+      end
+    end
+    member do
+      put 'change_status', to: 'courses#change_status', as: :change_status
+    end
+    collection do
+      get 'calculate_cost'
     end
   end
 
-  namespace :chalklers do
+  get '/c/:id' => 'courses#tiny_url', as: :course_tiny
+
+  namespace :me do
     root to: 'dashboard#index'
-    resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
+    get '/bookings' => 'dashboard#bookings', as: :bookings
+    get '/preferences' => 'preferences#show', as: :preferences
+    put '/preferences' => 'preferences#save', as: :preferences
+    get '/enter_email' => 'preferences#enter_email', as: :enter_email
+    put '/enter_email' => 'preferences#enter_email', as: :enter_email
+  end
 
-    get '/enter_email' => 'preferences#enter_email', as: 'enter_email'
-    put '/enter_email' => 'preferences#enter_email', as: 'enter_email'
-
-    match '/missing_channel' => 'dashboard#missing_channel'
-
-    resources :teachings do
+  namespace :sudo do
+    root to: 'silvias#index'
+    resources :payments
+    resources :chalklers do
       collection do
-        get 'success'
+        get 'becoming/:id' => 'chalklers#becoming', as: :becoming
+        get 'become'
+      end
+    end
+    
+    resources :outgoings do
+      collection do 
+        get 'pending'
+        get 'complete'
       end
     end
 
-    get '/preferences' => 'preferences#show', as: 'preferences'
-    get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: 'meetup_email_settings'
-    put '/preferences' => 'preferences#save', as: 'preferences'
+    resources :bookings do
+      collection do
+        get 'pending_refunds'
+        get 'completed_refunds'
+      end
+      member do
+        get 'set_status'
+        get 'refund'
+      end
+    end
+  end
 
-    delete '/preferences/destroy_chalkler/:id' => 'preferences#destroy', as: 'delete'
+  resources :chalklers, path: 'people', only: [:index, :show] do
+    collection do
+    #   get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: :meetup_email_settings
+       post 'exists'
+    #   delete '/preferences/destroy_chalkler/:id' => 'preferences#destroy', as: :delete
+    #   get  '/data_collection/:action', as: 'data_collection', controller: :data_collection_form
+    #   post '/data_collection/:action', as: 'data_collection_update', controller: :data_collection_form
+    end
+  end
 
-    get  '/data_collection/:action', as: 'data_collection', controller: 'data_collection_form'
-    post '/data_collection/:action', as: 'data_collection_update', controller: 'data_collection_form'
+  resources :channels, path: 'providers', only: [:index, :teachers] do
+    #resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
+    resources :subscriptions, only: [:create, :destroy], path: 'follow'
   end
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
-  match '/image' => 'image#generate'
+  #match '/image' => 'image#generate'
 
-  %w(welcome about blog learn).each do |name|
+
+  %w(blog).each do |name|
+#  %w(welcome about blog learn).each do |name|
     match "/#{name}" => redirect("http://blog.chalkle.com/#{name}"), :as => name.to_sym
   end
 
   get '/partners' => 'partners#index'
-  get '/partners/pricing' => 'partners#pricing'
+  #get '/partners/pricing' => 'partners#pricing'
   get '/partners/team' => 'partners#team'
   get '/partners/say_hello' => 'partners#say_hello'
   post '/partners/said_hello', as: 'said_hello', controller: 'partners'
 
+  get 'resources', to: 'resources#index', as: :resources
+  get 'metrics', to: 'metrics#index', as: :metrics
+
+  get 'topics', to: 'categories#index', as: :categories
+  get 'categories', to: 'categories#index', as: :categories
+  get '/classes/:year/:month/:day', to: 'courses#index', as: :classes_in_week
+
+  #get '/regions/:region', to: 'courses#index', as: :region
+  #get '/topics/:topic', to: 'courses#index', as: :category
+  #get '/providers/:provider', to: 'courses#show', as: :channel_filter
+
+  #TODO: find an easier way of doing these channel routes!
+  get ':channel_url_name/admins', to: 'channels#admins', as: :channels_admins
+  get 'providers/:channel_id/admins', to: 'channels#admins', as: :channel_channel_admins
+  get ':channel_url_name/admins/new', to: 'channel_admins#new', as: :new_channel_admin
+  get ':channel_url_name/admin/:id', to: 'channel_admins#show', as: :channel_channel_admin
+  get ':channel_url_name/admin/:id', to: 'channel_admins#show', as: :channel_admin
+  
+  get 'providers/:channel_id/url_available/:url_name', to: 'channels#url_available', as: :channel_url_available
+  get ':channel_url_name/teachers', to: 'channels#teachers', as: :channels_teachers
+  get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
+  get ':channel_url_name/teachers/new', to: 'channel_teachers#new', as: :new_channel_teacher
+  get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_channel_teacher
+  get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_teacher
+  get ':channel_url_name/settings', to: 'channels#edit', as: :channel_settings
+  put ':channel_url_name/settings', to: 'channels#update', as: :channel_settings
+  get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
+  post ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
+  get ':channel_url_name/followers', to: 'channels#followers', as: :channel_followers
+    get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
+  get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :channel_course
+  get ':channel_url_name', to: 'channels#show', as: :channel
+
+  #TODO: will never be hit because of channel_course_series
+  # constraints(MainDomain) do
+  #   get ':country_code/:region_name', to: 'courses#index', constraints: {country_code: /[a-zA-Z]{2}/}
+  # end
+  match '*a', :to => 'application#not_found'
 end

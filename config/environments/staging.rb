@@ -52,7 +52,7 @@ Chalkle::Application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Enable threaded mode
-  # config.threadsafe!
+  # config.threadsafe! unless $rails_rake_task
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
@@ -65,16 +65,24 @@ Chalkle::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.action_mailer.default_url_options = { host: "staging.chalkle.com" }
+  config.action_controller.default_url_options = {
+  :host => "chalklestaging.cloudapp.net", :port => 80
+}
 
-  config.action_dispatch.tld_length = 2
 
-  ActionMailer::Base.delivery_method = :smtp
-	ActionMailer::Base.smtp_settings = {
-	  :user_name => 'chalkle-24b10ef389f7e02b',
-	  :password => '05a8b4efeb8d5955',
-	  :address => 'mailtrap.io',
-	  :port => '2525',
-	  :authentication => :plain,
-	}
+  config.action_mailer.default_url_options = { 
+    host: "chalklestaging.cloudapp.net", :port => 80
+  }
+
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  :user_name => '228272f807b6c93e7',
+  :password => 'c7695e1be3c830',
+  :address => 'mailtrap.io',
+  :domain => 'mailtrap.io',
+  :port => '2525',
+  :authentication => :cram_md5,
+  :enable_starttls_auto => true
+}
+
 end

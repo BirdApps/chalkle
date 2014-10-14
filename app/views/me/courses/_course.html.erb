@@ -1,0 +1,51 @@
+<% if params[:view] == "grid" %>
+  <%# grid view %>
+  <div class="course col-sm-6">
+    <%= link_to course.name, channel_course_path(course.channel.url_name,course.url_name,course.id) %>
+  </div>
+
+<% else %>
+  <%# list view %>
+  <article class="course row">
+    <div class="col-sm-2">
+      <div class="">
+        <a href="<%= course.path %>" title="<%= course.name %>">
+          <% if course.course_upload_image.present? %>
+            <div class="avatar avatar64 img" style="background-image: url(<%= course.course_upload_image.url(:large).html_safe %>);">
+          </div>
+          <% elsif course.category %>
+            <div class="avatar avatar64 img">
+              <%= category_image course, 150 %>
+            </div>
+          <% else %>
+            <%= image_tag(
+              "categories/grey.png",
+              alt: course.name,
+              title: course.name,
+              class: 'avatar avatar64'
+            ) %>
+          <% end %>
+        </a>
+      </div>
+    </div>
+    <div class="col-sm-10">
+      <header class="clearfix">
+        <div class="title-wrapper">
+          <h3 class="title">
+            <%= link_to course.name, channel_course_path(course.channel.url_name,course.url_name,course.id), { :class => "colour"+course.best_colour_num.to_s } %>
+          </h3>
+        </div>
+      </header>
+      <div class="details clearfix">
+        <div class="upper smaller">
+          <% if course.teacher  %>
+            <%= link_to 'Taught by '+course.teacher.name, channel_channel_teacher_path(course.channel.url_name,course.teacher) %>
+          <% else %>
+            No teacher assigned
+          <% end %>
+        </div>
+        
+      </div>
+    </div>
+  </article>
+<% end %>

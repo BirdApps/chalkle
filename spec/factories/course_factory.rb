@@ -25,5 +25,12 @@ FactoryGirl.define do
         FactoryGirl.create_list(:booking, evaluator.bookings_count, course: course)
       end
     end
+
+    factory :course_with_no_lessons do
+      after(:create) do |course|
+        course.lessons = []
+      end
+    end
+
   end
 end

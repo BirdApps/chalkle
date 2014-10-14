@@ -1,12 +1,41 @@
 begin
   namespace :chalkle do
 
-    desc "Load all payments from xero"
-    task "load_payments" => :environment do
-      EventLog.log('load_payments') do
-        Payment.load_all_from_xero
-        Payment.where(total: 0).each {|p| p.complete_record_download} #note this will only grab the first 60 or so
+    desc "I got 99 problems and cache invalidation is handled by this"
+    task "expire_caches" => :environment do 
+      EventLog.log('expire_caches') do
+        CacheManager.expire_cache!
       end
+    end
+
+    desc "Pending payments"
+    task "create_pending_payments" => :environment do 
+      EventLog.log('expire_caches') do
+        OutgoingPayment.create_pending_payments
+      end
+    end
+
+
+    desc "Migration tasks"
+    task "migrate_images" => :environment do 
+      # channel_photo 
+      #   -> "http://chalkle-production.s3.amazonaws.com/channel_photo/image/:id" 
+      #   channel_photo_uploader
+
+      channels = Channel.all.select{|c| c.logo.url =~ /amazonaws\.com.*/ }
+      channels.each_with_index do |channel, index|
+        channel.remote_logo_url = channel.logo.url.gsub("system/uploads/production/", "")
+        channel.save
+        puts "#{index+1}/#{channels.count} migrated image for: #{channel.id} - #{channel.name}\n" 
+      end
+
+      courses = Course.all.select{|c| c.course_upload_image.url =~ /amazonaws\.com.*/ }
+      courses.each_with_index do |course, index|
+        course.remote_course_upload_image_url = course.course_upload_image.url.gsub("system/uploads/production/", "")
+        course.save
+        puts "#{index+1}/#{courses.count} migrated image for: #{course.id} - #{course.name}\n" 
+      end
+
     end
 
     desc "Pull all meetup data"

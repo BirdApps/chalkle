@@ -1,0 +1,61 @@
+<div class="row dashboard">
+  <div class="col-xs-12 col-md-6">
+      <% if current_chalkler.bookings.any? %>
+      <div class="fancy-header">
+        <h3>Upcoming Bookings</h3>
+        <hr />
+      </div>
+      <div class="row col-xs-12">
+        <%= render current_chalkler.bookings.limit(5) %>  
+      </div>
+    <% end %>
+
+    <% if current_chalkler.channels.any? %>
+      <div class="fancy-header">
+        <h3>Following</h3>
+        <hr />
+      </div>
+      <div class="row col-xs-12">
+        <%= render current_chalkler.channels.order('name ASC') %>  
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-xs-12 col-md-6">
+    <% 
+    teaching = current_chalkler.channel_teachers.map(&:courses).flatten
+    if teaching.any?
+    %>
+      <div class="fancy-header">
+        <h3>Upcoming Classes</h3>
+        <hr />
+      </div>
+      <div class="row col-xs-12">
+        <%= render teaching %>  
+      </div>
+    <% end %>
+
+     <% if current_chalkler.channel_teachers.any? %>
+      <div class="fancy-header">
+        <h3>Your Teacher Profiles</h3>
+        <hr />
+      </div>
+      <div class="row col-xs-12">
+        <%= render current_chalkler.channel_teachers %>  
+      </div>
+    <% end %>
+
+   <% if current_user.channels_adminable.any? %>
+      <div class="fancy-header">
+        <h3>Your Providers</h3>
+        <hr />
+      </div>
+      <div class="row col-xs-12">
+        <%= render current_user.channels_adminable %>  
+      </div>
+    <% end %>
+
+   
+
+  </div>
+</div>

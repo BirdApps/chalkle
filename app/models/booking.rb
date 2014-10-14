@@ -1,74 +1,158 @@
 class Booking < ActiveRecord::Base
-  PAYMENT_METHODS = [Finance::PaymentMethods::Cash.new, Finance::PaymentMethods::Bank.new, Finance::PaymentMethods::CreditCard.new]
-  attr_accessible :course_id, :guests, :payment_method, :terms_and_conditions
-  attr_accessible :chalkler_id, :chalkler, :course_id, :course, :meetup_data, :status, :guests, :meetup_id, :cost_override, :paid, :payment_method, :visible, :reminder_last_sent_at, :as => :admin
+  PAYMENT_METHODS = Finance::payment_methods
+  attr_accessible *BASIC_ATTR = [
+    :course_id, :guests, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
+  ]
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
-  attr_accessor :terms_and_conditions
-  attr_accessor :enforce_terms_and_conditions
+  #booking statuses
+  STATUS_5 = "pending" #payment pending
+  STATUS_4 = "refund_complete"
+  STATUS_3 = "refund_pending"
+  STATUS_2 = "no"
+  STATUS_1 = "yes"
+  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4]
+  BOOKING_STATUSES = %w(yes no refund_pending refund_complete)
 
   belongs_to :course
   belongs_to :chalkler
+  belongs_to :booking
+  has_many :bookings, as: :guests_bookings
   has_one :payment
+  has_one :channel, through: :course
+  
+  belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
+  belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
 
-  validates_presence_of :course_id, :chalkler_id, :status
+  validates_presence_of :course_id, :status, :name, :chalkler
   validates_presence_of :payment_method, :unless => :free?
-  validates_acceptance_of :terms_and_conditions, :message => 'please read and agree', :if => :enforce_terms_and_conditions
-  validates_uniqueness_of :chalkler_id, scope: :course_id
 
-  scope :paid, where{ paid == true }
-  scope :unpaid, where{ paid == false }
-  scope :confirmed, where(status: 'yes')
-  scope :waitlist, where(status: 'waitlist')
-  scope :status_no, where(status: 'no')
-  scope :interested, where{ (status == 'yes') | (status == 'waitlist') | (status == 'no-show') }
+  scope :confirmed, where(status: STATUS_1)
+  scope :waitlist, where(status: STATUS_3)
+  scope :status_no, where(status: STATUS_2)
+  scope :interested, where{ (status == STATUS_1) | (status == STATUS_3) | (status == STATUS_4) }
   scope :billable, joins(:course).where{ (courses.cost > 0) & (status == 'yes') & ((chalkler_id != courses.teacher_id) | (guests > 0)) }
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
-  scope :upcoming, course_visible.joins(:course => :lessons).where( 'start_at > ?', Time.now )
+  scope :by_date, order(:created_at)
+  scope :by_date_desc, order('created_at DESC')
+  scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at')
+  scope :needs_reminder, course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
 
   before_validation :set_free_course_attributes
 
-  delegate :name, :start_at, :venue, :prerequisites, :teacher_id, :meetup_url, :cose, to: :course, prefix: true
-  delegate :free?, to: :course, allow_nil: true
+  after_save :expire_cache!
+  after_create :expire_cache!
 
-  BOOKING_STATUSES = %w(yes waitlist no pending no-show)
+  delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
 
-  def name
-    if course.present? && chalkler.present?
-      if course.meetup_id.present?
-        "#{course.name} (#{course.meetup_id}) - #{chalkler.name}"
-      else
-        "#{course.name} - #{chalkler.name}"
+
+  def self.paid
+   select{|booking| (booking.paid || 0) >= booking.cost}
+  end
+
+  def self.unpaid
+   select{|booking| (booking.paid || 0) < booking.cost}
+end
+
+
+
+  def self.needs_booking_completed_mailer
+    course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| b.course.end_at > Date.current && b.course.status=="Published"}
+  end
+  
+  def free?
+    cost == 0
+  end
+
+  def refund!
+    self.status = STATUS_4
+    save
+  end
+
+  def confirmed?
+    true if status == STATUS_1
+  end
+
+  def cancel!(reason = nil, override_refund = false)
+    if status == STATUS_1
+      self.status = 'no'
+      self.cancelled_reason = reason if reason
+      if refundable? || override_refund
+        if paid? && paid > 0
+          self.status = 'refund_pending'
+        end
       end
-    else
-      id
+      save
+      BookingMailer.booking_cancelled(self).deliver!
     end
   end
 
-  def meetup_data
-    data = read_attribute(:meetup_data)
-    if data.present?
-      rsvp = JSON.parse(data)
-      rsvp["rsvp"]
-    else
-      {}
+  def cancelled?
+    true if status == STATUS_1 || status == STATUS_5
+  end
+
+  def paid?
+    true if free? || paid == cost
+  end
+
+  def processing_gst_number
+    chalkle_gst_number
+  end
+
+  def remove_fees
+    self.chalkle_fee = self.processing_fee = self.chalkle_gst = self.teacher_fee = self.teacher_gst = self.provider_fee = self.processing_gst = self.provider_gst = 0
+  end
+
+  def apply_fees
+    self.chalkle_gst_number =  Finance::CHALKLE_GST_NUMBER
+    self.chalkle_fee = course.chalkle_fee false
+    self.chalkle_gst = course.chalkle_fee(true) - chalkle_fee
+    
+    self.processing_fee = course.processing_fee
+    self.processing_gst = course.processing_fee*3/23
+    #processing_fee inclusive of gst
+    self.processing_fee = self.processing_fee-self.processing_gst
+
+    if course.teacher_pay_type == Course.teacher_pay_types[1]
+      self.teacher_fee = course.teacher_cost
+      if course.teacher.tax_number.present?
+        self.teacher_gst = teacher_fee*3/23
+        self.teacher_gst_number = course.teacher.tax_number
+      else
+        self.teacher_gst = 0
+        self.teacher_gst_number = nil
+      end
     end
+
+    self.provider_fee = course.channel_fee
+    if channel.tax_number.present?
+      self.provider_gst_number = channel.tax_number
+      self.provider_gst = course.channel_fee*3/23
+      #processing_fee inclusive of gst
+      self.provider_fee = self.provider_fee-self.provider_gst
+    else
+      self.provider_gst_number = nil
+      self.provider_gst = 0
+    end
+    cost
   end
 
   def cost
-    return cost_override unless cost_override.nil?
-    seats = guests.present? ? guests + 1 : 1
-    course.cost.present? ? (course.cost * seats) : nil
+    (chalkle_fee||0)+(chalkle_gst||0)+(teacher_fee||0)+(teacher_gst||0)+(provider_fee||0)+(provider_gst||0)+(processing_fee||0)+(processing_gst||0)
   end
 
-  def answers
-    return if meetup_data.empty? || (meetup_data["answers"][0] == "" && meetup_data["answers"].length == 1)
-    meetup_data["answers"]
+  def cost_formatted
+    sprintf('%.2f', cost)
   end
 
   def refundable?
-    course_start_at > (Time.now + 3.days)
+    course_start_at > (Time.current + no_refund_period_in_days.days)
+  end
+
+  def no_refund_period_in_days
+    3
   end
 
   def teacher?
@@ -77,57 +161,19 @@ class Booking < ActiveRecord::Base
   end
 
   def cancelled?
-    (status == 'no') ? true : false
-  end
-
-  # Refactor all of this:
-
-  def emailable
-    status == 'yes' && (cost ? cost : 0) > 0 && !teacher? && (paid != true) && course_teacher_id.present?
-  end
-
-  def first_email_condition
-    self.emailable && self.course.class_not_done && !self.course.class_coming_up
-  end
-
-  def second_email_condition
-    self.emailable && self.course.class_coming_up && (self.chalkler.email.nil? || self.chalkler.email == "")
-  end
-
-  def third_email_condition
-    self.status=='waitlist' && (self.cost.present? ? self.cost : 0) > 0 && !self.teacher? && (self.paid!=true) && self.course.class_coming_up
-  end
-
-  def reminder_after_class_condition
-    self.emailable && !self.course.class_not_done
-  end
-
-  def no_show_email_condition
-    self.status=='no-show' && !self.teacher? && (self.paid!=true) && !self.course.class_not_done
-  end
-
-  def reminder_email_choice
-    if first_email_condition
-      return 1
-    elsif second_email_condition
-      return 2
-    elsif third_email_condition
-      return 3
-    elsif reminder_after_class_condition
-      return 4
-    elsif no_show_email_condition
-      return "no-show"
-    else
-      return false
-    end
+    (status != 'yes') ? true : false
   end
 
   private
-
-  def set_free_course_attributes
-    if course && free?
-      self.payment_method = 'free'
-      self.paid = true
+    def set_free_course_attributes
+      if course && free?
+        self.payment_method = 'free'
+      elsif course
+        self.payment_method = 'credit_card'
+      end
     end
-  end
+
+    def expire_cache!
+      course.expire_cache!
+    end
 end

@@ -47,7 +47,7 @@ $link-color-hover:        darken($link-color, 15%) !default;
 
 // Typography
 // -------------------------
-$sans-font-family:        "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$sans-font-family:        "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $serif-font-family:       Georgia, "Times New Roman", Times, serif !default;
 $mono-font-family:        Monaco, Menlo, Consolas, "Courier New", monospace !default;
 
@@ -69,16 +69,15 @@ $btn-danger-bg:                     #ee5f5b !default;
 
 // Custom chalkle variables (merge this in above where possible)
 
-$font_family_chalk: 'MrChalk', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-$font_family_normal: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$font_family_normal: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 $pink: #cd4063;
 $blackboard: #2d2c29;
 
 $category1: #DF5B65;
-$category2: #8FB653;
-$category3: #FF754F;
-$category4: #9972AA;
+$category2: #8FB53F;
+$category3: #DE5C63;
+$category4: #F5BA56;
 $category5: #17ABAB;
 $categories: ("category1" $category1, "category2" $category2, "category3" $category3, "category4" $category4, "category5" $category5);
 

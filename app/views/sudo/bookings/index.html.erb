@@ -1,0 +1,27 @@
+<% content_for :header do %>
+<%= javascript_include_tag "sudo" %>
+<% end %>
+
+
+
+<%= render 'sub_menu' %>
+<div class="row even hidden-xs">
+   <div class="col-sm-1">
+    Date
+  </div>
+  <div class="col-sm-1">
+   Booking
+  </div>
+  <div class="col-sm-1">
+    Cost
+  </div>
+  <div class="col-sm-4">
+    Chalkler
+  </div>
+  <div class="col-sm-5">
+  </div>
+</div>
+<%= render @bookings %>
+
+
+<%= high_chart 'signups', @bookings_chart %>

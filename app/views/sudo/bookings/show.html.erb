@@ -1,0 +1,46 @@
+<%= render 'sub_menu' %>
+<div>
+  <%= "Created: "+day_ordinal_month(@booking.created_at,true,true) %>
+</div>
+<div>
+  <%= "Updated: "+day_ordinal_month(@booking.updated_at,true,true) %>
+</div>
+<div>
+  <%= "Paid: $"+@booking.paid.to_s %>
+</div>
+<div>
+  <br />
+  <%= link_to "Class:"+@booking.course.name, @booking.course.path, class: 'btn btn-primary' %>
+</div>
+<div>
+  <br />
+  <% if @booking.chalkler  %>
+    <%= link_to("Learner:"+@booking.chalkler.name, chalkler_path(@booking.chalkler.id), class: 'btn btn-primary') %>
+  <% else %>
+    <button disabled="disabled" class="btn btn-danger">! No Learner</button>
+  <% end %>
+</div>
+<div>
+  <br />
+  <% if @booking.payment %>
+      <%= link_to 'Payment', sudo_payment_path(@booking.payment.id), class: 'btn btn-default' %>
+    <% else %>
+      <button disabled="disabled" class="btn btn-danger">! No Payment</button>
+    <% end %>
+</div>
+<div>
+  <br />
+  <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+          Status: <%= @booking.status.to_s %>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+          <% Booking::BOOKING_STATUSES.each do |status| %>
+            <li>
+              <%= link_to 'Mark as: '+status, set_status_sudo_booking_path(@booking.id, status: status) %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+</div>

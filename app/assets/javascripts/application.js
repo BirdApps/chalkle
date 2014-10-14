@@ -27,4 +27,52 @@
 //= require month_calendar_view
 //= require bootstrap-datepicker/core
 //= require plugins/bootstrap-timepicker.min
+//= require_tree ./inputs
+//= require_tree ./v2
 
+
+$(function() {
+  function text_to_fit(){
+    if($('.text-to-fit').length > 0){
+      var text = $('.text-to-fit');
+      var limit = $('.text-to-fit').parent().width();
+      var fontSize = parseInt(text.css('font-size'));
+      do {
+          fontSize--;
+          if(fontSize < 15){
+            break;
+          }
+          text.css('font-size', fontSize.toString() + 'px');
+      } while (text.width() >= limit);
+       do {
+          fontSize++;
+          if(fontSize > 50){
+            break;
+          }
+          text.css('font-size', fontSize.toString() + 'px');
+      } while (text.width() <= limit-10);
+
+
+      var vert_limit = $('.text-to-fit').parent().height();
+      do {
+          fontSize--;
+          if(fontSize < 15){
+            break;
+          }
+          text.css('font-size', fontSize.toString() + 'px');
+      } while ($('.text-to-fit').parent().height() > 108);
+    }
+  }
+
+  text_to_fit();
+  window.addEventListener("resize", text_to_fit);
+});
+
+$(function(){
+  $('.facebook-share').click(function(){
+    FB.ui({
+        method: 'share',
+        href: window.location.href,
+      }, function(response){});
+  });
+});

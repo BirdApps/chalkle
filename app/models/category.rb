@@ -12,6 +12,11 @@ class Category < ActiveRecord::Base
   scope :alphabetical, order(:name)
 
   validates_presence_of :name
+  validates_uniqueness_of :name
+
+  def hero
+    nil
+  end
 
   #TODO: Move into a presenter class like Draper sometime
   #FIXME: Data should be enforced in some convention so lowercase conversion is not required here (probably all lowercase)
@@ -23,6 +28,17 @@ class Category < ActiveRecord::Base
         results << [indent + child.name, child.id]
       end
     end
+    results
+  end
+
+  def self.ordered
+    results = []
+      primary.alphabetical.all.each do |category|
+        results << category
+        category.children.each do |child|
+          results << child
+        end
+      end
     results
   end
 
@@ -46,5 +62,11 @@ class Category < ActiveRecord::Base
 
     def parent_best_colour_num
       parent.best_colour_num if parent
+    end
+
+    before_save :set_url_name
+    before_create :set_url_name
+    def set_url_name
+      self.url_name = name.parameterize
     end
 end
