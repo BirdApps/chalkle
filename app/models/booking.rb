@@ -53,7 +53,7 @@ class Booking < ActiveRecord::Base
   end
 
   def self.unpaid
-   select{|booking| (booking.paid || 0) < booking.cost)
+   select{|booking| (booking.paid || 0) < booking.cost}
 end
 
 

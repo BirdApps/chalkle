@@ -6,28 +6,22 @@ class Sudo::BookingsController < Sudo::BaseController
 
   def index
     @bookings = Booking.by_date_desc.limit(100)
-
-    @bookings_chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "Weekly Bookings")
-      f.xAxis(:categories => Array.new(30) {|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
-      f.series(:name => "New Bookings", :yAxis => 0, :data => Array.new(30) {|i|
-        Chalkler.where('created_at BETWEEN ? AND ?', (i+1).weeks.ago, i.weeks.ago ).count
-      }.reverse )
-
-      f.chart({:defaultSeriesType=>"area"})
-    end
-
+    bookings_chart_with @bookings
   end
 
   def pending_refunds
     @page_title = "Pending Refunds"
     @bookings = Booking.where(status: 'refund_pending')
+    bookings_chart_with @bookings
+
     render 'index'
   end
 
   def completed_refunds
     @page_title = "Completed Refunds"
     @bookings = Booking.where(status: 'refund_complete')
+    bookings_chart_with @bookings
+
     render 'index'
   end
 
@@ -37,6 +31,7 @@ class Sudo::BookingsController < Sudo::BaseController
     else
       flash[:notice] = "Booking #{@booking.id} could not be marked as refunded"
     end
+
     redirect_to pending_refunds_sudo_bookings_path
   end
 
@@ -50,6 +45,21 @@ class Sudo::BookingsController < Sudo::BaseController
   end
 
   private
+
+  def bookings_chart_with(bookings)
+    @bookings_chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(:text => "Weekly Bookings")
+      f.xAxis(:categories => Array.new(30) {|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
+      f.series(:name => "Bookings", :yAxis => 0, :data => Array.new(30) {|i|
+        bookings.select{|b| b.created_at > (i+1).weeks.ago && b.created_at < i.weeks.ago }.count
+      }.reverse )
+
+      f.chart({:defaultSeriesType=>"area"})
+    end
+  end
+
+
+
     def load_booking
       @booking = Booking.find_by_id params[:id]
     end
