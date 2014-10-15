@@ -312,7 +312,7 @@ class Course < ActiveRecord::Base
     if cost.present?
       cost * channel_plan.processing_fee_percent
     else
-      0 * channel_plan.processing_fee_percent
+      0
     end
   end
 
