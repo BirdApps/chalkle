@@ -452,7 +452,7 @@ class Course < ActiveRecord::Base
 
   def bookings_for(chalkler)
     if bookings.any?
-      chalkler.bookings & bookings
+      chalkler.bookings.visible & bookings
     else
       nil
     end

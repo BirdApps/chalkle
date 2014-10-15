@@ -8,7 +8,7 @@ class BookingsController < ApplicationController
     @page_subtitle = "Bookings for"
     @course = Course.find params[:course_id]
     raise "not authorized" unless CoursePolicy.new(current_user, @course).admin?
-    @bookings = @course.bookings if @course.present?
+    @bookings = @course.bookings.visible.order(:status) if @course.present?
   end
 
   def my_bookings
@@ -17,7 +17,7 @@ class BookingsController < ApplicationController
   end
 
   def new
-    flash[:notice] = "Removed bookings with pending payments" if(delete_any_unpaid_credit_card_booking.present?)
+    delete_any_unpaid_credit_card_booking
     @channel = Course.find(params[:course_id]).channel #Find channel for hero
     @booking = Booking.new
     @booking.name = current_user.name unless @course.bookings_for(current_user).present?
@@ -47,6 +47,7 @@ class BookingsController < ApplicationController
         redirect_to @booking.course.path and return
       else
         @booking.update_attribute(:status, 'pending')
+        @booking.update_attribute(:visible, false)
         wrapper = SwipeWrapper.new
         identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
                                                       amount: @booking.cost,

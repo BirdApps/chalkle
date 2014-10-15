@@ -104,7 +104,7 @@ class CoursesController < ApplicationController
   end
 
   def bookings
-    authorize @course
+    @bookings = @course.bookings.visible
   end
 
   def calculate_cost

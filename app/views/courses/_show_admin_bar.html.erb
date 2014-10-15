@@ -3,8 +3,7 @@
       <div class="col-xs-12 col-sm-10 col-sm-offset-1">
         <% if @course.status == 'Published' %>
           <div class="alert alert-warning clearfix text-right" role="alert"> 
-            
-            <% if @course.bookings.empty?  %>
+            <% if @course.bookings.confirmed.empty?  %>
               <span class="pad-top inline pull-left">   
                 <strong><%= @course.status+'!' %></strong> 
                 You can unpublish while there are no bookings
@@ -67,10 +66,10 @@
         <% end %>
       </div>
     </div>
-      <% if @course.bookings? %>
+      <% if @course.bookings.confirmed.present? %>
         <div class="row">
           <div class="text-right col-xs-12 col-sm-10 col-sm-offset-1">
-            This <%= @course.type %> has <strong><%= @course.bookings.count %></strong> bookings
+            This <%= @course.type %> has <strong><%= @course.bookings.confirmed.count %></strong> bookings
             <br />
             <strong>
               <%= link_to 'more details', course_bookings_path(@course.id)  %>
