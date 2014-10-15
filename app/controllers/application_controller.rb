@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
+  rescue_from Pundit::NotDefinedError, with: :not_found
 
   layout 'layouts/application'
   before_filter :load_region
