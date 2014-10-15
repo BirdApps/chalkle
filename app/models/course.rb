@@ -158,7 +158,7 @@ class Course < ActiveRecord::Base
     can_be = false
     can_be = true if min_attendee > bookings.confirmed.count
     can_be = true if start_at > DateTime.current.advance(hours: 24)
-    can_be = true if !bookings?
+    can_be = true if bookings.confirmed.blank?
     can_be
   end
 

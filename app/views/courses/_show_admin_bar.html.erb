@@ -16,22 +16,21 @@
               
               <% end #form %>
               
-               <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">
+              <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">
                   Unpublish
-                </button>
-            
+              </button>
+              
+              <% if @course.can_be_cancelled? %>
+                <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
+              <% else %>
+                <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
+              <% end %>
+
             <% else #elsif no? bookings%>
-            
               <span class="inline pad-top pull-left">   
-                <strong><%= pluralize(@course.bookings.confirmed.count,'booking','bookings') %></strong> confirmed
+                <strong><%= pluralize(@course.bookings.confirmed.count,'booking','bookings') %></strong> confirmed 
               </span>
-            
-            <% end %>
-            
-            <% if @course.can_be_cancelled? %>
-              <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
-            <% else %>
-              <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
+              <%= link_to 'View Bookings', course_bookings_path(@course.id), class: 'btn btn-default'  %>
             <% end %>
           </div>
         
@@ -66,16 +65,4 @@
         <% end %>
       </div>
     </div>
-      <% if @course.bookings.confirmed.present? %>
-        <div class="row">
-          <div class="text-right col-xs-12 col-sm-10 col-sm-offset-1">
-            This <%= @course.type %> has <strong><%= @course.bookings.confirmed.count %></strong> bookings
-            <br />
-            <strong>
-              <%= link_to 'more details', course_bookings_path(@course.id)  %>
-            </strong>
-            <hr />
-          </div>
-        </div>
-      <% end %>
   <% end %>

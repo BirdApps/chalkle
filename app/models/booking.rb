@@ -151,6 +151,24 @@ end
     sprintf('%.2f', paid)
   end
 
+
+  def status_formatted
+    case status 
+    when STATUS_1
+      'Confirmed'
+    when STATUS_2
+      'Cancelled'
+    when STATUS_3
+      'Cancelled - Pending Refund'
+    when STATUS_4
+      'Cancelled & Refunded'
+    when STATUS_5
+      'Pending Payment'
+    else
+       'Unknown status'
+    end
+  end
+
   def refundable?
     course_start_at > (Time.current + no_refund_period_in_days.days)
   end
