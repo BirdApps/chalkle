@@ -117,7 +117,7 @@ end
 
     if course.teacher_pay_type == Course.teacher_pay_types[1]
       self.teacher_fee = course.teacher_cost
-      if course.teacher.tax_number.present?
+      if course.teacher.present? && course.teacher.tax_number.present?
         self.teacher_gst = teacher_fee*3/23
         self.teacher_gst_number = course.teacher.tax_number
       else

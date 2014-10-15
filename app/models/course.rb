@@ -294,7 +294,7 @@ class Course < ActiveRecord::Base
   end
 
   def calc_channel_fee
-    cost - variable_costs - processing_fee - chalkle_fee
+    (cost||0) - (variable_costs||0) - (processing_fee||0) - (chalkle_fee||0)
   end
 
   def chalkle_fee(incl_tax = true)
