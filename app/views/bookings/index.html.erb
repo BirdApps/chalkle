@@ -27,7 +27,7 @@
         <% unless booking.confirmed? %>
           <span class="text text-danger"><%= booking.status %></span>
         <% else %>
-          $<%= booking.cost_formatted %>
+          $ $<%= booking.paid_formatted %>/<%= booking.cost_formatted %>
         <% end %>
       </span> 
     </div>

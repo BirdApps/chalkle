@@ -6,9 +6,12 @@ class BookingsController < ApplicationController
 
   def index
     @page_subtitle = "Bookings for"
-    @course = Course.find params[:course_id]
-    raise "not authorized" unless CoursePolicy.new(current_user, @course).admin?
-    @bookings = @course.bookings.visible.order(:status) if @course.present?
+    @course = Course.find_by_id params[:course_id]
+    return redirect_to not_found if @course.nil?
+    if @course
+      return redirect_to permission_denied unless CoursePolicy.new(current_user, @course).admin?
+      @bookings = @course.bookings.visible.order(:status) if @course.present?
+    end
   end
 
   def my_bookings
@@ -139,7 +142,7 @@ class BookingsController < ApplicationController
 
   def load_booking
     @booking = current_user.bookings.find(params[:booking_id] || params[:id]).decorate
-    return not_found if !@booking
+    redirect_to not_found and return if !@booking
   end
 
   def redirect_on_paid

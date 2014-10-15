@@ -147,6 +147,10 @@ end
     sprintf('%.2f', cost)
   end
 
+  def paid_formatted
+    sprintf('%.2f', paid)
+  end
+
   def refundable?
     course_start_at > (Time.current + no_refund_period_in_days.days)
   end

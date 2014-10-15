@@ -520,7 +520,7 @@ class Course < ActiveRecord::Base
   end
 
   def lesson_in_progress
-    @lesson_in_progress ||= lessons.map {|lesson| lesson.between_start_and_end ? lesson : nil  }.compact.first if status == STATUS_1
+    @lesson_in_progress ||= lessons.map {|lesson| lesson.between_start_and_end ? lesson : nil  }.compact.first if status == STATUS_1 && bookings.confirmed.count > 0
   end
 
   def between_start_and_end
