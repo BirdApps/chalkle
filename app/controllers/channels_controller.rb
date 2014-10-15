@@ -51,13 +51,17 @@ class ChannelsController < ApplicationController
     @channel = Channel.find params[:channel_id]
     
     if current_user.super?
-      success = @channel.update_attributes(channel_params,as: :admin)
+      if @channel.update_attributes(channel_params,as: :admin)
+        success = @channel.save
+      end
     else
       if params[:channel_agreeterms] == 'on'
-        success = @channel.update_attributes channel_params
+        if @channel.update_attributes channel_params
+          success = @channel.save
+        end
       end
     end
-
+    
     if success
       redirect_to channel_settings_path @channel.url_name, notice: 'Settings saved'
     else
