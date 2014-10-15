@@ -7,7 +7,7 @@
     Name
   </div>
   <div class="col-sm-4">
-    Amount Paid
+    Paid
   </div>
   <div class="col-sm-4">
     Note to teacher
@@ -27,7 +27,7 @@
         <% unless booking.confirmed? %>
           <span class="text text-danger"><%= booking.status %></span>
         <% else %>
-          $ $<%= booking.paid_formatted %>/<%= booking.cost_formatted %>
+          $<%= booking.paid_formatted %>
         <% end %>
       </span> 
     </div>

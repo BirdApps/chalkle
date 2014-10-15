@@ -7,10 +7,10 @@ class BookingsController < ApplicationController
   def index
     @page_subtitle = "Bookings for"
     @course = Course.find_by_id params[:course_id]
-    return redirect_to not_found if @course.nil?
-    if @course
-      return redirect_to permission_denied unless CoursePolicy.new(current_user, @course).admin?
+    if policy(@course).admin?
       @bookings = @course.bookings.visible.order(:status) if @course.present?
+    else
+      @bookings = []
     end
   end
 
@@ -38,7 +38,7 @@ class BookingsController < ApplicationController
       @booking.remove_fees
     end
     @booking.paid = 0
-    unless current_user.bookings.where(course_id: @booking.course.id, name: @booking.name ).empty?
+    unless current_user.bookings.confirmed.where(course_id: @booking.course.id, name: @booking.name ).empty?
       redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course' and return
     end
 
