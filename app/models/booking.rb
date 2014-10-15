@@ -163,7 +163,7 @@ end
     when STATUS_4
       'Cancelled & Refunded'
     when STATUS_5
-      'Pending Payment'
+      'Payment was not completed'
     else
        'Unknown status'
     end
