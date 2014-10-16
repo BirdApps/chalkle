@@ -82,15 +82,15 @@ class BookingsController < ApplicationController
         payment.swipe_token= params[:token]
         payment.date = DateTime.current
         payment.visible = true
-        payment.save
+        pay_result = payment.save
         if payment.total >=@booking.cost
           @booking.status = 'yes'
-          @booking.save
+          book_result = @booking.save
         end
       end
-      redirect_to root_url
+      render json: { pay: pay_result, book: book_result }
     else
-      redirect_to root_url, notice: "Request denied to #{request.ip}"
+      render json: { message: request.ip }
     end
   end
 
