@@ -45,15 +45,15 @@
       </div>
     <% end %>
 
-   <% if current_user.channels_adminable.any? %>
-      <div class="fancy-header clearfix center">
-        <h3>Your Providers</h3>
-        <hr />
-        <%= link_to "Create New Provider", new_channel_path, class: 'btn btn-primary' %>
-      </div>
-      <div class="row col-xs-12">
-        <%= render current_user.channels_adminable %>  
-      </div>
-    <% end %>
+ 
+    <div class="fancy-header clearfix center">
+      <h3>Your Providers</h3>
+      <hr />
+      <%= link_to "Create New Provider", new_channel_path, class: 'btn btn-primary' %>
+    </div>
+    <div class="row col-xs-12">
+      <%= render current_user.channels_adminable %>  
+    </div>
+
   </div>
 </div>

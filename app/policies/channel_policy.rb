@@ -13,6 +13,14 @@ class ChannelPolicy < ApplicationPolicy
     admin?
   end
 
+  def new?
+    create?
+  end
+
+  def create?
+    @user.authenticated?
+  end
+
   def metrics?
     admin?
   end
