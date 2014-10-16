@@ -90,7 +90,7 @@ class BookingsController < ApplicationController
       end
       redirect_to root_url
     else
-      not_found
+      redirect_to root_url, notice: "Request denied to #{request.ip}"
     end
   end
 
