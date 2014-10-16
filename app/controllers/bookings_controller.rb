@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_filter :authenticate_chalkler!
+  before_filter :authenticate_chalkler!, except: [:lpn]
   before_filter :redirect_on_paid, :only => [:edit, :update]
   before_filter :class_available, :only => [:edit, :update, :new]
   before_filter :load_booking, :only => [:payment_callback, :show, :edit, :update, :cancel, :confirm_cancel]
@@ -66,17 +66,33 @@ class BookingsController < ApplicationController
     end
   end
 
+  def lpn
+    #only accept connections from swipehq
+    if request.ip == '202.89.40.58'
+      @booking = Booking.find_by_id params[:identifier_id]
+      if @booking
+        payment = @booking.payment.present? ? @booking.payment : @booking.build_payment
+        payment.swipe_transaction_id = params[:transaction_id]
+        payment.total = params[:amount]
+        payment.swipe_name_on_card= params[:name_on_card]
+        payment.swipe_customer_email = params[:customer_email]
+        payment.swipe_currency = params[:currency]
+        payment.swipe_td_user_data = params[:td_user_data]
+        payment.swipe_token= params[:token]
+        payment.date = DateTime.current
+        payment.visible = true
+        payment.save
+      end
+      redirect_to root_url
+    else
+      not_found
+    end
+  end
+
   def payment_callback
-    payment_successful = (params[:result] =~ /accepted/i) && !(params[:result] =~ /test/i)
+    payment_successful = (params[:result] =~ /accepted/i) || (params[:result] =~ /test/i)
     if payment_successful
-      #should I set it to yes?
-      payment = @booking.build_payment
-      payment.booking = @booking
-      payment.total = @booking.apply_fees
-      payment.reconciled = true
-      payment.save
-      @booking.status = 'yes'
-      @booking.paid = payment.total
+      @booking.status = 'pending'
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
