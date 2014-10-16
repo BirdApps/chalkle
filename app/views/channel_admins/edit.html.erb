@@ -1,0 +1,41 @@
+<div class="hidden-xs col-sm-2">
+</div>
+<div class="new_form_wrapper col-xs-12 col-sm-8">
+  <%= bootstrap_form_for(@channel_admin, wrapper: :simple_bootstrap3, html: { method:  :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+    <div class="fancy-header">
+      <h3>Details </h3>
+      <hr />
+    </div>
+ 
+   <% if @channel_admin.chalkler.present? %>
+      <p class="center light">
+        Details are read only as it is set on the teacher's <%= link_to 'Chalkle account', chalkler_path(@channel_admin.chalkler.id) %>
+      </p>
+      <%= f.input :name, label: "Name", input_html: { readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
+      <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
+
+    <% else %>
+      <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
+      
+      <label class="vertical-borders exists-success" style="display:none">
+        Great, that person is already registered on Chalkle. <br /> We'll add them as a teacher for the provider <%= @channel.name %>
+      </label>
+
+      <label class="vertical-borders exists-warning" style="display:none">
+        Even though that person isn't on Chalkle yet, they can still be a teacher - you can make classes for them and they'll receive reminders and notices via email.<br /><br />At any point in time they can sign up to Chalkle to take advantage of the website's features. We'll email them to let them know.
+      </label>
+      
+      <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="center col-md-4">
+          <input class="btn btn-primary col-xs-12" value="Save" type="submit" />  
+        </div>
+        <div class="col-md-4">
+        </div>
+      </div>
+    <% end %>
+  <% end  %>
+</div>
+<div class="hidden-xs col-sm-2">
+</div>

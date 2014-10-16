@@ -1,5 +1,5 @@
 class ChannelAdmin < ActiveRecord::Base
-  attr_accessible :chalkler, :chalkler_id, :channel, :channel_id, :admin_user, :admin_user_id, :pseudo_chalkler_email
+  attr_accessible :chalkler, :chalkler_id, :channel, :channel_id, :admin_user, :admin_user_id, :email
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 

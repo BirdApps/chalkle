@@ -26,4 +26,8 @@ $(function(){
   $('#channel_teacher_email').change(function(){
     check_if_chalkler($(this).val());
   });
+
+   $('#channel_admin_email').change(function(){
+    check_if_chalkler($(this).val());
+  });
 });
