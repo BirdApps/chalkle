@@ -1,4 +1,5 @@
 class BookingsController < ApplicationController
+  include HTTParty
   before_filter :authenticate_chalkler!, except: [:lpn]
   before_filter :redirect_on_paid, :only => [:edit, :update]
   before_filter :class_available, :only => [:edit, :update, :new]
@@ -68,30 +69,29 @@ class BookingsController < ApplicationController
   end
 
   def lpn
-    #only accept connections from swipehq
-    if request.ip == '202.89.40.58'
-      @booking = Booking.find_by_id params[:td_user_data]
-      if @booking
-        payment = @booking.payment.present? ? @booking.payment : @booking.build_payment
-        payment.swipe_transaction_id = params[:transaction_id]
-        payment.total = params[:amount]
-        payment.swipe_name_on_card= params[:name_on_card]
-        payment.swipe_customer_email = params[:customer_email]
-        payment.swipe_currency = params[:currency]
-        payment.swipe_identifier_id = params[:identifier_id]
-        payment.swipe_token= params[:token]
-        payment.date = DateTime.current
-        payment.visible = true
+    @booking = Booking.find_by_id params[:td_user_data]
+    if @booking
+      payment = @booking.payment.present? ? @booking.payment : @booking.build_payment
+      payment.swipe_transaction_id = params[:transaction_id]
+      payment.total = params[:amount]
+      payment.swipe_name_on_card= params[:name_on_card]
+      payment.swipe_customer_email = params[:customer_email]
+      payment.swipe_currency = params[:currency]
+      payment.swipe_identifier_id = params[:identifier_id]
+      payment.swipe_token= params[:token]
+      payment.date = DateTime.current
+      payment.visible = true
+      verify = HTTParty.get("https://api.swipehq.com/verifyTransaction.php?api_key=#{ENV["SWIPE_API_KEY"]}&merchant_id=#{ENV["SWIPE_MERCHANT_ID"]}&transaction_id=#{payment.swipe_transaction_id}")
+      verify = JSON.parse verify
+      if verify['data']['transaction_approved'] == "yes"   
         pay_result = payment.save
-        if payment.total >=@booking.cost
+        if payment.total >= @booking.cost
           @booking.status = 'yes'
           book_result = @booking.save
         end
       end
-      render json: { pay: pay_result, book: book_result }
-    else
-      render json: { message: request.ip }
     end
+    render json: { pay: pay_result, book: book_result }
   end
 
   def payment_callback

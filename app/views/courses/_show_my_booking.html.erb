@@ -33,7 +33,7 @@
           <br />
           <%= link_to "Cancel booking", cancel_course_booking_path(booking.course.id, booking.id), class: 'text-danger small light' %>
           <% else %>
-            <span class="small light text-warning"><%= @booking.status_formatted %></span>
+            <span class="small light text-warning"><%= booking.status_formatted %></span>
           <% end %>
           <br />
           <div class="clearfix">
