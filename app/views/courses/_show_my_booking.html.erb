@@ -32,14 +32,8 @@
           <% end %>
           <br />
           <%= link_to "Cancel booking", cancel_course_booking_path(booking.course.id, booking.id), class: 'text-danger small light' %>
-          <% elsif booking.status == 'no' %>
-            <span class="small light text-danger">Cancelled</span>
-          <% elsif booking.status == 'refund_pending' %>
-            <span class="small light text-info">Pending Refund</span>
-          <% elsif booking.status == 'refund_complete' %>
-            <span class="small light text-success">Refund Complete</span>
-           <% elsif booking.status == 'pending' %>
-            <span class="small light text-warning">Pending Payment</span>
+          <% else %>
+            <span class="small light text-warning"><%= @booking.status_formatted %></span>
           <% end %>
           <br />
           <div class="clearfix">
