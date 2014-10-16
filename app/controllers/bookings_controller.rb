@@ -54,7 +54,7 @@ class BookingsController < ApplicationController
         wrapper = SwipeWrapper.new
         identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
                                                       amount: @booking.cost,
-                                                      return_url:course_booking_payment_callback_url(@booking.course_id, @booking.id),
+                                                      return_url: course_booking_payment_callback_url(@booking.course_id, @booking.id),
                                                       description: @booking.name)
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
@@ -72,11 +72,11 @@ class BookingsController < ApplicationController
       #should I set it to yes?
       payment = @booking.build_payment
       payment.booking = @booking
-      payment.total = @booking.course.cost
+      payment.total = @booking.apply_fees
       payment.reconciled = true
       payment.save
       @booking.status = 'yes'
-      @booking.paid = true
+      @booking.paid = payment.total
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"

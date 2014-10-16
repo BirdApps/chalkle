@@ -9,7 +9,7 @@ class Payment < ActiveRecord::Base
 
   serialize :xero_data
 
-  validates_uniqueness_of :xero_id
+  validates_uniqueness_of :xero_id, allow_nil: true
   validates_numericality_of :total, allow_nil: false
 
   scope :unreconciled, where("reconciled IS NOT true")
