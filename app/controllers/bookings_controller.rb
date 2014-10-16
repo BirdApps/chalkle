@@ -37,7 +37,7 @@ class BookingsController < ApplicationController
     if policy(@booking.course).admin? && params[:remove_fees] == '1'
       @booking.remove_fees
     end
-    @booking.paid = 0
+
     unless current_user.bookings.confirmed.where(course_id: @booking.course.id, name: @booking.name ).empty?
       redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course' and return
     end
@@ -52,10 +52,11 @@ class BookingsController < ApplicationController
         @booking.update_attribute(:status, 'pending')
         @booking.update_attribute(:visible, false)
         wrapper = SwipeWrapper.new
-        identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
-                                                      amount: @booking.cost,
-                                                      return_url: course_booking_payment_callback_url(@booking.course_id, @booking.id),
-                                                      description: @booking.name)
+        identifier = wrapper.create_tx_identifier_for(
+                            booking_id: @booking.id,
+                            amount: @booking.cost,
+                            return_url: course_booking_payment_callback_url(@booking.course_id, @booking.id),
+                            description: @booking.name)
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
     else
@@ -69,7 +70,7 @@ class BookingsController < ApplicationController
   def lpn
     #only accept connections from swipehq
     if request.ip == '202.89.40.58'
-      @booking = Booking.find_by_id params[:identifier_id]
+      @booking = Booking.find_by_id params[:td_user_data]
       if @booking
         payment = @booking.payment.present? ? @booking.payment : @booking.build_payment
         payment.swipe_transaction_id = params[:transaction_id]
@@ -77,15 +78,19 @@ class BookingsController < ApplicationController
         payment.swipe_name_on_card= params[:name_on_card]
         payment.swipe_customer_email = params[:customer_email]
         payment.swipe_currency = params[:currency]
-        payment.swipe_td_user_data = params[:td_user_data]
+        payment.swipe_identifier_id = params[:identifier_id]
         payment.swipe_token= params[:token]
         payment.date = DateTime.current
         payment.visible = true
         payment.save
+        if payment.total >=@booking.cost
+          @booking.status = 'yes'
+          @booking.save
+        end
       end
       redirect_to root_url
     else
-      redirect_to root_url, notice: "not authorized to access from #{request.ip}"
+      not_found
     end
   end
 

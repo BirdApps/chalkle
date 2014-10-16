@@ -3,7 +3,7 @@ class Booking < ActiveRecord::Base
   attr_accessible *BASIC_ATTR = [
     :course_id, :guests, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
   ]
-  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   #booking statuses
   STATUS_5 = "pending" #payment pending
@@ -47,6 +47,9 @@ class Booking < ActiveRecord::Base
 
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
 
+  def paid
+    self.payment.present? ? payment.total : 0
+  end
 
   def self.paid
    select{|booking| (booking.paid || 0) >= booking.cost}

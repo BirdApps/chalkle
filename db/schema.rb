@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141016040203) do
+ActiveRecord::Schema.define(:version => 20141016054518) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -52,13 +52,12 @@ ActiveRecord::Schema.define(:version => 20141016040203) do
     t.integer  "meetup_id"
     t.integer  "course_id"
     t.integer  "chalkler_id"
-    t.string   "status",                                                      :default => "yes"
-    t.integer  "guests",                                                      :default => 0
+    t.string   "status",                        :default => "yes"
+    t.integer  "guests",                        :default => 0
     t.text     "meetup_data"
-    t.datetime "created_at",                                                                     :null => false
-    t.datetime "updated_at",                                                                     :null => false
-    t.boolean  "visible",                                                     :default => true
-    t.decimal  "paid",                          :precision => 8, :scale => 2
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+    t.boolean  "visible",                       :default => true
     t.string   "payment_method"
     t.datetime "reminder_last_sent_at"
     t.decimal  "chalkle_fee"
@@ -75,8 +74,8 @@ ActiveRecord::Schema.define(:version => 20141016040203) do
     t.string   "note_to_teacher"
     t.string   "name"
     t.string   "cancelled_reason"
-    t.boolean  "reminder_mailer_sent",                                        :default => false
-    t.boolean  "booking_completed_mailer_sent",                               :default => false
+    t.boolean  "reminder_mailer_sent",          :default => false
+    t.boolean  "booking_completed_mailer_sent", :default => false
     t.integer  "teacher_payment_id"
     t.integer  "channel_payment_id"
     t.string   "swipe_transaction_id"
@@ -417,6 +416,13 @@ ActiveRecord::Schema.define(:version => 20141016040203) do
     t.string   "reference"
     t.boolean  "visible"
     t.boolean  "cash_payment"
+    t.string   "swipe_transaction_id"
+    t.string   "swipe_status"
+    t.string   "swipe_name_on_card"
+    t.string   "swipe_customer_email"
+    t.string   "swipe_currency"
+    t.string   "swipe_identifier_id"
+    t.string   "swipe_token"
   end
 
   create_table "rails_admin_histories", :force => true do |t|
