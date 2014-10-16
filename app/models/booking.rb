@@ -90,7 +90,7 @@ end
   end
 
   def cancelled?
-    true if status == STATUS_1 || status == STATUS_5
+    true if status == STATUS_1
   end
 
   def paid?
