@@ -104,7 +104,7 @@ Chalkle::Application.routes.draw do
     end
   end
 
-  resources :channels, path: 'providers', only: [:index, :teachers] do
+  resources :channels, path: 'providers', only: [:index, :teachersm, :new, :create] do
     #resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
     resources :subscriptions, only: [:create, :destroy], path: 'follow'
   end
