@@ -93,7 +93,7 @@
           <%
             start_at = f.object.start_at[i]
             date_temp = start_at.to_date
-            time_temp = start_at.strftime('%l:%M %p')
+            time_temp = date_temp.strftime('%l:%M %p')
             hours_temp = f.object.duration_hours[i]
             minutes_temp = f.object.duration_minutes[i]
            %>
