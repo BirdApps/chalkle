@@ -13,14 +13,12 @@
     </div>
   <% elsif @course.status == 'Published' %>
     <% if @course.between_start_and_end %>
-      <% if @course.lesson_in_progress %>
-          <div class="alert alert-warning clearfix">
-            <h3 class="flush">In Progress</h3>
-            <p>
-              Class finishes at <%= pretty_time @course.lesson_in_progress.end_at %>
-            </p>
-        <% else %>
-            <h3 class="flush">Course In Progress</h3>
+      <div class="alert alert-warning clearfix">
+        <% if @course.lesson_in_progress %>
+          <h3 class="flush">In Progress</h3>
+          <p>
+            Class finishes at <%= pretty_time @course.lesson_in_progress.end_at %>
+          </p>
         <% end %>
         <% if @course.course? %>
           <p>

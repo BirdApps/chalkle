@@ -117,7 +117,7 @@ end
 
     if course.teacher_pay_type == Course.teacher_pay_types[1]
       self.teacher_fee = course.teacher_cost
-      if course.teacher.tax_number.present?
+      if course.teacher.present? && course.teacher.tax_number.present?
         self.teacher_gst = teacher_fee*3/23
         self.teacher_gst_number = course.teacher.tax_number
       else
@@ -145,6 +145,28 @@ end
 
   def cost_formatted
     sprintf('%.2f', cost)
+  end
+
+  def paid_formatted
+    sprintf('%.2f', paid)
+  end
+
+
+  def status_formatted
+    case status 
+    when STATUS_1
+      'Confirmed'
+    when STATUS_2
+      'Cancelled'
+    when STATUS_3
+      'Cancelled - Pending Refund'
+    when STATUS_4
+      'Cancelled & Refunded'
+    when STATUS_5
+      'Payment was not completed'
+    else
+       'Unknown status'
+    end
   end
 
   def refundable?

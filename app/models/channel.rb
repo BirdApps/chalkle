@@ -48,8 +48,8 @@ class Channel < ActiveRecord::Base
   scope :chalkler_can_teach, lambda { |chalkler| joins(:channel_teachers).where("chalkler_id = ?", chalkler.id) }
 
 
-  after_save :check_url_name
-  after_create :set_url_name
+  before_save :check_url_name
+  after_create :set_url_name!
   after_save :expire_cache!
 
   def self.select_options(channel)
@@ -149,16 +149,16 @@ class Channel < ActiveRecord::Base
     'New Zealand'
   end
 
-  def set_url_name
-    url_name = name.parameterize
-    self.url_name = Channel.find_by_url_name(url_name).nil? ? url_name : url_name+self.id.to_s
+  def set_url_name!
+    check_url_name
     save
   end
 
   def check_url_name
-    if self.url_name.nil?
-      set_url_name
-    end
+    url_name = self.url_name.nil? ? name.parameterize : self.url_name.parameterize
+    existing_channel = Channel.find_by_url_name(url_name)
+    valid = existing_channel.nil? || existing_channel.id == self.id
+    self.url_name = valid ? url_name : url_name+id.to_s
   end
 
   def header_color

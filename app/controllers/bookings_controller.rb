@@ -6,9 +6,12 @@ class BookingsController < ApplicationController
 
   def index
     @page_subtitle = "Bookings for"
-    @course = Course.find params[:course_id]
-    raise "not authorized" unless CoursePolicy.new(current_user, @course).admin?
-    @bookings = @course.bookings if @course.present?
+    @course = Course.find_by_id params[:course_id]
+    if policy(@course).admin?
+      @bookings = @course.bookings.visible.order(:status) if @course.present?
+    else
+      @bookings = []
+    end
   end
 
   def my_bookings
@@ -17,7 +20,7 @@ class BookingsController < ApplicationController
   end
 
   def new
-    flash[:notice] = "Removed bookings with pending payments" if(delete_any_unpaid_credit_card_booking.present?)
+    delete_any_unpaid_credit_card_booking
     @channel = Course.find(params[:course_id]).channel #Find channel for hero
     @booking = Booking.new
     @booking.name = current_user.name unless @course.bookings_for(current_user).present?
@@ -35,7 +38,7 @@ class BookingsController < ApplicationController
       @booking.remove_fees
     end
     @booking.paid = 0
-    unless current_user.bookings.where(course_id: @booking.course.id, name: @booking.name ).empty?
+    unless current_user.bookings.confirmed.where(course_id: @booking.course.id, name: @booking.name ).empty?
       redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course' and return
     end
 
@@ -47,6 +50,7 @@ class BookingsController < ApplicationController
         redirect_to @booking.course.path and return
       else
         @booking.update_attribute(:status, 'pending')
+        @booking.update_attribute(:visible, false)
         wrapper = SwipeWrapper.new
         identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
                                                       amount: @booking.cost,
@@ -138,7 +142,7 @@ class BookingsController < ApplicationController
 
   def load_booking
     @booking = current_user.bookings.find(params[:booking_id] || params[:id]).decorate
-    return not_found if !@booking
+    redirect_to not_found and return if !@booking
   end
 
   def redirect_on_paid

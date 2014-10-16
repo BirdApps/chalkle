@@ -158,7 +158,7 @@ class Course < ActiveRecord::Base
     can_be = false
     can_be = true if min_attendee > bookings.confirmed.count
     can_be = true if start_at > DateTime.current.advance(hours: 24)
-    can_be = true if !bookings?
+    can_be = true if bookings.confirmed.blank?
     can_be
   end
 
@@ -294,7 +294,7 @@ class Course < ActiveRecord::Base
   end
 
   def calc_channel_fee
-    cost - variable_costs - processing_fee - chalkle_fee
+    (cost||0) - (variable_costs||0) - (processing_fee||0) - (chalkle_fee||0)
   end
 
   def chalkle_fee(incl_tax = true)
@@ -312,7 +312,7 @@ class Course < ActiveRecord::Base
     if cost.present?
       cost * channel_plan.processing_fee_percent
     else
-      calculate_cost(false) * channel_plan.processing_fee_percent
+      0
     end
   end
 
@@ -452,7 +452,7 @@ class Course < ActiveRecord::Base
 
   def bookings_for(chalkler)
     if bookings.any?
-      chalkler.bookings & bookings
+      chalkler.bookings.visible & bookings
     else
       nil
     end
@@ -520,7 +520,7 @@ class Course < ActiveRecord::Base
   end
 
   def lesson_in_progress
-    @lesson_in_progress ||= lessons.map {|lesson| lesson.between_start_and_end ? lesson : nil  }.compact.first if status == STATUS_1
+    @lesson_in_progress ||= lessons.map {|lesson| lesson.between_start_and_end ? lesson : nil  }.compact.first if status == STATUS_1 && bookings.confirmed.count > 0
   end
 
   def between_start_and_end
