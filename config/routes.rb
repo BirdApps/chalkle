@@ -24,7 +24,9 @@ Chalkle::Application.routes.draw do
   get '/terms/teacher' => 'terms#teacher', as: :teacher_terms
 
 
-  resources :channel_teachers, path: 'teachers', except: [:new, :show, :index] 
+  resources :channel_teachers, path: 'teachers', except: [:new, :show, :index]
+
+  resources :channel_admins, path: 'admins', except: [:new, :show, :index] 
 
   resources :channel_plans, path: 'plans'
 
@@ -137,8 +139,7 @@ Chalkle::Application.routes.draw do
   get ':channel_url_name/admins', to: 'channels#admins', as: :channels_admins
   get 'providers/:channel_id/admins', to: 'channels#admins', as: :channel_channel_admins
   get ':channel_url_name/admins/new', to: 'channel_admins#new', as: :new_channel_admin
-  get ':channel_url_name/admin/:id', to: 'channel_admins#show', as: :channel_channel_admin
-  get ':channel_url_name/admin/:id', to: 'channel_admins#show', as: :channel_admin
+  get ':channel_url_name/admin/:id/edit', to: 'channel_admins#edit', as: :edit_channel_admin
   
   get 'providers/:channel_id/url_available/:url_name', to: 'channels#url_available', as: :channel_url_available
   get ':channel_url_name/teachers', to: 'channels#teachers', as: :channels_teachers

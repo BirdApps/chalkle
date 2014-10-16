@@ -1,13 +1,21 @@
 <div class="teacher row">
-  <div class="col-xs-12 col-sm-8">
-    <img class="avatar" src="<%= channel_admin.avatar %>">
+  <div class="col-xs-8 col-sm-10">
+    <img class="avatar32" src="<%= channel_admin.avatar %>">
     <div class="pull-left"> 
       <div class="name">
-        <%= link_to channel_admin.name, channel_channel_admin_path(channel_admin.channel.url_name, channel_admin.id) %>
+        <% if channel_admin.chalkler %>
+          <%= link_to channel_admin.name, chalkler_path(channel_admin.chalkler.id) %>
+        <% else %>
+          <%= channel_admin.email %> <span class="small light">(user has not signed up)</span>
+        <% end %>
       </div>
     </div>
   </div>
-  <div class="col-xs-6 col-sm-4">
-    
+  <div class="col-xs-4 col-sm-2 text-right">
+    <% if channel_admin.chalkler.blank? %>
+      <%= link_to(edit_channel_admin_path(channel_admin.channel.url_name,channel_admin.id), class: 'btn btn-default') do %>
+        <span class="fa fa-cog"></span> Edit 
+      <% end %>
+    <% end %>
   </div>
 </div>

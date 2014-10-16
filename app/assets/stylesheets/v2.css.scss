@@ -1227,10 +1227,18 @@ body.v2 {
     .avatar64 {
       height: 64px;
       width: 64px;
+      float:left;
+      margin-right:10px;
+      
+      background: rgba(100, 100, 100, 0.2);
     }
     .avatar32 {
       height: 32px;
       width: 32px;
+      float:left;
+
+      margin-right:10px;
+      background: rgba(100, 100, 100, 0.2);
     }
     .people {
       .headings {
