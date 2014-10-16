@@ -85,7 +85,7 @@ class BookingsController < ApplicationController
       end
       redirect_to root_url
     else
-      not_found
+      redirect_to root_url, notice: "not authorized to access from #{request.ip}"
     end
   end
 
