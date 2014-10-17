@@ -28,6 +28,22 @@ class CoursesController < ApplicationController
     @page_subtitle = "Use chalkle to"
     @page_title = "Teach"
     @meta_title = "Teach with "
+
+    @page_context_links = [
+      {
+        img_name: "bolt",
+        link: new_course_path,
+        active: false,
+        title: "New Class"
+      },
+      {
+        img_name: "people",
+        link: new_channel_path,
+        active: false,
+        title: "New Provider"
+      }
+    ]
+
     render 'teach'
   end
   def learn
