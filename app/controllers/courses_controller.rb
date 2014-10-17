@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings]
+  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :check_clear_filters, only: [:index]
@@ -205,6 +205,11 @@ class CoursesController < ApplicationController
           @channel = Channel.new(name: "All Providers")
         end
       end
+    end
+
+    def clone
+      #authorize @course
+      #@course.
     end
 
     def check_course_visibility
