@@ -68,7 +68,7 @@ Chalkle::Application.routes.draw do
 
   namespace :sudo do
     root to: 'silvias#index'
-    resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
+    resources :partner_inquires, path: 'hellos', only: [:index,:show,:edit]
     resources :payments
     resources :chalklers do
       collection do
@@ -102,7 +102,7 @@ Chalkle::Application.routes.draw do
     end
   end
 
-  resources :channels, path: 'providers', only: [:index, :teachersm, :new, :create] do
+  resources :channels, path: 'providers', only: [:index, :teachers, :new, :create] do
     #resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
     resources :subscriptions, only: [:create, :destroy], path: 'follow'
   end
