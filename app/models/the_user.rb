@@ -107,7 +107,7 @@ class TheUser
   def learn_menu_badge_count 
     @learn_menu_badge_count ||= (
       if chalkler?
-        chalkler.bookings.confirmed.upcoming.count
+        chalkler.courses.in_future.by_date.uniq.count
       else
         0
       end
