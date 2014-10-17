@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141017055818) do
+ActiveRecord::Schema.define(:version => 20141017080823) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -309,12 +309,12 @@ ActiveRecord::Schema.define(:version => 20141017055818) do
     t.string   "postal_code"
     t.float    "longitude"
     t.float    "latitude"
-    t.string   "venue_address"
+    t.text     "venue_address"
     t.datetime "start_at"
     t.string   "teacher_pay_type"
     t.string   "course_class_type"
-    t.string   "note_to_attendees"
-    t.string   "cancelled_reason"
+    t.text     "note_to_attendees"
+    t.text     "cancelled_reason"
     t.datetime "end_at"
   end
 
