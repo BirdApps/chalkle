@@ -64,7 +64,7 @@ end
 
 
   def self.needs_booking_completed_mailer
-    course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| b.course.end_at > Date.current && b.course.status=="Published"}
+    course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| b.course.end_at < Date.current && b.course.status=="Published" }
   end
   
   def free?
