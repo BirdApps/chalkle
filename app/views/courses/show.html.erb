@@ -43,7 +43,7 @@
               FREE
             <% end %>
           </div>
-          <% if @course.next_class.present? && (@course.status != 'Unreviewed' || policy(@course).admin?) %>
+          <% if @course.next_class.present? && (@course.next_class.status == 'Published' || policy(@course).read?) %>
             <div class="col-xs-12 center small grey class-repeats">
               <br />
               <div class="upper">CLASS REPEATS</div>

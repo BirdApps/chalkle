@@ -20,13 +20,20 @@ class CoursesController < ApplicationController
   end
 
   def show
+    authorize @course
     redirect_to @course.path unless request.path == @course.path and return
   end
 
   def teach
+    @page_subtitle = "Use chalkle to"
+    @page_title = "Teach"
+    @meta_title = "Teach with "
     render 'teach'
   end
   def learn
+    @page_subtitle = "Use chalkle to"
+    @page_title =  "Learn"
+    @meta_title = "Learn with "
     @upcoming_courses = current_user.courses.in_future.by_date.uniq
     render 'learn'
   end
@@ -185,7 +192,7 @@ class CoursesController < ApplicationController
     end
 
     def check_course_visibility
-      unless !@course || policy(@course).edit?
+      unless !@course || policy(@course).read?
         unless @course.published?
           flash[:notice] = "This class is no longer available."
           redirect_to :root

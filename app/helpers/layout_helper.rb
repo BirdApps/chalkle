@@ -84,11 +84,7 @@ module LayoutHelper
       params_copy[type_i.to_sym] = params[type_i.to_sym]
     end
     if(types.include? type)
-      if value == 'all'
-         params_copy[type.to_sym] = session[type.to_sym].nil? ? nil : 'all'
-      else
         params_copy[type.to_sym] = value
-      end
     end
     params_copy
   end
