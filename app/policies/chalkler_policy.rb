@@ -5,7 +5,7 @@ class ChalklerPolicy < ApplicationPolicy
   end
 
   def exists?
-    @user.super? or current_user.channels_adminable.count > 0
+    @user.super? or @user.channels_adminable.count > 0
   end
 
   def show?
