@@ -132,6 +132,10 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def paid?
+    cost > 0
+  end
+
   def cancel!(reason = nil)
     #TODO: notify chalklers
     self.status = STATUS_2

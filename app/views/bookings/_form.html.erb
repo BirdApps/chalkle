@@ -92,7 +92,7 @@
      <%= f.input :name, label: '<span class="small light grey">Attendee Name</small>' %>
       <%= f.input :note_to_teacher, as: :text, label: '<span class="small light grey">Note to Teacher</small>' %>
     </div>
-    <% if policy(@course).admin? %>
+    <% if policy(@course).admin? && @course.paid? %>
       <br/><br />
       <div class="alert-danger alert clearfix">
         <div class="light small col-xs-6">
