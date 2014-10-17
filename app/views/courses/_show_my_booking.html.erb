@@ -1,4 +1,4 @@
-<% if current_chalkler && (bookings = @course.bookings_for(current_chalkler)).present? %>
+<% if (current_chalkler && (bookings = @course.bookings_for(current_chalkler)).present?) || current_user.super? %>
     <div class="col-sm-2">
     </div>
     <div class="col-sm-8"> 
@@ -40,11 +40,11 @@
             <hr class="dark" />
           </div>
       <% end %>
-      <% if (bookings.any? || current_user.super?) && bookings.first.course.note_to_attendees.present? %>
+      <% if (bookings.any? || current_user.super?) && @course.note_to_attendees.present? %>
           <div class="">
             <br />
             <div class="small light">Special note for attendees</div>
-            <%= bookings.first.course.note_to_attendees %>
+            <%= @course.note_to_attendees %>
           </div>
         <% end %>
       </div> 

@@ -454,7 +454,7 @@ class Course < ActiveRecord::Base
     if bookings.any?
       chalkler.bookings.visible & bookings
     else
-      nil
+      []
     end
   end
 
