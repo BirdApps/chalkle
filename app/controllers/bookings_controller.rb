@@ -44,7 +44,6 @@ class BookingsController < ApplicationController
     end
 
     # this should handle invalid @bookings before doing anything
-    #destroy_cancelled_booking
     if @booking.save
       if @booking.free?
         BookingMailer.booking_confirmation(@booking).deliver!
@@ -172,13 +171,5 @@ class BookingsController < ApplicationController
       flash[:alert] = 'You cannot edit a paid booking'
       redirect_to booking_path booking
     end
-  end
-
-  def destroy_cancelled_booking
-    current_chalkler.bookings.where{ (course_id == my{params[:course_id]}) & (status == 'no') }.destroy_all
-  end
-
-  def delete_any_unpaid_credit_card_booking
-    current_chalkler.bookings.where(course_id: params[:course_id], payment_method: 'credit_card', status: 'pending').where{|booking| booking.payment.nil? }.destroy_all
   end
 end

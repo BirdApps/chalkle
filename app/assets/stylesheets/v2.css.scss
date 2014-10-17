@@ -65,6 +65,54 @@ body.v2 {
     padding-bottom:75px;
     background-color: #fff;
   }
+  .dropdown.open {
+    @media screen and (max-width: $col-sm) {
+      button {
+        border: 0;
+      }
+      position: fixed;
+      left: 0;
+      width: 100%;
+      top: 68px;
+      z-index: 100;
+      background: #fff;
+      height:100%;
+      .btn {
+        background-color: rgba(255,255,255,0.85);
+        color:#000;
+        text-align: left;
+        line-height: 2.5em;
+        img{
+          margin-top:0 !important;
+        }
+      }
+    }
+  }
+  .dropdown-menu {
+    @include border-radius(0);
+    font-family: "proxima-nova",sans-serif; 
+    left: -1px;
+    background: #dfdfdf;
+    text-shadow: none;
+    font-weight: 100;
+    .divider {
+      background-color: #ccc; 
+    }
+    @media screen and (max-width: $col-sm) {
+      li{
+        a{
+          line-height: 2em;
+        }
+      }
+      top: 50px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      height: 100%; 
+      width: 100%;
+      padding-bottom:100px;
+    }
+  }
   .borders{
     border: 1px solid rgba(0,0,0,0.16);
     border-bottom: 0px;
@@ -150,6 +198,12 @@ body.v2 {
     font-weight: 100;
     display: block;
     padding:20px;
+  }
+  .pagination-wrapper{
+    text-align: right;
+    @media(max-width: $col-sm) {
+      text-align: center;
+    }
   }
   .page-menu {
     ul {
@@ -390,6 +444,9 @@ body.v2 {
       position:absolute;
       top: 62px;
       background-color: rgba(255, 255, 255, 0.6);
+      @media screen and (max-width: $col-sm) {
+        top: 68px;
+      }
       .search-wrapper {
         @media screen and (max-width: $col-sm) {
           clear: both;
@@ -530,20 +587,6 @@ body.v2 {
             width: 100%;
             padding-bottom:100px;
           }
-        }
-      }
-      .dropdown.open {
-        @media screen and (max-width: $col-sm) {
-          position: fixed;
-          left: 0;
-          width: 100%;
-          top: 68px;
-          z-index: 100;
-          background: #fff;
-          height:100%;
-        }
-        .btn {
-          background-color: rgba(255,255,255,0.85);
         }
       }
     }
@@ -1279,6 +1322,9 @@ body.v2 {
         }
       }
     }
+  }
+  .sudo_booking {
+    line-height: 3em;
   }
   .page-footer {
     color: #fff;

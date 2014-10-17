@@ -83,11 +83,6 @@ Chalkle::Application.routes.draw do
     end
 
     resources :bookings do
-      collection do
-        get 'pending_refunds'
-        get 'completed_refunds'
-        get 'pending_payments'
-      end
       member do
         get 'set_status'
         get 'refund'

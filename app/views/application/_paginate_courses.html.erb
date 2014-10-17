@@ -9,11 +9,11 @@
   <div class="alert alert-warning center">
      <%= problem %>    
   </div>
-<% else %>
-  <%= render paginate_courses(@courses) %>
 <% end %>
 
-<div class="row text-right">
+<%= render paginate_these(@courses) %>
+
+<div class="row  pagination-wrapper">
   <ul class="pagination">
     <li class="<%=  'disabled' if paginate_position == 0  %>">
       <a href="<%= url_for(filter_params('page', paginate_position)) %>">&laquo;</a>
