@@ -4,22 +4,42 @@
   <div class="row">
 
     <div class="col-md-12 text-center">
-      <%= link_to "Create a Class", new_course_path, class: "btn btn-default" %>
+      Want to make a new class?
+      <%= link_to "Create a Class", new_course_path, class: "btn btn-primary" %>
     </div>
 
   </div>
 
   <div class="row">
 
-    <% if current_user.channels_adminable.any? %>
-      <div class="fancy-header">
-        <h3>Providers</h3>
-        <hr />
-      </div>
-      <div class="row col-xs-12">
-        <%= render partial: '/me/channels/channel', collection: current_user.channels_adminable %>  
-      </div>
-    <% end %>
+    <div class="col-sm-6 col-xs-12">
+      <% if current_user.channels_adminable.any? %>
+        <div class="fancy-header">
+          <h3>Providers</h3>
+          <hr />
+        </div>
+        <div class="row col-xs-12">
+          <%= render partial: '/me/channels/channel', collection: current_user.channels_adminable %>  
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-sm-6 col-xs-12">
+      <% if current_chalkler.channel_teachers.any? %>
+        <div class="fancy-header">
+          <h3>Teacher Profiles</h3>
+          <hr />
+        </div>
+        <div class="col-xs-12">
+          <%= render partial: '/me/channel_teachers/channel_teacher', collection: current_chalkler.channel_teachers %>  
+        </div>
+      <% else %>
+        <div class="alert alert-warning">
+          You don't have any teacher profiles. Go to a provider you adminstrate, click settings, then add a teacher.
+        </div>
+      <% end %>
+    </div>
+
   </div>
 
   <% 
@@ -45,7 +65,7 @@
 <% else %>
 
   <div class="col-md-12 text-center">
-    Ready to set up your first class? <%= link_to "Create a Class", new_course_path, class: "btn btn-default" %>
+    Ready to set up your first class? <%= link_to "Create a Class", new_course_path, class: "btn btn-primary" %>
   </div>
 
 <section id="who" class="row">

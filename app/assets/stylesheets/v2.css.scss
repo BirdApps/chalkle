@@ -113,6 +113,9 @@ body.v2 {
       padding-bottom:100px;
     }
   }
+  .text-primary{
+    color: #F5BA56;
+  }
   .borders{
     border: 1px solid rgba(0,0,0,0.16);
     border-bottom: 0px;
@@ -794,6 +797,19 @@ body.v2 {
         width: 100%;
         height: 100%;
       }
+    ._teacher{
+      line-height:2em;
+      margin-bottom: 10px;
+    }
+    ._channel {
+      line-height:2em;
+      margin-bottom: 10px;
+     .channel-img {
+        height: 45px;
+        width: 45px;
+        background: #ccc;
+      }
+    }
     .course-show {
       margin-top:20px;
       .class-repeats{
@@ -861,13 +877,6 @@ body.v2 {
           margin-right:10px;
         }
         line-height: 1.2em;
-      }
-    }
-    ._channel {
-     .channel-img {
-        height: 45px;
-        width: 45px;
-        background: #ccc;
       }
     }
     .course {
