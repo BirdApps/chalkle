@@ -68,7 +68,7 @@ Chalkle::Application.routes.draw do
 
   namespace :sudo do
     root to: 'silvias#index'
-    resources :partner_inquires, path: 'hellos', only: [:index,:show,:edit]
+    resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
     resources :payments
     resources :chalklers do
       collection do
