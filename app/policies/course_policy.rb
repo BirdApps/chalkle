@@ -6,41 +6,56 @@ class CoursePolicy < ApplicationPolicy
     @course = course
   end
 
-  def edit?
-    update?
-  end
-
-  def show?
-    @course.displayable? or admin?
-  end
-
-  def update?
-    #cannot update if there are bookings unless you are an admin
-    ((@user.channel_teachers.where(id: @course.teacher_id).present? or @user.channel_admins.where(channel_id: @course.channel_id).present?) and @course.bookings.empty? ) or @user.super?
-  end
-
-  def admin?
-    @user.channel_teachers.where(id: @course.teacher_id).present? or @user.channel_admins.where(channel_id: @course.channel_id).present? or @user.super?
-  end
-
-  def bookings?
-    admin?
-  end
-
-  def change_status?
-    update?
-  end
-
   def tiny_url?
     true
   end
 
+  def bookings?
+    read?
+  end
+
+  def edit?
+    write?
+  end
+
+  def show?
+    @course.displayable? or read?
+  end
+
+  def update?
+    write?
+  end
+
+  def clone?
+    write?(true)
+  end
+
+  def change_status?
+    write?
+  end
+
   def confirm_cancel?
-    admin?
+    write?
   end
 
   def cancel?
-    admin?
+    write?
   end
 
+  def admin?
+    @user.super? or @user.channel_admins.where(channel_id: @course.channel_id).present?
+  end
+
+  def write?(anytime=false)
+    anytime = true if @course.status == "Unreviewed"
+    @user.super? or
+     ((@user.channel_teachers.where(id: @course.teacher_id, can_make_classes: true).present? or 
+       @user.channel_admins.where(channel_id: @course.channel_id).present?)                  and 
+       @course.bookings.empty?                                                               and 
+      (anytime ? true : @course.start_at > DateTime.current))
+  end
+
+  def read?
+    @user.super? or ((@user.channel_teachers.where(id: @course.teacher_id).present? or @user.channel_admins.where(channel_id: @course.channel_id).present?) and @course.bookings.empty?)
+  end
 end

@@ -153,6 +153,14 @@ module LayoutHelper
           title: "Edit"
         }
       end
+      if current_user.super?
+        nav_links <<  {
+          img_name: "people",
+          link: becoming_sudo_chalklers_path(@channel_teacher.chalkler_id),
+          active: false,
+          title: "Become"
+        }
+      end
     elsif @booking.present?
     elsif @course.present? && @course.id.present?
       if @course.spaces_left?

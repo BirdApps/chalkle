@@ -29,7 +29,7 @@
       <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
 
 
-      <%= f.input :can_make_classes, collection: [['Can make new classes',true],['Cannot make new classes',false]],include_blank: false,  label: "Permissions", wrapper: :horizontal %>
+      <%= f.input :can_make_classes, collection: [['Can Publish Classes',true],['Cannot Publish Classes',false]],include_blank: false,  label: "Permissions", wrapper: :horizontal %>
 
     <% else %>
       <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>

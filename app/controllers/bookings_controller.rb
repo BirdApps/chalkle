@@ -8,7 +8,7 @@ class BookingsController < ApplicationController
   def index
     @page_subtitle = "Bookings for"
     @course = Course.find_by_id params[:course_id]
-    if policy(@course).admin?
+    if policy(@course).read?
       @bookings = @course.bookings.visible.order(:status) if @course.present?
     else
       @bookings = []
@@ -21,7 +21,6 @@ class BookingsController < ApplicationController
   end
 
   def new
-    delete_any_unpaid_credit_card_booking
     @channel = Course.find(params[:course_id]).channel #Find channel for hero
     @booking = Booking.new
     @booking.name = current_user.name unless @course.bookings_for(current_user).present?
@@ -60,7 +59,6 @@ class BookingsController < ApplicationController
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
     else
-      delete_any_unpaid_credit_card_booking
       @course = Course.find(params[:course_id]).decorate
       flash[:notice] = 'Could not create booking at this time'
       render 'new'

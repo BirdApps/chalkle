@@ -56,7 +56,6 @@ class ChannelTeachersController < ApplicationController
         add_response_notice "That person is already a teacher on your channel"
       else
         @channel_teacher.name = @channel_teacher.name || @channel_teacher.email.split('@')[0]
-        @channel_teacher.can_make_classes = false
         result = @channel_teacher.save
       end
 

@@ -7,10 +7,26 @@
       <hr />
     </div>
     <%= f.text_field :channel_id, type: :hidden  %>
-     <p class="small grey center">
+    
+    <div class="form-group email required channel_teacher_email">
+      <div class="control-label col-sm-5">
+        <label class="email required" for="channel_teacher_email">
+          Name
+        </label>
+      </div>
+      <div class="col-sm-7">
+        <%= f.text_field :name, :'data-error-message' => 'The name was invalid', class: 'form-control' %>
+      </div>
+    </div>
+
+    <%= f.input :can_make_classes, collection: [['Can Publish Classes',true],['Cannot Publish Classes',false]],include_blank: false,  label: "Permissions", wrapper: :horizontal %>
+    
+    <p class="small grey center">
       If the teacher is already registered with chalkle,<br /> be sure to use the email they used when signing up.
     </p>
+
     <div class="form-group email required channel_teacher_email">
+
       <div class="control-label col-sm-5">
         <label class="email required" for="channel_teacher_email">
           <abbr title="required">*</abbr> 
@@ -21,19 +37,7 @@
         <%= f.text_field :email, :'data-error-message' => 'You must enter an email', class: 'form-control' %>
       </div>
     </div>
-    <div class="form-group email required channel_teacher_email">
-      <div class="control-label col-sm-5">
-        <label class="email required" for="channel_teacher_email">
-          Name
-        </label>
-      </div>
-      <div class="col-sm-7">
-        <%= f.text_field :name, :'data-error-message' => 'The name was invalid', class: 'form-control' %>
-      </div>
 
-
-
-    </div>
     <label class="vertical-borders exists-success" style="display:none">
       Great, that person is already registered on Chalkle. <br /> We'll add them as a teacher for the provider <%= @channel.name %>
     </label>

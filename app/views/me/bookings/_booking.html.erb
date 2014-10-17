@@ -1,11 +1,52 @@
-<div class="col-xs-12">
-  <div class="_booking clearfix">
-    <a href="<%= booking.course.path %>">
-      <img src="<%= booking.course.course_upload_image -%>" class='avatar avatar64 img' />
-      <%= booking.course.name %>
+<article class="course row">
+  <div class="col-sm-2 col-xs-2 col-md-1">
+    <a href="<%= booking.course.path %>" title="<%= booking.course.name %>">
+      <% if booking.course.course_upload_image.present? %>
+        <div class="avatar avatar64 img" style="background-image: url(<%= course.course_upload_image.url(:large).html_safe %>);">
+      </div>
+      <% elsif booking.course.category %>
+        <div class="avatar avatar64 img">
+          <%= category_image booking.course, 150 %>
+        </div>
+      <% else %>
+        <%= image_tag(
+          "categories/grey.png",
+          alt: booking.course.name,
+          title: booking.course.name,
+          class: 'avatar avatar64'
+        ) %>
+      <% end %>
     </a>
-    <div class="small grey">
-      <%= booking.confirmed? ? quick_date_time(booking.course.start_at) : "canceled" %>
-    </div>  
   </div>
-</div>
+  <div class="col-xs-10 col-sm-8 col-md-9">
+    <header>
+      <div class="title-wrapper">
+        <strong>
+          <%= link_to booking.course.name, booking.course.path, { :class => "colour"+booking.course.best_colour_num.to_s } %>
+        </strong>
+      </div>
+    </header>
+    <div class="details">
+      <div class="upper small">
+        <% if booking.confirmed?  %>
+          <%= quick_date_time booking.course.start_at %> 
+        <% else %>
+          <%= booking.status_formatted %>
+        <% end %>
+        |
+        <% if booking.course.teacher  %>
+          <%= link_to 'Taught by '+booking.course.teacher.name, channel_channel_teacher_path(booking.course.channel.url_name, booking.course.teacher.id) %>
+        <% else %>
+          No teacher assigned
+        <% end %>
+      </div>
+      
+    </div>
+  </div>
+  <div class="col-sm-2 col-xs-12">
+    <a href="<%= booking.course.path %>" class="no-margin clear-both block center alert alert-success small">
+      <%= @bookings_count %>
+      <br /> <%= 'Booking'.pluralize(@bookings_count) %>
+    </a>
+  </div>
+</article>

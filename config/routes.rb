@@ -47,6 +47,7 @@ Chalkle::Application.routes.draw do
       end
     end
     member do
+      get 'clone'
       put 'change_status', to: 'courses#change_status', as: :change_status
     end
     collection do
