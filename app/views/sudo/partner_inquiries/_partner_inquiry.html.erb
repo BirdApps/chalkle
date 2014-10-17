@@ -1,0 +1,15 @@
+<div class="sudo_hello odd row">
+  <a href="<%= sudo_partner_inquiry_path(partner_inquiry.id) %>">
+    <div class="col-xs-3 col-sm-2"><%= quick_date_time partner_inquiry.created_at %></div>
+    <div class="col-xs-3 col-sm-2"><%= partner_inquiry.name %></div>
+    <div class="col-xs-6 col-sm-3"><%= partner_inquiry.organisation %></div>
+    <div class="col-xs-6 col-sm-2"><%= partner_inquiry.location %></div>
+  </a>
+  <div class="col-xs-6 col-sm-3">
+    <% if partner_inquiry.visible %>
+      <%= link_to "Archive", edit_sudo_partner_inquiry_path(partner_inquiry.id, {new_status: 'hidden'}), class: 'btn btn-primary' %>
+    <% else %>
+       <%= link_to "Mark Unread", edit_sudo_partner_inquiry_path(partner_inquiry.id, {new_status: 'visible'}), class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

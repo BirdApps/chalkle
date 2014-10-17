@@ -1,0 +1,16 @@
+<% 
+  visible = hidden = 'btn btn-default'
+  case params[:type]  
+  when 'hidden'
+    hidden = 'btn btn-info'
+  else
+    visible = 'btn btn-info'
+  end
+%>
+
+<div>
+  <%= link_to "Unread ("+PartnerInquiry.visible.count.to_s+")", sudo_partner_inquiries_path, class: visible %>
+
+  <%= link_to "Archived", sudo_partner_inquiries_path({type: 'hidden'}), class: hidden %>
+  <br /><br />
+</div>

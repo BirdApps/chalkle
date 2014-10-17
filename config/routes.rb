@@ -68,6 +68,7 @@ Chalkle::Application.routes.draw do
 
   namespace :sudo do
     root to: 'silvias#index'
+    resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
     resources :payments
     resources :chalklers do
       collection do
@@ -114,6 +115,7 @@ Chalkle::Application.routes.draw do
 #  %w(welcome about blog learn).each do |name|
     match "/#{name}" => redirect("http://blog.chalkle.com/#{name}"), :as => name.to_sym
   end
+
 
   get '/partners' => 'partners#index'
   #get '/partners/pricing' => 'partners#pricing'
