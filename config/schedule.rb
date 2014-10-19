@@ -7,7 +7,7 @@ set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 # end
 
 
-every :day, :at => '12:01am' do 
+every :hour do 
   rake "chalkle:expire_caches"
   rake "chalkle:create_pending_payments"
 end
