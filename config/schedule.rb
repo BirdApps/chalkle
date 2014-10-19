@@ -7,7 +7,7 @@ set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 # end
 
 
-every :day, :at => '12:01am' do 
+every :hour do 
   rake "chalkle:expire_caches"
   rake "chalkle:create_pending_payments"
 end
@@ -37,6 +37,6 @@ end
 
 every :day, :at => '04:30am' do
   path = "/apps/chalkle/db_backups/"
-  filename = "chalk_prod_#{Datetime.current.strftime("%d%m%Y%H%M")}.sql"
+  filename = "chalk_prod_#{DateTime.current.strftime("%d%m%Y%H%M")}.sql"
   command "pg_dump -f #{path + filename} chalkle_production && gzip #{path + filename}"
 end
