@@ -76,3 +76,31 @@ $(function(){
       }, function(response){});
   });
 });
+
+
+
+$(function(){
+
+  var header = $('#header');
+  var header_content_bg = $('body.v2 .header_content_bg');
+  var filter_bar = $('.filter-nav');
+
+  background_size_for_header_images = function(){
+    var window_width = $(window).width();
+    header.css("background-size", window_width);
+    header_content_bg.css("background-size", window_width);
+
+  };
+
+  fade_filterbar = function(){
+    scrolltop = $(document).scrollTop();
+    filter_bar.css("opacity", (-scrolltop+400)/65 );
+  };
+
+  background_size_for_header_images();
+  fade_filterbar();
+
+  window.addEventListener("resize", background_size_for_header_images);
+  window.addEventListener("scroll", fade_filterbar);
+
+});

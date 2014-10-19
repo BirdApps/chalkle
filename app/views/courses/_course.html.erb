@@ -1,6 +1,6 @@
 <% cache "_course_#{course.id}", skip_digest: true do %>
   <article class="course row">
-    <div class="col-sm-2">
+    <div class="col-sm-2 flush-xs">
       <div class="porthole">
         <a href="<%= course.path %>" title="<%= course.name %>">
           <% if course.course_upload_image.present? %>
