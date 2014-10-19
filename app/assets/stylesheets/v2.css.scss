@@ -606,14 +606,16 @@ body.v2 {
     }
   }
   .header, .header_content_bg, .navbar-wrapper .navbar {
-    background-size: cover !important;
+    background-size: cover;
     width: 100%;
-    background-attachment: fixed;
-    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    /* height: 2400px; */
+    background-attachment: scroll;
+    background-position: center bottom;
   }
   .header {
     background-color: #ccc;
-    padding-top: 67px;
+    padding-top: 67px;    
     .header_content {
       color:#fff; 
       text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
