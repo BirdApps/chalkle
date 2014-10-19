@@ -32,12 +32,14 @@ class ChalklersController < ApplicationController
 
   def exists
     authorize Chalkler.new
-    if params[:email].present? && Chalkler.find_by_email(params[:email]).present?
-      render json: true
-    else
-      render json: false
+    if params[:email].present?
+      email = params[:email].strip
+      if Chalkler.find_by_email(email).present?
+        render json: true
+      else
+        render json: false
+      end
     end
-
   end
 
 end

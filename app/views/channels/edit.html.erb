@@ -1,4 +1,7 @@
 <div class="new_form_wrapper container">  
+  <%= link_to "Manage Teachers", channels_teachers_path(@channel.url_name), { class: 'btn btn-warning'} %>
+   <%= link_to "Manage Admins", channels_admins_path(@channel.url_name), { class: 'btn btn-warning'} %>
+
   <%= bootstrap_form_for(@channel, wrapper: :simple_bootstrap3, url: channel_settings_path, html: { method: :post, class: 'channel-form form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
     <input type="hidden" value="put" name="_method" />
 
