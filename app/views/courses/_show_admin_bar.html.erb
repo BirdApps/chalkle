@@ -1,7 +1,6 @@
 <% if policy(@course).read?  %>
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-      
       <% if @course.status == 'Published' %>
         <div class="alert alert-warning clearfix text-right" role="alert"> 
      
@@ -9,19 +8,19 @@
             <strong><%= @course.status+'!' %></strong> 
             Chalklers can view and book this <%= @course.type %>
           </span>
+            
+          <div class="col-xs-12 pull-right col-lg-6 center flush">
+            <%= link_to 'View Bookings ('+@course.bookings.confirmed.count.to_s+")", course_bookings_path(@course.id), class: 'btn btn-success'  %>
+          
+            <% if policy(@course).write? %>
+            
+              <div class="hidden">
+                <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course', class: 'hidden'}) do |f| %>
+                  <input name="_method" type="hidden" value="put" />
+                  <%= f.input :status, as: :hidden, input_html: { value: 'Unreviewed' } %>
+                <% end #form %>
+              </div>
 
-          <% if policy(@course).write? %>
-            
-            <div class="hidden">
-              <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
-                <input name="_method" type="hidden" value="put" />
-                <%= f.input :status, as: :hidden, input_html: { value: 'Unreviewed' } %>
-              <% end #form %>
-            </div>
-            
-            <div class="col-xs-12 pull-right col-lg-6 center flush">
-              <%= link_to 'View Bookings ('+@course.bookings.confirmed.count.to_s+")", course_bookings_path(@course.id), class: 'btn btn-success'  %>
-            
               <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Unpublish</button>
 
               <% if policy(@course).cancel? %>
@@ -29,39 +28,54 @@
               <% else %>
                 <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
               <% end %>
-            </div>
-          <% end %>
+
+            <% end %>
+          </div>
         </div>
       
-      <% elsif @course.status == 'Unreviewed' && policy(@course).change_status?  %>
+      <% elsif @course.status == 'Unreviewed' %>
       
         <div class="alert alert-danger clearfix text-right" role="alert"> 
           
-          <span class="pad-top inline pull-left">   
-            <strong>Your class is a Draft!</strong> Would you like to publish it?
-          </span>    
+          <% if policy(@course).change_status? %>
 
-          <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
-            <input name="_method" type="hidden" value="put" />
-             <%= f.input :status, as: :hidden, input_html: { value: 'Published' } %>
-          <% end %>
-          <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Publish</button>
-          <% if false #TODO: publish repeat_course @course.repeating? %>
-            <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_series'}) do |f| %>
+            <span class="pad-top inline pull-left">   
+              <strong>Your class is a Draft!</strong> Would you like to publish it?
+            </span>    
+
+            <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course'}) do |f| %>
               <input name="_method" type="hidden" value="put" />
-               <%= f.input :status, as: :hidden, input_html: { value: 'publish_series' } %>
+               <%= f.input :status, as: :hidden, input_html: { value: 'Published' } %>
             <% end %>
-            <button class="btn btn-default" onclick="document.getElementById('publish_series').submit()">Publish</button>
+            <button class="btn btn-default" onclick="document.getElementById('publish_course').submit()">Publish</button>
+
+            <% if false #TODO: publish repeat_course @course.repeating? %>
+              <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_series'}) do |f| %>
+                <input name="_method" type="hidden" value="put" />
+                 <%= f.input :status, as: :hidden, input_html: { value: 'publish_series' } %>
+              <% end %>
+              <button class="btn btn-default" onclick="document.getElementById('publish_series').submit()">Publish</button>
+            <% end %>
+
+          <% else %>
+            <span class="pad-top inline pull-left text-left">   
+              <strong>Your class is a Draft!</strong><br /> To publish it you'll need to contact an adminstrator of the provider <em><%= link_to @course.channel.name, channels_admins_path(@course.channel.url_name) %></em>
+            </span> 
+
           <% end %>
+
           <% if @course.status == 'Published' %>
+
             <% if @course.can_be_cancelled? %>
               <%= link_to "Cancel", cancel_course_path(@course.id), class: 'btn btn-danger' %>
             <% else %>
               <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
             <% end %>
+
           <% elsif @course.status != 'Unreviewed' %>
               Class is <%= @course.status %>
           <% end %>
+
         </div>
       <% end %>
     </div>
