@@ -1,7 +1,5 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :booking_id, :booking, :xero_id, :xero_contact_id, :xero_contact_name,
-    :date, :complete_record_downloaded, :total, :reconciled, :reference,
-    :visible, :cash_payment, :as => :admin
+  attr_accessible :booking_id, :booking, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible, :cash_payment, :swipe_transaction_id, :swipe_status, :swipe_name_on_card, :swipe_customer_email, :swipe_currency, :swipe_identifier_id, :swipe_token, :as => :admin
 
   belongs_to :booking
   has_one :chalkler, through: :booking
@@ -9,7 +7,7 @@ class Payment < ActiveRecord::Base
 
   serialize :xero_data
 
-  validates_uniqueness_of :xero_id
+  validates_uniqueness_of :xero_id, allow_nil: true
   validates_numericality_of :total, allow_nil: false
 
   scope :unreconciled, where("reconciled IS NOT true")

@@ -132,6 +132,10 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def paid?
+    cost > 0
+  end
+
   def cancel!(reason = nil)
     #TODO: notify chalklers
     self.status = STATUS_2
@@ -152,14 +156,6 @@ class Course < ActiveRecord::Base
       end
       save
     end
-  end
-
-  def can_be_cancelled?
-    can_be = false
-    can_be = true if min_attendee > bookings.confirmed.count
-    can_be = true if start_at > DateTime.current.advance(hours: 24)
-    can_be = true if bookings.confirmed.blank?
-    can_be
   end
 
   def classes
@@ -252,14 +248,18 @@ class Course < ActiveRecord::Base
   end
 
   def publish!
-    self.visible = true
-    self.status = "Published"
-    self.save
+    if @course.start_at > DateTime.current
+      self.visible = true
+      self.status = "Published"
+      self.save
+    end
   end
 
   def publish
-    self.visible = true
-    self.status = "Published"
+    if @course.start_at > DateTime.current
+      self.visible = true
+      self.status = "Published"
+    end
   end
 
   # kaminari
@@ -454,7 +454,7 @@ class Course < ActiveRecord::Base
     if bookings.any?
       chalkler.bookings.visible & bookings
     else
-      nil
+      []
     end
   end
 
@@ -482,18 +482,6 @@ class Course < ActiveRecord::Base
     return name.strip unless name.include?(':')
     parts = name.split(':')
     parts[1].strip
-  end
-
-  def copy_course
-    except = %w{id created_at updated_at status start_at teacher_payment published_at chalkle_payment visible}
-    copy_attributes = self.attributes.reject { |attr| except.include?(attr) || attr.starts_with?('deprecated_') }
-    new_course = Course.new(copy_attributes, :as => :admin)
-    new_course.category = self.category
-    new_course.visible = true
-    new_lesson = Lesson.create({start_at: start_at, duration: duration})
-    new_course.lessons = [new_lesson]
-    new_course.save
-    new_course
   end
 
   def free?

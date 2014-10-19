@@ -25,7 +25,13 @@ class Sudo::BaseController < ApplicationController
         img_name: "people",
         link: become_sudo_chalklers_path,
         active: controller_parts.include?("chalklers"),
-        title: "Psuedo Chalkler"
+        title: "Chalklers"
+      },
+      {
+        img_name: "book",
+        link: sudo_partner_inquiries_path,
+        active: controller_parts.include?("partner_inquiries"),
+        title: "Hello"
       }
     ]
   end

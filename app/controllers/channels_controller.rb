@@ -2,6 +2,7 @@ class ChannelsController < ApplicationController
   before_filter :expire_filter_cache!, only: [:create, :update, :destroy]
   after_filter :check_presence_of_courses, only: [:show, :series]
   before_filter :load_channel
+  before_filter :authenticate_chalkler!, only: [:new, :create]
 
   def index
     @channels = Channel.visible
@@ -30,11 +31,26 @@ class ChannelsController < ApplicationController
   end
 
   def new
-    
+    @page_subtitle = "Create a new"
+    @page_title = "Provider"
+    @new_channel = Channel.new
   end
 
   def create
-    
+    @new_channel = Channel.new 
+    @new_channel.name = params[:channel][:name]
+    @new_channel.email = current_user.email
+    @new_channel.channel_plan = ChannelPlan.default
+    @new_channel.visible = true
+
+    if @new_channel.save
+        redirect_to channel_settings_path(@new_channel.url_name), notice: "Provider #{@new_channel.name} has been created"
+      else
+        @new_channel.errors.each do |attr,error|
+          add_response_notice error
+        end
+        render 'new'
+      end
   end
 
   def edit

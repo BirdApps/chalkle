@@ -1,6 +1,37 @@
-<div class="clearfix">
-  <%= link_to "All Bookings", sudo_bookings_path, class: 'btn btn-default' %>
-  <%= link_to "Pending Refunds", pending_refunds_sudo_bookings_path, class: 'btn btn-default' %>
-  <%= link_to "Completed Refunds", completed_refunds_sudo_bookings_path, class: 'btn btn-default' %>
+<% 
+  all = pending = complete = unconfirmed = 'btn btn-default'
+  case params[:status]  
+  when 'pending'
+    unconfirmed = 'btn btn-info'
+  when 'refund_pending'
+    pending = 'btn btn-info'
+  when 'refund_complete'
+    complete = 'btn btn-info'
+  when 'all'
+    all = 'btn btn-info'
+  end
+%>
+
+<div class="hidden-xs hidden-sm">
+  <%= link_to "All Bookings", sudo_bookings_path({status: 'all', take: 300}), class: all %>
+
+  <%= link_to "Unconfirmed Payments ("+Booking.unconfirmed.count.to_s+")", sudo_bookings_path({status: 'pending'}), class: unconfirmed%>
+
+  <%= link_to "Pending Refunds ("+Booking.refund_pending.count.to_s+")", sudo_bookings_path({status: 'refund_pending'}), class: pending %>
+
+  <%= link_to "Completed Refunds ("+Booking.refund_complete.count.to_s+")", sudo_bookings_path({status: 'refund_complete'}), class: complete %>
 </div>
-<br /><br />
+
+<div class="dropdown col-xs-12 visible-xs visible-sm">
+  <button class="btn btn-default dropdown-toggle col-xs-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+    <%= Booking.status_formatted(params[:status]) %>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu text-left col-xs-12" role="menu" aria-labelledby="dropdownMenu1">
+    <% Booking::BOOKING_STATUSES.each do |status| %>
+      <li>
+        <%= link_to Booking.status_formatted(status), sudo_bookings_path({status: status}) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

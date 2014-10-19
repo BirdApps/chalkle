@@ -1,5 +1,6 @@
 class BookingsController < ApplicationController
-  before_filter :authenticate_chalkler!
+  include HTTParty
+  before_filter :authenticate_chalkler!, except: [:lpn]
   before_filter :redirect_on_paid, :only => [:edit, :update]
   before_filter :class_available, :only => [:edit, :update, :new]
   before_filter :load_booking, :only => [:payment_callback, :show, :edit, :update, :cancel, :confirm_cancel]
@@ -7,7 +8,7 @@ class BookingsController < ApplicationController
   def index
     @page_subtitle = "Bookings for"
     @course = Course.find_by_id params[:course_id]
-    if policy(@course).admin?
+    if policy(@course).read?
       @bookings = @course.bookings.visible.order(:status) if @course.present?
     else
       @bookings = []
@@ -20,7 +21,6 @@ class BookingsController < ApplicationController
   end
 
   def new
-    delete_any_unpaid_credit_card_booking
     @channel = Course.find(params[:course_id]).channel #Find channel for hero
     @booking = Booking.new
     @booking.name = current_user.name unless @course.bookings_for(current_user).present?
@@ -37,13 +37,12 @@ class BookingsController < ApplicationController
     if policy(@booking.course).admin? && params[:remove_fees] == '1'
       @booking.remove_fees
     end
-    @booking.paid = 0
+
     unless current_user.bookings.confirmed.where(course_id: @booking.course.id, name: @booking.name ).empty?
       redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course' and return
     end
 
     # this should handle invalid @bookings before doing anything
-    #destroy_cancelled_booking
     if @booking.save
       if @booking.free?
         BookingMailer.booking_confirmation(@booking).deliver!
@@ -52,31 +51,50 @@ class BookingsController < ApplicationController
         @booking.update_attribute(:status, 'pending')
         @booking.update_attribute(:visible, false)
         wrapper = SwipeWrapper.new
-        identifier = wrapper.create_tx_identifier_for(booking_id: @booking.id,
-                                                      amount: @booking.cost,
-                                                      return_url:course_booking_payment_callback_url(@booking.course_id, @booking.id),
-                                                      description: @booking.name)
+        identifier = wrapper.create_tx_identifier_for(
+                            booking_id: @booking.id,
+                            amount: @booking.cost,
+                            return_url: course_booking_payment_callback_url(@booking.course_id, @booking.id),
+                            description: @booking.name)
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
     else
-      delete_any_unpaid_credit_card_booking
       @course = Course.find(params[:course_id]).decorate
       flash[:notice] = 'Could not create booking at this time'
       render 'new'
     end
   end
 
+  def lpn
+    @booking = Booking.find_by_id params[:td_user_data]
+    if @booking
+      payment = @booking.payment.present? ? @booking.payment : @booking.build_payment
+      payment.swipe_transaction_id = params[:transaction_id]
+      payment.total = params[:amount]
+      payment.swipe_name_on_card= params[:name_on_card]
+      payment.swipe_customer_email = params[:customer_email]
+      payment.swipe_currency = params[:currency]
+      payment.swipe_identifier_id = params[:identifier_id]
+      payment.swipe_token= params[:token]
+      payment.date = DateTime.current
+      payment.visible = true
+      verify = HTTParty.get("https://api.swipehq.com/verifyTransaction.php?api_key=#{ENV["SWIPE_API_KEY"]}&merchant_id=#{ENV["SWIPE_MERCHANT_ID"]}&transaction_id=#{payment.swipe_transaction_id}")
+      verify = JSON.parse verify
+      if verify['data']['transaction_approved'] == "yes"   
+        pay_result = payment.save
+        if payment.total >= @booking.cost
+          @booking.status = 'yes'
+          book_result = @booking.save
+        end
+      end
+    end
+    render json: { pay: pay_result, book: book_result }
+  end
+
   def payment_callback
-    payment_successful = (params[:result] =~ /accepted/i) && !(params[:result] =~ /test/i)
+    payment_successful = (params[:result] =~ /accepted/i) || (params[:result] =~ /test/i)
     if payment_successful
-      #should I set it to yes?
-      payment = @booking.build_payment
-      payment.booking = @booking
-      payment.total = @booking.course.cost
-      payment.reconciled = true
-      payment.save
-      @booking.status = 'yes'
-      @booking.paid = true
+      @booking.status = 'pending'
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
@@ -151,13 +169,5 @@ class BookingsController < ApplicationController
       flash[:alert] = 'You cannot edit a paid booking'
       redirect_to booking_path booking
     end
-  end
-
-  def destroy_cancelled_booking
-    current_chalkler.bookings.where{ (course_id == my{params[:course_id]}) & (status == 'no') }.destroy_all
-  end
-
-  def delete_any_unpaid_credit_card_booking
-    current_chalkler.bookings.where(course_id: params[:course_id], payment_method: 'credit_card', status: 'pending').where{|booking| booking.payment.nil? }.destroy_all
   end
 end

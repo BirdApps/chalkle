@@ -59,6 +59,10 @@ class TheUser
     chalkler.id.present? ? chalkler.channels_adminable : Channel.none
   end
 
+  def channels_teachable
+    chalkler.id.present? ? chalkler.channels_teachable : Channel.none
+  end
+
   def subscriptions
     chalkler.present? ? chalkler.subscriptions : Subscription.none
   end
@@ -107,7 +111,7 @@ class TheUser
   def learn_menu_badge_count 
     @learn_menu_badge_count ||= (
       if chalkler?
-        chalkler.bookings.confirmed.upcoming.count
+        chalkler.courses.in_future.by_date.uniq.count
       else
         0
       end

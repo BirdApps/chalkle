@@ -47,6 +47,7 @@ Chalkle::Application.routes.draw do
       end
     end
     member do
+      get 'clone'
       put 'change_status', to: 'courses#change_status', as: :change_status
     end
     collection do
@@ -55,7 +56,7 @@ Chalkle::Application.routes.draw do
   end
 
   get '/c/:id' => 'courses#tiny_url', as: :course_tiny
-
+  post '/bookings/lpn', as: :lpn
   namespace :me do
     root to: 'dashboard#index'
     get '/bookings' => 'dashboard#bookings', as: :bookings
@@ -67,6 +68,7 @@ Chalkle::Application.routes.draw do
 
   namespace :sudo do
     root to: 'silvias#index'
+    resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
     resources :payments
     resources :chalklers do
       collection do
@@ -83,10 +85,6 @@ Chalkle::Application.routes.draw do
     end
 
     resources :bookings do
-      collection do
-        get 'pending_refunds'
-        get 'completed_refunds'
-      end
       member do
         get 'set_status'
         get 'refund'
@@ -104,7 +102,7 @@ Chalkle::Application.routes.draw do
     end
   end
 
-  resources :channels, path: 'providers', only: [:index, :teachers] do
+  resources :channels, path: 'providers', only: [:index, :teachers, :new, :create] do
     #resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
     resources :subscriptions, only: [:create, :destroy], path: 'follow'
   end
@@ -117,6 +115,7 @@ Chalkle::Application.routes.draw do
 #  %w(welcome about blog learn).each do |name|
     match "/#{name}" => redirect("http://blog.chalkle.com/#{name}"), :as => name.to_sym
   end
+
 
   get '/partners' => 'partners#index'
   #get '/partners/pricing' => 'partners#pricing'

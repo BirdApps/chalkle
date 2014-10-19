@@ -65,12 +65,71 @@ body.v2 {
     padding-bottom:75px;
     background-color: #fff;
   }
+  .dropdown.open {
+    @media screen and (max-width: $col-sm) {
+      button {
+        border: 0;
+      }
+      position: fixed;
+      left: 0;
+      width: 100%;
+      top: 68px;
+      z-index: 100;
+      background: #fff;
+      height:100%;
+      .btn {
+        background-color: rgba(255,255,255,0.85);
+        color:#000;
+        text-align: left;
+        line-height: 2.5em;
+        img{
+          margin-top:0 !important;
+        }
+      }
+    }
+  }
+  .dropdown-menu {
+    @include border-radius(0);
+    font-family: "proxima-nova",sans-serif; 
+    left: -1px;
+    background: #dfdfdf;
+    text-shadow: none;
+    font-weight: 100;
+    .divider {
+      background-color: #ccc; 
+    }
+    @media screen and (max-width: $col-sm) {
+      li{
+        a{
+          line-height: 2em;
+        }
+      }
+      top: 50px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      height: 100%; 
+      width: 100%;
+      padding-bottom:100px;
+    }
+  }
+  .text-primary{
+    color: #F5BA56;
+  }
   .borders{
     border: 1px solid rgba(0,0,0,0.16);
     border-bottom: 0px;
   }
   .pad-top {
     padding-top:10px;
+  }
+  .clear-xs{
+    @media screen and (max-width: $col-sm) {
+      clear:both;
+    }
+  }
+  .clear-both{
+    clear:both;
   }
   .pad-top-5 {
     padding-top:5px;
@@ -150,6 +209,12 @@ body.v2 {
     font-weight: 100;
     display: block;
     padding:20px;
+  }
+  .pagination-wrapper{
+    text-align: right;
+    @media(max-width: $col-sm) {
+      text-align: center;
+    }
   }
   .page-menu {
     ul {
@@ -281,6 +346,9 @@ body.v2 {
     padding: 0 !important;
     margin:0 !important;
   }
+  .no-margin {
+    margin:0 !important;
+  }
   .btn-3d {
     -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.08);
     box-shadow:         1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.08);
@@ -390,6 +458,9 @@ body.v2 {
       position:absolute;
       top: 62px;
       background-color: rgba(255, 255, 255, 0.6);
+      @media screen and (max-width: $col-sm) {
+        top: 68px;
+      }
       .search-wrapper {
         @media screen and (max-width: $col-sm) {
           clear: both;
@@ -530,20 +601,6 @@ body.v2 {
             width: 100%;
             padding-bottom:100px;
           }
-        }
-      }
-      .dropdown.open {
-        @media screen and (max-width: $col-sm) {
-          position: fixed;
-          left: 0;
-          width: 100%;
-          top: 68px;
-          z-index: 100;
-          background: #fff;
-          height:100%;
-        }
-        .btn {
-          background-color: rgba(255,255,255,0.85);
         }
       }
     }
@@ -740,6 +797,19 @@ body.v2 {
         width: 100%;
         height: 100%;
       }
+    ._teacher{
+      line-height:2em;
+      margin-bottom: 10px;
+    }
+    ._channel {
+      line-height:2em;
+      margin-bottom: 10px;
+     .channel-img {
+        height: 45px;
+        width: 45px;
+        background: #ccc;
+      }
+    }
     .course-show {
       margin-top:20px;
       .class-repeats{
@@ -807,13 +877,6 @@ body.v2 {
           margin-right:10px;
         }
         line-height: 1.2em;
-      }
-    }
-    ._channel {
-     .channel-img {
-        height: 45px;
-        width: 45px;
-        background: #ccc;
       }
     }
     .course {
@@ -1279,6 +1342,13 @@ body.v2 {
         }
       }
     }
+  }
+  .sudo_booking {
+    line-height: 3em;
+  }
+  .sudo_hello{
+    padding: 5px 0;
+    margin-bottom:10px;
   }
   .page-footer {
     color: #fff;

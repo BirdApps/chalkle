@@ -84,11 +84,7 @@ module LayoutHelper
       params_copy[type_i.to_sym] = params[type_i.to_sym]
     end
     if(types.include? type)
-      if value == 'all'
-         params_copy[type.to_sym] = session[type.to_sym].nil? ? nil : 'all'
-      else
         params_copy[type.to_sym] = value
-      end
     end
     params_copy
   end
@@ -151,6 +147,14 @@ module LayoutHelper
           link: edit_channel_teacher_path(@channel_teacher),
           active: action_parts.include?("edit"),
           title: "Edit"
+        }
+      end
+      if current_user.super?
+        nav_links <<  {
+          img_name: "people",
+          link: becoming_sudo_chalklers_path(@channel_teacher.chalkler_id),
+          active: false,
+          title: "Become"
         }
       end
     elsif @booking.present?

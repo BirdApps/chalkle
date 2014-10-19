@@ -92,7 +92,7 @@
         <% f.object.start_at.count.times do |i| %>
           <%
             start_at = f.object.start_at[i]
-            date_temp = start_at.to_date
+            date_temp = start_at.to_datetime
             time_temp = date_temp.strftime('%l:%M %p')
             hours_temp = f.object.duration_hours[i]
             minutes_temp = f.object.duration_minutes[i]

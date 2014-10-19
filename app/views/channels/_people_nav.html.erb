@@ -1,6 +1,6 @@
 <nav class="page-menu">
   <ul>
-    <% if policy(@channel).admin? %>
+    <% if policy(@channel).read? %>
       <li>
         <%= link_to 'Admins', channels_admins_path(@channel.url_name) %>
       </li>

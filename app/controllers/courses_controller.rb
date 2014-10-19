@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings]
+  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new]
   before_filter :check_clear_filters, only: [:index]
@@ -20,13 +20,36 @@ class CoursesController < ApplicationController
   end
 
   def show
+    authorize @course
     redirect_to @course.path unless request.path == @course.path and return
   end
 
   def teach
+    @page_subtitle = "Use chalkle to"
+    @page_title = "Teach"
+    @meta_title = "Teach with "
+
+    @page_context_links = [
+      {
+        img_name: "bolt",
+        link: new_course_path,
+        active: false,
+        title: "New Class"
+      },
+      {
+        img_name: "people",
+        link: new_channel_path,
+        active: false,
+        title: "New Provider"
+      }
+    ]
+
     render 'teach'
   end
   def learn
+    @page_subtitle = "Use chalkle to"
+    @page_title =  "Learn"
+    @meta_title = "Learn with "
     @upcoming_courses = current_user.courses.in_future.by_date.uniq
     render 'learn'
   end
@@ -184,8 +207,13 @@ class CoursesController < ApplicationController
       end
     end
 
+    def clone
+      #authorize @course
+      #@course.
+    end
+
     def check_course_visibility
-      unless !@course || policy(@course).edit?
+      unless !@course || policy(@course).read?
         unless @course.published?
           flash[:notice] = "This class is no longer available."
           redirect_to :root

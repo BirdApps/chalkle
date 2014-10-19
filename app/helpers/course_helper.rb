@@ -35,13 +35,17 @@ Your Chalkle Administrator")
     end
   end
 
-  def quick_date_time(date, use_relative_day = true)
+  def quick_date_time(date, use_relative_day = true, include_year = false)
     return unless date
     relative = relative_day_name date.to_date
     if relative && use_relative_day
       relative+" "+pretty_time(date)
     else
-      date.strftime("%d %b")+" — "+pretty_time(date)
+      if include_year
+        date.strftime("%d %b, %Y")+" — "+pretty_time(date)
+      else
+        date.strftime("%d %b")+" — "+pretty_time(date)
+      end
     end
   end
 
@@ -51,7 +55,7 @@ Your Chalkle Administrator")
     return relative if relative && use_relative_day
     ordinalDay = date.day.ordinalize
     if include_year
-      date.strftime("%B #{ordinalDay}, %Y")
+      date.strftime("%B #{ordinalDay}, %y")
     else
       date.strftime("%B #{ordinalDay}")
     end

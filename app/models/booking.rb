@@ -3,7 +3,7 @@ class Booking < ActiveRecord::Base
   attr_accessible *BASIC_ATTR = [
     :course_id, :guests, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
   ]
-  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :paid, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   #booking statuses
   STATUS_5 = "pending" #payment pending
@@ -11,8 +11,8 @@ class Booking < ActiveRecord::Base
   STATUS_3 = "refund_pending"
   STATUS_2 = "no"
   STATUS_1 = "yes"
-  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4]
-  BOOKING_STATUSES = %w(yes no refund_pending refund_complete)
+  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
+  BOOKING_STATUSES = %w(yes no refund_pending pending refund_complete)
 
   belongs_to :course
   belongs_to :chalkler
@@ -27,13 +27,15 @@ class Booking < ActiveRecord::Base
   validates_presence_of :course_id, :status, :name, :chalkler
   validates_presence_of :payment_method, :unless => :free?
 
-  scope :confirmed, where(status: STATUS_1)
-  scope :waitlist, where(status: STATUS_3)
-  scope :status_no, where(status: STATUS_2)
-  scope :interested, where{ (status == STATUS_1) | (status == STATUS_3) | (status == STATUS_4) }
-  scope :billable, joins(:course).where{ (courses.cost > 0) & (status == 'yes') & ((chalkler_id != courses.teacher_id) | (guests > 0)) }
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
+  scope :refund_pending, where(status: STATUS_3)  
+  scope :refund_complete, where(status: STATUS_4) 
+  scope :unconfirmed, visible.where(status: STATUS_5)
+  scope :confirmed, where(status: STATUS_1)
+  scope :status_no, where(status: STATUS_2)
+  scope :interested, where{ (status == STATUS_1) | (status == STATUS_5) }
+  scope :billable, joins(:course).where{ (courses.cost > 0) & (status == 'yes') & ((chalkler_id != courses.teacher_id) | (guests > 0)) }
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
   scope :by_date, order(:created_at)
   scope :by_date_desc, order('created_at DESC')
@@ -47,6 +49,9 @@ class Booking < ActiveRecord::Base
 
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
 
+  def paid
+    self.payment.present? ? payment.total : 0
+  end
 
   def self.paid
    select{|booking| (booking.paid || 0) >= booking.cost}
@@ -90,7 +95,7 @@ end
   end
 
   def cancelled?
-    true if status == STATUS_1 || status == STATUS_5
+    true if status == STATUS_1
   end
 
   def paid?
@@ -151,8 +156,7 @@ end
     sprintf('%.2f', paid)
   end
 
-
-  def status_formatted
+  def self.status_formatted(status)
     case status 
     when STATUS_1
       'Confirmed'
@@ -163,10 +167,14 @@ end
     when STATUS_4
       'Cancelled & Refunded'
     when STATUS_5
-      'Payment was not completed'
+      'Payment is being confirmed'
     else
        'Unknown status'
     end
+  end
+
+  def status_formatted
+    Booking.status_formatted self.status
   end
 
   def refundable?
@@ -175,6 +183,14 @@ end
 
   def no_refund_period_in_days
     3
+  end
+
+  def transaction_id
+    payment.present? && payment.swipe_transaction_id.present? ? payment.swipe_transaction_id : "nil"
+  end
+
+  def transaction_url
+    payment.present? && payment.swipe_transaction_id.present? ? "https://merchant.swipehq.com/admin/main/index.php?module=transactions&action=txn-details&transaction_id="+payment.swipe_transaction_id : '#'
   end
 
   def teacher?

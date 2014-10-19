@@ -6,7 +6,7 @@ class SwipeWrapper
   def create_tx_identifier_for(params)
     @amount = params[:amount]
     @currency = 'NZD'
-    @booking = params[:booking]
+    @booking_id = params[:booking_id]
     @description = params[:description]
     @return_url = params[:return_url]
     response = self.class.post(swipe_url, query: query_params)

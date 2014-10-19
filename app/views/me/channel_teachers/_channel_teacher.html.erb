@@ -1,14 +1,10 @@
-<div class="teacher row">
-  <div class="col-xs-12 col-sm-8">
-    <img class="avatar avatar64" src="<%= channel_teacher.avatar %>">
-    <div class="pull-left"> 
-      <div class="name">
-        <%= link_to channel_teacher.name, channel_channel_teacher_path(channel_teacher.channel.url_name, channel_teacher.id) %>
-      </div>
-
+<div class="_teacher row light">
+  <img class="avatar avatar32" src="<%= channel_teacher.avatar %>">
+  <div class="pull-left"> 
+    <div class="name">
+      <%= link_to channel_teacher.name, channel_channel_teacher_path(channel_teacher.channel.url_name, channel_teacher.id) %>,
+      <%= link_to channel_teacher.channel.name, channel_path(channel_teacher.channel.url_name) %>
+      
     </div>
-  </div>
-  <div class="col-xs-6 col-sm-4">
-    
   </div>
 </div>

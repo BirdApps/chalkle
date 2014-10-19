@@ -1,0 +1,28 @@
+<%= render 'sub_menu' %>
+
+<div class="row odd">
+  <div class="col-xs-5 col-md-2">Name</div>
+  <div class="col-xs-7 col-md-10"><%= @hello.name %></div>
+</div>
+<div class="row even">
+  <div class="col-xs-5 col-md-2">Organisation</div>
+  <div class="col-xs-7 col-md-10"><%= @hello.organisation %></div>
+</div>
+<div class="row odd">
+  <div class="col-xs-5 col-md-2">Location</div>
+  <div class="col-xs-7 col-md-10"><%= @hello.location %></div>
+</div>
+<div class="row even">
+  <div class="col-xs-5 col-md-2">Contact Details</div>
+  <div class="col-xs-7 col-md-10"><%= @hello.contact_details %></div>
+</div>
+<div class="row odd">
+  <div class="col-xs-5 col-md-2">Message</div>
+  <div class="col-xs-7 col-md-10"><%= @hello.comment %></div>
+</div>
+<br /><br />
+<% if @hello.visible %>
+  <%= link_to "Archive", edit_sudo_partner_inquiry_path(@hello.id, {new_status: 'hidden'}), class: 'btn btn-primary' %>
+<% else %>
+  <%= link_to "Mark Unread", edit_sudo_partner_inquiry_path(@hello.id, {new_status: 'visible'}), class: 'btn btn-primary pull-right' %>
+<% end %>

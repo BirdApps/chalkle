@@ -7,15 +7,8 @@
       <% @upcoming_courses.each do |course| %>
         <% bookings = course.bookings.confirmed.where(chalkler_id: current_user.id) %>
           <% if bookings.present? %>
-            <div class="col-sm-10">
+              <% @bookings_count = bookings.count %>
               <%= render partial: 'me/bookings/booking', locals: {booking: bookings.first } %>
-            </div>
-            <div class="col-sm-2">
-              <a href="<%= course.path %>" class="block center alert alert-success small">
-                <%= bookings.count %>
-                <br /> <%= 'Booking'.pluralize(bookings.count) %>
-              </a>
-            </div>
           <% end %>
       <% end %>
   </div>
@@ -26,7 +19,7 @@
         <hr />
       </div>
       <div class="col-xs-12">
-        <%= render partial: 'channels/channel', collection: current_chalkler.channels.order('name ASC') %>
+        <%= render partial: 'me/channels/channel', collection: current_chalkler.channels.order('name ASC') %>
       </div>
     <% end %>
   </div>

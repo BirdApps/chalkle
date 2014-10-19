@@ -1,16 +1,14 @@
-<div class="col-xs-12 col-sm-6">
-  <div class="_channel">
-    <%= link_to(channel_path(channel.url_name)) do %>
-      <% if channel.logo.file %>
-        <img src="<%= channel.logo.url %>" class='channel-img inline' > 
-      <% end %>
-        <h4 class="inline">
-          <%= channel.name %> 
-            <%= if channel.courses.upcoming(nil, :include_unpublished => true).taught_by_chalkler(current_user).count > 0  
-              "(#{channel.courses.upcoming(nil, :include_unpublished => true).taught_by_chalkler(current_user).count})"
-          end %>
-
-        </h4>
+<div class="_channel">
+  <%= link_to(channel_path(channel.url_name)) do %>
+    <% if channel.logo.file %>
+      <img src="<%= channel.logo.url %>" class='channel-img inline' > 
     <% end %>
-  </div>
+    <h5 class="inline">
+      <%= channel.name %>
+      <% upcoming_count = channel.courses.upcoming.taught_by_chalkler(current_user).count %> 
+      <% if upcoming_count > 0 %>
+          <%= "(#{upcoming_count})" %>
+      <% end %>
+    </h5>
+  <% end %>
 </div>

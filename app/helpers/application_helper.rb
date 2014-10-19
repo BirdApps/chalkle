@@ -43,11 +43,17 @@ module ApplicationHelper
   end
 
   def paginate_position
-    @paginate_position ||= paginate_pos
+    return @paginate_position if @paginate_position
+    page_num = params[:page].to_i > 0 ? params[:page].to_i-1 : 0 
+    if page_num > paginate_count
+      @paginate_position = paginate_count 
+    else
+      @paginate_position = page_num
+    end
   end
 
   def paginate_count
-    @paginate_count ||= (@courses.count / paginate_take) + 1
+    @paginate_count ||= (@pagination_list.count / paginate_take) + 1
   end
 
   def paginate_take
@@ -58,8 +64,9 @@ module ApplicationHelper
     @paginate_skip ||= paginate_position*paginate_take
   end
 
-  def paginate_courses(courses)
-    courses.drop(paginate_skip).take(paginate_take)
+  def paginate_these(list)
+    @pagination_list = list
+    list.drop(paginate_skip).take(paginate_take)
   end
 
   def filter_regions
@@ -97,15 +104,5 @@ module ApplicationHelper
     end
     (courses.map &:channel).compact.uniq.sort_by{|c| c.name.downcase }
   end
-
-  private
-    def paginate_pos
-      page_num = params[:page].to_i > 0 ? params[:page].to_i-1 : 0 
-      if page_num > paginate_count
-        paginate_count 
-      else
-        page_num
-      end
-    end
 
 end

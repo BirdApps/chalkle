@@ -5,24 +5,13 @@ class Sudo::BookingsController < Sudo::BaseController
   before_filter :set_title, except: [:pending_refunds,:completed_refunds]
 
   def index
-    @bookings = Booking.by_date_desc.limit(100)
-    bookings_chart_with @bookings
-  end
-
-  def pending_refunds
-    @page_title = "Pending Refunds"
-    @bookings = Booking.where(status: 'refund_pending')
-    bookings_chart_with @bookings
-
-    render 'index'
-  end
-
-  def completed_refunds
-    @page_title = "Completed Refunds"
-    @bookings = Booking.where(status: 'refund_complete')
-    bookings_chart_with @bookings
-
-    render 'index'
+    status = params[:status].present? ? params[:status] : 'refund_pending'
+    if Booking::BOOKING_STATUSES.include?(status)
+      @bookings = Booking.visible.where(status: status).by_date_desc
+    else
+      @bookings = Booking.visible.by_date_desc
+    end
+    #bookings_chart_with @bookings
   end
 
   def refund

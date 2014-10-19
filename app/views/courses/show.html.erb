@@ -1,33 +1,4 @@
 <div class="course-show">
-  <% if @course.status == 'Cancelled' %>
-    <div class="alert alert-danger clearfix">
-      <h3 class="flush">Cancelled</h3>
-      <p><strong>Reason:</strong> <%= @course.cancelled_reason %></p>
-    </div>
-  <% elsif @course.status == 'Completed' %>
-    <div class="alert alert-success clearfix">
-      <h3 class="flush">Completed</h3>
-      <p>
-        <%= @course.type.capitalize %> ran on <%= day_ordinal_month(@course.start_at,true,true) %>
-      </p>
-    </div>
-  <% elsif @course.status == 'Published' %>
-    <% if @course.between_start_and_end %>
-      <div class="alert alert-warning clearfix">
-        <% if @course.lesson_in_progress %>
-          <h3 class="flush">In Progress</h3>
-          <p>
-            Class finishes at <%= pretty_time @course.lesson_in_progress.end_at %>
-          </p>
-        <% end %>
-        <% if @course.course? %>
-          <p>
-            The classes in this course have already started. <%= link_to "Check out the provider's other courses as it may run again", channel_path(@course.channel.url_name)  %>
-          </p>
-        <% end %>
-      </div>
-    <% end %>
-  <% end %>
   <%= render 'show_admin_bar' %>
   <%= render 'show_my_booking' %>
   <div class="row">
@@ -72,7 +43,7 @@
               FREE
             <% end %>
           </div>
-          <% if @course.next_class.present? && (@course.status != 'Unreviewed' || policy(@course).admin?) %>
+          <% if @course.next_class.present? && (@course.next_class.status == 'Published' || policy(@course).read?) %>
             <div class="col-xs-12 center small grey class-repeats">
               <br />
               <div class="upper">CLASS REPEATS</div>
