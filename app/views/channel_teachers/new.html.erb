@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <%= f.input :can_make_classes, collection: [['Can Publish Classes',true],['Cannot Publish Classes',false]],include_blank: false,  label: "Permissions", wrapper: :horizontal %>
+    <%= f.input :can_make_classes, collection: [['Can Create & Manage Classes',true],['Cannot Create or Manage Classes',false]],include_blank: false,  label: "Permissions", wrapper: :horizontal %>
     
     <p class="small grey center">
       If the teacher is already registered with chalkle,<br /> be sure to use the email they used when signing up.
