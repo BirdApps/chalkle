@@ -5,7 +5,7 @@ class ChalklerMailer < ActionMailer::Base
   def welcome(chalkler)
     @chalkler = chalkler
     mail(to: @chalkler.email, subject: "#{@chalkler.name} welcome to a whole new world of learning!") do |format|
-      format.text{ render :layout => 'standard_mailer' }
+      format.text { render :layout => 'standard_mailer' }
       format.html { render :layout => 'standard_mailer' }
     end
   end
