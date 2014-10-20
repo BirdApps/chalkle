@@ -139,7 +139,7 @@ module LayoutHelper
         img_name: "bolt",
         link: channel_channel_teacher_path(@channel_teacher.channel.url_name,@channel_teacher.id),
         active: action_parts.include?("show"),
-        title: "Upcoming Classes"
+        title: "Classes"
       }
       if policy(@channel_teacher).edit?
         nav_links <<  {
