@@ -20,7 +20,7 @@
         <% end %>
         <div class=" small light grey">
           <% if @course.limited_spaces?  %>
-            <%= @course.spaces_left? ? @course.spaces_left.to_s+" spots left" : "Booked out" %> 
+            <%= @course.spaces_left? ? @course.spaces_left.to_s + " spots left" : "Booked out" %> 
           <% end %>
         </div>
         <br />
@@ -91,7 +91,7 @@
     <div class="col-sm-4 hidden-xs small grey light pad-top">
       <a href="#map-canvas"
         <span class="fa fa-map-marker"></span>
-        <%= @course.address || @course.venue %>
+        <%= @course.address || to_html(@course.venue) %>
       </a>
     </div>
     <div class="col-sm-3 col-xs-6 small grey light pad-top">
@@ -109,7 +109,7 @@
         <div class="col-sm-6 col-xs-12 map-overlay">
           <div class="col-xs-12 xol-sm-10 col-sm-offset-2">
             <p class="grey light">
-              <%= @course.venue_truncated(200) %>
+              <%= to_html @course.venue_truncated(200) %>
             </p>
             <p class="grey light hidden-xs">
               <%= @course.address_formatted %>

@@ -78,13 +78,6 @@ ActiveRecord::Schema.define(:version => 20141017080823) do
     t.boolean  "booking_completed_mailer_sent", :default => false
     t.integer  "teacher_payment_id"
     t.integer  "channel_payment_id"
-    t.string   "swipe_transaction_id"
-    t.string   "swipe_status"
-    t.string   "swipe_name_on_card"
-    t.string   "swipe_customer_email"
-    t.string   "swipe_currency"
-    t.string   "swipe_td_user_data"
-    t.string   "swipe_token"
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -315,7 +308,6 @@ ActiveRecord::Schema.define(:version => 20141017080823) do
     t.string   "course_class_type"
     t.text     "note_to_attendees"
     t.text     "cancelled_reason"
-    t.string   "cancelled_reason"
     t.datetime "end_at"
   end
 
