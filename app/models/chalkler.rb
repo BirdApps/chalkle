@@ -67,6 +67,7 @@ class Chalkler < ActiveRecord::Base
 
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+    ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
   end
 
   def upcoming_teaching
