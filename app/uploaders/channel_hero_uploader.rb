@@ -5,8 +5,6 @@ class ChannelHeroUploader < ChalkleBaseImageUploader
 
   after :cache, :cache_average_color
 
-  process :resize_to_fill => [2400, 2400]
-
   version :blurred do 
     process :blur => 25
   end
