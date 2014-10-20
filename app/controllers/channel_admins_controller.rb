@@ -2,8 +2,8 @@ class ChannelAdminsController < ApplicationController
   before_filter :load_admin, only: [:edit, :update]
 
   def new
-      @channel_admin = ChannelAdmin.new channel_id: @channel.id
-      authorize @channel_teacher 
+      @channel_admin = ChannelAdmin.new channel: @channel
+      authorize @channel_admin
       @page_subtitle = "Create a New"
       @page_title = "Admin"
   end
