@@ -38,7 +38,7 @@
     <ul class="dropdown-menu text-left" role="menu" aria-labelledby="dropdownMenu1">
       <% Booking::BOOKING_STATUSES.each do |status| %>
         <li>
-          <%= link_to 'Mark: '+Booking.status_formatted(status), set_status_sudo_booking_path(booking.id, status: status) %>
+          <%= link_to 'Mark: '+Booking.status_formatted(status), set_status_sudo_booking_path(@booking.id, status: status) %>
         </li>
       <% end %>
     </ul>
