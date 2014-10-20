@@ -84,6 +84,7 @@ $(function(){
   var header = $('#header');
   var header_content_bg = $('body.v2 .header_content_bg');
   var filter_bar = $('.filter-nav');
+  var coloring = $('.coloring');
 
   background_size_for_header_images = function(){
     var window_width = $(window).width();
@@ -95,6 +96,16 @@ $(function(){
   fade_filterbar = function(){
     scrolltop = $(document).scrollTop();
     filter_bar.css("opacity", (-scrolltop+400)/65 );
+    if(scrolltop > 300) {
+      filter_bar.css("margin-top", ((-scrolltop+300)/85*30) );
+      coloring.css( { "padding-top" : ((-scrolltop+300)/85*10) + 10 +"px" } );
+      coloring.css( { "padding-bottom" : ((-scrolltop+300)/85*10) + 10 +"px" } );
+    } else {
+      filter_bar.css("margin-top", 0);
+      coloring.css( { "padding-top" : '10px' } );
+      coloring.css( { "padding-bottom" : '10px' } );
+
+    };
   };
 
   background_size_for_header_images();
