@@ -21,7 +21,7 @@ class Sudo::BookingsController < Sudo::BaseController
       flash[:notice] = "Booking #{@booking.id} could not be marked as refunded"
     end
 
-    redirect_to pending_refunds_sudo_bookings_path
+    redirect_to sudo_bookings_path({status: 'refund_pending'})
   end
 
   def set_status
