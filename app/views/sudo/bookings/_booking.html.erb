@@ -21,7 +21,7 @@
     $<%= booking.paid_formatted %>/<%= booking.cost_formatted %>
   </div>
   <div class="col-md-2 col-xs-6">
-    <% if action_parts.include?("pending_refunds") %>
+    <% if params[:status] == "refund_pending" %>
       <%= link_to 'Mark Refunded', refund_sudo_booking_path(booking.id), class: 'btn btn-primary col-xs-12' %>
     <% elsif booking.payment %>
       <%= link_to booking.payment.id, sudo_payment_path(booking.payment.id), class: 'btn btn-success col-xs-12' %>
