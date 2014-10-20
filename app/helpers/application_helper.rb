@@ -1,6 +1,7 @@
 # encoding: UTF-8
 module ApplicationHelper
   
+
   def title(page_title)
     content_for :title, "#{page_title} | chalkle°"
   end
@@ -37,6 +38,11 @@ module ApplicationHelper
       nil
     end
   end
+
+  def to_html(markdown)
+    ("<div class='markdown'>#{RDiscount.new(markdown).to_html}</div>").html_safe
+  end
+
 
   def nav_badge_format()
     yield < 1 ? "" : " (#{yield})"

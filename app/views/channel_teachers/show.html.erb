@@ -2,7 +2,7 @@
 <br /> <br />
 <% if @channel_teacher.bio.present? %>
   <p class="center light">
-     <%= @channel_teacher.bio %>
+     <%= to_html @channel_teacher.bio %>
   </p>
 <% else %>
   <p class="center light">
