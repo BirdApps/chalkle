@@ -239,7 +239,8 @@ $(function(){
         $(date_picker).datepicker({
           startDate: new Date() //instance_date
         }).on('changeDate', change_date_picker);
-
+        
+        $(date_picker).datepicker('update',saved_datepick);
         highlight_date_in_picker(date_picker);
         
         /*INIT TIME PICKER*/
