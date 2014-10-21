@@ -32,7 +32,12 @@ class CoursesController < ApplicationController
         @page_subtitle = "From all your providers"
     end
     @page_title = "All Classes"
-    @courses = filter_courses(current_user.all_teaching)
+
+    @courses = current_user.all_teaching
+    
+    if params[:search].present?
+      courses = Course.search params[:search], courses
+    end
   end
 
   def teach
