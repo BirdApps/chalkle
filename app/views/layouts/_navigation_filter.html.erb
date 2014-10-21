@@ -82,7 +82,7 @@
             </span>
             <input type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search">
             <% params.each do |key,value| %>
-              <% unless %w(controller action search).include? key %>
+              <% unless %w(controller action search page).include? key %>
                 <input type="hidden" name="<%= key %>" value="<%= value %>" />
               <% end  %>
             <% end %>
