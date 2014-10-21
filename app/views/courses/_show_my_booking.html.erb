@@ -1,4 +1,4 @@
-<% if (current_chalkler && (bookings = @course.bookings_for(current_chalkler)).present?) || current_user.super? %>
+<% if (current_chalkler && (bookings = @course.bookings_for(current_chalkler)).present? && bookings.any?) || current_user.super? %>
     <div class="col-sm-2">
     </div>
     <div class="col-sm-8"> 
