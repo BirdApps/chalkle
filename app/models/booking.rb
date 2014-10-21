@@ -1,6 +1,6 @@
 class Booking < ActiveRecord::Base
 
-  require 'CSV'
+  require 'csv'
 
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
@@ -212,7 +212,6 @@ end
     CSV.generate do |csv|
       csv << fields_for_csv.map(&:to_s)
       bookings.each do |booking| 
-        binding.pry
         csv << fields_for_csv.map do |field| booking.send(field) 
         end
       end
