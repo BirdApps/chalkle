@@ -11,7 +11,11 @@
   </div>
 <% end %>
 
-<%= render paginate_these(@courses) %>
+<% if params['action'] == 'mine' %>
+  <%= render partial: 'me/courses/course', collection: paginate_these(@courses) %>
+<% else %>
+  <%= render paginate_these(@courses) %>
+<% end %>
 
 <div class="row  pagination-wrapper">
   <ul class="pagination">

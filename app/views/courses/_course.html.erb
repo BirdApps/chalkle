@@ -4,10 +4,8 @@
       <div class="porthole">
         <a href="<%= course.path %>" title="<%= course.name %>">
           <% if course.course_upload_image.present? %>
-          <div class="img" style="background-image: url(<%= course.course_upload_image.url(:large).html_safe %>);">
-          </div>
-          <% elsif course.category %>
-            <%= category_image course, 150 %>
+            <div class="img" style="background-image: url(<%= course.course_upload_image.url(:large).html_safe %>);">
+            </div>
           <% else %>
             <%= image_tag(
               "categories/grey.png",
@@ -59,8 +57,10 @@
         </div>
         <% unless course.published?  %>
           <div class="vertical-seperator pull-left hidden-xs"></div>
-          <div class="alert alert-warning pull-left">
-            <h4 class="warn-unpublished">UNPUBLISHED</h4>
+          <div class="margin-top-5 pull-left">
+            <div class="alert alert-<%= course.status_color %> flush">
+              <h4 class="warn-unpublished light small"><%= course.status %></h4>
+            </div>
           </div>
         <% end %>
         <% if course.reviews? %> 

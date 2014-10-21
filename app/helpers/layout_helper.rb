@@ -174,6 +174,12 @@ module LayoutHelper
           active: action_parts.include?("edit"),
           title: "Edit"
         }
+        nav_links << {
+          img_name: "people",
+          link: clone_course_path(@course),
+          active: false,
+          title: "Clone"
+        }
       end
     elsif @channel.id.present?
       nav_links << {

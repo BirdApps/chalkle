@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
   before_filter :check_course_visibility, only: [:show]
-  before_filter :authenticate_chalkler!, only: [:new]
+  before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
   before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status]
@@ -24,6 +24,17 @@ class CoursesController < ApplicationController
     redirect_to @course.path unless request.path == @course.path and return
   end
 
+  def mine
+    if current_user.channels_adminable.count == 1
+      channel = current_user.channels_adminable.first
+      @page_subtitle = "<a href='#{channel_path(channel.url_name)}'>#{channel.name}</a>".html_safe
+    else
+        @page_subtitle = "From all your providers"
+    end
+    @page_title = "All Classes"
+    @courses = filter_courses(current_user.all_teaching)
+  end
+
   def teach
     @page_subtitle = "Use chalkle to"
     @page_title = "Teach"
@@ -31,18 +42,27 @@ class CoursesController < ApplicationController
 
     @page_context_links = [
       {
-        img_name: "bolt",
-        link: new_course_path,
-        active: false,
-        title: "New Class"
-      },
-      {
         img_name: "people",
         link: new_channel_path,
         active: false,
         title: "New Provider"
+      },
+      {
+        img_name: "bolt",
+        link: new_course_path,
+        active: false,
+        title: "New Class"
       }
     ]
+
+    if current_user.all_teaching.count > 0
+      @page_context_links << {
+        img_name: "book",
+        link: mine_courses_path,
+        active: false,
+        title: "My Classes"
+      }
+    end
 
     render 'teach'
   end

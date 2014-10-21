@@ -61,10 +61,6 @@ class Chalkler < ActiveRecord::Base
   before_create :set_reset_password_token
 
 
-  def adminable_courses
-    courses_adminable.merge courses_teaching    
-  end
-
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
@@ -72,6 +68,10 @@ class Chalkler < ActiveRecord::Base
 
   def upcoming_teaching
     (courses_adminable.in_future+courses_teaching.in_future).uniq.sort_by(&:start_at) 
+  end
+
+  def all_teaching
+    (courses_adminable+courses_teaching).uniq.sort_by(&:start_at).reverse
   end
 
   class << self

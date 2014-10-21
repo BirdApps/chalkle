@@ -52,6 +52,7 @@ Chalkle::Application.routes.draw do
     end
     collection do
       get 'calculate_cost'
+      get 'mine'
     end
   end
 

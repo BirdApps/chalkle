@@ -166,6 +166,21 @@ class Course < ActiveRecord::Base
     sprintf('%.2f', cost)
   end
 
+  def status_color
+    case status
+      when "Processing"
+        'warning'
+      when "Completed"
+        'info'
+      when "Unreviewed"
+        'danger'
+      when "Cancelled"
+        'default'
+      when "Published"
+        'success'
+    end
+  end
+
   def repeating_class?
     true if repeat_course.present?
   end
