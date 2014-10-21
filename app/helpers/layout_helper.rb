@@ -178,7 +178,7 @@ module LayoutHelper
           img_name: "people",
           link: clone_course_path(@course),
           active: false,
-          title: "Clone"
+          title: "Copy"
         }
       end
     elsif @channel.id.present?

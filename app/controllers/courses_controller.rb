@@ -63,9 +63,9 @@ class CoursesController < ApplicationController
         title: "My Classes"
       }
     end
-
     render 'teach'
   end
+
   def learn
     @page_subtitle = "Use chalkle to"
     @page_title =  "Learn"
@@ -155,6 +155,21 @@ class CoursesController < ApplicationController
     render json: @course.as_json(methods: [:channel_fee, :chalkle_fee, :processing_fee, :teacher_max_income, :teacher_min_income, :channel_min_income, :channel_max_income, :teacher_pay_variable, :teacher_pay_flat])
   end
 
+
+  def clone
+    authorize @course
+    new_course = Course.create @course.attributes.except('id','description','created_at','updated_at','teacher_payment','published_at','chalkle_payment','cached_channel_fee','cached_chalkle_fee','end_at')
+    new_course.status = "Unreviewed"
+    new_course.course_upload_image = @course.course_upload_image
+    @course.lessons.each do |lesson|
+      new_lesson = Lesson.new lesson.attributes
+      new_lesson.course = new_course
+      new_course.lessons << lesson
+    end
+    new_course.save
+    redirect_to edit_course_path(new_course.id), notice: "You are now editing a copy of "+new_course.name
+  end
+
   private
 
     def take_me_to
@@ -225,11 +240,6 @@ class CoursesController < ApplicationController
           @channel = Channel.new(name: "All Providers")
         end
       end
-    end
-
-    def clone
-      #authorize @course
-      #@course.
     end
 
     def check_course_visibility
