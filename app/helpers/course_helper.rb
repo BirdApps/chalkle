@@ -41,7 +41,7 @@ Your Chalkle Administrator")
     if relative && use_relative_day
       relative+" "+pretty_time(date)
     else
-      if include_year
+      if include_year || date.year != DateTime.current.year
         date.strftime("%d %b, %Y")+" — "+pretty_time(date)
       else
         date.strftime("%d %b")+" — "+pretty_time(date)

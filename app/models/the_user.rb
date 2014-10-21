@@ -97,15 +97,19 @@ class TheUser
   end
 
   def courses_adminable
-    chalkler.id.present? ? chalkler.adminable_courses : Course.none
+    chalkler.id.present? ? chalkler.courses_adminable : Course.none
   end
 
   def courses_teaching
-    chalkler.id.present? ? chalkler.adminable_courses : Course.none
+    chalkler.id.present? ? chalkler.courses_teaching : Course.none
   end
 
   def upcoming_teaching
     chalkler.id.present? ? chalkler.upcoming_teaching : Course.none
+  end
+
+  def all_teaching
+    chalkler.id.present? ? chalkler.all_teaching : Course.none
   end
 
   def learn_menu_badge_count 
