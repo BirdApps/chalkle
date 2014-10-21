@@ -17,7 +17,7 @@ Your Chalkle Administrator")
     if course.duration.to_i/60 >= 60
      duration += (course.duration.to_i/60/60).to_s+" hrs "
     end
-    duration += (course.duration.to_i/60%30).to_s+" mins"
+    duration += (course.duration.to_i/60%60).to_s+" mins" unless course.duration.to_i/60%60 == 0
     
   end
 
