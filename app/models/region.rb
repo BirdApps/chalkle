@@ -2,8 +2,12 @@
 class Region < ActiveRecord::Base
   attr_accessible :name, :url_name, :courses
   attr_accessible :name, :url_name, :courses, as: :admin
+
   default_scope order('name ASC')
+
   after_create :set_url_name
+
+  mount_uploader :hero, ChannelHeroUploader
 
   has_many :courses
   

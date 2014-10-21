@@ -1356,6 +1356,14 @@ body.v2 {
   .sudo_booking {
     line-height: 3em;
   }
+
+  .hero.image-preview {
+    height: 175px;
+    width:100%;
+    max-width:600px;
+    margin:0 auto 10px;
+  }
+
   .sudo_hello{
     padding: 5px 0;
     margin-bottom:10px;
