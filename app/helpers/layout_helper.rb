@@ -78,7 +78,7 @@ module LayoutHelper
   end
 
   def filter_params(type, value)
-    types = %w(region topic provider search page take)
+    types = %w(region topic provider search take)
     params_copy = Hash.new
     types.each do |type_i|
       params_copy[type_i.to_sym] = params[type_i.to_sym]
