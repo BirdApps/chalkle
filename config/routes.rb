@@ -41,6 +41,7 @@ Chalkle::Application.routes.draw do
     end
     resources :bookings do
       get :payment_callback
+      collection { get 'csv' }
       member do
         get 'cancel'
         put 'cancel', to: 'bookings#confirm_cancel', as: :cancel

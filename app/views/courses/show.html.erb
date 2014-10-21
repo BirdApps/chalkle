@@ -20,7 +20,7 @@
         <% end %>
         <div class=" small light grey">
           <% if @course.limited_spaces?  %>
-            <%= @course.spaces_left? ? @course.spaces_left.to_s+" spots left" : "Booked out" %> 
+            <%= @course.spaces_left? ? @course.spaces_left.to_s + " spots left" : "Booked out" %> 
           <% end %>
         </div>
         <br />
@@ -67,10 +67,10 @@
           <% end %>
         </div>
       </div>
-      <%= @course.do_during_class %>
+      <%= to_html @course.do_during_class %>
       <br /><br />
       <small>
-        <%= @course.learning_outcomes %>
+        <%= to_html @course.learning_outcomes %>
       </small>
     </div>
   </div>
@@ -91,7 +91,7 @@
     <div class="col-sm-4 hidden-xs small grey light pad-top">
       <a href="#map-canvas"
         <span class="fa fa-map-marker"></span>
-        <%= @course.address || @course.venue %>
+        <%= @course.address || to_html(@course.venue) %>
       </a>
     </div>
     <div class="col-sm-3 col-xs-6 small grey light pad-top">
@@ -109,7 +109,7 @@
         <div class="col-sm-6 col-xs-12 map-overlay">
           <div class="col-xs-12 xol-sm-10 col-sm-offset-2">
             <p class="grey light">
-              <%= @course.venue_truncated(200) %>
+              <%= to_html @course.venue_truncated(200) %>
             </p>
             <p class="grey light hidden-xs">
               <%= @course.address_formatted %>
@@ -133,7 +133,7 @@
       <% if @course.suggested_audience.present?  %>
         <h5 class="upper">This class us suitable for</h5>
         <p>
-          <%= @course.suggested_audience %>
+          <%= to_html @course.suggested_audience %>
         </p>
       <% end %>
       
@@ -142,7 +142,7 @@
       <% if @course.prerequisites.present?  %>
         <h5 class="upper">Be sure to bring</h5>
         <p>
-          <%= @course.prerequisites %>
+          <%= to_html @course.prerequisites %>
         </p>
       <% end %>
     </div>
@@ -153,7 +153,7 @@
       <% if @course.additional_comments.present?  %>
         <h5 class="upper">Additional information</h5>
         <p>
-          <%= @course.additional_comments %>
+          <%= to_html @course.additional_comments %>
         </p>
       <% end %>
     </div>

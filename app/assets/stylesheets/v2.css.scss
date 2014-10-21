@@ -357,6 +357,14 @@ body.v2 {
     padding: 0 !important;
     margin:0 !important;
   }
+  
+  @media(max-width: $col-sm) {
+    .flush-xs {
+      padding: 0 !important;
+      margin: 0 -16px !important;
+    }
+  }
+  
   .no-margin {
     margin:0 !important;
   }
@@ -466,7 +474,7 @@ body.v2 {
     .filter-nav {
       width:100%;
       clear:both;
-      position:absolute;
+      position:fixed;
       top: 62px;
       background-color: rgba(255, 255, 255, 0.6);
       @media screen and (max-width: $col-sm) {
@@ -1390,6 +1398,20 @@ body.v2 {
       float: left;
       max-width: 100px;
       text-align: right;
+    }
+  }
+
+  .markdown {
+    h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+    h1, h2, h3, h4, h5, h6, p {
+      font-size: 1em;
+    }
+    ul, li {
+      margin-left: 0;
+      padding-left: 0;
+    }
+    li { 
+      list-style: inside;
     }
   }
 }

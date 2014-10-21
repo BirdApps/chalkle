@@ -510,13 +510,6 @@ class Course < ActiveRecord::Base
     "/#{channel.url_name}/#{url_name}/#{id}"
   end
 
-  def url
-    if channel.nil?
-      self.channel = Course.find(self.id).channel
-    end
-    "chalkle.com/#{channel.url_name}/#{url_name}/#{id}"
-  end
-
 
   def path_series
     "/#{channel.url_name}/#{url_name}"
