@@ -3,10 +3,6 @@
     <a href="<%= course.path %>" title="<%= course.name %>">
       <% if course.course_upload_image.present? %>
         <div class="avatar avatar64 img" style="background-image: url(<%= course.course_upload_image.url(:large).html_safe %>);">
-      </div>
-      <% elsif course.category %>
-        <div class="avatar avatar64 img">
-          <%= category_image course, 150 %>
         </div>
       <% else %>
         <%= image_tag(
@@ -18,7 +14,7 @@
       <% end %>
     </a>
   </div>
-  <div class="col-xs-10 col-sm-8 col-md-9">
+  <div class="col-xs-10 col-sm-6 col-md-7">
     <header>
       <div class="title-wrapper">
         <strong>
@@ -28,7 +24,9 @@
     </header>
     <div class="details">
       <div class="upper small">
-        <%= quick_date_time course.start_at %> |
+        <span class="<%= 'text-danger' if course.start_at < DateTime.current %>">
+        <%= quick_date_time course.start_at %>
+        </span> |
         <% if course.teacher  %>
           <%= link_to 'Taught by '+course.teacher.name, channel_channel_teacher_path(course.channel.url_name,course.teacher) %>
         <% else %>
@@ -42,10 +40,15 @@
       
     </div>
   </div>
-  <div class="col-sm-2 col-xs-12">
-    <a href="<%= course_bookings_path course.id %>" class="clear-both no-margin block center alert alert-success small">
+  <div class="col-sm-2 col-xs-6">
+    <a href="<%= course_bookings_path course.id %>" class="clear-both no-margin block center alert alert-default small">
       <%= course.bookings.confirmed.count %>
       <br /> <%= 'Attendee'.pluralize(course.bookings.confirmed.count) %>
+    </a>
+  </div>
+  <div class="col-sm-2 col-xs-6">
+    <a href="<%= course_bookings_path course.id %>" style="padding:25px 0" class="clear-both no-margin block center alert alert-<%= course.status_color %> small">
+      <%= course.status %>
     </a>
   </div>
 </article>

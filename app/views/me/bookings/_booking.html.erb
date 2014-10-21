@@ -3,10 +3,6 @@
     <a href="<%= booking.course.path %>" title="<%= booking.course.name %>">
       <% if booking.course.course_upload_image.present? %>
         <div class="avatar avatar64 img" style="background-image: url(<%= booking.course.course_upload_image.url(:large).html_safe %>);">
-      </div>
-      <% elsif booking.course.category %>
-        <div class="avatar avatar64 img">
-          <%= category_image booking.course, 150 %>
         </div>
       <% else %>
         <%= image_tag(
