@@ -1,6 +1,7 @@
-<% if policy(@course).read?  %>
-  <div class="row">
-    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+    <% if policy(@course).read?  %>
+
       <% if @course.status == 'Published' %>
         <div class="alert alert-warning clearfix text-right" role="alert"> 
      
@@ -78,59 +79,62 @@
 
         </div>
       <% end %>
-    </div>
-  </div>
-<% end %>
-
-<%# public visibility below  %>
-<% if @course.status == 'Cancelled' %>
-
-  <div class="alert alert-danger clearfix text-right">
-      <div class="pad-top pull-left text-left">   
-        <h3 class="flush"><%= @course.status %></h3> 
-        <p><strong>Reason:</strong> <%= @course.cancelled_reason %></p>
-      </div>
-
-    <% if policy(@course).write? %>
-      <div class="hidden">
-        <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'cancel_course'}) do |f| %>
-          <input name="_method" type="hidden" value="put" />
-          <%= f.input :status, as: :hidden, input_html: { value: 'Published' } %>
-        <% end #form %>
-      </div>
-      <button class="btn btn-success" onclick="document.getElementById('cancel_course').submit()">Republish</button>
     <% end %>
 
-  </div>
+    <%# public visibility below  %>
+    <% if @course.status == 'Cancelled' %>
 
-<% elsif @course.status == 'Completed' %>
+      <div class="alert alert-danger clearfix text-right">
+          <div class="pad-top pull-left text-left">   
+            <h3 class="flush"><%= @course.status %></h3> 
+            <p><strong>Reason:</strong> <%= @course.cancelled_reason %></p>
+          </div>
 
-  <div class="alert alert-success clearfix">
-    <h3 class="flush">Completed</h3>
-    <p>
-      <%= @course.type.capitalize %> ran on <%= day_ordinal_month(@course.start_at,true,true) %>
-    </p>
-  </div>
+        <% if policy(@course).write? %>
+          <div class="hidden">
+            <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'cancel_course'}) do |f| %>
+              <input name="_method" type="hidden" value="put" />
+              <%= f.input :status, as: :hidden, input_html: { value: 'Published' } %>
+            <% end #form %>
+          </div>
+          <button class="btn btn-success" onclick="document.getElementById('cancel_course').submit()">Republish</button>
+        <% end %>
 
-<% elsif @course.status == 'Published' %>
+      </div>
 
-  <% if @course.between_start_and_end %>
+    <% elsif @course.status == 'Completed' %>
 
-    <div class="alert alert-warning clearfix">
-
-      <% if @course.lesson_in_progress %>
-        <h3 class="flush">In Progress</h3>
+      <div class="alert alert-success clearfix">
+        <h3 class="flush">Completed</h3>
         <p>
-          Class finishes at <%= pretty_time @course.lesson_in_progress.end_at %>
+          <%= @course.type.capitalize %> ran on <%= day_ordinal_month(@course.start_at,true,true) %>
         </p>
+      </div>
+
+    <% elsif @course.status == 'Published' %>
+
+      <% if @course.between_start_and_end %>
+
+        <% if @course.lesson_in_progress %>
+          <div class="alert alert-warning clearfix">
+
+            <h3 class="flush">In Progress</h3>
+            <p>
+              Class finishes at <%= pretty_time @course.lesson_in_progress.end_at %>
+            </p>
+          </div>
+        <% end %>
+
+        <% if @course.course? %>
+          <div class="alert alert-warning clearfix">
+            <p>
+              The classes in this course have already started. <%= link_to "Check out the provider's other courses as it may run again", channel_path(@course.channel.url_name)  %>
+            </p>
+          </div>
+        <% end %>
+        
       <% end %>
 
-      <% if @course.course? %>
-        <p>
-          The classes in this course have already started. <%= link_to "Check out the provider's other courses as it may run again", channel_path(@course.channel.url_name)  %>
-        </p>
-      <% end %>
-
-    </div>
-  <% end %>
-<% end %>
+    <% end %>
+  </div>
+</div>

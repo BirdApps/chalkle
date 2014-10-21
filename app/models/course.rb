@@ -56,6 +56,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :lessons, if: :published?
   validates_presence_of :channel
   validates_presence_of :teacher 
+  validates_presence_of :start_at
   validates_numericality_of :teacher_payment, allow_nil: true
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher fee must be positive" }
