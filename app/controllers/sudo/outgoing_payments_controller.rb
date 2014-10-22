@@ -1,37 +1,30 @@
 class Sudo::OutgoingPaymentsController < Sudo::BaseController
-  before_filter :load_outgoing_payment, only: [:show,:edit,:update]
+  before_filter :load_outgoing_payment, only: [:show,:edit,:approve,:update]
 
   def index
-    @outgoings = OutgoingPayment.all
-  end
-
-  def pending
-    @outgoings = OutgoingPayment.pending
-    render 'index'
-  end
-
-  def complete
-    
+    status = params[:status].present? ? params[:status] : 'pending'
+    if OutgoingPayment::STATUSES.include?(status)
+      @outgoings = OutgoingPayment.where(status: status)
+    else
+      @outgoings = OutgoingPayment.all
+    end
   end
 
   def show
-    
   end
 
-  def new
-
+  def approve
+    @outgoing.approve!
+    redirect_to sudo_outgoing_payment_path(@outgoing.id)
   end
 
-  def create
-
-  end
-
-  def edit
-
+  def pay
+    reference = params[:ref] if params[:ref].present?
+    @outgoing.mark_paid!(reference)
+    redirect_to sudo_outgoing_payment_path(@outgoing.id)
   end
 
   def update
-
   end
 
   private

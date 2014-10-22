@@ -333,7 +333,7 @@ class Course < ActiveRecord::Base
   end
 
   def self.teacher_pay_types
-    [ 'Flat fee', 'Fee per attendee', 'Not paid through chalkle']
+    [ 'Flat fee', 'Fee per attendee', 'Provider pays teacher']
   end
 
   def teacher_pay_variable

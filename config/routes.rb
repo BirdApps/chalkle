@@ -85,6 +85,10 @@ Chalkle::Application.routes.draw do
         get 'pending'
         get 'complete'
       end
+      member do
+        get 'approve'
+        put 'pay'
+      end
     end
 
     resources :bookings do

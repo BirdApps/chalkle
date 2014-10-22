@@ -24,7 +24,7 @@ class OutgoingPayment < ActiveRecord::Base
   has_many :channel_payments, through: :channel_bookings, source: :payments
   
   has_many :teacher_courses, through: :teacher_bookings, source: :course, foreign_key: :course_id
-  has_many :channel_courses, through: :channel_bookings, source: :course_id
+  has_many :channel_courses, through: :channel_bookings, source: :course, foreign_key: :course_id
 
   def self.pending_payment_for_teacher(teacher)
     OutgoingPayment.where(status: STATUS_1, teacher_id: teacher.id).first || OutgoingPayment.create({teacher: teacher, status: STATUS_1, tax: 0, fee: 0, tax_number: teacher.tax_number, bank_account: teacher.account }, as: :admin)
@@ -32,6 +32,40 @@ class OutgoingPayment < ActiveRecord::Base
 
   def self.pending_payment_for_channel(channel)
     OutgoingPayment.where(status: STATUS_1, channel_id: channel.id).first || OutgoingPayment.create({channel: channel, status: STATUS_1, tax: 0, fee: 0, tax_number: channel.tax_number, bank_account: channel.account }, as: :admin)
+  end
+
+  def status_color
+    case status
+      when "pending"
+        'danger'
+      when "approved"
+        'warning'
+      when "invoiced"
+        'info'
+      when "marked_paid"
+        'success'
+      when "confirmed_paid"
+        'default'
+    end
+  end
+
+  def status_formatted
+    OutgoingPayment.status_formatted(status)
+  end
+
+  def self.status_formatted(status)
+    case status
+      when "pending"
+        'Pending'
+      when "approved"
+        'Approved'
+      when "invoiced"
+        'Invoiced'
+      when "marked_paid"
+        'Paid'
+      when "confirmed_paid"
+        'Paid & Verified'
+    end
   end
 
   def for_teacher?
@@ -51,12 +85,30 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def account
-    if for_channel?
-      channel.account
+    if bank_account.present?
+      bank_account
     else
-      teacher.account
+      if for_channel?
+        channel.account
+      else
+        teacher.account
+      end
     end
   end
+
+
+  def tax_num
+    if tax_number.present?
+      tax_number
+    else
+      if for_channel?
+        channel.tax_number
+      else
+        teacher.tax_number
+      end
+    end
+  end
+
 
   def courses
     if for_teacher?
@@ -78,7 +130,7 @@ class OutgoingPayment < ActiveRecord::Base
     if for_teacher?
       teacher_bookings.where("teacher_fee > 0") 
     else
-      channel_bookings.where("channel_fee > 0") 
+      channel_bookings.where("provider_fee > 0") 
     end
   end
 
@@ -105,6 +157,8 @@ class OutgoingPayment < ActiveRecord::Base
       calc_fee
       calc_tax
       self.status = STATUS_2
+      self.tax_number = tax_num
+      self.bank_account = account
       save
     end
     total
@@ -115,7 +169,7 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
 
-  def marked_paid!(reference = nil)
+  def mark_paid!(reference = nil)
     self.reference = reference
     self.paid_date = DateTime.current
     self.status = STATUS_4
