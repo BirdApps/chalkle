@@ -26,13 +26,15 @@
         <% end %>
         <% if @outgoing.status ==  'approved' %>
           <form class="new_course_wrapper" action="<%= pay_sudo_outgoing_payment_path(@outgoing.id) %>" method="post">
-            <input type="hidden" value="put" name="method" />
             <label>
               <span class="light">Reference</span>
               <input type="text" name="ref" class="col-xs-12" placeholder="xero remittance" />
               <input type="submit" value="Mark Paid" class="btn btn-primary col-xs-12 margin-top-5" />
             </label>
           </form>
+        <% end %>
+        <% if @outgoing.status ==  'paid' %>
+          
         <% end %>
       </div>
     </div>

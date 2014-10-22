@@ -40,6 +40,10 @@ class ApplicationController < ActionController::Base
     redirect_to admin_dashboard_path, :alert => exception.message
   end
 
+  def not_found
+    render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
+  end
+
   protected
 
     def authorize(record)
@@ -70,9 +74,7 @@ class ApplicationController < ActionController::Base
       return @current_user 
     end
 
-    def not_found
-      render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
-    end
+   
 
     def permission_denied
       flash[:notice] = "You do not have permission to view that page"

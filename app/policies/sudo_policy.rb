@@ -10,5 +10,7 @@ class SudoPolicy < ApplicationPolicy
     true if @user.super?
   end
 
-
+  def pay?
+    index?
+  end
 end

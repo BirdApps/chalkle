@@ -1,4 +1,5 @@
 class Sudo::OutgoingPaymentsController < Sudo::BaseController
+  before_filter :authorize_super
   before_filter :load_outgoing_payment, only: [:show,:edit,:approve,:update]
 
   def index
