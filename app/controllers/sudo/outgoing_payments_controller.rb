@@ -1,6 +1,5 @@
 class Sudo::OutgoingPaymentsController < Sudo::BaseController
-  before_filter :authorize_super
-  before_filter :load_outgoing_payment, only: [:show,:edit,:approve,:update]
+  before_filter :load_outgoing_payment, only: [:show,:edit,:approve,:update, :pay]
 
   def index
     status = params[:status].present? ? params[:status] : 'pending'
@@ -16,13 +15,13 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
 
   def approve
     @outgoing.approve!
-    redirect_to sudo_outgoing_payment_path(@outgoing.id)
+    redirect_to sudo_outgoing_payment_path(@outgoing)
   end
 
   def pay
-    reference = params[:ref] if params[:ref].present?
+    reference = params[:reference] if params[:reference].present?
     @outgoing.mark_paid!(reference)
-    redirect_to sudo_outgoing_payment_path(@outgoing.id)
+    redirect_to sudo_outgoing_payment_path(@outgoing)
   end
 
   def update

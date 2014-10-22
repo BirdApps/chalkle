@@ -87,7 +87,7 @@ Chalkle::Application.routes.draw do
       end
       member do
         get 'approve'
-        post 'pay'
+        put 'pay'
       end
     end
 
