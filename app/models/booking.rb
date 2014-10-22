@@ -1,4 +1,7 @@
 class Booking < ActiveRecord::Base
+
+  require 'csv'
+
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
     :course_id, :guests, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
@@ -48,6 +51,8 @@ class Booking < ActiveRecord::Base
   after_create :expire_cache!
 
   delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
+
+  delegate :email, to: :chalkler, prefix: true
 
   def paid
     self.payment.present? ? payment.total : 0
@@ -200,6 +205,17 @@ end
 
   def cancelled?
     (status != 'yes') ? true : false
+  end
+
+  def self.csv_for(bookings)
+    fields_for_csv = %w{ id name chalkler_email paid note_to_teacher }
+    CSV.generate do |csv|
+      csv << fields_for_csv.map(&:to_s)
+      bookings.each do |booking| 
+        csv << fields_for_csv.map do |field| booking.send(field) 
+        end
+      end
+    end
   end
 
   private

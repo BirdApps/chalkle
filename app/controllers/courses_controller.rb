@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
   before_filter :check_course_visibility, only: [:show]
-  before_filter :authenticate_chalkler!, only: [:new]
+  before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
   before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status]
@@ -24,6 +24,22 @@ class CoursesController < ApplicationController
     redirect_to @course.path unless request.path == @course.path and return
   end
 
+  def mine
+    if current_user.channels_adminable.count == 1
+      channel = current_user.channels_adminable.first
+      @page_subtitle = "<a href='#{channel_path(channel.url_name)}'>#{channel.name}</a>".html_safe
+    else
+        @page_subtitle = "From all your providers"
+    end
+    @page_title = "All Classes"
+
+    @courses = current_user.all_teaching
+    
+    if params[:search].present?
+      courses = Course.search params[:search], courses
+    end
+  end
+
   def teach
     @page_subtitle = "Use chalkle to"
     @page_title = "Teach"
@@ -31,21 +47,30 @@ class CoursesController < ApplicationController
 
     @page_context_links = [
       {
-        img_name: "bolt",
-        link: new_course_path,
-        active: false,
-        title: "New Class"
-      },
-      {
         img_name: "people",
         link: new_channel_path,
         active: false,
         title: "New Provider"
+      },
+      {
+        img_name: "bolt",
+        link: new_course_path,
+        active: false,
+        title: "New Class"
       }
     ]
 
+    if current_user.all_teaching.count > 0
+      @page_context_links << {
+        img_name: "book",
+        link: mine_courses_path,
+        active: false,
+        title: "My Classes"
+      }
+    end
     render 'teach'
   end
+
   def learn
     @page_subtitle = "Use chalkle to"
     @page_title =  "Learn"
@@ -135,6 +160,21 @@ class CoursesController < ApplicationController
     render json: @course.as_json(methods: [:channel_fee, :chalkle_fee, :processing_fee, :teacher_max_income, :teacher_min_income, :channel_min_income, :channel_max_income, :teacher_pay_variable, :teacher_pay_flat])
   end
 
+
+  def clone
+    authorize @course
+    new_course = Course.create @course.attributes.except('id','description','created_at','updated_at','teacher_payment','published_at','chalkle_payment','cached_channel_fee','cached_chalkle_fee','end_at')
+    new_course.status = "Unreviewed"
+    new_course.course_upload_image = @course.course_upload_image
+    @course.lessons.each do |lesson|
+      new_lesson = Lesson.new lesson.attributes
+      new_lesson.course = new_course
+      new_course.lessons << lesson
+    end
+    new_course.save
+    redirect_to edit_course_path(new_course.id), notice: "You are now editing a copy of "+new_course.name
+  end
+
   private
 
     def take_me_to
@@ -205,11 +245,6 @@ class CoursesController < ApplicationController
           @channel = Channel.new(name: "All Providers")
         end
       end
-    end
-
-    def clone
-      #authorize @course
-      #@course.
     end
 
     def check_course_visibility

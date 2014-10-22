@@ -170,4 +170,18 @@ class BookingsController < ApplicationController
       redirect_to booking_path booking
     end
   end
+
+  def csv
+    @course = Course.find_by_id params[:course_id]
+    if policy(@course).bookings_csv?
+      @bookings = @course.bookings.visible.order(:status) if @course.present?
+    else
+      @bookings = []
+    end
+
+    send_data Booking.csv_for(@bookings), type: :csv, filename: "bookings-for-#{@course.name.parameterize}.csv"
+
+  end
+
+
 end

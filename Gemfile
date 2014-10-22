@@ -104,6 +104,7 @@ group :development do
   gem 'capistrano-ext',  '~> 1.2.1',   require: false
   gem 'capistrano-rbenv', '~> 1.0'
   gem 'capistrano-unicorn', :require => false
+  gem 'hipchat'
 
   # Helpful Rails Generators
   gem 'nifty-generators',  '~> 0.4.6',  require: false

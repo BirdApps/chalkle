@@ -1,0 +1,53 @@
+
+
+<div class="fancy-header">
+  <h3>Header Image</h3>
+  <hr />
+</div>
+<div class="row">
+  <div class="hidden-xs col-sm-1">
+  </div>
+  <div class="col-sm-10 center">
+    <p>
+      <strong>
+          This image will show in headers of pages focused on the provider.
+      </strong><br />
+      In order for your channel to look its best, follow these guidelines when selecting a channel image
+    </p>
+  </div>
+  <div class="hidden-xs col-sm-1">
+  </div>
+  <div class="col-sm-5 small grey">
+    <p>
+      <strong class="text-danger">Do not include a logo</strong><br />
+      The logo is uploaded seperately to make sure it is always visible
+    </p>
+    <p>
+      <strong class="text-danger">Do not use text in your header image</strong><br />
+      As the image may be cropped or blurred, text will not always be legible. Use the caption and name above for information.
+    </p>
+    <p>
+      <strong class="text-success">Do choose a colourful photograph</strong><br />
+      Your page will look warm and inviting with a photograph that has colour and warmth
+    </p>
+    <p>
+      <strong class="text-success">Do put people in your header image</strong><br />
+      Showing a person engaged in a subject your classes teach is a great way to what what you are about without reading a single word.
+    </p>
+    <p>
+      <strong class="text-success">Do relate the photo to your class subject</strong><br />
+      If you only have classes in the ocean, show the ocean! If you make things - show someone working with tools.
+    </p>
+    <p>
+      <strong class="text-success">Do upload as large an image as you can</strong><br />
+      We will take care of resizing it as needed throughout the site
+    </p>
+  </div>
+  <div class="col-sm-7">
+    <div class="hero image-preview">
+      <div class="img hero_preview" style="background-image: url(<%= f.object.hero %>);"></div>
+    </div>
+    
+    <%= f.input :hero, as: :styled_file, input_html: { value: "", :'data-preview' => 'hero_preview', class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
+  </div>
+</div>

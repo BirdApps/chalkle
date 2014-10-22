@@ -1,0 +1,14 @@
+ <div class="row">
+   <div class="new_form_wrapper clearfix col-sm-offset-6 col-sm-6">
+    <form class="col-xs-12" method="get" role="search">
+      <div class="col-xs-9 flush">
+        <input type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search all classes">
+      </div>
+      <div class="col-xs-3 flush text-right">
+        <input type="submit" class="btn btn-primary" value="search" />
+      </div>
+    </form>
+  </div>
+</div>
+
+<%= render 'paginate_courses' %>

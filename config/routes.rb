@@ -41,6 +41,7 @@ Chalkle::Application.routes.draw do
     end
     resources :bookings do
       get :payment_callback
+      collection { get 'csv' }
       member do
         get 'cancel'
         put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
@@ -52,6 +53,7 @@ Chalkle::Application.routes.draw do
     end
     collection do
       get 'calculate_cost'
+      get 'mine'
     end
   end
 
@@ -70,6 +72,7 @@ Chalkle::Application.routes.draw do
     root to: 'silvias#index'
     resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
     resources :payments
+    resources :regions
     resources :chalklers do
       collection do
         get 'becoming/:id' => 'chalklers#becoming', as: :becoming

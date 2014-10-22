@@ -17,7 +17,7 @@ Your Chalkle Administrator")
     if course.duration.to_i/60 >= 60
      duration += (course.duration.to_i/60/60).to_s+" hrs "
     end
-    duration += (course.duration.to_i/60%30).to_s+" mins"
+    duration += (course.duration.to_i/60%60).to_s+" mins" unless course.duration.to_i/60%60 == 0
     
   end
 
@@ -41,7 +41,7 @@ Your Chalkle Administrator")
     if relative && use_relative_day
       relative+" "+pretty_time(date)
     else
-      if include_year
+      if include_year || date.year != DateTime.current.year
         date.strftime("%d %b, %Y")+" — "+pretty_time(date)
       else
         date.strftime("%d %b")+" — "+pretty_time(date)
