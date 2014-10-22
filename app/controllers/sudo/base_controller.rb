@@ -17,7 +17,7 @@ class Sudo::BaseController < ApplicationController
       },
       {
         img_name: "book",
-        link: sudo_outgoings_path,
+        link: sudo_outgoing_payments_path,
         active: controller_parts.include?("outgoings"),
         title: "Outgoings"
       },

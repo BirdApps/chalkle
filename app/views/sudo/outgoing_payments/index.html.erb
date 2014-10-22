@@ -1,0 +1,29 @@
+<% @total = 0 %>
+<div class="row alert-warning">
+  <div class="col-sm-2">
+    ID
+  </div>
+  <div class="col-sm-2">
+    To
+  </div>
+  <div class="col-sm-3">
+    Account
+  </div>
+  <div class="col-sm-2">
+    Owed
+  </div>
+  <div class="col-sm-2">
+    Status
+  </div>
+</div>
+
+<%= render paginate_these(@outgoings) %>
+ 
+<div class="row alert-danger">
+  <div class="col-xs-7">
+    TOTAL: 
+  </div>
+  <div class="col-xs-5">
+    $<%= @total %>
+  </div>
+</div>

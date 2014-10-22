@@ -1,12 +1,13 @@
-class Sudo::OutgoingsController < Sudo::BaseController
+class Sudo::OutgoingPaymentsController < Sudo::BaseController
   before_filter :load_outgoing_payment, only: [:show,:edit,:update]
 
   def index
-
+    @outgoings = OutgoingPayment.all
   end
 
   def pending
-    @outgoings = OutgoingPayment.where status == OutgoingPayment::STATUS_1
+    @outgoings = OutgoingPayment.pending
+    render 'index'
   end
 
   def complete
@@ -14,7 +15,7 @@ class Sudo::OutgoingsController < Sudo::BaseController
   end
 
   def show
-
+    
   end
 
   def new

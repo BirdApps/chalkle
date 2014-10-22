@@ -77,7 +77,7 @@ Chalkle::Application.routes.draw do
       end
     end
     
-    resources :outgoings do
+    resources :outgoing_payments, path: 'outgoings' do
       collection do 
         get 'pending'
         get 'complete'

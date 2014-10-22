@@ -1,5 +1,10 @@
 # Use this file to easily define all of your cron jobs.
 
+####################
+# REMEMBER         #
+# TIMES ARE IN UTC #
+####################
+
 set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 
 # every :hour, :at => 15 do
@@ -9,23 +14,30 @@ set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 
 every :hour do 
   rake "chalkle:expire_caches"
-  rake "chalkle:create_pending_payments"
+  rake "chalkle:complete_courses"
 end
 
-every :day, :at => '01:00am' do
-  rake "mailer:chalkler_digest['daily']"
+#run on the half hour to no conflict with complete_courses
+every :day, :at => '12:30pm' do
+  rake "chalkle:calculate_outgoings"
 end
 
-every :day, :at => '02:00am' do
+every :day, :at => '02:00pm' do
   rake "mailer:booking_reminder"
 end
-every :day, :at => '02:30am' do
+
+every :day, :at => '02:30pm' do
   rake "mailer:booking_completed"
 end
 
-every :monday, :at => '01:30am' do
+every :day, :at => '01:00pm' do
+  rake "mailer:chalkler_digest['daily']"
+end
+
+every :monday, :at => '01:30pm' do
   rake "mailer:chalkler_digest['weekly']"
 end
+
 
 #every :day, :at => '02:00am' do
 #  rake "mailer:five_day_reminder"
@@ -35,7 +47,7 @@ end
 #  rake "mailer:three_day_reminder"
 #end
 
-every :day, :at => '04:30am' do
+every :day, :at => '04:30pm' do
   path = "/apps/chalkle/db_backups/"
   filename = "chalk_prod_#{DateTime.current.strftime("%d%m%Y%H%M")}.sql"
   command "pg_dump -f #{path + filename} chalkle_production && gzip #{path + filename}"

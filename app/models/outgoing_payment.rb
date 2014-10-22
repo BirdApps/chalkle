@@ -6,14 +6,25 @@ class OutgoingPayment < ActiveRecord::Base
   STATUS_3 = "invoiced"
   STATUS_4 = "marked_paid"
   STATUS_5 = "confirmed_paid"
-  STATUSES = [STATUS_1,STATUS_2,STATUS_3]
+  STATUSES = [STATUS_1,STATUS_2,STATUS_4]
+
+  scope :pending, where(status: STATUS_1)
+  scope :approved, where(status: STATUS_2)
+  scope :invoiced, where(status: STATUS_3)
+  scope :marked_paid, where(status: STATUS_4)
+  scope :confirmed_paid, where(status: STATUS_5)
 
   belongs_to :teacher, class_name: 'ChannelTeacher'
   belongs_to :channel
 
   has_many :channel_bookings, class_name: 'Booking', foreign_key: :channel_payment_id
   has_many :teacher_bookings, class_name: 'Booking', foreign_key: :teacher_payment_id
-  has_many :payments, through: :bookings
+  
+  has_many :teacher_payments, through: :teacher_bookings, source: :payments
+  has_many :channel_payments, through: :channel_bookings, source: :payments
+  
+  has_many :teacher_courses, through: :teacher_bookings, source: :course, foreign_key: :course_id
+  has_many :channel_courses, through: :channel_bookings, source: :course_id
 
   def self.pending_payment_for_teacher(teacher)
     OutgoingPayment.where(status: STATUS_1, teacher_id: teacher.id).first || OutgoingPayment.create({teacher: teacher, status: STATUS_1, tax: 0, fee: 0, tax_number: teacher.tax_number, bank_account: teacher.account }, as: :admin)
@@ -21,25 +32,6 @@ class OutgoingPayment < ActiveRecord::Base
 
   def self.pending_payment_for_channel(channel)
     OutgoingPayment.where(status: STATUS_1, channel_id: channel.id).first || OutgoingPayment.create({channel: channel, status: STATUS_1, tax: 0, fee: 0, tax_number: channel.tax_number, bank_account: channel.account }, as: :admin)
-  end
-
-  #TODO: run at midnight every night
-  def self.create_pending_payments
-    courses = Course.need_outgoing_payments
-    payments = []
-    courses.each do |course|
-      teacher_payment = OutgoingPayment.pending_payment_for_teacher course.teacher
-      channel_payment = OutgoingPayment.pending_payment_for_channel course.channel
-
-      course.bookings.each do |booking|
-        booking.teacher_payment_id = teacher_payment.id
-        booking.channel_payment_id = channel_payment.id   
-        booking.save
-      end
-      payments << teacher_payment
-      payments << channel_payment
-    end
-    payments
   end
 
   def for_teacher?
@@ -50,41 +42,72 @@ class OutgoingPayment < ActiveRecord::Base
     channel.present?
   end
 
-  def bookings
-    channel_bookings + teacher_bookings
+  def name
+    if for_channel?
+      channel.name
+    else
+      teacher.name
+    end
   end
 
+  def account
+    if for_channel?
+      channel.account
+    else
+      teacher.account
+    end
+  end
+
+  def courses
+    if for_teacher?
+      teacher_courses
+    else
+      channel_courses
+    end
+  end
+
+  def payments
+    if for_teacher?
+      teacher_payments
+    else
+      channel_payments
+    end
+  end
+
+  def bookings
+    if for_teacher?
+      teacher_bookings.where("teacher_fee > 0") 
+    else
+      channel_bookings.where("channel_fee > 0") 
+    end
+  end
+
+  def calc_fee
+    self.fee = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_fee : b.provider_fee ) }
+  end
+
+  def calc_tax
+    self.tax = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_gst : b.provider_gst ) }
+  end
+
+  #only calculate fee and tax only before approval
   def total
     if status == STATUS_1
-      total = 0
-      bookings.each do |booking|
-        if for_teacher?
-          total += booking.teacher_fee
-          total += booking.teacher_gst
-        elsif for_channel?
-          total += booking.provider_fee
-          total += booking.provider_gst
-        end
-      end
-      total
-    else
-      fee+tax
+      calc_fee
+      calc_tax
     end
+    fee+tax
   end
 
-  #calculate fee and tax only once is approved
+  #calculate fee and tax only once on approval
   def approve!
-    bookings.each do |booking|
-      if for_teacher?
-        self.fee += booking.teacher_fee
-        self.tax += booking.teacher_gst
-      elsif for_channel?
-        self.fee += booking.provider_fee
-        self.tax += booking.provider_gst
-      end
+    if status == STATUS_1
+      calc_fee
+      calc_tax
+      self.status = STATUS_2
+      save
     end
-    self.status = STATUS_2
-    save
+    total
   end
 
   def received_invoice!

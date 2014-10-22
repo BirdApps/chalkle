@@ -1,0 +1,22 @@
+<div class="sudo_outgoing row">
+  <div class="col-sm-2">
+    <%= link_to outgoing_payment.id, sudo_outgoing_payment_path(outgoing_payment.id), class: 'btn btn-info' %>
+  </div>
+  <div class="col-sm-2">
+    <% if outgoing_payment.for_teacher? %>
+      <%= link_to outgoing_payment.name, channel_teacher_path(outgoing_payment.teacher.channel.url_name,outgoing_payment.teacher_id)  %>
+    <% else %>
+      <%= link_to outgoing_payment.name, channel_path(outgoing_payment.channel.url_name)  %>
+    <% end %>
+  </div>
+  <div class="col-sm-3">
+    <%= outgoing_payment.account %>
+  </div>
+  <div class="col-sm-2">
+    $<%= amount = outgoing_payment.total %>
+    <% @total += amount %>
+  </div>
+  <div class="col-sm-2">
+    <%= outgoing_payment.status %>
+  </div>
+</div>

@@ -77,7 +77,7 @@ end
   end
 
   def confirmed?
-    true if status == STATUS_1
+    status == STATUS_1
   end
 
   def cancel!(reason = nil, override_refund = false)
@@ -95,11 +95,11 @@ end
   end
 
   def cancelled?
-    true if status == STATUS_1
+    status == STATUS_1
   end
 
   def paid?
-    true if free? || paid == cost
+    free? || paid >= cost
   end
 
   def processing_gst_number

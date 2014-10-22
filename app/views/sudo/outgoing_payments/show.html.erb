@@ -1,0 +1,121 @@
+<div class="outgoing">
+  <div class="row">
+    <div class="col-xs-12 col-sm-9">
+      <div>
+        Outgoing ID: <%= @outgoing.id %>
+      </div>
+      <div>
+        <% if @outgoing.for_teacher? %>
+          <%= link_to @outgoing.name, channel_teacher_path(@outgoing.teacher.channel.url_name, @outgoing.teacher_id)  %>
+        <% else %>
+          <%= link_to @outgoing.name, channel_path(@outgoing.channel.url_name)  %>
+        <% end %>
+      </div>
+      <div>
+        <%= @outgoing.account %>
+      </div>
+      <div>
+        <%= @outgoing.status %>
+      </div>
+      <div>
+        Owed: <%= @outgoing.total %>
+      </div>
+    </div>
+
+    <div class="alert alert-warning col-xs-12 col-sm-3">
+      <h4><%= @outgoing.status %></h4>
+      <div class="clearfix">
+        <div class="col-xs-6 small light grey">
+          Fees
+        </div>
+        <div class="col-xs-6">
+          $<%= @outgoing.fee %>
+        </div>
+      </div>
+      <div class="clearfix">
+        <div class="col-xs-6 small light grey">
+          Tax 
+        </div>
+        <div class="col-xs-6">
+          $<%= @outgoing.tax %>
+        </div>
+      </div>
+      <hr class="flush" />
+      <div class="clearfix">
+        <div class="col-xs-6 small light grey">
+          Total 
+        </div>
+        <div class="col-xs-6">
+          $<%= @outgoing.total %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="outgoing_break_down">
+    <div class="outgoing_course">
+      <h4 class="flush upper">Courses and Bookings</h4>
+      <br />
+      <div class="row light">
+        <div class="col-xs-2">
+          ID
+        </div>
+        <div class="col-xs-4">
+          NAME
+        </div>
+        <div class="col-xs-3">
+          Fee 
+        </div>
+        <div class="col-xs-3">
+          Tax
+        </div>
+      </div>
+      <br />
+      <% @outgoing.courses.each do |course| 
+        bookings = @outgoing.for_teacher? ? @outgoing.bookings.where("teacher_fee > 0") : @outgoing.bookings.where("channel_fee > 0")
+        bookings = bookings.where(course_id: course.id).select{|b|b.paid?}
+      %>
+        <% if bookings.present? %>
+          <div class="row">
+            <div class="alert-success alert no-margin clearfix">
+              <%= link_to course_path(course.id) do %>
+                <div class="col-xs-2">
+                  <%= course.id %>
+                </div>
+                <div class="col-xs-4">
+                  <%= course.name %>
+                </div>
+                <div class="col-xs-3">
+                  $<%= bookings.inject(0){|sum,b| sum += ( @outgoing.for_teacher? ? b.teacher_fee : b.provider_fee ) } %> 
+                </div>
+                <div class="col-xs-3">
+                  $<%= bookings.inject(0){|sum,b| sum += ( @outgoing.for_teacher? ? b.teacher_gst : b.provider_gst ) } %> 
+                </div>
+              <% end %>
+            </div>
+            <div class="clearfix">
+              <% bookings.each do |booking | %>
+                <% if booking.paid? && !booking.free? %>
+                  <%= link_to sudo_booking_path(booking.id) do %>
+                    <div class="col-xs-2">
+                      <%= booking.id %>
+                    </div>
+                    <div class="col-xs-4">
+                      <%= booking.name %>
+                    </div>
+                    <div class="col-xs-3">
+                      $<%= @outgoing.for_teacher? ? booking.teacher_fee : booking.provider_fee  %>
+                    </div>
+                    <div class="col-xs-3">
+                      $<%= @outgoing.for_teacher? ? booking.teacher_gst : booking.provider_gst %>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
