@@ -41,8 +41,6 @@ set :hipchat_failed_color, 'red' #cancelled deployment message color
 set :hipchat_message_format, 'html' # Sets the deployment message format, see https://www.hipchat.com/docs/api/method/rooms/message
 set :hipchat_commit_log, true
 # Optional
-set :hipchat_commit_log_format, ":time :user\n:message\n"
-set :hipchat_commit_log_time_format, "%Y/%m/%d %H:%M:%S"
 set :hipchat_commit_log_message_format, "^CHAL-\d+" # extracts ticket number from message
 
 

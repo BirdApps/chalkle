@@ -2,11 +2,12 @@
     <div class="col-sm-2">
     </div>
     <div class="col-sm-8"> 
-      <div class="fancy-header">
-        <h3>Your Booking<%= 's' if bookings.count > 1 %></h3>
-        <hr />
-      </div>  
-
+      <% if bookings.any? %>
+        <div class="fancy-header">
+          <h3>Your Booking<%= 's' if bookings.count > 1 %></h3>
+          <hr />
+        </div>  
+      <% end %>
       <div class="col-xs-12 x1-25 center light">
       <% bookings.each do |booking|%>
           <div class="strong"> <%= booking.name %> </div>
