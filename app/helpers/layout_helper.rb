@@ -69,7 +69,7 @@ module LayoutHelper
     elsif @teaching && @teaching.editing_id
       meta_title = @teaching.title
     end
-    meta_title += ' |' if meta_title
+    meta_title += ' ' if meta_title
     meta_title.downcase.gsub('course', 'class')
   end
 

@@ -7,9 +7,9 @@
             <span class="sr-only Toggle navigation"></span>
             <span class="fa fa-bars"></span>
           </button>
-          <a class="navbar-brand" href="<%= root_path %>">
-            <img src="/assets/logo.png" alt="chalkle°" class="logo" />
-          </a>
+          <%= link_to root_path, class:"navbar-brand", alt: "chalkle°" do%>
+            <%= image_tag asset_path('logo.png'), class: "logo" %>
+          <% end %>
         </div>
         <div id="primary-naviation" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
