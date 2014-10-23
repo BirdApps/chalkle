@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141017080823) do
+ActiveRecord::Schema.define(:version => 20141023025252) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20141017080823) do
     t.boolean  "booking_completed_mailer_sent", :default => false
     t.integer  "teacher_payment_id"
     t.integer  "channel_payment_id"
+    t.boolean  "chalkler_deleted",              :default => false
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
