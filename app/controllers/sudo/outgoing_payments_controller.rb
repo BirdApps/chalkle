@@ -20,7 +20,6 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
   end
 
   def pay
-    binding.pry
     reference = params[:outgoing_payment][:reference] if params[:outgoing_payment][:reference].present?
     @outgoing.mark_paid!(reference)
     redirect_to sudo_outgoing_payment_path(@outgoing)
