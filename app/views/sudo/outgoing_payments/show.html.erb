@@ -1,3 +1,5 @@
+<%= render 'sub_menu' %>
+<br /><br />
 <div class="outgoing">
   <div class="row">
     <div class="col-xs-12 col-sm-6">
@@ -27,14 +29,15 @@
         <% if @outgoing.status ==  'approved' %>
           <%= form_for(@outgoing, url: pay_sudo_outgoing_payment_path(@outgoing), html_class: 'new_course_wrapper') do |f| %>
             <label>
-              <span class="light">Reference</span>
+              <span class="light">Remittance Reference</span>
               <%= f.text_field :reference, class: "col-xs-12", placeholder: "xero remittance" %>
               <%= f.submit "Mark Paid", class: "btn btn-primary col-xs-12 margin-top-5" %>
             </label>
           <% end %>
         <% end %>
-        <% if @outgoing.status ==  'paid' %>
-          
+        <% if @outgoing.status ==  'marked_paid' %>
+          <span class="light">Remittance Reference</span><br />
+          <input type="text" value="<%= @outgoing.reference %>" readonly="readonly" />
         <% end %>
       </div>
     </div>
