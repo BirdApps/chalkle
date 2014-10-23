@@ -17,7 +17,9 @@ class OutgoingPayment < ActiveRecord::Base
   belongs_to :teacher, class_name: 'ChannelTeacher'
   belongs_to :channel
 
-  validates_presence_of :fee, :tax, :teacher, :status
+  validates_presence_of :fee, :tax, :status
+
+  validate :teacher_or_channel_presence
 
   has_many :channel_bookings, class_name: 'Booking', foreign_key: :channel_payment_id
   has_many :teacher_bookings, class_name: 'Booking', foreign_key: :teacher_payment_id
@@ -53,6 +55,10 @@ class OutgoingPayment < ActiveRecord::Base
 
   def status_formatted
     OutgoingPayment.status_formatted(status)
+  end
+
+  def teacher_or_channel_presence
+    (teacher || channel).present?
   end
 
   def self.status_formatted(status)
