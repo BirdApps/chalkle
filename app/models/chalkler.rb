@@ -27,7 +27,7 @@ class Chalkler < ActiveRecord::Base
 
   has_many :subscriptions
   has_many :channel_teachers
-  has_many :bookings
+  has_many :bookings, dependent: :nullify
   has_many :channel_admins
   has_many :payments, through: :bookings
   has_many :channels_teachable, through: :channel_teachers, source: :channel
@@ -47,13 +47,18 @@ class Chalkler < ActiveRecord::Base
 
   scope :visible, where(visible: true)
 
+  scope :with_email_region_id, 
+    lambda {|region| 
+      where("email_region_ids LIKE '%?%'", region)
+    }
+
+
   serialize :email_categories
   serialize :email_region_ids
 
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_reset_password_token
-
 
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)

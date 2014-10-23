@@ -6,7 +6,7 @@ class RemoveAdminuser < ActiveRecord::Migration
     supers = ["anthony@chalkle.com", "silvia@chalkle.com", "matthew.kerr@me.com","jdbdean@gmail.com"]
     supers.each do |super_email|
       chalkler =  Chalkler.find_by_email super_email
-      chalkler.update_column('role', 'super')
+      chalkler.update_column('role', 'super') if chalkler
     end
 
     drop_table :admin_users
