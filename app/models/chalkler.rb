@@ -51,8 +51,6 @@ class Chalkler < ActiveRecord::Base
       where("email_region_ids LIKE '%?%'", region)
     }
 
-  search_methods :with_email_region_id
-
   serialize :email_categories
   serialize :email_region_ids
 
