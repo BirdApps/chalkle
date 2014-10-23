@@ -24,7 +24,6 @@ gem 'monthify', require: 'monthify'
 gem 'chronic',       '~> 0.9.0'
 
 gem 'airbrake',      '~> 4.0.0'
-gem 'activeadmin',   '~> 0.6.3'
 gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails',  '~> 2.1.4'
 gem 'active_attr',   '~> 0.7.0'
