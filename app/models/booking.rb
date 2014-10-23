@@ -28,7 +28,6 @@ class Booking < ActiveRecord::Base
   belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
 
   validates_presence_of :course_id, :status, :name
-  validates_presence_of :chalkler, unless: :chalkler_deleted
   validates_presence_of :payment_method, :unless => :free?
 
   scope :hidden, where(visible: false)

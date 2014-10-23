@@ -57,7 +57,6 @@ class Chalkler < ActiveRecord::Base
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_reset_password_token
-  before_destroy {|chalkler| !!! chalkler.bookings.each {|b| b.update_attribute :chalkler_deleted, true }.include?(false) }
 
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
