@@ -77,8 +77,9 @@ module LayoutHelper
     @header_bg ? @header_bg : find_hero
   end
 
-  def filter_params(type, value)
+  def filter_params(type, value, include_type = nil)
     types = %w(region topic provider search take)
+    types << include_type if include_type
     params_copy = Hash.new
     types.each do |type_i|
       params_copy[type_i.to_sym] = params[type_i.to_sym]
