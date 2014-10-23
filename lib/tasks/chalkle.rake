@@ -112,7 +112,8 @@ begin
     desc "Calculate outgoing payments for teachers and providers"
     task "calculate_outgoings" => :environment do
       EventLog.log('calculate_outgoings') do
-        Booking.need_outgoing_payments.each do |booking|
+        bookings = Booking.need_outgoing_payments
+        bookings.each do |booking|
           errors = []
           if booking.create_outgoing_payments!
             puts "booking #{booking.id} outgoings calculated"
