@@ -112,24 +112,16 @@ begin
     desc "Calculate outgoing payments for teachers and providers"
     task "calculate_outgoings" => :environment do
       EventLog.log('calculate_outgoings') do
-
-        courses = Course.need_outgoing_payments
-        outgoings = []
-        courses.each do |course|
-
-          #if there is a pending payment, rather than creating a new payment, we add on to the existing payment
-          teacher_payment = OutgoingPayment.pending_payment_for_teacher course.teacher
-          channel_payment = OutgoingPayment.pending_payment_for_channel course.channel
-
-          course.bookings.each do |booking|
-            booking.teacher_payment_id = teacher_payment.id
-            booking.channel_payment_id = channel_payment.id
-            booking.save
+        Booking.need_outgoing_payments.each do |booking|
+          errors = []
+          if booking.create_outgoing_payments!
+            puts "booking #{booking.id} outgoings calculated"
+          else
+            errors << booking.id.to_s+": "+booking.errors.messages.to_s
           end
-          outgoings << teacher_payment
-          outgoings << channel_payment
-
-          puts "course #{course.id} outgoings calculated"
+        end
+        errors.each do |error|
+          puts error
         end
       end
     end
