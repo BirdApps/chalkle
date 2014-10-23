@@ -1,3 +1,4 @@
+
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -109,9 +110,9 @@ $(function(){
   };
 
   background_size_for_header_images();
-  fade_filterbar();
+   fade_filterbar();
 
   window.addEventListener("resize", background_size_for_header_images);
-  window.addEventListener("scroll", fade_filterbar);
+   window.addEventListener("scroll", fade_filterbar);
 
 });

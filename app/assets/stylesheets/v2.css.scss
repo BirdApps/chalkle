@@ -96,12 +96,15 @@ body.v2 {
     text-shadow: none;
     font-weight: 100;
     .divider {
-      background-color: #ccc; 
+      background-color: #fff; 
     }
     @media screen and (max-width: $col-sm) {
       li{
         a{
           line-height: 2em;
+          &:hover {
+            color: #000 !important;
+          }
         }
       }
       top: 50px;
@@ -422,7 +425,7 @@ body.v2 {
     z-index: 20;
     #primary-naviation {
       font-weight: 100 !important;
-      font-family: "proxima-nova",sans-serif;
+      font-family: "proxima-nova", sans-serif;
     }
     .navbar {
       padding: 0;
@@ -476,7 +479,7 @@ body.v2 {
       clear:both;
       position:fixed;
       top: 62px;
-      background-color: rgba(255, 255, 255, 0.6);
+      background-color: rgba(255, 255, 255, 0.82);
       @media screen and (max-width: $col-sm) {
         top: 68px;
       }
@@ -602,14 +605,25 @@ body.v2 {
           } 
         }
         .dropdown-menu {
-          @include border-radius(0);
+          
+          max-height: 600px;
+          overflow: scroll;
+
+          @include border-radius(0 0 4px 4px);
           font-family: "proxima-nova",sans-serif; 
           left: -1px;
-          background: #dfdfdf;
+          background: rgba(255,255,255,0.82);
           text-shadow: none;
           font-weight: 100;
+
+          & li:hover {
+            color:  #000; 
+            background-color: #fff;
+
+          }
+
           .divider {
-            background-color: #ccc; 
+            background-color: none; 
           }
           @media screen and (max-width: $col-sm) {
             top: 50px;
