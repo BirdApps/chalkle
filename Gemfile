@@ -17,7 +17,6 @@ gem 'omniauth-meetup',  '~> 0.0.7'
 gem 'omniauth-facebook'
 
 # Authorisation
-gem 'cancan'
 gem 'pundit'
 
 # Time / Date

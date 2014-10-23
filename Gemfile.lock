@@ -96,7 +96,6 @@ GEM
     bower-rails (0.8.2)
     builder (3.0.4)
     callsite (0.0.11)
-    cancan (1.6.10)
     capistrano (2.14.2)
       highline
       net-scp (>= 1.0.0)
@@ -682,7 +681,6 @@ DEPENDENCIES
   binding_of_caller (= 0.7.2)
   bootstrap-datepicker-rails
   bower-rails
-  cancan
   capistrano (~> 2.14.1)
   capistrano-ext (~> 1.2.1)
   capistrano-rbenv (~> 1.0)
