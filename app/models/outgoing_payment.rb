@@ -17,6 +17,8 @@ class OutgoingPayment < ActiveRecord::Base
   belongs_to :teacher, class_name: 'ChannelTeacher'
   belongs_to :channel
 
+  validates_presence_of :fee, :tax, :teacher, :status
+
   has_many :channel_bookings, class_name: 'Booking', foreign_key: :channel_payment_id
   has_many :teacher_bookings, class_name: 'Booking', foreign_key: :teacher_payment_id
   
