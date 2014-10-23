@@ -474,7 +474,7 @@ body.v2 {
     .filter-nav {
       width:100%;
       clear:both;
-      position:absolute;
+      position:fixed;
       top: 62px;
       background-color: rgba(255, 255, 255, 0.6);
       @media screen and (max-width: $col-sm) {

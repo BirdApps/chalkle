@@ -76,3 +76,42 @@ $(function(){
       }, function(response){});
   });
 });
+
+
+
+$(function(){
+
+  var header = $('#header');
+  var header_content_bg = $('body.v2 .header_content_bg');
+  var filter_bar = $('.filter-nav');
+  var coloring = $('.coloring');
+
+  background_size_for_header_images = function(){
+    var window_width = $(window).width();
+    header.css("background-size", window_width);
+    header_content_bg.css("background-size", window_width);
+
+  };
+
+  fade_filterbar = function(){
+    scrolltop = $(document).scrollTop();
+    filter_bar.css("opacity", (-scrolltop+400)/65 );
+    if(scrolltop > 300) {
+      filter_bar.css("top", ((-scrolltop+300)/85*30) +62);
+      coloring.css( { "padding-top" : ((-scrolltop+300)/85*10) + 10 +"px" } );
+      coloring.css( { "padding-bottom" : ((-scrolltop+300)/85*10) + 10 +"px" } );
+    } else {
+      filter_bar.css("top", '62px');
+      coloring.css( { "padding-top" : '10px' } );
+      coloring.css( { "padding-bottom" : '10px' } );
+
+    };
+  };
+
+  background_size_for_header_images();
+  fade_filterbar();
+
+  window.addEventListener("resize", background_size_for_header_images);
+  window.addEventListener("scroll", fade_filterbar);
+
+});
