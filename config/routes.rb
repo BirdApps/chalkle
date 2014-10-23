@@ -6,7 +6,6 @@ Chalkle::Application.routes.draw do
   match '(*any)' => redirect { |p, req| req.url.sub!('my.', '') } , :constraints => { :host => /^my\./ }
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :chalklers, controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations' }
   
   constraints(Subdomain) do
@@ -87,7 +86,7 @@ Chalkle::Application.routes.draw do
       end
       member do
         get 'approve'
-        post 'pay'
+        get 'pay'
       end
     end
 

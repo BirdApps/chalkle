@@ -1,11 +1,10 @@
 class ChannelAdmin < ActiveRecord::Base
-  attr_accessible :chalkler, :chalkler_id, :channel, :channel_id, :admin_user, :admin_user_id, :email
+  attr_accessible :chalkler, :chalkler_id, :channel, :channel_id, :email
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   has_many :courses, :through => :channel
   belongs_to :channel
-  belongs_to :admin_user
   belongs_to :chalkler
 
   validates_presence_of :channel_id
@@ -22,7 +21,7 @@ class ChannelAdmin < ActiveRecord::Base
 
   def email
     if chalkler.present?
-      chalkler.email ? chalkler.email : admin_user.email
+      chalkler.email
     else
       pseudo_chalkler_email
     end

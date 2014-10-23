@@ -23,7 +23,6 @@ class Channel < ActiveRecord::Base
   validates :short_description, length: { maximum: 250 }
 
   has_many :channel_admins
-  has_many :admin_users, through: :channel_admins
   has_many :subscriptions
   has_many :chalklers, through: :subscriptions, source: :chalkler
   has_many :courses
