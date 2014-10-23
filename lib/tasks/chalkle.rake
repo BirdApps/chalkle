@@ -8,13 +8,6 @@ begin
       end
     end
 
-    desc "Pending payments"
-    task "create_pending_payments" => :environment do 
-      EventLog.log('expire_caches') do
-        OutgoingPayment.create_pending_payments
-      end
-    end
-
 
     desc "Migration tasks"
     task "migrate_images" => :environment do 
@@ -104,5 +97,35 @@ begin
         end
       end
     end
+
+    desc "Complete courses that have run"
+    task "complete_courses" => :environment do
+      EventLog.log('complete_courses') do
+        courses = Course.needs_completing.each do |course|
+          if course.complete! 
+            puts "course completed - #{course.id}: #{course.name}"
+          end
+        end 
+      end
+    end
+
+    desc "Calculate outgoing payments for teachers and providers"
+    task "calculate_outgoings" => :environment do
+      EventLog.log('calculate_outgoings') do
+        bookings = Booking.need_outgoing_payments
+        bookings.each do |booking|
+          errors = []
+          if booking.create_outgoing_payments!
+            puts "booking #{booking.id} outgoings calculated"
+          else
+            errors << booking.id.to_s+": "+booking.errors.messages.to_s
+          end
+        end
+        errors.each do |error|
+          puts error
+        end
+      end
+    end
+
   end
 end

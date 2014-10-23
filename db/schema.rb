@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141017080823) do
+ActiveRecord::Schema.define(:version => 20141023053148) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -27,26 +27,6 @@ ActiveRecord::Schema.define(:version => 20141017080823) do
   add_index "active_admin_comments", ["author_type", "author_id"], :name => "index_active_admin_comments_on_author_type_and_author_id"
   add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
-
-  create_table "admin_users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.string   "name"
-    t.string   "role"
-  end
-
-  add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
-  add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
   create_table "bookings", :force => true do |t|
     t.integer  "meetup_id"
@@ -124,16 +104,14 @@ ActiveRecord::Schema.define(:version => 20141017080823) do
     t.float    "longitude"
     t.string   "address"
     t.string   "avatar"
+    t.string   "role"
   end
 
   create_table "channel_admins", :force => true do |t|
     t.integer "channel_id",            :null => false
-    t.integer "admin_user_id"
     t.integer "chalkler_id"
     t.string  "pseudo_chalkler_email"
   end
-
-  add_index "channel_admins", ["channel_id", "admin_user_id"], :name => "index_channel_admins_on_channel_id_and_admin_user_id", :unique => true
 
   create_table "channel_categories", :id => false, :force => true do |t|
     t.integer "channel_id",  :null => false
@@ -178,6 +156,7 @@ ActiveRecord::Schema.define(:version => 20141017080823) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
+    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -185,7 +164,6 @@ ActiveRecord::Schema.define(:version => 20141017080823) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -234,9 +212,9 @@ ActiveRecord::Schema.define(:version => 20141017080823) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
-    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
     t.decimal  "balance"
   end
 

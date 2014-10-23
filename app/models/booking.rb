@@ -23,11 +23,12 @@ class Booking < ActiveRecord::Base
   has_many :bookings, as: :guests_bookings
   has_one :payment
   has_one :channel, through: :course
+  has_one :teacher, through: :course
   
   belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
   belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
 
-  validates_presence_of :course_id, :status, :name, :chalkler
+  validates_presence_of :course_id, :status, :name, :chalkler, :teacher, :channel
   validates_presence_of :payment_method, :unless => :free?
 
   scope :hidden, where(visible: false)
@@ -44,6 +45,9 @@ class Booking < ActiveRecord::Base
   scope :by_date_desc, order('created_at DESC')
   scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at')
   scope :needs_reminder, course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
+
+  scope :need_outgoing_payments, includes(:course).where("courses.cost > 0 AND courses.status = 'Completed' AND courses.end_at < '#{DateTime.current.advance(weeks:-2).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
+
 
   before_validation :set_free_course_attributes
 
@@ -63,9 +67,8 @@ class Booking < ActiveRecord::Base
   end
 
   def self.unpaid
-   select{|booking| (booking.paid || 0) < booking.cost}
-end
-
+    select{|booking| (booking.paid || 0) < booking.cost}
+  end
 
 
   def self.needs_booking_completed_mailer
@@ -82,7 +85,7 @@ end
   end
 
   def confirmed?
-    true if status == STATUS_1
+    status == STATUS_1
   end
 
   def cancel!(reason = nil, override_refund = false)
@@ -100,11 +103,11 @@ end
   end
 
   def cancelled?
-    true if status == STATUS_1
+    status == STATUS_1
   end
 
   def paid?
-    true if free? || paid == cost
+    free? || paid >= cost
   end
 
   def processing_gst_number
@@ -196,6 +199,13 @@ end
 
   def transaction_url
     payment.present? && payment.swipe_transaction_id.present? ? "https://merchant.swipehq.com/admin/main/index.php?module=transactions&action=txn-details&transaction_id="+payment.swipe_transaction_id : '#'
+  end
+
+  def create_outgoing_payments!
+    #if there is a pending payment, rather than creating a new payment, we add on to the existing payment
+    self.teacher_payment = OutgoingPayment.pending_payment_for_teacher(teacher) unless teacher_payment
+    self.channel_payment = OutgoingPayment.pending_payment_for_channel(channel) unless channel_payment
+    self.save
   end
 
   def teacher?

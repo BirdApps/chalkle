@@ -1,0 +1,19 @@
+<div class="sudo_outgoing row alert-<%= outgoing_payment.status_color %>">
+  <%= link_to sudo_outgoing_payment_path(outgoing_payment.id) do %>
+    <div class="col-sm-2">
+      <%= outgoing_payment.id %>
+    </div>
+    <div class="col-sm-2">
+      <%= outgoing_payment.name  %>
+    </div>
+    <div class="col-sm-3">
+      <%= outgoing_payment.account %>
+    </div>
+    <div class="col-sm-2">
+      $<%= outgoing_payment.total %>
+    </div>
+    <div class="col-sm-2">
+      <%= outgoing_payment.status_formatted %>
+    </div>
+  <% end %>
+</div>

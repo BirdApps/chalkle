@@ -7,8 +7,7 @@ class SudoPolicy < ApplicationPolicy
   end
 
   def index?
-    true if @user.super?
+    @user.super?
   end
-
 
 end

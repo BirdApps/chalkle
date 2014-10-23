@@ -6,14 +6,29 @@ class OutgoingPayment < ActiveRecord::Base
   STATUS_3 = "invoiced"
   STATUS_4 = "marked_paid"
   STATUS_5 = "confirmed_paid"
-  STATUSES = [STATUS_1,STATUS_2,STATUS_3]
+  STATUSES = [STATUS_1,STATUS_2,STATUS_4]
+
+  scope :pending, where(status: STATUS_1)
+  scope :approved, where(status: STATUS_2)
+  scope :invoiced, where(status: STATUS_3)
+  scope :marked_paid, where(status: STATUS_4)
+  scope :confirmed_paid, where(status: STATUS_5)
 
   belongs_to :teacher, class_name: 'ChannelTeacher'
   belongs_to :channel
 
+  validates_presence_of :fee, :tax, :status
+
+  validate :teacher_or_channel_presence
+
   has_many :channel_bookings, class_name: 'Booking', foreign_key: :channel_payment_id
   has_many :teacher_bookings, class_name: 'Booking', foreign_key: :teacher_payment_id
-  has_many :payments, through: :bookings
+  
+  has_many :teacher_payments, through: :teacher_bookings, source: :payments
+  has_many :channel_payments, through: :channel_bookings, source: :payments
+  
+  has_many :teacher_courses, through: :teacher_bookings, source: :course, foreign_key: :course_id
+  has_many :channel_courses, through: :channel_bookings, source: :course, foreign_key: :course_id
 
   def self.pending_payment_for_teacher(teacher)
     OutgoingPayment.where(status: STATUS_1, teacher_id: teacher.id).first || OutgoingPayment.create({teacher: teacher, status: STATUS_1, tax: 0, fee: 0, tax_number: teacher.tax_number, bank_account: teacher.account }, as: :admin)
@@ -23,23 +38,42 @@ class OutgoingPayment < ActiveRecord::Base
     OutgoingPayment.where(status: STATUS_1, channel_id: channel.id).first || OutgoingPayment.create({channel: channel, status: STATUS_1, tax: 0, fee: 0, tax_number: channel.tax_number, bank_account: channel.account }, as: :admin)
   end
 
-  #TODO: run at midnight every night
-  def self.create_pending_payments
-    courses = Course.need_outgoing_payments
-    payments = []
-    courses.each do |course|
-      teacher_payment = OutgoingPayment.pending_payment_for_teacher course.teacher
-      channel_payment = OutgoingPayment.pending_payment_for_channel course.channel
-
-      course.bookings.each do |booking|
-        booking.teacher_payment_id = teacher_payment.id
-        booking.channel_payment_id = channel_payment.id   
-        booking.save
-      end
-      payments << teacher_payment
-      payments << channel_payment
+  def status_color
+    case status
+      when "pending"
+        'danger'
+      when "approved"
+        'warning'
+      when "invoiced"
+        'info'
+      when "marked_paid"
+        'success'
+      when "confirmed_paid"
+        'default'
     end
-    payments
+  end
+
+  def status_formatted
+    OutgoingPayment.status_formatted(status)
+  end
+
+  def teacher_or_channel_presence
+    (teacher || channel).present?
+  end
+
+  def self.status_formatted(status)
+    case status
+      when "pending"
+        'Pending'
+      when "approved"
+        'Approved'
+      when "invoiced"
+        'Invoiced'
+      when "marked_paid"
+        'Paid'
+      when "confirmed_paid"
+        'Paid & Verified'
+    end
   end
 
   def for_teacher?
@@ -50,41 +84,92 @@ class OutgoingPayment < ActiveRecord::Base
     channel.present?
   end
 
-  def bookings
-    channel_bookings + teacher_bookings
+  def name
+    if for_channel?
+      channel.name
+    else
+      teacher.name
+    end
   end
 
+  def account
+    if bank_account.present?
+      bank_account
+    else
+      if for_channel?
+        channel.account
+      else
+        teacher.account
+      end
+    end
+  end
+
+
+  def tax_num
+    if tax_number.present?
+      tax_number
+    else
+      if for_channel?
+        channel.tax_number
+      else
+        teacher.tax_number
+      end
+    end
+  end
+
+
+  def courses
+    if for_teacher?
+      teacher_courses.uniq
+    else
+      channel_courses.uniq
+    end
+  end
+
+  def payments
+    if for_teacher?
+      teacher_payments
+    else
+      channel_payments
+    end
+  end
+
+  def bookings
+    if for_teacher?
+      teacher_bookings.where("teacher_fee > 0") 
+    else
+      channel_bookings.where("provider_fee > 0") 
+    end
+  end
+
+  def calc_fee
+    self.fee = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_fee : b.provider_fee ) }
+  end
+
+  def calc_tax
+    self.tax = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_gst : b.provider_gst ) }
+  end
+
+  #only calculate fee and tax only before approval
   def total
     if status == STATUS_1
-      total = 0
-      bookings.each do |booking|
-        if for_teacher?
-          total += booking.teacher_fee
-          total += booking.teacher_gst
-        elsif for_channel?
-          total += booking.provider_fee
-          total += booking.provider_gst
-        end
-      end
-      total
-    else
-      fee+tax
+      calc_fee
+      calc_tax
     end
+    fee+tax
   end
 
-  #calculate fee and tax only once is approved
+  #calculate fee and tax only once on approval
   def approve!
-    bookings.each do |booking|
-      if for_teacher?
-        self.fee += booking.teacher_fee
-        self.tax += booking.teacher_gst
-      elsif for_channel?
-        self.fee += booking.provider_fee
-        self.tax += booking.provider_gst
-      end
+    if status == STATUS_1
+      calc_fee
+      calc_tax
+      self.status = STATUS_2
+      self.tax_number = tax_num
+      self.bank_account = account
+      save
     end
-    self.status = STATUS_2
-    save
+    total
   end
 
   def received_invoice!
@@ -92,7 +177,7 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
 
-  def marked_paid!(reference = nil)
+  def mark_paid!(reference = nil)
     self.reference = reference
     self.paid_date = DateTime.current
     self.status = STATUS_4

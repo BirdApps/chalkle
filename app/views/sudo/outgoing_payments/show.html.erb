@@ -1,0 +1,79 @@
+<%= render 'sub_menu' %>
+<br /><br />
+<div class="outgoing">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6">
+      <div>
+        <% if @outgoing.for_teacher? %>
+          Teacher: <%= link_to @outgoing.name, channel_teacher_path(@outgoing.teacher.channel.url_name, @outgoing.teacher_id),class: 'btn btn-default'  %>
+        <% else %>
+          Provider: <%= link_to @outgoing.name, channel_path(@outgoing.channel.url_name), class: 'btn btn-default'  %>
+        <% end %>
+      </div>
+      <div>
+        Outgoing ID: <%= @outgoing.id %>
+      </div>
+      <div>
+        <%= @outgoing.account.present? ? @outgoing.account : 'no bank account' %>
+      </div>
+      <div>
+        <%= @outgoing.tax_num.present? ? @outgoing.tax_num : 'no tax number' %>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-3">
+      <div class="alert alert-<%= @outgoing.status_color %>">
+        <% if @outgoing.status ==  'pending' %>
+          <%= link_to "Approve Payment", approve_sudo_outgoing_payment_path(@outgoing), class: 'btn btn-primary' %>
+        <% end %>
+        <% if @outgoing.status ==  'approved' %>
+          <%= form_for(@outgoing, url: pay_sudo_outgoing_payment_path(@outgoing), html_class: 'new_course_wrapper') do |f| %>
+            <label>
+              <span class="light">Remittance Reference</span>
+              <%= f.text_field :reference, class: "col-xs-12", placeholder: "xero remittance" %>
+              <%= f.submit "Mark Paid", class: "btn btn-primary col-xs-12 margin-top-5" %>
+            </label>
+          <% end %>
+        <% end %>
+        <% if @outgoing.status ==  'marked_paid' %>
+          <span class="light">Remittance Reference</span><br />
+          <input type="text" value="<%= @outgoing.reference %>" readonly="readonly" />
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="col-xs-12 col-sm-3">
+      <div class="alert alert-<%= @outgoing.status_color %>">
+        <h4><%= @outgoing.status_formatted %></h4>
+        <div class="clearfix">
+          <div class="col-xs-6 small light grey">
+            Fees
+          </div>
+          <div class="col-xs-6">
+            $<%= @outgoing.calc_fee %>
+          </div>
+        </div>
+        <div class="clearfix">
+          <div class="col-xs-6 small light grey">
+            Tax 
+          </div>
+          <div class="col-xs-6">
+            $<%= @outgoing.calc_tax %>
+          </div>
+        </div>
+        <hr class="flush" />
+        <div class="clearfix">
+          <div class="col-xs-6 small light grey">
+            Total 
+          </div>
+          <div class="col-xs-6">
+            $<%= @outgoing.total %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <%= render partial: "outgoing_payments/breakdown", locals: {outgoing_payment: @outgoing } %>
+</div>

@@ -30,6 +30,14 @@ module ApplicationHelper
     render 'layouts/typekit_includes' unless Rails.env.development?
   end
 
+  def favicons
+    render partial: 'layouts/favicon'
+  end
+
+  def open_graph_tags 
+    render partial: 'layouts/open_graph_meta'
+  end
+
   def header_color
     if @channel && @channel.header_color || @course && @course.channel.header_color
       (@channel || @course.channel).header_color || @booking && @booking.course.channel.header_color

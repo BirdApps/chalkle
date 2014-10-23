@@ -1,0 +1,58 @@
+
+    <!-- Open Graph -->     
+
+      <meta property="fb:app_id" content="709387515738435" />  
+      <meta property="og:title" content="<%= strip_tags "#{meta_title}" %>" />  
+      <meta property="og:description" content="" />  
+      <meta property="og:image" content="<%=page_title_logo.try(:url) || asset_path('social-logo.jpg') %>" />  
+        
+      <meta property="og:site_name" content="Chalkle" />  
+
+      <% if @channel_teacher.present? && @channel_teacher.id.present? %>
+
+<!-- channel_teacher -->
+        
+        <meta property="og:type" content="profile" />  
+        <meta property="og:description" content="<%=@channel_teacher.bio %>" />  
+
+
+      <% elsif @booking && !@booking.new_record?  %>
+<!-- booking -->
+        <meta property="og:type" content="product.item" />
+        <meta property="og:description" content="<%=@channel.description %>" />  
+
+
+      <% elsif @bookings && @bookings.any? %>
+<!-- bookings -->
+        <meta property="og:type" content="product.group" />
+        <meta property="og:description" content="<%=@booking.course.description %>" />  
+
+      <% elsif @channel.present? %>
+<!-- channel -->
+        <meta property="og:type" content="product.group" />
+        <meta property="og:description" content="<%=@channel.description %>" />  
+
+    
+      <% elsif @region.present? %>
+<!-- region -->
+        <meta property="og:type" content="place" />
+        <meta property="og:description" content="Find classes on every topic in <%= @region.name %> on chalkle." />
+
+      <% elsif @category.present? %>
+<!-- category -->
+        <meta property="og:type" content="product.group" />
+        <meta property="og:description" content="Find classes about <%= @category.name %> and more on chalkle." />
+
+
+
+
+      <% else %>
+<!-- else -->
+        <meta property="og:type" content="product.group" />
+        <meta property="og:description" content="Find classes on every topic on chalkle." />
+
+
+      <% end %>
+
+
+    <!-- END Open Graph -->

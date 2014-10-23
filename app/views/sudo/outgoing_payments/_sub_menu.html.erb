@@ -1,0 +1,37 @@
+<% 
+  all = pending = approved = paid = 'btn btn-default'
+  case params[:status]  
+  when 'pending'
+    pending = 'btn btn-info'
+  when 'approved'
+    approved = 'btn btn-info'
+  when 'marked_paid'
+    paid = 'btn btn-info'
+  when 'all'
+    all = 'btn btn-info'
+  end
+%>
+
+<div class="hidden-xs hidden-sm">
+  <%= link_to "All Outgoings", sudo_outgoing_payments_path({status: 'all', take: 300}), class: all %>
+
+  <%= link_to "Pending ("+OutgoingPayment.pending.count.to_s+")", sudo_outgoing_payments_path({status: 'pending'}), class: pending %>
+
+  <%= link_to "Approved ("+OutgoingPayment.approved.count.to_s+")", sudo_outgoing_payments_path({status: 'approved'}), class: approved %>
+
+  <%= link_to "Paid ("+OutgoingPayment.marked_paid.count.to_s+")", sudo_outgoing_payments_path({status: 'marked_paid'}), class: paid %>
+</div>
+
+<div class="dropdown col-xs-12 visible-xs visible-sm">
+  <button class="btn btn-default dropdown-toggle col-xs-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+    <%= OutgoingPayment.status_formatted(params[:status]) %>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu text-left col-xs-12" role="menu" aria-labelledby="dropdownMenu1">
+    <% OutgoingPayment::STATUSES.each do |status| %>
+      <li>
+        <%= link_to OutgoingPayment.status_formatted(status), sudo_outgoing_payments_path({status: status}) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

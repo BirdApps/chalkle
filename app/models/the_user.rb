@@ -1,38 +1,35 @@
 class TheUser
 
-  def initialize current_chalkler, current_admin_user = nil
+  def initialize current_chalkler
     @chalkler = current_chalkler || Chalkler.new
-    @admin_user = current_admin_user || AdminUser.new
-    @admin_user = AdminUser.find_by_email chalkler.email if @admin_user.id.nil? && @chalkler.id.present?
-    @chalkler = Chalkler.find_by_email admin_user.email if @chalkler.id.nil? && @admin_user.id.present?
   end
 
   def id
     chalkler? ? chalkler.id : -1
   end
 
-  def authenticated?
-    !!(chalkler.id.present? || admin_user.id.present?)
+  def role
+    chalkler.role
   end
 
-  def admin?
-    admin_user.present? && admin_user.id.present?
+  def name
+    chalkler.name
+  end
+
+  def email
+    chalkler.email
+  end
+
+  def method_missing(m)  
+    chalkler.m
+  end  
+
+  def authenticated?
+    chalkler.id.present?
   end
 
   def chalkler?
     chalkler.present? && chalkler.id.present?
-  end
-
-  def role
-    admin_user.role if admin?
-  end
-
-  def name
-    chalkler.name ? chalkler.name : admin_user.name if authenticated?
-  end 
-
-  def email
-    chalkler.email ? chalkler.email : admin_user.email if authenticated?
   end
 
   def chalkler
@@ -43,16 +40,12 @@ class TheUser
     chalkler.avatar
   end
 
-  def admin_user
-    @admin_user
-  end
-
   def following
     chalkler.channels
   end
 
   def super?
-    admin_user.present? ? admin_user.super? : false
+    role == 'super'
   end
 
   def channels_adminable
@@ -90,7 +83,6 @@ class TheUser
   def channels
     return Channel.all if super?
     channels = []
-    channels = channels.concat admin_user.channels if admin?
     channels = channels.concat chalkler.channels_teachable if chalkler?
     channels = channels.concat chalkler.channels_adminable if chalkler?
     channels.uniq

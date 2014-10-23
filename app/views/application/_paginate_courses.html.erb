@@ -20,11 +20,11 @@
 <div class="row  pagination-wrapper">
   <ul class="pagination">
     <li class="<%=  'disabled' if paginate_position == 0  %>">
-      <a href="<%= url_for(filter_params('page', paginate_position)) %>">&laquo;</a>
+      <a href="<%= url_for(filter_params('page', paginate_position, 'page')) %>">&laquo;</a>
     </li>
     <% paginate_count.times do |i| %>
       <li class="<%= 'active' if paginate_position == i %>">
-        <a href="<%= url_for(filter_params('page', i+1)) %>">
+        <a href="<%= url_for(filter_params('page', i+1, 'page')) %>">
           <%= i+1 %> 
           <% if paginate_position == i %>
             <span class="sr-only">(current)</span>
@@ -32,6 +32,6 @@
         </a>
       </li>
     <% end %>
-    <li class="<%= 'disabled' if paginate_position >= paginate_count-1 %>"><a href="<%= url_for(filter_params('page', paginate_position+2)) %>">&raquo;</a></li>
+    <li class="<%= 'disabled' if paginate_position >= paginate_count-1 %>"><a href="<%= url_for(filter_params('page', paginate_position+2, 'page')) %>">&raquo;</a></li>
   </ul>
 </div>

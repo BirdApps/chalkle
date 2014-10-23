@@ -1,0 +1,52 @@
+<%= render 'sub_menu' %>
+<br /><br />
+<% if @outgoings.present? %>
+
+  <div class="row alert-warning">
+    <div class="col-sm-2">
+      ID
+    </div>
+    <div class="col-sm-2">
+      To
+    </div>
+    <div class="col-sm-3">
+      Account
+    </div>
+    <div class="col-sm-2">
+      Amount
+    </div>
+    <div class="col-sm-2">
+      Status
+    </div>
+  </div>
+
+  <hr class="flush" />
+  <%= render paginate_these(@outgoings) %>
+   
+  <div class="row pagination-wrapper">
+    <ul class="pagination">
+      <li class="<%=  'disabled' if paginate_position == 0  %>">
+        <a href="<%= url_for({ page: paginate_position, status: params[:status] }) %>">&laquo;</a>
+      </li>
+      <% paginate_count.times do |i| %>
+        <li class="<%= 'active' if paginate_position == i %>">
+          <a href="<%= url_for({page: i+1, status: params[:status]}) %>">
+            <%= i+1 %> 
+            <% if paginate_position == i %>
+              <span class="sr-only">(current)</span>
+            <% end %>
+          </a>
+        </li>
+      <% end %>
+      <li class="<%= 'disabled' if paginate_position >= paginate_count-1 %>">
+        <a href="<%= url_for({page: paginate_position+2, status: params[:status]}) %>">&raquo;</a>
+      </li>
+    </ul>
+  </div>
+
+<% else %>
+  <div class="alert alert-warning center light">
+    There are no <%= OutgoingPayment.status_formatted(params[:status]) %> outgoings
+  </div>
+
+<% end %>

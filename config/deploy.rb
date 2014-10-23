@@ -1,6 +1,8 @@
 require "capistrano-rbenv"
 require "bundler/capistrano"
+require 'hipchat/capistrano'
 # require 'capistrano-unicorn'
+
 set :bundle_flags, "--deployment --quiet --binstubs"
 
 
@@ -26,6 +28,21 @@ set :scm, :git
 set :whenever_command, "bundle exec whenever"
 set :whenever_environment, defer { rails_env }
 set :whenever_identifier, defer { "#{application}_#{rails_env}" }
+
+set :hipchat_token, "LtCXRyFQRGwiDiiAO9G7H74dBRCpMoXhrO0xM82p"
+set :hipchat_room_name, "Chalkle"
+set :hipchat_announce, true # notify users?
+set :hipchat_options, {
+  :api_version  => "v2" # Set "v2" to send messages with API v2
+}
+set :hipchat_color, 'yellow' #normal message color
+set :hipchat_success_color, 'green' #finished deployment message color
+set :hipchat_failed_color, 'red' #cancelled deployment message color
+set :hipchat_message_format, 'html' # Sets the deployment message format, see https://www.hipchat.com/docs/api/method/rooms/message
+set :hipchat_commit_log, true
+# Optional
+set :hipchat_commit_log_message_format, "^CHAL-\d+" # extracts ticket number from message
+
 
 task :staging do
   set :domain,    "chalklestaging.cloudapp.net"

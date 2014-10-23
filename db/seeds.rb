@@ -39,11 +39,6 @@ if Chalkler.all.empty?
   chalkler = Chalkler.create({name: 'Chalky Chalkler', email: 'chalkler@example.com', password: 'password', name: 'Julie User'}, as: :admin)
   puts "Created chalkler: #{chalkler.name}"
 
-  super_admin = AdminUser.create({name: 'Andy Admin', email: 'super_admin@enspiral.com', password: 'password', role: 'super'}, as: :admin)
-  puts "Created Super AdminUser: #{super_admin.name}"
-
-  channel_admin = AdminUser.create({name: 'Channy Channeler', email: 'channel_admin@enspiral.com', password: 'password', role: 'channel admin'}, as: :admin)
-  puts "Created AdminUser: #{channel_admin.name}"
 end
 
 # Create some categories

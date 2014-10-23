@@ -6,7 +6,6 @@ Chalkle::Application.routes.draw do
   match '(*any)' => redirect { |p, req| req.url.sub!('my.', '') } , :constraints => { :host => /^my\./ }
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :chalklers, controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations' }
   
   constraints(Subdomain) do
@@ -72,6 +71,7 @@ Chalkle::Application.routes.draw do
     root to: 'silvias#index'
     resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
     resources :payments
+    resources :regions
     resources :chalklers do
       collection do
         get 'becoming/:id' => 'chalklers#becoming', as: :becoming
@@ -79,10 +79,14 @@ Chalkle::Application.routes.draw do
       end
     end
     
-    resources :outgoings do
+    resources :outgoing_payments, path: 'outgoings' do
       collection do 
         get 'pending'
         get 'complete'
+      end
+      member do
+        get 'approve'
+        put 'pay'
       end
     end
 

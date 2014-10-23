@@ -10,10 +10,6 @@ class ApplicationController < ActionController::Base
   before_filter :load_category
   before_filter :skip_cache!
 
-  def current_ability
-    @current_ability ||= Ability.new(current_admin_user)
-  end
-
   def styleguide
     render "/styleguide"
   end
@@ -36,8 +32,9 @@ class ApplicationController < ActionController::Base
 
   end
 
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to admin_dashboard_path, :alert => exception.message
+
+  def not_found
+    render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
   end
 
   protected
@@ -65,14 +62,12 @@ class ApplicationController < ActionController::Base
 
     def current_user
       if @current_user.nil?
-        @current_user = TheUser.new current_chalkler, current_admin_user
+        @current_user = TheUser.new current_chalkler
       end
       return @current_user 
     end
 
-    def not_found
-      render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
-    end
+   
 
     def permission_denied
       flash[:notice] = "You do not have permission to view that page"

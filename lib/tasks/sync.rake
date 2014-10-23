@@ -22,10 +22,6 @@ namespace :sync do
   end
 
   task :set_passwords => [:environment] do
-    AdminUser.all.each do |user|
-      user.password = 'password'
-      user.save
-    end
     Chalkler.all.each do |user|
       user.password = 'password'
       user.save

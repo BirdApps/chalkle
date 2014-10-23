@@ -15,7 +15,7 @@ class Chalkler < ActiveRecord::Base
     :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
   attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :avatar ]
-  attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :as => :admin
+  attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :role, :as => :admin
 
   attr_accessor :join_channels, :set_password_token
 
@@ -46,12 +46,12 @@ class Chalkler < ActiveRecord::Base
   after_create :create_channel_associations
 
   scope :visible, where(visible: true)
+
   scope :with_email_region_id, 
     lambda {|region| 
       where("email_region_ids LIKE '%?%'", region)
     }
 
-  search_methods :with_email_region_id
 
   serialize :email_categories
   serialize :email_region_ids
@@ -59,7 +59,6 @@ class Chalkler < ActiveRecord::Base
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_reset_password_token
-
 
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)

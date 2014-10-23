@@ -100,8 +100,6 @@ class Course < ActiveRecord::Base
   scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
   scope :adminable_by, lambda {|chalkler| joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
 
-  scope :need_outgoing_payments, paid.joins(:bookings).where("courses.status = '#{STATUS_4}' AND courses.end_at < '#{DateTime.current.advance(weeks:-2).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
-
   scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
   before_create :set_url_name
@@ -333,7 +331,7 @@ class Course < ActiveRecord::Base
   end
 
   def self.teacher_pay_types
-    [ 'Flat fee', 'Fee per attendee', 'Not paid through chalkle']
+    [ 'Flat fee', 'Fee per attendee', 'Provider pays teacher']
   end
 
   def teacher_pay_variable
