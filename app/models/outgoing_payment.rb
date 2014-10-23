@@ -114,9 +114,9 @@ class OutgoingPayment < ActiveRecord::Base
 
   def courses
     if for_teacher?
-      teacher_courses
+      teacher_courses.uniq
     else
-      channel_courses
+      channel_courses.uniq
     end
   end
 

@@ -1,5 +1,6 @@
 class Sudo::OutgoingPaymentsController < Sudo::BaseController
-  before_filter :load_outgoing_payment, only: [:show,:edit,:approve,:update, :pay]
+
+  before_filter :load_outgoing_payment, only: [:show,:edit,:approve,:update,:pay]
 
   def index
     status = params[:status].present? ? params[:status] : 'pending'
