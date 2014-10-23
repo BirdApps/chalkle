@@ -27,7 +27,7 @@ class Chalkler < ActiveRecord::Base
 
   has_many :subscriptions
   has_many :channel_teachers
-  has_many :bookings, dependent: :nullify
+  has_many :bookings
   has_many :channel_admins
   has_many :payments, through: :bookings
   has_many :channels_teachable, through: :channel_teachers, source: :channel
