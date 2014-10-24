@@ -228,6 +228,16 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  def self.stats_for_dates(from, to)
+    {
+      asp: where('created_at BETWEEN ? AND ?', from, to).inject(0){|sum, b| sum += b.cost },
+      asp_only_paid: where('created_at BETWEEN ? AND ?', from, to).select{|b| ! b.free? }.inject(0){|sum, b| sum += b.cost }
+
+    }
+  end
+
+
+
   private
     def set_free_course_attributes
       if course && free?

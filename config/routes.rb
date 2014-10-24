@@ -71,6 +71,7 @@ Chalkle::Application.routes.draw do
     root to: 'silvias#index'
     resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
     resources :payments
+    resources :metrics, only: :index
     resources :regions
     resources :chalklers do
       collection do

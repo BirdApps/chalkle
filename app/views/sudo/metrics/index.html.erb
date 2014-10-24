@@ -1,0 +1,69 @@
+<% content_for :header do %>
+  <%= javascript_include_tag "sudo" %>
+<% end %>
+
+
+<div class="row">
+  <div class="col-md-6 col-sm-6 text-center">
+    <h4>New Chalklers</h4>
+      <div>
+        <small>Week</small>
+        <h2><%= @chalkler_stats[:week][:new] %></h2>
+      </div>
+      <div>
+      <small>Month</small>
+      <h2><%= @chalkler_stats[:month][:new] %></h2>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-sm-6 text-center">
+      <h4>Active Chalklers</h4>
+      <div>
+        <small>Week</small>
+        <h2><%= @chalkler_stats[:week][:active] %></h2>
+      </div>
+      <div>
+      <small>Month</small>
+      <h2><%= @chalkler_stats[:month][:active] %></h2>
+    </div>
+  </div>
+</div>
+
+<%= high_chart 'Signups', @signups_chart %>
+
+
+<div class="row">
+  <div class="col-md-6 col-sm-6 text-center">
+      <h4>ASP (all)</h4>
+      <div>
+        <small>Week</small>
+        <h2><%= @booking_stats[:week][:asp] %></h2>
+      </div>
+      <div>
+      <small>Month</small>
+      <h2><%= @booking_stats[:month][:asp] %></h2>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-6 text-center">
+      <h4>ASP (only paid)</h4>
+      <div>
+        <small>Week</small>
+        <h2><%= @booking_stats[:week][:asp_only_paid] %></h2>
+      </div>
+      <div>
+      <small>Month</small>
+      <h2><%= @booking_stats[:month][:asp_only_paid] %></h2>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+  <%= high_chart 'Bookings', @bookings_chart %>
+
+
+
+
+
