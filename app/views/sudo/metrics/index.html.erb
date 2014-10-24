@@ -37,22 +37,22 @@
       <h4>ASP (all)</h4>
       <div>
         <small>Week</small>
-        <h2><%= @booking_stats[:week][:asp] %></h2>
+        <h2> <%= number_to_currency @booking_stats[:week][:asp] %></h2>
       </div>
       <div>
       <small>Month</small>
-      <h2><%= @booking_stats[:month][:asp] %></h2>
+      <h2><%= number_to_currency @booking_stats[:month][:asp] %></h2>
     </div>
   </div>
   <div class="col-md-6 col-sm-6 text-center">
       <h4>ASP (only paid)</h4>
       <div>
         <small>Week</small>
-        <h2><%= @booking_stats[:week][:asp_only_paid] %></h2>
+        <h2><%= number_to_currency @booking_stats[:week][:asp_only_paid] %></h2>
       </div>
       <div>
       <small>Month</small>
-      <h2><%= @booking_stats[:month][:asp_only_paid] %></h2>
+      <h2><%= number_to_currency @booking_stats[:month][:asp_only_paid] %></h2>
     </div>
   </div>
 

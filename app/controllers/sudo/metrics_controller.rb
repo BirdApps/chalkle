@@ -6,12 +6,12 @@ class Sudo::MetricsController < Sudo::BaseController
     @bookings_chart = new_bookings_chart
     @signups_chart = new_chalkers_chart
     @chalkler_stats = {
-      week: Chalkler.stats_for_dates(Date.current, Date.current-1.week), 
-      month: Chalkler.stats_for_dates(Date.current, Date.current-1.month)
+      week: Chalkler.stats_for_dates(Date.current-1.week, Date.current), 
+      month: Chalkler.stats_for_dates(Date.current-1.month, Date.current)
     }
     @booking_stats = {
-      week: Booking.stats_for_dates(Date.current, Date.current-1.week), 
-      month: Booking.stats_for_dates(Date.current, Date.current-1.month)
+      week: Booking.stats_for_dates(Date.current-1.week, Date.current), 
+      month: Booking.stats_for_dates(Date.current-1.month, Date.current)
     }
 
   end
@@ -38,15 +38,15 @@ class Sudo::MetricsController < Sudo::BaseController
       f.title(:text => "Weekly Bookings")
       f.xAxis(:categories => Array.new(30) {|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
       f.series(:name => "All Bookings", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.select{|b| b.created_at > (i+1).weeks.ago && b.created_at < i.weeks.ago }.count
+        Booking.where('created_at > ? AND created_at < ?',(i+1).weeks.ago, i.weeks.ago).count
       }.reverse )
 
       f.series(:name => "Free", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.select{|b| b.cost==0 && (b.created_at > (i+1).weeks.ago && b.created_at < i.weeks.ago) }.count
+        Booking.where('provider_fee = 0 AND created_at > ? AND created_at < ?',(i+1).weeks.ago, i.weeks.ago).count
       }.reverse )
 
       f.series(:name => "Paid", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.select{|b| b.cost>0 && (b.created_at > (i+1).weeks.ago && b.created_at < i.weeks.ago) }.count
+        Booking.where('provider_fee > 0 AND created_at > ? AND created_at < ?',(i+1).weeks.ago, i.weeks.ago).count
       }.reverse )
       f.legend(:align => 'center', :verticalAlign => 'bottom', :y => -30, :x => 0, :layout => 'horizontal',)
 
