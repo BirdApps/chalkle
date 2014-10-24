@@ -38,7 +38,7 @@ class Sudo::MetricsController < Sudo::BaseController
       f.title(:text => "Weekly Bookings")
       f.xAxis(:categories => Array.new(30) {|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
       f.series(:name => "All Bookings", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.where('created_at > ? AND created_at < ?',(i+1).weeks.ago, i.weeks.ago).count
+        Booking.where('created_at > ? AND created_at < ?', (i+1).weeks.ago, i.weeks.ago).count
       }.reverse )
 
       f.series(:name => "Free", :yAxis => 0, :data => Array.new(30) {|i|

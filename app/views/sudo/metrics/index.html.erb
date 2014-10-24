@@ -30,7 +30,18 @@
 </div>
 
 <%= high_chart 'Signups', @signups_chart %>
-
+<div class="row">
+  <div class="col-md-12 col-sm-12 text-center">
+      <h4>Revenue</h4>
+      <div>
+        <small>Week</small>
+        <h2> <%= number_to_currency @booking_stats[:week][:revenue] %></h2>
+      </div>
+      <div>
+      <small>Month</small>
+      <h2><%= number_to_currency @booking_stats[:month][:revenue] %></h2>
+    </div>
+</div>
 
 <div class="row">
   <div class="col-md-6 col-sm-6 text-center">
