@@ -50,4 +50,9 @@ class ChannelTeacher < ActiveRecord::Base
       course.expire_cache!
     end
   end
+
+  def bio 
+    read_attribute :bio || "#{name} is a teacher for #{channel.name}" 
+  end
+
 end

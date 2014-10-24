@@ -4,7 +4,7 @@
       <meta property="fb:app_id" content="709387515738435" />  
       <meta property="og:title" content="<%= strip_tags "#{meta_title}" %>" />  
       <meta property="og:description" content="" />  
-      <meta property="og:image" content="<%=page_title_logo.try(:url) || asset_path('social-logo.jpg') %>" />  
+      <meta property="og:image" content="<%= page_title_logo.try(:url) || asset_path('social-logo.jpg') %>" />  
         
       <meta property="og:site_name" content="Chalkle" />  
 
@@ -13,24 +13,17 @@
 <!-- channel_teacher -->
         
         <meta property="og:type" content="profile" />  
-        <meta property="og:description" content="<%=@channel_teacher.bio %>" />  
+        <meta property="og:description" content="<%= @channel_teacher.bio %>" />  
 
-
-      <% elsif @booking && !@booking.new_record?  %>
-<!-- booking -->
+      <% elsif @course && @course.present? %>
+<!-- course -->
         <meta property="og:type" content="product.item" />
-        <meta property="og:description" content="<%=@channel.description %>" />  
+        <meta property="og:description" content="<%= @course.description %>" />  
 
-
-      <% elsif @bookings && @bookings.any? %>
-<!-- bookings -->
-        <meta property="og:type" content="product.group" />
-        <meta property="og:description" content="<%=@booking.course.description %>" />  
-
-      <% elsif @channel.present? %>
+      <% elsif @channel.present? && @channel.id %>
 <!-- channel -->
         <meta property="og:type" content="product.group" />
-        <meta property="og:description" content="<%=@channel.description %>" />  
+        <meta property="og:description" content="<%= @channel.description %>" />  
 
     
       <% elsif @region.present? %>

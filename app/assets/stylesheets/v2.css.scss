@@ -606,7 +606,7 @@ body.v2 {
         }
         .dropdown-menu {
           
-          max-height: 600px;
+          max-height: 550px;
           overflow: scroll;
 
           @include border-radius(0 0 4px 4px);
@@ -616,12 +616,16 @@ body.v2 {
           text-shadow: none;
           font-weight: 100;
 
-          & li:hover {
-            color:  #000; 
-            background-color: #fff;
+          & li{
+            & a{
+              color:  #444 !important; 
 
+              &:hover {
+                color:  #000 !important; 
+                background-color: #fff;
+              }
+            }
           }
-
           .divider {
             background-color: none; 
           }
@@ -688,12 +692,22 @@ body.v2 {
         a {
 
           &.nav_links {
-            color: #333;
+            color: #fff;
+
+            background-color: rgba(0,0,0,0.15);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+            border-radius: 50px;
+            height: 95px;
+            width: 95px;
+            margin-top:8px;
+            padding-top:16px;
+
           }
           color: #fff;
         }
         a:hover,a:active,a:focus {
-          color: #fff;
+          color: #333;
+          background-color: rgba(255,255,255,0.35);
         }
       }
       .title-wrapper {
