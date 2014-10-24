@@ -32,7 +32,14 @@ class Sudo::BaseController < ApplicationController
         link: sudo_partner_inquiries_path,
         active: controller_parts.include?("partner_inquiries"),
         title: "Hello"
+      },
+      {
+        img_name: "metrics",
+        link: sudo_metrics_path,
+        active: controller_parts.include?("metrics"),
+        title: "Metrics"
       }
+
     ]
   end
 
