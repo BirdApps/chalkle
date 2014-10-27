@@ -52,6 +52,7 @@ class Chalkler < ActiveRecord::Base
       where("email_region_ids LIKE '%?%'", region)
     }
   scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week ) }
+  scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month ) }
 
   scope :signed_in_since, lambda{|date| where('last_sign_in_at > ?', date) }
 
