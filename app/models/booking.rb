@@ -232,21 +232,13 @@ class Booking < ActiveRecord::Base
   end
 
   def self.stats_for_date_and_range(date, range)
-    @stats_for_dates ||= Hash.new do |h, key|
-      h[key] = (
         base_scope_for_stats = send("created_#{range}_of", date)
         {
           asp: asp_for( base_scope_for_stats ),
           asp_only_paid: asp_for( base_scope_for_stats.where('provider_fee > 0') ),
           revenue: base_scope_for_stats.inject(0){|sum, b| sum += b.cost }
         }
-      )
-    end
-    binding.pry
-    @stats_for_dates[range]
   end
-
-
 
   private
 

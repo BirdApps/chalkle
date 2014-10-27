@@ -79,16 +79,10 @@ class Chalkler < ActiveRecord::Base
 
 
     def stats_for_date_and_range(date, range)
-
-      @stats_for_dates ||= Hash.new do |h, key|
-        h[key] = (
-          {
-            new: send("created_#{range}_of", date).count, 
-            active: (signed_in_since date.send("beginning_of_#{range}") ).count
-          }
-        )
-      end
-      @stats_for_dates[range]
+      {
+        new: send("created_#{range}_of", date).count, 
+        active: (signed_in_since date.send("beginning_of_#{range}") ).count
+      }
     end
 
     #TODO: Move into a presenter class like Draper sometime
