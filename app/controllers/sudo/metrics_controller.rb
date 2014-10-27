@@ -25,7 +25,7 @@ class Sudo::MetricsController < Sudo::BaseController
       f.title(:text => "Weekly Signups")
       f.xAxis(:categories => Array.new(30){|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
       f.series(:name => "Signups", :yAxis => 0, :data => Array.new(30) {|i|
-        Chalkler.where('created_at BETWEEN ? AND ?', (i+1).weeks.ago, i.weeks.ago ).count
+        Chalkler.created_week_of(i.weeks.ago).count
       }.reverse )
 
       f.chart({:defaultSeriesType=>"area"})
@@ -38,15 +38,15 @@ class Sudo::MetricsController < Sudo::BaseController
       f.title(:text => "Weekly Bookings")
       f.xAxis(:categories => Array.new(30) {|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
       f.series(:name => "All Bookings", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.where('created_at > ? AND created_at < ?', (i+1).weeks.ago, i.weeks.ago).count
+        Booking.created_week_of(i.weeks.ago).count
       }.reverse )
 
       f.series(:name => "Free", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.where('provider_fee = 0 AND created_at > ? AND created_at < ?',(i+1).weeks.ago, i.weeks.ago).count
+        Booking.created_week_of(i.weeks.ago).where('provider_fee = 0').count
       }.reverse )
 
       f.series(:name => "Paid", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.where('provider_fee > 0 AND created_at > ? AND created_at < ?',(i+1).weeks.ago, i.weeks.ago).count
+        Booking.created_week_of(i.weeks.ago).where('provider_fee > 0 ').count
       }.reverse )
       f.legend(:align => 'center', :verticalAlign => 'bottom', :y => -30, :x => 0, :layout => 'horizontal',)
 

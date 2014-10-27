@@ -51,7 +51,7 @@ class Chalkler < ActiveRecord::Base
     lambda {|region| 
       where("email_region_ids LIKE '%?%'", region)
     }
-
+  scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week ) }
 
   serialize :email_categories
   serialize :email_region_ids

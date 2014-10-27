@@ -48,6 +48,7 @@ class Booking < ActiveRecord::Base
 
   scope :need_outgoing_payments, includes(:course).where("courses.cost > 0 AND courses.status = 'Completed' AND courses.end_at < '#{DateTime.current.advance(weeks:-2).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
 
+  scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week) }
 
   before_validation :set_free_course_attributes
 
