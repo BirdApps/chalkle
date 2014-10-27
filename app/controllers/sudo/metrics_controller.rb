@@ -6,12 +6,12 @@ class Sudo::MetricsController < Sudo::BaseController
     @bookings_chart = new_bookings_chart
     @signups_chart = new_chalkers_chart
     @chalkler_stats = {
-      week: Chalkler.stats_for_dates(Date.current-1.week, Date.current), 
-      month: Chalkler.stats_for_dates(Date.current-1.month, Date.current)
+      week: Chalkler.stats_for_date_and_range(Date.current, :week), 
+      month: Chalkler.stats_for_date_and_range(Date.current, :month)
     }
     @booking_stats = {
-      week: Booking.stats_for_dates(Date.current-1.week, Date.current), 
-      month: Booking.stats_for_dates(Date.current-1.month, Date.current)
+      week: Booking.stats_for_date_and_range(Date.current, :week), 
+      month: Booking.stats_for_date_and_range(Date.current, :month)
     }
 
   end

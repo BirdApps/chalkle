@@ -53,6 +53,8 @@ class Chalkler < ActiveRecord::Base
     }
   scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week ) }
 
+  scope :signed_in_since, lambda{|date| where('last_sign_in_at > ?', date) }
+
   serialize :email_categories
   serialize :email_region_ids
 
@@ -75,11 +77,18 @@ class Chalkler < ActiveRecord::Base
 
   class << self
 
-    def stats_for_dates(from, to)
-      {
-        new: where('created_at BETWEEN ? AND ?', from, to).count, 
-        active: where('(last_sign_in_at BETWEEN ? AND ?)', from, to).count
-      }
+
+    def stats_for_date_and_range(date, range)
+
+      @stats_for_dates ||= Hash.new do |h, key|
+        h[key] = (
+          {
+            new: send("created_#{range}_of", date).count, 
+            active: (signed_in_since date.send("beginning_of_#{range}") ).count
+          }
+        )
+      end
+      @stats_for_dates[range]
     end
 
     #TODO: Move into a presenter class like Draper sometime
