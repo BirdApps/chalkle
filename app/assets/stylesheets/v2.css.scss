@@ -612,7 +612,8 @@ body.v2 {
           @include border-radius(0 0 4px 4px);
           font-family: "proxima-nova",sans-serif; 
           left: -1px;
-          background: rgba(255,255,255,0.82);
+          background: rgba(255,255,255,0.97);
+          box-shadow: 0 2px 3px rgba(0,0,0,0.1);
           text-shadow: none;
           font-weight: 100;
 
