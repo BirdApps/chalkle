@@ -547,6 +547,11 @@ body.v2 {
             padding: 0;
             padding-left:10px;
           }
+          .input-group-addon:hover{
+            .fa{
+              color: #fff;
+            }
+          }
           .form-control:focus, input:focus {
             @include box-shadow( none );
             border: 0px;
