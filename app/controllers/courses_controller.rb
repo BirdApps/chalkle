@@ -33,9 +33,8 @@ class CoursesController < ApplicationController
     end
 
     @page_title = "All Classes"
-
     @courses = current_user.super? ? Course.scoped : current_user.all_teaching
-   
+    
     if params[:search].present?
       @courses = Course.search params[:search], @courses
     end
