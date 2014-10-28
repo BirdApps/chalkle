@@ -78,7 +78,7 @@ module LayoutHelper
   end
 
   def filter_params(type, value, include_type = nil)
-    types = %w(region topic provider search take)
+    types = %w( topic region provider search take )
     types << include_type if include_type
     params_copy = Hash.new
     types.each do |type_i|
