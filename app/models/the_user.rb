@@ -20,10 +20,6 @@ class TheUser
     chalkler.email
   end
 
-  def method_missing(m)  
-    chalkler.m
-  end  
-
   def authenticated?
     chalkler.id.present?
   end
@@ -42,10 +38,6 @@ class TheUser
 
   def following
     chalkler.channels
-  end
-
-  def super?
-    role == 'super'
   end
 
   def channels_adminable
@@ -117,4 +109,9 @@ class TheUser
   def teach_menu_badge_count
     @teach_menu_badge_count ||= chalkler? ? chalkler.upcoming_teaching.count : 0
   end
+
+  private 
+    def method_missing(method, *args, &block)  
+      chalkler.send(method, *args, &block)
+    end  
 end
