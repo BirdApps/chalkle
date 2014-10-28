@@ -63,6 +63,10 @@ class Chalkler < ActiveRecord::Base
 
   before_create :set_reset_password_token
 
+  def super?
+    role == 'super'
+  end
+
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
