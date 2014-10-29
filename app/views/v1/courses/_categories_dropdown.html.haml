@@ -1,7 +1,0 @@
-%ul.dropdown-menu.pull-right.arrow-right
-	%li.dropdown-entry
-		%span.dropdown-link.dropdown-active
-			All categories
-	- categories.each do |category|
-		%li.dropdown-entry
-			= link_to category.name, '#', class: 'dropdown-link'
