@@ -1,5 +1,5 @@
-<section id="hello" class="grid-container"> 
-  <div class="grid-60 prefix-20">
+<section id="hello" class="row"> 
+  <div class="col-sm-7 col-sm-offset-2">
   <p>
     In order to be as helpful as possible, we’d love to learn a little bit more about your organisation. Answer the questions below and we’ll be in touch directly with the next steps.
   </p>
@@ -9,9 +9,9 @@
 
 </section>
 
-<section class="grid-container" id="hello-form">
+<section class="row" id="hello-form">
 
-  <div class="grid-60 prefix-20 grid-parent">
+  <div class="col-sm-8 col-sm-offset-2">
 
 
     <%= bootstrap_form_for 'said_hello', url: 'said_hello' do |f| %> 
@@ -19,7 +19,7 @@
       <% if @partner_inquiry.errors.any? %>
 
         
-        <div class="grid-100 errors">
+        <div class="col-sm-12 errors">
           <h3>There were some errors on your form: </h3>
           <% @partner_inquiry.errors.full_messages.each do |msg| %>
             <div class="error"><%= msg %></div>
@@ -28,37 +28,38 @@
 
       <% end %>
 
-      <div class="grid-100 grid-parent">
-        <h1 class="grid-100">Contact Details</h1>
+      <div class="col-sm-12 flush">
+        <h1 class="col-sm-12">Contact Details</h1>
 
         <div class="form-item">
-          <%= f.label :name, "What is your name?*", class: "grid-45" %>
-          <%= f.text_field :name, class: "grid-50" %> 
+          <%= f.label :name, "What is your name?*", class: "col-sm-5" %>
+          <%= f.text_field :name, class: "col-sm-6" %> 
         </div>
 
         <div class="form-item">
-          <%= f.label :organisation, "What is your organisation called?", class: "grid-45" %>
-          <%= f.text_field :organisation, class: "grid-50" %>
+          <%= f.label :organisation, "What is your organisation called?", class: "col-sm-5" %>
+          <%= f.text_field :organisation, class: "col-sm-6" %>
         </div>
 
         <div class="form-item">
-          <%= f.label :location, "Where are you based?", class: "grid-45" %> 
-          <%= f.text_field :location, class: "grid-50" %>
+          <%= f.label :location, "Where are you based?", class: "col-sm-5" %> 
+          <%= f.text_field :location, class: "col-sm-6" %>
         </div>
 
         <div class="form-item">
-          <%= f.label :contact_details, "What email or phone number is best used to contact you?*", class: "grid-45" %>
-          <%= f.text_field :contact_details, class: "grid-50" %>
+          <%= f.label :contact_details, "What email or phone number is best used to contact you?*", class: "col-sm-5" %>
+          <%= f.text_field :contact_details, class: "col-sm-6" %>
         </div>
 
       </div>
 
-      <div class="grid-100">
+      <div class="col-sm-12">
         <div class="form-item">
-          <%= f.label :comment, "What do you want to achieve with Chalkle°?", class: "grid-80 prefix-10 suffix-10" %>
-          <%= f.text_area :comment, class: "grid-80 prefix-10 suffix-10", rows: 4  %> 
+          <%= f.label :comment, "What do you want to achieve with Chalkle°?", class: "col-sm-12" %>
+          <%= f.text_area :comment, class: "col-sm-12", rows: 4  %> 
         </div>
-        <div class="submit-wrapper grid-100">
+        <br />
+        <div class="submit-wrapper col-sm-12">
           <%= f.submit "Say Hello", class: 'hello-button'%> 
         </div>
       </div>

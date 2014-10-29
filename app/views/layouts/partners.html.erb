@@ -24,17 +24,24 @@
 
     <header id="header" class="" >
       <h1 class="tk-proxima-nova" ><%=h @hero_text %></h1>
+      <div class="navbar-wrapper">
+        <nav class="navbar navbar-fixed-top">
+          <div class="navbar-header col-md-2">
+            <button class="navbar-toggle" data-target="#primary-naviation" data-toggle="collapse" type="button">
+              <span class="sr-only Toggle navigation"></span>
+              <span class="fa fa-bars"></span>
+            </button>
+            <%= link_to root_path, class:"navbar-brand", alt: "chalkle°" do%>
+              <%= image_tag asset_path('partners/chalkle@2x.png'), class: "logo" %>
+            <% end %>
+          </div>
+          <div class="col-sm-2 col-md-1 hidden-xs pull-right"></div>
+          <div id="primary-naviation" class="pull-right collapse navbar-collapse">
+            <%= render 'layouts/partners_navigation' %>
+          </div>
+        </nav>
+      </div>
     </header>
-    <nav class="" >
-      <div class="grid-20 logo-container">
-        <%= link_to image_tag( asset_path('partners/chalkle@2x.png'), width: 153, height: 38 ), :root %>
-      </div>
-      <div  class="grid-80">
-        <%= render 'layouts/partners_navigation' %>
-        </div>
-      </div>
-    </nav>
-
     <div id="">
 
       <div id="header-mask">
