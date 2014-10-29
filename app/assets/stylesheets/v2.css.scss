@@ -20,6 +20,7 @@
   transform: $transform;
 }
 
+
 @mixin filter($args) {
   filter: $args;
   -webkit-filter: $args;
@@ -51,6 +52,8 @@ $primary-color-opaque: rgba(76,126,147,1);
 $col-sm: 768px;
 $col-md: 992px;
 $col-lg: 1200px;
+
+* { @include transition(all 175ms ease-out) }
 
 html {
   position: relative;
