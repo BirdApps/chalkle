@@ -55,7 +55,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :lessons, if: :published?
   validates_presence_of :channel
-  validates_presence_of :teacher 
+  validates_presence_of :teacher
   validates_presence_of :start_at
   validates_numericality_of :teacher_payment, allow_nil: true
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
@@ -105,8 +105,8 @@ class Course < ActiveRecord::Base
   before_create :set_url_name
   before_save :update_published_at
   before_save :save_first_lesson
-  after_save :start_at!
-  after_save :end_at!
+  before_save :start_at!
+  before_save :end_at!
   after_save :expire_cache!
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
