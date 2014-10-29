@@ -75,6 +75,7 @@ class LessonCostCalculator
   _attachHandlers: ->
     for field in @_inputFields()
       field.on 'change', @triggerRecompute
+    @triggerRecompute()
 
 
 $.fn.courseCostCalculator = (options) ->
