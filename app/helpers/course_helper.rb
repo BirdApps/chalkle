@@ -26,10 +26,12 @@ Your Chalkle Administrator")
   end
 
 
-  def pretty_time_range(start, finish)
+  def pretty_time_range(start, finish, abbr = false)
     return unless start && finish
     if(finish - start < 24*3600)
       pretty_time(start)+" - "+pretty_time(finish)
+    elsif abbr
+      quick_date(start)+" - "+quick_date(finish)
     else
       day_ordinal_month(start)+" - "+day_ordinal_month(finish)
     end
@@ -37,24 +39,29 @@ Your Chalkle Administrator")
 
   def quick_date_time(date, use_relative_day = true, include_year = false)
     return unless date
+    quick_date(date, use_relative_day, include_year)+" — "+pretty_time(date)
+  end
+
+  def quick_date(date, use_relative_day = true, include_year = false)
+    return unless date
     relative = relative_day_name date.to_date
     if relative && use_relative_day
       relative+" "+pretty_time(date)
     else
       if include_year || date.year != DateTime.current.year
-        date.strftime("%d %b, %Y")+" — "+pretty_time(date)
+        date.strftime("%d %b, %y")
       else
-        date.strftime("%d %b")+" — "+pretty_time(date)
+        date.strftime("%d %b")
       end
     end
   end
 
-  def day_ordinal_month(date, use_relative_day = true, include_year = true)
+  def day_ordinal_month(date, use_relative_day = true, include_year = false)
     return unless date
     relative = relative_day_name date.to_date
     return relative if relative && use_relative_day
     ordinalDay = date.day.ordinalize
-    if include_year
+    if include_year || date.year != DateTime.current.year
       date.strftime("%B #{ordinalDay}, %y")
     else
       date.strftime("%B #{ordinalDay}")
