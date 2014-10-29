@@ -116,6 +116,9 @@ class CoursesController < ApplicationController
     if success
       redirect_to course_path @course.id
     else
+      @course.errors.each do |attribute,error|
+        add_response_notice attribute.to_s+" "+error
+      end
       render 'new'
     end
   end
@@ -163,16 +166,12 @@ class CoursesController < ApplicationController
 
   def clone
     authorize @course
-    new_course = Course.create @course.attributes.except('id','description','created_at','updated_at','teacher_payment','published_at','chalkle_payment','cached_channel_fee','cached_chalkle_fee','end_at')
-    new_course.status = "Unreviewed"
-    new_course.course_upload_image = @course.course_upload_image
-    @course.lessons.each do |lesson|
-      new_lesson = Lesson.new lesson.attributes
-      new_lesson.course = new_course
-      new_course.lessons << lesson
-    end
-    new_course.save
-    redirect_to edit_course_path(new_course.id), notice: "You are now editing a copy of "+new_course.name
+    @teaching = Teaching.new current_user
+    @teaching.course_to_teaching @course
+    @teaching.cloning_id = @teaching.editing_id
+    @teaching.editing_id = nil
+    flash[:notice] = "You are now creating a copy of "+@course.name
+    render 'new' 
   end
 
   private

@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :note_to_attendees, :new_channel_bank_number
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :note_to_attendees, :new_channel_bank_number, :cloning_id
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
@@ -198,6 +198,11 @@ class Teaching
 
   def editing?
     true if editing_id
+  end
+
+
+  def cloning?
+    true if cloning_id
   end
 
   private

@@ -32,7 +32,7 @@ $(function(){
       set_attendee_summary();
       $('#teaching_repeating').change(set_repeating);
       $('form#new_teaching').courseCostCalculator({resource_name: 'teaching'});
-      if($('input[name=_method]').val() == "put"){
+      if($('#type_unchangable').length > 0){
         part_change( '#details' );
       }else{
         part_change("#type");

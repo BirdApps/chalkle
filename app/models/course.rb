@@ -217,10 +217,10 @@ class Course < ActiveRecord::Base
   end
 
   def first_lesson
-    lessons.order('start_at').limit(1).first
+    lessons.sort_by{|c| c.start_at}.first
   end
   def last_lesson
-    lessons.order('start_at DESC').limit(1).last
+    lessons.sort_by{|c| c.start_at}.last
   end
 
 
@@ -545,12 +545,12 @@ class Course < ActiveRecord::Base
 
   def start_at!
     new_start_at = first_lesson.start_at if first_lesson.present?
-    update_column(:start_at, new_start_at) if start_at != new_start_at
+    update_attribute("start_at", new_start_at) if start_at != new_start_at
   end
 
   def end_at!
     new_end_at = last_lesson.end_at if last_lesson.present? && last_lesson.valid?
-    update_column(:end_at, new_end_at) if end_at != new_end_at
+    update_attribute("end_at", new_end_at) if end_at != new_end_at
   end
 
   def expire_cache!
