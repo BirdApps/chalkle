@@ -5,10 +5,11 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
   def index
     status = params[:status].present? ? params[:status] : 'pending'
     if OutgoingPayment::STATUSES.include?(status)
-      @outgoings = OutgoingPayment.where(status: status)
+      @outgoings = OutgoingPayment.where(status: status).select{|o| o.bookings.present? }
     else
-      @outgoings = OutgoingPayment.all
+      @outgoings = OutgoingPayment.scoped.select{|o| o.bookings.present? }
     end
+     #TODO: move the above select to a scope 
   end
 
   def show
