@@ -48,6 +48,9 @@ class Booking < ActiveRecord::Base
 
   scope :need_outgoing_payments, includes(:course).where("courses.cost > 0 AND courses.status = 'Completed' AND courses.end_at < '#{DateTime.current.advance(weeks:-2).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
 
+  scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week) }
+  scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month) }
+
 
   before_validation :set_free_course_attributes
 
@@ -228,16 +231,14 @@ class Booking < ActiveRecord::Base
     end
   end
 
-  def self.stats_for_dates(from, to)
-    {
-      asp: asp_for(where('created_at BETWEEN ? AND ?', from, to) ),
-      asp_only_paid: asp_for(where('(created_at BETWEEN ? AND ?) AND provider_fee > 0', from, to) ),
-      revenue: where('created_at BETWEEN ? AND ?', from, to).inject(0){|sum, b| sum += b.cost }
-    }
-
+  def self.stats_for_date_and_range(date, range)
+        base_scope_for_stats = send("created_#{range}_of", date)
+        {
+          asp: asp_for( base_scope_for_stats ),
+          asp_only_paid: asp_for( base_scope_for_stats.where('provider_fee > 0') ),
+          revenue: base_scope_for_stats.inject(0){|sum, b| sum += b.cost }
+        }
   end
-
-
 
   private
 

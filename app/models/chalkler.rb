@@ -51,7 +51,10 @@ class Chalkler < ActiveRecord::Base
     lambda {|region| 
       where("email_region_ids LIKE '%?%'", region)
     }
+  scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week ) }
+  scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month ) }
 
+  scope :signed_in_since, lambda{|date| where('last_sign_in_at > ?', date) }
 
   serialize :email_categories
   serialize :email_region_ids
@@ -75,10 +78,11 @@ class Chalkler < ActiveRecord::Base
 
   class << self
 
-    def stats_for_dates(from, to)
+
+    def stats_for_date_and_range(date, range)
       {
-        new: where('created_at BETWEEN ? AND ?', from, to).count, 
-        active: where('(last_sign_in_at BETWEEN ? AND ?)', from, to).count
+        new: send("created_#{range}_of", date).count, 
+        active: (signed_in_since date.send("beginning_of_#{range}") ).count
       }
     end
 

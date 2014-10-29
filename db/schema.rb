@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20141023053148) do
     t.boolean  "booking_completed_mailer_sent", :default => false
     t.integer  "teacher_payment_id"
     t.integer  "channel_payment_id"
+    t.boolean  "chalkler_deleted",              :default => false
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
