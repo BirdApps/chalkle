@@ -38,7 +38,7 @@ end
 every :hour do
   path = "/apps/chalkle/db_backups/hourly/"
   filename = "chalk_prod_#{DateTime.current.strftime("%d%m%Y%H%M")}.sql"
-  command "cd #{path} && rm chalkle_prod_*"
+  command "cd #{path} && ls | grep chalk_prod_ | xargs rm"
   command "pg_dump -f #{path + filename} chalkle_production && gzip #{path + filename}"
 end
 
