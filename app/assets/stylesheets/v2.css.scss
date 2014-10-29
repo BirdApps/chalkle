@@ -53,7 +53,6 @@ $col-sm: 768px;
 $col-md: 992px;
 $col-lg: 1200px;
 
-* { @include transition(all 175ms ease-out) }
 
 html {
   position: relative;
@@ -72,6 +71,7 @@ body.v2 {
     @media screen and (max-width: $col-sm) {
       button {
         border: 0;
+        background: #efefef !important;
       }
       position: fixed;
       left: 0;
@@ -99,17 +99,21 @@ body.v2 {
     text-shadow: none;
     font-weight: 100;
     .divider {
-      background-color: #fff; 
+      background-color: #efefef; 
     }
-    @media screen and (max-width: $col-sm) {
-      li{
-        a{
-          line-height: 2em;
+    li{
+      a{
+        @media screen and (max-width: $col-sm) {
+          line-height: 2.3em;
           &:hover {
             color: #000 !important;
           }
         }
+        padding: 8px 20px;
       }
+    }
+  
+    @media screen and (max-width: $col-sm) {
       top: 50px;
       overflow-y: scroll;
       overflow-x: hidden;
@@ -436,7 +440,7 @@ body.v2 {
         float: left;
         font-size: 12px;
         margin-left: 10px; 
-        padding: 0 10px;
+        padding: 10px;
       }
       .coloring {
         padding: 10px 0;
@@ -619,9 +623,10 @@ body.v2 {
           } 
         }
         .dropdown-menu {
-          
-          max-height: 550px;
-          overflow: scroll;
+          @media screen and (min-width: $col-sm) {
+            max-height: 550px;
+            overflow: scroll;
+          }
 
           @include border-radius(0 0 4px 4px);
           font-family: "proxima-nova",sans-serif; 
