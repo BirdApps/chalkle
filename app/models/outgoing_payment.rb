@@ -40,11 +40,11 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def self.pending_payment_for_teacher(teacher)
-    OutgoingPayment.where(status: STATUS_1, teacher_id: teacher.id).first || OutgoingPayment.new({teacher: teacher, status: STATUS_1, tax: 0, fee: 0, tax_number: teacher.tax_number, bank_account: teacher.account }, as: :admin)
+    OutgoingPayment.where(status: STATUS_1, teacher_id: teacher.id).first || OutgoingPayment.create({teacher: teacher, status: STATUS_1, tax: 0, fee: 0, tax_number: teacher.tax_number, bank_account: teacher.account }, as: :admin)
   end
 
   def self.pending_payment_for_channel(channel)
-    OutgoingPayment.where(status: STATUS_1, channel_id: channel.id).first || OutgoingPayment.new({channel: channel, status: STATUS_1, tax: 0, fee: 0, tax_number: channel.tax_number, bank_account: channel.account }, as: :admin)
+    OutgoingPayment.where(status: STATUS_1, channel_id: channel.id).first || OutgoingPayment.create({channel: channel, status: STATUS_1, tax: 0, fee: 0, tax_number: channel.tax_number, bank_account: channel.account }, as: :admin)
   end
 
   def first_booking
