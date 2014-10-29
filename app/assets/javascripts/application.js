@@ -96,17 +96,21 @@ $(function(){
 
   fade_filterbar = function(){
     scrolltop = $(document).scrollTop();
-    filter_bar.css("opacity", (-scrolltop+400)/65 );
     if(scrolltop > 300) {
       filter_bar.css("top", ((-scrolltop+300)/85*30) +62);
       coloring.css( { "padding-top" : ((-scrolltop+300)/85*10) + 10 +"px" } );
       coloring.css( { "padding-bottom" : ((-scrolltop+300)/85*10) + 10 +"px" } );
     } else {
-      filter_bar.css("top", '62px');
+      filter_bar.css("top", 62);
       coloring.css( { "padding-top" : '10px' } );
       coloring.css( { "padding-bottom" : '10px' } );
-
     };
+    if(scrolltop > 400) { 
+      filter_bar.css("display", 'none' );
+    } else {
+      filter_bar.css("display", 'block' );
+      filter_bar.css("opacity", (-scrolltop+400)/65 ); 
+    }
   };
 
   background_size_for_header_images();
