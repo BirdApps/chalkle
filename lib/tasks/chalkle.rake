@@ -113,14 +113,14 @@ begin
     task "calculate_outgoings" => :environment do
       EventLog.log('calculate_outgoings') do
         bookings = Booking.need_outgoing_payments
-        bookings.each do |booking|
-          errors = []
-          if booking.create_outgoing_payments!
-            puts "booking #{booking.id} outgoings calculated"
-          else
-            errors << booking.id.to_s+": "+booking.errors.messages.to_s
+        errors = []
+          bookings.each do |booking|
+            if booking.create_outgoing_payments!
+              puts "booking #{booking.id} outgoings calculated"
+            else
+              errors << booking.id.to_s+": "+booking.errors.messages.to_s
+            end
           end
-        end
         errors.each do |error|
           puts error
         end

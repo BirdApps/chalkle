@@ -79,6 +79,13 @@ class Chalkler < ActiveRecord::Base
 
   class << self
 
+    def stats_for_dates(from, to)
+      {
+        new: where('created_at BETWEEN ? AND ?', from, to).count, 
+        active: where('(last_sign_in_at BETWEEN ? AND ?)', from, to).count
+      }
+    end
+
     #TODO: Move into a presenter class like Draper sometime
     def email_frequency_select_options
       EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
@@ -160,6 +167,8 @@ class Chalkler < ActiveRecord::Base
   assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
   
+
+
 
   private
 

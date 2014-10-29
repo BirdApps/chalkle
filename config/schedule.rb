@@ -7,9 +7,6 @@
 
 set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 
-# every :hour, :at => 15 do
-#   rake "chalkle:load_all"
-# end
 
 
 every :hour do 
@@ -38,14 +35,12 @@ every :monday, :at => '01:30pm' do
   rake "mailer:chalkler_digest['weekly']"
 end
 
-
-#every :day, :at => '02:00am' do
-#  rake "mailer:five_day_reminder"
-#end
-#
-#every :day, :at => '03:00am' do
-#  rake "mailer:three_day_reminder"
-#end
+every :hour do
+  path = "/apps/chalkle/db_backups/hourly/"
+  filename = "chalk_prod_#{DateTime.current.strftime("%d%m%Y%H%M")}.sql"
+  command "cd #{path} && ls | grep chalk_prod_ | xargs rm"
+  command "pg_dump -f #{path + filename} chalkle_production && gzip #{path + filename}"
+end
 
 every :day, :at => '04:30pm' do
   path = "/apps/chalkle/db_backups/"

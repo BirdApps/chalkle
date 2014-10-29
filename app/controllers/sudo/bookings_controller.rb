@@ -11,7 +11,6 @@ class Sudo::BookingsController < Sudo::BaseController
     else
       @bookings = Booking.visible.by_date_desc
     end
-    #bookings_chart_with @bookings
   end
 
   def refund
@@ -34,19 +33,6 @@ class Sudo::BookingsController < Sudo::BaseController
   end
 
   private
-
-  def bookings_chart_with(bookings)
-    @bookings_chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "Weekly Bookings")
-      f.xAxis(:categories => Array.new(30) {|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
-      f.series(:name => "Bookings", :yAxis => 0, :data => Array.new(30) {|i|
-        bookings.select{|b| b.created_at > (i+1).weeks.ago && b.created_at < i.weeks.ago }.count
-      }.reverse )
-
-      f.chart({:defaultSeriesType=>"area"})
-    end
-  end
-
 
 
     def load_booking
