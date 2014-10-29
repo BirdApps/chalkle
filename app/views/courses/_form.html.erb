@@ -44,6 +44,7 @@
           </div>
           <p class="col-sm-12 center"><small class="">You cannot change between class or course once the <%= f.object.course_class_type %> is published. </small></p>
         <% elsif f.object.cloning? %>
+          <input type="hidden" name="teaching[cloning_id]" value="<%= f.object.cloning_id %>" />
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-default" id="type_unchangable"><%= f.radio_button :course_class_type, f.object.course_class_type , class: :'course-class-radio' %>Copy <%= f.object.course_class_type.capitalize %></label>
           </div>

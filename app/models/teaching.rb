@@ -306,6 +306,7 @@ class Teaching
     @cost = calculate_cost
     @venue_address = params[:venue_address]
     @course_upload_image = params[:course_upload_image]
+    @course_upload_image = Course.find(params[:cloning_id]).course_upload_image if params[:cloning_id] && @course_upload_image.nil?
     @teacher_pay_type = params[:teacher_pay_type]
     @cost = params[:cost]
     @note_to_attendees = params[:note_to_attendees]
