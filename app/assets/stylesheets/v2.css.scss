@@ -60,7 +60,7 @@ html {
   min-height: 100%;
   height: auto;
 }
-body.v2 {
+body {
   margin-bottom: 52px;
   height: auto;
   color: #727272;
@@ -432,6 +432,12 @@ body.v2 {
     }
     .navbar {
       padding: 0;
+      .environment{
+        float: left;
+        font-size: 12px;
+        margin-left: 10px; 
+        padding: 0 10px;
+      }
       .coloring {
         padding: 10px 0;
         background: $primary-color;

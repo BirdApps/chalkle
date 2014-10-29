@@ -1,5 +1,16 @@
 module LayoutHelper
 
+  def environment_color(env)
+    case env
+    when "Development"
+      return "default"
+    when "Staging"
+      return "info"
+    when "Production"
+      return "warning"
+    end
+  end
+
   def page_title
     return @page_title if @page_title.present?
     if @channel_teacher.present? && @channel_teacher.id.present?
@@ -150,7 +161,7 @@ module LayoutHelper
           title: "Edit"
         }
       end
-      if current_user.super?
+      if current_user.super? && @channel_teacher.chalkler_id.present?
         nav_links <<  {
           img_name: "people",
           link: becoming_sudo_chalklers_path(@channel_teacher.chalkler_id),
