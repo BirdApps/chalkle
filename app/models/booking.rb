@@ -204,11 +204,16 @@ class Booking < ActiveRecord::Base
     payment.present? && payment.swipe_transaction_id.present? ? "https://merchant.swipehq.com/admin/main/index.php?module=transactions&action=txn-details&transaction_id="+payment.swipe_transaction_id : '#'
   end
 
-  def create_outgoing_payments!
+   def create_outgoing_payments!
     #if there is a pending payment, rather than creating a new payment, we add on to the existing payment
-    self.teacher_payment = OutgoingPayment.pending_payment_for_teacher(teacher) unless teacher_payment
-    self.channel_payment = OutgoingPayment.pending_payment_for_channel(channel) unless channel_payment
-    self.save
+    unless self.teacher_payment
+      t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
+      self.update_column('teacher_payment_id', t_payment.id)
+    end
+    unless self.channel_payment
+      c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
+      self.update_column('channel_payment_id', c_payment.id)
+    end
   end
 
   def teacher?
