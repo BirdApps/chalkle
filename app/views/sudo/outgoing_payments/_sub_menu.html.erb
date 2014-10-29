@@ -1,5 +1,5 @@
 <% 
-  all = pending = approved = paid = 'btn btn-default'
+  all = pending = approved = paid = not_valid ='btn btn-default'
   case params[:status]  
   when 'pending'
     pending = 'btn btn-info'
@@ -9,17 +9,21 @@
     paid = 'btn btn-info'
   when 'all'
     all = 'btn btn-info'
+  when 'not_valid'
+    not_valid = 'btn btn-info'
   end
 %>
 
 <div class="hidden-xs hidden-sm">
   <%= link_to "All Outgoings", sudo_outgoing_payments_path({status: 'all', take: 300}), class: all %>
 
-  <%= link_to "Pending ("+OutgoingPayment.pending.count.to_s+")", sudo_outgoing_payments_path({status: 'pending'}), class: pending %>
+  <%= link_to "Pending ("+OutgoingPayment.pending.valid.count.to_s+")", sudo_outgoing_payments_path({status: 'pending'}), class: pending %>
 
-  <%= link_to "Approved ("+OutgoingPayment.approved.count.to_s+")", sudo_outgoing_payments_path({status: 'approved'}), class: approved %>
+  <%= link_to "Approved ("+OutgoingPayment.approved.valid.count.to_s+")", sudo_outgoing_payments_path({status: 'approved'}), class: approved %>
 
-  <%= link_to "Paid ("+OutgoingPayment.marked_paid.count.to_s+")", sudo_outgoing_payments_path({status: 'marked_paid'}), class: paid %>
+  <%= link_to "Paid ("+OutgoingPayment.marked_paid.valid.count.to_s+")", sudo_outgoing_payments_path({status: 'marked_paid'}), class: paid %>
+
+  <%= link_to "Not Valid", sudo_outgoing_payments_path({status: 'not_valid'}), class: not_valid %>
 </div>
 
 <div class="dropdown col-xs-12 visible-xs visible-sm">

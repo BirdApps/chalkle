@@ -6,13 +6,18 @@ class OutgoingPayment < ActiveRecord::Base
   STATUS_3 = "invoiced"
   STATUS_4 = "marked_paid"
   STATUS_5 = "confirmed_paid"
-  STATUSES = [STATUS_1,STATUS_2,STATUS_4]
+  STATUS_6 = "not_valid"
+  STATUSES = [STATUS_1,STATUS_2,STATUS_4,STATUS_6]
 
   scope :pending, where(status: STATUS_1)
   scope :approved, where(status: STATUS_2)
   scope :invoiced, where(status: STATUS_3)
   scope :marked_paid, where(status: STATUS_4)
   scope :confirmed_paid, where(status: STATUS_5)
+  scope :not_valid, where(status: STATUS_6)
+  scope :with_valid_teacher_bookings, includes(:teacher_bookings).where("bookings.teacher_fee > 0")
+  scope :with_valid_channel_bookings, includes(:channel_bookings).where("bookings.provider_fee > 0")
+  scope :by_date, order(:updated_at)
 
   belongs_to :teacher, class_name: 'ChannelTeacher'
   belongs_to :channel
@@ -24,18 +29,30 @@ class OutgoingPayment < ActiveRecord::Base
   has_many :channel_bookings, class_name: 'Booking', foreign_key: :channel_payment_id
   has_many :teacher_bookings, class_name: 'Booking', foreign_key: :teacher_payment_id
   
-  has_many :teacher_payments, through: :teacher_bookings, source: :payments
-  has_many :channel_payments, through: :channel_bookings, source: :payments
+  has_many :teacher_payments, through: :teacher_bookings, source: :payment
+  has_many :channel_payments, through: :channel_bookings, source: :payment
   
   has_many :teacher_courses, through: :teacher_bookings, source: :course, foreign_key: :course_id
   has_many :channel_courses, through: :channel_bookings, source: :course, foreign_key: :course_id
 
+  def self.valid
+    (with_valid_channel_bookings+with_valid_teacher_bookings).uniq
+  end
+
   def self.pending_payment_for_teacher(teacher)
-    OutgoingPayment.where(status: STATUS_1, teacher_id: teacher.id).first || OutgoingPayment.create({teacher: teacher, status: STATUS_1, tax: 0, fee: 0, tax_number: teacher.tax_number, bank_account: teacher.account }, as: :admin)
+    OutgoingPayment.where(status: STATUS_1, teacher_id: teacher.id).first || OutgoingPayment.new({teacher: teacher, status: STATUS_1, tax: 0, fee: 0, tax_number: teacher.tax_number, bank_account: teacher.account }, as: :admin)
   end
 
   def self.pending_payment_for_channel(channel)
-    OutgoingPayment.where(status: STATUS_1, channel_id: channel.id).first || OutgoingPayment.create({channel: channel, status: STATUS_1, tax: 0, fee: 0, tax_number: channel.tax_number, bank_account: channel.account }, as: :admin)
+    OutgoingPayment.where(status: STATUS_1, channel_id: channel.id).first || OutgoingPayment.new({channel: channel, status: STATUS_1, tax: 0, fee: 0, tax_number: channel.tax_number, bank_account: channel.account }, as: :admin)
+  end
+
+  def first_booking
+    bookings.order(:created_at).first
+  end
+
+  def last_booking
+    bookings.order(:created_at).last
   end
 
   def status_color
@@ -49,6 +66,8 @@ class OutgoingPayment < ActiveRecord::Base
       when "marked_paid"
         'success'
       when "confirmed_paid"
+        'default'
+      when "not_valid"
         'default'
     end
   end
@@ -73,6 +92,8 @@ class OutgoingPayment < ActiveRecord::Base
         'Paid'
       when "confirmed_paid"
         'Paid & Verified'
+       when "not_valid"
+        'Not valid'
     end
   end
 
@@ -136,9 +157,9 @@ class OutgoingPayment < ActiveRecord::Base
 
   def bookings
     if for_teacher?
-      teacher_bookings.where("teacher_fee > 0") 
+      teacher_bookings.where("teacher_fee > 0")
     else
-      channel_bookings.where("provider_fee > 0") 
+      channel_bookings.where("provider_fee > 0")
     end
   end
 
@@ -152,7 +173,7 @@ class OutgoingPayment < ActiveRecord::Base
 
   #only calculate fee and tax only before approval
   def total
-    if status == STATUS_1
+    if status == STATUS_1 || status == STATUS_6
       calc_fee
       calc_tax
     end
