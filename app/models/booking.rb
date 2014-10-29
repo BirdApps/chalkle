@@ -201,7 +201,7 @@ class Booking < ActiveRecord::Base
     payment.present? && payment.swipe_transaction_id.present? ? "https://merchant.swipehq.com/admin/main/index.php?module=transactions&action=txn-details&transaction_id="+payment.swipe_transaction_id : '#'
   end
 
-  def create_outgoing_payments!
+   def create_outgoing_payments!
     #if there is a pending payment, rather than creating a new payment, we add on to the existing payment
     unless self.teacher_payment
       t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
