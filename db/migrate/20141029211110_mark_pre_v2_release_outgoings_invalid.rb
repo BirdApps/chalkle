@@ -1,12 +1,8 @@
 class MarkPreV2ReleaseOutgoingsInvalid < ActiveRecord::Migration
+   #ensure all post release bookings are not yet calculated into payment, mark all previously calculated outgoings as invalid
    def up
-    #all these outgoing payments were calculated before v2 release therefore not valid
-    OutgoingPayment.valid.each do |o| 
-      if o.last_booking.created_at < DateTime.new(2014,10,12)
-        o.update_attribute("status", "not_valid") 
-        o.update_attribute("reference", "Pre v2 release") 
-      end
-    end  
+    Booking.joins(:course).where("courses.start_at > '#{DateTime.new(2014,10,11).to_s(:db)}'").update_all(channel_payment_id: nil, teacher_payment_id: nil)
+    OutgoingPayment.update_all(status: "not_valid", reference: "Pre v2 release")
   end
 
   def down
