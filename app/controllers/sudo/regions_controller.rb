@@ -1,5 +1,4 @@
 class Sudo::RegionsController < Sudo::BaseController
-  before_filter :authorize_super
   before_filter :set_titles
   before_filter :set_title
 
