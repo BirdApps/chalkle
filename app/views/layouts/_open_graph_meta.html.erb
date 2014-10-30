@@ -18,12 +18,12 @@
       <% elsif @course && @course.present? %>
 <!-- course -->
         <meta property="og:type" content="product.item" />
-        <meta property="og:description" content="<%= @course.description %>" />  
+        <meta property="og:description" content="<%= @course.do_during_class %>" />  
 
       <% elsif @channel.present? && @channel.id %>
 <!-- channel -->
         <meta property="og:type" content="product.group" />
-        <meta property="og:description" content="<%= @channel.description %>" />  
+        <meta property="og:description" content="<%= @channel.short_description %>" />  
 
     
       <% elsif @region.present? %>
