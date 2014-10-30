@@ -8,14 +8,16 @@
             <span class="fa fa-bars"></span>
           </button>
           <%= link_to root_path, class:"navbar-brand", alt: "chalkle°" do%>
-            <%= image_tag asset_path('logo.png'), class: "logo" %>
+            <% if Rails.env.titleize != "Production" %>
+              <div class="light environment alert-<%= environment_color Rails.env.titleize %>">
+                  <%= Rails.env.titleize %> <small> #<%= VERSION_NUMBER %></small>
+              </div>
+            <% else %>
+              <%= image_tag asset_path('logo.png'), class: "logo" %>
+            <% end %>
           <% end %>
         </div>
-        <% if Rails.env.titleize != "Production" %>
-          <div class="light environment alert-<%= environment_color Rails.env.titleize %>">
-              <%= Rails.env.titleize %> <small> #<%= VERSION_NUMBER %></small>
-          </div>
-        <% end %>
+
         <div id="primary-naviation" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li>

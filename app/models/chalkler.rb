@@ -80,6 +80,10 @@ class Chalkler < ActiveRecord::Base
     (courses_adminable+courses_teaching).uniq.sort_by(&:start_at).reverse
   end
 
+  def confirmed_courses
+    courses.merge(Booking.confirmed).uniq.in_future.by_date
+  end
+
   class << self
 
 

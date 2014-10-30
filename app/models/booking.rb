@@ -28,8 +28,7 @@ class Booking < ActiveRecord::Base
   belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
   belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
 
-  validates_presence_of :course_id, :status, :name, :chalkler, :teacher, :channel
-  validates_presence_of :payment_method, :unless => :free?
+  validates_presence_of :course_id, :status, :name, :chalkler_id
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -54,12 +53,11 @@ class Booking < ActiveRecord::Base
 
   before_validation :set_free_course_attributes
 
-  after_save :expire_cache!
   after_create :expire_cache!
 
-  delegate :start_at, :venue, :prerequisites, :teacher_id, :cose, to: :course, prefix: true
+  delegate :start_at, :venue, :prerequisites, :teacher_id, :cost, to: :course
 
-  delegate :email, to: :chalkler, prefix: true
+  delegate :email, to: :chalkler
 
   def paid
     self.payment.present? ? payment.total : 0
@@ -72,7 +70,6 @@ class Booking < ActiveRecord::Base
   def self.unpaid
     select{|booking| (booking.paid || 0) < booking.cost}
   end
-
 
   def self.needs_booking_completed_mailer
     course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| b.course.end_at < Date.current && b.course.status=="Published" }
@@ -204,11 +201,16 @@ class Booking < ActiveRecord::Base
     payment.present? && payment.swipe_transaction_id.present? ? "https://merchant.swipehq.com/admin/main/index.php?module=transactions&action=txn-details&transaction_id="+payment.swipe_transaction_id : '#'
   end
 
-  def create_outgoing_payments!
+   def create_outgoing_payments!
     #if there is a pending payment, rather than creating a new payment, we add on to the existing payment
-    self.teacher_payment = OutgoingPayment.pending_payment_for_teacher(teacher) unless teacher_payment
-    self.channel_payment = OutgoingPayment.pending_payment_for_channel(channel) unless channel_payment
-    self.save
+    unless self.teacher_payment
+      t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
+      self.update_column('teacher_payment_id', t_payment.id)
+    end
+    unless self.channel_payment
+      c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
+      self.update_column('channel_payment_id', c_payment.id)
+    end
   end
 
   def teacher?
@@ -248,9 +250,9 @@ class Booking < ActiveRecord::Base
     end
 
     def set_free_course_attributes
-      if course && free?
+      if course_id && free?
         self.payment_method = 'free'
-      elsif course
+      elsif course_id
         self.payment_method = 'credit_card'
       end
     end

@@ -2,38 +2,46 @@
     <div class="outgoing_course">
       <h4 class="flush upper">Courses and Bookings</h4>
       <br />
-      <div class="row light">
+      <div class="row light hidden-xs">
+        <div class="col-xs-3">
+          Date
+        </div>
         <div class="col-xs-2">
           ID
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
           NAME
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-2">
           Fee 
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-2">
           Tax
         </div>
       </div>
       <br />
-      <% outgoing_payment.courses.each do |course|
+      <% outgoing_payment.courses.sort_by{|o|o.start_at}.each do |course|
         bookings = outgoing_payment.bookings.where(course_id: course.id).select{|b|b.paid?}
       %>
         <% if bookings.present? %>
           <div class="row">
             <div class="alert-success alert no-margin clearfix">
               <%= link_to course_path(course.id), target: :blank do %>
-                <div class="col-xs-2">
+                <div class="col-sm-3">
+                  <%= quick_date course.start_at %>
+                </div>
+                <div class="col-sm-2">
                   <%= course.id %>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-sm-3">
                   <%= course.name %>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-sm-2">
+                  <span class="visible-xs">Fee</span>
                   $<%= bookings.inject(0){|sum,b| sum += ( outgoing_payment.for_teacher? ? b.teacher_fee : b.provider_fee ) } %> 
                 </div>
-                <div class="col-xs-3">
+                <div class="col-sm-2">
+                  <span class="visible-xs">Tax</span>
                   $<%= bookings.inject(0){|sum,b| sum += ( outgoing_payment.for_teacher? ? b.teacher_gst : b.provider_gst ) } %> 
                 </div>
               <% end %>
@@ -42,16 +50,19 @@
               <% bookings.each do |booking | %>
                 <% if booking.paid? && !booking.free? %>
                   <%= link_to ( current_user.super? ? sudo_booking_path(booking.id) : course_bookings_path(course.id)), target: :blank do %>
+                    <div class="col-sm-3">
+                      <%= quick_date booking.start_at %>
+                    </div>
                     <div class="col-xs-2">
                       <%= booking.id %>
                     </div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-3">
                       <%= booking.name %>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-2">
                       $<%= outgoing_payment.for_teacher? ? booking.teacher_fee : booking.provider_fee  %>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-2">
                       $<%= outgoing_payment.for_teacher? ? booking.teacher_gst : booking.provider_gst %>
                     </div>
                   <% end %>
