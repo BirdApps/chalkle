@@ -102,10 +102,6 @@ class Booking < ActiveRecord::Base
     end
   end
 
-  def cancelled?
-    status == STATUS_1
-  end
-
   def paid?
     free? || paid >= cost
   end

@@ -171,14 +171,21 @@ module LayoutHelper
       end
     elsif @booking.present?
     elsif @course.present? && @course.id.present?
-      if @course.spaces_left?
+      if policy(@course).read?
         nav_links << {
-          img_name: "bolt",
-          link: new_course_booking_path(@course.id),
-          active: action_parts.include?("new"),
-          title: "Join"
-        }
-      end
+            img_name: "bolt",
+            link: course_bookings_path(@course),
+            active: controller_parts.include?("bookings"),
+            title: "Bookings"
+          }
+      elsif @course.spaces_left?
+          nav_links << {
+            img_name: "bolt",
+            link: new_course_booking_path(@course.id),
+            active: action_parts.include?("new"),
+            title: "Join"
+          }
+        end
       if policy(@course).edit?
         nav_links << {
           img_name: "settings",
