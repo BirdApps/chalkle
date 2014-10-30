@@ -141,19 +141,21 @@ class BookingsController < ApplicationController
     valid = true
     if params[:course_id].present?
       @course = Course.find(params[:course_id]).decorate
-    elsif @booking.present? 
+    elsif @booking.present?
       @course = @booking.course
     else
       return
     end
-    unless @course.published?
-      return redirect_to :root, notice: "This class is no longer available."
-    end
-    unless @course.start_at > DateTime.current
-      return redirect_to @course.path, notice: "This class has already started, and bookings cannot be created or altered"
-    end
-    unless @course.spaces_left?
-      return redirect_to @course.path, notice: "The class is full"
+    unless policy(@course).write?
+      unless @course.published?
+        return redirect_to :back, notice: "This class is no longer available."
+      end
+      unless @course.start_at > DateTime.current
+        return redirect_to :back, notice: "This class has already started, and bookings cannot be created or altered"
+      end
+      unless @course.spaces_left?
+        return redirect_to :back, notice: "The class is full"
+      end
     end
 
   end

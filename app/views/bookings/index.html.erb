@@ -21,7 +21,11 @@
   <% count+=1 %>
   <div class="col-xs-12 x1-25 clearfix <%= count%2 ==0 ? 'even' : 'odd'  %>">
     <div class="col-xs-2 col-sm-1">
-      <%= booking.id %>
+      <% unless current_user.super? %>
+        <%= booking.id %>
+      <% else %>
+        <%= link_to booking.id, sudo_booking_path(booking) %>
+      <% end %>
     </div>
     <div class="col-xs-4 col-sm-3">
       <%= link_to booking.name, chalkler_path(booking.chalkler.id) %>
