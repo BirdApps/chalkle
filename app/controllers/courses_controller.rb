@@ -75,7 +75,7 @@ class CoursesController < ApplicationController
     @page_subtitle = "Use chalkle to"
     @page_title =  "Learn"
     @meta_title = "Learn with "
-    @upcoming_courses = current_user.courses.in_future.by_date.uniq
+    @upcoming_courses = current_user.courses
     render 'learn'
   end
 

@@ -69,7 +69,7 @@ class TheUser
   end
 
   def courses
-    chalkler.id.present? ? chalkler.courses : Course.none
+    chalkler.id.present? ? chalkler.confirmed_courses : Course.none
   end
 
   def channels
@@ -99,7 +99,7 @@ class TheUser
   def learn_menu_badge_count 
     @learn_menu_badge_count ||= (
       if chalkler?
-        chalkler.courses.in_future.by_date.uniq.count
+        chalkler.confirmed_courses.count
       else
         0
       end
