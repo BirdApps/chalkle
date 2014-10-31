@@ -48,7 +48,7 @@ class Channel < ActiveRecord::Base
   scope :chalkler_can_teach, lambda { |chalkler| joins(:channel_teachers).where("chalkler_id = ?", chalkler.id) }
 
 
-  before_save :check_url_name
+  before_validation :check_url_name
   after_create :set_url_name!
   after_save :expire_cache!
 
@@ -156,8 +156,8 @@ class Channel < ActiveRecord::Base
 
   def check_url_name
     url_name = self.url_name.nil? ? name.parameterize : self.url_name.parameterize
-    existing_channel = Channel.find_by_url_name(url_name)
-    valid = existing_channel.nil? || existing_channel.id == self.id
+    existing_channels = Channel.where(url_name: url_name)
+    valid = existing_channels.blank? || (existing_channels.first.id == self.id && existing_channels.count == 1)
     self.url_name = valid ? url_name : url_name+id.to_s
   end
 

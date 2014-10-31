@@ -63,8 +63,8 @@ class Course < ActiveRecord::Base
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Class price must be positive" }
   validates :lessons, :length => { minimum: 1 }, if: :published?
   validate :image_size
-  validate :check_start_at
-  validate :check_url_name
+  before_validation :check_start_at
+  before_validation :check_url_name
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
