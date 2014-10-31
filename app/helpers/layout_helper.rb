@@ -185,7 +185,7 @@ module LayoutHelper
             active: action_parts.include?("new"),
             title: "Join"
           }
-        end
+      end
       if policy(@course).edit?
         nav_links << {
           img_name: "settings",
@@ -193,6 +193,8 @@ module LayoutHelper
           active: action_parts.include?("edit"),
           title: "Edit"
         }
+      end
+      if policy(@course).write?(true)
         nav_links << {
           img_name: "people",
           link: clone_course_path(@course),
