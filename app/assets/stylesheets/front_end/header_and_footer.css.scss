@@ -3,7 +3,6 @@ $vertical-padding: 10px;
 $line-height: $navbar-height - ($vertical-padding * 2);
 
 .navbar {
-  font-weight: bold;
   border-bottom: none;
   padding: $vertical-padding 0px;
   font-size: 20px;
@@ -51,7 +50,6 @@ $line-height: $navbar-height - ($vertical-padding * 2);
         display: block;
         padding: 0 10px;
         text-decoration: none;
-        font-weight: normal;
         background-color: transparent;
         @include border-radius(4px);
 

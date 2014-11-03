@@ -672,7 +672,13 @@ body.v2 {
   }
   .header {
     background-color: #ccc;
-    padding-top: 67px;    
+    padding-top: 67px;
+    -webkit-transition: all none;
+    -moz-transition: all none;
+    -ms-transition: all none;
+    -o-transition: all none;
+    transition: all none;
+ 
     .header_content {
       color:#fff; 
       text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
