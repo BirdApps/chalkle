@@ -24,7 +24,7 @@
     </header>
     <div class="details">
       <div class="upper small">
-        <span class="<%= 'text-danger' if course.start_at < DateTime.current %>">
+        <span class="<%= 'text-danger' if course.start_at.nil? || course.start_at < DateTime.current %>">
         <%= quick_date_time course.start_at %>
         </span> |
         <% if course.teacher  %>

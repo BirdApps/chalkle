@@ -164,11 +164,11 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def calc_fee
-    self.fee = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_fee : b.provider_fee ) }
+    self.fee = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) }
   end
 
   def calc_tax
-    self.tax = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_gst : b.provider_gst ) }
+    self.tax = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_gst || 0 : b.provider_gst || 0 ) }
   end
 
   #only calculate fee and tax only before approval

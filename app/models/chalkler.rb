@@ -73,11 +73,12 @@ class Chalkler < ActiveRecord::Base
   end
 
   def upcoming_teaching
-    (courses_adminable.in_future+courses_teaching.in_future).uniq.sort_by(&:start_at) 
+    (courses_adminable.in_future+courses_teaching.in_future).uniq.sort_by{ |c| c.start_at.present? ? c.start_at : DateTime.current.advance(years: 1)}.reverse
   end
 
   def all_teaching
-    (courses_adminable+courses_teaching).uniq.sort_by(&:start_at).reverse
+    #(courses_adminable+courses_teaching).uniq.sort_by(&:start_at).reverse
+     (courses_adminable+courses_teaching).uniq.sort_by{ |c| c.start_at.present? ? c.start_at : DateTime.current.advance(years: 1)}.reverse
   end
 
   def confirmed_courses
