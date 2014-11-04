@@ -218,7 +218,7 @@ class Booking < ActiveRecord::Base
   end
 
   def self.csv_for(bookings)
-    fields_for_csv = %w{ id name chalkler_email paid note_to_teacher }
+    fields_for_csv = %w{ id name email paid note_to_teacher }
     CSV.generate do |csv|
       csv << fields_for_csv.map(&:to_s)
       bookings.each do |booking| 
