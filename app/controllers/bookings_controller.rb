@@ -78,8 +78,8 @@ class BookingsController < ApplicationController
       payment.swipe_token= params[:token]
       payment.date = DateTime.current
       payment.visible = true
-      verify = HTTParty.get("https://api.swipehq.com/verifyTransaction.php?api_key=#{ENV["SWIPE_API_KEY"]}&merchant_id=#{ENV["SWIPE_MERCHANT_ID"]}&transaction_id=#{payment.swipe_transaction_id}")
-      verify = JSON.parse verify
+      wrapper = SwipeWrapper.new
+      verify = wrapper.verify payment.swipe_transaction_id
       if verify['data']['transaction_approved'] == "yes"   
         pay_result = payment.save
         if payment.total >= @booking.cost

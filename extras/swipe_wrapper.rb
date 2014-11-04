@@ -17,6 +17,15 @@ class SwipeWrapper
     parse_identifier_from_response(response)
   end
 
+  def verify(transaction_id)
+    swype_reconnection_attempts ||= 3
+    verify = self.class.get("https://api.swipehq.com/verifyTransaction.php?api_key=#{ENV["SWIPE_API_KEY"]}&merchant_id=#{ENV["SWIPE_MERCHANT_ID"]}&transaction_id=#{transaction_id}")
+  rescue SocketError => e
+    retry if (swype_reconnection_attempts -= 1) > 0
+  else
+    JSON.parse verify
+  end
+
   def currency=(c)
     @currency = c.upcase
   end
@@ -30,6 +39,7 @@ class SwipeWrapper
   end
 
   private
+
 
   def parse_identifier_from_response(response)
     response["data"]["identifier"]
