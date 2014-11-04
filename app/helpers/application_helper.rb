@@ -50,8 +50,12 @@ module ApplicationHelper
   def truncate(string, length=16)
     return unless string
     truncated = string.split[0..string[0..length].split(" ").count-1].join(" ")
-    truncated[truncated.length-1] = truncated[truncated.length-1].gsub(/[^0-9A-Za-z]/, '')
-    truncated
+    if truncated[truncated.length-1]
+      truncated[truncated.length-1] = truncated[truncated.length-1].gsub(/[^0-9A-Za-z]/, '')
+      truncated
+    else 
+      ""
+    end
   end
 
   def to_html(markdown)
