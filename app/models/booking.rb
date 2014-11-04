@@ -181,7 +181,7 @@ class Booking < ActiveRecord::Base
   end
 
   def refundable?
-    course_start_at > (Time.current + no_refund_period_in_days.days)
+    start_at > (Time.current + no_refund_period_in_days.days)
   end
 
   def no_refund_period_in_days
