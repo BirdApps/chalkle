@@ -4,12 +4,16 @@ class SwipeWrapper
   CURRENCIES = ['USD', 'NZD', 'CNY', 'HKD', 'GBP', 'AUD', 'JPY', 'CAD', 'SGD', 'ZAR', 'EUR', 'KRW']
 
   def create_tx_identifier_for(params)
+    swype_reconnection_attempts ||= 3
     @amount = params[:amount]
     @currency = 'NZD'
     @booking_id = params[:booking_id]
     @description = params[:description]
     @return_url = params[:return_url]
     response = self.class.post(swipe_url, query: query_params)
+  rescue SocketError => e
+    retry if (swype_reconnection_attempts -= 1) > 0
+  else
     parse_identifier_from_response(response)
   end
 
