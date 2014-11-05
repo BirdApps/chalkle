@@ -8,12 +8,8 @@ describe ChalklerDecorator do
       @chalkler.channels << @channel = FactoryGirl.create(:channel, name: 'Local', url_name: '', visible: true)
     end
 
-    it "links to a Meetup based channel" do
-      @chalkler.decorate.channel_links.should include('Meetup', 'meetup')
-    end
-
     it "links to a local channel" do
-      @chalkler.decorate.channel_links.should include('Local', "channels/#{@channel.id}")
+      @chalkler.decorate.channel_links.should include('Local', @channel.id.to_s)
     end
 
     it 'adds custom css' do

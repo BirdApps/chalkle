@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe Course do
+
+  binding.pry
+  
   it { should belong_to(:category) }
   it { should have_one :course_image }
 
-  it { should validate_uniqueness_of :meetup_id }
   it { should accept_nested_attributes_for :course_image }
 
   specify { expect(FactoryGirl.create(:course)).to be_valid }

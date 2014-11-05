@@ -4,8 +4,7 @@ FactoryGirl.define do
     description "You should really learn, it's fun!"
     cost 20
     lessons { |i| [i.association(:lesson)]}
-    channel
-    teacher { |i| i.association(:chalkler)}
+    channel { |i| i.association(:channel)}
 
     factory :published_course do
       status 'Published'

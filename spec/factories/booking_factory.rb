@@ -1,11 +1,9 @@
 FactoryGirl.define do
   factory :booking do
-    meetup_id
     status 'yes'
     guests 3
-    paid false
-    payment_method 'meetup'
-    chalkler
-    course
+    payment_method 'credit_card'
+    chalkler { |i| i.association(:chalkler)}
+    course { |i| i.association(:course)}
   end
 end
