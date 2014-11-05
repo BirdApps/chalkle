@@ -625,6 +625,7 @@ body.v2 {
         .dropdown-menu {
           @media screen and (min-width: $col-sm) {
             max-height: 550px;
+            max-width: 360px;
             overflow: scroll;
           }
 
