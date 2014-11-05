@@ -19,7 +19,7 @@ class SwipeWrapper
 
   def verify(transaction_id)
     swype_reconnection_attempts ||= 3
-    verify = HTTParty.get("https://api.swipehq.com/verifyTransaction.php?api_key=#{ENV["SWIPE_API_KEY"]}&merchant_id=#{ENV["SWIPE_MERCHANT_ID"]}&transaction_id=#{swipe_transaction_id}")
+    verify = HTTParty.get("https://api.swipehq.com/verifyTransaction.php?api_key=#{ENV["SWIPE_API_KEY"]}&merchant_id=#{ENV["SWIPE_MERCHANT_ID"]}&transaction_id=#{transaction_id}")
   rescue SocketError => e
     retry if (swype_reconnection_attempts -= 1) > 0
   else
