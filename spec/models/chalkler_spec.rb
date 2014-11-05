@@ -1,4 +1,5 @@
 require 'spec_helper'
+require "pundit/rspec"
 
 describe Chalkler do
   let(:channel) { FactoryGirl.create(:channel) }
