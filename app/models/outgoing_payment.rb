@@ -157,14 +157,14 @@ class OutgoingPayment < ActiveRecord::Base
 
   def bookings
     if for_teacher?
-      teacher_bookings.where("teacher_fee > 0")
+      teacher_bookings.confirmed.where("teacher_fee > 0")
     else
-      channel_bookings.where("provider_fee > 0")
+      channel_bookings.confirmed.where("provider_fee > 0")
     end
   end
 
   def calc_fee
-    self.fee = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) }
+    self.fee = bookings.inject(0){|sum,b| sum += b.paid? ? ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) : 0 }
   end
 
   def calc_tax
