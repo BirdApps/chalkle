@@ -15,8 +15,8 @@ class OutgoingPayment < ActiveRecord::Base
   scope :marked_paid, where(status: STATUS_4)
   scope :confirmed_paid, where(status: STATUS_5)
   scope :not_valid, where(status: STATUS_6)
-  scope :with_valid_teacher_bookings, includes(:teacher_bookings).where("bookings.teacher_fee > 0")
-  scope :with_valid_channel_bookings, includes(:channel_bookings).where("bookings.provider_fee > 0")
+  scope :with_valid_teacher_bookings, includes(:teacher_bookings).where("bookings.teacher_fee > 0 AND bookings.status = 'yes'")
+  scope :with_valid_channel_bookings, includes(:channel_bookings).where("bookings.provider_fee > 0  AND bookings.status = 'yes'")
   scope :by_date, order(:updated_at)
 
   belongs_to :teacher, class_name: 'ChannelTeacher'
@@ -36,7 +36,7 @@ class OutgoingPayment < ActiveRecord::Base
   has_many :channel_courses, through: :channel_bookings, source: :course, foreign_key: :course_id
 
   def self.valid
-    (with_valid_channel_bookings+with_valid_teacher_bookings).uniq
+    (with_valid_channel_bookings+with_valid_teacher_bookings).uniq.select{|o| o.bookings.present?}
   end
 
   def self.pending_payment_for_teacher(teacher)
