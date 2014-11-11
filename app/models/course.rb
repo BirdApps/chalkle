@@ -64,6 +64,7 @@ class Course < ActiveRecord::Base
   validates :lessons, :length => { minimum: 1 }, if: :published?
   validate :image_size
   before_validation :check_start_at
+  before_validation :check_end_at
   before_validation :check_url_name
 
   scope :hidden, where(visible: false)
