@@ -122,7 +122,7 @@ class Teaching
     course_to_teaching course
     if check_valid_input params
       course.update_attributes course_args
-      @class_count = 1 if !@class_count || @class_count == 0
+      @class_count = 1 if !@class_count || @class_count == 0 || @class_count == "0"
       @class_count.to_i.times do |i|
         lesson = course.lessons[i]
         if lesson.present?
