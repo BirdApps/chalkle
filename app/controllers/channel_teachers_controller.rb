@@ -52,11 +52,16 @@ class ChannelTeachersController < ApplicationController
 
       if @channel_teacher.email.blank?
         add_response_notice "You must supply an email"
-      elsif @channel_teacher.channel.teaching_chalklers.find_by_email(@channel_teacher.email).present? || @channel_teacher.channel.channel_teachers.find_by_pseudo_chalkler_email(@channel_teacher.email).present?
-        add_response_notice "That person is already a teacher on your channel"
       else
-        @channel_teacher.name = @channel_teacher.name || @channel_teacher.email.split('@')[0]
-        result = @channel_teacher.save
+        exists = @channel_teacher.channel.channel_teachers.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @channel_teacher.email.strip.downcase]).present?
+        exists = @channel_teacher.channel.teaching_chalklers.find(:first, conditions: ["lower(email) = ?", @channel_teacher.email.strip.downcase]).present?
+
+        if exists
+          add_response_notice "That person is already a teacher on your channel"
+        else
+          @channel_teacher.name = @channel_teacher.name || @channel_teacher.email.split('@')[0]
+          result = @channel_teacher.save
+        end
       end
 
       if result
