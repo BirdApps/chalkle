@@ -32,7 +32,7 @@ class ChannelTeacher < ActiveRecord::Base
   end
 
   def email=(email)
-    self.chalkler = Chalkler.find_by_email email
+    self.chalkler = Chalkler.exists email
     self.pseudo_chalkler_email = email unless chalkler.present?
     #TODO: email chalkler or non-chalkler to tell them they are a teacher
   end
@@ -42,9 +42,15 @@ class ChannelTeacher < ActiveRecord::Base
   end
 
   def check_name
-    self.name = chalkler.name if self.name.blank?
+    if self.name.blank?
+      if chalkler
+        self.name = chalkler.name
+      elsif email
+        self.name = email.split('@')[0]
+      end
+    end
   end
-  
+
   def expire_cache!
     courses.each do |course|
       course.expire_cache!

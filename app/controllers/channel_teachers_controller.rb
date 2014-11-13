@@ -22,7 +22,7 @@ class ChannelTeachersController < ApplicationController
     @page_subtitle = "editing"
     authorize @channel_teacher
     if @channel_teacher.chalkler.blank?
-      existing_chalkler = Chalkler.find_by_email params[:channel_teacher][:email]
+      existing_chalkler = Chalkler.exists params[:channel_teacher][:email]
       if existing_chalkler.present?
         if existing_chalkler.channels_teachable.include? @channel_teacher.channel
           add_response_notice "That email belongs to a chalkler already teaching on this channel"
