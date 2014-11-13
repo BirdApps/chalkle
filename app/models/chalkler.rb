@@ -77,12 +77,11 @@ class Chalkler < ActiveRecord::Base
   end
 
   def all_teaching
-    #(courses_adminable+courses_teaching).uniq.sort_by(&:start_at).reverse
      (courses_adminable+courses_teaching).uniq.sort_by{ |c| c.start_at.present? ? c.start_at : DateTime.current.advance(years: 1)}.reverse
   end
 
   def confirmed_courses
-    courses.merge(Booking.confirmed).uniq.in_future.by_date
+    courses.merge(Booking.confirmed).in_future.by_date
   end
 
   class << self
