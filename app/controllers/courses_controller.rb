@@ -33,12 +33,10 @@ class CoursesController < ApplicationController
     end
 
     @page_title = "All Classes"
-    @courses = current_user.super? ? Course.scoped : current_user.all_teaching
-
-    if params[:search].present?
-      @courses = Course.search params[:search], @courses
-    end
+    @courses = current_user.super? ? mine_filter(Course.order(:start_at)) : (mine_filter(current_user.courses_adminable)+mine_filter(current_user.courses_teaching)).sort_by(&:start_at)
   end
+
+  
 
   def teach
     @page_subtitle = "Use chalkle to"
@@ -203,6 +201,23 @@ class CoursesController < ApplicationController
       if params[:search].present?
         courses = Course.search params[:search], courses
       end
+      courses
+    end
+
+    def mine_filter(courses)
+    
+      if params[:start].present? || params[:end].present?
+        range_start = params[:start].to_datetime.in_time_zone(current_user.timezone) if params[:start].present?
+        range_end = params[:end].to_datetime.in_time_zone(current_user.timezone) if params[:end].present?
+        range_start = range_start || DateTime.new(2000,1,1)
+        range_end = range_end || DateTime.new(2100,1,1)
+        courses = courses.start_at_between(range_start, range_end)
+      end
+
+      if params[:search].present?
+        courses = Course.search params[:search], courses
+      end
+
       courses
     end
 

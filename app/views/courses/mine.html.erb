@@ -1,14 +1,37 @@
  <div class="row">
-   <div class="new_form_wrapper clearfix col-sm-offset-6 col-sm-6">
+   <div class="new_form_wrapper clearfix">
     <form class="col-xs-12" method="get" role="search">
-      <div class="col-xs-9 flush">
-        <input type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search all classes">
+      <div class="col-xs-12 col-sm-5">
+        <div class="input-daterange" id="datepicker">
+          <div class="col-xs-2 form-joiner">From</div>
+          <div class="col-xs-4 flush">
+            <input type="text" value="<%= params[:start] %>" class="form-control col-xs-12" name="start" />
+          </div>
+          <div class="col-xs-2 form-joiner">To</div>
+          <div class="col-xs-4 flush">
+            <input type="text" value="<%= params[:end] %>" class="form-control col-xs-12" name="end" />
+          </div>
+        </div>
       </div>
-      <div class="col-xs-3 flush text-right">
-        <input type="submit" class="btn btn-primary" value="search" />
+      <div class="col-xs-9 col-sm-5">
+        <input type="text" name="search" value="<%= params[:search] %>" class="col-xs-12 form-control" placeholder="Search all classes">
+      </div>
+      <div class="col-xs-3 col-sm-2">
+        <input type="submit" class="btn btn-primary col-xs-12" value="search" />
       </div>
     </form>
   </div>
 </div>
 
 <%= render 'paginate_courses' %>
+
+<script>
+$(function(){
+  $('.input-daterange').datepicker({
+      multidate: 2,
+      multidateSeparator: " – ",
+      autoclose: true,
+      format: "yyyy/mm/dd"
+  });
+});
+</script>
