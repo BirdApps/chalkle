@@ -81,7 +81,7 @@ class Chalkler < ActiveRecord::Base
   end
 
   def confirmed_courses
-    courses.merge(Booking.confirmed).in_future.by_date
+    courses.merge(Booking.confirmed).uniq.in_future.by_date
   end
 
   class << self
