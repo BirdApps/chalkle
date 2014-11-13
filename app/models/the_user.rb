@@ -20,6 +20,10 @@ class TheUser
     chalkler.email
   end
 
+  def timezone
+    "Auckland"
+  end
+
   def authenticated?
     chalkler.id.present?
   end
