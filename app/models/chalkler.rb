@@ -86,6 +86,13 @@ class Chalkler < ActiveRecord::Base
 
   class << self
 
+    def exists?(email)
+      Chalkler.exists(email).present?
+    end
+
+    def exists(email)
+      Chalkler.find(:first, conditions: ["lower(email) = ?", email.strip.downcase]) if email.present?
+    end
 
     def stats_for_date_and_range(date, range)
       {
