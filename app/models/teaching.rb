@@ -126,6 +126,9 @@ class Teaching
   def update(course, params)
     course_to_teaching course
     if check_valid_input params
+      if has_bookings?
+        course_args.delete(:cost)
+      end
       course.update_attributes course_args
       @class_count = 1 if !@class_count || @class_count == 0 || @class_count == "0"
       @class_count.to_i.times do |i|
@@ -208,10 +211,6 @@ class Teaching
 
   def cloning?
     true if cloning_id
-  end
-
-  def cost_formatted
-    sprintf('%.2f', cost)
   end
 
   private
@@ -312,7 +311,6 @@ class Teaching
       @max_attendee = params[:max_attendee]
       @teacher_cost = params[:teacher_cost]
       @availabilities = params[:availabilities]
-      @cost = calculate_cost
       @venue_address = params[:venue_address]
       @course_upload_image = params[:course_upload_image]
       @course_upload_image = Course.find(params[:cloning_id]).course_upload_image if params[:cloning_id] && @course_upload_image.nil?

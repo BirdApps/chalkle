@@ -230,9 +230,9 @@
       </div>
         
       <% unless f.object.has_bookings? %>
-       <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: f.object.cost_formatted || '0.00', :'data-error-message' => "Negative values are not valid" } %>
+       <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
       <% else %>
-        <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: f.object.cost_formatted || '0.00', disabled: 'disabled' } %>
+        <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', readonly: 'readonly' } %>
       <% end %>
       <div class="col-sm-5"></div>
       <div class="col-sm-7">

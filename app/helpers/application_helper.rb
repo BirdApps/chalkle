@@ -2,7 +2,7 @@
 module ApplicationHelper
   
   def money_formatted(cost)
-    sprintf('%.2f', cost)
+    sprintf('%.2f', cost || 0)
   end
 
   def title(page_title)

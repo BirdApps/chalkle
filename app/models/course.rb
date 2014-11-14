@@ -163,7 +163,7 @@ class Course < ActiveRecord::Base
   end
 
   def cost_formatted
-    sprintf('%.2f', cost)
+    sprintf('%.2f', cost || 0)
   end
 
   def status_color
