@@ -109,6 +109,7 @@ class Course < ActiveRecord::Base
   before_save :start_at!
   before_save :end_at!
   after_save :expire_cache!
+  before_save :check_teacher_cost
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 
@@ -598,4 +599,8 @@ class Course < ActiveRecord::Base
     self.url_name = name.parameterize if self.url_name.nil?
   end
 
+  def check_teacher_cost
+    self.teacher_cost = 0 if teacher_pay_type == Course.teacher_pay_types[2]
+  end
+  
 end

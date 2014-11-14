@@ -114,7 +114,7 @@ class Booking < ActiveRecord::Base
   end
 
   def apply_fees
-    self.chalkle_gst_number =  Finance::CHALKLE_GST_NUMBER
+    self.chalkle_gst_number = Finance::CHALKLE_GST_NUMBER
     self.chalkle_fee = course.chalkle_fee false
     self.chalkle_gst = course.chalkle_fee(true) - chalkle_fee
     
@@ -132,6 +132,9 @@ class Booking < ActiveRecord::Base
         self.teacher_gst = 0
         self.teacher_gst_number = nil
       end
+    else
+      self.teacher_fee = 0
+      self.teacher_gst = 0
     end
 
     self.provider_fee = course.channel_fee
