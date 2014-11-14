@@ -27,13 +27,13 @@ every :day, :at => '02:30pm' do
   rake "mailer:booking_completed"
 end
 
-every :day, :at => '01:00pm' do
-  rake "mailer:chalkler_digest['daily']"
-end
+# every :day, :at => '01:00pm' do
+#   rake "mailer:chalkler_digest['daily']"
+# end
 
-every :monday, :at => '01:30pm' do
-  rake "mailer:chalkler_digest['weekly']"
-end
+# every :monday, :at => '01:30pm' do
+#   rake "mailer:chalkler_digest['weekly']"
+# end
 
 every :hour do
   path = "/apps/chalkle/db_backups/hourly/"
