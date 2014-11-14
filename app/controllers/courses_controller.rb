@@ -185,8 +185,8 @@ class CoursesController < ApplicationController
     def take_me_to
       if params[:search].present?
         try_id = params[:search] 
-        course = Course.find_by_id try_id
-        return redirect_to course.path if course.present?
+        course = Course.find_by_id try_id if try_id =~ /^\d+$/
+        return redirect_to course.path if course.present? && policy(course).read?
       end
     end
 
