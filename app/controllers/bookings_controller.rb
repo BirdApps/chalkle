@@ -146,7 +146,7 @@ class BookingsController < ApplicationController
     else
       return
     end
-    unless policy(@course).write?
+    unless policy(@course).write?(true)
       unless @course.published?
         return redirect_to :back, notice: "This class is no longer available."
       end
