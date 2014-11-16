@@ -255,7 +255,7 @@
 
       <% if current_user.channels.count > 0  %>
           
-        <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , :label => "How does the <strong>teacher fee calculated</strong>?", wrapper: :horizontal %>
+        <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee calculated</strong>?", wrapper: :horizontal %>
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
           <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
