@@ -37,12 +37,24 @@ $(function(){
       }else{
         part_change("#type");
       }
+      $('#teaching_cost').change(display_pay_type);
+      display_pay_type();
       hijack_navigation();
       apply_inline_validation();
       get_teacher_list();
       bind_agree_terms();
       init_start_at();
       $('.new_course_form_wrapper').fadeIn();
+    }
+
+    function display_pay_type(){
+      if ( $('#teaching_cost').val() > 0 ){
+        $("#teaching_teacher_pay_type").removeAttr("disabled");
+        $(".teacher_pay_type_wrapper").show();
+      }else{
+        $("#teaching_teacher_pay_type").attr("disabled","disabled");
+        $(".teacher_pay_type_wrapper").hide();
+      }
     }
 
     function init_start_at(){
