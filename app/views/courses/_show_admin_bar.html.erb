@@ -20,7 +20,7 @@
                 <div class="hidden">
                   <%= bootstrap_form_for(@course, wrapper: :simple_bootstrap3, url: change_status_course_path(@course.id), html: { id: 'publish_course', class: 'hidden'}) do |f| %>
                     <input name="_method" type="hidden" value="put" />
-                    <%= f.input :status, as: :hidden, input_html: { value: 'Unreviewed' } %>
+                    <%= f.input :status, as: :hidden, input_html: { value: 'Draft' } %>
                   <% end %>
                 </div>
 
@@ -38,7 +38,7 @@
           </div>
         </div>
       
-      <% elsif @course.status == 'Unreviewed' %>
+      <% elsif @course.status == 'Draft' %>
       
         <div class="alert alert-danger clearfix text-right" role="alert"> 
           
@@ -77,7 +77,7 @@
               <small class="text-right"><%= @course.type.capitalize %> runs in the next 24 hours<br />Cannot be Cancelled</small>
             <% end %>
 
-          <% elsif @course.status != 'Unreviewed' %>
+          <% elsif @course.status != 'Draft' %>
               Class is <%= @course.status %>
           <% end %>
 

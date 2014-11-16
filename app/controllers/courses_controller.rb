@@ -151,7 +151,7 @@ class CoursesController < ApplicationController
     if new_status == 'publish_series'
       new_status = 'Published'
       course.repeat_course.courses.each do |series_course|
-        series_course.publish! if series_course.status == 'Unreviewed'
+        series_course.publish! if series_course.status == 'Draft'
       end
     end
     course.status = new_status

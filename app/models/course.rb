@@ -18,7 +18,7 @@ class Course < ActiveRecord::Base
   #Course statuses
   STATUS_5 = "Processing"
   STATUS_4 = "Completed"
-  STATUS_3 = "Unreviewed"
+  STATUS_3 = "Draft"
   STATUS_2 = "Cancelled"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
@@ -86,7 +86,7 @@ class Course < ActiveRecord::Base
   scope :by_date, order(:start_at)
   scope :by_date_desc, order('start_at DESC')
 
-  scope :unreviewed, visible.where(status: STATUS_3)
+  scope :Draft, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
   scope :approved, visible.where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
@@ -173,7 +173,7 @@ class Course < ActiveRecord::Base
         'warning'
       when "Completed"
         'info'
-      when "Unreviewed"
+      when "Draft"
         'danger'
       when "Cancelled"
         'default'
