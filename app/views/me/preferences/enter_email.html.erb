@@ -1,15 +1,19 @@
-<div class="row">
-  <div class="col-md-6 offset3">
-    <h2>Almost there!</h2>
-    <p>Please enter your email to complete the account activation process.</p>
-  </div>
-</div>
-<%= simple_form_for(@chalkler, url: me_enter_email_path, html: { method: :put, class: 'form-inline' }) do |f| %>
-  <div class="row">
-    <div class="col-md-6 offset3">
-      <%= f.error_notification %>
-      <%= f.input :email %>
-      <%= f.submit "Submit email" %>
+<div class="new_form_wrapper">
+  <%= bootstrap_form_for(@chalkler, wrapper: :simple_bootstrap3, url: me_enter_email_path, html: { method: :put, class: 'form-horizontal', role: 'form'}) do |f| %>
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <div class="fancy-header">
+          <h3>Almost there!</h3>
+          <hr />
+        </div>
+        <p class="small center grey">
+          Please enter your email to complete the account activation process.
+        </p>
+        <%= f.input :email %>
+        <%= f.submit "Complete Profile", class: 'btn btn-primary pull-right' %>
+      </div>
+      <div class="col-sm-2">
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</div>
