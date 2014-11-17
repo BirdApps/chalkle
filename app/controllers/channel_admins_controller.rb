@@ -29,8 +29,8 @@ class ChannelAdminsController < ApplicationController
     if result
       redirect_to edit_channel_admin_path(@channel_admin.channel.url_name, @channel_admin.id), notice: 'Admin created successfully'
     else
-      @channel_admin.errors.each do |attr,error|
-        add_response_notice error
+      @channel_admin.errors.each do |attribute,error|
+        add_response_notice attribute.to_s+" "+error
       end
       @page_subtitle = "Create a New"
       @page_title = "Teacher"
@@ -58,8 +58,8 @@ class ChannelAdminsController < ApplicationController
       if result
         redirect_to edit_channel_admin_path(@channel_admin.channel.url_name, @channel_admin.id), notice: 'Email updated successfully'
       else
-        @channel_admin.errors.each do |attr,error|
-          add_response_notice error
+        @channel_admin.errors.each do |attribute,error|
+        add_response_notice attribute.to_s+" "+error
         end
         render 'edit'
       end
