@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_channel
   before_filter :load_category
   before_filter :skip_cache!
+  before_filter :check_user_data
 
   def styleguide
     render "/styleguide"
@@ -208,6 +209,15 @@ class ApplicationController < ActionController::Base
 
     def expire_filter_cache!
       expire_fragment(/.*filter_list.*/)
+    end
+
+    def check_user_data
+      if current_user.authenticated?
+        if current_user.email.nil?
+          session[:original_path] = request.path
+          return redirect_to me_enter_email_path
+        end
+      end
     end
 
 end
