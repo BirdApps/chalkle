@@ -63,15 +63,15 @@ class Booking < ActiveRecord::Base
   end
 
   def self.paid
-   select{|booking| (booking.paid || 0) >= booking.cost}
+   select{|booking| (booking.paid || 0) >= booking.cost }
   end
 
   def self.unpaid
-    select{|booking| (booking.paid || 0) < booking.cost}
+    select{|booking| (booking.paid || 0) < booking.cost }
   end
 
   def self.needs_booking_completed_mailer
-    course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| b.course.end_at < Date.current && b.course.status=="Published" }
+    course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| (b.course.end_at + 1.day) < Date.current && b.course.status=="Published" }
   end
   
   def free?
