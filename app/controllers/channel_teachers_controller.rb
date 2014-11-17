@@ -67,8 +67,8 @@ class ChannelTeachersController < ApplicationController
       if result
         redirect_to channel_channel_teacher_path(@channel_teacher.channel.url_name, @channel_teacher)
       else
-        @channel_teacher.errors.each do |attr,error|
-          add_response_notice error
+        @channel_teacher.errors.each do |attribute,error|
+          add_response_notice attribute.to_s+" "+error
         end
         @page_subtitle = "Create a New"
         @page_title = "Teacher"
