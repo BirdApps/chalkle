@@ -54,7 +54,7 @@ class ChannelTeachersController < ApplicationController
         add_response_notice "You must supply an email"
       else
         exists = @channel_teacher.channel.channel_teachers.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @channel_teacher.email.strip.downcase]).present?
-        exists = @channel_teacher.channel.teaching_chalklers.find(:first, conditions: ["lower(email) = ?", @channel_teacher.email.strip.downcase]).present?
+        exists = @channel_teacher.channel.teaching_chalklers.find(:first, conditions: ["lower(email) = ?", @channel_teacher.email.strip.downcase]).present? unless exists
 
         if exists
           add_response_notice "That person is already a teacher on your channel"
