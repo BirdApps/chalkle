@@ -39,9 +39,11 @@
         
       </header>
       <div class="details clearfix">
-        <a href="<%= channel_path(course.channel.url_name) %>" title="<%= course.channel.name %>" >
-          <img class="channel-img pull-left" src=<%= course.channel.logo.url %> />
-        </a>
+        <% if course.channel.logo.present? %>
+          <%= link_to channel_path(course.channel.url_name) do %>
+            <%= image_tag course.channel.logo.url, class: "channel-img pull-left", title: course.channel.name %>
+          <% end %>
+        <% end %>
         <div class="pull-left">
           <div class="grey upper smaller">Provided By</div>
           <%= link_to course.channel.name, channel_path(course.channel.url_name) %>
