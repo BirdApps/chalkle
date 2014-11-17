@@ -5,20 +5,28 @@ class Region < ActiveRecord::Base
 
   default_scope order('name ASC')
 
-  after_create :set_url_name
+  before_validation :check_url_name
+  after_create :set_url_name!
 
-  mount_uploader :hero, ChannelHeroUploader
+  #mount_uploader :hero, ChannelHeroUploader
 
   has_many :courses
   
   scope :with_classes, includes(:courses).where("COUNT(courses.id) > 0")
   scope :alphabetical, order(:name)
 
-  def set_url_name
-    url_name = name.parameterize
-    self.url_name = Region.find_by_url_name(url_name).nil? ? url_name : url_name+self.id.to_s
+  def set_url_name!
+    check_url_name
     save
   end
+
+  def check_url_name
+    url_name = self.url_name.nil? ? name.parameterize : self.url_name.parameterize
+    existing_regions = Region.where(url_name: url_name)
+    valid = existing_regions.blank? || (existing_regions.first.id == self.id && existing_regions.count == 1)
+    self.url_name = valid ? url_name : url_name+id.to_s
+  end
+
 
   def hero
     nil

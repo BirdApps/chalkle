@@ -91,7 +91,7 @@ class CoursesController < ApplicationController
     if params[:teaching_agreeterms] == 'on'
       new_course_ids =  @teaching.submit params[:teaching]
     end
-    if new_course_ids
+    if new_course_ids && new_course_ids[0] != nil
       redirect_to course_path new_course_ids[0]
     else
       render 'new'
