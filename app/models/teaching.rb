@@ -73,7 +73,7 @@ class Teaching
       @duration_hours << lesson.duration/60/60
       @duration_minutes << lesson.duration/60%60
     end
-    start_at << Time.current.advance(month: 1) if @start_at.empty?
+    @start_at << Time.current.advance(month: 1) if @start_at.empty?
     @editing_id = args.id
   end
 
