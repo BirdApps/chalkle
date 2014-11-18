@@ -23,10 +23,10 @@
   <div class="col-md-9">
     <ol class="breadcrumb">
       <li class="active"><a class="part_link" href="#type" id="type-link">Class Type</a></li>
-      <li><a href="#details" class="part_link" id="details-link"><span class="class_only">Class</span><span class="course_only">Course</span> Details</a></li>
+      <li><a href="#details" class="part_link" id="details-link">Details</a></li>
       <li><a href="#learning" class="part_link" id="learning-link">Learning</a></li>
       <li><a href="#teaching" class="part_link" id="teaching-link">Teacher & Venue</a></li>
-      <li><a href="#summary" class="part_link" id="summary-link">Summary & Submit</a></li>
+      <li><a href="#summary" class="part_link" id="summary-link">Summary</a></li>
     </ol>
 
     <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: submit_url, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
@@ -82,7 +82,7 @@
             <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizontal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
             
             <div class="repeating-options" style="display:none;">
-              <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the class take place", input_html: { :class => 'form-control update_class_time' }, wrapper: :horizontal %>
+              <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the class take place", input_html: { :class => 'form-control update_class_time', :'data-error-message' => 'Please choose an option' }, wrapper: :horizontal %>
 
               <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the class be held?", wrapper_html: { class: :'update_repeat_count' }, input_html: { :'data-min' => '2', value: f.object.repeat_count || 2, class: :'update_class_time' }, wrapper: :horizontal %>
            
