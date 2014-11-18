@@ -25,7 +25,7 @@ class ChannelsController < ApplicationController
 
   def series 
     return not_found if !@channel || @channel.new_record?
-    @courses = @channel.courses.displayable.where url_name: params[:course_url_name]
+    @courses = @channel.courses.displayable.in_future.by_date.where url_name: params[:course_url_name]
     return not_found if @courses.empty?
     @courses
   end
