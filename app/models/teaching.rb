@@ -176,8 +176,7 @@ class Teaching
           if repeating?
             #calculate the next class's start_at
             if weekly?
-              class_starts = Time.parse(@start_at[i].to_s) + 7.days
-              @start_at[i+1] = Time.new class_starts.year, class_starts.month, class_starts.day, class_starts.hour, class_starts.min
+              @start_at[i+1] = Time.parse(@start_at[i].to_s) + 7.days
             elsif monthly?
               if i == 0
                 nth = nth_wday_of(Time.parse start_at[i])
