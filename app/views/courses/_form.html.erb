@@ -50,8 +50,8 @@
           </div>
           <p class="col-sm-12 center"><small class="">You cannot change between class or course while copying a <%= f.object.course_class_type %>. </small></p>
         <% else %>
-          <p class="center">Do you want to create a class, or a course with many classes?</p>
-          <div class="btn-group center col-xs-12" data-toggle="buttons">
+          <p>Do you want to create a class, or a course with many classes?</p>
+          <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class', class: :'course-class-radio' %>Create class</label>
           <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course', class: :'course-class-radio' %>Create a course</label>
           </div>
@@ -201,97 +201,94 @@
        
         <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizontal %>
 
-      <% unless current_user.channels.count == 1 && current_user.channels.first.channel_teachers.count < 2 %>
+        <% unless current_user.channels.count == 1 && current_user.channels.first.channel_teachers.count < 2 %>
 
-        <%# if not multiple channel will be inferred %>
-        <% if current_user.channels.count > 0 %>
-          <div class="fancy-header">
-            <h3>Presented by</h3>
-            <hr />
-          </div>
+          <%# if not multiple channel will be inferred %>
+          <% if current_user.channels.count > 0 %>
+            <div class="fancy-header">
+              <h3>Presented by</h3>
+              <hr />
+            </div>
             <%= f.input :channel_id, :label => "Associated <strong>Provider</strong>", :collection => current_user.channels, wrapper: :horizontal, input_html: {:'data-error-message'=>'Please select a provider'} %>
+          <% end %>
+
+          <%# if no channel or single channel having 1 or 0 teachers, teacher is inferred %>
+          <% if current_user.channels.count > 0  %>
+            <% if f.object.editing? %>
+              <input type="hidden" value="<%= f.object.teacher_id %>" id="saved_teacher_id" />
+              <div class="teacher-select">
+                <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => f.object.channel.channel_teachers, wrapper: :horizontal %>
+              </div>
+            <% else %>
+              <div class="teacher-select">
+                <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a provider first'}, wrapper: :horizontal %>
+              </div>
+            <% end %>
+          <% end %>
+
         <% end %>
 
-        <%# if no channel or single channel having 1 or 0 teachers, teacher is inferred %>
-        <% if current_user.channels.count > 0  %>
-          <% if f.object.editing? %>
-            <input type="hidden" value="<%= f.object.teacher_id %>" id="saved_teacher_id" />
-            <div class="teacher-select">
-              <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => f.object.channel.channel_teachers, wrapper: :horizontal %>
-            </div>
-          <% else %>
-            <div class="teacher-select">
-              <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a provider first'}, wrapper: :horizontal %>
-            </div>
-          <% end %>
-        <% end %>
-
-      <% end %>
-      
-      <div class="fancy-header">
-        <h3>Pricing</h3>
-        <hr />
-      </div>
-        
-      <% unless f.object.has_bookings? %>
-       <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
-      <% else %>
-        <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', readonly: 'readonly' } %>
-      <% end %>
-      <div class="col-sm-5"></div>
-      <div class="col-sm-7">
-        <p class="small grey">
-          <% unless f.object.has_bookings? %>
-            How much will attendees pay to attend the class? This will include any material costs, etc.
-          <% else %>
-            Advertised price cannot be altered once bookings are made
-          <% end %>
-        </p>
-      </div>
-
-      <%= f.input :min_attendee, as: :number_picker, label: "<strong>Minimum</strong> Attendees", wrapper: :horizontal %> 
-      <%= f.input :max_attendee, as: :number_picker, label: "<strong>Maximum</strong> Attendees", wrapper: :horizontal %>
-      <div class="col-sm-5"></div>
-      <div class="col-sm-7">
-        <div class="min-max-error" data-error-message="Minimum must be smaller than Maximum"></div>
-        <p class="small grey">If the number of attendees is above the maximum, or below the minimum, the <span class="class_only">class</span><span class="course_only">course</span> will not run. </p>
-      </div>
-
-      <% if current_user.channels.count > 0  %>
-        <div class="teacher_pay_type_wrapper">
-          <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee calculated</strong>?", wrapper: :horizontal %>
-          <div class="col-sm-5"></div>
-          <div class="col-sm-7">
-            <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
-          </div>
-
+        <div class="fancy-header">
+          <h3>Pricing</h3>
+          <hr />
+        </div>
           
-          <div class="teaching_fee_wrapper">
-            <%= f.input :teacher_cost, as: :currency, :label => "<strong class='teacher_fee_label'>Teacher Fee</strong>", wrapper: :horizontal, input_html: {:'data-error-message'=>'Specify the teacher fee', value: money_formatted(f.object.teacher_cost) || '0.00'} %>
+        <% unless f.object.has_bookings? %>
+         <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
+        <% else %>
+          <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', readonly: 'readonly' } %>
+        <% end %>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">
+            <% unless f.object.has_bookings? %>
+              How much will attendees pay to attend the class? This will include any material costs, etc.
+            <% else %>
+              Advertised price cannot be altered once bookings are made
+            <% end %>
+          </p>
+        </div>
+
+        <%= f.input :min_attendee, as: :number_picker, label: "<strong>Minimum</strong> Attendees", wrapper: :horizontal %> 
+        <%= f.input :max_attendee, as: :number_picker, label: "<strong>Maximum</strong> Attendees", wrapper: :horizontal %>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <div class="min-max-error" data-error-message="Minimum must be smaller than Maximum"></div>
+          <p class="small grey">If the number of attendees is above the maximum, or below the minimum, the <span class="class_only">class</span><span class="course_only">course</span> will not run. </p>
+        </div>
+
+        <% if current_user.channels.count > 0  %>
+          <div class="teacher_pay_type_wrapper">
+            <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee calculated</strong>?", wrapper: :horizontal %>
             <div class="col-sm-5"></div>
             <div class="col-sm-7">
-              <p class="small grey">How much should we pay the teacher?</p>
+              <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
+            </div>
+
+            
+            <div class="teaching_fee_wrapper">
+              <%= f.input :teacher_cost, as: :currency, :label => "<strong class='teacher_fee_label'>Teacher Fee</strong>", wrapper: :horizontal, input_html: {:'data-error-message'=>'Specify the teacher fee', value: money_formatted(f.object.teacher_cost) || '0.00'} %>
+              <div class="col-sm-5"></div>
+              <div class="col-sm-7">
+                <p class="small grey">How much should we pay the teacher?</p>
+              </div>
             </div>
           </div>
-        </div>
-      <% else  %>
-        <%= f.input :new_channel_bank_number, label: "Bank account", wrapper: :horizontal %>
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">The bank account you would like Chalkle to pay money to</p>
-        </div>
+        <% else  %>
+          <%= f.input :new_channel_bank_number, label: "Bank account", wrapper: :horizontal %>
+          <div class="col-sm-5"></div>
+          <div class="col-sm-7">
+            <p class="small grey">The bank account you would like Chalkle to pay money to</p>
+          </div>
 
-        <%= f.input :new_channel_tax_number, label: "GST Number, if applicable", wrapper: :horizontal %>
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">Only include a GST number if it GST applies at the standard rate. This will show on your attendee's receipt.</p>
-        </div>
+          <%= f.input :new_channel_tax_number, label: "GST Number, if applicable", wrapper: :horizontal %>
+          <div class="col-sm-5"></div>
+          <div class="col-sm-7">
+            <p class="small grey">Only include a GST number if it GST applies at the standard rate. This will show on your attendee's receipt.</p>
+          </div>
 
-      <% end  %>
+        <% end  %>
           
-
-     
-
         <div class="row prevnext">
           <div class="col-xs-5 prev">
             <a href="#learning" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>

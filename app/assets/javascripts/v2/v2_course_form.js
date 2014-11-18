@@ -442,7 +442,7 @@ $(function(){
     function validate_basics(location){
       var valid = true;
       $(location).find('[data-error-message]').each(function(){ 
-        if(!!!$(this).val() && !$(this).is("div") && $(this).is(':visible')){
+        if(!!!$(this).val() && !$(this).is("div") && $(this).is(':visible')) {
           show_error_for(this);
           valid = false;
         }
@@ -465,9 +465,6 @@ $(function(){
     function validate_details(){
       var valid = true;
       valid_basics = validate_basics('#details');
-      if ($("#teaching_repeat_frequency").is(":visible")){
-
-      }
       //validate the datetime pickers by their output
       $('.teaching_times_summary').each(function(){
         if($(this).text() == ""){
