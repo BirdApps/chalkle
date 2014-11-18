@@ -103,6 +103,9 @@ class Course < ActiveRecord::Base
 
   scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
+  scope :similar_to, lambda { |course| where(channel_id: course.channel_id, url_name: course.url_name).displayable.in_future.by_date }
+
+
   before_create :set_url_name
   before_save :update_published_at
   before_save :save_first_lesson
@@ -191,7 +194,12 @@ class Course < ActiveRecord::Base
   end
 
   def next_class
-    repeat_course.courses[repeat_course.courses.index(repeat_course.courses.find(id))+1] if repeat_course.present?
+    if repeat_course.present?
+      repetitions =  repeat_course.courses.displayable.order(:start_at)
+      current_index = repetitions.index(self)
+      repetitions[current_index+1] unless repetitions[current_index+1].nil? 
+      #repeat_course.courses[repeat_course.courses.index(repeat_course.courses.find(id))+1] 
+    end
   end
 
   def bookings?
