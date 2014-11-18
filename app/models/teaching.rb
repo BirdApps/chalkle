@@ -113,7 +113,7 @@ class Teaching
 
   def lesson_args(i)
     {
-      start_at: @start_at[i],
+      start_at: @start_at[i].to_datetime.to_s(:db),
       duration: (@duration_hours[i].to_i*60*60+@duration_minutes[i].to_i*60)
     }
   end
@@ -179,7 +179,7 @@ class Teaching
               @start_at[i+1] = DateTime.parse(@start_at[i].to_s) + 7.days
             elsif monthly?
               if i == 0
-                nth = nth_wday_of(DateTime.parse start_at[i])
+                nth = nth_wday_of(DateTime.parse start_at[i].to_s)
               end
               @start_at[i+1] = nth_day_in(DateTime.parse(start_at[i].to_s), nth)
             end
