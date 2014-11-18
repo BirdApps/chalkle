@@ -201,6 +201,8 @@
        
         <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizontal %>
 
+      <% unless current_user.channels.count == 1 && current_user.channels.first.channel_teachers.count < 2 %>
+
         <%# if not multiple channel will be inferred %>
         <% if current_user.channels.count > 0 %>
           <div class="fancy-header">
@@ -223,6 +225,8 @@
             </div>
           <% end %>
         <% end %>
+
+      <% end %>
       
       <div class="fancy-header">
         <h3>Pricing</h3>
