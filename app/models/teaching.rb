@@ -176,12 +176,13 @@ class Teaching
           if repeating?
             #calculate the next class's start_at
             if weekly?
-              @start_at[i+1] = Time.parse(@start_at[i].to_s) + 7.days
+              binding.pry
+              @start_at[i+1] = DateTime.parse(@start_at[i].to_s) + 7.days
             elsif monthly?
               if i == 0
-                nth = nth_wday_of(Time.parse start_at[i])
+                nth = nth_wday_of(DateTime.parse start_at[i])
               end
-              @start_at[i+1] = nth_day_in(Time.parse(start_at[i].to_s), nth)
+              @start_at[i+1] = nth_day_in(DateTime.parse(start_at[i].to_s), nth)
             end
             @duration_hours[i+1] = @duration_hours[i]
             @duration_minutes[i+1] = @duration_minutes[i]
