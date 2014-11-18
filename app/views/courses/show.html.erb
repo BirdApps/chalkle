@@ -43,16 +43,20 @@
               FREE
             <% end %>
           </div>
-          <% if @course.next_class.present? && (@course.next_class.status == 'Published' || policy(@course).read?) %>
-            <div class="col-xs-12 center small grey class-repeats">
-              <br />
-              <div class="upper">CLASS REPEATS</div>
-              <div>- next class -</div>
-              <div>
-                <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
-              </div>
-            </div>
-          <% end %>
+
+          <div class="col-xs-12 center small grey class-repeats">
+           <br />
+            <% if @course.next_class.present? && (@course.next_class.status == 'Published' || policy(@course).read?) %>
+                <div class="upper">CLASS REPEATS</div>
+                <div>- next class -</div>
+                <div>
+                  <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
+                </div>
+            <% elsif Course.similar_to(@course).count > 1 %>
+              <%= link_to "Find similar #{ @course.type.pluralize }", channel_course_series_path(@course.channel.url_name, @course.url_name) %>
+            <% end %>
+          </div>
+
           <% if @course.course? %>
             <div class="col-xs-12 center small grey class-repeats">
               <br />
