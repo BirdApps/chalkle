@@ -33,7 +33,7 @@ class CoursesController < ApplicationController
     end
 
     @page_title = "All Classes"
-    @courses = current_user.super? ? mine_filter(Course.order(:start_at)) : (mine_filter(current_user.courses_adminable)+mine_filter(current_user.courses_teaching)).sort_by(&:start_at)
+    @courses = current_user.super? ? mine_filter(Course.order(:start_at)).uniq : (mine_filter(current_user.courses_adminable)+mine_filter(current_user.courses_teaching)).sort_by(&:start_at).uniq
   end
 
   
