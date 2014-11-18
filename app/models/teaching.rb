@@ -176,7 +176,6 @@ class Teaching
           if repeating?
             #calculate the next class's start_at
             if weekly?
-              binding.pry
               @start_at[i+1] = DateTime.parse(@start_at[i].to_s) + 7.days
             elsif monthly?
               if i == 0
