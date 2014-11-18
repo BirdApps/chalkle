@@ -158,7 +158,7 @@ Chalkle::Application.routes.draw do
   get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
   post ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
   get ':channel_url_name/followers', to: 'channels#followers', as: :channel_followers
-    get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
+  get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
   get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :channel_course
   get ':channel_url_name', to: 'channels#show', as: :channel
 
