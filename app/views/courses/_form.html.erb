@@ -50,8 +50,8 @@
           </div>
           <p class="col-sm-12 center"><small class="">You cannot change between class or course while copying a <%= f.object.course_class_type %>. </small></p>
         <% else %>
-          <p>Do you want to create a class, or a course with many classes?</p>
-          <div class="btn-group" data-toggle="buttons">
+          <p class="center">Do you want to create a class, or a course with many classes?</p>
+          <div class="btn-group center col-xs-12" data-toggle="buttons">
           <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class', class: :'course-class-radio' %>Create class</label>
           <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course', class: :'course-class-radio' %>Create a course</label>
           </div>
