@@ -100,7 +100,7 @@
     </div>
     <div class="col-sm-3 col-xs-6 small grey light pad-top">
       <span class="fa fa-calendar"></span>
-      <%= day_ordinal_month @course.start_at %>
+      <%= day_ordinal_month @course.start_at, true, false, true %>
       <br />
       <span class="fa fa-clock-o"></span>
       <%= pretty_duration(@course) %> - 
