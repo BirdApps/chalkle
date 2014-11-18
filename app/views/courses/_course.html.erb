@@ -81,7 +81,7 @@
         <span class="small grey">
           <span class="fa fa-clock-o"></span>
           <% if course.class? %>
-            <%= day_ordinal_month course.start_at %>
+            <%= day_ordinal_month course.start_at, true, false, true %>
           <% end %>
           <%= pretty_time_range course.start_at, course.end_at %>
           <span class="fa fa-map-marker"></span>
