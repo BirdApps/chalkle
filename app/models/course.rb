@@ -197,7 +197,7 @@ class Course < ActiveRecord::Base
     if repeat_course.present?
       repetitions =  repeat_course.courses.displayable.order(:start_at)
       current_index = repetitions.index(self)
-      repetitions[current_index+1] if current_index && repetitions[current_index+1].present? 
+      repetitions[current_index+1] if current_index && repetitions[current_index+1].present?
     end
   end
 
