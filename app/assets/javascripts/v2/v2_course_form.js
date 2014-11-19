@@ -58,6 +58,9 @@ $(function(){
     }
 
     function init_start_at(){
+      set_monthly();
+      set_repeating();
+      set_repeat_count();
       $('.class-count').each(function(){
         apply_start_at_controls(this);
       });
@@ -101,7 +104,7 @@ $(function(){
 
     /* sets the monthly variable */
     function set_monthly(){
-      monthly = $(this).val() == 'monthly';
+      monthly = $('#teaching_repeat_frequency').val() == 'monthly';
     }
 
     /* sets the repeat_count variable */
@@ -111,7 +114,7 @@ $(function(){
 
     /* sets the repeating variable and shows/hides repeating controls */
     function set_repeating(){
-      repeating = $(this).val() == 'repeating';
+      repeating = $("#teaching_repeating").val() == 'repeating';
       if(repeating) {
         $('.repeating-options').show();  
       } else {
@@ -198,9 +201,17 @@ $(function(){
      
       /* initilizes the start_at_controls */
       function start_at_controls_init() {
+        $('#teaching_repeating').change(calculate_class_times);
+        $('#teaching_repeat_frequency').change(calculate_class_times);
+        $('#teaching_repeat_count').change(calculate_class_times);
+        $('.teaching_repeat_count .number-picker .number-picker-down').click(calculate_class_times);
+        $('.teaching_repeat_count .number-picker .number-picker-up').click(calculate_class_times);
+
         $(scope).find('.update_class_time').change(calculate_class_times);
+
         $(scope).find('.number-picker .number-picker-up').click(update_durations);
         $(scope).find('.number-picker .number-picker-down').click(update_durations);
+
         $(scope).find('#teaching_duration_hours').change(update_durations);
         $(scope).find('#teaching_duration_minutes').change(update_durations);
          date_time_picker_init();
@@ -296,7 +307,8 @@ $(function(){
           var start_time = make_time(instance_date.getHours(), instance_date.getMinutes(),0,0);
           var end_time = make_time(instance_date.getHours(), instance_date.getMinutes(), duration_hours, duration_minutes);
           var class_time_summary = "";
-          repeating = repeating && repeat_count > 1
+
+          repeating = repeating && repeat_count > 1;
           if(repeating && monthly) {
             //monthly
             var wday = instance_date.getDay();
