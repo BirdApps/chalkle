@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141116223650) do
+ActiveRecord::Schema.define(:version => 20141119034042) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(:version => 20141116223650) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
+    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -163,7 +164,6 @@ ActiveRecord::Schema.define(:version => 20141116223650) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -212,9 +212,9 @@ ActiveRecord::Schema.define(:version => 20141116223650) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
-    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
     t.decimal  "balance"
   end
 
@@ -231,6 +231,14 @@ ActiveRecord::Schema.define(:version => 20141116223650) do
     t.integer  "course_id"
     t.string   "image_uid"
     t.string   "image_name"
+  end
+
+  create_table "course_notices", :force => true do |t|
+    t.integer  "chalkler_id"
+    t.integer  "course_id",   :null => false
+    t.text     "body",        :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "course_suggestions", :force => true do |t|
