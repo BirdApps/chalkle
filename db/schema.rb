@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.integer  "chalkler_id"
     t.integer  "course_id",   :null => false
     t.text     "body",        :null => false
+    t.boolean  "visible",     :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
