@@ -82,7 +82,7 @@
             <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizontal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
             
             <div class="repeating-options" style="display:none;">
-              <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the class take place", input_html: { :class => 'form-control update_class_time', :'data-error-message' => 'Please choose an option' }, wrapper: :horizontal %>
+              <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the class take place", input_html: { :class => 'form-control update_class_time', :'data-error-message' => 'Please choose an option', :'data-validate-complex' => :true }, wrapper: :horizontal %>
 
               <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the class be held?", wrapper_html: { class: :'update_repeat_count' }, input_html: { :'data-min' => '2', value: f.object.repeat_count || 2, class: :'update_class_time' }, wrapper: :horizontal %>
            
@@ -204,12 +204,14 @@
         <% unless current_user.channels.count == 1 && current_user.channels.first.channel_teachers.count < 2 %>
 
           <%# if not multiple channel will be inferred %>
-          <% if current_user.channels.count > 0 %>
+          <% if current_user.channels.count > 1 %>
             <div class="fancy-header">
               <h3>Presented by</h3>
               <hr />
             </div>
             <%= f.input :channel_id, :label => "Associated <strong>Provider</strong>", :collection => current_user.channels, wrapper: :horizontal, input_html: {:'data-error-message'=>'Please select a provider'} %>
+          <% elsif current_user.channels.count == 1%>
+            <%= f.text_field :channel_id, type: :hidden, value: current_user.channels.first.id  %>
           <% end %>
 
           <%# if no channel or single channel having 1 or 0 teachers, teacher is inferred %>
@@ -259,7 +261,7 @@
 
         <% if current_user.channels.count > 0  %>
           <div class="teacher_pay_type_wrapper">
-            <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee calculated</strong>?", wrapper: :horizontal %>
+            <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee calculated</strong>?", input_html: { :'data-error-message' => "Please specify how the teacher fee is calculated", :'data-validate-complex' => :true }, wrapper: :horizontal %>
             <div class="col-sm-5"></div>
             <div class="col-sm-7">
               <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
