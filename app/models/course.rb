@@ -36,7 +36,7 @@ class Course < ActiveRecord::Base
   has_many  :bookings
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
-
+  has_many  :course_notices
 
   mount_uploader :course_upload_image, CourseUploadImageUploader
 
