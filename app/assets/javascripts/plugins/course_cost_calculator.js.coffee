@@ -34,7 +34,7 @@ class LessonCostCalculator
   check_positive: =>
     for k,v of @fields
       amount = $(v).val()
-      amount = amount.replace("$","")
+      amount = amount.replace("$","") if amount
       if !isNaN(amount) && amount < 0
         $(v).addClass('text-danger') 
       else
