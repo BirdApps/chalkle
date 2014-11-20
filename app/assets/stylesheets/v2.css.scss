@@ -993,10 +993,11 @@ body.v2 {
         }
         header{
           border-bottom: #ccc solid 1px;
+          margin-top: 20px;
           .white{
             position:relative;
             background: #fff;
-            top: 9px;
+            bottom: 12px;
             padding: 0 6px;
           }
           .name{
@@ -1005,7 +1006,7 @@ body.v2 {
           }
           .time{
             float: right;
-            top: 12px;
+            bottom: 9px;
           }
         }
         .notice-image{
@@ -1027,8 +1028,12 @@ body.v2 {
         .notice-image:hover{
            background: #ccc;
         }
+        .avatar32{
+          position: relative;
+          bottom:5px;
+        }
         .notice-body, .edit-notice{
-          margin: 12px 20px;
+          margin: 0 20px 12px;
           .control{
             padding-left: 10px;
             padding-bottom: 10px;

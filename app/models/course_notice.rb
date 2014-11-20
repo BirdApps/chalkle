@@ -4,10 +4,11 @@ class CourseNotice < ActiveRecord::Base
   mount_uploader :photo, CourseNoticeUploader
   
   validates_presence_of :course
-  validates_presence_of :body
 
   belongs_to :chalkler
   belongs_to :course
+
+  before_save :check_body_or_photo
 
   has_one :channel, through: :course
 
@@ -28,5 +29,12 @@ class CourseNotice < ActiveRecord::Base
   def deleted?
     !visible
   end
+
+  private 
+    def check_body_or_photo
+      if photo.present? && body.blank?
+        self.body = ' '
+      end
+    end
 
 end

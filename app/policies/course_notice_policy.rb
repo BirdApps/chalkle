@@ -18,7 +18,7 @@ class CourseNoticePolicy < ApplicationPolicy
   end
 
   def destroy?
-    @user.super? or @course_notice.chalkler.id == @user.id or @user.courses_adminable.include?(@course_notice.course)
+    @user.super? or @course_notice.chalkler.id == @user.id or @user.courses_teaching.include?(@course_notice.course) or @user.courses_adminable.include?(@course_notice.course)
   end
 
 end
