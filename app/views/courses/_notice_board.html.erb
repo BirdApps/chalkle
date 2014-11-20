@@ -5,6 +5,7 @@
   </div> 
   
   <div class="row">
+  <% if current_user.authenticated? %>
     <div class="new_form_wrapper">
       <%= bootstrap_form_for(CourseNotice.new, wrapper: :simple_bootstrap3, url: course_course_notices_path(@course.id), html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
         <div class="col-xs-12">
@@ -18,6 +19,16 @@
     </div>
   </div>
   <br /><br />
-  <%= render @course.notices.order(:created_at).reverse_order %>
+  <% end %>
+
+  <% if @course.notices.present? %>
+    <%= render @course.notices.order(:created_at).reverse_order %>
+  <% elsif !current_user.authenticated? %>
+    <div class="light grey center">
+      <em>
+        No discussion yet
+      </em>
+    </div>
+  <% end %>
 
 </div>

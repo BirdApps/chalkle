@@ -10,15 +10,15 @@ class CourseNoticePolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    @user.authenticated?
   end
 
   def update?
-    @user.super? or @course_notice.chalkler == current_chalkler
+    @user.super? or @course_notice.chalkler.id == @user.id
   end
 
   def destroy?
-    @user.super? or @course_notice.chalkler == current_chalkler or @user.courses_adminable.include?(@course_notice.course)
+    @user.super? or @course_notice.chalkler.id == @user.id or @user.courses_adminable.include?(@course_notice.course)
   end
 
 end

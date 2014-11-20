@@ -43,9 +43,10 @@ Chalkle::Application.routes.draw do
     end
 
     resource :course_notices, path: 'discussion' do 
-      get 'delete/:id', to: 'course_notices#destroy', as: :delete
+      get 'show/:id', to: 'course_notices#show', as: :show
       put 'update/:id', to: 'course_notices#update', as: :update
       post 'create', to: 'course_notices#create', as: :create
+      get 'delete/:id', to: 'course_notices#destroy', as: :delete
     end
     
     resources :bookings do

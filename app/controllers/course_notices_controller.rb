@@ -1,7 +1,11 @@
 class CourseNoticesController < ApplicationController
-  before_filter :load_course, only: :create
+  before_filter :load_course, only: [:show, :create]
   before_filter :load_course_notice, only: [:update, :destroy]
   before_filter :authenticate_chalkler!
+
+  def show
+    redirect_to @course
+  end
 
   def create
     params[:course_notice][:chalkler_id] = current_user.id
