@@ -87,6 +87,16 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def load_course
+      @course = Course.find_by_id(params[:id]).try :decorate
+      unless @course
+        @course = Course.find_by_id(params[:course_id]).try :decorate
+      end
+      return not_found if !@course
+      authorize @course
+      ActiveRecord::RecordNotFound if @course.nil?
+    end  
+
     def country_code
       params[:country_code] unless params[:country_code].blank?
     end

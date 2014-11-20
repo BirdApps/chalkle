@@ -228,13 +228,6 @@ class CoursesController < ApplicationController
       courses
     end
 
-    def load_course
-      @course = Course.find_by_id(params[:id]).try :decorate
-      return not_found if !@course
-      authorize @course
-      ActiveRecord::RecordNotFound if @course.nil?
-    end  
-
     def load_geography_override
       load_country
       load_region
