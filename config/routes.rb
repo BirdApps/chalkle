@@ -32,12 +32,18 @@ Chalkle::Application.routes.draw do
   match '/teach' => 'courses#teach'
   match '/learn' => 'courses#learn'
 
+
   resources :courses, path: 'classes' do
-    #resources :notices
+
     member do
       get 'cancel', to: 'courses#cancel', as: :cancel
+      get 'clone'
       put 'cancel', to: 'courses#confirm_cancel', as: :cancel
+      put 'change_status', to: 'courses#change_status', as: :change_status
     end
+
+    resource :course_notices, only: [:create, :update, :destroy]
+    
     resources :bookings do
       get :payment_callback
       collection { get 'csv' }
@@ -46,14 +52,12 @@ Chalkle::Application.routes.draw do
         put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
       end
     end
-    member do
-      get 'clone'
-      put 'change_status', to: 'courses#change_status', as: :change_status
-    end
+
     collection do
       get 'calculate_cost'
       get 'mine'
     end
+    
   end
 
   get '/c/:id' => 'courses#tiny_url', as: :course_tiny
