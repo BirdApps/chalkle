@@ -41,6 +41,7 @@ class Chalkler < ActiveRecord::Base
       where(provider: provider).first
     end
   end
+  has_many :course_notices
   has_many :courses_teaching, through: :channel_teachers, source: :courses
 
   after_create :create_channel_associations

@@ -6,13 +6,27 @@ class CourseNotice < ActiveRecord::Base
   validates_presence_of :course
   validates_presence_of :body
 
-  has_one :chalkler
-  has_one :course
+  belongs_to :chalkler
+  belongs_to :course
 
-  scope :visible, where(visible: true).order(:created_at)
+  has_one :channel, through: :course
+
+  scope :visible, where(visible: true)
 
   def edited?
-    updated_at == created_at
+    updated_at != created_at
+  end
+
+  def by_attendee?
+    chalkler.confirmed_courses.include? course
+  end
+
+  def by_teacher?
+    chalkler.courses_teaching.include? course
+  end
+
+  def deleted?
+    !visible
   end
 
 end

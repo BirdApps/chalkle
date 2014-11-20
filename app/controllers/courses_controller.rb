@@ -181,6 +181,12 @@ class CoursesController < ApplicationController
 
   private
 
+    def load_course
+      @course = Course.find_by_id(params[:id]).try :decorate
+      return not_found unless @course
+      authorize @course
+    end  
+
     def take_me_to
       if params[:search].present?
         try_id = params[:search] 
@@ -260,17 +266,7 @@ class CoursesController < ApplicationController
         end
       end
     end
-
-    def check_course_visibility
-      unless !@course || policy(@course).read?
-        unless @course.published?
-          flash[:notice] = "This class is no longer available."
-          redirect_to :root
-          return false
-        end
-      end
-    end
-
+    
     def courses_for_time
       @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
     end

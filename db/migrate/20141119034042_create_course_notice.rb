@@ -8,5 +8,7 @@ class CreateCourseNotice < ActiveRecord::Migration
       t.string    :photo
       t.timestamps
     end
+    add_foreign_key :course_notices, :chalklers
+    add_foreign_key :course_notices, :courses
   end
 end

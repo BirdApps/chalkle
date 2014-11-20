@@ -977,6 +977,64 @@ body.v2 {
         }
         line-height: 1.2em;
       }
+      .course_notice{
+        .removed{
+          color: #ccc;
+          .name{
+            color: #ccc;
+          }
+        }
+        .tiny-photo{
+          max-height:20px;
+          margin: 10px;
+        }
+        .cancel-edit-btn{
+          margin: 10px; 
+        }
+        header{
+          border-bottom: #ccc solid 1px;
+          .white{
+            position:relative;
+            background: #fff;
+            top: 9px;
+            padding: 0 6px;
+          }
+          .name{
+            font-size: 120%;
+            color: #3A3A3A;
+          }
+          .time{
+            float: right;
+            top: 12px;
+          }
+        }
+        .notice-image{
+          float: left;
+          padding: 1px;
+          background: #fafafa;
+          margin-right: 5px;
+          cursor: pointer;
+          img {
+            max-height: 100px;
+          }
+        }
+        .popover img{
+          max-width:100%;
+        }
+        .popover {
+          max-width: 100%;
+        }
+        .notice-image:hover{
+           background: #ccc;
+        }
+        .notice-body, .edit-notice{
+          margin: 12px 20px;
+          .control{
+            padding-left: 10px;
+            padding-bottom: 10px;
+          }
+        }
+      }
     }
     .course {
       position: relative;

@@ -42,7 +42,11 @@ Chalkle::Application.routes.draw do
       put 'change_status', to: 'courses#change_status', as: :change_status
     end
 
-    resource :course_notices, only: [:create, :update, :destroy]
+    resource :course_notices, path: 'discussion' do 
+      get 'delete/:id', to: 'course_notices#destroy', as: :delete
+      put 'update/:id', to: 'course_notices#update', as: :update
+      post 'create', to: 'course_notices#create', as: :create
+    end
     
     resources :bookings do
       get :payment_callback

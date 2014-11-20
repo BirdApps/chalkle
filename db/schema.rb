@@ -461,6 +461,9 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
   add_foreign_key "channel_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
   add_foreign_key "channel_teachers", "channels", name: "channel_teachers_channel_id_fk"
 
+  add_foreign_key "course_notices", "chalklers", name: "course_notices_chalkler_id_fk"
+  add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"
+
   add_foreign_key "courses", "regions", name: "courses_region_id_fk"
 
 end

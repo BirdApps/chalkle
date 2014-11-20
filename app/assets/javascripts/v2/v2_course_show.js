@@ -45,3 +45,40 @@ $(function(){
     }
   }
 });
+
+$(function(){
+
+  $('.notice-image').each(function(){
+    var options = {
+      html: true,
+      content: function(){ return $(this).html() }
+    }
+    $(this).popover(options);
+  });
+
+  $('.notice-image').on('show.bs.popover', function(){
+    $('.notice-image').popover('hide');
+  })
+
+  $('body').on('click', function (e) {
+    $('.notice-image').each(function () {
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            $(this).popover('hide');
+        }
+    });
+  });
+
+
+  $('.edit-btn').click(function(){
+    $('.edit-notice').hide();
+    $('.notice-body').show();
+    var target = '#'+$(this).data('target')
+    $(target).find('.edit-notice').show();
+    $(target).find('.notice-body').hide();
+  });
+  $('.cancel-edit-btn').click(function(){
+    var target = '#'+$(this).data('target')
+    $(target).find('.notice-body').show();
+    $(target).find('.edit-notice').hide();
+  });
+});

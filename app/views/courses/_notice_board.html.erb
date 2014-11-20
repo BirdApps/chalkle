@@ -1,14 +1,23 @@
-<div class="col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light small">
-  <%= render @course.notices.visible %>
-
-  <div class="new_form_wrapper col-sm-10 col-sm-offset-1 col-xs-12">
-    <%= bootstrap_form_for(CourseNotice.new, wrapper: :simple_bootstrap3, url: course_course_notices_path(@course.id), html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
-
-      <%= f.input :body, :label => 'Post notice' %>
-      <%= f.input :photo, as: :file, input_html: { class: 'styled_upload', content: 'Attach Image' }, wrapper_html: { class: 'no-label' }  %>
-      
-      <%= f.submit "Submit", class: 'btn btn-primary pull-right' %>
-    <% end %>
+ <div class="col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light small">
+  <div class="fancy-header">
+    <h3>Discussion</h3>
+    <hr />
+  </div> 
+  
+  <div class="row">
+    <div class="new_form_wrapper">
+      <%= bootstrap_form_for(CourseNotice.new, wrapper: :simple_bootstrap3, url: course_course_notices_path(@course.id), html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+        <div class="col-xs-12">
+          <%= f.text_area :body, class: 'col-xs-12' %>
+          <div class="margin-top">
+            <input name="course_notice_photo" type="file" class="margin-top pull-left" />
+            <%= f.submit "Post", class: 'btn btn-primary pull-right' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
+  <br /><br />
+  <%= render @course.notices.order(:created_at).reverse_order %>
 
 </div>
