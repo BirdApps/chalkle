@@ -235,11 +235,12 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
 
   create_table "course_notices", :force => true do |t|
     t.integer  "chalkler_id"
-    t.integer  "course_id",   :null => false
-    t.text     "body",        :null => false
-    t.boolean  "visible",     :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "course_id",                     :null => false
+    t.text     "body",                          :null => false
+    t.boolean  "visible",     :default => true, :null => false
+    t.string   "photo"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "course_suggestions", :force => true do |t|
