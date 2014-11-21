@@ -29,7 +29,14 @@
 
     <div class="row">
       <div class="light grey center">
-        <%= link_to "Create an account", new_chalkler_registration_path %> or <%= link_to "login", new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: (current_page?(controller: 'chalkler') ? "current": "") %> to leave a comment
+        <strong>
+          <%= link_to "Create an account", new_chalkler_registration_path %>
+        </strong>
+        or 
+        <strong>
+          <%= link_to "login", new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: (current_page?(controller: 'chalkler') ? "current": "") %>
+        </strong>
+        to leave a comment
         <br /><br />
       </div>
     </div>
