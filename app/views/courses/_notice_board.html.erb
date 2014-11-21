@@ -1,42 +1,53 @@
  <div class="col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light small">
+
   <div class="fancy-header">
     <h3>Discusson</h3>
     <hr />
   </div> 
 
   <% if current_user.authenticated? %>
+
     <div class="row">
       <div class="new_form_wrapper">
-        <small>Ask qauestions or leave comments about the class</small>
+        <small class="col-xs-12">Ask questions or leave comments about the class</small>
         <%= bootstrap_form_for(CourseNotice.new, wrapper: :simple_bootstrap3, url: course_course_notices_path(@course.id), html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
-        <div class="col-xs-12">
-          <%= f.text_area :body, class: 'col-xs-12' %>
-          <div class="margin-top">
-            <input name="course_notice_photo" type="file" class="margin-top pull-left" />
-            <%= f.submit "Post", class: 'btn btn-primary pull-right' %>
+
+          <div class="col-xs-12">
+            <%= f.text_area :body, class: 'col-xs-12' %>
+            <div class="margin-top">
+              <input name="course_notice_photo" type="file" class="margin-top pull-left" />
+              <%= f.submit "Post", class: 'btn btn-primary pull-right' %>
             </div>
           </div>
+
         <% end %>
       </div>
     </div>
     <br /><br />
+
   <% else %>
-  <div class="row">
-    <div class="light grey center">
-      <%= link_to "Create an account", new_chalkler_registration_path %> or <%= link_to "login", new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: (current_page?(controller: 'chalkler') ? "current": "") %> to leave a comment
-      <br /><br />
+
+    <div class="row">
+      <div class="light grey center">
+        <%= link_to "Create an account", new_chalkler_registration_path %> or <%= link_to "login", new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: (current_page?(controller: 'chalkler') ? "current": "") %> to leave a comment
+        <br /><br />
+      </div>
     </div>
-  </div>
+
   <% end %>
 
   <% if @course.notices.present? %>
+
     <%= render @course.notices.order(:created_at).reverse_order %>
+
   <% elsif !current_user.authenticated? %>
+
     <div class="light grey center">
       <em>
         No discussion yet
       </em>
     </div>
+
   <% end %>
 
 </div>

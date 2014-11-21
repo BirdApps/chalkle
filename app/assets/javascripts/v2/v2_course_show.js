@@ -49,22 +49,16 @@ $(function(){
 $(function(){
 
   $('.notice-image').each(function(){
+    var self = this;
     var options = {
       html: true,
       content: function(){ return $(this).html() }
     }
-    $(this).popover(options);
-  });
-
-  $('.notice-image').on('show.bs.popover', function(){
-    $('.notice-image').popover('hide');
-  })
-
-  $('body').on('click', function (e) {
-    $('.notice-image').each(function () {
-        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-            $(this).popover('hide');
-        }
+    $(self).popover(options);
+    $(self).on('shown.bs.popover', function(){
+      $('.popover-content').click(function(e){
+        $(self).click();
+      });
     });
   });
 

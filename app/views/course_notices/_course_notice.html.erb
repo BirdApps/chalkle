@@ -30,17 +30,17 @@
           <%= link_to 'Edit', "#edit-notice-#{course_notice.id}", :'data-target' => "discuss-#{course_notice.id}", class: 'edit-btn' %>
         <% end %>
         <% if policy(course_notice).destroy? %>
-          <%= link_to 'Delete', delete_course_course_notices_path(course_notice.course.id, course_notice.id)  %>
+          <%= link_to 'Remove', delete_course_course_notices_path(course_notice.course.id, course_notice.id)  %>
         <% end %>
       </div>
     <% end %>
     <div class="clearfix">
       <% if course_notice.photo.present? %>
-        <div class="notice-image" data-toggle="popover">
+        <a class="notice-image" data-toggle="popover">
           <%= image_tag course_notice.photo %>
-        </div>
+        </a>
       <% end %>
-      <div class="<%= 'pull-left margin-top' if course_notice.photo.present?  %>">
+      <div class="<%= 'right-body margin-top' if course_notice.photo.present?  %>">
         <%= to_html(course_notice.body) %>
       </div>
     </div>
@@ -70,7 +70,7 @@
         </span>
       </span>
       <span class="time white">     
-        <%= link_to 'Undelete', delete_course_course_notices_path(course_notice.course.id, course_notice.id) if policy(course_notice).destroy?   %>
+        <%= link_to 'Undo', delete_course_course_notices_path(course_notice.course.id, course_notice.id) if policy(course_notice).destroy?   %>
         <%= quick_date course_notice.updated_at %>
       </span>
     </header>
