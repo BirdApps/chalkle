@@ -1,0 +1,26 @@
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8'http-equiv= 'Content-Type' />
+    <meta content='width=device-width, initial-scale=1.0' name='viewport' />
+    <%= stylesheet_link_tag 'mail', media: 'all' %>
+    <title>chalkle.com email</title>
+  </head>
+  <body>
+    <table id="container" border='0' cellpadding='0'cellspacing='0' width='100%'>
+      <tr>
+        <td id="date-stamp">
+          <%= date_stamp %>
+        </td>
+        <td></td>
+        <td>
+          <%= link_to "Email Preferences", my_account_path(@chalkler) %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id='logo' src="<%= "#{root_url}logo.gif" -%>" alt ='chalkle' />
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
