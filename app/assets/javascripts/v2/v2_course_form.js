@@ -436,24 +436,26 @@ $(function(){
     }
 
     function show_error_for(element, error_msg, focus){
-      if(focus == undefined){
-        focus = true;
-      }
-      if(error_msg == undefined){
-        error_msg = $(element).data('error-message');
-      }
-      if(!$(element).siblings('.form-error').length){
-        $(element).after('<div class="info form-error">'+error_msg+'</div>');
-        $(element).parent().removeClass('hidden');
-      }
-      if(focus){
-        if(isScrolledIntoView(element)){
-          $(element).focus();
-        }else{
-          var scroll_to = $(element).offset().top - 150;
-          $("html, body").animate({ scrollTop: scroll_to }, "slow", function(){
+      if($(element).length > 0){
+        if(focus == undefined){
+          focus = true;
+        }
+        if(error_msg == undefined){
+          error_msg = $(element).data('error-message');
+        }
+        if(!$(element).siblings('.form-error').length){
+          $(element).after('<div class="info form-error">'+error_msg+'</div>');
+          $(element).parent().removeClass('hidden');
+        }
+        if(focus){
+          if(isScrolledIntoView(element)){
             $(element).focus();
-          });
+          }else{
+            var scroll_to = $(element).offset().top - 150;
+            $("html, body").animate({ scrollTop: scroll_to }, "slow", function(){
+              $(element).focus();
+            });
+          }
         }
       }
     }
@@ -474,7 +476,7 @@ $(function(){
     }
 
     function validate_element(elem){
-     if(!!!$(elem).val() && !$(elem).is('div')) {
+     if(!!!$(elem).val() && !$(elem).is('div') && !$(elem).is('label')) {
         show_error_for(elem);
         return false
       }
@@ -494,7 +496,7 @@ $(function(){
     function apply_inline_validation(){
       $('[data-error-message]').each(function(){
         $(this).focusout(function(){
-          if(!!!$(this).val() && !$(this).is("div")){
+          if(!!!$(this).val() && !$(this).is("div") && !$(elem).is('label')){
             show_error_for(this, undefined, false);
           }else{
             $(this).siblings('.form-error').remove();
@@ -530,11 +532,11 @@ $(function(){
       valid_basics = validate_basics('#teaching');
 
       //validate complex
-      if($('#teaching_cost').val() > 0){
+      if($('#teaching_cost').val() > 0 && $('#teaching_teacher_pay_type').length > 0 ){
         valid = validate_element($('#teaching_teacher_pay_type'));
       }
 
-      if($('#teaching_longitude').val() == "")
+      if($('#teaching_longitude').val() == "" && $('#teaching_venue_address').length > 0)
       {
         valid = false;
         show_error_for($('#teaching_venue_address'));
@@ -568,6 +570,8 @@ $(function(){
         valid = false;
         show_error_for($('#teaching_teacher_cost'), "Teacher fee cannot be less than 0");
       }
+      console.log(valid);
+      console.log(valid_basics);
       return valid && valid_basics;
     }
 
@@ -589,7 +593,7 @@ $(function(){
     }
 
     function bind_agree_terms(){
-      $('input[name=teaching_agreeterms]').change(validation_submit);
+      //$('input[name=teaching_agreeterms]').change(validation_submit);
     }
 
     function validate_part(location){
