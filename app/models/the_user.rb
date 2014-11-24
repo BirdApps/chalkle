@@ -100,6 +100,14 @@ class TheUser
     chalkler.id.present? ? chalkler.all_teaching : Course.none
   end
 
+  def new_notifications
+    []
+  end
+
+  def recent_notifications
+    []
+  end
+
   def learn_menu_badge_count 
     @learn_menu_badge_count ||= (
       if chalkler?

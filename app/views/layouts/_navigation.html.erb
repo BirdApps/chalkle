@@ -28,12 +28,39 @@
             </li>
 
             <% if chalkler_signed_in? %>
-              <li>
-                <%= link_to current_user.name, me_root_path, class: (current_page?(me_root_path) ? "current": "") %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                  <%= current_user.name %>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu pull-right" role="menu" style="background-color: <%= header_color if header_color %>" >
+                  <li>  
+                    <%= link_to "Dashboard", me_root_path, class: (current_page?(me_root_path) ? "current": "") %>
+                  </li>
+                  <li>
+                    <%= link_to "Settings", me_preferences_path, class: (current_page?(me_preferences_path) ? "current": "") %>
+                  </li>
+                    <%# <li><a href="/muni-wallet-stuff">Account</a></li> %>
+                  <li>
+                    <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
+                  </li>
+                </ul>
               </li>
-              <li>
-                <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
+
+              <li class="dropdown notifications-drop">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                 <img src="/assets/icons/bell.png" />
+                 <%= current_user.new_notifications.count %>
+                </a>
+                <ul class="dropdown-menu pull-right" role="menu" style="background-color: <%= header_color if header_color %>" >
+                  <% current_user.recent_notifications.each do |notification| %>
+                    <li>   
+                      
+                    </li>
+                  <% end %>
+                </ul>
               </li>
+
             <% else %>
               <li>
                 <%= link_to 'Login', new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: (current_page?(controller: 'chalkler') ? "current": "") %>
