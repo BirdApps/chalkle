@@ -2,11 +2,13 @@ class Category < ActiveRecord::Base
   attr_accessible :name, :colour_num, :parent_id, :parent, as: :default
   attr_accessible :name, :colour_num, :parent_id, :parent, :primary, as: :admin
 
-  has_many :channel_categories
-  has_many :channels, :through => :channel_categories
-  has_many :courses
-  belongs_to :parent, class_name: 'Category'
-  has_many :children, class_name: 'Category', foreign_key: :parent_id
+  has_many    :channel_categories
+  has_many    :channels, :through => :channel_categories
+  has_many    :courses
+  belongs_to  :parent, class_name: 'Category'
+  has_many    :children, class_name: 'Category', foreign_key: :parent_id
+  has_many    :interaction, as: :actor 
+  has_many    :interaction, as: :target
 
   scope :primary, where(primary: true)
   scope :alphabetical, order(:name)

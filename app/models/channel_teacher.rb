@@ -7,9 +7,11 @@ class ChannelTeacher < ActiveRecord::Base
 
   attr_accessible :channel, :channel_id, :chalkler, :chalkler_id, :name, :email, :bio, :pseudo_chalkler_email, :can_make_classes, :tax_number, :account, :avatar, :courses
 
-  belongs_to :channel
-  belongs_to :chalkler
-  has_many :courses, class_name: "Course", foreign_key: "teacher_id"
+  belongs_to  :channel
+  belongs_to  :chalkler
+  has_many    :courses, class_name: "Course", foreign_key: "teacher_id"
+  has_many    :interaction, as: :actor 
+  has_many    :interaction, as: :target
 
   validates_uniqueness_of :chalkler_id, scope: :channel_id, allow_blank:true
   validates_presence_of :channel_id

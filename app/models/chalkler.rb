@@ -43,6 +43,8 @@ class Chalkler < ActiveRecord::Base
   end
   has_many :course_notices
   has_many :courses_teaching, through: :channel_teachers, source: :courses
+  has_many :interaction, as: :actor 
+  has_many :interaction, as: :target
 
   after_create :create_channel_associations
 

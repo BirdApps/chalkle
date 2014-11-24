@@ -35,6 +35,9 @@ class OutgoingPayment < ActiveRecord::Base
   has_many :teacher_courses, through: :teacher_bookings, source: :course, foreign_key: :course_id
   has_many :channel_courses, through: :channel_bookings, source: :course, foreign_key: :course_id
 
+  has_many :interaction, as: :actor 
+  has_many :interaction, as: :target
+
   def self.valid
     (with_valid_channel_bookings+with_valid_teacher_bookings).uniq.select{|o| o.bookings.present?}
   end

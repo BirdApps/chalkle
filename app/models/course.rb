@@ -32,12 +32,14 @@ class Course < ActiveRecord::Base
   has_many  :bookings
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
-  has_one   :course_image, :dependent => :destroy, :inverse_of => :course
   has_many  :bookings
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
   has_many  :notices, class_name: 'CourseNotice'
-
+  has_many  :interaction, as: :actor 
+  has_many  :interaction, as: :target
+  has_one   :course_image, :dependent => :destroy, :inverse_of => :course
+  
   mount_uploader :course_upload_image, CourseUploadImageUploader
 
   accepts_nested_attributes_for :course_image

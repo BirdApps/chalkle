@@ -17,13 +17,15 @@ class Booking < ActiveRecord::Base
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
   BOOKING_STATUSES = %w(yes no refund_pending pending refund_complete)
 
-  belongs_to :course
-  belongs_to :chalkler
-  belongs_to :booking
-  has_many :bookings, as: :guests_bookings
-  has_one :payment
-  has_one :channel, through: :course
-  has_one :teacher, through: :course
+  belongs_to  :course
+  belongs_to  :chalkler
+  belongs_to  :booking
+  has_many    :bookings, as: :guests_bookings
+  has_many    :interaction, as: :actor 
+  has_many    :interaction, as: :target
+  has_one     :payment
+  has_one     :channel, through: :course
+  has_one     :teacher, through: :course
   
   belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
   belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id

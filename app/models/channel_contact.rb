@@ -1,8 +1,10 @@
 class ChannelContact < ActiveRecord::Base
   attr_accessible :channel, :chalkler, :from, :to, :subject, :message,:status
 
-  belongs_to :channel
-  has_one :chalkler
+  belongs_to  :channel
+  has_one     :chalkler
+  has_many    :interaction, as: :actor 
+  has_many    :interaction, as: :target
 
   validates_presence_of :channel
   validates_presence_of :from
