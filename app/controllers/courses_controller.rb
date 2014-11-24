@@ -36,8 +36,6 @@ class CoursesController < ApplicationController
     @courses = current_user.super? ? mine_filter(Course.order(:start_at)).uniq : (mine_filter(current_user.courses_adminable)+mine_filter(current_user.courses_teaching)).sort_by(&:start_at).uniq
   end
 
-  
-
   def teach
     @page_subtitle = "Use chalkle to"
     @page_title = "Teach"
@@ -75,11 +73,6 @@ class CoursesController < ApplicationController
     @meta_title = "Learn with "
     @upcoming_courses = current_user.courses
     render 'learn'
-  end
-
-  def tiny_url
-    return not_found if !@course
-    return redirect_to @course.path
   end
 
   def new
@@ -185,6 +178,7 @@ class CoursesController < ApplicationController
       @course = Course.find_by_id(params[:id]).try :decorate
       return not_found unless @course
       authorize @course
+      interacted_with @course
     end  
 
     def take_me_to
@@ -232,55 +226,6 @@ class CoursesController < ApplicationController
       end
 
       courses
-    end
-
-    def load_geography_override
-      load_country
-      load_region
-    end
-
-    def load_region
-      if region_name
-        @region = Region.find_by_url_name region_name.downcase
-      end
-      if @region.nil?
-        @region = Region.new name: "New Zealand", courses: Course.upcoming
-      end
-    end
-
-    def load_category
-      if category_name
-        @category = Category.find_by_url_name category_name.downcase
-      end
-      if @category.nil?
-        @category = Category.new name: 'All Topics'
-      end
-    end
-
-    def load_channel
-      if !@channel
-        if channel_name 
-          @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
-        else
-          @channel = Channel.new(name: "All Providers")
-        end
-      end
-    end
-    
-    def courses_for_time
-      @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
-    end
-
-    def get_current_week(start_date = Date.current)
-      if params[:day]
-        begin
-          Week.containing(Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i))
-        rescue
-          Week.containing(start_date)
-        end
-      else
-        Week.containing(start_date)
-      end
     end
 
     def decorate(courses)

@@ -40,6 +40,19 @@ class ApplicationController < ActionController::Base
 
   protected
 
+    def interacted_with(target, flag = nil, description = nil)
+      interaction = {
+          actor:       current_chalkler,
+          target:      target,
+          action:      params[:action],
+          controller:  params[:controller],
+          parameters:  YAML::dump(params),
+          flag:        flag,
+          description: description
+        }
+      Interaction.log interaction
+    end
+
     def authorize(record)
       super record unless current_user.super?
     end
@@ -62,10 +75,7 @@ class ApplicationController < ActionController::Base
     end
 
     def current_user
-      if @current_user.nil?
-        @current_user = TheUser.new current_chalkler
-      end
-      return @current_user 
+      @current_user ||= TheUser.new current_chalkler
     end
 
    
