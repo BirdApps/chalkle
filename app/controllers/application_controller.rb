@@ -102,12 +102,24 @@ class ApplicationController < ActionController::Base
     end
     
     def region_name
+      reconnect_attempts ||= 3
       session[:region] = params[:region] unless params[:region].blank?
-      if request && request.location && request.location.data
-        request_region = request.location.data["region_name"]
+
+      return session[:region] if session[:region]
+
+      # Occasionally the geolocator API does not respond. Trying again usually gets this to behave.
+      begin  
+
+        if request && request.location && request.location.data
+          request_region = request.location.data["region_name"]
+        end
+
+      rescue Errno::ECONNRESET => e
+        retry if (reconnect_attempts -=1) > 0
+      else
+        nil
       end
-      request_region = nil unless request_region != ""
-      session[:region] || request_region
+      (request_region == "") ? nil : request_region
     end
 
     def channel_name
