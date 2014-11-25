@@ -1,0 +1,46 @@
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8'http-equiv= 'Content-Type' />
+    <meta content='width=device-width, initial-scale=1.0' name='viewport' />
+    <%= stylesheet_link_tag 'mail', media: 'all' %>
+    <title>chalkle.com email</title>
+  </head>
+  <body>
+    <!-- BEGIN CONTAINER TABLE. THE HEADER IS LAID OUT USING 3 COLUMNS. BODY CONTENT IS CONTAINED IN NESTED TABLES WITH THEIR OWN LAYOUT RULES -->
+    <table id="container" border='0' cellpadding='0'cellspacing='0' width='100%'>
+      <tr>
+        <td id="date-stamp">
+          <%= <%= Date.current.strftime("%A %B #{Date.current.day.ordinalize}") %> %>
+        </td>
+        <td></td>
+        <td>
+          <%= link_to "Email Preferences", me_preferences_url %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id='logo' src="<%= "#{root_url}logo.gif" -%>" alt ='chalkle' />
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="2">
+          <p>Hello <%= @chalkler.name.split[0] %>,</p>
+          <%= mailer_message %>
+        </td>
+      </tr>
+<!-- BEGIN THE MAIL MESSAGE BODY HERE WITH A NESTED TABLE -->
+      <tr>
+        <td colspan='3'>
+
+          <%= yield %>
+          
+        </td>
+      </tr>
+<!-- END THE MAIL MESSAGE BODY NESTED TABLE -->
+
+    </table>
+  </body>
+</html>
