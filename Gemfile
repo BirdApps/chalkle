@@ -10,7 +10,7 @@ gem 'pg', '~> 0.17.1'
 gem 'unicorn-rails'
 gem 'unicorn-worker-killer'
 
-gem 'entity_events', path: 'entity_events'
+gem 'entity_events'
 
 # Authentication
 gem 'devise',           '~> 2.2.4'
