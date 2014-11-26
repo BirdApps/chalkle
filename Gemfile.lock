@@ -22,6 +22,12 @@ GIT
       activemodel (~> 3.0)
 
 PATH
+  remote: entity_events
+  specs:
+    entity_events (0.0.1)
+      rails (~> 3.2.19)
+
+PATH
   remote: vendor/gems/omni_avatar
   specs:
     omni_avatar (0.0.1)
@@ -675,6 +681,7 @@ DEPENDENCIES
   dragonfly (~> 0.9.14)
   draper (~> 1.0)
   email_spec
+  entity_events!
   execjs (~> 1.4.0)
   factory_girl_rails (~> 4.2.1)
   faker

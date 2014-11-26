@@ -4,7 +4,6 @@ class CreateInteraction < ActiveRecord::Migration
       t.string :action
       t.string :controller
       t.string :flag
-      t.text   :description
       t.text   :parameters
       t.references :actor, polymorphic: true
       t.references :target, polymorphic: true
