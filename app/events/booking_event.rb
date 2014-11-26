@@ -1,9 +1,10 @@
 class BookingEvent < EntityEvents::EntityEvent
   def new_target
-    binding.pry
+    id = params[:course_id]
+    Course.find id if id
   end
 
-  def new_actor
-    binding.pry
+  def create_target
+    @actor.bookings.last
   end
 end

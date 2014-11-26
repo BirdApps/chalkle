@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_category
   before_filter :skip_cache!
   before_filter :check_user_data
-  before_filter :entity_events
+  after_filter :entity_events
 
   def styleguide
     render "/styleguide"
@@ -242,6 +242,7 @@ class ApplicationController < ActionController::Base
     end
 
     def entity_events
-      EntityEvents.record(params, current_chalkler)
+      auto_log = true
+      EntityEvents.record(params, current_chalkler, auto_log)
     end
 end
