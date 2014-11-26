@@ -8,8 +8,6 @@ class CourseNotice < ActiveRecord::Base
   belongs_to  :chalkler
   belongs_to  :course
   before_save :check_body_or_photo
-  has_many    :interaction, as: :actor 
-  has_many    :interaction, as: :target
 
   has_one :channel, through: :course
 

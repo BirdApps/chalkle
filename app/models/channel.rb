@@ -36,8 +36,6 @@ class Channel < ActiveRecord::Base
   has_many :channel_teachers
   has_many :teaching_chalklers, through: :channel_teachers, source: :chalkler
   has_many  :admin_chalklers, through: :channel_admins, source: :chalkler
-  has_many  :interaction, as: :actor 
-  has_many  :interaction, as: :target
 
   belongs_to :channel_plan
 

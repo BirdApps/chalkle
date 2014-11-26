@@ -178,7 +178,6 @@ class CoursesController < ApplicationController
       @course = Course.find_by_id(params[:id]).try :decorate
       return not_found unless @course
       authorize @course
-      interacted_with @course
     end  
 
     def take_me_to

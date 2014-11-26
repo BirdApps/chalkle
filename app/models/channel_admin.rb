@@ -6,8 +6,6 @@ class ChannelAdmin < ActiveRecord::Base
   has_many   :courses, through: :channel
   belongs_to :channel
   belongs_to :chalkler
-  has_many   :interaction, as: :actor 
-  has_many   :interaction, as: :target
 
   validates_presence_of :channel_id
   validates_presence_of :email, message: 'Email cannot be blank'

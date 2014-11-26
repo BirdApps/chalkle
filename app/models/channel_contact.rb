@@ -3,8 +3,6 @@ class ChannelContact < ActiveRecord::Base
 
   belongs_to  :channel
   has_one     :chalkler
-  has_many    :interaction, as: :actor 
-  has_many    :interaction, as: :target
 
   validates_presence_of :channel
   validates_presence_of :from

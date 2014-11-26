@@ -5,8 +5,6 @@ class ChannelPlan < ActiveRecord::Base
   attr_accessible  *BASIC_ATTR, :as => :admin
   
   has_many :channels
-  has_many :interaction, as: :actor 
-  has_many :interaction, as: :target
 
   validates_uniqueness_of :name, allow_blank: false
   

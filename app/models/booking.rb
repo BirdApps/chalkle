@@ -21,8 +21,6 @@ class Booking < ActiveRecord::Base
   belongs_to  :chalkler
   belongs_to  :booking
   has_many    :bookings, as: :guests_bookings
-  has_many    :interaction, as: :actor 
-  has_many    :interaction, as: :target
   has_one     :payment
   has_one     :channel, through: :course
   has_one     :teacher, through: :course

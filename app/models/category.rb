@@ -7,8 +7,6 @@ class Category < ActiveRecord::Base
   has_many    :courses
   belongs_to  :parent, class_name: 'Category'
   has_many    :children, class_name: 'Category', foreign_key: :parent_id
-  has_many    :interaction, as: :actor 
-  has_many    :interaction, as: :target
 
   scope :primary, where(primary: true)
   scope :alphabetical, order(:name)
