@@ -1,7 +1,7 @@
 class Notification < ActiveRecord::Base
   
   attr_accessible *BASIC_ATTR = [
-    :type, :viewed_at, :actioned_at, :target, :href, :message, :image
+    :notification_type, :valid_from, :valid_till, :viewed_at, :actioned_at, :target, :href, :message, :image
   ]
 
   attr_accessible *BASIC_ATTR, :chalkler, :chalkler_id, :as => :admin
@@ -11,9 +11,11 @@ class Notification < ActiveRecord::Base
 
   validates_presence_of :message
   validates_presence_of :chalkler
-  validates_presence_of :type
+  validates_presence_of :notification_type
   validate :type_defined?
   validate :has_link?
+
+  scope :visible, where("valid_from < ?", DateTime.current).where("valid_till > ?", DateTime.current) 
 
   CHALKLE = "chalkle"
   DISCUSSION = "discussion"
@@ -30,13 +32,17 @@ class Notification < ActiveRecord::Base
     actioned_at.present?
   end
 
+  def visible?
+    valid_from < DateTime.current && valid_till > DateTime.current
+  end
+
   private
     def has_link?
       target || href
     end
 
     def type_defined?
-      Notification::TYPES.include? type
+      Notification::TYPES.include? notification_type
     end
 
 end

@@ -352,16 +352,18 @@ ActiveRecord::Schema.define(:version => 20141127020015) do
   add_index "lessons", ["start_at"], :name => "index_lessons_on_start_at"
 
   create_table "notifications", :force => true do |t|
-    t.string   "type"
+    t.string   "notification_type"
     t.datetime "viewed_at"
     t.datetime "actioned_at"
+    t.datetime "valid_from"
+    t.datetime "valid_till"
     t.integer  "target_id"
     t.string   "target_type"
     t.text     "href"
     t.text     "message"
     t.string   "image"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "omni_avatar_avatars", :force => true do |t|
