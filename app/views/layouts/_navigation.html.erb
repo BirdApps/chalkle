@@ -50,7 +50,7 @@
               <li class="dropdown notifications-drop">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                  <img src="/assets/icons/bell.png" />
-                 <%= current_user.new_notifications.count %>
+                 <%= current_user.new_notifications.count unless current_user.new_notifications.count == 0%>
                 </a>
                 <ul class="dropdown-menu pull-right" role="menu" style="background-color: <%= header_color if header_color %>" >
                   <% current_user.recent_notifications.each do |notification| %>
