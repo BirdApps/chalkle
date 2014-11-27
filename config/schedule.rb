@@ -7,11 +7,13 @@
 
 set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 
-
-
 every :hour do 
   rake "chalkle:expire_caches"
   rake "chalkle:complete_courses"
+end
+
+every 6.minutes do
+  rake "chalkle:verify_payments"
 end
 
 #run on the half hour to no conflict with complete_courses
