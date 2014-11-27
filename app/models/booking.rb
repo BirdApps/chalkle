@@ -220,6 +220,19 @@ class Booking < ActiveRecord::Base
     (status != 'yes') ? true : false
   end
 
+  def swipe_confirm!
+    if payment && payment.swipe_transaction_id
+      wrapper = SwipeWrapper.new
+      verify = wrapper.verify payment.swipe_transaction_id
+      if verify['data']['transaction_approved'] == "yes"
+        if payment.total >= cost
+          self.status = 'yes'
+          self.save
+        end
+      end
+    end
+  end
+
   def self.csv_for(bookings)
     fields_for_csv = %w{ id name email paid note_to_teacher }
     CSV.generate do |csv|
