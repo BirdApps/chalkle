@@ -127,5 +127,19 @@ begin
       end
     end
 
+    desc "Attempt to verify unverfied payments with swipe"
+    task "verify_payments" => :environment do
+      EventLog.log('verify_payments') do
+        bookings = Booking.unconfirmed
+        bookings.each do |booking|
+          if booking.swipe_confirm!
+            puts "Confirmed booking #{booking.id}"
+          else
+            puts "Unable to confirm booking #{booking.id}"
+          end
+        end
+      end
+    end
+
   end
 end
