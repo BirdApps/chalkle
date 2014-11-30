@@ -155,6 +155,7 @@ class ChannelsController < ApplicationController
     if !@channel
       @channel = Channel.new(name: "All Providers")
     end
+    interacted_with @channel
   end
 
   def redirect_meetup_channels

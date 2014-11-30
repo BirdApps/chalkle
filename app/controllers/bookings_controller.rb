@@ -21,11 +21,22 @@ class BookingsController < ApplicationController
   end
 
   def new
-    @channel = Course.find(params[:course_id]).channel #Find channel for hero
+    course = Course.find(params[:course_id])
+    @channel = course.channel #Find channel for hero
     @booking = Booking.new
     @booking.name = current_user.name unless @course.bookings_for(current_user).present?
     @page_subtitle = "Booking for"
     @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
+
+    interaction = {
+          actor:       current_chalkler,
+          target:      course,
+          action:      'new_booking',
+          controller:  'courses',
+          parameters:  params,
+          flag:        params[:flag]
+        }
+      Interaction.log interaction
   end
 
   def create
@@ -44,6 +55,16 @@ class BookingsController < ApplicationController
 
     # this should handle invalid @bookings before doing anything
     if @booking.save
+
+      interaction = {
+          actor:       current_chalkler,
+          target:      @booking.course,
+          action:      'create_booking',
+          controller:  'courses',
+          parameters:  params
+        }
+      Interaction.log interaction
+
       if @booking.free?
         BookingMailer.booking_confirmation(@booking).deliver!
         redirect_to @booking.course.path and return
@@ -163,6 +184,7 @@ class BookingsController < ApplicationController
   def load_booking
     @booking = current_user.bookings.find(params[:booking_id] || params[:id]).decorate
     redirect_to not_found and return if !@booking
+    interacted_with @booking
   end
 
   def redirect_on_paid
