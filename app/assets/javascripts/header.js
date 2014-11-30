@@ -71,7 +71,7 @@ $(function(){
 
   fade_filterbar = function(){
       var hardtop = $('.navbar-fixed-top').height();
-      var can_affect =  $(".filter-nav .dropdown.open").length == 0;
+      var can_affect =  $(".filter-nav .dropdown.open").length == 0 && $(".coloring .dropdown.open").length == 0;
       if(scrolltop() > 300 && can_affect) {
         filter_bar.css("top", ((-scrolltop()+300)/85*30) +hardtop);
         coloring.css( { "padding-top" : ((-scrolltop()+300)/85*10) + 10 +"px" } );
