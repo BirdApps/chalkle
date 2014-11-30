@@ -194,7 +194,7 @@ class Chalkler < ActiveRecord::Base
   end
   
   def notify(type, href, message, image = nil, valid_from = DateTime.current, valid_till = nil, target = nil)
-    image = image.url if image && image.url
+    image = image.url if image && image.respond_to?('url')
     notification = {
       notification_type:  type,
       href:               href,
