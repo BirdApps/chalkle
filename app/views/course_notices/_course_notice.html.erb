@@ -19,7 +19,7 @@
         <% if course_notice.edited? %>
           Edited
         <% end %>
-        <%= quick_date course_notice.updated_at %>
+        <%= quick_date_time course_notice.updated_at %>
       </span>
     </header>
   </div>
@@ -71,7 +71,7 @@
       </span>
       <span class="time white">     
         <%= link_to 'Undo', delete_course_course_notices_path(course_notice.course.id, course_notice.id) if policy(course_notice).destroy?   %>
-        <%= quick_date course_notice.updated_at %>
+        <%= quick_date_time course_notice.updated_at %>
       </span>
     </header>
     <br />
