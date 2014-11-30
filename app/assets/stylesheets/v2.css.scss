@@ -634,6 +634,34 @@ body.v2 {
               width: 11px;
             }
           }
+          ul{
+            min-width: 460px;
+            padding: 0;
+            .avatar64{
+              padding: 5px;
+              background: transparent;
+            }
+            li._notification{
+              height: auto !important;
+              min-height: 65px !important;
+              a {
+                padding:0 !important;
+                font-weight: 100;
+                font-size: 0.75em;
+                line-height: 1.3em !important;
+                overflow: hidden;
+              }
+            }
+            li._notification:hover{
+              background-color: rgba(255,255,255,0.1); 
+            }
+            li._notification.unactioned{
+              background-color: rgba(255,255,255,0.2);
+            }
+            li._notification.unactioned:hover{
+              background-color: rgba(255,255,255,0.3);
+            }
+          }
         }
         .dropdown-menu { 
           background: $primary-color;
@@ -870,18 +898,6 @@ body.v2 {
       }
     }
    
-    li._notification{
-      a {
-        padding:0 !important;
-        font-weight: 100;
-        font-size: 0.75em;
-        line-height: 1.3em !important;
-        overflow: hidden;
-      }
-    }
-    ._notification.unactioned{
-      background: #e2f2f2;
-    }
   }
   .header, .header_content_bg, .navbar-wrapper .navbar {
     background-size: cover;
