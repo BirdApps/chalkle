@@ -10,6 +10,7 @@ class Notification < ActiveRecord::Base
   belongs_to :target, polymorphic: true
 
   validates_presence_of :message
+  validates_presence_of :href
   validates_presence_of :chalkler
   validates_presence_of :notification_type
   validates_presence_of :valid_from
@@ -43,9 +44,6 @@ class Notification < ActiveRecord::Base
   end
 
   private
-    def has_link?
-      target || href
-    end
 
     def type_defined?
       Notification::TYPES.include? notification_type

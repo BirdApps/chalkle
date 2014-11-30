@@ -111,6 +111,8 @@ Chalkle::Application.routes.draw do
   end
 
   resources :chalklers, path: 'people', only: [:index, :show] do
+    resources :notifications, only: [:index, :show]
+
     collection do
       post 'exists'
     end
