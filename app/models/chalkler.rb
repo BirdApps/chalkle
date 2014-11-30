@@ -29,6 +29,7 @@ class Chalkler < ActiveRecord::Base
   has_many :channel_teachers
   has_many :bookings
   has_many :channel_admins
+  has_many :notifications
   has_many :payments, through: :bookings
   has_many :channels_teachable, through: :channel_teachers, source: :channel
   has_many :channels_adminable, through: :channel_admins, source: :channel
@@ -67,6 +68,15 @@ class Chalkler < ActiveRecord::Base
   def super?
     role == 'super'
   end
+
+  def new_notifications
+    notifications.visible.unseen
+  end
+
+  def recent_notifications
+    notifications.visible.order(:valid_from).limit(20)
+  end
+
 
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
@@ -180,10 +190,23 @@ class Chalkler < ActiveRecord::Base
   end
 
   def email_regions=(email_region)
-  assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
+    assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
   
-
+  def notify(type, href, message, image = nil, valid_from = DateTime.current, valid_till = nil, target = nil)
+    image = image.url if image && image.url
+    notification = {
+      notification_type:  type,
+      href:               href,
+      message:            message,
+      image:              image,
+      target:             target,
+      valid_from:         valid_from,
+      valid_till:         valid_till,
+      chalkler:           self
+    }
+    Notification.create notification, as: :admin
+  end
 
 
   private

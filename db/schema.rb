@@ -352,6 +352,7 @@ ActiveRecord::Schema.define(:version => 20141127020015) do
   add_index "lessons", ["start_at"], :name => "index_lessons_on_start_at"
 
   create_table "notifications", :force => true do |t|
+    t.integer  "chalkler_id"
     t.string   "notification_type"
     t.datetime "viewed_at"
     t.datetime "actioned_at"
@@ -361,7 +362,7 @@ ActiveRecord::Schema.define(:version => 20141127020015) do
     t.string   "target_type"
     t.text     "href"
     t.text     "message"
-    t.string   "image"
+    t.text     "image"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
@@ -493,5 +494,7 @@ ActiveRecord::Schema.define(:version => 20141127020015) do
   add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"
 
   add_foreign_key "courses", "regions", name: "courses_region_id_fk"
+
+  add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
 
 end
