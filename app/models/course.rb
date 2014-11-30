@@ -152,6 +152,7 @@ class Course < ActiveRecord::Base
 
   def complete!
     #TODO: run at midnight everynight on scope Course.needs_completing
+    check_end_at
     if end_at < DateTime.current
       if bookings.present?
         self.status = STATUS_4
