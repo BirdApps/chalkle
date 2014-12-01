@@ -112,6 +112,10 @@ $(function(){
     $('.notifications-drop ul').css('max-height', window.innerHeight - 140 );
   }
 
+  $('.notifications-drop .dropdown-toggle').click(function(){
+    $.get('/me/notifications/seen');
+  });
+
 
   background_size_for_header_images();
   fade_filterbar();
