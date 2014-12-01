@@ -69,14 +69,6 @@ class Chalkler < ActiveRecord::Base
     role == 'super'
   end
 
-  def new_notifications
-    notifications.visible.unseen
-  end
-
-  def recent_notifications
-    notifications.visible.order(:valid_from).limit(20)
-  end
-
 
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)

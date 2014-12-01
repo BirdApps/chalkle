@@ -465,7 +465,9 @@ body.v2 {
       margin: 0 -16px !important;
     }
   }
-  
+  .no-padding {
+    padding: 0 !important;
+  }
   .no-margin {
     margin:0 !important;
   }
@@ -602,6 +604,7 @@ body.v2 {
       }
       .coloring {
         padding: 10px 0;
+        transition: padding 0.5s ease;
         background: $primary-color;
         @media screen and (max-width: $col-sm) {
           padding: 10px 0 !important;
@@ -634,32 +637,41 @@ body.v2 {
               width: 11px;
             }
           }
-          ul{
-            min-width: 460px;
-            padding: 0;
-            .avatar64{
-              padding: 5px;
-              background: transparent;
-            }
-            li._notification{
-              height: auto !important;
-              min-height: 65px !important;
-              a {
-                padding:0 !important;
-                font-weight: 100;
-                font-size: 0.75em;
-                line-height: 1.3em !important;
-                overflow: hidden;
+          .dropdown-menu{
+            ul{
+              z-index: 100;
+              min-width: 460px;
+              transition: height 0.2s linear;
+              max-height: 400px;
+              overflow-y: scroll;
+              padding: 0;
+              .avatar64{
+                padding: 5px;
+                background: transparent;
               }
-            }
-            li._notification:hover{
-              background-color: rgba(255,255,255,0.1); 
-            }
-            li._notification.unactioned{
-              background-color: rgba(255,255,255,0.2);
-            }
-            li._notification.unactioned:hover{
-              background-color: rgba(255,255,255,0.3);
+              li._notification{
+                height: auto !important;
+                min-height: 65px !important;
+                a {
+                  padding:0 !important;
+                  font-weight: 100;
+                  font-size: 0.75em;
+                  line-height: 1.3em !important;
+                  overflow: hidden;
+                  .small{
+                    margin: 5px 0;
+                  }
+                }
+              }
+              li._notification:hover{
+                background-color: rgba(255,255,255,0.1); 
+              }
+              li._notification.unactioned{
+                background-color: rgba(255,255,255,0.2);
+              }
+              li._notification.unactioned:hover{
+                background-color: rgba(255,255,255,0.3);
+              }
             }
           }
         }
@@ -1738,6 +1750,15 @@ body.v2 {
           font-size: 16px;
           margin:0;
         }
+      }
+    }
+    .notifications{
+      li{
+        min-height: 65px;
+        padding: 5px;
+      }
+      li.unactioned{
+        background: rgba(0,0,0,0.05);
       }
     }
   }

@@ -69,6 +69,8 @@ Chalkle::Application.routes.draw do
   post '/bookings/lpn', as: :lpn
   namespace :me do
     root to: 'dashboard#index'
+    get '/notifications' => 'notifications#index', as: :notifications
+    get '/notification/:id' => 'notifications#show', as: :show_notification
     get '/bookings' => 'dashboard#bookings', as: :bookings
     get '/preferences' => 'preferences#show', as: :preferences
     put '/preferences' => 'preferences#save', as: :preferences
@@ -110,11 +112,7 @@ Chalkle::Application.routes.draw do
 
   resources :chalklers, path: 'people', only: [:index, :show] do
     collection do
-    #   get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: :meetup_email_settings
-       post 'exists'
-    #   delete '/preferences/destroy_chalkler/:id' => 'preferences#destroy', as: :delete
-    #   get  '/data_collection/:action', as: 'data_collection', controller: :data_collection_form
-    #   post '/data_collection/:action', as: 'data_collection_update', controller: :data_collection_form
+      post 'exists'
     end
   end
 

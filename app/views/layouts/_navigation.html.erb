@@ -56,16 +56,22 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                  <span class="hidden-xs">
                    <img src="/assets/icons/bell.png" />
-                   <%= current_user.new_notifications.count unless current_user.new_notifications.count == 0 %>
+                   <%= current_user.notifications.unseen.count unless current_user.notifications.unseen.count == 0 %>
                  </span>
                  <span class="visible-xs">
                     Notifications
-                   <%= "(#{current_user.new_notifications.count})" unless current_user.new_notifications.count == 0 %>
+                   <%= "(#{current_user.notifications.unseen.count})" unless current_user.notifications.unseen.count == 0 %>
                  </span>
                 </a>
-                <ul class="dropdown-menu pull-right" role="menu" style="background-color: <%= header_color if header_color %>" >
-                  <%= render current_user.recent_notifications %>
-                </ul>
+                <div class="dropdown-menu pull-right no-padding" role="menu" style="background-color: <%= header_color if header_color %>" >
+                  <ul class="flush">
+                    <%= render current_user.notifications.recent %>
+                  </ul>
+                  <div class="divider flush"></div>
+                  <div class="small center">
+                      <%= link_to "See more", me_notifications_path  %>
+                  </div>
+                </div>
               </li>
 
             <% else %>
