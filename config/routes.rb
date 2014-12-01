@@ -70,6 +70,7 @@ Chalkle::Application.routes.draw do
   namespace :me do
     root to: 'dashboard#index'
     get '/notifications' => 'notifications#index', as: :notifications
+    get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
     get '/notification/:id' => 'notifications#show', as: :show_notification
     get '/bookings' => 'dashboard#bookings', as: :bookings
     get '/preferences' => 'preferences#show', as: :preferences

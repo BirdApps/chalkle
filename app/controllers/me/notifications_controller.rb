@@ -11,6 +11,11 @@ class Me::NotificationsController < Me::BaseController
     redirect_to @notification.href
   end
 
+  def seen
+    render json: current_user.notifications.update_all(viewed_at: DateTime.current)
+
+  end
+
   private
     def load_notification
       @notification = Notification.find_by_id(params[:id])
