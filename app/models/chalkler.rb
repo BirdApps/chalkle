@@ -11,8 +11,7 @@ class Chalkler < ActiveRecord::Base
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable,
-    :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
   attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :avatar ]
   attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :role, :as => :admin
@@ -44,6 +43,7 @@ class Chalkler < ActiveRecord::Base
   end
   has_many :course_notices
   has_many :courses_teaching, through: :channel_teachers, source: :courses
+  has_one  :notification_preferences
 
   after_create :create_channel_associations
 
@@ -185,8 +185,9 @@ class Chalkler < ActiveRecord::Base
     assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
   
-  def notify(type, href, message, image = nil, valid_from = DateTime.current, valid_till = nil, target = nil)
+  def notify(type, href, message, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil, target = nil)
     image = image.url if image && image.respond_to?('url')
+    image = Notification.default_image(type) unless image
     notification = {
       notification_type:  type,
       href:               href,

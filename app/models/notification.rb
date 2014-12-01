@@ -15,7 +15,6 @@ class Notification < ActiveRecord::Base
   validates_presence_of :notification_type
   validates_presence_of :valid_from
   validate :type_defined?
-  validate :has_link?
 
   scope :visible, lambda{ where("valid_from < ?", DateTime.current).where("valid_till > ? OR valid_till IS NULL", DateTime.current) }
   scope :unactioned, visible.where(actioned_at: nil)
@@ -41,6 +40,17 @@ class Notification < ActiveRecord::Base
 
   def visible?
     (valid_from < DateTime.current ) && ( valid_till == nil|| valid_till > DateTime.current)
+  end
+
+  class << self
+    def default_image(type)
+      case type
+      when CHALKLE
+        '/assets/social-logo.jpg'
+      else
+        '/assets/social-logo.jpg'
+      end
+    end
   end
 
   private
