@@ -128,7 +128,7 @@ class CoursesController < ApplicationController
 
   def confirm_cancel
     authorize @course
-    @course.cancel!(params[:course][:cancelled_reason])
+    @course.cancel!(current_chalkler, params[:course][:cancelled_reason])
     return redirect_to @course.path
   end
 

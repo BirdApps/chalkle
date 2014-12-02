@@ -133,7 +133,7 @@ class BookingsController < ApplicationController
 
   def confirm_cancel
     authorize @booking
-    @booking.cancel!(params[:booking][:cancelled_reason])
+    @booking.cancel!(current_chalkler, params[:booking][:cancelled_reason])
     return redirect_to @booking.course.path
   end
 

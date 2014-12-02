@@ -22,6 +22,7 @@ class Course < ActiveRecord::Base
   STATUS_2 = "Cancelled"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
+  PUBLIC_STATUSES = [STATUS_1, STATUS_2, STATUS_4]
 
   belongs_to :repeat_course
   belongs_to :region
@@ -140,12 +141,12 @@ class Course < ActiveRecord::Base
     cost > 0
   end
 
-  def cancel!(reason = nil)
+  def cancel!(cancelling_chalkler, reason = nil)
     #TODO: notify chalklers
     self.status = STATUS_2
     self.cancelled_reason = reason if reason
     bookings.each do |booking|
-      booking.cancel!(reason, true)
+      booking.cancel!(cancelling_chalkler, reason, true)
     end
     save
   end

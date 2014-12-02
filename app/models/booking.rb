@@ -87,17 +87,21 @@ class Booking < ActiveRecord::Base
     status == STATUS_1
   end
 
-  def cancel!(reason = nil, override_refund = false)
+  def cancel!(cancelling_chalkler, reason = nil, override_refund = false)
     if status == STATUS_1
+      refunding = false
       self.status = 'no'
       self.cancelled_reason = reason if reason
       if refundable? || override_refund
         if paid? && paid > 0
+          refunding = true
           self.status = 'refund_pending'
         end
       end
+      
       save
-      BookingMailer.booking_cancelled(self).deliver!
+
+      self.chalkler.notify.booking_cancelled(self, refunding, cancelling_chalkler)
     end
   end
 
