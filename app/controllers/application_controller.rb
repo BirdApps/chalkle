@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
 
     def check_course_visibility
       unless !@course || policy(@course).read?
-        unless @course.published?
+        unless Course::PUBLIC_STATUSES.include? @course.status
           flash[:notice] = "This class is no longer available."
           redirect_to :root
           return false
