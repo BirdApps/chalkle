@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141201030613) do
+ActiveRecord::Schema.define(:version => 20141201222332) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -353,8 +353,9 @@ ActiveRecord::Schema.define(:version => 20141201030613) do
 
   create_table "notification_preferences", :force => true do |t|
     t.integer  "chalkler_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "from_chalkler_id"
   end
 
   create_table "notifications", :force => true do |t|
@@ -502,6 +503,7 @@ ActiveRecord::Schema.define(:version => 20141201030613) do
   add_foreign_key "courses", "regions", name: "courses_region_id_fk"
 
   add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_chalkler_id_fk"
+  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_from_chalkler_id_fk"
 
   add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
 

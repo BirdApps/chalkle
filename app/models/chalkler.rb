@@ -29,6 +29,7 @@ class Chalkler < ActiveRecord::Base
   has_many :bookings
   has_many :channel_admins
   has_many :notifications
+  has_many :sent_notifications, class_name: 'Notification', foreign_key: :from_chalkler_id
   has_many :payments, through: :bookings
   has_many :channels_teachable, through: :channel_teachers, source: :channel
   has_many :channels_adminable, through: :channel_admins, source: :channel
@@ -43,7 +44,7 @@ class Chalkler < ActiveRecord::Base
   end
   has_many :course_notices
   has_many :courses_teaching, through: :channel_teachers, source: :courses
-  has_one  :notification_preferences
+  has_one  :notification_preference
 
   after_create :create_channel_associations
 
@@ -69,6 +70,12 @@ class Chalkler < ActiveRecord::Base
     role == 'super'
   end
 
+  def notify 
+    unless notification_preference
+      self.notification_preference = NotificationPreference.create chalkler: self
+    end
+    notification_preference
+  end
 
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
@@ -185,9 +192,12 @@ class Chalkler < ActiveRecord::Base
     assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
   
-  def notify(type, href, message, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil, target = nil)
+  def send_notification(type, href, message, from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil, target = nil)
+    
+    image = from.avatar if image.blank? && from.present? && from.respond_to?('avatar')
     image = image.url if image && image.respond_to?('url')
     image = Notification.default_image(type) unless image
+
     notification = {
       notification_type:  type,
       href:               href,

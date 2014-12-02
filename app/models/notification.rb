@@ -1,13 +1,14 @@
 class Notification < ActiveRecord::Base
 
   attr_accessible *BASIC_ATTR = [
-    :notification_type, :valid_from, :valid_till, :viewed_at, :actioned_at, :target, :href, :message, :image
+    :notification_type, :valid_from, :valid_till, :viewed_at, :actioned_at, :target, :href, :message, :image, :from_chalkler, :from_chalkler_id
   ]
 
   attr_accessible *BASIC_ATTR, :chalkler, :chalkler_id, :as => :admin
 
   belongs_to :chalkler
   belongs_to :target, polymorphic: true
+  belongs_to :from_chalkler, class_name: 'Chalkler'
 
   validates_presence_of :message
   validates_presence_of :href
