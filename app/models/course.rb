@@ -272,11 +272,7 @@ class Course < ActiveRecord::Base
   end
 
   def publish!
-    if @course.start_at > DateTime.current
-      self.visible = true
-      self.status = "Published"
-      self.save
-    end
+    save if publish
   end
 
   def publish
