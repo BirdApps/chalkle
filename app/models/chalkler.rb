@@ -211,26 +211,29 @@ class Chalkler < ActiveRecord::Base
     Notification.create notification, as: :admin
   end
 
+  def first_name
+    name.split(' ')[0]
+  end
 
   private
 
-  # for Chalklers created outside of meetup
-  def set_reset_password_token
-    return unless self.set_password_token
-    self.password = Chalkler.reset_password_token
-    self.reset_password_token = Chalkler.reset_password_token
-    self.reset_password_sent_at = Time.current
-  end
-
-  def create_channel_associations  
-    return unless join_channels.is_a?(Array)
-    join_channels.reject(&:empty?).each do |channel_id|
-      if Subscription.where(chalkler_id: id, channel_id: channel_id).count == 0
-        channels << Channel.find(channel_id)
-      end
+    # for Chalklers created outside of meetup
+    def set_reset_password_token
+      return unless self.set_password_token
+      self.password = Chalkler.reset_password_token
+      self.reset_password_token = Chalkler.reset_password_token
+      self.reset_password_sent_at = Time.current
     end
-    save!
-  end
+
+    def create_channel_associations  
+      return unless join_channels.is_a?(Array)
+      join_channels.reject(&:empty?).each do |channel_id|
+        if Subscription.where(chalkler_id: id, channel_id: channel_id).count == 0
+          channels << Channel.find(channel_id)
+        end
+      end
+      save!
+    end
 
 
 end

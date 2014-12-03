@@ -13,7 +13,7 @@ class NotificationPreference < ActiveRecord::Base
 
   def welcome_chalkler
     #3
-    chalkler.send_notification Notification::CHALKLE, me_preferences_path, "**Welcome!** It's great to have you onboard. When you are ready, pop over to your **Preferences** page to complete your profile"
+    chalkler.send_notification Notification::CHALKLE, me_preferences_path, I18n.t('notify.chalkler.welcome', name: chalkler.first_name)
 
     ChalklerMailer.welcome(chalkler).deliver!
   end
@@ -30,6 +30,7 @@ class NotificationPreference < ActiveRecord::Base
   def booking_cancelled(booking, refunding, cancelling_chalkler)
     #notification chalkler's booking was cancelled
     unless chalkler == cancelling_chalkler
+
 
       message = if booking.name.downcase == chalkler.name.downcase
         "Your booking "
