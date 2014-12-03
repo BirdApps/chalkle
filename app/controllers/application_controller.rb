@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotDefinedError, with: :not_found
   
   layout 'layouts/application'
+
+  before_filter :set_locale
+
   before_filter :load_region
   before_filter :load_channel
   before_filter :load_category
@@ -244,5 +247,14 @@ class ApplicationController < ActionController::Base
     def entity_events
       auto_log = true
       EntityEvents.record(params, current_chalkler, auto_log)
+    end
+
+    def set_locale
+      I18n.locale = params[:locale] || extract_locale_from_tld || I18n.default_locale
+    end
+
+    def extract_locale_from_tld
+      parsed_locale = request.host.split('.').last
+      I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
     end
 end

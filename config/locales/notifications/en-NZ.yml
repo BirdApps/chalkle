@@ -1,0 +1,4 @@
+en-NZ:
+  notify:
+    chalkler:
+      welcome: "**Welcome %{name}!** It's great to have you onboard. When you are ready, pop over to your **Preferences** page to complete your profile"

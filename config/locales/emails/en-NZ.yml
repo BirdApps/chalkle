@@ -1,0 +1,77 @@
+en-NZ:
+  email:
+    welcome:
+      subject: "%{name} welcome to a whole new world of learning!"
+      body:
+        html: |
+          # Hi %{name},
+
+          Welcome to [Chalkle](http://chalkle.com)!
+          %{activation}
+
+          It’s great you've joined! We trust you've found a class or two that interests you. Here is a quick rundown on making the most of Chalkle.
+
+          ## Learn about new classes
+          Now that you're part of Chalkle we can keep you up to date with the latest exciting classes. You decide how often you’d like to hear from us by adjusting your email settings [here](%{url}). 
+
+          ## Connect with our great organisational partners. 
+          We work with great organisational partners to deliver classes. Browse the organisations in your area and if you have any questions about a class, contact the provider or teacher directly as they will have all the information you need. 
+
+          ## Spread the word! 
+          It's our job to find great learning opportunities for you so we're always on the lookout for more great teachers or class ideas. Don't forget to spread the word on [Facebook](http://www.facebook.com/chalkle) and follow us
+          on [Twitter](https://twitter.com/ChalkleNZ). 
+
+          If you have any suggestions for things you’d love to learn, please don't hesitate to get in touch :)
+
+          That’s it. Nice and easy! 
+          Happy Learning! 
+
+          **Silvia & The Chalkle Team**
+        text: |
+          %{name}, Welcome to Chalkle!
+
+          Welcome to Chalkle.com!
+          %{activation}
+
+          It’s great to have you onboard. We trust you've found a class or two that interests you. 
+
+          Here is a quick rundown on making the most of Chalkle
+
+          LEARN ABOUT NEW CLASSES
+          Now that you're part of Chalkle we can keep you up to date with the latest exciting classes. You decide how often you’d like to hear from us by adjusting your email settings here.
+
+          CONNECT WITH OUR GREAT COURSE PROVIDERS
+          We work with great organisational partners to deliver classes, browse the organisations in your area and if you have any questions about a class, contact the channel operator or teacher directly as they will have all the information you need.
+
+          SPREAD THE WORD!
+          It's our job to find great learning opportunities for you so we're always on the lookout for more great teachers or class ideas. Don't forget to spread the word and if you have any suggestions for things you’d love to learn, please don't hesitate to get in touch :)
+
+          That’s it. Nice and easy!
+          Happy Learning!
+
+          Silva & the Chalkle team
+    activation: 
+      text: |
+        ========================================
+         Activate your account
+
+        Your account does not yet have a password. To activate your account simply create a password by clicking on the link below:
+
+        %{url}?initial=true&reset_password_token=%{token}"
+
+        ========================================
+      html: "Get started by [setting a password](%{url}?initial=true&reset_password_token=%{token})"
+    settings:
+      text: |
+        ==========================================
+
+        At Chalkle we’ve adopted a spam free diet, but change your email settings or unsubscribe here. 
+        %{settings_url}
+
+        %{root_url}
+        Facebook - http://facebook.com/Chalkle
+        Twitter - http://twitter.com/ChalkleNZ
+
+        What do you think of this email? Let us know at
+        learn@chalkle.com
+      default: "At Chalkle we’ve adopted a spam free diet, but change your [email settings](%{url}) here."
