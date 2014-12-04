@@ -2,6 +2,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  chalkle: 'Chalkle'
+  hello: 'Hello'
   time:
     formats:
       long_without_year: ! '%l:%M%P %A %-d %B'

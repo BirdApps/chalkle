@@ -4,7 +4,6 @@ en-NZ:
       subject: "%{name} welcome to a whole new world of learning!"
       body:
         html: |
-          # Hi %{name},
 
           Welcome to [Chalkle](http://chalkle.com)!
           %{activation}
@@ -23,14 +22,13 @@ en-NZ:
 
           If you have any suggestions for things you’d love to learn, please don't hesitate to get in touch :)
 
-          That’s it. Nice and easy! 
-          Happy Learning! 
+          That’s it. Nice and easy!
+          Happy Learning!
 
           **Silvia & The Chalkle Team**
         text: |
-          %{name}, Welcome to Chalkle!
+          Welcome to Chalkle!
 
-          Welcome to Chalkle.com!
           %{activation}
 
           It’s great to have you onboard. We trust you've found a class or two that interests you. 
@@ -61,17 +59,3 @@ en-NZ:
 
         ========================================
       html: "Get started by [setting a password](%{url}?initial=true&reset_password_token=%{token})"
-    settings:
-      text: |
-        ==========================================
-
-        At Chalkle we’ve adopted a spam free diet, but change your email settings or unsubscribe here. 
-        %{settings_url}
-
-        %{root_url}
-        Facebook - http://facebook.com/Chalkle
-        Twitter - http://twitter.com/ChalkleNZ
-
-        What do you think of this email? Let us know at
-        learn@chalkle.com
-      default: "At Chalkle we’ve adopted a spam free diet, but change your [email settings](%{url}) here."

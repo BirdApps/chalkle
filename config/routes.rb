@@ -18,6 +18,8 @@ Chalkle::Application.routes.draw do
 
   get '/terms' => 'terms#chalkler', as: :terms
 
+  get '/privacy' => 'terms#privacy', as: :privacy
+
   get '/terms/provider' => 'terms#provider', as: :provider_terms
 
   get '/terms/teacher' => 'terms#teacher', as: :teacher_terms

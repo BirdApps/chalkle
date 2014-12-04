@@ -5,6 +5,10 @@ class TermsController < ApplicationController
     @page_title = 'Terms of Use for Chalklers'
   end
 
+  def privacy
+    chalkler
+  end
+
   def provider
     load_channel
     if @channel.id.blank? && current_user.authenticated?
