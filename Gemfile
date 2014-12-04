@@ -10,7 +10,7 @@ gem 'pg', '~> 0.17.1'
 gem 'unicorn-rails'
 gem 'unicorn-worker-killer'
 
-gem 'entity_events'
+gem 'entity_events', github: 'Jdbdean/entity_events', ref: 'HEAD'
 
 # Authentication
 gem 'devise',           '~> 2.2.4'
@@ -66,6 +66,7 @@ gem 'bootstrap-datepicker-rails'
 
 #attachments
 gem 'carrierwave'
+gem 'carrierwave-imageoptimizer'
 gem 'rmagick', require: false
 gem 'unf', require: false       # optional dependency used by fog for unicode strings
 gem 'fog', ">= 1.3.1", require: false
