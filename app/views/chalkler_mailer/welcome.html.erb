@@ -1,0 +1,7 @@
+<markdown>
+  <%= 
+    activate_text = @chalkler.reset_password_token? ? t("email.chalkler.activation.html", url: edit_chalkler_password_url, token: @chalkler.reset_password_token) : ""
+    
+     t("email.chalkler.welcome.body.html", name: @chalkler.first_name, activation: activate_text, url: me_preferences_url).to_html
+  %>
+</markdown>

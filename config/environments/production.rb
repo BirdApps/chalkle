@@ -62,22 +62,22 @@ Chalkle::Application.configure do
   config.active_support.deprecation = :notify
 
   # Google analytics tracking code
-  GA.tracker = "UA-37364156-3"
+  TRACKER = "UA-37364156-3"
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.action_controller.default_url_options = { :host => "chalkle.com", :port => 80 }
+  config.action_controller.default_url_options = { :host => "chalkle.com" }
 
-  config.action_mailer.default_url_options = { host: "chalkle.com", :port => 80 }
+  config.action_mailer.default_url_options = { host: "chalkle.com" }
 
   ActionMailer::Base.smtp_settings = {
-    :address => "smtp.sendgrid.net",
-    :port => 25,
+    :address => "smtp.mandrillapp.com",
+    :port => 587,
     :domain => "chalkle.com",
     :authentication => :plain,
-    :user_name => "chalkle",
-    :password => "dZAmm26aQsXmHU"
+    :user_name => "silvia@chalkle.com",
+    :password => "QwfU_8o1hDmLc8eGo2xSmw"
   }
 end

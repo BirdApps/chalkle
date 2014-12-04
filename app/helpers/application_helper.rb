@@ -1,6 +1,9 @@
 # encoding: UTF-8
 module ApplicationHelper
   
+  def money_formatted(cost)
+    sprintf('%.2f', cost || 0)
+  end
 
   def title(page_title)
     content_for :title, "#{page_title} | chalkle°"
@@ -28,6 +31,10 @@ module ApplicationHelper
 
   def typekit_includes
     render 'layouts/typekit_includes' unless Rails.env.development?
+  end
+
+  def analytics_init
+    render 'layouts/google_tracker'
   end
 
   def favicons

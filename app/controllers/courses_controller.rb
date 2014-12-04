@@ -33,11 +33,7 @@ class CoursesController < ApplicationController
     end
 
     @page_title = "All Classes"
-    @courses = current_user.super? ? Course.scoped : current_user.all_teaching
-
-    if params[:search].present?
-      @courses = Course.search params[:search], @courses
-    end
+    @courses = current_user.super? ? mine_filter(Course.order(:start_at)).uniq : (mine_filter(current_user.courses_adminable)+mine_filter(current_user.courses_teaching)).sort_by(&:start_at).uniq
   end
 
   def teach
@@ -79,11 +75,6 @@ class CoursesController < ApplicationController
     render 'learn'
   end
 
-  def tiny_url
-    return not_found if !@course
-    return redirect_to @course.path
-  end
-
   def new
     @teaching = Teaching.new current_user
   end
@@ -93,7 +84,7 @@ class CoursesController < ApplicationController
     if params[:teaching_agreeterms] == 'on'
       new_course_ids =  @teaching.submit params[:teaching]
     end
-    if new_course_ids
+    if new_course_ids && new_course_ids[0] != nil
       redirect_to course_path new_course_ids[0]
     else
       render 'new'
@@ -113,7 +104,14 @@ class CoursesController < ApplicationController
     if params[:teaching_agreeterms] == 'on'
       success = @teaching.update @course, params[:teaching]
     end
+
     if success
+      #recalculate booking fees in case they changed the provider/teacher money split
+      @course.bookings.each do |booking|
+        booking.apply_fees
+        booking.save
+      end
+
       redirect_to course_path @course.id
     else
       @course.errors.each do |attribute,error|
@@ -146,7 +144,7 @@ class CoursesController < ApplicationController
     if new_status == 'publish_series'
       new_status = 'Published'
       course.repeat_course.courses.each do |series_course|
-        series_course.publish! if series_course.status == 'Unreviewed'
+        series_course.publish! if series_course.status == 'Draft'
       end
     end
     course.status = new_status
@@ -176,11 +174,17 @@ class CoursesController < ApplicationController
 
   private
 
+    def load_course
+      @course = Course.find_by_id(params[:id])
+      return not_found unless @course
+      authorize @course
+    end  
+
     def take_me_to
       if params[:search].present?
         try_id = params[:search] 
-        course = Course.find_by_id try_id
-        return redirect_to course.path if course.present?
+        course = Course.find_by_id try_id if try_id =~ /^\d+$/
+        return redirect_to course.path if course.present? && policy(course).read?
       end
     end
 
@@ -206,74 +210,21 @@ class CoursesController < ApplicationController
       courses
     end
 
-    def load_course
-      @course = Course.find_by_id(params[:id]).try :decorate
-      return not_found if !@course
-      authorize @course
-      ActiveRecord::RecordNotFound if @course.nil?
-    end  
-
-    def load_geography_override
-      load_country
-      load_region
-    end
-
-    def load_region
-      if region_name
-        @region = Region.find_by_url_name region_name.downcase
+    def mine_filter(courses)
+    
+      if params[:start].present? || params[:end].present?
+        range_start = params[:start].to_datetime.in_time_zone(current_user.timezone) if params[:start].present?
+        range_end = params[:end].to_datetime.in_time_zone(current_user.timezone) if params[:end].present?
+        range_start = range_start || DateTime.new(2000,1,1)
+        range_end = range_end || DateTime.new(2100,1,1)
+        courses = courses.start_at_between(range_start, range_end)
       end
-      if @region.nil?
-        @region = Region.new name: "New Zealand", courses: Course.upcoming
-      end
-    end
 
-    def load_category
-      if category_name
-        @category = Category.find_by_url_name category_name.downcase
+      if params[:search].present?
+        courses = Course.search params[:search], courses
       end
-      if @category.nil?
-        @category = Category.new name: 'All Topics'
-      end
-    end
 
-    def load_channel
-      if !@channel
-        if channel_name 
-          @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
-        else
-          @channel = Channel.new(name: "All Providers")
-        end
-      end
-    end
-
-    def check_course_visibility
-      unless !@course || policy(@course).read?
-        unless @course.published?
-          flash[:notice] = "This class is no longer available."
-          redirect_to :root
-          return false
-        end
-      end
-    end
-
-    def courses_for_time
-      @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
-    end
-
-    def get_current_week(start_date = Date.current)
-      if params[:day]
-        begin
-          Week.containing(Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i))
-        rescue
-          Week.containing(start_date)
-        end
-      else
-        Week.containing(start_date)
-      end
-    end
-
-    def decorate(courses)
-      CourseDecorator.decorate_collection(courses)
+      courses
     end
 
 end

@@ -1,6 +1,5 @@
 class BookingDecorator < Draper::Decorator
   delegate_all
-  decorates_association :course
   decorates_association :chalkler
 
   def formatted_price

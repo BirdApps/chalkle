@@ -59,7 +59,7 @@ class BookingsController < ApplicationController
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
     else
-      @course = Course.find(params[:course_id]).decorate
+      @course = Course.find(params[:course_id])
       flash[:notice] = 'Could not create booking at this time'
       render 'new'
     end
@@ -112,7 +112,7 @@ class BookingsController < ApplicationController
 
   def edit
     return redirect_edit_on_paid(@booking) if @booking.paid?
-    @course = @booking.course.decorate
+    @course = @booking.course
   end
 
   def update
@@ -120,7 +120,7 @@ class BookingsController < ApplicationController
     if @booking.save
       redirect_to booking_path @booking
     else
-      @course = @booking.course.decorate
+      @course = @booking.course
       render action: 'edit'
     end
   end
@@ -133,20 +133,20 @@ class BookingsController < ApplicationController
 
   def confirm_cancel
     authorize @booking
-    @booking.cancel!(params[:booking][:cancelled_reason])
+    @booking.cancel!(current_chalkler, params[:booking][:cancelled_reason])
     return redirect_to @booking.course.path
   end
 
   def class_available
     valid = true
     if params[:course_id].present?
-      @course = Course.find(params[:course_id]).decorate
+      @course = Course.find(params[:course_id])
     elsif @booking.present?
       @course = @booking.course
     else
       return
     end
-    unless policy(@course).write?
+    unless policy(@course).write?(true)
       unless @course.published?
         return redirect_to :back, notice: "This class is no longer available."
       end

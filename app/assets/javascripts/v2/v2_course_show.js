@@ -45,3 +45,34 @@ $(function(){
     }
   }
 });
+
+$(function(){
+
+  $('.notice-image').each(function(){
+    var self = this;
+    var options = {
+      html: true,
+      content: function(){ return $(this).html() }
+    }
+    $(self).popover(options);
+    $(self).on('shown.bs.popover', function(){
+      $('.popover-content').click(function(e){
+        $(self).click();
+      });
+    });
+  });
+
+
+  $('.edit-btn').click(function(){
+    $('.edit-notice').hide();
+    $('.notice-body').show();
+    var target = '#'+$(this).data('target')
+    $(target).find('.edit-notice').show();
+    $(target).find('.notice-body').hide();
+  });
+  $('.cancel-edit-btn').click(function(){
+    var target = '#'+$(this).data('target')
+    $(target).find('.notice-body').show();
+    $(target).find('.edit-notice').hide();
+  });
+});

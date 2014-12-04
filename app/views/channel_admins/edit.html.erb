@@ -12,10 +12,10 @@
         Details are read only as it is set on the teacher's <%= link_to 'Chalkle account', chalkler_path(@channel_admin.chalkler.id) %>
       </p>
       <%= f.input :name, label: "Name", input_html: { readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
-      <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
+      <%= f.input :email, label: "Admin's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
 
     <% else %>
-      <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
+      <%= f.input :email, label: "Admin's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
       
       <label class="vertical-borders exists-success" style="display:none">
         Great, that person is already registered on Chalkle. <br /> We'll add them as a teacher for the provider <%= @channel.name %>

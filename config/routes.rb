@@ -18,6 +18,8 @@ Chalkle::Application.routes.draw do
 
   get '/terms' => 'terms#chalkler', as: :terms
 
+  get '/privacy' => 'terms#privacy', as: :privacy
+
   get '/terms/provider' => 'terms#provider', as: :provider_terms
 
   get '/terms/teacher' => 'terms#teacher', as: :teacher_terms
@@ -32,12 +34,23 @@ Chalkle::Application.routes.draw do
   match '/teach' => 'courses#teach'
   match '/learn' => 'courses#learn'
 
+
   resources :courses, path: 'classes' do
-    #resources :notices
+
     member do
       get 'cancel', to: 'courses#cancel', as: :cancel
+      get 'clone'
       put 'cancel', to: 'courses#confirm_cancel', as: :cancel
+      put 'change_status', to: 'courses#change_status', as: :change_status
     end
+
+    resource :course_notices, path: 'discussion' do 
+      get 'show/:id', to: 'course_notices#show', as: :show
+      put 'update/:id', to: 'course_notices#update', as: :update
+      post 'create', to: 'course_notices#create', as: :create
+      get 'delete/:id', to: 'course_notices#destroy', as: :delete
+    end
+    
     resources :bookings do
       get :payment_callback
       collection { get 'csv' }
@@ -46,20 +59,21 @@ Chalkle::Application.routes.draw do
         put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
       end
     end
-    member do
-      get 'clone'
-      put 'change_status', to: 'courses#change_status', as: :change_status
-    end
+
     collection do
       get 'calculate_cost'
       get 'mine'
     end
+    
   end
 
-  get '/c/:id' => 'courses#tiny_url', as: :course_tiny
+  get '/c/:id' => 'courses#show', as: :course_tiny
   post '/bookings/lpn', as: :lpn
   namespace :me do
     root to: 'dashboard#index'
+    get '/notifications' => 'notifications#index', as: :notifications
+    get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
+    get '/notification/:id' => 'notifications#show', as: :show_notification
     get '/bookings' => 'dashboard#bookings', as: :bookings
     get '/preferences' => 'preferences#show', as: :preferences
     put '/preferences' => 'preferences#save', as: :preferences
@@ -100,12 +114,10 @@ Chalkle::Application.routes.draw do
   end
 
   resources :chalklers, path: 'people', only: [:index, :show] do
+    resources :notifications, only: [:index, :show]
+
     collection do
-    #   get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: :meetup_email_settings
-       post 'exists'
-    #   delete '/preferences/destroy_chalkler/:id' => 'preferences#destroy', as: :delete
-    #   get  '/data_collection/:action', as: 'data_collection', controller: :data_collection_form
-    #   post '/data_collection/:action', as: 'data_collection_update', controller: :data_collection_form
+      post 'exists'
     end
   end
 
@@ -158,7 +170,7 @@ Chalkle::Application.routes.draw do
   get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
   post ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
   get ':channel_url_name/followers', to: 'channels#followers', as: :channel_followers
-    get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
+  get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
   get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :channel_course
   get ':channel_url_name', to: 'channels#show', as: :channel
 

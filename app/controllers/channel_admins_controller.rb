@@ -15,17 +15,22 @@ class ChannelAdminsController < ApplicationController
 
     if @channel_admin.email.blank?
       add_response_notice "You must supply an email"
-    elsif @channel_admin.channel.admin_chalklers.find_by_email(@channel_admin.email).present? || @channel_admin.channel.channel_admins.find_by_pseudo_chalkler_email(@channel_admin.email).present?
-      add_response_notice "That person is already an admin on your channel"
     else
-      result = @channel_admin.save
+      exists = @channel_admin.channel.channel_admins.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @channel_admin.email.strip.downcase]).present?
+      exists = @channel_admin.channel.admin_chalklers.find(:first, conditions: ["lower(email) = ?", @channel_admin.email.strip.downcase]).present?
+
+     if exists
+        add_response_notice "That person is already an admin on your channel"
+      else
+        result = @channel_admin.save
+      end
     end
 
     if result
       redirect_to edit_channel_admin_path(@channel_admin.channel.url_name, @channel_admin.id), notice: 'Admin created successfully'
     else
-      @channel_admin.errors.each do |attr,error|
-        add_response_notice error
+      @channel_admin.errors.each do |attribute,error|
+        add_response_notice attribute.to_s+" "+error
       end
       @page_subtitle = "Create a New"
       @page_title = "Teacher"
@@ -53,8 +58,8 @@ class ChannelAdminsController < ApplicationController
       if result
         redirect_to edit_channel_admin_path(@channel_admin.channel.url_name, @channel_admin.id), notice: 'Email updated successfully'
       else
-        @channel_admin.errors.each do |attr,error|
-          add_response_notice error
+        @channel_admin.errors.each do |attribute,error|
+        add_response_notice attribute.to_s+" "+error
         end
         render 'edit'
       end

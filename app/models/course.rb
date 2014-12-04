@@ -18,10 +18,11 @@ class Course < ActiveRecord::Base
   #Course statuses
   STATUS_5 = "Processing"
   STATUS_4 = "Completed"
-  STATUS_3 = "Unreviewed"
+  STATUS_3 = "Draft"
   STATUS_2 = "Cancelled"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
+  PUBLIC_STATUSES = [STATUS_1, STATUS_2, STATUS_4]
 
   belongs_to :repeat_course
   belongs_to :region
@@ -32,12 +33,12 @@ class Course < ActiveRecord::Base
   has_many  :bookings
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
-  has_one   :course_image, :dependent => :destroy, :inverse_of => :course
   has_many  :bookings
   has_many  :chalklers, through: :bookings
   has_many  :payments, through: :bookings
-
-
+  has_many  :notices, class_name: 'CourseNotice'
+  has_one   :course_image, :dependent => :destroy, :inverse_of => :course
+  
   mount_uploader :course_upload_image, CourseUploadImageUploader
 
   accepts_nested_attributes_for :course_image
@@ -64,6 +65,7 @@ class Course < ActiveRecord::Base
   validates :lessons, :length => { minimum: 1 }, if: :published?
   validate :image_size
   before_validation :check_start_at
+  before_validation :check_end_at
   before_validation :check_url_name
 
   scope :hidden, where(visible: false)
@@ -85,7 +87,7 @@ class Course < ActiveRecord::Base
   scope :by_date, order(:start_at)
   scope :by_date_desc, order('start_at DESC')
 
-  scope :unreviewed, visible.where(status: STATUS_3)
+  scope :Draft, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
   scope :approved, visible.where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
@@ -102,12 +104,16 @@ class Course < ActiveRecord::Base
 
   scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
+  scope :similar_to, lambda { |course| where(channel_id: course.channel_id, url_name: course.url_name).displayable.in_future.by_date }
+
+
   before_create :set_url_name
   before_save :update_published_at
   before_save :save_first_lesson
   before_save :start_at!
   before_save :end_at!
   after_save :expire_cache!
+  before_save :check_teacher_cost
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 
@@ -162,7 +168,7 @@ class Course < ActiveRecord::Base
   end
 
   def cost_formatted
-    sprintf('%.2f', cost)
+    sprintf('%.2f', cost || 0)
   end
 
   def status_color
@@ -171,7 +177,7 @@ class Course < ActiveRecord::Base
         'warning'
       when "Completed"
         'info'
-      when "Unreviewed"
+      when "Draft"
         'danger'
       when "Cancelled"
         'default'
@@ -189,7 +195,11 @@ class Course < ActiveRecord::Base
   end
 
   def next_class
-    repeat_course.courses[repeat_course.courses.index(repeat_course.courses.find(id))+1] if repeat_course.present?
+    if repeat_course.present?
+      repetitions =  repeat_course.courses.displayable.order(:start_at)
+      current_index = repetitions.index(self)
+      repetitions[current_index+1] if current_index && repetitions[current_index+1].present?
+    end
   end
 
   def bookings?
@@ -262,11 +272,7 @@ class Course < ActiveRecord::Base
   end
 
   def publish!
-    if @course.start_at > DateTime.current
-      self.visible = true
-      self.status = "Published"
-      self.save
-    end
+    save if publish
   end
 
   def publish
@@ -597,4 +603,8 @@ class Course < ActiveRecord::Base
     self.url_name = name.parameterize if self.url_name.nil?
   end
 
+  def check_teacher_cost
+    self.teacher_cost = 0 if teacher_pay_type == Course.teacher_pay_types[2]
+  end
+  
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141029211110) do
+ActiveRecord::Schema.define(:version => 20141201222332) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20141029211110) do
     t.string   "provider_gst_number"
     t.decimal  "processing_fee"
     t.decimal  "processing_gst"
-    t.string   "note_to_teacher"
+    t.text     "note_to_teacher"
     t.string   "name"
     t.string   "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
@@ -234,6 +234,16 @@ ActiveRecord::Schema.define(:version => 20141029211110) do
     t.string   "image_name"
   end
 
+  create_table "course_notices", :force => true do |t|
+    t.integer  "chalkler_id"
+    t.integer  "course_id",                     :null => false
+    t.text     "body",                          :null => false
+    t.boolean  "visible",     :default => true, :null => false
+    t.string   "photo"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
   create_table "course_suggestions", :force => true do |t|
     t.string   "name"
     t.text     "description"
@@ -246,11 +256,11 @@ ActiveRecord::Schema.define(:version => 20141029211110) do
   create_table "courses", :force => true do |t|
     t.integer  "teacher_id"
     t.string   "name"
-    t.string   "status",                                            :default => "Unreviewed"
+    t.string   "status",                                            :default => "Draft"
     t.text     "description"
     t.decimal  "cost",                :precision => 8, :scale => 2
-    t.datetime "created_at",                                                                  :null => false
-    t.datetime "updated_at",                                                                  :null => false
+    t.datetime "created_at",                                                             :null => false
+    t.datetime "updated_at",                                                             :null => false
     t.decimal  "teacher_cost",        :precision => 8, :scale => 2
     t.boolean  "visible",                                           :default => true
     t.decimal  "teacher_payment",     :precision => 8, :scale => 2
@@ -319,6 +329,19 @@ ActiveRecord::Schema.define(:version => 20141029211110) do
     t.string   "error"
   end
 
+  create_table "interactions", :force => true do |t|
+    t.string   "action"
+    t.string   "controller"
+    t.string   "flag"
+    t.text     "parameters"
+    t.integer  "actor_id"
+    t.string   "actor_type"
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "lessons", :force => true do |t|
     t.integer  "course_id"
     t.datetime "start_at"
@@ -328,6 +351,29 @@ ActiveRecord::Schema.define(:version => 20141029211110) do
 
   add_index "lessons", ["course_id"], :name => "index_lessons_on_course_id"
   add_index "lessons", ["start_at"], :name => "index_lessons_on_start_at"
+
+  create_table "notification_preferences", :force => true do |t|
+    t.integer  "chalkler_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "from_chalkler_id"
+  end
+
+  create_table "notifications", :force => true do |t|
+    t.integer  "chalkler_id"
+    t.string   "notification_type"
+    t.datetime "viewed_at"
+    t.datetime "actioned_at"
+    t.datetime "valid_from"
+    t.datetime "valid_till"
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.text     "href"
+    t.text     "message"
+    t.text     "image"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
 
   create_table "omni_avatar_avatars", :force => true do |t|
     t.integer "owner_id"
@@ -452,6 +498,14 @@ ActiveRecord::Schema.define(:version => 20141029211110) do
   add_foreign_key "channel_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
   add_foreign_key "channel_teachers", "channels", name: "channel_teachers_channel_id_fk"
 
+  add_foreign_key "course_notices", "chalklers", name: "course_notices_chalkler_id_fk"
+  add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"
+
   add_foreign_key "courses", "regions", name: "courses_region_id_fk"
+
+  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_chalkler_id_fk"
+  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_from_chalkler_id_fk"
+
+  add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
 
 end

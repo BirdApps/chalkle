@@ -17,13 +17,13 @@ class Booking < ActiveRecord::Base
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
   BOOKING_STATUSES = %w(yes no refund_pending pending refund_complete)
 
-  belongs_to :course
-  belongs_to :chalkler
-  belongs_to :booking
-  has_many :bookings, as: :guests_bookings
-  has_one :payment
-  has_one :channel, through: :course
-  has_one :teacher, through: :course
+  belongs_to  :course
+  belongs_to  :chalkler
+  belongs_to  :booking
+  has_many    :bookings, as: :guests_bookings
+  has_one     :payment
+  has_one     :channel, through: :course
+  has_one     :teacher, through: :course
   
   belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
   belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
@@ -63,15 +63,15 @@ class Booking < ActiveRecord::Base
   end
 
   def self.paid
-   select{|booking| (booking.paid || 0) >= booking.cost}
+   select{|booking| (booking.paid || 0) >= booking.cost }
   end
 
   def self.unpaid
-    select{|booking| (booking.paid || 0) < booking.cost}
+    select{|booking| (booking.paid || 0) < booking.cost }
   end
 
   def self.needs_booking_completed_mailer
-    course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| b.course.end_at < Date.current && b.course.status=="Published" }
+    course_visible.confirmed.where('booking_completed_mailer_sent != true').paid.select{|b| ((b.course.end_at || b.course.start_at) + 1.day) < Date.current && b.course.status=="Published" }
   end
   
   def free?
@@ -89,15 +89,19 @@ class Booking < ActiveRecord::Base
 
   def cancel!(reason = nil, override_refund = false)
     if status == STATUS_1
+      refunding = false
       self.status = 'no'
       self.cancelled_reason = reason if reason
       if refundable? || override_refund
         if paid? && paid > 0
+          refunding = true
           self.status = 'refund_pending'
         end
       end
+      
       save
-      BookingMailer.booking_cancelled(self).deliver!
+
+      self.chalkler.notify.booking_cancelled(self)
     end
   end
 
@@ -114,7 +118,7 @@ class Booking < ActiveRecord::Base
   end
 
   def apply_fees
-    self.chalkle_gst_number =  Finance::CHALKLE_GST_NUMBER
+    self.chalkle_gst_number = Finance::CHALKLE_GST_NUMBER
     self.chalkle_fee = course.chalkle_fee false
     self.chalkle_gst = course.chalkle_fee(true) - chalkle_fee
     
@@ -132,6 +136,9 @@ class Booking < ActiveRecord::Base
         self.teacher_gst = 0
         self.teacher_gst_number = nil
       end
+    else
+      self.teacher_fee = 0
+      self.teacher_gst = 0
     end
 
     self.provider_fee = course.channel_fee
@@ -206,6 +213,10 @@ class Booking < ActiveRecord::Base
       c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
       self.update_column('channel_payment_id', c_payment.id)
     end
+  end
+
+  def pending_refund?
+    status == STATUS_3 
   end
 
   def teacher?

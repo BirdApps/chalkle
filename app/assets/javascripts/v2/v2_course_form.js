@@ -37,6 +37,8 @@ $(function(){
       }else{
         part_change("#type");
       }
+      $('#teaching_cost').change(display_pay_type);
+      display_pay_type();
       hijack_navigation();
       apply_inline_validation();
       get_teacher_list();
@@ -45,7 +47,20 @@ $(function(){
       $('.new_course_form_wrapper').fadeIn();
     }
 
+    function display_pay_type(){
+      if ( $('#teaching_cost').val() > 0 ){
+        $("#teaching_teacher_pay_type").removeAttr("disabled");
+        $(".teacher_pay_type_wrapper").show();
+      }else{
+        $("#teaching_teacher_pay_type").attr("disabled","disabled");
+        $(".teacher_pay_type_wrapper").hide();
+      }
+    }
+
     function init_start_at(){
+      set_monthly();
+      set_repeating();
+      set_repeat_count();
       $('.class-count').each(function(){
         apply_start_at_controls(this);
       });
@@ -89,7 +104,7 @@ $(function(){
 
     /* sets the monthly variable */
     function set_monthly(){
-      monthly = $(this).val() == 'monthly';
+      monthly = $('#teaching_repeat_frequency').val() == 'monthly';
     }
 
     /* sets the repeat_count variable */
@@ -99,7 +114,7 @@ $(function(){
 
     /* sets the repeating variable and shows/hides repeating controls */
     function set_repeating(){
-      repeating = $(this).val() == 'repeating';
+      repeating = $("#teaching_repeating").val() == 'repeating';
       if(repeating) {
         $('.repeating-options').show();  
       } else {
@@ -186,9 +201,17 @@ $(function(){
      
       /* initilizes the start_at_controls */
       function start_at_controls_init() {
+        $('#teaching_repeating').change(calculate_class_times);
+        $('#teaching_repeat_frequency').change(calculate_class_times);
+        $('#teaching_repeat_count').change(calculate_class_times);
+        $('.teaching_repeat_count .number-picker .number-picker-down').click(calculate_class_times);
+        $('.teaching_repeat_count .number-picker .number-picker-up').click(calculate_class_times);
+
         $(scope).find('.update_class_time').change(calculate_class_times);
+
         $(scope).find('.number-picker .number-picker-up').click(update_durations);
         $(scope).find('.number-picker .number-picker-down').click(update_durations);
+
         $(scope).find('#teaching_duration_hours').change(update_durations);
         $(scope).find('#teaching_duration_minutes').change(update_durations);
          date_time_picker_init();
@@ -284,7 +307,8 @@ $(function(){
           var start_time = make_time(instance_date.getHours(), instance_date.getMinutes(),0,0);
           var end_time = make_time(instance_date.getHours(), instance_date.getMinutes(), duration_hours, duration_minutes);
           var class_time_summary = "";
-          repeating = repeating && repeat_count > 1
+
+          repeating = repeating && repeat_count > 1;
           if(repeating && monthly) {
             //monthly
             var wday = instance_date.getDay();
@@ -411,7 +435,10 @@ $(function(){
       }
     }
 
-    function show_error_for(element, error_msg){
+    function show_error_for(element, error_msg, focus){
+      if(focus == undefined){
+        focus = true;
+      }
       if(error_msg == undefined){
         error_msg = $(element).data('error-message');
       }
@@ -419,7 +446,30 @@ $(function(){
         $(element).after('<div class="info form-error">'+error_msg+'</div>');
         $(element).parent().removeClass('hidden');
       }
-      $(element).focus();
+      if(focus){
+        if(isScrolledIntoView(element)){
+          $(element).focus();
+        }else{
+          var scroll_to = $(element).offset().top - 150;
+          $("html, body").animate({ scrollTop: scroll_to }, "slow", function(){
+            $(element).focus();
+          });
+        }
+      }
+    }
+
+    function isScrolledIntoView(elem)
+    {
+      if ($(elem).length > 0){
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+        var elemTop = $(elem).offset().top;
+        var elemBottom = elemTop + $(elem).height();
+
+        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+      }else{
+        return false;
+      }
     }
 
     function validate_type(){   
@@ -427,12 +477,19 @@ $(function(){
       return true;
     }
 
+    function validate_element(elem){
+     if(!!!$(elem).val() && !$(elem).is('div')) {
+        show_error_for(elem);
+        return false
+      }
+      return true;
+    }
+
     function validate_basics(location){
       var valid = true;
       $(location).find('[data-error-message]').each(function(){ 
-        if(!!!$(this).val() && !$(this).is("div")){
-          show_error_for(this);
-          valid = false;
+        if(valid && $(this).data('validate-complex') == null){
+          valid = validate_element(this);
         }
       });
       return valid;
@@ -441,8 +498,8 @@ $(function(){
     function apply_inline_validation(){
       $('[data-error-message]').each(function(){
         $(this).focusout(function(){
-          if(!!!$(this).val()){
-            show_error_for(this);
+          if(!!!$(this).val() && !$(this).is("div")){
+            show_error_for(this, undefined, false);
           }else{
             $(this).siblings('.form-error').remove();
           }
@@ -453,6 +510,11 @@ $(function(){
     function validate_details(){
       var valid = true;
       valid_basics = validate_basics('#details');
+      //validate complex
+      if(repeating){
+        valid = validate_element($('#teaching_repeat_frequency'));
+      }
+
       //validate the datetime pickers by their output
       $('.teaching_times_summary').each(function(){
         if($(this).text() == ""){
@@ -470,6 +532,12 @@ $(function(){
     function validate_teaching(){
       var valid = true;
       valid_basics = validate_basics('#teaching');
+
+      //validate complex
+      if($('#teaching_cost').val() > 0){
+        valid = validate_element($('#teaching_teacher_pay_type'));
+      }
+
       if($('#teaching_longitude').val() == "")
       {
         valid = false;
@@ -487,7 +555,7 @@ $(function(){
         valid = false;
         show_error_for($('.min-max-error'), "Minimum attendee cannot be negative");
       }
-       if(!isNaN(max_a) && max_a < 0)
+      if(!isNaN(max_a) && max_a < 0)
       {
         valid = false;
         show_error_for($('.min-max-error'), "Maximum attendee cannot be negative");
@@ -544,7 +612,10 @@ $(function(){
     }
 
     /* shows the part of the form that matches the location anchor */
-    function part_change( location, keep_errors ){
+    function part_change( location, keep_errors, scroll ){
+      if(scroll == undefined){
+        scroll = false;
+      }
       location = (typeof location == 'undefined') ? window.location.hash : location;
       var valid = validate_part(location);
       if(valid || validate_off){
@@ -562,7 +633,13 @@ $(function(){
           ready_to_submit = true;
           $('#new_teaching').submit();
         }
-        $("html, body").animate({ scrollTop: 0 }, "slow");
+        if(scroll){
+          top = 0;
+          if( $(window).width() > 768 ){
+            top = 207;
+          }
+          $("html, body").animate({ scrollTop: top }, "slow");
+        }
       }else{
         navigate_to_invalid(location);
       }
@@ -570,8 +647,12 @@ $(function(){
 
     /* makes the target href for the form anchors trigger form part changes */
     function link_part_change(e){
-        part_change($(this).attr('href'));
-        e.preventDefault();
+      if($(this).hasClass('btn')){
+        part_change($(this).attr('href'),false,true);
+      }else{
+        part_change($(this).attr('href'),false,false);
+      }
+      e.preventDefault();
     }
 
     /* handles changing between course or class on the first form part */

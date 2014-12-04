@@ -1,0 +1,79 @@
+<% unless course_notice.deleted? %>
+<div class="course_notice" id="discuss-<%= course_notice.id %>">
+  <div class="clearfix">
+    <header>
+      <span class="white pull-left">
+        <%= image_tag(course_notice.chalkler.avatar, class: 'avatar32') if course_notice.chalkler.avatar.present? %>
+        <span class="name">
+          <%= course_notice.chalkler.name %>
+        </span>
+        <% if course_notice.by_teacher? %>
+          | Teacher
+        <% elsif course_notice.by_attendee? %>
+          | Attendee
+        <% elsif course_notice.chalkler.super? %>
+          | Chalkle Admin
+        <% end %>
+      </span>
+      <span class="time white">
+        <% if course_notice.edited? %>
+          Edited
+        <% end %>
+        <%= quick_date_time course_notice.updated_at %>
+      </span>
+    </header>
+  </div>
+  <div class="notice-body">
+    <% if policy(course_notice).destroy? || policy(course_notice).update?  %>
+      <div class="pull-right control">
+        <% if policy(course_notice).update?  %>
+          <%= link_to 'Edit', "#edit-notice-#{course_notice.id}", :'data-target' => "discuss-#{course_notice.id}", class: 'edit-btn' %>
+        <% end %>
+        <% if policy(course_notice).destroy? %>
+          <%= link_to 'Remove', delete_course_course_notices_path(course_notice.course.id, course_notice.id)  %>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="clearfix">
+      <% if course_notice.photo.present? %>
+        <a class="notice-image" data-toggle="popover">
+          <%= image_tag course_notice.photo %>
+        </a>
+      <% end %>
+      <div class="<%= 'right-body margin-top' if course_notice.photo.present?  %>">
+        <%= to_html(course_notice.body) %>
+      </div>
+    </div>
+  </div>
+  <% if policy(course_notice).update? %>
+    <div class="edit-notice clearfix" style="display:none">
+      <div class="new_form_wrapper">
+        <%= bootstrap_form_for(course_notice, wrapper: :simple_bootstrap3, url: update_course_course_notices_path(course_notice.course.id, course_notice.id ), html: { method: :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+          <%= f.text_area :body, class: 'col-xs-12' %>
+          <div class="margin-top">
+            <%= image_tag(course_notice.photo, class: 'tiny-photo pull-left') if course_notice.photo.present? %>
+            <input name="course_notice_photo" type="file" class="margin-top pull-left" />
+            <%= f.submit "Update", class: 'btn btn-primary pull-right' %>
+            <%= link_to 'Cancel ', "#edit-notice-#{course_notice.id}", :'data-target' => "discuss-#{course_notice.id}", class: 'cancel-edit-btn pull-right margin-top' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<% else %>
+  <div class="course_notice" id="discuss-<%= course_notice.id %>">
+    <header class="removed">
+      <span class="white pull-left">
+        <span class="name">
+          <em>Comment Removed</em>
+        </span>
+      </span>
+      <span class="time white">     
+        <%= link_to 'Undo', delete_course_course_notices_path(course_notice.course.id, course_notice.id) if policy(course_notice).destroy?   %>
+        <%= quick_date_time course_notice.updated_at %>
+      </span>
+    </header>
+    <br />
+  </div>
+<% end %>

@@ -19,7 +19,9 @@ The course will be delivered by <%= @course.channel.name %>
 <br />
 If you have any questions please contact the course provider directly. <br />
 <br />
-You should have also received a payment receipt separately. <br />
+<% if @course.paid? %>
+  You should have also received a payment receipt separately. <br />
+<% end %>
 <br />
 Happy learning!<br />
 <br />

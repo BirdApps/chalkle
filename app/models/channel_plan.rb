@@ -1,8 +1,13 @@
 class ChannelPlan < ActiveRecord::Base
+  
   attr_accessible *BASIC_ATTR = [ :name, :max_channel_admins, :max_teachers, :class_attendee_cost, :course_attendee_cost, :max_free_class_attendees, :annual_cost, :processing_fee_percent ]
+  
   attr_accessible  *BASIC_ATTR, :as => :admin
+  
   has_many :channels
+
   validates_uniqueness_of :name, allow_blank: false
+  
   def self.default
     ChannelPlan.where(name: 'Community').first
   end

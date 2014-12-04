@@ -2,14 +2,4 @@
 
 <%= yield -%>
 
-==========================================
-
-At Chalkle we’ve adopted a spam free diet, but change your email settings or unsubscribe here. 
-<%= me_preferences_url -%>
-
-<%= root_url %>
-Facebook - http://facebook.com/Chalkle
-Twitter - http://twitter.com/ChalkleNZ
-
-What do you think of this email? Let us know at
-learn@chalkle.com
+<%= t "email.settings.text", settings_url: me_preferences_url %>

@@ -11,8 +11,7 @@ class Chalkler < ActiveRecord::Base
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable,
-    :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
   attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :avatar ]
   attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :role, :as => :admin
@@ -29,6 +28,8 @@ class Chalkler < ActiveRecord::Base
   has_many :channel_teachers
   has_many :bookings
   has_many :channel_admins
+  has_many :notifications
+  has_many :sent_notifications, class_name: 'Notification', foreign_key: :from_chalkler_id
   has_many :payments, through: :bookings
   has_many :channels_teachable, through: :channel_teachers, source: :channel
   has_many :channels_adminable, through: :channel_admins, source: :channel
@@ -41,7 +42,9 @@ class Chalkler < ActiveRecord::Base
       where(provider: provider).first
     end
   end
+  has_many :course_notices
   has_many :courses_teaching, through: :channel_teachers, source: :courses
+  has_one  :notification_preference
 
   after_create :create_channel_associations
 
@@ -67,18 +70,24 @@ class Chalkler < ActiveRecord::Base
     role == 'super'
   end
 
+  def notify 
+    unless notification_preference
+      self.notification_preference = NotificationPreference.create chalkler: self
+    end
+    notification_preference
+  end
+
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
   end
 
   def upcoming_teaching
-    (courses_adminable.in_future+courses_teaching.in_future).uniq.sort_by{ |c| c.start_at.present? ? c.start_at : DateTime.current.advance(years: 1)}.reverse
+    (courses_adminable.in_future+courses_teaching.in_future).uniq.sort_by{ |c| c.start_at.present? ? c.start_at : DateTime.current.advance(years: 1)}
   end
 
   def all_teaching
-    #(courses_adminable+courses_teaching).uniq.sort_by(&:start_at).reverse
-     (courses_adminable+courses_teaching).uniq.sort_by{ |c| c.start_at.present? ? c.start_at : DateTime.current.advance(years: 1)}.reverse
+     (courses_adminable+courses_teaching).uniq.sort_by{ |c| c.start_at.present? ? c.start_at : DateTime.current.advance(years: 1)}
   end
 
   def confirmed_courses
@@ -87,6 +96,13 @@ class Chalkler < ActiveRecord::Base
 
   class << self
 
+    def exists?(email)
+      Chalkler.exists(email).present?
+    end
+
+    def exists(email)
+      Chalkler.find(:first, conditions: ["lower(email) = ?", email.strip.downcase]) if email.present?
+    end
 
     def stats_for_date_and_range(date, range)
       {
@@ -173,31 +189,51 @@ class Chalkler < ActiveRecord::Base
   end
 
   def email_regions=(email_region)
-  assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
+    assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
   
+  def send_notification(type, href, message, from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil, target = nil)
+    
+    image = from.avatar if image.blank? && from.present? && from.respond_to?('avatar')
+    image = image.url if image && image.respond_to?('url')
+    image = Notification.default_image(type) unless image
 
+    notification = {
+      notification_type:  type,
+      href:               href,
+      message:            message,
+      image:              image,
+      target:             target,
+      valid_from:         valid_from,
+      valid_till:         valid_till,
+      chalkler:           self
+    }
+    Notification.create notification, as: :admin
+  end
 
+  def first_name
+    name.split(' ')[0]
+  end
 
   private
 
-  # for Chalklers created outside of meetup
-  def set_reset_password_token
-    return unless self.set_password_token
-    self.password = Chalkler.reset_password_token
-    self.reset_password_token = Chalkler.reset_password_token
-    self.reset_password_sent_at = Time.current
-  end
-
-  def create_channel_associations  
-    return unless join_channels.is_a?(Array)
-    join_channels.reject(&:empty?).each do |channel_id|
-      if Subscription.where(chalkler_id: id, channel_id: channel_id).count == 0
-        channels << Channel.find(channel_id)
-      end
+    # for Chalklers created outside of meetup
+    def set_reset_password_token
+      return unless self.set_password_token
+      self.password = Chalkler.reset_password_token
+      self.reset_password_token = Chalkler.reset_password_token
+      self.reset_password_sent_at = Time.current
     end
-    save!
-  end
+
+    def create_channel_associations  
+      return unless join_channels.is_a?(Array)
+      join_channels.reject(&:empty?).each do |channel_id|
+        if Subscription.where(chalkler_id: id, channel_id: channel_id).count == 0
+          channels << Channel.find(channel_id)
+        end
+      end
+      save!
+    end
 
 
 end

@@ -7,10 +7,10 @@ class ChannelTeacher < ActiveRecord::Base
 
   attr_accessible :channel, :channel_id, :chalkler, :chalkler_id, :name, :email, :bio, :pseudo_chalkler_email, :can_make_classes, :tax_number, :account, :avatar, :courses
 
-  belongs_to :channel
-  belongs_to :chalkler
-  has_many :courses, class_name: "Course", foreign_key: "teacher_id"
-
+  belongs_to  :channel
+  belongs_to  :chalkler
+  has_many    :courses, class_name: "Course", foreign_key: "teacher_id"
+  
   validates_uniqueness_of :chalkler_id, scope: :channel_id, allow_blank:true
   validates_presence_of :channel_id
   validates_presence_of :email, message: 'Email cannot be blank'
@@ -32,7 +32,7 @@ class ChannelTeacher < ActiveRecord::Base
   end
 
   def email=(email)
-    self.chalkler = Chalkler.find_by_email email
+    self.chalkler = Chalkler.exists email
     self.pseudo_chalkler_email = email unless chalkler.present?
     #TODO: email chalkler or non-chalkler to tell them they are a teacher
   end
@@ -42,9 +42,15 @@ class ChannelTeacher < ActiveRecord::Base
   end
 
   def check_name
-    self.name = chalkler.name if self.name.blank?
+    if self.name.blank?
+      if chalkler
+        self.name = chalkler.name
+      elsif email
+        self.name = email.split('@')[0]
+      end
+    end
   end
-  
+
   def expire_cache!
     courses.each do |course|
       course.expire_cache!

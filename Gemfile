@@ -10,6 +10,8 @@ gem 'pg', '~> 0.17.1'
 gem 'unicorn-rails'
 gem 'unicorn-worker-killer'
 
+gem 'entity_events', github: 'Jdbdean/entity_events', ref: 'HEAD'
+
 # Authentication
 gem 'devise',           '~> 2.2.4'
 gem 'omniauth',         '~> 1.1.4'
@@ -34,7 +36,6 @@ gem 'squeel',        '~> 1.0.18'
 gem 'validates_timeliness', '~> 3.0'
 gem 'whenever', require: false
 gem 'premailer-rails', '~> 1.4.0'
-gem 'google-analytics-rails'
 gem 'kaminari'
 gem 'httparty'
 gem 'inherited_resources'
@@ -48,9 +49,9 @@ gem 'rdiscount'
 #apis
 gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'
 gem 'xeroizer'
-gem 'sendgrid'
 gem "geocoder"
 gem 'newrelic_rpm'
+gem 'mandrill-rails'
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'
@@ -65,6 +66,7 @@ gem 'bootstrap-datepicker-rails'
 
 #attachments
 gem 'carrierwave'
+gem 'carrierwave-imageoptimizer'
 gem 'rmagick', require: false
 gem 'unf', require: false       # optional dependency used by fog for unicode strings
 gem 'fog', ">= 1.3.1", require: false

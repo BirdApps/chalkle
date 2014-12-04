@@ -35,8 +35,8 @@ class Channel < ActiveRecord::Base
   has_many :regions, through: :channel_regions
   has_many :channel_teachers
   has_many :teaching_chalklers, through: :channel_teachers, source: :chalkler
-  has_many :admin_chalklers, through: :channel_admins, source: :chalkler
-  
+  has_many  :admin_chalklers, through: :channel_admins, source: :chalkler
+
   belongs_to :channel_plan
 
   accepts_nested_attributes_for :photos

@@ -24,7 +24,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def show?
-    @course.displayable? or read?
+    Course::PUBLIC_STATUSES.include?(@course.status) or read?
   end
 
   def update?
@@ -52,11 +52,11 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def write?(anytime=false)
-    anytime = true if @course.status == "Unreviewed"
+    anytime = true if @course.status == "Draft"
     @user.super? or
      ((@user.channel_teachers.where(id: @course.teacher_id, can_make_classes: true).present? or 
       @user.channel_admins.where(channel_id: @course.channel_id).present?) and 
-      (anytime ? true : @course.end_at > DateTime.current))
+      (anytime ? true : (@course.end_at || @course.start_at) > DateTime.current))
   end
 
   def read?

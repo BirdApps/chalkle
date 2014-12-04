@@ -1,14 +1,20 @@
 class ApplicationController < ActionController::Base
   include Pundit
+
   protect_from_forgery
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
   rescue_from Pundit::NotDefinedError, with: :not_found
-
+  
   layout 'layouts/application'
+
+  before_filter :set_locale
+
   before_filter :load_region
   before_filter :load_channel
   before_filter :load_category
   before_filter :skip_cache!
+  before_filter :check_user_data
+  after_filter :entity_events
 
   def styleguide
     render "/styleguide"
@@ -61,10 +67,7 @@ class ApplicationController < ActionController::Base
     end
 
     def current_user
-      if @current_user.nil?
-        @current_user = TheUser.new current_chalkler
-      end
-      return @current_user 
+      @current_user ||= TheUser.new current_chalkler
     end
 
    
@@ -86,25 +89,45 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def check_course_visibility
+      unless !@course || policy(@course).read?
+        unless Course::PUBLIC_STATUSES.include? @course.status
+          flash[:notice] = "This class is no longer available."
+          redirect_to :root
+          return false
+        end
+      end
+    end
+
     def country_code
       params[:country_code] unless params[:country_code].blank?
     end
     
     def region_name
+      reconnect_attempts ||= 3
       session[:region] = params[:region] unless params[:region].blank?
-      if request && request.location && request.location.data
-        request_region = request.location.data["region_name"]
+
+      return session[:region] if session[:region]
+
+      # Occasionally the geolocator API does not respond. Trying again usually gets this to behave.
+      begin  
+
+        if request && request.location && request.location.data
+          request_region = request.location.data["region_name"]
+        end
+
+      rescue Errno::ECONNRESET => e
+        retry if (reconnect_attempts -=1) > 0
+      else
+        nil
       end
-      request_region = nil unless request_region != ""
-      session[:region] || request_region
+      (request_region == "") ? nil : request_region
     end
 
     def channel_name
-      begin 
       (params[:provider] || params[:channel_url_name]).encode("UTF-8", "ISO-8859-1").parameterize if (params[:provider] || params[:channel_url_name]).present?
-      rescue ArgumentError 
-        nil
-      end
+    rescue ArgumentError 
+      nil
     end
 
     def category_name
@@ -210,4 +233,26 @@ class ApplicationController < ActionController::Base
       expire_fragment(/.*filter_list.*/)
     end
 
+    def check_user_data
+      if current_user.authenticated?
+        if current_user.email.nil?
+          session[:original_path] = request.path
+          return redirect_to me_enter_email_path
+        end
+      end
+    end
+
+    def entity_events
+      auto_log = true
+      EntityEvents.record(params, current_chalkler, auto_log)
+    end
+
+    def set_locale
+      I18n.locale = params[:locale] || extract_locale_from_tld || I18n.default_locale
+    end
+
+    def extract_locale_from_tld
+      parsed_locale = request.host.split('.').last
+      I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
+    end
 end

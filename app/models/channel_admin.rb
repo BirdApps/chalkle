@@ -3,7 +3,7 @@ class ChannelAdmin < ActiveRecord::Base
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  has_many :courses, :through => :channel
+  has_many   :courses, through: :channel
   belongs_to :channel
   belongs_to :chalkler
 
@@ -28,7 +28,7 @@ class ChannelAdmin < ActiveRecord::Base
   end
 
   def email=(email)
-    self.chalkler = Chalkler.find_by_email email
+    self.chalkler = Chalkler.exists email
     self.pseudo_chalkler_email = email unless chalkler.present?
     #TODO: email chalkler or non-chalkler to tell them they are an admin
   end

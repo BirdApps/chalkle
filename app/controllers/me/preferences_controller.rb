@@ -1,4 +1,7 @@
 class Me::PreferencesController < Me::BaseController
+
+  before_filter :check_user_data, only: :destroy
+
   def save
    	@chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
 
@@ -21,14 +24,18 @@ class Me::PreferencesController < Me::BaseController
 
   def enter_email
     @chalkler = current_chalkler
-    if params[:chalkler].blank?
-      render template: 'me/preferences/enter_email'
-    else
+    unless params[:chalkler].blank?
       @chalkler.email = params[:chalkler][:email]
       if @chalkler.save
-        redirect_to :root, notice: 'Welcome to chalkle! Sign in successful.'
+        if session[:original_path].present?
+          redirect_to session[:original_path], notice: "Thanks for completeing your profile!"
+        else
+          redirect_to :root, notice: 'Welcome to chalkle! Sign in successful.'
+        end
       else
-        render template: 'me/preferences/enter_email'
+        @chalkler.errors.each do |attribute,error|
+          add_response_notice attribute.to_s+" "+error
+        end
       end
     end
   end
