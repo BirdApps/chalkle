@@ -45,7 +45,7 @@ class CourseNoticesController < ApplicationController
   private 
 
     def load_course
-      @course = Course.find_by_id(params[:course_id]).try :decorate
+      @course = Course.find_by_id(params[:course_id])
       return not_found unless @course
       check_course_visibility
     end

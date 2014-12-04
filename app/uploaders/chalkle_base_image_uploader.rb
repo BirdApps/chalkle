@@ -3,11 +3,13 @@ require 'chalkle_base_uploader'
 
 class ChalkleBaseImageUploader < ChalkleBaseUploader
   include CarrierWave::MiniMagick
+  include CarrierWave::ImageOptimizer
 
   def extension_white_list
     %w(jpg jpeg gif png)
   end
 
+  process :optimize
 
 protected
 
