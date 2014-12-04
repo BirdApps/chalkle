@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20141201222332) do
     t.boolean  "booking_completed_mailer_sent", :default => false
     t.integer  "teacher_payment_id"
     t.integer  "channel_payment_id"
+    t.boolean  "chalkler_deleted",              :default => false
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -255,11 +256,11 @@ ActiveRecord::Schema.define(:version => 20141201222332) do
   create_table "courses", :force => true do |t|
     t.integer  "teacher_id"
     t.string   "name"
-    t.string   "status",                                            :default => "Unreviewed"
+    t.string   "status",                                            :default => "Draft"
     t.text     "description"
     t.decimal  "cost",                :precision => 8, :scale => 2
-    t.datetime "created_at",                                                                  :null => false
-    t.datetime "updated_at",                                                                  :null => false
+    t.datetime "created_at",                                                             :null => false
+    t.datetime "updated_at",                                                             :null => false
     t.decimal  "teacher_cost",        :precision => 8, :scale => 2
     t.boolean  "visible",                                           :default => true
     t.decimal  "teacher_payment",     :precision => 8, :scale => 2
