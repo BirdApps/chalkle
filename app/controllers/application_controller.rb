@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::Base
+:106class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
@@ -114,7 +114,7 @@ class ApplicationController < ActionController::Base
           request_region = request.location.data["region_name"]
         end
 
-      rescue Errno::ECONNRESET => e
+      rescue
         retry if (reconnect_attempts -=1) > 0
       else
         nil
