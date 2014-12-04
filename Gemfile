@@ -36,7 +36,6 @@ gem 'squeel',        '~> 1.0.18'
 gem 'validates_timeliness', '~> 3.0'
 gem 'whenever', require: false
 gem 'premailer-rails', '~> 1.4.0'
-gem 'google-analytics-rails'
 gem 'kaminari'
 gem 'httparty'
 gem 'inherited_resources'

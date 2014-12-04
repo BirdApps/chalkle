@@ -62,7 +62,7 @@ Chalkle::Application.configure do
   config.active_support.deprecation = :notify
 
   # Google analytics tracking code
-  GA.tracker = "UA-37364156-3"
+  TRACKER = "UA-37364156-3"
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)

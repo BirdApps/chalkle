@@ -33,6 +33,10 @@ module ApplicationHelper
     render 'layouts/typekit_includes' unless Rails.env.development?
   end
 
+  def analytics_init
+    render 'layouts/google_tracker'
+  end
+
   def favicons
     render partial: 'layouts/favicon'
   end
