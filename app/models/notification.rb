@@ -18,10 +18,10 @@ class Notification < ActiveRecord::Base
   validate :type_defined?
 
   scope :visible, lambda{ where("valid_from < ?", DateTime.current).where("valid_till > ? OR valid_till IS NULL", DateTime.current) }
-  scope :unactioned, visible.where(actioned_at: nil)
-  scope :unseen, visible.where(viewed_at: nil)
+  scope :unactioned, where(actioned_at: nil)
+  scope :unseen, where(viewed_at: nil)
   scope :by_date, order(:valid_from).reverse_order
-  scope :recent, visible.limit(20).by_date
+  scope :recent, limit(20).by_date
 
   CHALKLE = "chalkle"
   DISCUSSION = "discussion"

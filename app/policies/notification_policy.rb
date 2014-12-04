@@ -7,6 +7,6 @@ class NotificationPolicy < ApplicationPolicy
   end
 
   def show?
-    user.super? or notification.chalkler.id == user.id
+    user.super? or (notification.chalkler.id == user.id and notification.visible?)
   end
 end

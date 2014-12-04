@@ -55,16 +55,16 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                  <span class="hidden-xs">
                    <img src="/assets/icons/bell.png" />
-                   <%= current_user.notifications.unseen.count unless current_user.notifications.unseen.count == 0 %>
+                   <%= current_user.notifications.visible.unseen.count unless current_user.notifications.visible.unseen.count == 0 %>
                  </span>
                  <span class="visible-xs">
                     Notifications
-                   <%= "(#{current_user.notifications.unseen.count})" unless current_user.notifications.unseen.count == 0 %>
+                   <%= "(#{current_user.notifications.visible.unseen.count})" unless current_user.notifications.visible.unseen.count == 0 %>
                  </span>
                 </a>
                 <div class="dropdown-menu pull-right no-padding" role="menu" style="background-color: <%= header_color if header_color %>" >
                   <ul class="flush">
-                    <%= render current_user.notifications.recent %>
+                    <%= render current_user.notifications.visible.recent %>
                   </ul>
                   <div class="divider flush"></div>
                   <div class="small center">
