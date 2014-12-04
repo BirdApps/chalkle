@@ -87,7 +87,7 @@ class Booking < ActiveRecord::Base
     status == STATUS_1
   end
 
-  def cancel!(cancelling_chalkler, reason = nil, override_refund = false)
+  def cancel!(reason = nil, override_refund = false)
     if status == STATUS_1
       refunding = false
       self.status = 'no'
@@ -101,7 +101,7 @@ class Booking < ActiveRecord::Base
       
       save
 
-      self.chalkler.notify.booking_cancelled(self, refunding, cancelling_chalkler)
+      self.chalkler.notify.booking_cancelled(self)
     end
   end
 
@@ -213,6 +213,10 @@ class Booking < ActiveRecord::Base
       c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
       self.update_column('channel_payment_id', c_payment.id)
     end
+  end
+
+  def pending_refund?
+    status == STATUS_3 
   end
 
   def teacher?

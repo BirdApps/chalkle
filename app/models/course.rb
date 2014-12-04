@@ -141,12 +141,12 @@ class Course < ActiveRecord::Base
     cost > 0
   end
 
-  def cancel!(cancelling_chalkler, reason = nil)
+  def cancel!(reason = nil)
     #TODO: notify chalklers
     self.status = STATUS_2
     self.cancelled_reason = reason if reason
     bookings.each do |booking|
-      booking.cancel!(cancelling_chalkler, reason, true)
+      booking.cancel!(reason, true)
     end
     save
   end
