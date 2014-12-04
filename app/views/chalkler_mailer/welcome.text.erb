@@ -1,5 +1,5 @@
 <%= 
-  activate_text = @chalkler.reset_password_token? ? t("email.activation.text", url: edit_chalkler_password_url, token: @chalkler.reset_password_token) : ""
+  activate_text = @chalkler.reset_password_token? ? t("email.chalkler.activation.text", url: edit_chalkler_password_url, token: @chalkler.reset_password_token) : ""
   
-   t("email.welcome.body.text", name: @chalkler.first_name, activation: activate_text, url: me_preferences_url)
+   t("email.chalkler.welcome.body.text", name: @chalkler.first_name, activation: activate_text, url: me_preferences_url)
 %>

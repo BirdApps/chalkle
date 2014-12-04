@@ -27,32 +27,9 @@ class NotificationPreference < ActiveRecord::Base
     #5
   end
 
-  def booking_cancelled(booking, refunding, cancelling_chalkler)
-    #notification chalkler's booking was cancelled
-    unless chalkler == cancelling_chalkler
-
-
-      message = if booking.name.downcase == chalkler.name.downcase
-        "Your booking "
-      else
-        "**#{booking.name}'s** booking "
-      end
-
-      message += "for **#{booking.course.name}** has been **cancelled**."
-
-      message += " **#{cancelling_chalkler.name.capitalize}** made the cancellation"
-
-      message += if booking.cancelled_reason.present?
-        " for the following reason: \"#{booking.cancelled_reason}\""
-      else
-        "."
-      end
-
-      message += "\n\nA **full refund** will be made shortly." if refunding
-
-      chalkler.send_notification Notification::REMINDER, course_path(booking.course), message
-
-    end
+  def booking_cancelled(booking)
+    refund_text = booking.pending_refund? ? t('notify.booking.refund') : ""
+    chalkler.send_notification Notification::REMINDER, course_path(booking.course), I18n.t('notify.booking.cancelled', course_name: booking.course.name, refund: refund_text)
 
     BookingMailer.booking_cancelled(booking).deliver!
   end

@@ -1,10 +1,8 @@
-Hello <%= @chalkler.name %>,
+<%= 
+  reason_text = @booking.cancelled_reason.present?  ? @booking.cancelled_reason : ""
 
-Unfortunately <%= @course.channel.name -%> has had to cancel <%= @course.name -%>. You should receive a full refund notification from Chalkle shortly.
-
-If you have any questions, please contact the provider directly. 
-
-In the meantime, check out http://chalkle.com for more classes.
-
-Cheers!
-
+  refund_text = @booking.pending_refund? ? t("email.booking.refund") :
+   ""
+  
+   t("email.booking.cancelled.body.text", root_name: t("chalkle_url"), root_url: root_url, reason: reason_text, refund: refund_text, course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name)).to_html
+%>
