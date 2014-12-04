@@ -125,11 +125,9 @@ class ApplicationController < ActionController::Base
     end
 
     def channel_name
-      begin 
       (params[:provider] || params[:channel_url_name]).encode("UTF-8", "ISO-8859-1").parameterize if (params[:provider] || params[:channel_url_name]).present?
-      rescue ArgumentError 
-        nil
-      end
+    rescue ArgumentError 
+      nil
     end
 
     def category_name
