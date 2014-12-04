@@ -175,7 +175,7 @@ class CoursesController < ApplicationController
   private
 
     def load_course
-      @course = Course.find_by_id(params[:id]).try :decorate
+      @course = Course.find_by_id(params[:id])
       return not_found unless @course
       authorize @course
     end  
@@ -225,10 +225,6 @@ class CoursesController < ApplicationController
       end
 
       courses
-    end
-
-    def decorate(courses)
-      CourseDecorator.decorate_collection(courses)
     end
 
 end

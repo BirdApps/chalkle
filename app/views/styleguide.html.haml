@@ -631,8 +631,8 @@
                         %button.btn{:type => "submit"}
                           %i.icon.icon-search
 
-        -@courses = Course.where('do_during_class IS NOT NULL').order('created_at desc').limit(5).decorate
-        -@courses << Course.where('start_at is NULL').order('created_at desc').first.decorate
+        -@courses = Course.where('do_during_class IS NOT NULL').order('created_at desc').limit(5)
+        -@courses << Course.where('start_at is NULL').order('created_at desc').first
         -@courses.compact!
         -#- raise @courses.last.inspect
         -@courses.last.suggested_audience = "YOUNG PEOPLE"
