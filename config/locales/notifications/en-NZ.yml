@@ -5,3 +5,6 @@ en-NZ:
     booking:
       refund: "A **full refund** will be made shortly."
       cancelled: "**%{course_name}** has been **cancelled**. %{refund}"
+      completed: "Thanks for coming along to **%{course_name}**!"
+      confirmation: "Great job! You are booked in for **%{course_name}**"
+      reminder: "**%{course_name}** is coming up shortly. Check the class notices for any important info you might need."

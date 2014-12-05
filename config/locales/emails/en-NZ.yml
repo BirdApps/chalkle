@@ -66,18 +66,18 @@ en-NZ:
     booking:
       cancelled:
         reason: |
-
           For the following reason:
-
         refund: |
-
           Your payment will be reversed within the next 21 days
-
         subject: "%{name}, your booking has been cancelled."
         body:
           html: |
             Your booking for **[%{course_name}](%{course_url})** has been cancelled
-            %{reason}%{refund}
+            
+            %{reason}
+
+            %{refund}
+
             If you have any questions, please contact the provider,  [%{provider_name}](%{provider_url}), directly.
 
             Otherwise, check out [%{root_name}](%{root_url}) for more classes!
@@ -85,7 +85,11 @@ en-NZ:
             Cheers!
           text: |
             Your booking for %{course_name} has been cancelled
-            %{reason}%{refund}
+            
+            %{reason}
+
+            %{refund}
+
             If you have any questions, please contact the provider, %{provider_name}, directly.
 
             Otherwise, check out %{root_name} for more classes!
@@ -95,19 +99,125 @@ en-NZ:
             %{root_url}
             %{course_url}
             %{provider_url}
-      # completed:
-      #   subject: "%{name}, we hope you enjoyed your class!"
-      #   body:
-      #     html: 
-      #     text: 
-      # confirmation:
-      #   subject: "%{name}, congrats! You are booked in to %{@course.name}"
-      #   body:
-      #     html: 
-      #     text: 
-      # reminder:
-      #   subject: "%{name}, your course is coming up soon!"
-      #   body:
-      #     html: 
-      #     text: 
+      completed:
+        subject: "%{name}, we hope you enjoyed your class!"
+        body:
+          html: |
+            Thanks for coming along to [%{course_name}](%{course_url}), we hope you had a great time and learning something new!
 
+            We’d love some feedback on how the class went and your experience using Chalkle.
+
+            Please let us know if there is anything you’d like to share.
+
+            Cheers!
+          text: |
+            Thanks for coming along to %{course_name}, we hope you had a great time and learning something new!
+
+            We’d love some feedback on how the class went and your experience using Chalkle.
+
+            Please let us know if there is anything you’d like to share.
+
+            Cheers!
+
+            ======================================
+            [Find more classes provided by %{provider_name}](provider_url)
+            ======================================
+      confirmation:
+        paid: "You should have also received a payment receipt separately."
+        subject: "%{name}, congrats! You are booked in to %{course_name}"
+        body:
+          html: |
+            Thanks! You are all booked in for [%{course_name}](%{course_url}). 
+
+            The booking details are as follows:
+
+            [%{booking_name}](%{course_url})
+
+            [%{course_name}](%{course_url})
+
+            %{start_at}
+            %{time_range}
+            %{address}
+            %{venue}
+
+            If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
+
+            %{paid}
+
+
+            Happy learning!
+          text: |
+            Thanks! You are all booked in for %{course_name}. 
+
+            The booking details are as follows:
+
+            %{booking_name}
+
+            %{course_name}
+
+            %{start_at}
+            %{time_range}
+            %{address}
+            %{venue}
+
+            If you have any questions please contact the provider, %{provider_name} directly.
+
+            %{paid}
+
+
+            Happy learning!
+
+            =======================
+
+            %{course_url}
+            %{provider_url}
+
+            =======================
+      reminder:
+        subject: "%{name}, your course is coming up soon!"
+        body:
+          html: |
+            Just a friendly reminder, your course is coming up really soon.
+
+            The booking details are as follows:
+
+            [%{booking_name}](%{course_url})
+
+            [%{course_name}](%{course_url})
+
+            %{start_at}
+            %{time_range}
+            %{address}
+            %{venue}
+
+            If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
+
+            Check out the class noticeboard to make sure you have everything you need. If you have any questions please contact the course provider directly.
+
+            Enjoy your class!
+          text: |
+            Just a friendly reminder, your course is coming up really soon.
+
+            The booking details are as follows:
+
+            %{booking_name}
+
+            %{course_name}
+
+            %{start_at}
+            %{time_range}
+            %{address}
+            %{venue}
+
+            If you have any questions please contact the provider, %{provider_name}, directly.
+
+            Check out the class noticeboard to make sure you have everything you need. If you have any questions please contact the course provider directly.
+
+            Enjoy your class!
+
+            ========================
+
+            %{course_url}
+            %{provider_url}
+
+            ========================

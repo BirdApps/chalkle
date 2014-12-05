@@ -23,8 +23,11 @@ class NotificationPreference < ActiveRecord::Base
     #escalates to 14
   end
 
-  def booking_confirmation
+  def booking_confirmation(booking)
     #5
+    chalkler.send_notification Notification::REMINDER, course_path(booking.course), I18n.t('notify.booking.confirmation', course_name: booking.course.name)
+
+    BookingMailer.booking_confirmation(booking).deliver!
   end
 
   def booking_cancelled(booking)
@@ -34,12 +37,21 @@ class NotificationPreference < ActiveRecord::Base
     BookingMailer.booking_cancelled(booking).deliver!
   end
 
+  def booking_completed(booking)
+    chalkler.send_notification Notification::REMINDER, course_path(booking.course), I18n.t('notify.booking.completed', course_name: booking.course.name)
+
+    BookingMailer.booking_completed(booking).deliver!
+  end
+
   def course_details_changed
     #6
   end
 
-  def upcoming_booking
+  def booking_reminder(booking)
     #7
+    chalkler.send_notification Notification::REMINDER, course_path(booking.course), I18n.t('notify.booking.reminder', course_name: booking.course.name)
+
+    BookingMailer.booking_reminder(booking).deliver!
   end
 
   def after_class_follow_up 
