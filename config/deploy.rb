@@ -10,7 +10,7 @@ set :default_environment, {
   'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 }
 
-set :rbenv_ruby_version, "1.9.3-p545"
+set :rbenv_ruby_version, "2.1.5"
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
