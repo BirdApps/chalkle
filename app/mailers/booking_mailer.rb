@@ -7,7 +7,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
-    mail(to: @chalkler.email, subject: "#{@chalkler.first_name}, congrats! You are booked in to #{@course.name}") do |format| 
+    mail(to: @chalkler.email,  subject: I18n.t("email.booking.confirmation.subject", name: @chalkler.first_name, course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
@@ -27,7 +27,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
-    mail(to: @chalkler.email, subject: "#{@chalkler.name}, your course is coming up soon!") do |format| 
+    mail(to: @chalkler.email, subject: I18n.t("email.booking.reminder.subject", name: @chalkler.first_name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
@@ -37,7 +37,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
-    mail(to: @chalkler.email, subject: "#{@chalkler.name}, we hope you enjoyed your class!") do |format| 
+    mail(to: @chalkler.email, subject: I18n.t("email.booking.completed.subject", name: @chalkler.first_name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
