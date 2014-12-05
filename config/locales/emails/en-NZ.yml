@@ -103,7 +103,7 @@ en-NZ:
         subject: "%{name}, we hope you enjoyed your class!"
         body:
           html: |
-            Thanks for coming along to [%{course_name}](%{course_url}), we hope you had a great time and learning something new!
+            Thanks for coming along to [%{course_name}](%{course_url}), we hope you had a great time and learned something new!
 
             We’d love some feedback on how the class went and your experience using Chalkle.
 
@@ -111,7 +111,7 @@ en-NZ:
 
             Cheers!
           text: |
-            Thanks for coming along to %{course_name}, we hope you had a great time and learning something new!
+            Thanks for coming along to %{course_name}, we hope you had a great time and learned something new!
 
             We’d love some feedback on how the class went and your experience using Chalkle.
 
