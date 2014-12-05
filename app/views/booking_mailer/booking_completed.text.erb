@@ -1,8 +1,3 @@
-Hello <%= @chalkler.name %>,
-
-Thanks for coming along to your class, we hope you had a great time and learning something new!
-
-We’d love some feedback on how the class went and your experience using Chalkle. 
-Please let us know if there is anything you’d like to share.
-
-Cheers!
+<%= 
+   t("email.booking.completed.body.text", course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name))
+%>
