@@ -24,7 +24,11 @@ class Region < ActiveRecord::Base
     url_name = self.url_name.nil? ? name.parameterize : self.url_name.parameterize
     existing_regions = Region.where(url_name: url_name)
     valid = existing_regions.blank? || (existing_regions.first.id == self.id && existing_regions.count == 1)
-    self.url_name = valid ? url_name : url_name+id.to_s
+    unless valid
+      existing_regions.sort{|s|s.id}  
+       url_name = url_name+'-'+existing_regions.last.id.to_s
+    end
+    self.url_name = url_name
   end
 
 

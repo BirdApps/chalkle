@@ -18,7 +18,6 @@ class Channel < ActiveRecord::Base
   validates :teacher_percentage, presence: true, numericality: {less_than_or_equal_to: 1, message: "Teacher percentage of revenue must be less than or equal to 1"}
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   #validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, message: "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
-  validates_uniqueness_of :name, allow_blank: true
   validates_uniqueness_of :url_name, allow_blank: false
   validates :short_description, length: { maximum: 250 }
 
@@ -158,7 +157,11 @@ class Channel < ActiveRecord::Base
     url_name = self.url_name.nil? ? name.parameterize : self.url_name.parameterize
     existing_channels = Channel.where(url_name: url_name)
     valid = existing_channels.blank? || (existing_channels.first.id == self.id && existing_channels.count == 1)
-    self.url_name = valid ? url_name : url_name+id.to_s
+    unless valid
+      existing_channels.sort{|s|s.id}  
+       url_name = url_name+'-'+existing_channels.last.id.to_s
+    end
+    self.url_name = url_name
   end
 
   def header_color
