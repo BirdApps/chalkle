@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Course do
-
-  binding.pry
   
   it { should belong_to(:category) }
   it { should have_one :course_image }

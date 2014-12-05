@@ -4,7 +4,7 @@ class CreateInteraction < ActiveRecord::Migration
       t.string :action
       t.string :controller
       t.string :flag
-      t.text   :parameters
+      t.string :request_ip
       t.references :actor, polymorphic: true
       t.references :target, polymorphic: true
       t.timestamps

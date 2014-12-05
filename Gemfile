@@ -1,10 +1,5 @@
 source 'https://rubygems.org'
 
-if RUBY_VERSION =~ /1.9/
-Encoding.default_external = Encoding::UTF_8
-Encoding.default_internal = Encoding::UTF_8
-end
-
 gem 'rails', '3.2.19'
 gem 'pg', '~> 0.17.1'
 gem 'unicorn-rails'
@@ -132,7 +127,6 @@ group :test, :development do
   gem 'rspec-rails'
 
   gem 'pry-rails'
-  gem 'pry-debugger'
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
 end

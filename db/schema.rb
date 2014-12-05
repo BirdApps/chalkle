@@ -332,7 +332,7 @@ ActiveRecord::Schema.define(:version => 20141201222332) do
     t.string   "action"
     t.string   "controller"
     t.string   "flag"
-    t.text     "parameters"
+    t.string   "request_ip"
     t.integer  "actor_id"
     t.string   "actor_type"
     t.integer  "target_id"

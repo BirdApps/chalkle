@@ -244,7 +244,7 @@ class ApplicationController < ActionController::Base
 
     def entity_events
       auto_log = true
-      EntityEvents.record(params, current_chalkler, auto_log)
+      EntityEvents.record(request, current_chalkler, auto_log)
     end
 
     def set_locale
