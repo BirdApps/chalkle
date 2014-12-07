@@ -70,18 +70,18 @@ class Course < ActiveRecord::Base
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :displayable, lambda { published.visible }
+  scope :displayable, -> { published.visible }
 
-  scope :start_at_between, lambda{ |from,to| where(:start_at => from.beginning_of_day..to.end_of_day) }
+  scope :start_at_between, ->(from,to) { where(:start_at => from.beginning_of_day..to.end_of_day) }
   scope :recent, visible.start_at_between(DateTime.current.advance(days: PAST), DateTime.current.advance(days: IMMEDIATE_FUTURE))
   scope :last_week, visible.start_at_between(DateTime.current.advance(weeks: -1), DateTime.current)
-  scope :in_month, lambda{|month| start_at_between(month.first_day, month.last_day) }
-  scope :in_week, lambda {|week| start_at_between(week.first_day, week.last_day) }
-  scope :in_fortnight, lambda {|week| start_at_between(week.first_day, (week+1).last_day) }
+  scope :in_month, ->(month){ start_at_between(month.first_day, month.last_day) }
+  scope :in_week, -> (week){ start_at_between(week.first_day, week.last_day) }
+  scope :in_fortnight, -> (week){ start_at_between(week.first_day, (week+1).last_day) }
   
-  scope :on_date, lambda {|date| start_at_between(date, date) }
-  scope :in_future, lambda { where( "end_at >= ?", DateTime.current) }
-  scope :previous, lambda { where("start_at < ?", DateTime.current) }
+  scope :on_date, -> (date) { start_at_between(date, date) }
+  scope :in_future, -> { where( "end_at >= ?", DateTime.current) }
+  scope :previous, -> { where("start_at < ?", DateTime.current) }
   #TODO: replace references to previous with in_past - time consuming because previous is common word
   scope :in_past, previous
   scope :by_date, order(:start_at)
@@ -94,17 +94,17 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-  scope :taught_by_chalkler, lambda {|chalkler| joins(:teacher).where('channel_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
-  scope :in_region, lambda {|region| where(region_id: region.id) }
-  scope :in_channel, lambda {|channel| where(channel_id: channel.id) }
-  scope :in_category, lambda {|category| includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
+  scope :taught_by_chalkler, -> (chalkler){ joins(:teacher).where('channel_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
+  scope :in_region, -> (region){ where(region_id: region.id) }
+  scope :in_channel, -> (channel){ where(channel_id: channel.id) }
+  scope :in_category, -> (category){ includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
   scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
-  scope :adminable_by, lambda {|chalkler| joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
+  scope :adminable_by, -> (chalkler){ joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
 
   scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
-  scope :similar_to, lambda { |course| where(channel_id: course.channel_id, url_name: course.url_name).displayable.in_future.by_date }
+  scope :similar_to, -> (course){ where(channel_id: course.channel_id, url_name: course.url_name).displayable.in_future.by_date }
 
 
   before_create :set_url_name

@@ -15,11 +15,11 @@ describe CourseImage do
 
   describe 'image generation' do
     it 'sanitizes the filename' do
-      CourseImage.sanitize_filename('  title"ä*@').should == 'title____.png'
+      expect(CourseImage.sanitize_filename('  title"ä*@')).to eq 'title____.png'
     end
 
     it 'sanitizes the title' do
-      CourseImage.sanitize_title('title"%').should == 'title\"\%'
+      expect(CourseImage.sanitize_title('title"%')).to eq 'title\"\%'
     end
   end
 end

@@ -3,14 +3,18 @@ require 'spec_helper'
 describe ChalklerObserver do
 
   let(:chalkler){ FactoryGirl.create(:chalkler, email: 'email@example.com') }
-
+  let(:unsaved_chalkler){ FactoryGirl.build(:chalkler) }
+  before { ActiveRecord::Base.observers.enable :chalkler_observer }
   describe "#send_welcome_mail" do
-    it "sends welcome email"
-    it "sends no email when chalkler has no email address"
+    it 'should send welcome mailer on chalkler create' do
+      expect{ unsaved_chalkler.save }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
   end
-
-  describe "#create_channel_associations" do
-    it "assigns a chalkler to channels"
+  
+  describe "sets a notification preference for new chalklers" do
+    it 'should add notification preference to new chalklers' do 
+      expect( chalkler.notification_preference ).not_to be_nil 
+    end
   end
 
 end

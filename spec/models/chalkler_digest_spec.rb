@@ -13,7 +13,6 @@ describe ChalklerDigest do
                          lessons: [lesson],
                          status: 'Published',
                          do_during_class: 'x',
-                         meetup_url: 'http://meetup.com',
                          max_attendee: 10)
     }
     let(:category){FactoryGirl.create(:category)}
@@ -26,7 +25,6 @@ describe ChalklerDigest do
                                    lessons: [lesson],
                                    status: 'Published',
                                    do_during_class: 'x',
-                                   meetup_url: 'http://meetup.com',
                                    max_attendee: 15,
                                    category: category,
                                    channel: channel)}
@@ -149,12 +147,6 @@ describe ChalklerDigest do
         digest.open_courses.should be_empty
       end
 
-      it "won't load a course that begins less than one day from now" do
-        course.start_at = Time.now.utc + 23.hours
-        course.save
-        digest.open_courses.should be_empty
-      end
-
       it "won't choke on an empty set" do
         course.destroy
         digest.open_courses.should be_empty
@@ -188,12 +180,6 @@ describe ChalklerDigest do
 
       it "won't load a course without do_during_class" do
         course.update_attribute :do_during_class, nil
-        digest.default_open_courses.should be_empty
-      end
-
-      it "won't load a course that begins less than one day from now" do
-        course.start_at = Time.now.utc + 23.hours
-        course.save
         digest.default_open_courses.should be_empty
       end
 

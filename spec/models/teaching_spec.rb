@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
+  let(:the_user) { FactoryGirl.create(:the_user) }
   let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.1, teacher_percentage: 0.5) }
   let(:channel2) { FactoryGirl.create(:channel, channel_rate_override: 0.6, teacher_percentage: 0.1) }
   let(:category) { FactoryGirl.create(:category, name: "music and dance") }
@@ -26,7 +27,7 @@ describe "Teachings" do
     repeat_frequency: '',
     repeat_count: 1
   } }
-  let(:chalkler_teaching){ Teaching.new(chalkler) }
+  let!(:chalkler_teaching){ Teaching.new(chalkler) }
 
   before(:each) do
     chalkler.channels << channel
@@ -44,68 +45,68 @@ describe "Teachings" do
   describe "form validation" do
 
   	it "returns true for all required inputs completed" do
-  		expect(chalkler_teaching.check_valid_input(params)).to be true
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be true
   	end
 
   	it "returns false for blank form" do
-  		expect(chalkler_teaching.check_valid_input({})).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, {})).to be_falsey
   	end
 
   	it "returns false without a class title" do
   		params[:name] = ''
-  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
   	end
 
   	it "returns false without what we do during class" do
   		params[:do_during_class] = ''
-  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
   	end
 
   	it "returns false without what we will learn during class" do
   		params[:learning_outcomes] = ''
-  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
   	end
 
   	it "returns false without a numerical duration" do
   		params[:duration_hours] = 'ABC'
       params[:duration_minutes] = 'ABC'
-  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
   	end
 
   	it "returns false without a numerical teacher cost" do
   		params[:teacher_cost] = 'ABC'
-  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
   	end
 
   	it "returns false without a numerical maximum attendee" do
   		params[:max_attendee] = 'ABC'
-  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
   	end
 
   	it "returns false without a numerical minimum attendee" do
   		params[:min_attendee] = 'ABC'
-  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
   	end
 
   	it "returns false when teacher cost is nonzero and free course is checked" do
   		params[:free_course] = '1'
   		params[:teacher_cost] = '10'
-  		expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+  		expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
   	end
 
     it "returns false when min number of attendee is not an integer" do
       params[:min_attendee] = '1.3'
-      expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+      expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
     end
 
     it "returns false when max number of attendee is not an integer" do
       params[:max_attendee] = '10.3'
-      expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+      expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
     end
 
     it "returns false when a primary category is not assigned" do
       params[:category_primary_id] = '0'
-      expect(chalkler_teaching.check_valid_input(params)).to be_falsey
+      expect(chalkler_teaching.send(:check_valid_input, params)).to be_falsey
     end
   end
 

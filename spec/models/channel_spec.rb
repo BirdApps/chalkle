@@ -20,12 +20,12 @@ describe Channel do
   		expect(channel).not_to be_valid
   	end
 
-    it "should not allow bank account number not in the correct format" do
+    pending "should not allow bank account number not in the correct format" do
       channel.account = '12312-12'
       expect(channel).not_to be_valid
     end
 
-    it "should not allow bank account number containing letters" do
+    pending "should not allow bank account number containing letters" do
       channel.account = '12-1231-43243Arewr-34'
       expect(channel).not_to be_valid
     end

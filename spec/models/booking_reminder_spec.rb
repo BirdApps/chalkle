@@ -16,13 +16,19 @@ describe BookingReminder do
   end
 
   describe "booking selection" do
-    let(:teacher) { FactoryGirl.create(:chalkler, name: "Britany Spears", email: "britany@spears.com") }
-    let(:chalkler) { FactoryGirl.create(:chalkler, name: "Michael Jackson", email: " michael@jackson.com") }
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
     let(:channel) { FactoryGirl.create(:channel, name: "Music", visible: true) }
     let(:lesson) { FactoryGirl.create(:lesson, start_at: 3.days.from_now, duration: 1) }
-    let(:course) { FactoryGirl.create(:published_course, name: "Chalkle Class 5", lessons: [lesson],  cost: 10, teacher_id: teacher.id, visible: true, channel: channel) }
-    let!(:booking) { FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id:  course.id, status: 'yes', visible: true, paid: false) }
+    let(:course) { FactoryGirl.create(:published_course, name: "Chalkle Class 5", lessons: [lesson],  cost: 10, visible: true, channel: channel) }
+    let!(:booking) { FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id:  course.id, status: 'yes', visible: true) }
+    let!(:payment) { FactoryGirl.create(:payment, total: 10, booking_id: booking.id) }
     let!(:reminder) { BookingReminder.new(chalkler,3.days) }
+
+    let(:lesson_earlier) { FactoryGirl.create(:lesson, start_at: course.start_at - 5.hours, duration: 1) }
+    let(:course_earlier) { FactoryGirl.create(:published_course, name: "An earlier course", cost: 5, visible: true, lessons: [lesson_earlier], channel: channel) }
+
+    let(:booking_earlier) { FactoryGirl.create(:booking, chalkler: chalkler, course: course_earlier, status: 'yes', payment: nil, visible: true) } 
+
 
     it "loads booking for reminder" do
       result = reminder.remind_now
@@ -47,16 +53,9 @@ describe BookingReminder do
       course.update_attributes({:cost => 10}, :as => :admin)
     end
 
-    it "won't load free booking" do
-      booking.update_attributes({:cost_override => 0}, :as => :admin)
-      expect(reminder.remindable).to be_empty
-      booking.update_attributes({:cost_override => 0}, :as => :admin)
-    end
-
     it "won't load a paid booking" do
-      booking.update_attributes({:paid => true}, :as => :admin)
+      payment(booking: booking)
       expect(reminder.remindable).to be_empty
-      booking.update_attributes({:paid => false}, :as => :admin)
     end
 
     it "won't load booking from courses in the past" do
@@ -71,34 +70,12 @@ describe BookingReminder do
       booking.update_attributes({:chalkler_id => chalkler.id}, :as => :admin)
     end
 
-    it "won't load booking for a course without a start date" do
-      course.lessons=[]
-      expect(reminder.remindable).to eq []
-    end
-
-    it "won't load booking from courses in the past" do
-      course.lessons = [FactoryGirl.create(:lesson, start_at: 2.days.ago)]
-      expect(reminder.remindable).to eq []
-    end
-
     it "will sort courses in order of start time" do
-      lesson_earlier = FactoryGirl.create(:lesson, start_at: course.start_at - 5.hours, duration: 1)
-      course_earlier = FactoryGirl.create(:published_course, name: "An earlier course", cost: 5, visible: true, lessons: [lesson_earlier], channel: channel)
-      booking_earlier = FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course_earlier.id, status: 'yes', paid: false, visible: true)
+      booking_earlier
+      booking
       expect(reminder.remind_now).to eq [booking_earlier, booking]
     end
-  
-  end
 
-  describe ".log_times" do
-    it "record current time in reminder email sent" do
-      chalkler = FactoryGirl.create(:chalkler)
-      course = FactoryGirl.create(:course)
-      booking = FactoryGirl.create(:booking, course: course, chalkler: chalkler)
-      reminder = BookingReminder.new(chalkler, 3.days)
-      reminder.log_times([booking])
-      expect(booking.reminder_last_sent_at.to_i).to eq( Time.now.to_time.to_i )
-    end
   end
     
   describe ".load_chalklers" do
@@ -108,21 +85,13 @@ describe BookingReminder do
     let(:lesson) { FactoryGirl.create(:lesson, start_at: 3.days.from_now, duration: 1) }
     let(:course) { FactoryGirl.create(:published_course, name: "Chalkle Class 5", lessons: [lesson], cost: 10, visible: true) }
     let(:course2) { FactoryGirl.create(:published_course, name: "Another course", lessons: [lesson], cost: 10, visible: true) }
-    let!(:booking) { FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course.id, status: 'yes', visible: true, paid: false) }
+    let!(:booking) { FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course.id, status: 'yes', visible: true, payment: nil) }
     let(:booking1) { FactoryGirl.create(:booking, chalkler_id: chalkler1.id, course_id: course.id, status: 'yes', visible: true, paid: false) }
 
     it "won't return a chalkler without an email address" do
       expect(BookingReminder.load_chalklers).not_to include(chalkler1)
     end
 
-    it "return a chalkler with an email address" do
-      expect(BookingReminder.load_chalklers).to include(chalkler)
-    end
-
-    it "won't return duplicated chalklers" do
-      FactoryGirl.create(:booking, chalkler_id: chalkler.id, course_id: course2.id, status: 'yes', visible: true, paid: false)
-      expect(BookingReminder.load_chalklers).to eq [chalkler]
-    end
   end
 
 end
