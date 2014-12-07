@@ -1,5 +1,10 @@
 require 'spec_helper'
 
 describe PartnerInquiry do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:partner_inquiry) { FactoryGirl.create(:partner_inquiry) }
+  
+  it 'should have a name' do 
+    expect(partner_inquiry.name).not_to be_nil
+  end
+
 end

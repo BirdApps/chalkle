@@ -13,7 +13,6 @@ describe ChalklerDigest do
                          lessons: [lesson],
                          status: 'Published',
                          do_during_class: 'x',
-                         meetup_url: 'http://meetup.com',
                          max_attendee: 10)
     }
     let(:category){FactoryGirl.create(:category)}
@@ -26,7 +25,6 @@ describe ChalklerDigest do
                                    lessons: [lesson],
                                    status: 'Published',
                                    do_during_class: 'x',
-                                   meetup_url: 'http://meetup.com',
                                    max_attendee: 15,
                                    category: category,
                                    channel: channel)}
@@ -38,7 +36,7 @@ describe ChalklerDigest do
       chalkler.channels << channel
       courses = digest.new_courses
       courses.concat digest.open_courses
-      courses.should == [course]
+      expect(courses).to eq [course]
     end
 
     it "only loads default new/open courses once" do
@@ -48,7 +46,7 @@ describe ChalklerDigest do
       chalkler.channels << channel
       courses = digest.default_new_courses
       courses.concat digest.default_open_courses
-      courses.should == [course]
+      expect(courses).to eq [course]
     end
 
     describe "#new_courses" do
@@ -56,29 +54,29 @@ describe ChalklerDigest do
         course1.category = FactoryGirl.create(:category)
         course1.channel = channel
         course1.save!
-        digest.new_courses.should == [course]
+        expect(digest.new_courses).to eq [course]
       end
 
       it "loads a courses from channels that chalkler belongs to" do
         course1.category = category
         course1.channel = FactoryGirl.create(:channel)
         course1.save!
-        digest.new_courses.should == [course]
+        expect(digest.new_courses).to eq [course]
       end
 
       it "won't load a course without do_during_class" do
         course.update_attribute :do_during_class, nil
-        digest.instance_eval{ new_courses }.should be_empty
+        expect(digest.instance_eval{ new_courses }).to be_empty
       end
 
       it "won't load a course that is more than 1 day old" do
         course.update_attribute :published_at, 2.days.ago
-        digest.instance_eval{ new_courses }.should be_empty
+        expect(digest.instance_eval{ new_courses }).to be_empty
       end
 
       it "won't load a course from a hidden channel" do
         channel.update_attribute :visible, false
-        digest.new_courses.should be_empty
+        expect(digest.new_courses).to be_empty
       end
 
       it "only loads a course from chalkler's regions if specified" do
@@ -87,10 +85,10 @@ describe ChalklerDigest do
         course.region = region
         course.save!
         
-        digest.new_courses.should include(course)
+        expect(digest.new_courses).to include(course)
         course.region = nil
         course.save!
-        digest.new_courses.should be_empty
+        expect(digest.new_courses).to be_empty
       end
     end
 
@@ -98,22 +96,22 @@ describe ChalklerDigest do
       it "loads a courses from channels that chalkler belongs to" do
         course1.channel = FactoryGirl.create(:channel)
         course1.save!
-        digest.default_new_courses.should == [course]
+        expect(digest.default_new_courses).to eq [course]
       end
 
       it "won't load a course without do_during_class" do
         course.update_attribute :do_during_class, nil
-        digest.default_new_courses.should be_empty
+        expect(digest.default_new_courses).to be_empty
       end
 
       it "won't load a course that is more than 1 day old" do
         course.update_attribute :published_at, 2.days.ago
-        digest.default_new_courses.should be_empty
+        expect(digest.default_new_courses).to be_empty
       end
 
       it "won't load a course from a hidden channel" do
         channel.update_attribute :visible, false
-        digest.default_new_courses.should be_empty
+        expect(digest.default_new_courses).to be_empty
       end
     end
 
@@ -127,42 +125,36 @@ describe ChalklerDigest do
         course1.category = FactoryGirl.create(:category)
         course1.channel = channel
         course1.save!
-        digest.open_courses.should == [course]
+        expect(digest.open_courses).to eq [course]
       end
 
       it "loads a courses from channels that chalkler belongs to" do
         course1.category = category
         course1.channel = FactoryGirl.create(:channel)
         course1.save!
-        digest.open_courses.should == [course]
+        expect(digest.open_courses).to eq [course]
       end
 
       it "won't load a full course" do
         course.update_attribute :max_attendee, 10
         course.bookings = []
         10.times { FactoryGirl.create(:booking, course: course) }
-        digest.open_courses.should be_empty
+        expect(digest.open_courses).to be_empty
       end
 
       it "won't load a course without do_during_class" do
         course.update_attribute :do_during_class, nil
-        digest.open_courses.should be_empty
-      end
-
-      it "won't load a course that begins less than one day from now" do
-        course.start_at = Time.now.utc + 23.hours
-        course.save
-        digest.open_courses.should be_empty
+        expect(digest.open_courses).to be_empty
       end
 
       it "won't choke on an empty set" do
         course.destroy
-        digest.open_courses.should be_empty
+        expect(digest.open_courses).to be_empty
       end
 
       it "won't load a course from a hidden channel" do
         channel.update_attribute :visible, false
-        digest.open_courses.should be_empty
+        expect(digest.open_courses).to be_empty
       end
     end
 
@@ -176,35 +168,29 @@ describe ChalklerDigest do
         course1.category = category
         course1.channel = FactoryGirl.create(:channel)
         course1.save!
-        digest.default_open_courses.should == [course]
+        expect(digest.default_open_courses).to eq [course]
       end
 
       it "won't load a full course" do
         course.update_attribute :max_attendee, 10
         course.bookings = []
         10.times { FactoryGirl.create(:booking, course: course) }
-        digest.default_open_courses.should be_empty
+        expect(digest.default_open_courses).to be_empty
       end
 
       it "won't load a course without do_during_class" do
         course.update_attribute :do_during_class, nil
-        digest.default_open_courses.should be_empty
-      end
-
-      it "won't load a course that begins less than one day from now" do
-        course.start_at = Time.now.utc + 23.hours
-        course.save
-        digest.default_open_courses.should be_empty
+        expect(digest.default_open_courses).to be_empty
       end
 
       it "won't choke on an empty set" do
         course.destroy
-        digest.default_open_courses.should be_empty
+        expect(digest.default_open_courses).to be_empty
       end
 
       it "won't load a course from a hidden channel" do
         channel.update_attribute :visible, false
-        digest.default_open_courses.should be_empty
+        expect(digest.default_open_courses).to be_empty
       end
     end
   end
@@ -213,17 +199,17 @@ describe ChalklerDigest do
     it "won't return a chalkler without an email address" do
       chalkler = FactoryGirl.create(:chalkler)
       chalkler.update_attribute(:email, nil)
-      ChalklerDigest.load_chalklers('weekly').should be_empty
+      expect(ChalklerDigest.load_chalklers('weekly')).to be_empty
     end
 
     it "won't returns a chalkler without correct frequency" do
       c = FactoryGirl.create(:chalkler, email: 'example@example.com', email_frequency: 'weekly')
-      ChalklerDigest.load_chalklers('daily').should be_empty
+      expect(ChalklerDigest.load_chalklers('daily')).to be_empty
     end
 
     it "will return a chalkler when email and correct email_frequency set" do
       c = FactoryGirl.create(:chalkler, email: 'example@example.com', email_frequency: 'weekly')
-      ChalklerDigest.load_chalklers('weekly').should == [c]
+      expect(ChalklerDigest.load_chalklers('weekly')).to eq [c]
     end
   end
 end

@@ -154,14 +154,13 @@ class Channel < ActiveRecord::Base
   end
 
   def check_url_name
-    url_name = self.url_name.nil? ? name.parameterize : self.url_name.parameterize
-    existing_channels = Channel.where(url_name: url_name)
-    valid = existing_channels.blank? || (existing_channels.first.id == self.id && existing_channels.count == 1)
-    unless valid
+    new_url_name = (self.url_name || name).try :parameterize
+    existing_channels = Channel.where(url_name: new_url_name)
+    unless existing_channels.blank? || (existing_channels.first.id == self.id && existing_channels.count == 1)
       existing_channels.sort{|s|s.id}  
        url_name = url_name+'-'+existing_channels.last.id.to_s
     end
-    self.url_name = url_name
+    self.url_name = new_url_name
   end
 
   def header_color

@@ -15,7 +15,7 @@ class Booking < ActiveRecord::Base
   STATUS_2 = "no"
   STATUS_1 = "yes"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
-  BOOKING_STATUSES = %w(yes no refund_pending pending refund_complete)
+  BOOKING_STATUSES = VALID_STATUSES
 
   belongs_to  :course
   belongs_to  :chalkler
@@ -54,7 +54,7 @@ class Booking < ActiveRecord::Base
 
   after_create :expire_cache!
 
-  delegate :start_at, :venue, :prerequisites, :teacher_id, :cost, to: :course
+  delegate :start_at, :venue, :prerequisites, :teacher_id, to: :course
 
   delegate :email, to: :chalkler
 

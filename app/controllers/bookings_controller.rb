@@ -152,13 +152,13 @@ class BookingsController < ApplicationController
     end
     unless policy(@course).write?(true)
       unless @course.published?
-        return redirect_to :back, notice: "This class is no longer available."
+        return redirect_to_back_with_fallback :root, notice: "This class is no longer available."
       end
       unless @course.start_at > DateTime.current
-        return redirect_to :back, notice: "This class has already started, and bookings cannot be created or altered"
+        return redirect_to_back_with_fallback :root, "This class has already started, and bookings cannot be created or altered"
       end
       unless @course.spaces_left?
-        return redirect_to :back, notice: "The class is full"
+        return redirect_to_back_with_fallback :root, notice: "The class is full"
       end
     end
 
