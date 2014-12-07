@@ -153,6 +153,4 @@ group :test do
   # Test coverage
   gem 'simplecov',  '~> 0.7.1', require: false
 
-  gem 'zeus', '0.13.4.pre2'
-
 end
