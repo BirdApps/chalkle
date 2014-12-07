@@ -9,8 +9,7 @@ describe BookingsController do
       context "when the course is unpublished" do
         let(:course) { FactoryGirl.create(:course, status: 'Draft', channel: channel) }
         before do 
-          ENV["HTTP_REFERER"] = root_url
-          get :new, channel_id: channel.id, course_id: course.id, HTTP_REFERER: root_url
+          get :new, channel_id: channel.id, course_id: course.id
         end
 
         it "redirects to the chalkler dashboard" do

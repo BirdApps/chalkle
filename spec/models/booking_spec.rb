@@ -7,72 +7,7 @@ describe Booking do
     it { should validate_presence_of(:course_id) }
     it { should validate_presence_of(:chalkler_id) }
 
-    describe "callbacks" do
 
-      describe "#set_free_course_attributes" do
-        context "free course" do
-          let(:course) { FactoryGirl.create(:course, cost: 0) }
-          let(:booking) { FactoryGirl.create(:booking, course: course) }
-
-          it "sets payment method to free" do
-            expect(booking.payment_method).to eq 'free'
-          end
-
-          it "sets paid to true" do
-            expect(booking.paid).to eq 0
-          end
-        end
-      end
-    end
-  end
-
-  describe "#cost" do
-
-    let(:free_course) {FactoryGirl.create(:course, cost: nil)}
-    let(:free_booking) {FactoryGirl.create(:booking, guests: 5, course: free_course)}
-    let(:course) {FactoryGirl.create(:course, cost: 10)}
-    let(:booking) {FactoryGirl.create(:booking, guests: 5, course: course)}
-
-    it "returns nil when course has no cost" do
-      expect(free_booking.cost).to eq 0
-    end
-
-    it "returns cost from course" do
-      expect(booking.cost.to_f).to eq 10
-    end
-
-    it "calculates cost when booking has no guests" do
-      expect(booking.cost.to_f).to eq 10
-    end
-
-    it "calculates cost when booking has guests" do
-      expect(booking.cost.to_f).to eq 100
-    end
-  end
-
-  describe ".paid and .unpaid" do
-
-    let(:course) {FactoryGirl.create(:course, cost: nil)}
-    let(:course_paid) {FactoryGirl.create(:course, cost: 10)}
-    let!(:booking) { FactoryGirl.create(:booking, course: course_paid) }
-    let!(:booking_unpaid) { FactoryGirl.create(:booking, course: course) }
-    let!(:payment) { FactoryGirl.create(:payment, booking: booking) }
-
-    it "excludes unpaid bookings" do
-      expect(Booking.paid).not_to include(booking_unpaid)
-    end
-
-    it "includes paid bookings" do
-      expect(Booking.paid).to include(booking)
-    end
-
-    it "excludes paid bookings" do
-      expect(Booking.unpaid).not_to include(booking_unpaid)
-    end
-
-    it "includes unpaid bookings" do
-      expect(Booking.unpaid).to include(booking_unpaid)
-    end
   end
 
   describe ".confirmed" do

@@ -54,7 +54,7 @@ class Booking < ActiveRecord::Base
 
   after_create :expire_cache!
 
-  delegate :start_at, :venue, :prerequisites, :teacher_id, :cost, to: :course
+  delegate :start_at, :venue, :prerequisites, :teacher_id, to: :course
 
   delegate :email, to: :chalkler
 

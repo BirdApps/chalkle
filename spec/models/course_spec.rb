@@ -62,7 +62,8 @@ describe Course do
       end
 
       it { 
-        course
+        course.status = Course::STATUS_1
+        course.save
         expect(Course.published).to include(course) 
       }
     end
@@ -82,9 +83,9 @@ describe Course do
   end
 
   describe ".upcoming" do
-    let!(:old) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.ago)], duration: 1) }
-    let!(:soon) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.from_now)], duration: 1) }
-    let!(:later) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 5.days.from_now)], duration: 1) }
+    let!(:old) { FactoryGirl.create(:published_course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.ago)], duration: 1) }
+    let!(:soon) { FactoryGirl.create(:published_course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.from_now)], duration: 1) }
+    let!(:later) { FactoryGirl.create(:published_course, lessons: [ FactoryGirl.create(:lesson, start_at: 5.days.from_now)], duration: 1) }
 
     it "should include published courses in the future" do
       expect(Course.upcoming).to include(soon, later)
@@ -92,13 +93,13 @@ describe Course do
     end
 
     it "should limit courses if limit is present" do
-      expect(Course.upcoming(1.day.from_now)).not_to include(soon)
+      expect(Course.upcoming(1.day.from_now)).not_to include(later)
     end
   end
 
   describe ".in_future" do
     let!(:lesson) { FactoryGirl.create(:lesson, start_at: Time.current + 5.hours, duration: 1) }
-    let(:course) { FactoryGirl.create(:course, lessons: [lesson]) }
+    let(:course) { FactoryGirl.create(:published_course, lessons: [lesson]) }
 
     it "includes course published earlier today" do
       Timecop.freeze(Time.current) do
@@ -118,7 +119,7 @@ describe Course do
       let(:chalkler) { FactoryGirl.create(:chalkler, name: "Chalkler") }
       let(:channel) { FactoryGirl.create(:channel) }
       let(:lesson) { FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5) }
-      let(:course) { FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, min_attendee: 2, venue: "Town Hall") }
+      let(:published_course) { FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, min_attendee: 2, venue: "Town Hall") }
       let(:booking) { FactoryGirl.create(:booking, chalkler: chalkler, course: course, status: 'yes', guests: 5) }
 
     it "should not be valid if published with no lessons and published" do
@@ -144,7 +145,7 @@ describe Course do
 
     let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5) }
 
-    let(:course) { FactoryGirl.create(:course, channel: channel, cost: 20) }
+    let(:course) { FactoryGirl.create(:published_course, channel: channel, cost: 20) }
       
     describe "cost validations" do
 

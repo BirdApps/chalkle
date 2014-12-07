@@ -43,10 +43,10 @@ class ApplicationController < ActionController::Base
     render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
   end
 
-  def redirect_to_back_with_fallback(fallback, *args)
-    redirect_to :back, notice: notice
+  def redirect_to_back_with_fallback(fallback, args={notice: "" })
+    return redirect_to :back, notice: notice
   rescue ActionController::RedirectBackError
-    redirect_to fallback, notice: args[:notice]
+    return redirect_to fallback, notice: args[:notice]
   end
 
   protected
