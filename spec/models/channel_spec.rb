@@ -10,7 +10,7 @@ describe Channel do
 
   describe "default values" do
     it "hides channel by default" do
-      channel.visible.should be_falsey
+      expect(channel.visible).to be_falsey
     end
   end
 
