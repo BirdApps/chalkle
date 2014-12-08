@@ -192,9 +192,17 @@ class Chalkler < ActiveRecord::Base
     assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
   
-  def send_notification(type, href, message, from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil, target = nil)
+  def send_notification(type, href, message, target = nil,from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil)
     
+    ## GET AN IMAGE
+    # if from a chalkler
     image = from.avatar if image.blank? && from.present? && from.respond_to?('avatar')
+    # if from a booking
+    image = target.image if image.blank? && target.present? && target.respond_to?('image')
+    # if from a course
+    image = target.course_upload_image if image.blank? && target.present? && target.respond_to?('course_upload_image')
+    
+    #extract url from img
     image = image.url if image && image.respond_to?('url')
     image = Notification.default_image(type) unless image
 

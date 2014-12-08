@@ -13,7 +13,9 @@ class NotificationPreference < ActiveRecord::Base
 
   def welcome_chalkler
     #3
-    chalkler.send_notification Notification::CHALKLE, me_preferences_path, I18n.t('notify.chalkler.welcome', name: chalkler.first_name)
+    message = I18n.t('notify.chalkler.welcome', name: chalkler.first_name)
+
+    chalkler.send_notification Notification::CHALKLE, me_preferences_path, message
 
     ChalklerMailer.welcome(chalkler).deliver!
   end
@@ -25,20 +27,27 @@ class NotificationPreference < ActiveRecord::Base
 
   def booking_confirmation(booking)
     #5
-    chalkler.send_notification Notification::REMINDER, course_path(booking.course), I18n.t('notify.booking.confirmation', course_name: booking.course.name)
+    message = I18n.t('notify.booking.confirmation', course_name: booking.course.name)
+
+    chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 
     BookingMailer.booking_confirmation(booking).deliver!
   end
 
   def booking_cancelled(booking)
     refund_text = booking.pending_refund? ? t('notify.booking.refund') : ""
-    chalkler.send_notification Notification::REMINDER, course_path(booking.course), I18n.t('notify.booking.cancelled', course_name: booking.course.name, refund: refund_text)
+
+    message = I18n.t('notify.booking.cancelled', course_name: booking.course.name, refund: refund_text)
+
+    chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 
     BookingMailer.booking_cancelled(booking).deliver!
   end
 
   def booking_completed(booking)
-    chalkler.send_notification Notification::REMINDER, course_path(booking.course), I18n.t('notify.booking.completed', course_name: booking.course.name)
+    message = I18n.t('notify.booking.completed', course_name: booking.course.name)
+
+    chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 
     BookingMailer.booking_completed(booking).deliver!
   end
@@ -49,7 +58,9 @@ class NotificationPreference < ActiveRecord::Base
 
   def booking_reminder(booking)
     #7
-    chalkler.send_notification Notification::REMINDER, course_path(booking.course), I18n.t('notify.booking.reminder', course_name: booking.course.name)
+    message = I18n.t('notify.booking.reminder', course_name: booking.course.name)
+    
+    chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 
     BookingMailer.booking_reminder(booking).deliver!
   end
