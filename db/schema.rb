@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141201222332) do
+ActiveRecord::Schema.define(:version => 20141208034843) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -353,9 +353,14 @@ ActiveRecord::Schema.define(:version => 20141201222332) do
 
   create_table "notification_preferences", :force => true do |t|
     t.integer  "chalkler_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.integer  "from_chalkler_id"
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.boolean  "chalkler_discussion_from_chalkler", :default => true
+    t.boolean  "chalkler_discussion_from_teacher",  :default => true
+    t.boolean  "teacher_bookings",                  :default => true
+    t.boolean  "teacher_discussion",                :default => true
+    t.boolean  "provider_bookings",                 :default => true
+    t.boolean  "provider_discussion",               :default => true
   end
 
   create_table "notifications", :force => true do |t|
@@ -372,6 +377,7 @@ ActiveRecord::Schema.define(:version => 20141201222332) do
     t.text     "image"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.integer  "from_chalkler_id"
   end
 
   create_table "omni_avatar_avatars", :force => true do |t|
@@ -506,5 +512,6 @@ ActiveRecord::Schema.define(:version => 20141201222332) do
   add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_from_chalkler_id_fk"
 
   add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
+  add_foreign_key "notifications", "chalklers", name: "notifications_from_chalkler_id_fk"
 
 end
