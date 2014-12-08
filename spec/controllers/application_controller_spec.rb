@@ -8,27 +8,6 @@ describe ApplicationController do
     end
   end
 
-  describe "#region_name" do 
-    context "Region is auto detected" do 
-      let(:user) { FactoryGirl.build(:user) }
-      let(:region) { FactoryGirl.build(:region) }
-
-      it "sets the correct region when region is passed in as params" do 
-        params[:region] = region.name
-        expect(conroller.region_name).to eq(region)
-      end
-
-      it "falls back when the API is down" do
-        pending
-      end
-
-      it "does not do an API request when supplied with a region param" do 
-        pending
-      end
-
-    end
-  end 
-
   describe "#after_sign_in_path_for" do
 
     context "when an Admin User signs in successfully" do
@@ -43,18 +22,18 @@ describe ApplicationController do
 
     context "when a Chalkler signs in successfully" do
 
-      let(:user)       { FactoryGirl.build(:chalkler) }
+      let(:user) { FactoryGirl.build(:chalkler) }
       let(:data_collection) { double("data_collection", path: "/data_collection/fix") }
 
-      before { Chalkler::DataCollection.stub(:new) { data_collection } }
+      before { allow(Chalkler::DataCollection).to receive(:new).and_return( data_collection) }
 
       it "creates a new Chalkler data collector" do
-        Chalkler::DataCollection.should_receive(:new)
+        expect(Chalkler::DataCollection).to receive(:new)
         controller.after_sign_in_path_for(user)
       end
 
       it "gets a path name from the Chalkler data collector" do
-        data_collection.should_receive(:path)
+        expect(data_collection).to receive(:path)
         controller.after_sign_in_path_for(user)
       end
 

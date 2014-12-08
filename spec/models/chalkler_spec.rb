@@ -5,7 +5,6 @@ describe Chalkler do
   let(:channel) { FactoryGirl.create(:channel) }
 
   specify { expect( FactoryGirl.build(:chalkler) ).to be_valid }
-  specify { expect( FactoryGirl.build(:meetup_chalkler) ).to be_valid }
 
   describe "validation" do
     subject { Chalkler.new }
@@ -14,7 +13,6 @@ describe Chalkler do
     it { should validate_uniqueness_of :email }
 
     context "non-meetup" do
-      before { subject.stub(:meetup_id) { nil } }
       it { should validate_presence_of :email }
     end
   end
@@ -44,19 +42,6 @@ describe Chalkler do
 
     it "defaults to receiving weekly emails for all categories" do
       expect(Chalkler.new.email_frequency).to eq 'weekly'
-    end
-  end
-
-  describe '.teachers' do
-    it "includes chalklers who are teachers" do
-      chalkler = FactoryGirl.create(:chalkler)
-      course = FactoryGirl.create(:course, name: "New Class", teacher_id: chalkler.id)
-      expect(Chalkler.teachers).to include(chalkler)
-    end
-
-    it "excludes chalklers who are not teachers" do
-      chalkler = FactoryGirl.create(:chalkler)
-      expect(Chalkler.teachers).not_to include(chalkler)
     end
   end
 

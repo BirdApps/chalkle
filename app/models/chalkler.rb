@@ -94,6 +94,10 @@ class Chalkler < ActiveRecord::Base
     courses.merge(Booking.confirmed).uniq.in_future.by_date
   end
 
+  def chalkler
+    self
+  end
+
   class << self
 
     def exists?(email)

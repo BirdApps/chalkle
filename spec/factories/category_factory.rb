@@ -1,5 +1,8 @@
 FactoryGirl.define do
+  
+  sequence(:name) { |n| "Just a category #{n}" }
+
   factory :category do
-    name "Just a category"
+    name { generate(:name) }
   end
 end
