@@ -54,7 +54,7 @@ class Booking < ActiveRecord::Base
 
   after_create :expire_cache!
 
-  delegate :start_at, :venue, :prerequisites, :teacher_id, :cost, to: :course
+  delegate :start_at, :venue, :prerequisites, :teacher_id, :cost, :course_upload_image, to: :course
 
   delegate :email, to: :chalkler
 
@@ -239,6 +239,10 @@ class Booking < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def image
+    course.course_upload_image
   end
 
   def self.csv_for(bookings)
