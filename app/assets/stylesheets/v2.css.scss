@@ -633,8 +633,8 @@ body.v2 {
         .notifications-drop{
           .dropdown-toggle{
             img{
-              height: 14px;
-              width: 11px;
+              height: 24px;
+              width: 20px;
             }
           }
           .dropdown-menu{
@@ -650,28 +650,33 @@ body.v2 {
                 background: transparent;
               }
               li._notification{
+                font-size: 1.2em;
                 height: auto !important;
                 min-height: 65px !important;
                 a {
                   padding:0 !important;
-                  font-weight: 100;
+                  font-weight: 500;
                   font-size: 0.75em;
                   line-height: 1.3em !important;
                   overflow: hidden;
                   letter-spacing: 1px;
                   .small{
-                    margin: 5px 0;
+                    font-size: 0.7em; 
+                    margin: 5px 0 0px 0;
+                    font-weight: 700;
+                    color: rgba(255,255,255,0.8);
+
                   }
                 }
               }
               li._notification:hover{
-                background-color: rgba(255,255,255,0.1); 
+                background-color: rgba(0,0,0,0.12); 
               }
               li._notification.unactioned{
-                background-color: rgba(255,255,255,0.2);
+                background-color: rgba(255,255,255,0.10);
               }
               li._notification.unactioned:hover{
-                background-color: rgba(255,255,255,0.3);
+                background-color: rgba(0,0,0,0.25);
               }
             }
           }
@@ -681,7 +686,7 @@ body.v2 {
         }
         .dropdown-menu { 
           background: $primary-color;
-          @include border-radius( 0px );
+          @include border-radius( 0 0 3px 3px);
           border: 0px;
           margin-top:10px;
           li {

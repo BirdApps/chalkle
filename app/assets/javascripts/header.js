@@ -117,6 +117,7 @@ $(function(){
   });
 
 
+
   background_size_for_header_images();
   fade_filterbar();
   check_notification_height();

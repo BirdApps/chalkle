@@ -171,7 +171,7 @@ class Channel < ActiveRecord::Base
         hsl.s = hsl.s * 2
         hsl.l = 0.65 unless hsl.l < 0.65
         rgb = hsl.to_rgb
-        "rgba(#{rgb.red.to_i}, #{rgb.green.to_i}, #{rgb.blue.to_i}, 0.8)"
+        "rgba(#{rgb.red.to_i}, #{rgb.green.to_i}, #{rgb.blue.to_i}, 0.91)"
       rescue ArgumentError => error
         nil
       end
