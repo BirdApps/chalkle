@@ -75,10 +75,15 @@ Chalkle::Application.routes.draw do
     get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
     get '/notification/:id' => 'notifications#show', as: :show_notification
     get '/bookings' => 'dashboard#bookings', as: :bookings
+    
     get '/preferences' => 'preferences#show', as: :preferences
     put '/preferences' => 'preferences#save', as: :preferences
+    
     get '/enter_email' => 'preferences#enter_email', as: :enter_email
     put '/enter_email' => 'preferences#enter_email', as: :enter_email
+    
+    get '/preferences/notifications' => 'preferences#notifications', as: :preferences_notifications
+    put '/preferences/notifications' => 'preferences#notifications', as: :preferences_notifications
   end
 
   namespace :sudo do
