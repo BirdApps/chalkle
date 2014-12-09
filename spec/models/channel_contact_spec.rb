@@ -4,7 +4,8 @@ describe ChannelContact do
   include EmailSpec::Helpers
   include EmailSpec::Matchers
 
-  let(:channel_contact) { FactoryGirl.create(:channel_contact) }
+  let(:channel_contact) {
+   FactoryGirl.create(:channel_contact) }
 
   describe "Channel Mailer" do
 
