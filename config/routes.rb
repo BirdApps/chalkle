@@ -82,19 +82,26 @@ Chalkle::Application.routes.draw do
     get '/enter_email' => 'preferences#enter_email', as: :enter_email
     put '/enter_email' => 'preferences#enter_email', as: :enter_email
     
-    get '/preferences/notifications' => 'preferences#notifications', as: :preferences_notifications
-    put '/preferences/notifications' => 'preferences#notifications', as: :preferences_notifications
+    get '/preferences/notifications' => 'preferences#notifications', as: :notification_preference
+    put '/preferences/notifications' => 'preferences#notifications', as: :notification_preference
   end
 
   namespace :sudo do
-    root to: 'silvias#index'
-    resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
-    resources :payments
+    root to: 'metrics#index'
+    
     resources :metrics, only: :index
-    resources :regions
+
+    resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
+    
+    resources :payments
+
     resources :chalklers do
+      member do
+        get 'become' => 'chalklers#becoming'
+      end
+
       collection do
-        get 'becoming/:id' => 'chalklers#becoming', as: :becoming
+        get 'notifications'
         get 'become'
       end
     end
@@ -116,6 +123,7 @@ Chalkle::Application.routes.draw do
         get 'refund'
       end
     end
+
   end
 
   resources :chalklers, path: 'people', only: [:index, :show] do
