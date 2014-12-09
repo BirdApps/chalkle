@@ -151,17 +151,26 @@ class BookingsController < ApplicationController
       return
     end
     unless policy(@course).write?(true)
+      
+      redirect_url = if @course.has_public_status?
+        course_path(@course)
+      else
+        root_path
+      end
+
       unless @course.published?
-        return redirect_to_back_with_fallback :root, notice: "This class is no longer available."
+        flash.notice = "This class is no longer available."
+        return redirect_to redirect_url
       end
       unless @course.start_at > DateTime.current
-        return redirect_to_back_with_fallback :root, "This class has already started, and bookings cannot be created or altered"
+        flash.notice = "This class has already started, and bookings cannot be created or altered"
+        return redirect_to redirect_url 
       end
       unless @course.spaces_left?
-        return redirect_to_back_with_fallback :root, notice: "The class is full"
+        flash.notice = "The class is full"
+        return redirect_to redirect_url
       end
     end
-
   end
 
   def load_booking
