@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-xs-2">
+    <img class="avatar64" src="<%= notification.chalkler.avatar %>">
+    <div class="pull-left"> 
+      <div class="name">
+        <%= link_to notification.chalkler.name, chalkler_path(notification.chalkler.id) %>
+      </div>
+    </div>
+  </div>
+  <div class="_notification col-xs-10 col-sm-8">
+    <%= link_to me_show_notification_path(notification, just_looking: true) do %>
+      <div class="avatar64">
+        <div class="img" style="background-image: url(<%= notification.image %>)">
+        </div>
+      </div>
+      <p class="small">
+        <%= quick_date_time notification.valid_from %>
+      </p>
+      <%= to_html(notification.message) %>
+    <% end %>
+  </div>
+  <div class="col-xs-12 col-sm-2">
+   <div class="clear-both no-margin block center alert alert-default small">
+    <%= notification.status %>
+   </div>
+  </div>
+</div>
+<hr />
