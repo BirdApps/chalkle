@@ -30,25 +30,34 @@ class Booking < ActiveRecord::Base
 
   validates_presence_of :course_id, :status, :name, :chalkler_id
 
+  scope :free, where('NOT EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
+  scope :not_free, where('EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
+
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
+
   scope :refund_pending, where(status: STATUS_3)  
   scope :refund_complete, where(status: STATUS_4) 
+
   scope :unconfirmed, visible.where(status: STATUS_5)
   scope :confirmed, where(status: STATUS_1)
-  scope :status_no, where(status: STATUS_2)
-  scope :interested, where{ (status == STATUS_1) | (status == STATUS_5) }
-  scope :billable, joins(:course).where{ (courses.cost > 0) & (status == 'yes') & ((chalkler_id != courses.teacher_id) | (guests > 0)) }
+
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
+
   scope :by_date, order(:created_at)
   scope :by_date_desc, order('created_at DESC')
+  
   scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at')
+
   scope :needs_reminder, course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
 
   scope :need_outgoing_payments, includes(:course).where("courses.cost > 0 AND courses.status = 'Completed' AND courses.end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
 
   scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week) }
   scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month) }
+
+
+
 
   before_validation :set_free_course_attributes
 
