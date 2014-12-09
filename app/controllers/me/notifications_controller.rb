@@ -19,7 +19,7 @@ class Me::NotificationsController < Me::BaseController
 
   def list
     current_count = params[:current_unseen_notification_count].to_i
-    if current_count != current_user.notifications.unseen.recent.count
+    if current_count != current_user.notifications.unseen.recent.count || current_count == -1
       render partial: 'notification', collection: current_user.notifications.visible.recent, formats: :html
     else
       render text: ''

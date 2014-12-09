@@ -136,8 +136,6 @@ $(function(){
       $('title').html(ORIGINAL_TITLE); 
     };
     
-    
-    console.log("update_notification_badge to " + count);
     return false
   };
 
@@ -145,11 +143,20 @@ $(function(){
     return $('#notifications_container').children("li._notification");
   };
 
-  update_notification_list = function(){
-    var notification_badge_count = current_notifications().filter(".unseen").size()
+  update_notification_list = function(init){
+    
+    var notification_badge_count = current_notifications().filter(".unseen").size();
+    
+    if(init != undefined){
+      notification_badge_count = -1;
+    }
+    
+    var get_url = "/me/notifications/list?current_unseen_notification_count=" + notification_badge_count;
+
+    console.log(get_url);
     $.ajax({
       type: "GET",
-      url: "/me/notifications/list?current_unseen_notification_count=" + notification_badge_count, 
+      url: get_url,
       dataType: "html"
     }).done(function(data){
 
@@ -157,7 +164,7 @@ $(function(){
         //do not update if there os no new data 
         $('#notifications_container').html(data);
 
-        var new_notification_badge_count = current_notifications().filter(".unseen").size()
+        var new_notification_badge_count = current_notifications().filter(".unseen").size();
 
         //play the notificaiton sound after updating the UI 
         update_notification_badge(new_notification_badge_count);
@@ -174,12 +181,12 @@ $(function(){
   var ORIGINAL_TITLE = $('title').html();
   var NOTIFICATIONS_LOADED = false;
 
-  update_notification_list();
+  update_notification_list(true);
   background_size_for_header_images();
   fade_filterbar();
   check_notification_height();
 
-  window.setInterval(update_notification_list, 7000);
+  //window.setInterval(update_notification_list, 7000);
 
 
   coloring.click(big_color);
