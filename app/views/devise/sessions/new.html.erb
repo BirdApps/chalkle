@@ -10,7 +10,6 @@
     <br />
     <div class="well">
       <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
-        <input name="redirect_to" type="hidden" value="<%= params[:redirect_to] %>"></input>
         <%= f.input :email, :required => false, :autofocus => true %>
         <%= f.input :password, :required => false %>
         <div class="control-group">
