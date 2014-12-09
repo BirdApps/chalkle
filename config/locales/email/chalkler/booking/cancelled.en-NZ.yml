@@ -1,0 +1,39 @@
+en-NZ:
+  email:
+    chalkler:
+      booking:
+        cancelled:
+          reason: |
+            For the following reason:
+          refund: |
+            Your payment will be reversed within the next 21 days
+          subject: "%{name}, your booking has been cancelled."
+          body:
+            html: |
+              Your booking for **[%{course_name}](%{course_url})** has been cancelled
+              
+              %{reason}
+
+              %{refund}
+
+              If you have any questions, please contact the provider,  [%{provider_name}](%{provider_url}), directly.
+
+              Otherwise, check out [%{root_name}](%{root_url}) for more classes!
+
+              Cheers!
+            text: |
+              Your booking for %{course_name} has been cancelled
+              
+              %{reason}
+
+              %{refund}
+
+              If you have any questions, please contact the provider, %{provider_name}, directly.
+
+              Otherwise, check out %{root_name} for more classes!
+
+              Cheers!
+
+              %{root_url}
+              %{course_url}
+              %{provider_url}

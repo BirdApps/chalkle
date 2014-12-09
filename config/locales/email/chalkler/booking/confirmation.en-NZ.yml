@@ -1,0 +1,55 @@
+en-NZ:
+  email:
+    chalkler:
+      booking:
+        confirmation:
+          paid: "You should have also received a payment receipt separately."
+          subject: "%{name}, congrats! You are booked in to %{course_name}"
+          body:
+            html: |
+              Thanks! You are all booked in for [%{course_name}](%{course_url}). 
+
+              The booking details are as follows:
+
+              [%{booking_name}](%{course_url})
+
+              [%{course_name}](%{course_url})
+
+              %{start_at}
+              %{time_range}
+              %{address}
+              %{venue}
+
+              If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
+
+              %{paid}
+
+
+              Happy learning!
+            text: |
+              Thanks! You are all booked in for %{course_name}. 
+
+              The booking details are as follows:
+
+              %{booking_name}
+
+              %{course_name}
+
+              %{start_at}
+              %{time_range}
+              %{address}
+              %{venue}
+
+              If you have any questions please contact the provider, %{provider_name} directly.
+
+              %{paid}
+
+
+              Happy learning!
+
+              =======================
+
+              %{course_url}
+              %{provider_url}
+
+              =======================
