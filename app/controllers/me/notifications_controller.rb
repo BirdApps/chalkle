@@ -7,13 +7,14 @@ class Me::NotificationsController < Me::BaseController
   end
 
   def show
-    @notification.update_attribute("actioned_at", DateTime.current ) unless @notification.actioned?
+    unless params[:just_looking].present?
+      @notification.update_attribute("actioned_at", DateTime.current ) unless @notification.actioned?
+    end
     redirect_to @notification.href
   end
 
   def seen
     render json: current_user.notifications.update_all(viewed_at: DateTime.current)
-
   end
 
   private
