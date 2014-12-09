@@ -31,8 +31,8 @@ class Notification < ActiveRecord::Base
   MESSAGE = "message"
   TYPES = [CHALKLE, DISCUSSION, REMINDER, FOLLOWING, FEEDBACK, MESSAGE ]
   
-  def viewed?
-    viewed.present?
+  def seen?
+    viewed_at.present?
   end
 
   def actioned?

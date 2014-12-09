@@ -23,6 +23,8 @@ class ChannelContact < ActiveRecord::Base
     self.from = chalkler.email if chalkler.present?
     true
   end
+  
+private
 
   def send_email!
     ChannelMailer.contact(self).deliver! unless to.blank?

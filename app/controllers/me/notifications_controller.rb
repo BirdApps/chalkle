@@ -17,6 +17,16 @@ class Me::NotificationsController < Me::BaseController
     render json: current_user.notifications.update_all(viewed_at: DateTime.current)
   end
 
+  def list
+    current_count = params[:current_unseen_notification_count].to_i
+    if current_count != current_user.notifications.unseen.recent.count
+      render partial: 'notification', collection: current_user.notifications.visible.recent, formats: :html
+    else
+      render text: ''
+    end
+  end
+
+
   private
     def load_notification
       @notification = Notification.find_by_id(params[:id])

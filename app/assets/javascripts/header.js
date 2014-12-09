@@ -116,10 +116,71 @@ $(function(){
     $.get('/me/notifications/seen');
   });
 
+  update_notification_badge = function(count) {
 
+    // update the nav
+    $(".notification-count").each(function(){
+      if( $(this).hasClass("brackets") ) {
+        new_badge = "(" + count + ")";
+      } else { 
+        new_badge = count;
+      };
+      if(count<1) { new_badge = '' };
+      $(this).html(new_badge);
+    });
+
+    // update the title element
+    if(count<1) {
+      $('title').html( "(" + count + ") " + ORIGINAL_TITLE); 
+    } else { 
+      $('title').html(ORIGINAL_TITLE); 
+    };
+    
+    
+    console.log("update_notification_badge to " + count);
+    return false
+  };
+
+  current_notifications = function(){ 
+    return $('#notifications_container').children("li._notification");
+  };
+
+  update_notification_list = function(){
+    var notification_badge_count = current_notifications().filter(".unseen").size()
+    $.ajax({
+      type: "GET",
+      url: "/me/notifications/list?current_unseen_notification_count=" + notification_badge_count, 
+      dataType: "html"
+    }).done(function(data){
+
+      if( data != '' ) { 
+        //do not update if there os no new data 
+        $('#notifications_container').html(data);
+
+        var new_notification_badge_count = current_notifications().filter(".unseen").size()
+
+        //play the notificaiton sound after updating the UI 
+        update_notification_badge(new_notification_badge_count);
+        if(notification_badge_count < new_notification_badge_count && NOTIFICATIONS_LOADED) {
+          var audio = new Audio('/sounds/notification.mp3');
+          audio.play(); 
+        };
+      };
+      NOTIFICATIONS_LOADED = true;
+    });
+    update_notification_badge(notification_badge_count);
+  };
+
+  var ORIGINAL_TITLE = $('title').html();
+  var NOTIFICATIONS_LOADED = false;
+
+  update_notification_list();
   background_size_for_header_images();
   fade_filterbar();
   check_notification_height();
+
+  window.setInterval(update_notification_list, 7000);
+
 
   coloring.click(big_color);
   window.addEventListener("resize", background_size_for_header_images);
