@@ -164,7 +164,7 @@ module LayoutHelper
       if current_user.super? && @channel_teacher.chalkler_id.present?
         nav_links <<  {
           img_name: "people",
-          link: becoming_sudo_chalklers_path(@channel_teacher.chalkler_id),
+          link: become_sudo_chalkler_path(@channel_teacher.chalkler_id),
           active: false,
           title: "Become"
         }
