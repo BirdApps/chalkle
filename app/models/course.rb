@@ -459,6 +459,10 @@ class Course < ActiveRecord::Base
     status == STATUS_1 && visible == true
   end
 
+  def has_public_status?
+    PUBLIC_STATUSES.include? status
+  end
+
   def valid_statuses
     VALID_STATUSES
   end
