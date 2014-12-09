@@ -12,11 +12,6 @@ class BookingReminder
     end
   end
 
-  def self.load_chalklers
-    chalklers = Booking.visible.confirmed.billable.unpaid.upcoming.select("DISTINCT chalkler_id").map{ |b| Chalkler.find(b.chalkler_id)}
-    chalklers.delete_if { |c| (c.email == nil || c.email == "") }
-  end
-
   def remindable
     bookings = @chalkler.bookings.upcoming.visible.confirmed.billable.unpaid
     bookings.delete_if { |b| (b.teacher? == true || !b.course.channel || b.course_start_at.present? == false || b.cost == 0) }
