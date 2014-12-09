@@ -130,7 +130,7 @@ $(function(){
     });
 
     // update the title element
-    if(count>0) {
+    if(count<1) {
       $('title').html( "(" + count + ") " + ORIGINAL_TITLE); 
     } else { 
       $('title').html(ORIGINAL_TITLE); 
@@ -178,17 +178,15 @@ $(function(){
     update_notification_badge(notification_badge_count);
   };
 
+  var ORIGINAL_TITLE = $('title').html();
+  var NOTIFICATIONS_LOADED = false;
+
+  update_notification_list(true);
   background_size_for_header_images();
   fade_filterbar();
   check_notification_height();
 
-  var ORIGINAL_TITLE = $('title').html();
-  var NOTIFICATIONS_LOADED = false;
-
-  if($(".notifications-drop").length > 0){ 
-    update_notification_list(true);
-    window.setInterval(update_notification_list, 7000);
-  }
+  //window.setInterval(update_notification_list, 7000);
 
 
   coloring.click(big_color);

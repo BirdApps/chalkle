@@ -165,17 +165,6 @@ class OutgoingPayment < ActiveRecord::Base
 
   def calc_fee
     self.fee = bookings.inject(0){|sum,b| sum += b.paid? ? ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) : 0 }
-    adjust_flat_fee
-  end
-
-  def adjust_flat_fee
-    discrepancy = courses.inject(0){ |sum,c| sum += c.teacher_pay_flat }
-    
-    if for_teacher?
-      self.fee = self.fee + discrepancy
-    else
-      self.fee = self.fee - discrepancy
-    end
   end
 
   def calc_tax
