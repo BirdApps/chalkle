@@ -40,6 +40,13 @@ class Me::PreferencesController < Me::BaseController
     end
   end
 
+  def notifications
+    @preferences_notifications = current_user.notification_preference
+    unless params[:chalkler_id].blank?
+      
+    end
+  end
+
   def destroy
     @chalkler = Chalkler.find params[:id]
 
