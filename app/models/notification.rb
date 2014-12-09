@@ -39,6 +39,13 @@ class Notification < ActiveRecord::Base
     actioned_at.present?
   end
 
+  def status
+    status = "Clicked"
+    status = "Seen" unless actioned_at
+    status = "Unseen" unless viewed_at
+    status
+  end
+
   def visible?
     (valid_from < DateTime.current ) && ( valid_till == nil|| valid_till > DateTime.current)
   end
