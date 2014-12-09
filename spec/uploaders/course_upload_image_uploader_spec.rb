@@ -8,7 +8,7 @@ describe CourseUploadImageUploader do
   let(:uploader){ CourseUploadImageUploader.new(course, :course_upload_image) }
 
   before(:each) do
-    uploader.enable_processing = true
+    uploader.enable_processing = false #make this true to enable image processing – it takes a whie
     uploader.store!(File.open("#{Rails.root}/app/assets/images/course-bg.png"))
   end
 
