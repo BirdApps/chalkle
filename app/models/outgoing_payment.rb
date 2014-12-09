@@ -8,6 +8,7 @@ class OutgoingPayment < ActiveRecord::Base
   STATUS_5 = "confirmed_paid"
   STATUS_6 = "not_valid"
   STATUSES = [STATUS_1,STATUS_2,STATUS_4,STATUS_6]
+  APPROVED_STATUSES = [STATUS_2,STATUS_4]
 
   scope :pending, where(status: STATUS_1)
   scope :approved, where(status: STATUS_2)
@@ -53,6 +54,14 @@ class OutgoingPayment < ActiveRecord::Base
 
   def last_booking
     bookings.order(:created_at).last
+  end
+
+  def approved?
+    APPROVED_STATUSES.include? self.status
+  end
+
+  def not_approved?
+    !approved?
   end
 
   def status_color
@@ -165,17 +174,31 @@ class OutgoingPayment < ActiveRecord::Base
 
   def calc_fee
     self.fee = bookings.inject(0){|sum,b| sum += b.paid? ? ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) : 0 }
-    adjust_flat_fee
   end
 
-  def adjust_flat_fee
-    discrepancy = courses.inject(0){ |sum,c| sum += c.teacher_pay_flat }
-    
-    if for_teacher?
-      self.fee = self.fee + discrepancy
-    else
-      self.fee = self.fee - discrepancy
+  def flat_fee_amount
+    flat_fee_courses = Course.none
+
+    #If a flat fee course's bookings were spread across multiple outgoing_payments then the adjustment would happen twice, resulting in the teacher being paid twice. flat_fee_courses is ensured to only contain flat fee courses which are not connected to any other approved outgoing_payments 
+
+    courses.select{ |c| c.teacher_pay_type == 'Flat fee' }.each do |course|
+      
+      applicable = true     
+
+      course.bookings.each do |booking|
+
+        if for_teacher?
+          applicable = booking.teacher_payment.nil? || booking.teacher_payment == self || booking.teacher_payment.not_approved?  if applicable
+        else
+          applicable = booking.channel_payment.nil? || booking.channel_payment == self || booking.teacher_payment.not_approved? if applicable
+        end
+
+      end
+
+      flat_fee_courses << course if applicable
     end
+    
+    flat_fee_courses.inject(0){ |sum,c| sum += c.teacher_pay_flat }
   end
 
   def calc_tax
