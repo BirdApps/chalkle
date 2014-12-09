@@ -70,10 +70,15 @@ Chalkle::Application.routes.draw do
   get '/c/:id' => 'courses#show', as: :course_tiny
   post '/bookings/lpn', as: :lpn
   namespace :me do
+    
     root to: 'dashboard#index'
+
     get '/notifications' => 'notifications#index', as: :notifications
+    get '/notifications/list' => 'notifications#list', as: :list_notifications
+    get '/notifications/count' => 'notifications#list', as: :count_notifications
     get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
     get '/notification/:id' => 'notifications#show', as: :show_notification
+
     get '/bookings' => 'dashboard#bookings', as: :bookings
     get '/preferences' => 'preferences#show', as: :preferences
     put '/preferences' => 'preferences#save', as: :preferences

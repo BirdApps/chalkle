@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
     return redirect_to fallback, notice: args[:notice]
   end
 
-  protected
+protected
 
   def authorize(record)
     super record unless current_user.super?
