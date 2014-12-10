@@ -14,20 +14,29 @@ class ApplicationController < ActionController::Base
   before_filter :load_category
   before_filter :skip_cache!
   before_filter :check_user_data
-  after_filter :entity_events
+  after_filter :store_location
 
-  def styleguide
-    render "/styleguide"
+  def store_location
+    # store last url - this is needed for post-login redirect to whatever the user last visited.
+    return unless request.get? 
+    if (request.path != "/chalklers/sign_in" &&
+        request.path != "/chalklers/sign_up" &&
+        request.path != "/chalklers/password/new" &&
+        request.path != "/chalklers/password/edit" &&
+        request.path != "/chalklers/confirmation" &&
+        request.path != "/chalklers/sign_out" &&
+        !request.xhr?) # don't store ajax calls
+      session[:previous_url] = request.fullpath 
+    end
   end
 
   def after_sign_in_path_for(resource)
-    
-    original_path = stored_location_for(resource)
-    default_path  = root_path
-    options       = { original_path: original_path, default_path: default_path }
+    Chalkler::DataCollection.new(resource, { original_path: session[:previous_url], default_path: root_path }).path
 
-    Chalkler::DataCollection.new(resource, options).path
-    original_path  || session[:user_return_to] || params[:redirect_to] || root_path
+    session[:previous_url] || root_path
+  end
+  def styleguide
+    render "/styleguide"
   end
 
   def after_register_path_for(resource)

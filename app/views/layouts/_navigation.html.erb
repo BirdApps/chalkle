@@ -81,7 +81,7 @@
 
             <% else %>
               <li>
-                <%= link_to 'Login', new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: (current_page?(controller: 'chalkler') ? "current": "") %>
+                <%= link_to 'Login', new_chalkler_session_path,  class: (current_page?(controller: 'chalkler') ? "current": "") %>
               </li>
             <% end %>
             <li class="divider visible-xs"></li>

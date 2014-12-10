@@ -136,7 +136,7 @@ $(function(){
       $('title').html(ORIGINAL_TITLE); 
     };
     
-    return false
+    return false;
   };
 
   current_notifications = function(){ 
@@ -153,7 +153,6 @@ $(function(){
     
     var get_url = "/me/notifications/list?current_unseen_notification_count=" + notification_badge_count;
 
-    console.log(get_url);
     $.ajax({
       type: "GET",
       url: get_url,

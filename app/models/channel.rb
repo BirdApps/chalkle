@@ -158,7 +158,7 @@ class Channel < ActiveRecord::Base
     existing_channels = Channel.where(url_name: new_url_name)
     unless existing_channels.blank? || (existing_channels.first.id == self.id && existing_channels.count == 1)
       existing_channels.sort{|s|s.id}  
-       url_name = url_name+'-'+existing_channels.last.id.to_s
+       url_name = "#{url_name}-#{existing_channels.last.id.to_s}"
     end
     self.url_name = new_url_name
   end
