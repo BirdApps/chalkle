@@ -56,15 +56,6 @@ ActiveRecord::Schema.define(:version => 20141210035602) do
     t.string   "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    t.integer  "teacher_payment_id"
-    t.integer  "channel_payment_id"
-    t.boolean  "chalkler_deleted",              :default => false
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -163,6 +154,7 @@ ActiveRecord::Schema.define(:version => 20141210035602) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
+    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -170,7 +162,6 @@ ActiveRecord::Schema.define(:version => 20141210035602) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -219,9 +210,9 @@ ActiveRecord::Schema.define(:version => 20141210035602) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
-    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
     t.decimal  "balance"
   end
 
