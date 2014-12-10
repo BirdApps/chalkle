@@ -105,8 +105,8 @@ class BookingsController < ApplicationController
       
       redirect_to course_path(params[:course_id])
     else
-      flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
-      redirect_to new_course_booking_path(params[:channel_id], params[:course_id], params[:booking_id])
+      flash[:alert] = "Sorry, it seems that payment was declined. Would you like to try again?"
+      redirect_to new_course_booking_path(params[:course_id])
     end
   end
 
