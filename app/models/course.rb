@@ -6,14 +6,12 @@ class Course < ActiveRecord::Base
   GST = 0.15
 
   attr_accessible *BASIC_ATTR = [
-    :name, :lessons, :bookings, :status, :visible, :course_type, :teacher_id, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :repeat_course, :repeat_course_id, :start_at, :lessons_attributes, :duration, :url_name, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :first_lesson_start_at, :cost, :teacher_cost, :course_class_type, :processing_fee, :teacher_pay_type, :note_to_attendees, :cancelled_reason
+    :name, :status, :visible, :course_type, :teacher_id, :fee, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at
   ]
 
-  attr_accessible  *BASIC_ATTR, :description, :teacher_payment, :published_at, :course_image_attributes, :chalkle_payment, :attendance_last_sent_at, :course_upload_image, :remove_course_upload_image, :cached_channel_fee, :cached_chalkle_fee, :as => :admin
-
-  #chalkle fee is cached without GST
-  #channel fee is specified inc. GST so is cached including it
-
+  #chalkle fee is saved exclusive of GST
+  #channel fee is saved inclusive of GST
+  #teacher cost is saved inclusive of GST
 
   #Course statuses
   STATUS_5 = "Processing"
@@ -29,6 +27,10 @@ class Course < ActiveRecord::Base
   belongs_to :channel
   belongs_to :teacher, class_name: "ChannelTeacher"
   belongs_to :category
+  
+  belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
+  belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
+
   has_many  :lessons
   has_many  :bookings
   has_many  :chalklers, through: :bookings
@@ -58,7 +60,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :channel
   validates_presence_of :teacher
   validates_presence_of :start_at
-  validates_numericality_of :teacher_payment, allow_nil: true
+
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher fee must be positive" }
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Class price must be positive" }
@@ -234,7 +236,6 @@ class Course < ActiveRecord::Base
     lessons.sort_by{|c| c.start_at}.last
   end
 
-
   def first_or_new_lesson
     @first_or_new_lesson ||= ( first_lesson || Lesson.new(course_id: id) )
   end
@@ -306,6 +307,20 @@ class Course < ActiveRecord::Base
   # Costings
   ###
 
+  def teacher_income
+    if fee_per_attendee?
+      bookings.inject(0){|sum,b| sum += (b.teacher_fee || 0) }
+    elsif flat_fee?
+      teacher_cost || 0
+    else
+      0
+    end
+  end
+
+  def channel_income
+    bookings.inject(0){|sum,b| sum += (b.provider_fee || 0) } - (flat_fee? ? teacher_income : 0)
+  end
+
   def channel_plan
     (channel && channel.plan) ? channel.plan : ChannelPlan.default
   end
@@ -325,10 +340,6 @@ class Course < ActiveRecord::Base
     incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
   end
 
-  def chalkle_fee=(value)
-    self.cached_chalkle_fee = value
-  end
-
   def processing_fee
     if cost.present?
       cost * channel_plan.processing_fee_percent
@@ -337,16 +348,28 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def flat_fee?
+    teacher_pay_type == Course.teacher_pay_types[0]
+  end
+
+  def fee_per_attendee?
+    teacher_pay_type == Course.teacher_pay_types[1]
+  end
+
+  def provider_pays_teacher?
+    teacher_pay_type == Course.teacher_pay_types[2]
+  end
+
   def self.teacher_pay_types
     [ 'Flat fee', 'Fee per attendee', 'Provider pays teacher']
   end
 
   def teacher_pay_variable
-    teacher_pay_type == Course.teacher_pay_types[1] ? teacher_cost : 0
+    fee_per_attendee? ? teacher_cost : 0
   end
 
   def teacher_pay_flat
-    teacher_pay_type == Course.teacher_pay_types[0] ? teacher_cost : 0 
+    flat_fee? ? teacher_cost : 0 
   end
 
   def variable_costs
@@ -593,11 +616,6 @@ class Course < ActiveRecord::Base
 
   def check_start_at
     self.start_at = first_lesson.start_at if first_lesson.present?
-  end
-
-  def cache_costs
-    self.cached_chalkle_fee = chalkle_fee
-    self.cached_channel_fee = channel_fee
   end
 
   def set_url_name

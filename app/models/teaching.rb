@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :availabilities, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :note_to_attendees, :new_channel_bank_number, :cloning_id, :bookings
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :note_to_attendees, :new_channel_bank_number, :cloning_id, :bookings
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
@@ -60,7 +60,6 @@ class Teaching
     @max_attendee = args.max_attendee
     @cost = args.cost
     @teacher_cost = args.teacher_cost
-    @availabilities = args.availabilities
     @venue_address = args.venue_address
     @course_upload_image = args.course_upload_image
     @teacher_pay_type = args.teacher_pay_type
@@ -101,7 +100,6 @@ class Teaching
       max_attendee: @max_attendee.to_i,
       cost: @cost,
       teacher_cost: @teacher_cost,
-      availabilities: @availabilities,
       venue_address: @venue_address,
       course_upload_image: @course_upload_image,
       start_at: @start_at[0],
@@ -309,7 +307,6 @@ class Teaching
       @min_attendee = params[:min_attendee]
       @max_attendee = params[:max_attendee]
       @teacher_cost = params[:teacher_cost]
-      @availabilities = params[:availabilities]
       @venue_address = params[:venue_address]
       @course_upload_image = params[:course_upload_image]
       @course_upload_image = Course.find(params[:cloning_id]).course_upload_image if params[:cloning_id] && @course_upload_image.nil?

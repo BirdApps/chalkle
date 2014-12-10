@@ -108,8 +108,7 @@ class CoursesController < ApplicationController
     if success
       #recalculate booking fees in case they changed the provider/teacher money split
       @course.bookings.each do |booking|
-        booking.apply_fees
-        booking.save
+        booking.apply_fees!
       end
 
       redirect_to course_path @course.id

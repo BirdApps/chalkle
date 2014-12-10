@@ -25,8 +25,8 @@ class Booking < ActiveRecord::Base
   has_one     :channel, through: :course
   has_one     :teacher, through: :course
   
-  belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
-  belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
+  has_one :teacher_payment, through: :course
+  has_one :channel_payment, through: :course
 
   validates_presence_of :course_id, :status, :name, :chalkler_id
 
@@ -63,7 +63,7 @@ class Booking < ActiveRecord::Base
 
   after_create :expire_cache!
 
-  delegate :start_at, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
+  delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
 
   delegate :email, to: :chalkler
 
@@ -126,40 +126,60 @@ class Booking < ActiveRecord::Base
     self.chalkle_fee = self.processing_fee = self.chalkle_gst = self.teacher_fee = self.teacher_gst = self.provider_fee = self.processing_gst = self.provider_gst = 0
   end
 
+  # apply_fees runs on:
+  #   1. booking creation (initial calculation)
+  #   2. course update (in case course fees allocation between provider and teacher have changes )
+  #   3. outgoing_payment.calc_flat_fee (in the case of a flat_fee payment to the teacher this is the only accurate time to calculate this)
+
   def apply_fees
+    #CHALKLE
     self.chalkle_gst_number = Finance::CHALKLE_GST_NUMBER
     self.chalkle_fee = course.chalkle_fee false
     self.chalkle_gst = course.chalkle_fee(true) - chalkle_fee
     
     self.processing_fee = course.processing_fee
     self.processing_gst = course.processing_fee*3/23
-    #processing_fee inclusive of gst
     self.processing_fee = self.processing_fee-self.processing_gst
 
-    if course.teacher_pay_type == Course.teacher_pay_types[1]
-      self.teacher_fee = course.teacher_cost
-      if course.teacher.present? && course.teacher.tax_number.present?
-        self.teacher_gst = teacher_fee*3/23
-        self.teacher_gst_number = course.teacher.tax_number
-      else
+    #TEACHER FEE
+    if provider_pays_teacher?
+        self.teacher_fee = 0
         self.teacher_gst = 0
-        self.teacher_gst_number = nil
-      end
     else
-      self.teacher_fee = 0
-      self.teacher_gst = 0
+      if fee_per_attendee?
+        self.teacher_fee = course.teacher_cost
+      elsif flat_fee?
+        #flat fees these are calculated on the outgoing_payment rather than per booking
+        self.teacher_fee = 0
+      end
     end
 
+    #TEACHER TAX
+    if course.teacher.present? && course.teacher.tax_number.present?
+      self.teacher_gst_number = course.teacher.tax_number
+      self.teacher_gst = teacher_fee*3/23
+      self.teacher_fee = teacher_fee-teacher_gst
+    else
+      self.teacher_gst = 0
+      self.teacher_gst_number = nil
+    end
+
+    #PROVIDER
     self.provider_fee = course.channel_fee
     if channel.tax_number.present?
       self.provider_gst_number = channel.tax_number
       self.provider_gst = course.channel_fee*3/23
-      #processing_fee inclusive of gst
       self.provider_fee = self.provider_fee-self.provider_gst
     else
       self.provider_gst_number = nil
       self.provider_gst = 0
     end
+    cost
+  end
+
+  def apply_fees!
+    cost = apply_fees
+    save
     cost
   end
 

@@ -41,6 +41,10 @@ class ChannelTeacher < ActiveRecord::Base
     courses.in_future.displayable.order(:start_at).first
   end
 
+  def tax_registered?
+    tax_number.present?
+  end
+
   def check_name
     if self.name.blank?
       if chalkler

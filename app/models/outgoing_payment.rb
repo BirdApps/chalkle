@@ -13,6 +13,7 @@ class OutgoingPayment < ActiveRecord::Base
   scope :pending, where(status: STATUS_1)
   scope :approved, where(status: STATUS_2)
   scope :invoiced, where(status: STATUS_3)
+  scope :paid, where("status = '#{STATUS_4}' OR status = '#{STATUS_5}'")
   scope :marked_paid, where(status: STATUS_4)
   scope :confirmed_paid, where(status: STATUS_5)
   scope :not_valid, where(status: STATUS_6)
@@ -27,14 +28,14 @@ class OutgoingPayment < ActiveRecord::Base
 
   validate :teacher_or_channel_presence
 
-  has_many :channel_bookings, class_name: 'Booking', foreign_key: :channel_payment_id
-  has_many :teacher_bookings, class_name: 'Booking', foreign_key: :teacher_payment_id
+  has_many :channel_courses, class_name: 'Course', foreign_key: :channel_payment_id
+  has_many :teacher_courses, class_name: 'Course', foreign_key: :teacher_payment_id
+
+  has_many :teacher_bookings, through: :teacher_courses,  source: :bookings
+  has_many :channel_bookings, through: :teacher_courses,  source: :bookings
   
   has_many :teacher_payments, through: :teacher_bookings, source: :payment
   has_many :channel_payments, through: :channel_bookings, source: :payment
-  
-  has_many :teacher_courses, through: :teacher_bookings, source: :course, foreign_key: :course_id
-  has_many :channel_courses, through: :channel_bookings, source: :course, foreign_key: :course_id
 
   def self.valid
     (with_valid_channel_bookings+with_valid_teacher_bookings).uniq.select{|o| o.bookings.present?}
@@ -173,36 +174,13 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def calc_fee
-    self.fee = bookings.inject(0){|sum,b| sum += b.paid? ? ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) : 0 }
-  end
-
-  def flat_fee_amount
-    flat_fee_courses = Course.none
-
-    #If a flat fee course's bookings were spread across multiple outgoing_payments then the adjustment would happen twice, resulting in the teacher being paid twice. flat_fee_courses is ensured to only contain flat fee courses which are not connected to any other approved outgoing_payments 
-
-    courses.select{ |c| c.teacher_pay_type == 'Flat fee' }.each do |course|
-      
-      applicable = true     
-
-      course.bookings.each do |booking|
-
-        if for_teacher?
-          applicable = booking.teacher_payment.nil? || booking.teacher_payment == self || booking.teacher_payment.not_approved?  if applicable
-        else
-          applicable = booking.channel_payment.nil? || booking.channel_payment == self || booking.teacher_payment.not_approved? if applicable
-        end
-
-      end
-
-      flat_fee_courses << course if applicable
-    end
-    
-    flat_fee_courses.inject(0){ |sum,c| sum += c.teacher_pay_flat }
+    c_fee = bookings.inject(0){|sum,b| sum += b.paid? ? ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) : 0 }
+    self.fee = c_fee + flat_fees
   end
 
   def calc_tax
-    self.tax = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_gst || 0 : b.provider_gst || 0 ) }
+    c_tax = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_gst || 0 : b.provider_gst || 0 ) }
+    self.tax = c_tax + flat_fees_tax
   end
 
   #only calculate fee and tax only before approval
@@ -213,6 +191,7 @@ class OutgoingPayment < ActiveRecord::Base
     end
     fee+tax
   end
+
 
   #calculate fee and tax only once on approval
   def approve!
@@ -244,5 +223,51 @@ class OutgoingPayment < ActiveRecord::Base
     self.status = STATUS_5
     save
   end
+
+  private
+
+    def flat_fees
+      multiplier = for_teacher? ? 1 : -1
+      multiplier*(flat_fees_total - flat_fees_tax)
+    end
+
+    def flat_fees_tax
+      if for_teacher? &&  teacher.tax_registered?
+        flat_fees_total*3/23
+      else
+        0
+      end
+    end
+
+    def flat_fees_total
+      @flat_fees ||= calc_flat_fees
+    end
+
+    def calc_flat_fees
+      bookings.map &:apply_fees!
+
+      flat_fee_courses = Course.none
+
+      #If a flat fee course's bookings were spread across multiple outgoing_payments (should be unlikely) then the adjustment would happen twice, resulting in the teacher being paid twice. flat_fee_courses is ensured to only contain flat fee courses which are not connected to any other approved outgoing_payments
+
+      courses.select{ |c| c.teacher_pay_type == 'Flat fee' }.each do |course|
+        
+        include_course = true     
+
+        course.bookings.each do |booking|
+
+          if for_teacher?
+            include_course = booking.teacher_payment.nil? || booking.teacher_payment == self || booking.teacher_payment.not_approved?  if include_course
+          else
+            include_course = booking.channel_payment.nil? || booking.channel_payment == self || booking.teacher_payment.not_approved? if include_course
+          end
+
+        end
+
+        flat_fee_courses << course if include_course
+      end
+      
+      flat_fee_courses.inject(0){ |sum,c| sum += c.teacher_pay_flat }
+    end
 
 end

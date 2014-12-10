@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141208034843) do
+ActiveRecord::Schema.define(:version => 20141210035602) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,9 +56,15 @@ ActiveRecord::Schema.define(:version => 20141208034843) do
     t.string   "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     t.integer  "teacher_payment_id"
     t.integer  "channel_payment_id"
     t.boolean  "chalkler_deleted",              :default => false
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -257,7 +263,6 @@ ActiveRecord::Schema.define(:version => 20141208034843) do
     t.integer  "teacher_id"
     t.string   "name"
     t.string   "status",                                            :default => "Draft"
-    t.text     "description"
     t.decimal  "cost",                :precision => 8, :scale => 2
     t.datetime "created_at",                                                             :null => false
     t.datetime "updated_at",                                                             :null => false
@@ -269,7 +274,6 @@ ActiveRecord::Schema.define(:version => 20141208034843) do
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
     t.integer  "min_attendee",                                      :default => 2
-    t.text     "availabilities"
     t.text     "prerequisites"
     t.text     "additional_comments"
     t.string   "course_skill"
@@ -279,8 +283,6 @@ ActiveRecord::Schema.define(:version => 20141208034843) do
     t.decimal  "chalkle_payment",     :precision => 8, :scale => 2
     t.string   "course_upload_image"
     t.integer  "category_id"
-    t.decimal  "cached_channel_fee",  :precision => 8, :scale => 2
-    t.decimal  "cached_chalkle_fee",  :precision => 8, :scale => 2
     t.integer  "channel_id"
     t.integer  "region_id"
     t.integer  "repeat_course_id"
@@ -298,6 +300,8 @@ ActiveRecord::Schema.define(:version => 20141208034843) do
     t.text     "note_to_attendees"
     t.text     "cancelled_reason"
     t.datetime "end_at"
+    t.integer  "teacher_payment_id"
+    t.integer  "channel_payment_id"
   end
 
   add_index "courses", ["region_id"], :name => "index_courses_on_region_id"
