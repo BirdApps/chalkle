@@ -574,8 +574,6 @@ $(function(){
         valid = false;
         show_error_for($('#teaching_teacher_cost'), "Teacher fee cannot be less than 0");
       }
-      console.log(valid);
-      console.log(valid_basics);
       return valid && valid_basics;
     }
 
