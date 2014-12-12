@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141212040729) do
+ActiveRecord::Schema.define(:version => 20141211033201) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20141212040729) do
     t.decimal  "processing_gst",                                   :null => false
     t.text     "note_to_teacher"
     t.string   "name"
-    t.string   "cancelled_reason"
+    t.text     "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
   end

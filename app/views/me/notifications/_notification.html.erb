@@ -1,4 +1,4 @@
-<li role="presentation" class="_notification clearfix <%= 'unactioned' unless notification.actioned? %> <%= 'unseen' unless notification.seen? %> ">
+<li role="presentation" class="_notification <%= 'unactioned' unless notification.actioned? %> <%= 'unseen' unless notification.seen? %> ">
   <%= link_to me_show_notification_path notification do %>
     <div class="avatar64">
       <div class="img" style="background-image: url(<%= notification.image %>)">
