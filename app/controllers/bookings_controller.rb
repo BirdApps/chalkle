@@ -16,7 +16,6 @@ class BookingsController < ApplicationController
   end
 
   def my_bookings
-    @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
     @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming.decorate
   end
 
