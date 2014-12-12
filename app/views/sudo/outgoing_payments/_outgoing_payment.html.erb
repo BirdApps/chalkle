@@ -12,7 +12,7 @@
       <%= outgoing_payment.name  %>
     </div>
     <div class="col-xs-4 col-sm-2">
-      $<%= outgoing_payment.total %>
+      $<%= money_formatted outgoing_payment.total %>
     </div>
     <div class="col-xs-4 col-sm-2">
       <%= outgoing_payment.status_formatted %>

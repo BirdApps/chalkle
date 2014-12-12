@@ -181,16 +181,16 @@ class OutgoingPayment < ActiveRecord::Base
 
   def recalculate!
     self.tax_number = nil
+    bookings.map{ |b| b.apply_fees! }
     #remove any bookings which have changed status
     remove_courses = courses.where("status != '#{Course::STATUS_4}'")
     remove_courses.update_all(channel_payment_id: nil)
     remove_courses.update_all(teacher_payment_id: nil)
-    bookings.map{ |b| b.apply_fees! }
     calculate!
   end
 
   def calc_fee(recalculate = false)
-    if self.fee.blank? || recalculate
+    if recalculate || self.fee.blank?
       self.fee = courses.inject(0){|sum,c| sum += (for_channel? ? c.channel_income_no_tax : c.teacher_income_no_tax) }
     end
     self.fee
