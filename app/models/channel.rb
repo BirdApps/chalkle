@@ -78,6 +78,10 @@ class Channel < ActiveRecord::Base
     url_name
   end
 
+  def tax_registered?
+    tax_number.present?
+  end
+
   def financial_table(first_day, period, num_rows)
     financials = StatsMath.new()
     num_rows.times do |i|

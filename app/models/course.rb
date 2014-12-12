@@ -25,25 +25,21 @@ class Course < ActiveRecord::Base
   belongs_to :repeat_course
   belongs_to :region
   belongs_to :channel
-  belongs_to :teacher, class_name: "ChannelTeacher"
+  belongs_to :teacher,          class_name: "ChannelTeacher"
   belongs_to :category
-  
-  belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
-  belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
+  belongs_to :teacher_payment,  class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
+  belongs_to :channel_payment,  class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
 
   has_many  :lessons
   has_many  :bookings
-  has_many  :chalklers, through: :bookings
-  has_many  :payments, through: :bookings
-  has_many  :bookings
-  has_many  :chalklers, through: :bookings
-  has_many  :payments, through: :bookings
-  has_many  :notices, class_name: 'CourseNotice'
-  has_one   :course_image, :dependent => :destroy, :inverse_of => :course
+  has_many  :chalklers,     through: :bookings
+  has_many  :payments,      through: :bookings
+  has_many  :chalklers,     through: :bookings
+  has_many  :payments,      through: :bookings
+  has_many  :notices,       class_name: 'CourseNotice'
   
   mount_uploader :course_upload_image, CourseUploadImageUploader
 
-  accepts_nested_attributes_for :course_image
   accepts_nested_attributes_for :lessons
 
   [:teacher, :channel, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
@@ -65,10 +61,11 @@ class Course < ActiveRecord::Base
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher fee must be positive" }
   validates :cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Class price must be positive" }
   validates :lessons, :length => { minimum: 1 }, if: :published?
-  validate :image_size
+
   before_validation :check_start_at
   before_validation :check_end_at
   before_validation :check_url_name
+  after_save :clear_ivars
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -107,6 +104,8 @@ class Course < ActiveRecord::Base
   scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
   scope :similar_to, -> (course){ where(channel_id: course.channel_id, url_name: course.url_name).displayable.in_future.by_date }
+
+  scope :need_outgoing_payments, where("cost > 0 AND status = '#{STATUS_4}' AND end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR channel_payment_id IS NULL)")
 
 
   before_create :set_url_name
@@ -154,7 +153,10 @@ class Course < ActiveRecord::Base
   end
 
   def complete!
-    #TODO: run at midnight everynight on scope Course.needs_completing
+    save if complete
+  end
+
+  def complete
     check_end_at
     if end_at < DateTime.current
       if bookings.present?
@@ -162,7 +164,6 @@ class Course < ActiveRecord::Base
       else
         self.status = STATUS_3
       end
-      save
     end
   end
 
@@ -232,6 +233,7 @@ class Course < ActiveRecord::Base
   def first_lesson
     lessons.sort_by{|c| c.start_at}.first
   end
+
   def last_lesson
     lessons.sort_by{|c| c.start_at}.last
   end
@@ -278,22 +280,9 @@ class Course < ActiveRecord::Base
   end
 
   def publish
-    if @course.start_at > DateTime.current
+    if start_at > DateTime.current
       self.visible = true
       self.status = "Published"
-    end
-  end
-
-  # kaminari
-  paginates_per 10
-
-  def image_size
-    return unless course_upload_image.present?
-    begin
-      if course_upload_image.file.size.to_f/(1000*1000) > 4.to_f
-        errors.add(:course_upload_image, "You cannot upload an image greater than 4 MB")
-      end
-    rescue
     end
   end
 
@@ -307,37 +296,52 @@ class Course < ActiveRecord::Base
   # Costings
   ###
 
-  def teacher_income
-    if fee_per_attendee?
-      bookings.inject(0){|sum,b| sum += (b.teacher_fee || 0) }
-    elsif flat_fee?
-      teacher_cost || 0
-    else
-      0
-    end
+  def has_income?
+    bookings.paid.confirmed.present?
   end
 
-  def channel_income
-    bookings.inject(0){|sum,b| sum += (b.provider_fee || 0) } - (flat_fee? ? teacher_income : 0)
+  def teacher_income_with_tax
+    @teacher_income_with_tax ||= calc_teacher_income(true)
+  end
+
+  def teacher_income_no_tax
+    @teacher_income_no_tax ||= calc_teacher_income(false)
+  end
+
+  def channel_income_with_tax
+    @channel_income_with_tax ||= calc_channel_income(true)
+  end
+
+  def channel_income_no_tax
+    @channel_income_no_tax ||= calc_channel_income(false)
+  end
+
+  def channel_income_tax
+    channel.tax_registered? ? channel_income*3/23 : 0
+  end
+
+  def teacher_income_tax
+    teacher.tax_registered? ? teacher_income*3/23 : 0
   end
 
   def channel_plan
-    (channel && channel.plan) ? channel.plan : ChannelPlan.default
+    @channel_plan ||= calc_channel_plan
+  end
+
+  def chalkle_fee
+    chalkle_fee_with_tax
+  end
+
+  def chalkle_fee_with_tax
+    @chalkle_fee_with_tax ||= calc_chalkle_fee(true)
+  end
+
+  def chalkle_fee_no_tax
+    @chalkle_fee_no_tax ||= calc_chalkle_fee(false)
   end
 
   def channel_fee
-    calc_channel_fee
-  end
-
-  def calc_channel_fee
-    (cost||0) - (variable_costs||0) - (processing_fee||0) - (chalkle_fee||0)
-  end
-
-  def chalkle_fee(incl_tax = true)
-    return 0 if free?
-    single = course_class_type.nil? ? single_class? : course_class_type == 'course'
-    no_tax_fee = (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
-    incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
+    @channel_fee ||= calc_channel_fee
   end
 
   def processing_fee
@@ -420,41 +424,8 @@ class Course < ActiveRecord::Base
     end
   end
 
-  #Class incomes
-  def expected_turnover
-    total = 0
-    bookings.confirmed.visible.each do |b|
-      total = total + (b.cost.present? ? b.cost : 0)
-    end
-    return total
-  end
-
-  def collected_turnover
-    payments.sum(:total)
-  end
-
-  def cash_payment
-    payments.cash.sum(:total)
-  end
-
-  def uncollected_turnover
-    expected_turnover - collected_turnover
-  end
-
-  def total_cost
-    if teacher_payment.present? && chalkle_payment.present?
-      teacher_payment + cash_payment + chalkle_payment
-    else
-      attendance*( (teacher_cost.present? ? teacher_cost : 0) + chalkle_fee)
-    end
-  end
-
-  def incomeco
-    excl_gst(collected_turnover - total_cost)
-  end
-
   def image
-    course_image.image rescue nil
+    course_upload_image.image rescue nil
   end
 
   # this should be a scope
@@ -490,14 +461,6 @@ class Course < ActiveRecord::Base
     VALID_STATUSES
   end
 
-  def unpaid_count
-    bookings.confirmed.visible.count - bookings.confirmed.visible.paid.count
-  end
-
-  def complete_details?
-    teacher_id.present? && start_at.present? && channel && do_during_class.present? && teacher_cost.present? && venue.present?
-  end
-
   def bookings_for(chalkler)
     if bookings.any?
       chalkler.bookings.visible & bookings
@@ -510,28 +473,6 @@ class Course < ActiveRecord::Base
     bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
   end
 
-  def pay_involved
-    (cost.present? ? cost : 0) > 0
-  end
-
-  def todo_attendee_list
-    return (start_at > DateTime.current) && (start_at <= DateTime.tomorrow + 1) && pay_involved
-  end
-
-  def todo_pay_reminder
-    return unpaid_count > 0 && pay_involved && ( start_at < DateTime.current + 4 )
-  end
-
-  def todo_payment_summary
-    return pay_involved && ( (teacher_cost.present? ? teacher_cost : 0) > 0 ) && ( start_at < DateTime.current ) && ( start_at > DateTime.current - 2)
-  end
-
-  def set_name(name)
-    return name.strip unless name.include?(':')
-    parts = name.split(':')
-    parts[1].strip
-  end
-
   def free?
     cost == 0
   end
@@ -542,7 +483,6 @@ class Course < ActiveRecord::Base
     end
     "/#{channel.url_name}/#{url_name}/#{id}"
   end
-
 
   def path_series
     "/#{channel.url_name}/#{url_name}"
@@ -591,43 +531,86 @@ class Course < ActiveRecord::Base
     ActionController::Base.new.expire_fragment("_course_#{id}")
   end
 
+  def create_outgoing_payments!
+    unless self.teacher_payment
+      t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
+      self.update_column('teacher_payment_id', t_payment.id)
+    end
+    unless self.channel_payment
+      c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
+      self.update_column('channel_payment_id', c_payment.id)
+    end
+  end
+
   private
-  def class_or_course
-    return 'class' if lessons.count < 2
-    'course'
-  end
+    def clear_ivars
+      @channel_income_with_tax = nil
+      @channel_income_no_tax = nil
+      @teacher_income_with_tax = nil
+      @teacher_income_no_tax = nil
+      @channel_plan = nil
+      @channel_fee = nil
+      @chalkle_fee_with_tax = nil
+      @chalkle_fee_no_tax = nil
+      @first_or_new_lesson = nil
+    end
 
-  def save_first_lesson
-    @first_or_new_lesson.save if @first_or_new_lesson
-  end
+    def calc_chalkle_fee(incl_tax)
+      return 0 if free?
+      single = course_class_type.nil? ? single_class? : course_class_type == 'course'
+      no_tax_fee = (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
+      incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
+    end
 
-  #price calculation methods
-  def excl_gst(price)
-    price/(1 + GST)
-  end
+    def calc_channel_income(incl_tax)
+      income = bookings.confirmed.paid.sum(&:provider_fee) - teacher_pay_flat
+      income - (incl_tax ? 0 : channel_income_tax)
+    end
 
-  def update_published_at
-    self.published_at ||= Time.current
-  end
-  
-  def check_end_at
-    self.end_at = last_lesson.end_at if last_lesson.present? && last_lesson.valid?
-  end
+    def calc_channel_plan
+      (channel && channel.plan) ? channel.plan : ChannelPlan.default
+    end
 
-  def check_start_at
-    self.start_at = first_lesson.start_at if first_lesson.present?
-  end
+    def calc_channel_fee
+      (cost||0) - (variable_costs||0) - (processing_fee||0) - (chalkle_fee_with_tax||0)
+    end
 
-  def set_url_name
-    self.url_name = name.parameterize
-  end
+    def calc_teacher_income(incl_tax)
+      if fee_per_attendee?
+        income = bookings.confirmed.paid.sum(&:teacher_fee)
+      elsif flat_fee?
+        income = teacher_cost || 0
+      else
+        income = 0
+      end
+      income - (incl_tax ? 0 : teacher_income_tax)
+    end
 
-  def check_url_name
-    self.url_name = name.parameterize if self.url_name.nil?
-  end
+    def save_first_lesson
+      @first_or_new_lesson.save if @first_or_new_lesson
+    end
 
-  def check_teacher_cost
-    self.teacher_cost = 0 if teacher_pay_type == Course.teacher_pay_types[2]
-  end
-  
+    def update_published_at
+      self.published_at ||= Time.current if published?
+    end
+    
+    def check_end_at
+      self.end_at = last_lesson.end_at if last_lesson.present? && last_lesson.valid?
+    end
+
+    def check_start_at
+      self.start_at = first_lesson.start_at if first_lesson.present?
+    end
+
+    def set_url_name
+      self.url_name = name.parameterize
+    end
+
+    def check_url_name
+      self.url_name = name.parameterize if self.url_name.nil?
+    end
+
+    def check_teacher_cost
+      self.teacher_cost = 0 if teacher_pay_type == Course.teacher_pay_types[2]
+    end
 end

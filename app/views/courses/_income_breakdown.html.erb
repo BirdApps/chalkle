@@ -1,0 +1,72 @@
+<% 
+  course = income_breakdown 
+  hide_teacher = false unless defined?(:hide_teacher) && hide_teacher
+  hide_provider = false unless defined?(:hide_provider) && hide_provider
+%>
+<% if course.has_income? %>
+  <div>
+    <div class="alert-success alert no-margin clearfix">
+      <div class="row">
+        <%= link_to course_path(course.id), target: :blank do %>
+          <div class="col-sm-3">
+            <%= quick_date course.start_at %>
+          </div>
+          <div class="col-sm-2">
+            <%= course.id %>
+          </div>
+          <div class="<%= hide_teacher || hide_provider ? 'col-sm-5' : 'col-sm-3' %>">
+            <%= course.name %>
+          </div>
+
+          <% unless hide_provider %>
+            <div class="col-sm-2">
+              <span class="visible-xs">Provider: </span>
+              $<%= money_formatted course.channel_income_with_tax %> 
+            </div>
+          <% end %>
+
+          <% unless hide_teacher %>
+            <div class="col-sm-2">
+              <span class="visible-xs">Teacher: </span>
+              $<%= money_formatted course.teacher_income_with_tax %> 
+            </div>
+          <% end %>
+
+        <% end %>
+      </div>
+    </div>
+
+    <div class="clearfix alert alert-danger">
+      <% course.bookings.paid.each do |booking | %>
+        <div class="row">
+          <%= link_to ( current_user.super? ? sudo_booking_path(booking.id) : course_bookings_path(course.id)), class: 'clearfix', target: :blank do %>
+            
+            <div class="col-sm-3">
+              <%= quick_date booking.start_at %>
+            </div>
+            <div class="col-xs-2">
+              <%= booking.id %>
+            </div>
+            <div class="<%= hide_teacher || hide_provider ? 'col-sm-5' : 'col-sm-3' %>">
+              <%= booking.name.titlecase %>
+            </div>
+
+            <% unless hide_provider %>
+              <div class="col-xs-2">
+                $<%= money_formatted booking.provider_fee  %>
+              </div>
+            <% end %>
+
+            <% unless hide_teacher %>
+              <div class="col-xs-2">
+                $<%= money_formatted booking.teacher_fee %>
+              </div>
+            <% end %>
+
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <br /> <br />
+  </div>
+<% end %>

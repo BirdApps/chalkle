@@ -5,7 +5,7 @@
     </div>
     <div class="col-xs-6 col-sm-3">
       <span class="alert-default light">
-        <%= pretty_time_range(outgoing_payment.first_booking.created_at,outgoing_payment.last_booking.created_at, true) %>
+        <%= pretty_time_range(outgoing_payment.first_booking.created_at,outgoing_payment.last_booking.created_at, true) unless outgoing_payment.bookings.blank? %>
       </span>
     </div>
     <div class="col-xs-4 col-sm-2">

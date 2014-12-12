@@ -33,6 +33,9 @@ class Booking < ActiveRecord::Base
   scope :free, where('NOT EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
   scope :not_free, where('EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
 
+  scope :paid, not_free
+  scope :unpaid, free
+
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
 
@@ -51,13 +54,8 @@ class Booking < ActiveRecord::Base
 
   scope :needs_reminder, course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
 
-  scope :need_outgoing_payments, includes(:course).where("courses.cost > 0 AND courses.status = 'Completed' AND courses.end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
-
   scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week) }
   scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month) }
-
-
-
 
   before_validation :set_free_course_attributes
 
@@ -69,14 +67,6 @@ class Booking < ActiveRecord::Base
 
   def paid
     self.payment.present? ? payment.total : 0
-  end
-
-  def self.paid
-   select{|booking| (booking.paid || 0) >= booking.cost }
-  end
-
-  def self.unpaid
-    select{|booking| (booking.paid || 0) < booking.cost }
   end
 
   def self.needs_booking_completed_mailer
@@ -134,8 +124,8 @@ class Booking < ActiveRecord::Base
   def apply_fees
     #CHALKLE
     self.chalkle_gst_number = Finance::CHALKLE_GST_NUMBER
-    self.chalkle_fee = course.chalkle_fee false
-    self.chalkle_gst = course.chalkle_fee(true) - chalkle_fee
+    self.chalkle_fee = course.chalkle_fee_no_tax
+    self.chalkle_gst = course.chalkle_fee_with_tax - chalkle_fee
     
     self.processing_fee = course.processing_fee
     self.processing_gst = course.processing_fee*3/23
@@ -230,18 +220,6 @@ class Booking < ActiveRecord::Base
 
   def transaction_url
     payment.present? && payment.swipe_transaction_id.present? ? "https://merchant.swipehq.com/admin/main/index.php?module=transactions&action=txn-details&transaction_id="+payment.swipe_transaction_id : '#'
-  end
-
-   def create_outgoing_payments!
-    #if there is a pending payment, rather than creating a new payment, we add on to the existing payment
-    unless self.teacher_payment
-      t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
-      self.update_column('teacher_payment_id', t_payment.id)
-    end
-    unless self.channel_payment
-      c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
-      self.update_column('channel_payment_id', c_payment.id)
-    end
   end
 
   def pending_refund?

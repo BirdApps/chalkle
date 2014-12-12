@@ -13,6 +13,8 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
   end
 
   def show
+    @outgoing.recalculate! if params[:recalculate].present?
+    @page_title = @outgoing.for_teacher? ? "Teacher Payment" : "Provider Payment"
   end
 
   def approve

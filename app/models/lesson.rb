@@ -17,6 +17,8 @@ class Lesson < ActiveRecord::Base
     errors.add(:duration, "Duration cannot be negative") if lesson.duration && lesson.duration < 0
   end
 
+  after_save :reset_end_at
+
   def between_start_and_end
     start_at < DateTime.current && end_at > DateTime.current
   end
@@ -24,4 +26,9 @@ class Lesson < ActiveRecord::Base
   def end_at
     @end_at ||= start_at + duration 
   end
+
+  def reset_end_at
+    @end_at = start_at + duration
+  end
+
 end

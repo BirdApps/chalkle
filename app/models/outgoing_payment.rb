@@ -17,28 +17,26 @@ class OutgoingPayment < ActiveRecord::Base
   scope :marked_paid, where(status: STATUS_4)
   scope :confirmed_paid, where(status: STATUS_5)
   scope :not_valid, where(status: STATUS_6)
-  scope :with_valid_teacher_bookings, includes(:teacher_bookings).where("bookings.teacher_fee > 0 AND bookings.status = 'yes'")
-  scope :with_valid_channel_bookings, includes(:channel_bookings).where("bookings.provider_fee > 0  AND bookings.status = 'yes'")
+ 
   scope :by_date, order(:updated_at)
 
   belongs_to :teacher, class_name: 'ChannelTeacher'
   belongs_to :channel
 
-  validates_presence_of :fee, :tax, :status
-
-  validate :teacher_or_channel_presence
-
-  has_many :channel_courses, class_name: 'Course', foreign_key: :channel_payment_id
-  has_many :teacher_courses, class_name: 'Course', foreign_key: :teacher_payment_id
+  has_many :channel_courses,  class_name: 'Course', foreign_key: :channel_payment_id
+  has_many :teacher_courses,  class_name: 'Course', foreign_key: :teacher_payment_id
 
   has_many :teacher_bookings, through: :teacher_courses,  source: :bookings
-  has_many :channel_bookings, through: :teacher_courses,  source: :bookings
+  has_many :channel_bookings, through: :channel_courses,  source: :bookings
   
   has_many :teacher_payments, through: :teacher_bookings, source: :payment
   has_many :channel_payments, through: :channel_bookings, source: :payment
 
+  validates_presence_of :fee, :tax, :status
+  validate :teacher_or_channel_presence
+
   def self.valid
-    (with_valid_channel_bookings+with_valid_teacher_bookings).uniq.select{|o| o.bookings.present?}
+    OutgoingPayment.select{|o| o.courses.select{ |c| (o.for_teacher? ? c.teacher_income_with_tax : c.channel_income_with_tax) != 0 }.present? }
   end
 
   def self.pending_payment_for_teacher(teacher)
@@ -151,9 +149,9 @@ class OutgoingPayment < ActiveRecord::Base
 
   def courses
     if for_teacher?
-      teacher_courses.uniq
+      teacher_courses
     else
-      channel_courses.uniq
+      channel_courses
     end
   end
 
@@ -167,40 +165,59 @@ class OutgoingPayment < ActiveRecord::Base
 
   def bookings
     if for_teacher?
-      teacher_bookings.confirmed.where("teacher_fee > 0")
+      teacher_bookings.confirmed.not_free
     else
-      channel_bookings.confirmed.where("provider_fee > 0")
+      channel_bookings.confirmed.not_free
     end
   end
 
-  def calc_fee
-    c_fee = bookings.inject(0){|sum,b| sum += b.paid? ? ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) : 0 }
-    self.fee = c_fee + flat_fees
+  def calculate!
+    self.tax_number = tax_num
+    self.bank_account = account
+    calc_fee(true)
+    calc_tax(true)
+    save
   end
 
-  def calc_tax
-    c_tax = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_gst || 0 : b.provider_gst || 0 ) }
-    self.tax = c_tax + flat_fees_tax
+  def recalculate!
+    self.tax_number = nil
+    #remove any bookings which have changed status
+    remove_courses = courses.where("status != '#{Course::STATUS_4}'")
+    remove_courses.update_all(channel_payment_id: nil)
+    remove_courses.update_all(teacher_payment_id: nil)
+    bookings.map{ |b| b.apply_fees! }
+    calculate!
+  end
+
+  def calc_fee(recalculate = false)
+    if self.fee.blank? || recalculate
+      self.fee = courses.inject(0){|sum,c| sum += (for_channel? ? c.channel_income_no_tax : c.teacher_income_no_tax) }
+    end
+    self.fee
+  end
+
+  def calc_tax(recalculate = false)
+    if self.tax.blank? || recalculate
+      self.tax = courses.inject(0){|sum,c| sum+= (for_channel? ? c.channel_income_tax : c.teacher_income_tax) }
+    end
+    self.tax
   end
 
   #only calculate fee and tax only before approval
-  def total
+  def total(recalculate = false)
     if status == STATUS_1 || status == STATUS_6
-      calc_fee
-      calc_tax
+      calc_fee(true) + calc_tax(true)
+    else
+      calc_fee + calc_tax
     end
-    fee+tax
   end
 
 
   #calculate fee and tax only once on approval
   def approve!
     if status == STATUS_1
-      calc_fee
-      calc_tax
+      calculate!
       self.status = STATUS_2
-      self.tax_number = tax_num
-      self.bank_account = account
       save
     end
     total
@@ -213,7 +230,7 @@ class OutgoingPayment < ActiveRecord::Base
 
   def mark_paid!(reference = nil)
     self.reference = reference
-    self.paid_date = DateTime.current
+    self.paid_date = DateTime.current unless self.paid_date
     self.status = STATUS_4
     save
   end
@@ -223,51 +240,5 @@ class OutgoingPayment < ActiveRecord::Base
     self.status = STATUS_5
     save
   end
-
-  private
-
-    def flat_fees
-      multiplier = for_teacher? ? 1 : -1
-      multiplier*(flat_fees_total - flat_fees_tax)
-    end
-
-    def flat_fees_tax
-      if for_teacher? &&  teacher.tax_registered?
-        flat_fees_total*3/23
-      else
-        0
-      end
-    end
-
-    def flat_fees_total
-      @flat_fees ||= calc_flat_fees
-    end
-
-    def calc_flat_fees
-      bookings.map &:apply_fees!
-
-      flat_fee_courses = Course.none
-
-      #If a flat fee course's bookings were spread across multiple outgoing_payments (should be unlikely) then the adjustment would happen twice, resulting in the teacher being paid twice. flat_fee_courses is ensured to only contain flat fee courses which are not connected to any other approved outgoing_payments
-
-      courses.select{ |c| c.teacher_pay_type == 'Flat fee' }.each do |course|
-        
-        include_course = true     
-
-        course.bookings.each do |booking|
-
-          if for_teacher?
-            include_course = booking.teacher_payment.nil? || booking.teacher_payment == self || booking.teacher_payment.not_approved?  if include_course
-          else
-            include_course = booking.channel_payment.nil? || booking.channel_payment == self || booking.teacher_payment.not_approved? if include_course
-          end
-
-        end
-
-        flat_fee_courses << course if include_course
-      end
-      
-      flat_fee_courses.inject(0){ |sum,c| sum += c.teacher_pay_flat }
-    end
 
 end
