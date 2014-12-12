@@ -317,11 +317,11 @@ class Course < ActiveRecord::Base
   end
 
   def channel_income_tax
-    channel.tax_registered? ? channel_income*3/23 : 0
+    channel.tax_registered? ? channel_income_no_tax*3/23 : 0
   end
 
   def teacher_income_tax
-    teacher.tax_registered? ? teacher_income*3/23 : 0
+    teacher.tax_registered? ? teacher_income_no_tax*3/23 : 0
   end
 
   def channel_plan
@@ -564,7 +564,7 @@ class Course < ActiveRecord::Base
 
     def calc_channel_income(incl_tax)
       income = bookings.confirmed.paid.sum(&:provider_fee) - teacher_pay_flat
-      income - (incl_tax ? 0 : channel_income_tax)
+      income - (incl_tax ? 0 : (channel.tax_registered? ? income*3/23 : 0))
     end
 
     def calc_channel_plan
@@ -583,7 +583,7 @@ class Course < ActiveRecord::Base
       else
         income = 0
       end
-      income - (incl_tax ? 0 : teacher_income_tax)
+      income - (incl_tax ? 0 : (teacher.tax_registered? ? income*3/23 : 0))
     end
 
     def save_first_lesson
