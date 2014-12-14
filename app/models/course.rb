@@ -88,7 +88,7 @@ class Course < ActiveRecord::Base
 
   scope :Draft, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
-  scope :approved, visible.where(status: STATUS_4)
+  scope :completed, visible.where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
