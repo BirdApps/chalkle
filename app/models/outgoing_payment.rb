@@ -36,6 +36,7 @@ class OutgoingPayment < ActiveRecord::Base
   validate :teacher_or_channel_presence
 
   def self.valid
+    #TODO: OutgoingPayment.valid should be sql instead of ruby
     OutgoingPayment.select{|o| o.courses.select{ |c| (o.for_teacher? ? c.teacher_income_with_tax : c.channel_income_with_tax) != 0 }.present? }
   end
 
