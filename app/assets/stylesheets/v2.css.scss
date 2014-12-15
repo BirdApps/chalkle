@@ -133,7 +133,7 @@ body.v2 {
       }
       li{
         .btn, a {
-          color: #888;
+          color: #333;
           text-align: left;
           line-height: 2.5em;
           img{
@@ -217,7 +217,7 @@ body.v2 {
   .alert-default {
     background-color: #eee;
     border-color: #dfdfdf;
-    color: #888;
+    color: #333;
   }
   .text-primary{
     color: #F5BA56;
@@ -289,7 +289,7 @@ body.v2 {
   .light {
     font-weight: 100;
     font-family: "proxima-nova",sans-serif;
-    color: #888;
+    color: #333;
   }
   .inline {
     display: inline-block;
@@ -548,7 +548,7 @@ body.v2 {
           }
           margin-bottom: 0;
           a {
-            color: #888;
+            color: #555;
             @media screen and (max-width: $col-sm) {
               min-height: $mob-line-height;
               line-height: $mob-line-height;
@@ -616,7 +616,7 @@ body.v2 {
             background-color: transparent;
           }
           li{
-            color: #888;
+            color: #333;
           }
         }
         .navbar-header {
@@ -735,7 +735,7 @@ body.v2 {
           @media screen and (max-width: $col-sm) {
             margin-left: 0 !important;
             >a{
-              color: #888;
+              color: #333;
               line-height: 2.8em;
             }
           }
@@ -1320,12 +1320,11 @@ body.v2 {
       .title-wrapper {
         position:relative;
         .title {
-          @include text-shadow(1px, 1px, 0px, #FFF, 2px, 2px, 0px, rgba(0,0,0,0.1));
           font-family: "proxima-nova",sans-serif;
           font-weight: 500;
-          font-size: 24px;
+          font-size: 28px;
           line-height: 29px;
-          letter-spacing: 2px;
+          letter-spacing: 3px;
           text-transform: uppercase;
           text-decoration: none;
           border: 0;
@@ -1385,7 +1384,7 @@ body.v2 {
         }
       }
       .description {
-        color: #727272;
+        color: #555;
         font-size: 14px;
         line-height: 20px;
       }
@@ -1447,7 +1446,7 @@ body.v2 {
       }
     }
     .grey {
-        color: #696969;
+        color: #555;
     }
     .small {
       font-size: 80%;

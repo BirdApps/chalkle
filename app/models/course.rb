@@ -470,7 +470,7 @@ class Course < ActiveRecord::Base
   end
 
   def attendance
-    bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
+    bookings.confirmed.visible.count
   end
 
   def free?

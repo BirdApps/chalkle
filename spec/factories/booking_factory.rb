@@ -21,6 +21,10 @@ FactoryGirl.define do
       status 'no'
     end
 
+    factory :hidden_booking do 
+      visible false
+    end
+
     factory :pending_refund do
       status 'refund_pending'
     end
