@@ -5,7 +5,7 @@ FactoryGirl.define do
     payment_method 'credit_card'
     payment {|i| i.association(:payment) }
     chalkler { |i| i.association(:chalkler)}
-    course { |i| i.association(:fee_per_attendee_course)}
+    course { |i| i.association(:course)}
     
     teacher_fee     8.50
     teacher_gst     1.50

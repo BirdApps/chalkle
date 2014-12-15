@@ -55,8 +55,8 @@ describe Booking do
   end
 
   describe ".visible" do
-    let(:booking) { FactoryGirl.create(:booking) }
-    let(:hidden_booking) { FactoryGirl.create(:hidden_booking) }
+    let!(:booking) { FactoryGirl.create(:booking) }
+    let!(:hidden_booking) { FactoryGirl.create(:hidden_booking) }
     
     it {expect(Booking.visible).to include(booking)}
     it "should not include a hidden booking" do
