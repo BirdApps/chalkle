@@ -20,10 +20,11 @@ class CourseNoticesController < ApplicationController
       notice.save
     end
 
+    # check if the notice is from the teacher or a chalkler; these are actually different notifications 
     if current_chalkler == @course.teacher.chalkler
       @course.followers_except(current_chalkler).map {|c| c.notify.discussion_from_teacher(notice) }
     else
-      @course.teacher.chalkler.notify.discussion_from_chalkler(notice)
+      @course.teacher.chalkler && @course.teacher.chalkler.notify.discussion_from_chalkler(notice)
       @course.followers_except(current_chalkler).map {|c| c.notify.discussion_from_chalkler(notice) }
     end
 
