@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Course do
   
-  it { should belong_to(:category) }
-  it { should have_one :course_image }
+  it { should belong_to :channel }
+  it { should belong_to :teacher }
 
-  it { should accept_nested_attributes_for :course_image }
+  it { should accept_nested_attributes_for :lessons }
 
   specify { expect(FactoryGirl.create(:course)).to be_valid }
 
@@ -83,9 +83,9 @@ describe Course do
   end
 
   describe ".upcoming" do
-    let!(:old) { FactoryGirl.create(:published_course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.ago)], duration: 1) }
-    let!(:soon) { FactoryGirl.create(:published_course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.from_now)], duration: 1) }
-    let!(:later) { FactoryGirl.create(:published_course, lessons: [ FactoryGirl.create(:lesson, start_at: 5.days.from_now)], duration: 1) }
+    let!(:old) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.ago)], duration: 1) }
+    let!(:soon) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.from_now)], duration: 1) }
+    let!(:later) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 5.days.from_now)], duration: 1) }
 
     it "should include published courses in the future" do
       expect(Course.upcoming).to include(soon, later)
@@ -99,7 +99,7 @@ describe Course do
 
   describe ".in_future" do
     let!(:lesson) { FactoryGirl.create(:lesson, start_at: Time.current + 5.hours, duration: 1) }
-    let(:course) { FactoryGirl.create(:published_course, lessons: [lesson]) }
+    let(:course) { FactoryGirl.create(:course, lessons: [lesson]) }
 
     it "includes course published earlier today" do
       Timecop.freeze(Time.current) do
@@ -119,7 +119,7 @@ describe Course do
       let(:chalkler) { FactoryGirl.create(:chalkler, name: "Chalkler") }
       let(:channel) { FactoryGirl.create(:channel) }
       let(:lesson) { FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5) }
-      let(:published_course) { FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, min_attendee: 2, venue: "Town Hall") }
+      let(:course) { FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, min_attendee: 2, venue: "Town Hall") }
       let(:booking) { FactoryGirl.create(:booking, chalkler: chalkler, course: course, status: 'yes', guests: 5) }
 
     it "should not be valid if published with no lessons and published" do
@@ -132,20 +132,11 @@ describe Course do
     end
   end
 
-  describe "#set_name" do
-
-    let(:course) { Course.new }
-    
-    it "returns text after the colon" do
-      expect(course.set_name('zzz: xxx')).to eq 'xxx'
-    end
-  end
-
   describe "course costs" do
 
     let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5) }
 
-    let(:course) { FactoryGirl.create(:published_course, channel: channel, cost: 20) }
+    let(:course) { FactoryGirl.create(:course, channel: channel, cost: 20) }
       
     describe "cost validations" do
 
@@ -159,11 +150,19 @@ describe Course do
         expect(course).not_to be_valid
       end
 
-      it "should not allow non numerical teacher payment" do
-        course.teacher_payment = "resres"
-        expect(course).not_to be_valid
-      end
+    end
+  end
 
+  describe ".create_outgoing_payments!" do
+    let(:channel) { FactoryGirl.create(:channel) }
+    let(:teacher){ FactoryGirl.create(:channel_teacher, channel: channel )}
+    let(:lesson){ FactoryGirl.create(:past_lesson)}
+    let(:course) { FactoryGirl.create(:course_with_bookings, channel: channel, teacher: teacher, status: 'Completed', lessons: [lesson])}
+
+    it "should associate a completed course with a teacher_payment and a channel_payment" do
+      course.create_outgoing_payments!
+      expect(course.teacher_payment).to(be_valid) && 
+      expect(course.channel_payment).to(be_valid)
     end
   end
 end

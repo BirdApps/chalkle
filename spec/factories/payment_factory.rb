@@ -7,7 +7,7 @@ FactoryGirl.define do
     xero_contact_name "John Smith"
     date  { Date.today }
     complete_record_downloaded false
-    total 30
+    total 20
     reconciled false
   end
 end

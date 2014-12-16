@@ -29,6 +29,10 @@ class CourseNotice < ActiveRecord::Base
     !visible
   end
 
+  def image
+    course.course_upload_image
+  end
+
   private 
     def check_body_or_photo
       if photo.present? && body.blank?

@@ -8,8 +8,7 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
       @outgoings = OutgoingPayment.by_date.where(status: status).valid
     else
       @outgoings = OutgoingPayment.by_date.valid
-    end
-     #TODO: move the above select to a scope 
+    end 
   end
 
   def show

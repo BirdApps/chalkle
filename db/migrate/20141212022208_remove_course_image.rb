@@ -4,5 +4,6 @@ class RemoveCourseImage < ActiveRecord::Migration
   end
 
   def down
+    ActiveRecord::IrreversibleMigration
   end
 end

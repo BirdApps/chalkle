@@ -34,8 +34,6 @@ class Course < ActiveRecord::Base
   has_many  :bookings
   has_many  :chalklers,     through: :bookings
   has_many  :payments,      through: :bookings
-  has_many  :chalklers,     through: :bookings
-  has_many  :payments,      through: :bookings
   has_many  :notices,       class_name: 'CourseNotice'
   
   mount_uploader :course_upload_image, CourseUploadImageUploader
@@ -88,7 +86,7 @@ class Course < ActiveRecord::Base
 
   scope :Draft, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
-  scope :approved, visible.where(status: STATUS_4)
+  scope :completed, visible.where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
@@ -143,7 +141,6 @@ class Course < ActiveRecord::Base
   end
 
   def cancel!(reason = nil)
-    #TODO: notify chalklers
     self.status = STATUS_2
     self.cancelled_reason = reason if reason
     bookings.each do |booking|
@@ -165,6 +162,14 @@ class Course < ActiveRecord::Base
         self.status = STATUS_3
       end
     end
+  end
+
+  def followers
+    chalklers
+  end
+
+  def followers_except(chalkler)
+    chalklers.find(:all, :conditions => ["chalklers.id != ?", chalkler.id]).uniq
   end
 
   def classes
@@ -470,7 +475,7 @@ class Course < ActiveRecord::Base
   end
 
   def attendance
-    bookings.confirmed.visible.sum(:guests) + bookings.confirmed.visible.count
+    bookings.confirmed.visible.count
   end
 
   def free?

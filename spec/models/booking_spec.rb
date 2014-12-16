@@ -7,12 +7,11 @@ describe Booking do
     it { should validate_presence_of(:course_id) }
     it { should validate_presence_of(:chalkler_id) }
 
-
   end
 
   describe ".confirmed" do
-    let(:booking_unconfirmed) {FactoryGirl.create(:booking, status: 'no')}
-    let(:booking) {FactoryGirl.create(:booking, status: 'yes')}
+    let!(:booking_unconfirmed) {FactoryGirl.create(:booking, status: 'no')}
+    let!(:booking) {FactoryGirl.create(:booking, status: 'yes')}
 
 
     it "excludes unconfirmed bookings" do
@@ -49,16 +48,17 @@ describe Booking do
   end
 
   describe "#name" do
-    let(:booking) { FactoryGirl.create(:course) }
+    let(:booking) { FactoryGirl.create(:booking) }
     it "creates name when course and chalkler present" do
-      expect(booking.name).to eq "Learning fun"
+      expect(booking.name).to eq "Joe Groot"
     end
   end
 
   describe ".visible" do
-    let(:booking) { FactoryGirl.create(:booking) }
+    let!(:booking) { FactoryGirl.create(:booking) }
+    let!(:hidden_booking) { FactoryGirl.create(:hidden_booking) }
+    
     it {expect(Booking.visible).to include(booking)}
-
     it "should not include a hidden booking" do
       booking.update_attribute :visible, false
       expect(Booking.visible).not_to include(booking)

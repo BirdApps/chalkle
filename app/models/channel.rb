@@ -27,6 +27,7 @@ class Channel < ActiveRecord::Base
   has_many :courses
   has_many :bookings, through: :courses
   has_many :payments, through: :bookings
+  has_many :outgoing_payments
   has_many :channel_categories
   has_many :categories, through: :channel_categories
   has_many :photos, class_name: 'ChannelPhoto', dependent: :destroy

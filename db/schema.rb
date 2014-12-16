@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141212040729) do
+ActiveRecord::Schema.define(:version => 20141214223448) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(:version => 20141212040729) do
     t.integer  "course_id"
     t.integer  "chalkler_id"
     t.string   "status",                        :default => "yes"
-    t.integer  "guests",                        :default => 0
     t.text     "meetup_data"
     t.datetime "created_at",                                       :null => false
     t.datetime "updated_at",                                       :null => false
@@ -56,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20141212040729) do
     t.text     "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
+    t.boolean  "chalkler_deleted",              :default => false
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"

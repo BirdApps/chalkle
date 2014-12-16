@@ -60,6 +60,22 @@ class NotificationPreference < ActiveRecord::Base
     BookingMailer.booking_completed(booking).deliver!
   end
 
+  def discussion_from_chalkler(course_notice)
+    message = I18n.t('notify.chalkler.discussion.from_chalkler', from_name: course_notice.chalkler.name, course_name: course_notice.course.name)
+
+    chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice
+
+    DiscussionMailer.new_from_chalkler(course_notice, chalkler).deliver!
+  end
+
+   def discussion_from_teacher(course_notice)
+    message = I18n.t('notify.chalkler.discussion.from_teacher', from_name: course_notice.chalkler.name, course_name: course_notice.course.name)
+
+    chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}"), message, course_notice
+
+    DiscussionMailer.new_from_teacher(course_notice, chalkler).deliver!
+  end
+
   def course_details_changed
     #6
   end
