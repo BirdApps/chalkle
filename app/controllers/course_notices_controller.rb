@@ -10,12 +10,11 @@ class CourseNoticesController < ApplicationController
   def create
     params[:course_notice][:chalkler_id] = current_user.id
     notice = CourseNotice.new params[:course_notice]
-    notice.course_id = @course.id
     notice.course = @course
     notice.photo = params[:course_notice_photo] if params[:course_notice_photo]
     
     if params[:course_notice_photo].blank? && notice.body.blank?
-      return redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id), notice: 'Empty Comment'
+      return redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id), notice: t('notify.chalkler.discussion.error.flash')
     else
       notice.save
     end

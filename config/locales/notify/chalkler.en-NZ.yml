@@ -9,5 +9,7 @@ en-NZ:
         confirmation: "You are booked in for **%{course_name}**"
         reminder: "**%{course_name}** is coming up shortly. Check the class notices for any important info you might need."
       discussion:
+        error: 
+          flash: "You cannot post a comment without any content"
         from_chalkler: "New comment from **%{from_name}** on **%{course_name}**"
         from_teacher: "New comment from teacher **%{from_name}** on **%{course_name}**"
