@@ -1,7 +1,7 @@
 require 'carrierwave'
 require 'course_upload_image_uploader'
 
-class CourseFactory
+class Teaching
   include ActiveAttr::Model
 
   attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :note_to_attendees, :new_channel_bank_number, :cloning_id, :bookings
@@ -22,7 +22,7 @@ class CourseFactory
     @duration_minutes = [0]
   end
 
-  def course_to_factory(args)
+  def course_to_teaching(args)
     #TODO: can only edit each course seperately at this point
     @repeating = 'once-off'
     
@@ -122,7 +122,7 @@ class CourseFactory
   end
 
   def update(course, params)
-    course_to_factory course
+    course_to_teaching course
     if check_valid_input params
       if has_bookings?
         course_args.delete(:cost)
