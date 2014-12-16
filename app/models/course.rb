@@ -34,8 +34,6 @@ class Course < ActiveRecord::Base
   has_many  :bookings
   has_many  :chalklers,     through: :bookings
   has_many  :payments,      through: :bookings
-  has_many  :chalklers,     through: :bookings
-  has_many  :payments,      through: :bookings
   has_many  :notices,       class_name: 'CourseNotice'
   
   mount_uploader :course_upload_image, CourseUploadImageUploader
@@ -143,7 +141,6 @@ class Course < ActiveRecord::Base
   end
 
   def cancel!(reason = nil)
-    #TODO: notify chalklers
     self.status = STATUS_2
     self.cancelled_reason = reason if reason
     bookings.each do |booking|
@@ -165,6 +162,14 @@ class Course < ActiveRecord::Base
         self.status = STATUS_3
       end
     end
+  end
+
+  def followers
+    chalklers
+  end
+
+  def followers_except(chalkler)
+    chalklers.find(:all, :conditions => ["chalklers.id != ?", chalkler.id]).uniq
   end
 
   def classes
