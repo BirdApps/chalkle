@@ -10,4 +10,4 @@ en-NZ:
         reminder: "**%{course_name}** is coming up shortly. Check the class notices for any important info you might need."
       discussion:
         from_chalkler: "New comment from **%{from_name}** on **%{course_name}**"
-        from_teacher: "New comment from **%{teacher_name}** on **%{course_name}**"
+        from_teacher: "New comment from teacher **%{from_name}** on **%{course_name}**"

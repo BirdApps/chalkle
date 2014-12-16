@@ -1,0 +1,24 @@
+en-NZ:
+  email:
+    chalkler:
+      discussion:
+        new_from_teacher:
+          subject: "%{from_name} has left a comment on %{course_name}"
+          body:
+            html: | 
+              The teacher of **[%{course_name}](%{course_url})** has left a comment.
+
+              **[%{from_name}](%{from_url})** said:
+
+              "%{discussion_text}"
+
+            text: |
+              The teacher of %{course_name} has left a comment.
+
+              %{from_name} said:
+
+              "%{discussion_text}"
+
+              Link: %{course_url}
+
+              ==============================
