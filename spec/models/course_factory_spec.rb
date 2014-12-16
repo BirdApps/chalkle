@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Teachings" do
+describe "CourseFactory" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
   let(:the_user) { FactoryGirl.create(:the_user) }
   let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.1, teacher_percentage: 0.5) }
@@ -27,7 +27,7 @@ describe "Teachings" do
     repeat_frequency: '',
     repeat_count: 1
   } }
-  let!(:chalkler_teaching){ Teaching.new(chalkler) }
+  let!(:chalkler_teaching){ CourseFactory.new(chalkler) }
 
   before(:each) do
     chalkler.channels << channel

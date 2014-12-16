@@ -76,11 +76,11 @@ class CoursesController < ApplicationController
   end
 
   def new
-    @teaching = Teaching.new current_user
+    @teaching = CourseFactory.new current_user
   end
 
   def create
-    @teaching = Teaching.new current_user
+    @teaching = CourseFactory.new current_user
     if params[:teaching_agreeterms] == 'on'
       new_course_ids =  @teaching.submit params[:teaching]
     end
@@ -94,13 +94,13 @@ class CoursesController < ApplicationController
   def edit
     @page_subtitle = 'Editing'
     authorize @course
-    @teaching = Teaching.new current_user
-    @teaching.course_to_teaching @course
+    @teaching = CourseFactory.new current_user
+    @teaching.course_to_factory @course
   end
 
   def update
     authorize @course
-    @teaching = Teaching.new current_user
+    @teaching = CourseFactory.new current_user
     if params[:teaching_agreeterms] == 'on'
       success = @teaching.update @course, params[:teaching]
     end
@@ -163,8 +163,8 @@ class CoursesController < ApplicationController
 
   def clone
     authorize @course
-    @teaching = Teaching.new current_user
-    @teaching.course_to_teaching @course
+    @teaching = CourseFactory.new current_user
+    @teaching.course_to_factory @course
     @teaching.cloning_id = @teaching.editing_id
     @teaching.editing_id = nil
     flash[:notice] = "You are now creating a copy of "+@course.name
