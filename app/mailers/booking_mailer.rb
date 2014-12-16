@@ -7,7 +7,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
-    mail(to: @chalkler.email,  subject: I18n.t("email.booking.confirmation.subject", name: @chalkler.first_name, course_name: @course.name)) do |format| 
+    mail(to: @chalkler.email,  subject: I18n.t("email.chalkler.booking.confirmation.subject", name: @chalkler.first_name, course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
@@ -17,7 +17,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
-    mail(to: @chalkler.email, subject: I18n.t("email.booking.cancelled.subject", name: @chalkler.first_name)) do |format| 
+    mail(to: @chalkler.email, subject: I18n.t("email.chalkler.booking.cancelled.subject", name: @chalkler.first_name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
@@ -27,7 +27,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
-    mail(to: @chalkler.email, subject: I18n.t("email.booking.reminder.subject", name: @chalkler.first_name)) do |format| 
+    mail(to: @chalkler.email, subject: I18n.t("email.chalkler.booking.reminder.subject", name: @chalkler.first_name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
@@ -37,7 +37,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
-    mail(to: @chalkler.email, subject: I18n.t("email.booking.completed.subject", name: @chalkler.first_name)) do |format| 
+    mail(to: @chalkler.email, subject: I18n.t("email.chalkler.booking.completed.subject", name: @chalkler.first_name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end

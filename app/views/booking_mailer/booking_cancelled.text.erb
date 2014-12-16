@@ -1,8 +1,8 @@
 <%= 
-  reason_text = @booking.cancelled_reason.present?  ? t("email.booking.cancelled.reason")+"\"#{@booking.cancelled_reason}\"" : ""
+  reason_text = @booking.cancelled_reason.present?  ? t("email.chalkler.booking.cancelled.reason")+"\"#{@booking.cancelled_reason}\"" : ""
   
-  refund_text = @booking.pending_refund? ? t("email.booking.cancelled.refund") :
+  refund_text = @booking.pending_refund? ? t("email.chalkler.booking.cancelled.refund") :
      ""
   
-   t("email.booking.cancelled.body.text", root_name: t("chalkle_url"), root_url: root_url, reason: reason_text, refund: refund_text, course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name))
+   t("email.chalkler.booking.cancelled.body.text", root_name: t("chalkle_url"), root_url: root_url, reason: reason_text, refund: refund_text, course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name))
 %>
