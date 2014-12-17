@@ -15,6 +15,7 @@ class Payment < ActiveRecord::Base
   scope :visible, where(visible: true)
   scope :cash, where(cash_payment: true)
   scope :by_date, order(:created_at)
+  scope :date_between, ->(from,to) { where(:created_at => from.beginning_of_day..to.end_of_day) }
 
   before_create :set_metadata
 
