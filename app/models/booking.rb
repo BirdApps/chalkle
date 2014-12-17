@@ -49,6 +49,7 @@ class Booking < ActiveRecord::Base
 
   scope :by_date, order(:created_at)
   scope :by_date_desc, order('created_at DESC')
+  scope :date_between, ->(from,to) { where(:created_at => from.beginning_of_day..to.end_of_day) }
   
   scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at')
 
@@ -99,9 +100,13 @@ class Booking < ActiveRecord::Base
       end
       
       save
-
-      self.chalkler.notify.booking_cancelled(self)
     end
+  end
+
+  def confirm!
+    self.status = 'yes'
+    self.visible = true
+    save
   end
 
   def paid?
