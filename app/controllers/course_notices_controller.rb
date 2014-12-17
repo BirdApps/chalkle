@@ -14,18 +14,13 @@ class CourseNoticesController < ApplicationController
     notice.photo = params[:course_notice_photo] if params[:course_notice_photo]
     
     if params[:course_notice_photo].blank? && notice.body.blank?
-      return redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id), notice: t('notify.chalkler.discussion.error.flash')
+      return redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id), notice: t('flash.discussion.error')
     else
       notice.save
     end
 
-    # check if the notice is from the teacher or a chalkler; these are actually different notifications 
-    if current_chalkler == @course.teacher.chalkler
-      @course.followers_except(current_chalkler).map {|c| c.notify.discussion_from_teacher(notice) }
-    else
-      @course.teacher.chalkler && @course.teacher.chalkler.notify.discussion_from_chalkler(notice)
-      @course.followers_except(current_chalkler).map {|c| c.notify.discussion_from_chalkler(notice) }
-    end
+    role = current_chalkler == @course.teacher.chalkler ? :teacher : :chalkler
+    Notify.for(notice).as(role).from(current_chalkler).created
 
     redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id, anchor: 'discuss-'+notice.id.to_s)
   end

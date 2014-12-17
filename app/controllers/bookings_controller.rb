@@ -44,9 +44,9 @@ class BookingsController < ApplicationController
     # this should handle invalid @bookings before doing anything
     if @booking.save
       if @booking.free?
-                
-        @booking.chalkler.notify.booking_confirmation(@booking)
-
+        
+        Notify.for(@booking).confirmation
+        
         redirect_to @booking.course.path and return
       else
         @booking.update_attribute(:status, 'pending')
@@ -84,8 +84,8 @@ class BookingsController < ApplicationController
       if verify['data']['transaction_approved'] == "yes"   
         pay_result = payment.save
         if payment.total >= @booking.cost
-          @booking.status = 'yes'
-          book_result = @booking.save
+          book_result = @booking.confirm!
+          Notify.for(@booking).confirmation
         end
       end
     end
@@ -100,8 +100,6 @@ class BookingsController < ApplicationController
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
 
-      @booking.chalkler.notify.booking_confirmation(@booking)
-      
       redirect_to course_path(params[:course_id])
     else
       flash[:alert] = "Sorry, it seems that payment was declined. Would you like to try again?"
@@ -196,6 +194,5 @@ class BookingsController < ApplicationController
     send_data Booking.csv_for(@bookings), type: :csv, filename: "bookings-for-#{@course.name.parameterize}.csv"
 
   end
-
 
 end
