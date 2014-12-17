@@ -71,13 +71,6 @@ class Chalkler < ActiveRecord::Base
     role == 'super'
   end
 
-  def notify 
-    unless notification_preference
-      self.notification_preference = NotificationPreference.create chalkler: self
-    end
-    notification_preference
-  end
-
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
@@ -226,6 +219,14 @@ class Chalkler < ActiveRecord::Base
 
   def first_name
     name.split(' ')[0]
+  end
+
+  def email_about?(preference_attr)
+    if notification_preference.present?
+      notification_preference.email_about?(preference_attr)
+    else
+      true
+    end
   end
 
   private
