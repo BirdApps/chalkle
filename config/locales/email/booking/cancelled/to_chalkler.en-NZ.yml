@@ -1,8 +1,8 @@
 en-NZ:
   email:
-    chalkler:
-      booking:
-        cancelled:
+    booking:
+      cancelled:
+        to_chalkler:
           reason: |
             For the following reason:
           refund: |

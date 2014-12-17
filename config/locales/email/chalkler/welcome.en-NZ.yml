@@ -1,17 +1,6 @@
 en-NZ:
   email:
     chalkler:
-      activation: 
-        text: |
-          ========================================
-           Activate your account
-
-          Your account does not yet have a password. To activate your account simply create a password by clicking on the link below:
-
-          %{url}?initial=true&reset_password_token=%{token}"
-
-          ========================================
-        html: "Get started by [setting a password](%{url}?initial=true&reset_password_token=%{token})"
       welcome:
         subject: "%{name} welcome to a whole new world of learning!"
         body:

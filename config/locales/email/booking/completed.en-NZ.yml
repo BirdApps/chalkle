@@ -1,0 +1,26 @@
+en-NZ:
+  email:
+    booking:
+      completed:
+        subject: "%{name}, we hope you enjoyed your class!"
+        body:
+          html: |
+            Thanks for coming along to [%{course_name}](%{course_url}), we hope you had a great time and learned something new!
+
+            We’d love some feedback on how the class went and your experience using Chalkle.
+
+            Please let us know if there is anything you’d like to share.
+
+            Cheers!
+          text: |
+            Thanks for coming along to %{course_name}, we hope you had a great time and learned something new!
+
+            We’d love some feedback on how the class went and your experience using Chalkle.
+
+            Please let us know if there is anything you’d like to share.
+
+            Cheers!
+
+            ======================================
+            [Find more classes provided by %{provider_name}](provider_url)
+            ======================================

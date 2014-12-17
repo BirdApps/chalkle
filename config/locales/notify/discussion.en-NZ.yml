@@ -1,0 +1,5 @@
+en-NZ:
+  notify:
+    discussion:
+      from_chalkler: "New comment from **%{from_name}** on **%{course_name}**"
+      from_teacher: "New comment from teacher **%{from_name}** on **%{course_name}**"

@@ -1,9 +1,0 @@
-en-NZ:
-  notify:
-    teacher:
-      discussion:
-        from_booking: "**%{from_name}** left a comment on **%{course_name}**"
-        from_non_booking: "**%{from_name}** left a comment on **%{course_name}**"
-      course:
-        booking_created: "New booking on **%{course_name}** for **%{from_name}**"
-        booking_deleted: "**%{from_name}** cancelled their booking on **%{course_name}**"

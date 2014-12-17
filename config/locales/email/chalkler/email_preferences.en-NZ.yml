@@ -1,0 +1,6 @@
+en-NZ:
+  email:
+    chalkler:
+      email_preferences: 
+        text: "Unsubscribe through your email settings: %{settings_url}"
+        html: "Unsubscribe through your [email settings](%{settings_url})."

@@ -2,14 +2,3 @@ en-NZ:
   notify:
     chalkler:
       welcome: "**Welcome %{name}!** It's great to have you onboard. When you are ready, pop over to your **Preferences** page to complete your profile"
-      booking:
-        refund: "**full refund** will be made shortly."
-        cancelled: "**%{course_name}** has been **cancelled**. %{refund}"
-        completed: "We hope you enjoyed **%{course_name}**!"
-        confirmation: "You are booked in for **%{course_name}**"
-        reminder: "**%{course_name}** is coming up shortly. Check the class notices for any important info you might need."
-      discussion:
-        error: 
-          flash: "You cannot post a comment without any content"
-        from_chalkler: "New comment from **%{from_name}** on **%{course_name}**"
-        from_teacher: "New comment from teacher **%{from_name}** on **%{course_name}**"
