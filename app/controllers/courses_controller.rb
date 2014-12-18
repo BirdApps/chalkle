@@ -175,6 +175,18 @@ class CoursesController < ApplicationController
 
   private
 
+    def check_clear_filters
+      if @region.id.blank?
+        session[:region] = nil
+      end
+      if @category.id.blank?
+        session[:topic] = nil
+      end
+      if @channel.id.blank?
+        session[:provider] = nil
+      end
+    end
+
     def load_course
       @course = Course.find_by_id(params[:id])
       return not_found unless @course

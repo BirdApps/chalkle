@@ -7,7 +7,7 @@ describe Chalkler do
   specify { expect( FactoryGirl.build(:chalkler) ).to be_valid }
 
   describe "validation" do
-    subject { Chalkler.new }
+    subject { FactoryGirl.build(:chalkler) }
 
     it { should validate_presence_of :name }
     it { should validate_uniqueness_of :email }
@@ -16,6 +16,22 @@ describe Chalkler do
       it { should validate_presence_of :email }
     end
   end
+
+  describe "sets a notification preference for new chalklers" do
+    let(:chalkler) { FactoryGirl.create(:chalkler) }
+
+    it 'should add notification preference to new chalklers' do 
+      expect( chalkler.notification_preference ).not_to be_nil 
+    end
+  end
+
+  describe "#send_welcome_mail" do
+    let(:chalkler) { FactoryGirl.build(:chalkler) }
+    it 'should send welcome mailer on chalkler create' do
+      expect{ chalkler.save }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
+  end
+
 
   describe "is_following" do
     subject { FactoryGirl.create(:chalkler) }

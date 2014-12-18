@@ -1,10 +1,10 @@
 FactoryGirl.define do
-  sequence(:uid) { |n| "1234567#{n}" }
   sequence(:email) { |n| "example_#{n}@example.com" }
 
   factory :chalkler do
     name "Ben Smith"
-    email
+    email {generate(:email)}
+    join_channels 'skip'
     bio "All about me!!"
 
     factory :admin_chalkler do 
