@@ -72,6 +72,14 @@ class Chalkler < ActiveRecord::Base
     role == 'super'
   end
 
+  def teacher? 
+    channel_teachers.any? 
+  end
+
+  def channel_admin? 
+    channel_admins.any?
+  end
+
   def join_psuedo_identities!
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
@@ -190,6 +198,19 @@ class Chalkler < ActiveRecord::Base
   def email_regions=(email_region)
     assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
+
+  def avialable_notifications
+    _available_notifications = { chalkler: NotificationPreference::CHALKLER_OPTIONS }
+    if teacher?
+      _available_notifications[:teacher] = NotificationPreference::TEACHER_OPTIONS
+    end
+    if channel_admin?
+      _available_notifications[:channel_admin] = NotificationPreference::PROVIDER_OPTIONS
+    end
+    _available_notifications
+  end
+
+
   
   def send_notification(type, href, message, target = nil,from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil)
     

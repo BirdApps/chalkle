@@ -82,13 +82,13 @@ Chalkle::Application.routes.draw do
     get '/bookings' => 'dashboard#bookings', as: :bookings
     
     get '/preferences' => 'preferences#show', as: :preferences
-    put '/preferences' => 'preferences#save', as: :preferences
+    put '/preferences' => 'preferences#update', as: :preferences
     
     get '/enter_email' => 'preferences#enter_email', as: :enter_email
     put '/enter_email' => 'preferences#enter_email', as: :enter_email
     
     get '/preferences/notifications' => 'preferences#notifications', as: :notification_preference
-    put '/preferences/notifications' => 'preferences#notifications', as: :notification_preference
+    put '/preferences/notifications' => 'preferences#update_notifications', as: :notification_preference
   end
 
   namespace :sudo do

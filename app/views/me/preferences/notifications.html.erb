@@ -8,18 +8,36 @@
 <div class="hidden-xs col-sm-2">
 </div>
 <div class="new_form_wrapper col-xs-12 col-sm-8">
-  <%= bootstrap_form_for(@preferences_notifications, wrapper: :simple_bootstrap3, url: me_notification_preference_path, html: { method:  :put, class: 'form-horizontal', role: 'form' }) do |f| %>
+  <%= bootstrap_form_for(@notification_preference, wrapper: :simple_bootstrap3, url: me_notification_preference_path, html: { method:  :put, class: 'form-horizontal', role: 'form' }) do |f| %>
         
       <%# TODO: settings form %>
 
       <%# f.input :name, label: "Name", input_html: { readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
      
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-12 center">
+        Select the email notifications you want to receive
       </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <% current_user.avialable_notifications.each do |notification_type, notifications| %>
+          <h4><%= notification_type.to_s.humanize %></h4>
+            <% notifications.each do |notification| %>
+              <div>
+                <%= f.check_box notification, as: :boolean %>
+                <%= f.label notification %>
+              </div>
+            <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
       <div class="center col-md-4">
         <input class="btn btn-primary col-xs-12" value="Save" type="submit" />  
       </div>
+
       <div class="col-md-4">
       </div>
     </div>

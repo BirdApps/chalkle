@@ -2,7 +2,7 @@ class Me::PreferencesController < Me::BaseController
 
   before_filter :check_user_data, only: :destroy
 
-  def save
+  def update
    	@chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
 
     if @chalkler_email_preferences.update_attributes(params[:chalkler_preferences])
@@ -40,11 +40,15 @@ class Me::PreferencesController < Me::BaseController
     end
   end
 
-  def notifications
-    @preferences_notifications = current_user.notification_preference
-    unless params[:chalkler_id].blank?
-      
-    end
+  def notifications   
+    @notification_preference = current_user.notification_preference
+  end
+
+  def update_notifications 
+    @notification_preference = current_user.notification_preference
+    @notification_preference.preferences = Hash[ params[:notification_preference].collect{|k,v| [k.to_sym, (v=="1" ? true : false)] }]
+    @notification_preference.save
+    redirect_to me_notification_preference_path
   end
 
   def destroy
