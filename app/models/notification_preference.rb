@@ -30,14 +30,16 @@ class NotificationPreference < ActiveRecord::Base
 
 
   def reset_to_default
-    self.preferences = Hash[ ALL_NOTIFICATIONS.collect{|n| [n, true]} ]
+    update_attributes :preferences => Hash[ ALL_NOTIFICATIONS.collect{|n| [n, true]} ]
   end
 
   ALL_NOTIFICATIONS.each do |notification|
-    reset_to_default unless preferences
+
     define_method(notification) do
+      reset_to_default if preferences.empty?
       preferences.keys.include?(notification) ? preferences[notification] : true
     end
+  
   end
 
 end
