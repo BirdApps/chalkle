@@ -1,3 +1,3 @@
 <%= 
-    t("email.chalkler.discussion.new_from_chalkler.body.text", from_name: @notice.chalkler.first_name, from_url: chalkler_url(@notice.chalkler), course_name: @notice.course.name, course_url: course_url(@notice.course, anchor: "discuss-#{@notice.id}" ), discussion_text: @notice.body ).to_html
+    t("email.discussion.new_from_chalkler.body.text", from_name: @notice.chalkler.first_name, from_url: chalkler_url(@notice.chalkler), course_name: @notice.course.name, course_url: course_url(@notice.course, anchor: "discuss-#{@notice.id}" ), discussion_text: @notice.body ).to_html
  %>

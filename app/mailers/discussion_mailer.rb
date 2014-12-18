@@ -7,7 +7,7 @@ class DiscussionMailer < BaseChalkleMailer
       should_send = true
       to_email = chalkler
     else
-      should_send = chalkler.email_about? 'discussion.new_from_teacher'
+      should_send = chalkler.email_about? :course_notice_new_from_teacher_to_chalkler
       to_email = chalkler.email
     end
     
@@ -27,9 +27,9 @@ class DiscussionMailer < BaseChalkleMailer
     else
 
       if course_notice.teacher == chalkler 
-        should_send = chalkler.email_about? 'discussion.new_from_chalkler.as_teacher'
+        should_send = chalkler.email_about? :course_notice_new_from_chalkler_to_teacher
       else
-        should_send = chalkler.email_about? 'discussion.new_from_chalkler.as_chalkler'
+        should_send = chalkler.email_about? :course_notice_new_from_chalkler_to_chalkler
       end
 
       to_email = chalkler.email
