@@ -105,6 +105,7 @@ class Course < ActiveRecord::Base
 
   scope :need_outgoing_payments, where("cost > 0 AND status = '#{STATUS_4}' AND end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR channel_payment_id IS NULL)")
 
+  scope :free, where("cost IS NULL or cost = 0")
 
   before_create :set_url_name
   before_save :update_published_at
