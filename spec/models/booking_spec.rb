@@ -9,6 +9,13 @@ describe Booking do
 
   end
 
+  describe "creates free bookings" do 
+    let(:booking) {FactoryGirl.create(:booking_free)}
+    it "creates a free booking" do 
+      expect(booking).to be_valid
+    end
+  end
+
   describe ".confirmed" do
     let!(:booking_unconfirmed) {FactoryGirl.create(:booking, status: 'no')}
     let!(:booking) {FactoryGirl.create(:booking, status: 'yes')}
