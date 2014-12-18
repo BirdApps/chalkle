@@ -23,6 +23,7 @@ class Chalkler < ActiveRecord::Base
   validates_uniqueness_of :email, { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
   validates_associated :subscriptions, :channels
+  validates_presence_of :notification_preference, :if => :persisted?
 
   has_many :subscriptions
   has_many :channel_teachers
@@ -244,11 +245,7 @@ class Chalkler < ActiveRecord::Base
   end
 
   def email_about?(preference_attr)
-    if notification_preference.present?
-      notification_preference.email_about?(preference_attr)
-    else
-      true
-    end
+    notification_preference.email_about?(preference_attr)
   end
 
   private

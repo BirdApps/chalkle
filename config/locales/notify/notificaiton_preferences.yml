@@ -1,0 +1,17 @@
+en-NZ:
+  notify:
+    notification_types:
+      chalkler: 
+        label: for classes you are attending
+        booking_cancelled_to_chalkler: Your booking is cancelled
+        booking_completed: Offer feedback to a classes you attend
+        booking_confirmation_to_chalkler: Confirm new bookings
+        booking_reminder: Reminder about upcomming bookings
+        course_notice_new_from_chalkler_to_chalkler: New comment on a class 
+        course_notice_new_from_teacher_to_chalkler: Teacher comments on a class
+      teacher: 
+        label: for classes you are teaching
+        booking_cancelled_to_teacher: Cancelled class
+        booking_confirmation_to_teacher: New booking made on a class
+        course_cancelled_to_teacher: Cancelled class by the teacher
+        course_notice_new_from_chalkler_to_teacher: New comment on a class

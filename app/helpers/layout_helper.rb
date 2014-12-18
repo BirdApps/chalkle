@@ -258,6 +258,12 @@ module LayoutHelper
           active: action_parts.include?("show"),
           title: "Settings"
       }
+      nav_links << {
+        img_name: "plane", 
+        link: me_notification_preference_path,
+        active: action_parts.include?("notifications"),
+        title: "Email Options"
+      }
     end
     nav_links
   end

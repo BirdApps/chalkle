@@ -42,13 +42,15 @@ class Me::PreferencesController < Me::BaseController
 
   def notifications   
     @notification_preference = current_user.notification_preference
+    render template: 'me/preferences/notifications'
+
   end
 
   def update_notifications 
     @notification_preference = current_user.notification_preference
     @notification_preference.preferences = Hash[ params[:notification_preference].collect{|k,v| [k.to_sym, (v=="1" ? true : false)] }]
     @notification_preference.save
-    redirect_to me_notification_preference_path
+    redirect_to me_notification_preference_path, notice: "Your settings have been updated"
   end
 
   def destroy

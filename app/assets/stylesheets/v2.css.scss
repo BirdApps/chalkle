@@ -246,6 +246,24 @@ body.v2 {
   .margin-top-5 {
     margin-top:5px;
   }
+
+  .notification-type-group {
+    padding: 1em 0;
+    border-bottom: solid 1px #ddd;
+    &:last-child {
+      border-bottom: none;
+
+    }
+    input[type="checkbox"] { margin-right: 10px; }
+    label { font-weight: light; color: #777; font-size: 0.87em; }
+    h4 {
+      padding-bottom: 0.25em;
+    }
+    div {
+      padding: 0.1em 0 0 1em;
+    }
+  }
+
   .social-links {
     background: #F3F3F3;
     @include border-radius( 8px );
