@@ -80,7 +80,7 @@
       <table>
         <tr>
           <td>
-            <h2><%= t 'hello' %> <%= @chalkler ? @chalkler.first_name : "" %>,</h2>
+            <h2><%= t 'hello' %><%= @chalkler ? " "+@chalkler.first_name : "" %>,</h2>
             
             <p class="lead">
             </p>
