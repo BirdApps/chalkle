@@ -49,7 +49,6 @@ class Chalkler < ActiveRecord::Base
   has_one  :notification_preference
 
   after_create :create_channel_associations
-  after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }
   after_create -> (chalkler) { Notify.for(chalkler).welcome }
   
   scope :visible, where(visible: true)
@@ -245,7 +244,10 @@ class Chalkler < ActiveRecord::Base
   end
 
   def email_about?(preference_attr)
-    notification_preference.email_about?(preference_attr)
+    unless notification_preference
+      self.notification_preference = NotificationPreference.create
+    end
+    self.notification_preference.send preference_attr
   end
 
   private
