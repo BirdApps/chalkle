@@ -49,6 +49,7 @@ class Chalkler < ActiveRecord::Base
   has_one  :notification_preference
 
   after_create :create_channel_associations
+  after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }
   after_create -> (chalkler) { Notify.for(chalkler).welcome }
   
   scope :visible, where(visible: true)
