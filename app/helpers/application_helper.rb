@@ -25,10 +25,6 @@ module ApplicationHelper
     end
   end
   
-  def base_url
-    request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}")
-  end
-
   def typekit_includes
     render 'layouts/typekit_includes' unless Rails.env.development?
   end

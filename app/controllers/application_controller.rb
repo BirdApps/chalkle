@@ -52,29 +52,12 @@ class ApplicationController < ActionController::Base
     render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
   end
 
-  def redirect_to_back_with_fallback(fallback, args={notice: "" })
-    return redirect_to :back, notice: notice
-  rescue ActionController::RedirectBackError
-    return redirect_to fallback, notice: args[:notice]
-  end
-
 protected
 
   def authorize(record)
     super record unless current_user.super?
   end
 
-  def check_clear_filters
-    if @region.id.blank?
-      session[:region] = nil
-    end
-    if @category.id.blank?
-      session[:topic] = nil
-    end
-    if @channel.id.blank?
-      session[:provider] = nil
-    end
-  end
 
   def authenticate_chalkler!
     session[:user_return_to] = request.fullpath
@@ -91,14 +74,6 @@ protected
       authenticate_chalkler!
     else
       redirect_to root_url
-    end
-  end
-
-  def load_country
-    if country_code
-      if country_code != 'nz'
-        raise ActiveRecord::RecordNotFound
-      end
     end
   end
 
@@ -175,21 +150,7 @@ protected
 
   def redirect_to_subdomain
     if request.subdomain.present?
-      redirect_to base_url+'/'+request.subdomain
-    end
-  end
-
-  def courses_for_time
-    @courses_for_time ||= Querying::CoursesForTime.new courses_base_scope
-  end
-
-  def courses_base_scope
-    apply_filter start_of_association_chain.published.by_date
-  end
-
-  def check_presence_of_courses
-    unless @courses.present?
-      add_response_notice(notice)
+      redirect_to request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}") +'/'+request.subdomain
     end
   end
 
@@ -198,10 +159,6 @@ protected
         response[:notices] = []
       end
       response[:notices] << notice || "There are no courses that match the current filter"
-  end
-
-  def start_of_association_chain
-    @channel.id.present? ? @channel.courses : Course
   end
 
   def current_date
@@ -230,10 +187,6 @@ protected
     end
   end
 
-  def base_url
-    request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}")
-  end
-
   def expire_cache!
     CacheManager.expire_cache!
   end
@@ -246,14 +199,6 @@ protected
     expire_fragment(/.*filter_list.*/)
   end
 
-  def check_user_data
-    if current_user.authenticated?
-      if current_user.email.nil?
-        session[:original_path] = request.path
-        return redirect_to me_enter_email_path
-      end
-    end
-  end
 
   def entity_events
     auto_log = true
@@ -268,4 +213,14 @@ protected
     parsed_locale = request.host.split('.').last
     I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
   end
+
+  def check_user_data
+    if current_user.authenticated?
+      if current_user.email.nil?
+        session[:original_path] = request.path
+        return redirect_to me_enter_email_path
+      end
+    end
+  end
+
 end
