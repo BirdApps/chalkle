@@ -5,8 +5,8 @@ class CourseMailer < BaseChalkleMailer
 
   def cancelled_to_teacher(course)
     @course = course
-    @chalkler = course.teacher.chalkler
-    mail(to: @chalkler, subject: "Contact from user on Chalkler, #{@channel_contact.subject}") do |format| 
+    @teacher = course.teacher
+    mail(to: @teacher.email, subject: I18n.t("email.course.cancelled.to_teacher.subject", course_name: @course.name) ) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
