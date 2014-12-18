@@ -103,16 +103,14 @@ protected
       if request && request.location && request.location.data
         request_region = request.location.data["region_name"]
       end
-    rescue
-      if (reconnect_attempts -=1) > 0
-        retry 
-      else
-        nil
-      end
+
+    rescue 
+      retry if (reconnect_attempts -=1) > 0
+    else
+      nil
     end
     (request_region == "") ? nil : request_region
   end
-
   def channel_name
     (params[:provider] || params[:channel_url_name]).encode("UTF-8", "ISO-8859-1").parameterize if (params[:provider] || params[:channel_url_name]).present?
   rescue ArgumentError 
