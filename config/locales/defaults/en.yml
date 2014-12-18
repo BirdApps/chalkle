@@ -1,0 +1,14 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  chalkle_url: 'Chalkle.com'
+  chalkle: 'Chalkle'
+  hello: 'Hello'
+  time:
+    formats:
+      long_without_year: ! '%l:%M%P %A %-d %B'
+  date:
+    formats:
+      weekday: '%a %e'
+      monthday: '%d %b'

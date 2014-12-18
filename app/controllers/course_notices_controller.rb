@@ -10,15 +10,17 @@ class CourseNoticesController < ApplicationController
   def create
     params[:course_notice][:chalkler_id] = current_user.id
     notice = CourseNotice.new params[:course_notice]
-    notice.course_id = @course.id
     notice.course = @course
     notice.photo = params[:course_notice_photo] if params[:course_notice_photo]
     
     if params[:course_notice_photo].blank? && notice.body.blank?
-      return redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id), notice: 'Empty Comment'
+      return redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id), notice: t('flash.discussion.error')
     else
       notice.save
     end
+
+    role = current_chalkler == @course.teacher.chalkler ? :teacher : :chalkler
+    Notify.for(notice).as(role).from(current_chalkler).created
 
     redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id, anchor: 'discuss-'+notice.id.to_s)
   end
@@ -45,7 +47,7 @@ class CourseNoticesController < ApplicationController
   private 
 
     def load_course
-      @course = Course.find_by_id(params[:course_id]).try :decorate
+      @course = Course.find_by_id(params[:course_id])
       return not_found unless @course
       check_course_visibility
     end

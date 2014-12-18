@@ -3,7 +3,7 @@ class ChannelAdmin < ActiveRecord::Base
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  has_many :courses, :through => :channel
+  has_many   :courses, through: :channel
   belongs_to :channel
   belongs_to :chalkler
 

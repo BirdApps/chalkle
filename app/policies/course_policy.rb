@@ -24,7 +24,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def show?
-    @course.displayable? or read?
+    Course::PUBLIC_STATUSES.include?(@course.status) or read?
   end
 
   def update?

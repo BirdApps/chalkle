@@ -13,7 +13,7 @@ describe Chalkler::DataCollection::EmailForm do
       end
 
       it "checks the existance of an email via the Chalkler model" do
-        chalkler.stub(:update_attributes) { true }
+        allow(chalkler).to receive(:update_attributes).and_return(true)
         form = Chalkler::DataCollection::EmailForm.new("chalkler" => chalkler, "email" => email)
         expect(Chalkler).to receive(:where).with("LOWER(email) = LOWER(?)", email) { [] }
         form.save
@@ -22,12 +22,12 @@ describe Chalkler::DataCollection::EmailForm do
 
     context "when saving" do
       it "returns true if the data is persisted" do
-        chalkler.stub(:update_attributes) { true }
+        allow(chalkler).to receive(:update_attributes).and_return( true )
         expect(form.save).to be true
       end
 
       it "returns false if the data is not persisted" do
-        chalkler.stub(:update_attributes) { false }
+        allow(chalkler).to receive(:update_attributes).and_return( false )
         expect(form.save).to be false
       end
 
@@ -35,13 +35,13 @@ describe Chalkler::DataCollection::EmailForm do
 
     context "sending to other objects" do
       it "saves the changes to the Chalkler" do
-        chalkler.should_receive(:update_attributes) { true }
+        expect(chalkler).to receive(:update_attributes) { true }
         form.save
       end
 
       it "wont overwrite another email address" do
-        chalkler.stub(:email) { "old@address.com" }
-        chalkler.should_receive(:update_attributes).never
+        allow(chalkler).to receive(:email).and_return( "old@address.com" )
+        expect(chalkler).not_to receive(:update_attributes)
         form.save
       end
     end

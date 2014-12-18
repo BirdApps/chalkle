@@ -19,7 +19,7 @@
         <% if course_notice.edited? %>
           Edited
         <% end %>
-        <%= quick_date course_notice.updated_at %>
+        <%= quick_date_time course_notice.updated_at %>
       </span>
     </header>
   </div>
@@ -49,7 +49,7 @@
     <div class="edit-notice clearfix" style="display:none">
       <div class="new_form_wrapper">
         <%= bootstrap_form_for(course_notice, wrapper: :simple_bootstrap3, url: update_course_course_notices_path(course_notice.course.id, course_notice.id ), html: { method: :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
-          <%= f.text_area :body, class: 'col-xs-12' %>
+          <%= f.text_area :body, class: 'discussion-box' %>
           <div class="margin-top">
             <%= image_tag(course_notice.photo, class: 'tiny-photo pull-left') if course_notice.photo.present? %>
             <input name="course_notice_photo" type="file" class="margin-top pull-left" />
@@ -71,7 +71,7 @@
       </span>
       <span class="time white">     
         <%= link_to 'Undo', delete_course_course_notices_path(course_notice.course.id, course_notice.id) if policy(course_notice).destroy?   %>
-        <%= quick_date course_notice.updated_at %>
+        <%= quick_date_time course_notice.updated_at %>
       </span>
     </header>
     <br />

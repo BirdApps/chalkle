@@ -16,8 +16,7 @@ class BookingsController < ApplicationController
   end
 
   def my_bookings
-    @unpaid_bookings = current_chalkler.bookings.visible.confirmed.unpaid.decorate
-    @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming.decorate
+    @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming
   end
 
   def new
@@ -45,7 +44,9 @@ class BookingsController < ApplicationController
     # this should handle invalid @bookings before doing anything
     if @booking.save
       if @booking.free?
-        BookingMailer.booking_confirmation(@booking).deliver!
+        
+        Notify.for(@booking).confirmation
+        
         redirect_to @booking.course.path and return
       else
         @booking.update_attribute(:status, 'pending')
@@ -59,7 +60,7 @@ class BookingsController < ApplicationController
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
     else
-      @course = Course.find(params[:course_id]).decorate
+      @course = Course.find(params[:course_id])
       flash[:notice] = 'Could not create booking at this time'
       render 'new'
     end
@@ -83,8 +84,8 @@ class BookingsController < ApplicationController
       if verify['data']['transaction_approved'] == "yes"   
         pay_result = payment.save
         if payment.total >= @booking.cost
-          @booking.status = 'yes'
-          book_result = @booking.save
+          book_result = @booking.confirm!
+          Notify.for(@booking).confirmation
         end
       end
     end
@@ -98,11 +99,11 @@ class BookingsController < ApplicationController
       @booking.visible = true
       @booking.save
       flash[:notice] = "Payment successful. Thank you very much!"
-      BookingMailer.booking_confirmation(@booking).deliver!
+
       redirect_to course_path(params[:course_id])
     else
-      flash[:alert] = "Payment was not successful. Sorry about that. Would you like to try again?"
-      redirect_to new_course_booking_path(params[:channel_id], params[:course_id], params[:booking_id])
+      flash[:alert] = "Sorry, it seems that payment was declined. Would you like to try again?"
+      redirect_to new_course_booking_path(params[:course_id])
     end
   end
 
@@ -112,7 +113,7 @@ class BookingsController < ApplicationController
 
   def edit
     return redirect_edit_on_paid(@booking) if @booking.paid?
-    @course = @booking.course.decorate
+    @course = @booking.course
   end
 
   def update
@@ -120,7 +121,7 @@ class BookingsController < ApplicationController
     if @booking.save
       redirect_to booking_path @booking
     else
-      @course = @booking.course.decorate
+      @course = @booking.course
       render action: 'edit'
     end
   end
@@ -133,35 +134,46 @@ class BookingsController < ApplicationController
 
   def confirm_cancel
     authorize @booking
-    @booking.cancel!(params[:booking][:cancelled_reason])
+    if @booking.cancel!(current_chalkler, params[:booking][:cancelled_reason])
+      Notify.for(@booking).cancelled
+    end
     return redirect_to @booking.course.path
   end
 
   def class_available
     valid = true
     if params[:course_id].present?
-      @course = Course.find(params[:course_id]).decorate
+      @course = Course.find(params[:course_id])
     elsif @booking.present?
       @course = @booking.course
     else
       return
     end
     unless policy(@course).write?(true)
+      
+      redirect_url = if @course.has_public_status?
+        course_path(@course)
+      else
+        root_path
+      end
+
       unless @course.published?
-        return redirect_to :back, notice: "This class is no longer available."
+        flash.notice = "This class is no longer available."
+        return redirect_to redirect_url
       end
       unless @course.start_at > DateTime.current
-        return redirect_to :back, notice: "This class has already started, and bookings cannot be created or altered"
+        flash.notice = "This class has already started, and bookings cannot be created or altered"
+        return redirect_to redirect_url 
       end
       unless @course.spaces_left?
-        return redirect_to :back, notice: "The class is full"
+        flash.notice = "The class is full"
+        return redirect_to redirect_url
       end
     end
-
   end
 
   def load_booking
-    @booking = current_user.bookings.find(params[:booking_id] || params[:id]).decorate
+    @booking = current_user.bookings.find(params[:booking_id] || params[:id])
     redirect_to not_found and return if !@booking
   end
 
@@ -184,6 +196,5 @@ class BookingsController < ApplicationController
     send_data Booking.csv_for(@bookings), type: :csv, filename: "bookings-for-#{@course.name.parameterize}.csv"
 
   end
-
 
 end

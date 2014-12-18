@@ -1,24 +1,22 @@
 FactoryGirl.define do
-  sequence(:uid) { |n| "1234567#{n}" }
-  sequence(:meetup_id) { |n| "1234567#{n}" }
   sequence(:email) { |n| "example_#{n}@example.com" }
 
   factory :chalkler do
     name "Ben Smith"
-    email
+    email {generate(:email)}
     join_channels 'skip'
     bio "All about me!!"
 
-    factory :meetup_chalkler do
-      after(:build) do |user|
-        user.identities << FactoryGirl.build(:meetup_identity)
-      end
+    factory :admin_chalkler do 
+      role 'admin'
     end
+
+    factory :teacher_chalkler do 
+      name "Mr. Bilbo"
+      bio "I am a teacher"
+      email
+    end
+
   end
 
-  factory :meetup_identity, class: 'OmniauthIdentity' do
-    uid
-    provider 'meetup'
-    provider_data { MeetupApiStub::chalkler_response.to_json }
-  end
 end

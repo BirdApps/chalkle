@@ -1,10 +1,5 @@
-<h3 style="border-bottom: solid 1px #ececec; padding-bottom: 5px;">
-Hello <%= @chalkler.name %>,
-</h3>
-Thanks for coming along to your class, we hope you had a great time and learning something new!
-<br/>
-We’d love some feedback on how the class went and your experience using Chalkle. 
-Please let us know if there is anything you’d like to share.
-<br/>
-Cheers! 
-<br />
+<markdown>
+  <%= 
+     t("email.booking.completed.body.html", course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name)).to_html
+  %>
+</markdown>

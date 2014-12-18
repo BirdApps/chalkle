@@ -1,2 +1,0 @@
-module Chalklers::DashboardHelper
-end

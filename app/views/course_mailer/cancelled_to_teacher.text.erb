@@ -1,0 +1,5 @@
+<%= 
+  reason_text = @course.cancelled_reason.present?  ? t("email.course.cancelled.to_teacher.reason")+"\"#{@course.cancelled_reason}\"" : ""
+  
+   t("email.course.cancelled.to_teacher.body.text", reason: reason_text,course_name: @course.name, course_url: course_url(@course) ).to_html
+%>

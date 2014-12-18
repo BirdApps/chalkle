@@ -18,7 +18,6 @@ class Channel < ActiveRecord::Base
   validates :teacher_percentage, presence: true, numericality: {less_than_or_equal_to: 1, message: "Teacher percentage of revenue must be less than or equal to 1"}
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   #validates_format_of :account, allow_blank: true, with: /^\d{2}\-\d{4}\-\d{7}\-\d{2,3}$/, message: "Account number should be in format of xx-xxxx-xxxxxxx-suffix"
-  validates_uniqueness_of :name, allow_blank: true
   validates_uniqueness_of :url_name, allow_blank: false
   validates :short_description, length: { maximum: 250 }
 
@@ -28,6 +27,7 @@ class Channel < ActiveRecord::Base
   has_many :courses
   has_many :bookings, through: :courses
   has_many :payments, through: :bookings
+  has_many :outgoing_payments
   has_many :channel_categories
   has_many :categories, through: :channel_categories
   has_many :photos, class_name: 'ChannelPhoto', dependent: :destroy
@@ -35,8 +35,8 @@ class Channel < ActiveRecord::Base
   has_many :regions, through: :channel_regions
   has_many :channel_teachers
   has_many :teaching_chalklers, through: :channel_teachers, source: :chalkler
-  has_many :admin_chalklers, through: :channel_admins, source: :chalkler
-  
+  has_many  :admin_chalklers, through: :channel_admins, source: :chalkler
+
   belongs_to :channel_plan
 
   accepts_nested_attributes_for :photos
@@ -77,6 +77,10 @@ class Channel < ActiveRecord::Base
 
   def path
     url_name
+  end
+
+  def tax_registered?
+    tax_number.present?
   end
 
   def financial_table(first_day, period, num_rows)
@@ -155,10 +159,13 @@ class Channel < ActiveRecord::Base
   end
 
   def check_url_name
-    url_name = self.url_name.nil? ? name.parameterize : self.url_name.parameterize
-    existing_channels = Channel.where(url_name: url_name)
-    valid = existing_channels.blank? || (existing_channels.first.id == self.id && existing_channels.count == 1)
-    self.url_name = valid ? url_name : url_name+id.to_s
+    new_url_name = (self.url_name || name).try :parameterize
+    existing_channels = Channel.where(url_name: new_url_name)
+    unless existing_channels.blank? || (existing_channels.first.id == self.id && existing_channels.count == 1)
+      existing_channels.sort{|s|s.id}  
+       url_name = "#{url_name}-#{existing_channels.last.id.to_s}"
+    end
+    self.url_name = new_url_name
   end
 
   def header_color
@@ -169,7 +176,7 @@ class Channel < ActiveRecord::Base
         hsl.s = hsl.s * 2
         hsl.l = 0.65 unless hsl.l < 0.65
         rgb = hsl.to_rgb
-        "rgba(#{rgb.red.to_i}, #{rgb.green.to_i}, #{rgb.blue.to_i}, 0.8)"
+        "rgba(#{rgb.red.to_i}, #{rgb.green.to_i}, #{rgb.blue.to_i}, 0.91)"
       rescue ArgumentError => error
         nil
       end

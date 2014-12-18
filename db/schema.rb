@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141119034042) do
+ActiveRecord::Schema.define(:version => 20141218054308) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -33,32 +33,28 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.integer  "course_id"
     t.integer  "chalkler_id"
     t.string   "status",                        :default => "yes"
-    t.integer  "guests",                        :default => 0
     t.text     "meetup_data"
     t.datetime "created_at",                                       :null => false
     t.datetime "updated_at",                                       :null => false
     t.boolean  "visible",                       :default => true
     t.string   "payment_method"
     t.datetime "reminder_last_sent_at"
-    t.decimal  "chalkle_fee"
-    t.decimal  "chalkle_gst"
+    t.decimal  "chalkle_fee",                                      :null => false
+    t.decimal  "chalkle_gst",                                      :null => false
     t.string   "chalkle_gst_number"
-    t.decimal  "teacher_fee"
-    t.decimal  "teacher_gst"
+    t.decimal  "teacher_fee",                                      :null => false
+    t.decimal  "teacher_gst",                                      :null => false
     t.string   "teacher_gst_number"
-    t.decimal  "provider_fee"
-    t.decimal  "provider_gst"
+    t.decimal  "provider_fee",                                     :null => false
+    t.decimal  "provider_gst",                                     :null => false
     t.string   "provider_gst_number"
-    t.decimal  "processing_fee"
-    t.decimal  "processing_gst"
+    t.decimal  "processing_fee",                                   :null => false
+    t.decimal  "processing_gst",                                   :null => false
     t.text     "note_to_teacher"
     t.string   "name"
-    t.string   "cancelled_reason"
+    t.text     "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
-    t.integer  "teacher_payment_id"
-    t.integer  "channel_payment_id"
-    t.boolean  "chalkler_deleted",              :default => false
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -157,6 +153,7 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
+    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -164,7 +161,6 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -213,9 +209,9 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
-    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
     t.decimal  "balance"
   end
 
@@ -223,15 +219,6 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "course_images", :force => true do |t|
-    t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "course_id"
-    t.string   "image_uid"
-    t.string   "image_name"
   end
 
   create_table "course_notices", :force => true do |t|
@@ -257,7 +244,6 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.integer  "teacher_id"
     t.string   "name"
     t.string   "status",                                            :default => "Draft"
-    t.text     "description"
     t.decimal  "cost",                :precision => 8, :scale => 2
     t.datetime "created_at",                                                             :null => false
     t.datetime "updated_at",                                                             :null => false
@@ -269,7 +255,6 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.text     "learning_outcomes"
     t.integer  "max_attendee"
     t.integer  "min_attendee",                                      :default => 2
-    t.text     "availabilities"
     t.text     "prerequisites"
     t.text     "additional_comments"
     t.string   "course_skill"
@@ -279,8 +264,6 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.decimal  "chalkle_payment",     :precision => 8, :scale => 2
     t.string   "course_upload_image"
     t.integer  "category_id"
-    t.decimal  "cached_channel_fee",  :precision => 8, :scale => 2
-    t.decimal  "cached_chalkle_fee",  :precision => 8, :scale => 2
     t.integer  "channel_id"
     t.integer  "region_id"
     t.integer  "repeat_course_id"
@@ -298,6 +281,8 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.text     "note_to_attendees"
     t.text     "cancelled_reason"
     t.datetime "end_at"
+    t.integer  "teacher_payment_id"
+    t.integer  "channel_payment_id"
   end
 
   add_index "courses", ["region_id"], :name => "index_courses_on_region_id"
@@ -329,6 +314,19 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
     t.string   "error"
   end
 
+  create_table "interactions", :force => true do |t|
+    t.string   "action"
+    t.string   "controller"
+    t.string   "flag"
+    t.string   "request_ip"
+    t.integer  "actor_id"
+    t.string   "actor_type"
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "lessons", :force => true do |t|
     t.integer  "course_id"
     t.datetime "start_at"
@@ -338,6 +336,30 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
 
   add_index "lessons", ["course_id"], :name => "index_lessons_on_course_id"
   add_index "lessons", ["start_at"], :name => "index_lessons_on_start_at"
+
+  create_table "notification_preferences", :force => true do |t|
+    t.integer  "chalkler_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.text     "preferences"
+  end
+
+  create_table "notifications", :force => true do |t|
+    t.integer  "chalkler_id"
+    t.string   "notification_type"
+    t.datetime "viewed_at"
+    t.datetime "actioned_at"
+    t.datetime "valid_from"
+    t.datetime "valid_till"
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.text     "href"
+    t.text     "message"
+    t.text     "image"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "from_chalkler_id"
+  end
 
   create_table "omni_avatar_avatars", :force => true do |t|
     t.integer "owner_id"
@@ -466,5 +488,11 @@ ActiveRecord::Schema.define(:version => 20141119034042) do
   add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"
 
   add_foreign_key "courses", "regions", name: "courses_region_id_fk"
+
+  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_chalkler_id_fk"
+  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_from_chalkler_id_fk"
+
+  add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
+  add_foreign_key "notifications", "chalklers", name: "notifications_from_chalkler_id_fk"
 
 end

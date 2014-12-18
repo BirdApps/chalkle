@@ -141,6 +141,13 @@ class ChannelsController < ApplicationController
 
   private 
   
+
+  def check_presence_of_courses
+    unless @courses.present?
+      add_response_notice(notice)
+    end
+  end
+
   def load_channel
     redirect_to_subdomain
     if !@channel

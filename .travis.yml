@@ -2,7 +2,7 @@ language: ruby
 env:
   - DB=postgres
 rvm:
-  - 1.9.3
+  - 2.1.5
 bundler_args: --without development
 before_script:
   - cp config/database.yml.travis config/database.yml
@@ -18,4 +18,6 @@ notifications:
       # - matthew@chalkle.com 
   hipchat:
     rooms: 3d318fc3e1f401238a50171784b534@Chalkle
+    template: '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}'
+  slack: chalkle:Ogd5rawPEkbu9RRFECVXm6ic
     template: '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}'

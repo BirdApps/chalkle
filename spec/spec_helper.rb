@@ -2,6 +2,7 @@ require 'simplecov'
 require 'rubygems'
 require 'email_spec'
 require 'capybara/rspec'
+require "pundit/rspec"
 
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start

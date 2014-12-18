@@ -1,0 +1,23 @@
+en-NZ:
+  email:
+    discussion:
+      new_from_chalkler:
+        subject: "%{from_name} has left a comment on %{course_name}"
+        body:
+          html: | 
+            There has been new discussion on **[%{course_name}](%{course_url})**.
+
+            **[%{from_name}](%{from_url})** said:
+
+            "%{discussion_text}"
+
+          text: |
+            There has been new discussion on %{course_name}.
+
+            %{from_name} said:
+
+            "%{discussion_text}"
+
+            Link: %{course_url}
+
+            ==============================

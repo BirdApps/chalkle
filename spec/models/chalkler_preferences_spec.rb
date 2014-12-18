@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe ChalklerPreferences do
-  let(:chalkler) { double('chalkler', email: 'test@user.com', email_frequency: 'weekly', email_categories: [1], email_region_ids: nil) }
-  let(:params) { { email: 'tested@user.com', email_frequency: 'none', email_categories: ['2', ''] } }
+  let(:chalkler) { FactoryGirl.create(:chalkler, name: 'chalkler', email: 'test@user.com', email_frequency: 'weekly', email_categories: [1], email_region_ids: nil) }
+  let(:params) { { name: 'new chalkler name', email: 'tested@user.com', email_frequency: 'none', email_categories: ['2', ''] } }
 
   describe '#initialize' do
     before { @email_prefs = ChalklerPreferences.new(chalkler) }
 
     it 'extracts the correct preferences' do
-      expect( @email_prefs.email).to eq('test@user.com')
-      expect( @email_prefs.email_frequency).to eq('weekly')
-      expect( @email_prefs.email_categories).to eq([1])
+      expect(@email_prefs.email).to eq('test@user.com')
+      expect(@email_prefs.email_frequency).to eq('weekly')
+      expect(@email_prefs.email_categories).to eq([1])
     end
   end
 

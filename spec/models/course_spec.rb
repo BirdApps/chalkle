@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Course do
-  it { should belong_to(:category) }
-  it { should have_one :course_image }
+  
+  it { should belong_to :channel }
+  it { should belong_to :teacher }
 
-  it { should validate_uniqueness_of :meetup_id }
-  it { should accept_nested_attributes_for :course_image }
+  it { should accept_nested_attributes_for :lessons }
 
   specify { expect(FactoryGirl.create(:course)).to be_valid }
 
@@ -14,17 +14,17 @@ describe Course do
   describe "column validations" do
     it "should not allow non valid status" do
       course.status = "resres"
-      course.should_not be_valid
+      expect(course).not_to be_valid
     end
   end
 
   describe ".visible" do
-    it { Course.visible.should include(course) }
+    it { expect(Course.visible).to include(course) }
 
    	it "should not include hidden course" do
       course.visible = false
       course.save
-      Course.visible.should_not include(course)
+      expect(Course.visible).not_to include(course)
     end
   end
 
@@ -47,10 +47,10 @@ describe Course do
     it "should include hidden course" do
       course.visible = false
       course.save
-      Course.hidden.should include(course)
+      expect(Course.hidden).to include(course)
    	end
 
-    it { Course.hidden.should_not include(course) }
+    it { expect(Course.hidden).not_to include(course) }
   end
 
   context "publication" do
@@ -58,273 +58,111 @@ describe Course do
       it "should include published courses" do
         course.status = Course::STATUS_1
         course.save
-        Course.published.should include(course)
+        expect(Course.published).to include(course)
       end
 
-      it { Course.published.should_not include(course) }
+      it { 
+        course.status = Course::STATUS_1
+        course.save
+        expect(Course.published).to include(course) 
+      }
     end
 
     it "sets published at to now if it is nil" do
       course.status = Course::STATUS_1
       course.save!
-      course.published_at.should be_within(10.seconds).of(Time.now)
+      expect(course.published_at).to be_within(10.seconds).of(Time.now)
     end
 
     it "doesn't override published at if already set" do
       course.status = Course::STATUS_1
       course.published_at = 1.day.ago
       course.save!
-      course.published_at.should be_within(10.seconds).of(1.day.ago)
+      expect(course.published_at).to be_within(10.seconds).of(1.day.ago)
     end
   end
 
   describe ".upcoming" do
-    before do
-      { 'old' => 1.day.ago, 'soon' => 1.day.from_now, 'later' => 5.days.from_now }.each do |name, start_at|
-        lesson = FactoryGirl.create(:lesson, start_at: start_at, duration: 1)
-        FactoryGirl.create(:course, visible: true, status: 'Published', name: name, lessons: [lesson])
-      end
-    end
+    let!(:old) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.ago)], duration: 1) }
+    let!(:soon) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 1.day.from_now)], duration: 1) }
+    let!(:later) { FactoryGirl.create(:course, lessons: [ FactoryGirl.create(:lesson, start_at: 5.days.from_now)], duration: 1) }
 
     it "should include published courses in the future" do
-      Course.upcoming.should include(Course.find_by_name('soon'), Course.find_by_name('later'))
-      Course.upcoming.should_not include(Course.find_by_name('old'))
+      expect(Course.upcoming).to include(soon, later)
+      expect(Course.upcoming).not_to include(old)
     end
 
     it "should limit courses if limit is present" do
-      Course.upcoming(1.day.from_now).should_not include(Course.find_by_name('later'))
+      expect(Course.upcoming(1.day.from_now)).not_to include(later)
     end
   end
 
   describe ".in_future" do
+    let!(:lesson) { FactoryGirl.create(:lesson, start_at: Time.current + 5.hours, duration: 1) }
+    let(:course) { FactoryGirl.create(:course, lessons: [lesson]) }
+
     it "includes course published earlier today" do
-      day_start = Time.new(2013,1,1,0,5)
-      day_middle = Time.new(2013,1,1,12,0)
-
-      lesson = FactoryGirl.create(:lesson, start_at: day_start, duration: 1)
-      course = FactoryGirl.create(:course, lessons: [lesson])
-
-      Timecop.freeze(day_middle) do
-        Course.in_future.should include(course)
+      Timecop.freeze(Time.current) do
+        expect(Course.in_future).to include(course)
       end
     end
 
     it "includes course published later today" do
-      day_start = Time.new(2013,1,1,0,5,0)
-      day_middle = Time.new(2013,1,1,12,0,0)
-
-      lesson = FactoryGirl.create(:lesson, start_at: day_middle, duration: 1)
-      course = FactoryGirl.create(:course, lessons: [lesson])
-
-      Timecop.freeze(day_start) do
-        Course.in_future.should include(course)
+      Timecop.freeze(Time.current) do
+        expect(Course.in_future).to include(course)
       end
     end
   end
-
-  describe "cancellation email" do
-    let(:course2) { FactoryGirl.create(
-        :course, 
-        lessons: [FactoryGirl.create(:lesson, start_at: Date.today, duration: 1)],
-        min_attendee: 3)
-      }
-    it "sends cancellation email for too little bookings" do
-      expect(course2.class_may_cancel).to be true
-    end
-
-    it "do not send cancellation email for sufficient bookings" do
-      booking = FactoryGirl.create(:booking, course: course2, status: 'yes', guests: 5)
-      expect(course2.class_may_cancel).to be false
-    end
-  end
-
   describe "warning flag on courses" do
-    before do
-      @teacher = FactoryGirl.create(:chalkler, name: "Teacher")
-      chalkler = FactoryGirl.create(:chalkler, name: "Chalkler")
-      @channel = FactoryGirl.create(:channel)
-      lesson = FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5)
-      @course = FactoryGirl.create(:course, name: "Test class", teacher_id: @teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, venue_cost: 2, min_attendee: 2, venue: "Town Hall")
-      FactoryGirl.create(:booking, chalkler: chalkler, course: @course, status: 'yes', guests: 5)
-    end
 
-    it "should raise warning flag when no channel is assigned" do
-      @course.channel = nil
-      @course.flag_warning.should == "Missing details"
-    end
-
-    it "should raise warning flag when no teacher is assigned" do
-      @course.update_attributes({:teacher_id => nil}, :as => :admin)
-      @course.flag_warning.should == "Missing details"
-      @course.update_attributes({:teacher_id => @teacher.id}, :as => :admin)
-    end
+      let(:teacher)  { FactoryGirl.create(:channel_teacher, name: "Teacher") }
+      let(:chalkler) { FactoryGirl.create(:chalkler, name: "Chalkler") }
+      let(:channel) { FactoryGirl.create(:channel) }
+      let(:lesson) { FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5) }
+      let(:course) { FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, min_attendee: 2, venue: "Town Hall") }
+      let(:booking) { FactoryGirl.create(:booking, chalkler: chalkler, course: course, status: 'yes', guests: 5) }
 
     it "should not be valid if published with no lessons and published" do
-      @course.lessons = []
-      @course.visible = true
-      @course.status = Course::STATUS_1
-      expect(@course).not_to be_valid
-      @course.lessons << FactoryGirl.create(:lesson, start_at: 2.days.from_now)
-      expect(@course).to be_valid
-    end
-
-    it "should raise warning flag when no venue cost is assigned" do
-      @course.update_attributes({:venue_cost => nil}, :as => :admin)
-      @course.flag_warning.should == "Missing details"
-      @course.update_attributes({:venue_cost => 10}, :as => :admin)
-    end
-
-    it "should raise warning flag when no venue is assigned" do
-      @course.update_attributes({:venue => nil}, :as => :admin)
-      @course.flag_warning.should == "Missing details"
-      @course.update_attributes({:venue => "Town Hall"}, :as => :admin)
-    end
-
-    it "should raise warning flag when minimum number of attendees is not reached" do
-      @course.update_attributes({:min_attendee => 10}, :as => :admin)
-      @course.flag_warning.should == "May cancel"
-      @course.update_attributes({:min_attendee => 2}, :as => :admin)
-    end
-  end
-
-  describe ".copy_course" do
-    let(:chalkler) {FactoryGirl.create(:chalkler, name: "Teacher")}
-    let(:channel) { FactoryGirl.create(:channel) }
-    let(:category) { FactoryGirl.create(:category, name: "Category1") }
-    let(:course_original) { FactoryGirl.create(:course, name: "Original Course", teacher_id: chalkler.id, status: "Published", teacher_payment: 10, visible: false, category: category) }
-    before do
-      course_original.channel = channel
-      course_original.category = category
-      @new_course = course_original.copy_course
-    end
-
-    it "should make a new copy with the same course name" do
-      @new_course.name.should == course_original.name
-    end
-
-    it "should make a new copy with the same teacher" do
-      @new_course.teacher_id.should == course_original.teacher_id
-    end
-
-    it "should make a new copy with the same channel" do
-      @new_course.channel.should == course_original.channel
-    end
-
-    it "should make a new copy with the same category" do
-      @new_course.category.should == course_original.category
-    end
-
-    it "should not copy teacher payment" do
-      @new_course.teacher_payment.should == nil
-    end
-
-    it "should have status Unreviewed" do
-      @new_course.status.should == "Unreviewed"
-    end
-
-    it "should be visible" do
-      @new_course.visible.should == true
-    end
-  end
-
-  context "categories" do
-    describe "#set_category" do
-      it "should create an association" do
-        category = FactoryGirl.create(:category, name: "category")
-        course = FactoryGirl.create(:course)
-        course.set_category 'category: a new course'
-        course.category.should == category
-      end
-    end
-  end
-
-  describe "#set_name" do
-    before do
-      @course = Course.new
-    end
-
-    it "returns text after the colon" do
-      @course.set_name('zzz: xxx').should == 'xxx'
-    end
-
-    it "strips whitespace from the course name" do
-      @course.set_name(' xxx ').should == 'xxx'
-    end
-  end
-
-  describe "material cost validation" do
-    before do
-      @course = FactoryGirl.create(:course)
-    end
-    it "assigns default material cost" do
-      @course.material_cost.should == 0
-    end
-
-    it "does not allow non numerical costs" do
-      @course.material_cost = "rewrew"
-      @course.should_not be_valid
+      course.lessons = []
+      course.visible = true
+      course.status = Course::STATUS_1
+      expect(course).not_to be_valid
+      course.lessons << FactoryGirl.create(:lesson, start_at: 2.days.from_now)
+      expect(course).to be_valid
     end
   end
 
   describe "course costs" do
 
-    let(:result) { MeetupApiStub::course_response }
     let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5) }
 
-    before do
-      @course = FactoryGirl.create(:course, channel: channel)
-      @course.cost = 20
-      @course.save
-    end
-
+    let(:course) { FactoryGirl.create(:course, channel: channel, cost: 20) }
+      
     describe "cost validations" do
-      it "should not allow non numercial teacher cost" do
-        @course.teacher_cost = "resres"
-        @course.should_not be_valid
-      end
 
       it "should not allow non numercial cost" do
-        @course.cost = "resres"
-        @course.should_not be_valid
+        course.cost = "resres"
+        expect(course).not_to be_valid
       end
 
       it "should not allow negative cost" do
-        @course.cost = -10
-        @course.should_not be_valid
-      end
-
-      it "should not allow non numerical teacher payment" do
-        @course.teacher_payment = "resres"
-        @course.should_not be_valid
-      end
-
-      it "should not allow teacher cost greater than cost" do
-        @course.teacher_cost = 40
-        @course.should_not be_valid
+        course.cost = -10
+        expect(course).not_to be_valid
       end
 
     end
+  end
 
+  describe ".create_outgoing_payments!" do
+    let(:channel) { FactoryGirl.create(:channel) }
+    let(:teacher){ FactoryGirl.create(:channel_teacher, channel: channel )}
+    let(:lesson){ FactoryGirl.create(:past_lesson)}
+    let(:course) { FactoryGirl.create(:course_with_bookings, channel: channel, teacher: teacher, status: 'Completed', lessons: [lesson])}
 
-    describe "GST" do
-      it "should know the gst for supported region" do
-        Course.gst_rate_for(:nz).should == 0.15 
-      end
-    end
-
-    describe "pricing and profit calculations" do
-      before do
-        @course.teacher_cost = 10
-        @course.cost = 23
-        @course.teacher_payment = 10
-        @course.chalkle_payment = -20
-        @course.save
-        @GST = 0.15
-      end
-
-      it "should calculate channel income excluding GST component" do
-        @course.income.round(2).should == (-(@course.teacher_payment + @course.chalkle_payment)/(1 + @GST)).round(2)
-      end
+    it "should associate a completed course with a teacher_payment and a channel_payment" do
+      course.create_outgoing_payments!
+      expect(course.teacher_payment).to(be_valid) && 
+      expect(course.channel_payment).to(be_valid)
     end
   end
 end

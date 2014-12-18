@@ -18,6 +18,8 @@ Chalkle::Application.routes.draw do
 
   get '/terms' => 'terms#chalkler', as: :terms
 
+  get '/privacy' => 'terms#privacy', as: :privacy
+
   get '/terms/provider' => 'terms#provider', as: :provider_terms
 
   get '/terms/teacher' => 'terms#teacher', as: :teacher_terms
@@ -65,26 +67,46 @@ Chalkle::Application.routes.draw do
     
   end
 
-  get '/c/:id' => 'courses#tiny_url', as: :course_tiny
+  get '/c/:id' => 'courses#show', as: :course_tiny
   post '/bookings/lpn', as: :lpn
   namespace :me do
+    
     root to: 'dashboard#index'
+
+    get '/notifications' => 'notifications#index', as: :notifications
+    get '/notifications/list' => 'notifications#list', as: :list_notifications
+    get '/notifications/count' => 'notifications#list', as: :count_notifications
+    get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
+    get '/notification/:id' => 'notifications#show', as: :show_notification
+
     get '/bookings' => 'dashboard#bookings', as: :bookings
+    
     get '/preferences' => 'preferences#show', as: :preferences
-    put '/preferences' => 'preferences#save', as: :preferences
+    put '/preferences' => 'preferences#update', as: :preferences
+    
     get '/enter_email' => 'preferences#enter_email', as: :enter_email
     put '/enter_email' => 'preferences#enter_email', as: :enter_email
+    
+    get '/preferences/notifications' => 'preferences#notifications', as: :notification_preference
+    put '/preferences/notifications' => 'preferences#update_notifications', as: :notification_preference
   end
 
   namespace :sudo do
-    root to: 'silvias#index'
-    resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
-    resources :payments
+    root to: 'metrics#index'
+    
     resources :metrics, only: :index
-    resources :regions
+
+    resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
+    
+    resources :payments
+
     resources :chalklers do
+      member do
+        get 'become' => 'chalklers#becoming'
+      end
+
       collection do
-        get 'becoming/:id' => 'chalklers#becoming', as: :becoming
+        get 'notifications'
         get 'become'
       end
     end
@@ -106,15 +128,14 @@ Chalkle::Application.routes.draw do
         get 'refund'
       end
     end
+
   end
 
   resources :chalklers, path: 'people', only: [:index, :show] do
+    resources :notifications, only: [:index, :show]
+
     collection do
-    #   get '/preferences/meetup_email_settings' => 'preferences#meetup_email_settings', as: :meetup_email_settings
-       post 'exists'
-    #   delete '/preferences/destroy_chalkler/:id' => 'preferences#destroy', as: :delete
-    #   get  '/data_collection/:action', as: 'data_collection', controller: :data_collection_form
-    #   post '/data_collection/:action', as: 'data_collection_update', controller: :data_collection_form
+      post 'exists'
     end
   end
 

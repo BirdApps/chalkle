@@ -14,7 +14,7 @@ class ChalklersController < ApplicationController
     if current_user.super?
      @page_context_links << {
         img_name: "people",
-        link: becoming_sudo_chalklers_path(@chalkler.id),
+        link: become_sudo_chalkler_path(@chalkler.id),
         active: false,
         title: "Become"
       }

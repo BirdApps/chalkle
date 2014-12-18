@@ -1,0 +1,56 @@
+<% 
+@page_title= 'Notifications' 
+@page_subtitle = current_user.name
+%>
+<div class="fancy-header">
+    <h3>Email Options</h3>
+    <hr />
+  </div>
+<p>
+  
+</p>
+<div class="hidden-xs col-sm-2">
+</div>
+<div class="new_form_wrapper col-xs-12 col-sm-8">
+  <%= bootstrap_form_for(@notification_preference, wrapper: :simple_bootstrap3, url: me_notification_preference_path, html: { method:  :put, class: 'form-horizontal', role: 'form' }) do |f| %>
+        
+      <%# TODO: settings form %>
+
+      <%# f.input :name, label: "Name", input_html: { readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
+     
+    <div class="row">
+      <div class="col-md-12 center">
+        <em>Select the email notifications you want to receive</em>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <% current_user.avialable_notifications.each do |notification_type, notifications| %>
+          <% if notifications.any? %>
+            <div class="notification-type-group">
+              <h4><%= t("notify.notification_types.#{notification_type}.label", default: notification_type.to_s.humanize) %></h4>
+              <% notifications.each do |notification| %>
+                <div>
+                  <%= f.check_box notification, as: :boolean %>
+                  <%= f.label(notification, t("notify.notification_types.#{notification_type}.#{notification}", default: notification) ) %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="center col-md-12">
+        <input class="btn btn-primary col-md-4 col-md-offset-4" value="Save" type="submit" />  
+      </div>
+
+      <div class="col-md-4">
+      </div>
+    </div>
+
+  <% end  %>
+</div>
+<div class="hidden-xs col-sm-2">
+</div>

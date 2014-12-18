@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
-  before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status]
+  before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status] 
 
   def index
     if current_user.super?
@@ -35,8 +35,6 @@ class CoursesController < ApplicationController
     @page_title = "All Classes"
     @courses = current_user.super? ? mine_filter(Course.order(:start_at)).uniq : (mine_filter(current_user.courses_adminable)+mine_filter(current_user.courses_teaching)).sort_by(&:start_at).uniq
   end
-
-  
 
   def teach
     @page_subtitle = "Use chalkle to"
@@ -77,11 +75,6 @@ class CoursesController < ApplicationController
     render 'learn'
   end
 
-  def tiny_url
-    return not_found if !@course
-    return redirect_to @course.path
-  end
-
   def new
     @teaching = Teaching.new current_user
   end
@@ -115,8 +108,7 @@ class CoursesController < ApplicationController
     if success
       #recalculate booking fees in case they changed the provider/teacher money split
       @course.bookings.each do |booking|
-        booking.apply_fees
-        booking.save
+        booking.apply_fees!
       end
 
       redirect_to course_path @course.id
@@ -135,7 +127,9 @@ class CoursesController < ApplicationController
 
   def confirm_cancel
     authorize @course
-    @course.cancel!(params[:course][:cancelled_reason])
+    if @course.cancel!(params[:course][:cancelled_reason])
+      Notify.for(@course).from(current_user).cancelled
+    end
     return redirect_to @course.path
   end
 
@@ -181,8 +175,20 @@ class CoursesController < ApplicationController
 
   private
 
+    def check_clear_filters
+      if @region.id.blank?
+        session[:region] = nil
+      end
+      if @category.id.blank?
+        session[:topic] = nil
+      end
+      if @channel.id.blank?
+        session[:provider] = nil
+      end
+    end
+
     def load_course
-      @course = Course.find_by_id(params[:id]).try :decorate
+      @course = Course.find_by_id(params[:id])
       return not_found unless @course
       authorize @course
     end  
@@ -232,59 +238,6 @@ class CoursesController < ApplicationController
       end
 
       courses
-    end
-
-    def load_geography_override
-      load_country
-      load_region
-    end
-
-    def load_region
-      if region_name
-        @region = Region.find_by_url_name region_name.downcase
-      end
-      if @region.nil?
-        @region = Region.new name: "New Zealand", courses: Course.upcoming
-      end
-    end
-
-    def load_category
-      if category_name
-        @category = Category.find_by_url_name category_name.downcase
-      end
-      if @category.nil?
-        @category = Category.new name: 'All Topics'
-      end
-    end
-
-    def load_channel
-      if !@channel
-        if channel_name 
-          @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
-        else
-          @channel = Channel.new(name: "All Providers")
-        end
-      end
-    end
-    
-    def courses_for_time
-      @courses_for_time ||= Querying::CoursesForTime.new(courses_base_scope)
-    end
-
-    def get_current_week(start_date = Date.current)
-      if params[:day]
-        begin
-          Week.containing(Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i))
-        rescue
-          Week.containing(start_date)
-        end
-      else
-        Week.containing(start_date)
-      end
-    end
-
-    def decorate(courses)
-      CourseDecorator.decorate_collection(courses)
     end
 
 end

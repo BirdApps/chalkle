@@ -4,7 +4,7 @@ class Booking < ActiveRecord::Base
 
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
-    :course_id, :guests, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
+    :course_id, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
   ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
@@ -15,37 +15,47 @@ class Booking < ActiveRecord::Base
   STATUS_2 = "no"
   STATUS_1 = "yes"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
-  BOOKING_STATUSES = %w(yes no refund_pending pending refund_complete)
+  BOOKING_STATUSES = VALID_STATUSES
 
-  belongs_to :course
-  belongs_to :chalkler
-  belongs_to :booking
-  has_many :bookings, as: :guests_bookings
-  has_one :payment
-  has_one :channel, through: :course
-  has_one :teacher, through: :course
+  belongs_to  :course
+  belongs_to  :chalkler
+  belongs_to  :booking
+  has_many    :bookings, as: :guests_bookings
+  has_one     :payment
+  has_one     :channel, through: :course
+  has_one     :teacher, through: :course
   
-  belongs_to :teacher_payment, class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
-  belongs_to :channel_payment, class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
+  has_one :teacher_payment, through: :course
+  has_one :channel_payment, through: :course
 
   validates_presence_of :course_id, :status, :name, :chalkler_id
 
+  validates_numericality_of :chalkle_fee, :chalkle_gst, :provider_fee, :provider_gst, :teacher_fee, :provider_fee, :processing_gst, :teacher_gst, allow_nil: false
+
+  scope :free, where('NOT EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
+  scope :not_free, where('EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
+
+  scope :paid, not_free
+  scope :unpaid, free
+
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
+
   scope :refund_pending, where(status: STATUS_3)  
   scope :refund_complete, where(status: STATUS_4) 
+
   scope :unconfirmed, visible.where(status: STATUS_5)
   scope :confirmed, where(status: STATUS_1)
-  scope :status_no, where(status: STATUS_2)
-  scope :interested, where{ (status == STATUS_1) | (status == STATUS_5) }
-  scope :billable, joins(:course).where{ (courses.cost > 0) & (status == 'yes') & ((chalkler_id != courses.teacher_id) | (guests > 0)) }
+
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
+
   scope :by_date, order(:created_at)
   scope :by_date_desc, order('created_at DESC')
+  scope :date_between, ->(from,to) { where(:created_at => from.beginning_of_day..to.end_of_day) }
+  
   scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at')
-  scope :needs_reminder, course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
 
-  scope :need_outgoing_payments, includes(:course).where("courses.cost > 0 AND courses.status = 'Completed' AND courses.end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (bookings.teacher_payment_id IS NULL OR bookings.channel_payment_id IS NULL)")
+  scope :needs_reminder, course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
 
   scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week) }
   scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month) }
@@ -54,20 +64,12 @@ class Booking < ActiveRecord::Base
 
   after_create :expire_cache!
 
-  delegate :start_at, :venue, :prerequisites, :teacher_id, :cost, to: :course
+  delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
 
   delegate :email, to: :chalkler
 
   def paid
     self.payment.present? ? payment.total : 0
-  end
-
-  def self.paid
-   select{|booking| (booking.paid || 0) >= booking.cost }
-  end
-
-  def self.unpaid
-    select{|booking| (booking.paid || 0) < booking.cost }
   end
 
   def self.needs_booking_completed_mailer
@@ -89,16 +91,24 @@ class Booking < ActiveRecord::Base
 
   def cancel!(reason = nil, override_refund = false)
     if status == STATUS_1
+      refunding = false
       self.status = 'no'
       self.cancelled_reason = reason if reason
       if refundable? || override_refund
         if paid? && paid > 0
+          refunding = true
           self.status = 'refund_pending'
         end
       end
+      
       save
-      BookingMailer.booking_cancelled(self).deliver!
     end
+  end
+
+  def confirm!
+    self.status = 'yes'
+    self.visible = true
+    save
   end
 
   def paid?
@@ -113,40 +123,61 @@ class Booking < ActiveRecord::Base
     self.chalkle_fee = self.processing_fee = self.chalkle_gst = self.teacher_fee = self.teacher_gst = self.provider_fee = self.processing_gst = self.provider_gst = 0
   end
 
+  # apply_fees runs on:
+  #   1. booking creation (initial calculation)
+  #   2. course update (in case course fees allocation between provider and teacher have changes )
+  #   3. outgoing_payment.calc_flat_fee (in the case of a flat_fee payment to the teacher this is the only accurate time to calculate this)
+
   def apply_fees
+    #CHALKLE
     self.chalkle_gst_number = Finance::CHALKLE_GST_NUMBER
-    self.chalkle_fee = course.chalkle_fee false
-    self.chalkle_gst = course.chalkle_fee(true) - chalkle_fee
+    self.chalkle_fee = course.chalkle_fee_no_tax
+    self.chalkle_gst = course.chalkle_fee_with_tax - chalkle_fee
     
     self.processing_fee = course.processing_fee
     self.processing_gst = course.processing_fee*3/23
-    #processing_fee inclusive of gst
     self.processing_fee = self.processing_fee-self.processing_gst
 
-    if course.teacher_pay_type == Course.teacher_pay_types[1]
-      self.teacher_fee = course.teacher_cost
-      if course.teacher.present? && course.teacher.tax_number.present?
-        self.teacher_gst = teacher_fee*3/23
-        self.teacher_gst_number = course.teacher.tax_number
-      else
+    #TEACHER FEE
+    if provider_pays_teacher?
+        self.teacher_fee = 0
         self.teacher_gst = 0
-        self.teacher_gst_number = nil
+    else
+      if fee_per_attendee?
+        self.teacher_fee = course.teacher_cost
+      elsif flat_fee?
+        #flat fees these are calculated on the outgoing_payment rather than per booking
+        self.teacher_fee = 0
       end
+    end
+
+    #TEACHER TAX
+    if course.teacher.present? && course.teacher.tax_number.present?
+      self.teacher_gst_number = course.teacher.tax_number
+      self.teacher_gst = teacher_fee*3/23
+      self.teacher_fee = teacher_fee-teacher_gst
     else
       self.teacher_fee = 0
       self.teacher_gst = 0
+      self.teacher_gst_number = nil
     end
 
+    #PROVIDER
     self.provider_fee = course.channel_fee
     if channel.tax_number.present?
       self.provider_gst_number = channel.tax_number
       self.provider_gst = course.channel_fee*3/23
-      #processing_fee inclusive of gst
       self.provider_fee = self.provider_fee-self.provider_gst
     else
       self.provider_gst_number = nil
       self.provider_gst = 0
     end
+    cost
+  end
+
+  def apply_fees!
+    cost = apply_fees
+    save
     cost
   end
 
@@ -199,16 +230,8 @@ class Booking < ActiveRecord::Base
     payment.present? && payment.swipe_transaction_id.present? ? "https://merchant.swipehq.com/admin/main/index.php?module=transactions&action=txn-details&transaction_id="+payment.swipe_transaction_id : '#'
   end
 
-   def create_outgoing_payments!
-    #if there is a pending payment, rather than creating a new payment, we add on to the existing payment
-    unless self.teacher_payment
-      t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
-      self.update_column('teacher_payment_id', t_payment.id)
-    end
-    unless self.channel_payment
-      c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
-      self.update_column('channel_payment_id', c_payment.id)
-    end
+  def pending_refund?
+    status == STATUS_3 
   end
 
   def teacher?
@@ -231,6 +254,10 @@ class Booking < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def image
+    course.course_upload_image
   end
 
   def self.csv_for(bookings)

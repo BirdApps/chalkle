@@ -46,7 +46,7 @@ Your Chalkle Administrator")
     return unless date
     relative = relative_day_name date.to_date
     if relative && use_relative_day
-      relative+" "+pretty_time(date)
+      relative
     else
       if include_year || date.year != DateTime.current.year
         date.strftime("%d %b, %y")

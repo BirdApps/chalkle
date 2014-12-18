@@ -1,19 +1,19 @@
 FactoryGirl.define do
   factory :course do
-    name "Learning fun"
-    description "You should really learn, it's fun!"
-    cost 20
     lessons { |i| [i.association(:lesson)]}
-    channel
-    teacher { |i| i.association(:chalkler)}
+    channel { |i| i.association(:channel) }
+    teacher { |i| i.association(:channel_teacher) }
+    
+    name "Learn Foo with Bar"
+    learning_outcomes "Bar the foo, it's all about how far you can boo"
+    do_during_class "You will take a foo and bar it"
+    cost 20
 
-    factory :published_course do
-      status 'Published'
-      published_at { Time.now }
-    end
+    status 'Published'
+    teacher_pay_type 'Fee per attendee'
 
-    factory :course_without_lessons do
-      lessons []
+    factory :flat_fee_course do
+      teacher_pay_type 'Flat fee'
     end
 
     factory :course_with_bookings do

@@ -5,12 +5,12 @@ class CourseNotice < ActiveRecord::Base
   
   validates_presence_of :course
 
-  belongs_to :chalkler
-  belongs_to :course
-
+  belongs_to  :chalkler
+  belongs_to  :course
   before_save :check_body_or_photo
 
   has_one :channel, through: :course
+  has_one :teacher, through: :course
 
   scope :visible, where(visible: true)
 
@@ -28,6 +28,10 @@ class CourseNotice < ActiveRecord::Base
 
   def deleted?
     !visible
+  end
+
+  def image
+    course.course_upload_image
   end
 
   private 

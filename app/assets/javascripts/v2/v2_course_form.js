@@ -462,12 +462,16 @@ $(function(){
 
     function isScrolledIntoView(elem)
     {
-      var docViewTop = $(window).scrollTop();
-      var docViewBottom = docViewTop + $(window).height();
-      var elemTop = $(elem).offset().top;
-      var elemBottom = elemTop + $(elem).height();
+      if ($(elem).length > 0){
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+        var elemTop = $(elem).offset().top;
+        var elemBottom = elemTop + $(elem).height();
 
-      return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+      }else{
+        return false;
+      }
     }
 
     function validate_type(){   
@@ -570,8 +574,6 @@ $(function(){
         valid = false;
         show_error_for($('#teaching_teacher_cost'), "Teacher fee cannot be less than 0");
       }
-      console.log(valid);
-      console.log(valid_basics);
       return valid && valid_basics;
     }
 

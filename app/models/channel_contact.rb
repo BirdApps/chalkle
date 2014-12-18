@@ -1,8 +1,8 @@
 class ChannelContact < ActiveRecord::Base
   attr_accessible :channel, :chalkler, :from, :to, :subject, :message,:status
 
-  belongs_to :channel
-  has_one :chalkler
+  belongs_to  :channel
+  belongs_to  :chalkler
 
   validates_presence_of :channel
   validates_presence_of :from
@@ -23,6 +23,8 @@ class ChannelContact < ActiveRecord::Base
     self.from = chalkler.email if chalkler.present?
     true
   end
+  
+private
 
   def send_email!
     ChannelMailer.contact(self).deliver! unless to.blank?

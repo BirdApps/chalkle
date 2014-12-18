@@ -10,7 +10,7 @@ set :default_environment, {
   'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 }
 
-set :rbenv_ruby_version, "1.9.3-p545"
+set :rbenv_ruby_version, "2.1.5"
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
@@ -111,9 +111,34 @@ namespace :chalkle do
 end
 
 
+namespace :slack do 
+  desc "slack"
+  task :deploy_starts, :roles => [:app] do 
+    message = HTTParty.post "https://hooks.slack.com/services/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", body: {
+        username: "Deploy Boy",
+        icon_emoji: ":rooster:",
+        text: "Deploy to #{rails_env} has begun!"
+      }.to_json,  :headers => { 'Content-Type' => 'application/json' }
+
+  end
+  task :deploy_complete, :roles => [:app] do 
+    message = HTTParty.post "https://hooks.slack.com/services/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", body: {
+        username: "Deploy Boy",
+        icon_emoji: ":rooster:",
+        text: "Successfully deployed to #{rails_env}"
+      }.to_json,  :headers => { 'Content-Type' => 'application/json' }
+
+  end
+
+end
+
 after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs", "deploy:migrate"
 after "deploy:update", "deploy:cleanup"
 after "deploy", "unicorn:restart"
+
+before 'deploy', 'slack:deploy_starts'
+after 'deploy', 'slack:deploy_complete'
+
 
 namespace :unicorn do 
   desc "unicorn things"

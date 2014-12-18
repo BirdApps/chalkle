@@ -76,13 +76,12 @@ Chalkle::Application.configure do
 
 config.action_mailer.delivery_method = :smtp
 config.action_mailer.smtp_settings = {
-  :user_name => '228272f807b6c93e7',
-  :password => 'c7695e1be3c830',
-  :address => 'mailtrap.io',
-  :domain => 'mailtrap.io',
-  :port => '2525',
-  :authentication => :cram_md5,
-  :enable_starttls_auto => true
+    :address => "smtp.mandrillapp.com",
+    :port => 587,
+    :domain => "chalkle.com",
+    :authentication => :plain,
+    :user_name => "silvia@chalkle.com",
+    :password => "WbQeXY2O5OzLm9bjvKVkGQ"
 }
 
 end

@@ -8,11 +8,12 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
       @outgoings = OutgoingPayment.by_date.where(status: status).valid
     else
       @outgoings = OutgoingPayment.by_date.valid
-    end
-     #TODO: move the above select to a scope 
+    end 
   end
 
   def show
+    @outgoing.recalculate! if params[:recalculate].present?
+    @page_title = @outgoing.for_teacher? ? "Teacher Payment" : "Provider Payment"
   end
 
   def approve

@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <meta content='width=device-width, initial-scale=1.0' name='viewport' />
+    <%= stylesheet_link_tag 'mail', media: 'all' %>
+    <title>chalkle.com email</title>
+  </head>
+  <body bgcolor="#FFFFFF">
+
+    <!-- HEADER -->
+    <table class="head-wrap" bgcolor="#B26DCD">
+      <tr>
+        <td></td>
+        <td class="header container" >
+            
+          <div class="content">
+             <table>
+              <tr>
+                <td><img class='logo' width="108" src="<%= "#{root_url}assets/logo.png" -%>" alt ='Chalkle.com' /></td>
+                <td align="right"><span class="collapse">
+                  <%= mailer_preview if respond_to?"mailer_preview" %>
+                </span></td>
+              </tr>
+            </table>
+          </div>
+          
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td class="header container" >
+         
+          <div class="content">
+            <table>
+              <tr>
+                <td>
+                  <p style="color: #fff">
+                    <%# mailer_message %>
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </div>
+          
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td class="header container" >
+            
+          <div class="content">
+            <table>
+              <tr>
+                <td class="datetime"><%= Date.current.strftime("%A %B #{Date.current.day.ordinalize}") %></td>
+                <td align="right"><p class="collapse"><%= link_to "Email Preferences", me_preferences_url %></p></td>
+              </tr>
+            </table>
+          </div>
+          
+        </td>
+        <td></td>
+      </tr>
+
+    </table><!-- /HEADER -->
+
+
+    
+<!-- BODY -->
+<table class="body-wrap">
+  <tr>
+    <td></td>
+    <td class="container" bgcolor="#FFFFFF">
+
+      <div class="content">
+      <table>
+        <tr>
+          <td>
+            <h2><%= t 'hello' %><%= @chalkler ? " "+@chalkler.first_name : "" %>,</h2>
+            
+            <p class="lead">
+            </p>
+              
+            <%= yield %>
+                        
+            <!-- social & contact -->
+            <table class="social" width="100%">
+              <tr>
+                <td>
+                  
+                  <!-- column 1 -->
+                  <table align="left" class="column">
+                    <tr>
+                      <td>        
+                        
+                        <h5 class="">Connect with Us:</h5>
+                        <p class="">
+                          <a href="<%= root_url %>" class="soc-btn gp">Chalkle</a>
+                          <a href="http://facebook.com/Chalkle" class="soc-btn fb">Facebook</a> 
+                          <a href="http://twitter.com/ChalkleNZ/" class="soc-btn tw">Twitter</a> 
+                        </p>
+            
+                        
+                      </td>
+                    </tr>
+                  </table><!-- /column 1 -->  
+                  
+                  <!-- column 2 -->
+                  <table align="left" class="column">
+                    <tr>
+                      <td>        
+                                      
+                        <h5 class="">Contact Info:</h5>                       
+                        <p>
+                          Email: 
+                          <strong>
+                            <a href="emailto:learn@chalkle.com">learn@chalkle.com
+                            </a>
+                          </strong><br />
+                          Mailing Address:
+                          <strong>Chalkle</strong> <br />
+                          CMC Building, Level 2 <br />
+                          89 Courtenay Place <br />
+                          Wellington, 6011 <br />
+                          New Zealand
+                        </p>
+                
+                      </td>
+                    </tr>
+                  </table><!-- /column 2 -->
+                  
+                  <span class="clear"></span> 
+                  
+                </td>
+              </tr>
+            </table><!-- /social & contact -->
+            
+          </td>
+        </tr>
+      </table>
+      </div><!-- /content -->
+                  
+    </td>
+    <td></td>
+  </tr>
+</table><!-- /BODY -->
+
+<!-- FOOTER -->
+<table class="footer-wrap">
+  <tr>
+    <td></td>
+    <td class="container">
+      
+        <!-- content -->
+        <div class="content">
+        <table>
+        <tr>
+          <td align="center">
+            <p>
+              <a href="<%= terms_url %>">Terms</a> |
+              <a href="<%= privacy_url %>">Privacy</a> |
+              <a href="<%= me_preferences_url %>">
+                <unsubscribe>Unsubscribe via email Preferences</unsubscribe>
+              </a>
+            </p>
+          </td>
+        </tr>
+      </table>
+        </div><!-- /content -->
+        
+    </td>
+    <td></td>
+  </tr>
+</table><!-- /FOOTER -->
+
+</body>
+</html>

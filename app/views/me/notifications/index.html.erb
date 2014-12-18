@@ -1,0 +1,25 @@
+<ul class="no-list notifications">
+  <%= render paginate_these(@notifications) %>
+</ul>
+
+
+<div class="row pagination-wrapper">
+  <ul class="pagination">
+    <li class="<%=  'disabled' if paginate_position == 0  %>">
+      <a href="<%= url_for({page: paginate_position, take: params[:take], status: params[:status] }) %>">&laquo;</a>
+    </li>
+    <% paginate_count.times do |i| %>
+      <li class="<%= 'active' if paginate_position == i %>">
+        <a href="<%= url_for({page: i+1, take: params[:take], status: params[:status] }) %>">
+          <%= i+1 %> 
+          <% if paginate_position == i %>
+            <span class="sr-only">(current)</span>
+          <% end %>
+        </a>
+      </li>
+    <% end %>
+    <li class="<%= 'disabled' if paginate_position >= paginate_count-1 %>">
+      <a href="<%= url_for({ page: paginate_position+2, take: params[:take], status: params[:status] }) %>">&raquo;</a>
+    </li>
+  </ul>
+</div>

@@ -8,35 +8,36 @@ class OutgoingPayment < ActiveRecord::Base
   STATUS_5 = "confirmed_paid"
   STATUS_6 = "not_valid"
   STATUSES = [STATUS_1,STATUS_2,STATUS_4,STATUS_6]
+  APPROVED_STATUSES = [STATUS_2,STATUS_4]
 
   scope :pending, where(status: STATUS_1)
   scope :approved, where(status: STATUS_2)
   scope :invoiced, where(status: STATUS_3)
+  scope :paid, where("status = '#{STATUS_4}' OR status = '#{STATUS_5}'")
   scope :marked_paid, where(status: STATUS_4)
   scope :confirmed_paid, where(status: STATUS_5)
   scope :not_valid, where(status: STATUS_6)
-  scope :with_valid_teacher_bookings, includes(:teacher_bookings).where("bookings.teacher_fee > 0 AND bookings.status = 'yes'")
-  scope :with_valid_channel_bookings, includes(:channel_bookings).where("bookings.provider_fee > 0  AND bookings.status = 'yes'")
+ 
   scope :by_date, order(:updated_at)
 
   belongs_to :teacher, class_name: 'ChannelTeacher'
   belongs_to :channel
 
-  validates_presence_of :fee, :tax, :status
+  has_many :channel_courses,  class_name: 'Course', foreign_key: :channel_payment_id
+  has_many :teacher_courses,  class_name: 'Course', foreign_key: :teacher_payment_id
 
-  validate :teacher_or_channel_presence
-
-  has_many :channel_bookings, class_name: 'Booking', foreign_key: :channel_payment_id
-  has_many :teacher_bookings, class_name: 'Booking', foreign_key: :teacher_payment_id
+  has_many :teacher_bookings, through: :teacher_courses,  source: :bookings
+  has_many :channel_bookings, through: :channel_courses,  source: :bookings
   
   has_many :teacher_payments, through: :teacher_bookings, source: :payment
   has_many :channel_payments, through: :channel_bookings, source: :payment
-  
-  has_many :teacher_courses, through: :teacher_bookings, source: :course, foreign_key: :course_id
-  has_many :channel_courses, through: :channel_bookings, source: :course, foreign_key: :course_id
+
+  validates_presence_of :fee, :tax, :status
+  validate :teacher_or_channel_presence
 
   def self.valid
-    (with_valid_channel_bookings+with_valid_teacher_bookings).uniq.select{|o| o.bookings.present?}
+    #TODO: OutgoingPayment.valid should be sql instead of ruby
+    OutgoingPayment.select{|o| o.courses.select{ |c| (o.for_teacher? ? c.teacher_income_with_tax : c.channel_income_with_tax) != 0 }.present? }
   end
 
   def self.pending_payment_for_teacher(teacher)
@@ -53,6 +54,14 @@ class OutgoingPayment < ActiveRecord::Base
 
   def last_booking
     bookings.order(:created_at).last
+  end
+
+  def approved?
+    APPROVED_STATUSES.include? self.status
+  end
+
+  def not_approved?
+    !approved?
   end
 
   def status_color
@@ -141,9 +150,9 @@ class OutgoingPayment < ActiveRecord::Base
 
   def courses
     if for_teacher?
-      teacher_courses.uniq
+      teacher_courses
     else
-      channel_courses.uniq
+      channel_courses
     end
   end
 
@@ -157,37 +166,60 @@ class OutgoingPayment < ActiveRecord::Base
 
   def bookings
     if for_teacher?
-      teacher_bookings.confirmed.where("teacher_fee > 0")
+      teacher_bookings.confirmed.not_free
     else
-      channel_bookings.confirmed.where("provider_fee > 0")
+      channel_bookings.confirmed.not_free
     end
   end
 
-  def calc_fee
-    self.fee = bookings.inject(0){|sum,b| sum += b.paid? ? ( for_teacher? ? b.teacher_fee || 0 : b.provider_fee || 0 ) : 0 }
+  def calculate!
+    self.tax_number = tax_num
+    self.bank_account = account
+    calc_fee(true)
+    calc_tax(true)
+    save
   end
 
-  def calc_tax
-    self.tax = bookings.inject(0){|sum,b| sum += ( for_teacher? ? b.teacher_gst || 0 : b.provider_gst || 0 ) }
+  def recalculate!
+    self.tax_number = nil
+    self.bank_account = nil
+    bookings.map{ |b| b.apply_fees! }
+    #remove any courses which are no longer marked as complete
+    remove_courses = courses.where("status != '#{Course::STATUS_4}'")
+    remove_courses.update_all(channel_payment_id: nil)
+    remove_courses.update_all(teacher_payment_id: nil)
+    calculate!
+  end
+
+  def calc_fee(recalculate = false)
+    if recalculate || self.fee.blank?
+      self.fee = courses.inject(0){|sum,c| sum += (for_channel? ? c.channel_income_no_tax : c.teacher_income_no_tax) }
+    end
+    self.fee
+  end
+
+  def calc_tax(recalculate = false)
+    if self.tax.blank? || recalculate
+      self.tax = courses.inject(0){|sum,c| sum+= (for_channel? ? c.channel_income_tax : c.teacher_income_tax) }
+    end
+    self.tax
   end
 
   #only calculate fee and tax only before approval
-  def total
+  def total(recalculate = false)
     if status == STATUS_1 || status == STATUS_6
-      calc_fee
-      calc_tax
+      calc_fee(true) + calc_tax(true)
+    else
+      calc_fee + calc_tax
     end
-    fee+tax
   end
+
 
   #calculate fee and tax only once on approval
   def approve!
     if status == STATUS_1
-      calc_fee
-      calc_tax
+      calculate!
       self.status = STATUS_2
-      self.tax_number = tax_num
-      self.bank_account = account
       save
     end
     total
@@ -200,7 +232,7 @@ class OutgoingPayment < ActiveRecord::Base
 
   def mark_paid!(reference = nil)
     self.reference = reference
-    self.paid_date = DateTime.current
+    self.paid_date = DateTime.current unless self.paid_date
     self.status = STATUS_4
     save
   end

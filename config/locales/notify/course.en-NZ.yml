@@ -1,0 +1,6 @@
+en-NZ:
+  notify:
+    course:
+      cancelled: 
+        by: " by **%{name_who_cancelled}**"
+        to_teacher: "**%{course_name}** has been cancelled"

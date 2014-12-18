@@ -164,7 +164,7 @@ module LayoutHelper
       if current_user.super? && @channel_teacher.chalkler_id.present?
         nav_links <<  {
           img_name: "people",
-          link: becoming_sudo_chalklers_path(@channel_teacher.chalkler_id),
+          link: become_sudo_chalkler_path(@channel_teacher.chalkler_id),
           active: false,
           title: "Become"
         }
@@ -257,6 +257,12 @@ module LayoutHelper
           link: me_preferences_path,
           active: action_parts.include?("show"),
           title: "Settings"
+      }
+      nav_links << {
+        img_name: "plane", 
+        link: me_notification_preference_path,
+        active: action_parts.include?("notifications"),
+        title: "Email Options"
       }
     end
     nav_links

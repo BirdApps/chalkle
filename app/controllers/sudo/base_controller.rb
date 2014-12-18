@@ -10,6 +10,12 @@ class Sudo::BaseController < ApplicationController
     action_parts = request.path_parameters[:action].split("/")
     @page_context_links = [
       {
+        img_name: "metrics",
+        link: sudo_metrics_path,
+        active: controller_parts.include?("metrics"),
+        title: "Metrics"
+      },
+      {
         img_name: "bolt",
         link: sudo_bookings_path,
         active: controller_parts.include?("bookings") && !action_parts.include?("pending_refunds") ,
@@ -23,7 +29,7 @@ class Sudo::BaseController < ApplicationController
       },
       {
         img_name: "people",
-        link: become_sudo_chalklers_path,
+        link: sudo_chalklers_path,
         active: controller_parts.include?("chalklers"),
         title: "Chalklers"
       },
@@ -32,12 +38,6 @@ class Sudo::BaseController < ApplicationController
         link: sudo_partner_inquiries_path,
         active: controller_parts.include?("partner_inquiries"),
         title: "Hello"
-      },
-      {
-        img_name: "metrics",
-        link: sudo_metrics_path,
-        active: controller_parts.include?("metrics"),
-        title: "Metrics"
       }
 
     ]

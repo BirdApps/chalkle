@@ -1,0 +1,28 @@
+en-NZ:
+  email:
+    course:
+      cancelled:
+        to_teacher:
+          reason: |
+            For the following reason: 
+          subject: "%{course_name} has been cancelled."
+          body:
+            html: |
+              **[%{course_name}](%{course_url})** has been cancelled
+
+              %{reason}
+
+              The confirmed bookings have been notified also.
+
+            text: |
+              %{course_name} has been cancelled
+              
+              %{reason}
+
+              The confirmed bookings have been notified also.
+
+              =================================
+
+              %{course_url}
+
+              =================================
