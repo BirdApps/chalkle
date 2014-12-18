@@ -28,14 +28,14 @@ FactoryGirl.define do
     factory :pending_refund do
       status 'refund_pending'
     end
-  end
 
-  factory :booking_free do
-    name 'Joe Groot'
-    status 'yes'
-    payment_method 'free'
-    chalkler { |i| i.association(:chalkler)}
-    course { |i| i.association(:course)}
+    factory :booking_free do
+      name 'Joe Groot'
+      status 'yes'
+      payment_method 'free'
+      chalkler { |i| i.association(:chalkler)}
+      course { |i| i.association(:course)}
+    end
   end
 
 end
