@@ -19,6 +19,11 @@ describe CoursesController do
 
   end
 
+  describe "#create" do 
+    pending "creates a course" do 
+    end
+  end
+
   describe "#calculate_cost" do
     it "returns calculated cost value" do
       #TODO todo?!

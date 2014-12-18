@@ -16,6 +16,10 @@ FactoryGirl.define do
       teacher_pay_type 'Flat fee'
     end
 
+    factory :free_course do 
+      teacher_pay_type 'Flat fee'
+    end
+
     factory :course_with_bookings do
       ignore do
         bookings_count { rand(5) }
