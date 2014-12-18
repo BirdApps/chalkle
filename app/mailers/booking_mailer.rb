@@ -15,9 +15,9 @@ class BookingMailer < BaseChalkleMailer
 
   def booking_confirmation_to_teacher(booking)
     @booking = booking
-    @chalkler = booking.teacher.chalkler
+    @teacher = booking.teacher
     @course = booking.course
-    mail(to: @chalkler.email,  subject: I18n.t("email.booking.confirmation.to_teacher.subject", name: @chalkler.first_name, course_name: @course.name)) do |format| 
+    mail(to: @teacher.email,  subject: I18n.t("email.booking.confirmation.to_teacher.subject", course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
@@ -35,9 +35,9 @@ class BookingMailer < BaseChalkleMailer
 
   def booking_cancelled_to_teacher(booking)
     @booking = booking
-    @chalkler = booking.teacher.chalkler
+    @teacher = booking.teacher
     @course = booking.course
-    mail(to: @chalkler.email, subject: I18n.t("email.booking.cancelled.to_teacher.subject", course_name: @course.name, from_name: @chalkler.name)) do |format| 
+    mail(to: @teacher.email, subject: I18n.t("email.booking.cancelled.to_teacher.subject", course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
