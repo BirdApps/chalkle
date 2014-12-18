@@ -172,7 +172,7 @@ class Course < ActiveRecord::Base
     unless chalkler
       followers
     else
-      followers.find(:all, :conditions => ["chalklers.id != ?", chalkler.id]).uniq
+      chalklers.where("chalklers.id != ?", chalkler.id).uniq
     end
   end
 
