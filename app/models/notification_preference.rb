@@ -36,7 +36,7 @@ class NotificationPreference < ActiveRecord::Base
   ALL_NOTIFICATIONS.each do |notification|
 
     define_method(notification) do
-      reset_to_default if preferences.empty?
+      reset_to_default if preferences.nil?
       preferences.keys.include?(notification) ? preferences[notification] : true
     end
   
