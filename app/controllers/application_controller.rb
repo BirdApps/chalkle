@@ -103,11 +103,12 @@ protected
       if request && request.location && request.location.data
         request_region = request.location.data["region_name"]
       end
-
-    rescue Errno::ECONNRESET => e
-      retry if (reconnect_attempts -=1) > 0
-    else
-      nil
+    rescue
+      if (reconnect_attempts -=1) > 0
+        retry 
+      else
+        nil
+      end
     end
     (request_region == "") ? nil : request_region
   end
