@@ -48,9 +48,10 @@ class Chalkler < ActiveRecord::Base
   has_one  :notification_preference
 
   after_create :create_channel_associations
-
+  after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }
+  after_create -> (chalkler) { Notify.for(chalkler).welcome }
+  
   scope :visible, where(visible: true)
-
   scope :with_email_region_id, 
     lambda {|region| 
       where("email_region_ids LIKE '%?%'", region)
@@ -218,7 +219,7 @@ class Chalkler < ActiveRecord::Base
   end
 
   def first_name
-    name.split(' ')[0]
+    name ? name.split(' ')[0] : ''
   end
 
   def email_about?(preference_attr)
