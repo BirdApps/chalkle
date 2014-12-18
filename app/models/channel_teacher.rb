@@ -12,7 +12,7 @@ class ChannelTeacher < ActiveRecord::Base
   has_many    :courses, class_name: "Course", foreign_key: "teacher_id"
   has_many    :outgoing_payments, foreign_key: :teacher_id
 
-  validates_uniqueness_of :chalkler_id, scope: :channel_id, allow_blank:true
+  validates_uniqueness_of :chalkler_id, scope: :channel_id, allow_blank: true
   validates_presence_of :channel_id
   validates_presence_of :email, message: 'Email cannot be blank'
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
@@ -65,5 +65,10 @@ class ChannelTeacher < ActiveRecord::Base
   def bio 
     read_attribute :bio || "#{name} is a teacher for #{channel.name}" 
   end
+
+  private 
+    def method_missing(method, *args, &block)  
+      chalkler.send(method, *args, &block)
+    end  
 
 end

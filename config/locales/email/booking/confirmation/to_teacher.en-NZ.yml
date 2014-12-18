@@ -1,0 +1,42 @@
+en-NZ:
+  email:
+    booking:
+      confirmation:
+        to_teacher:
+          subject: "New booking on %{course_name}"
+          body:
+            html: |
+              New booking for [%{booking_name}](%{course_bookings_url}) for your class 
+               [%{course_name}](%{course_url}). 
+
+              The booking details are as follows:
+
+              [%{booking_name}](%{course_bookings_url})
+
+              [%{course_name}](%{course_url})
+
+              %{start_at}
+              %{time_range}
+              %{address}
+              %{venue}
+
+            text: |
+              New booking for %{booking_name}, attending %{course_name}. 
+
+              The booking details are as follows:
+
+              %{booking_name}
+
+              %{course_name}
+
+              %{start_at}
+              %{time_range}
+              %{address}
+              %{venue}
+
+              =======================
+
+              %{course_url}
+              %{course_bookings_url}
+
+              =======================

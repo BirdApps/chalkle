@@ -1,12 +1,14 @@
 FactoryGirl.define do
   factory :course do
+    lessons { |i| [i.association(:lesson)]}
+    channel { |i| i.association(:channel) }
+    teacher { |i| i.association(:channel_teacher) }
+    
     name "Learn Foo with Bar"
     learning_outcomes "Bar the foo, it's all about how far you can boo"
     do_during_class "You will take a foo and bar it"
     cost 20
-    lessons { |i| [i.association(:lesson)]}
-    channel { |i| i.association(:channel) }
-    teacher { |i| i.association(:channel_teacher) }
+
     status 'Published'
     teacher_pay_type 'Fee per attendee'
 

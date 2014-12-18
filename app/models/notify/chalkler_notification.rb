@@ -1,7 +1,5 @@
 class Notify::ChalklerNotification < Notify::Notifier
-
-  include Rails.application.routes.url_helpers
-
+  
   def initialize(chalkler, role = NotificationPreference::CHALKLER)
     @chalkler = chalkler
     @role = role
