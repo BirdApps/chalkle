@@ -244,11 +244,10 @@ class Chalkler < ActiveRecord::Base
   end
 
   def email_about?(preference_attr)
-    if notification_preference.present?
-      notification_preference.email_about?(preference_attr)
-    else
-      true
+    unless notification_preference
+      self.notification_preference = NotificationPreference.create
     end
+    self.notification_preference.send preference_attr
   end
 
   private

@@ -22,7 +22,7 @@ class NotificationPreference < ActiveRecord::Base
   CHALKLER = :chalkler
   ROLES = [PROVIDER,TEACHER,CHALKLER]
 
-  before_create :reset_to_default
+  before_validation :reset_to_default, unless: -> (not_pref){ not_pref.preferences }
 
   validates_presence_of :preferences
 
@@ -35,14 +35,8 @@ class NotificationPreference < ActiveRecord::Base
 
   ALL_NOTIFICATIONS.each do |notification|
     define_method(notification) do
-      preferences[notification]
+      preferences.keys.include?(notification) ? preferences[notification] : true
     end
-  end
-
-
-  def email_about?(preference_attr)
-    true
-    #TODO: check email preferences by analyzing string
   end
 
 end
