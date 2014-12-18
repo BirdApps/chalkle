@@ -339,14 +339,8 @@ ActiveRecord::Schema.define(:version => 20141218054308) do
 
   create_table "notification_preferences", :force => true do |t|
     t.integer  "chalkler_id"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
-    t.boolean  "chalkler_discussion_from_chalkler", :default => true
-    t.boolean  "chalkler_discussion_from_teacher",  :default => true
-    t.boolean  "teacher_bookings",                  :default => true
-    t.boolean  "teacher_discussion",                :default => true
-    t.boolean  "provider_bookings",                 :default => true
-    t.boolean  "provider_discussion",               :default => true
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.text     "preferences"
   end
 
