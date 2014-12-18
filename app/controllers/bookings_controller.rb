@@ -16,7 +16,7 @@ class BookingsController < ApplicationController
   end
 
   def my_bookings
-    @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming.decorate
+    @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming
   end
 
   def new
@@ -173,7 +173,7 @@ class BookingsController < ApplicationController
   end
 
   def load_booking
-    @booking = current_user.bookings.find(params[:booking_id] || params[:id]).decorate
+    @booking = current_user.bookings.find(params[:booking_id] || params[:id])
     redirect_to not_found and return if !@booking
   end
 
