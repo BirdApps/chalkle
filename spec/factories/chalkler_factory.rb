@@ -11,6 +11,12 @@ FactoryGirl.define do
       role 'admin'
     end
 
+    factory :teacher_chalkler do 
+      name "Mr. Bilbo"
+      bio "I am a teacher"
+      email
+    end
+
   end
 
 end

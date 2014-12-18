@@ -1,7 +1,5 @@
 class Notify::CourseNoticeNotification < Notify::Notifier
   
-  include Rails.application.routes.url_helpers
-
   def initialize(course_notice, role = NotificationPreference::CHALKLER)
     @course_notice = course_notice
     @role = role

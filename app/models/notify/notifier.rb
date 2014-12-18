@@ -1,4 +1,7 @@
 class Notify::Notifier
+  
+  include Rails.application.routes.url_helpers
+
   def as(role)
     @role = role if NotificationPreference::ROLES.include? role
     self

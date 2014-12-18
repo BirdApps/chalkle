@@ -6,7 +6,7 @@ en-NZ:
       reminder: "**%{course_name}** is coming up shortly. Check the class notices for any important info you might need."
       cancelled: 
         to_chalkler: "**%{course_name}** has been **cancelled**. %{refund}"
-        to_teacher: "**%{from_name}** cancelled their booking on **%{course_name}**"
+        to_teacher: "Cancelled booking on **%{course_name}** for **%{from_name}**"
       confirmation: 
         to_chalkler: "You are booked in for **%{course_name}**"
         to_teacher: "New booking on **%{course_name}** for **%{from_name}**"
