@@ -13,13 +13,26 @@ class Notify::CourseNoticeNotification < Notify::Notifier
     chalklers_to_notify.each do |chalkler|
       chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice
 
-      DiscussionMailer.send('new_from_'+role.to_s, course_notice, chalkler).deliver!
+      permission = if role == :teacher  
+        :course_notice_new_from_teacher_to_chalkler 
+      else 
+        :course_notice_new_from_chalkler_to_chalkler
+      end
+
+      DiscussionMailer.send('new_from_'+role.to_s, course_notice, chalkler).deliver! if chalkler.email_about? permission
+
     end
 
-    unless chalklers_to_notify.include? course_notice.teacher.chalkler
-      course_notice.teacher.chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice if course_notice.teacher.chalkler.present?
+    unless (role == :teacher) || chalklers_to_notify.include?(course_notice.teacher.chalkler)
 
-      DiscussionMailer.send('new_from_'+role.to_s, course_notice, course_notice.teacher.email).deliver!
+      if course_notice.teacher.chalkler.present?
+        course_notice.teacher.chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice 
+      end
+
+      if course_notice.teacher.chalkler.blank? || course_notice.teacher.chalkler.email_about?(:course_notice_new_from_chalkler_to_teacher)
+        DiscussionMailer.send('new_from_'+role.to_s, course_notice, course_notice.teacher.email).deliver!
+      end
+
     end
 
   end
