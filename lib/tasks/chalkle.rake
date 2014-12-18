@@ -104,6 +104,7 @@ begin
         courses = Course.needs_completing.each do |course|
           if course.complete! 
             puts "course completed - #{course.id}: #{course.name}"
+            Notify.for(course).completed
           end
         end 
       end

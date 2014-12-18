@@ -165,11 +165,15 @@ class Course < ActiveRecord::Base
   end
 
   def followers
-    chalklers
+    chalklers.uniq
   end
 
   def followers_except(chalkler)
-    chalklers.find(:all, :conditions => ["chalklers.id != ?", chalkler.id]).uniq
+    unless chalkler
+      followers
+    else
+      followers.find(:all, :conditions => ["chalklers.id != ?", chalkler.id]).uniq
+    end
   end
 
   def classes

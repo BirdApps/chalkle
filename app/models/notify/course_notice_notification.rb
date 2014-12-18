@@ -8,16 +8,18 @@ class Notify::CourseNoticeNotification < Notify::Notifier
   def created
     message = I18n.t('notify.discussion.from_'+role.to_s, from_name: course_notice.chalkler.name, course_name: course_notice.course.name)
 
-    chalklers_to_notify = course_notice.course.followers_except(current_user).to_a
+    chalklers_to_notify = course_notice.course.followers_except(current_user)
 
-    if course_notice.teacher.chalkler.present? && course_notice.teacher.chalkler != current_user
-      chalklers_to_notify.push(course_notice.course.teacher.chalkler) 
-    end
-
-    chalklers_to_notify.uniq.each do |chalkler|
+    chalklers_to_notify.each do |chalkler|
       chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice
 
       DiscussionMailer.send('new_from_'+role.to_s, course_notice, chalkler).deliver!
+    end
+
+    unless chalklers_to_notify.include? course_notice.teacher.chalkler
+      course_notice.teacher.chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice if course_notice.teacher.chalkler.present?
+
+      DiscussionMailer.send('new_from_'+role.to_s, course_notice, course_notice.teacher.email).deliver!
     end
 
   end

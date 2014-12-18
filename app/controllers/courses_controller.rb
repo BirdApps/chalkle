@@ -128,7 +128,7 @@ class CoursesController < ApplicationController
   def confirm_cancel
     authorize @course
     if @course.cancel!(params[:course][:cancelled_reason])
-      Notify.for(@course).cancelled
+      Notify.for(@course).from(current_user).cancelled
     end
     return redirect_to @course.path
   end
