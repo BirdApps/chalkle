@@ -10,6 +10,10 @@ FactoryGirl.define do
     factory :admin_chalkler do 
       role 'admin'
     end
+    factory :super_chalkler do 
+      role 'super'
+    end
+
 
     factory :teacher_chalkler do 
       name "Mr. Bilbo"
