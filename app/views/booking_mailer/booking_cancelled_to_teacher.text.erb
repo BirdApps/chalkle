@@ -1,7 +1,15 @@
 <%= 
   reason_text = @booking.cancelled_reason.present?  ? t("email.booking.cancelled.to_teacher.reason")+"\"#{@booking.cancelled_reason}\"" : ""
 
-    refund_text = @booking.pending_refund? ? t("email.booking.cancelled.to_teacher.refund") : t("email.booking.cancelled.to_teacher.no_refund")
-    
-     t("email.booking.cancelled.to_teacher.body.text", reason: reason_text, refund: refund_text, booking_name: @booking.name, course_name: @booking.course.name, course_url: course_url(@booking.course), course_bookings_url: course_bookings_url(@booking.course) ).to_html
+  refund_text =  if @booking.pending_refund? 
+    t("email.booking.cancelled.to_teacher.refund") 
+  else
+    unless @booking.free? 
+      t("email.booking.cancelled.to_teacher.no_refund")
+    else
+      ""
+    end
+  end
+  
+   t("email.booking.cancelled.to_teacher.body.text", reason: reason_text, refund: refund_text, booking_name: @booking.name, course_name: @booking.course.name, course_url: course_url(@booking.course), course_bookings_url: course_bookings_url(@booking.course) ).to_html
 %>

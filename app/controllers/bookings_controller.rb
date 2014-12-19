@@ -134,7 +134,7 @@ class BookingsController < ApplicationController
 
   def confirm_cancel
     authorize @booking
-    if @booking.cancel!(current_chalkler, params[:booking][:cancelled_reason])
+    if @booking.cancel!(params[:booking][:cancelled_reason])
       Notify.for(@booking).cancelled
     end
     return redirect_to @booking.course.path

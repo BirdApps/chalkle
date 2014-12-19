@@ -30,6 +30,8 @@ class Booking < ActiveRecord::Base
 
   validates_presence_of :course_id, :status, :name, :chalkler_id
 
+  validates_numericality_of :chalkle_fee, :chalkle_gst, :provider_fee, :provider_gst, :teacher_fee, :provider_fee, :processing_gst, :teacher_gst, allow_nil: false
+
   scope :free, where('NOT EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
   scope :not_free, where('EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
 
@@ -155,6 +157,7 @@ class Booking < ActiveRecord::Base
       self.teacher_gst = teacher_fee*3/23
       self.teacher_fee = teacher_fee-teacher_gst
     else
+      self.teacher_fee = 0
       self.teacher_gst = 0
       self.teacher_gst_number = nil
     end

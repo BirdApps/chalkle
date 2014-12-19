@@ -1,5 +1,5 @@
 class NotificationPreference < ActiveRecord::Base
-  *BASE = [:chalkler, :chalkler_id]
+  *BASE = [:chalkler, :chalkler_id, :preferences]
 
 
   CHALKLER_OPTIONS = [:booking_cancelled_to_chalkler,:booking_completed,:booking_confirmation_to_chalkler,:booking_reminder,:course_notice_new_from_chalkler_to_chalkler,:course_notice_new_from_teacher_to_chalkler
@@ -36,7 +36,7 @@ class NotificationPreference < ActiveRecord::Base
   ALL_NOTIFICATIONS.each do |notification|
 
     define_method(notification) do
-      reset_to_default if preferences.empty?
+      reset_to_default if preferences.nil?
       preferences.keys.include?(notification) ? preferences[notification] : true
     end
   

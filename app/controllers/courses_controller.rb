@@ -240,4 +240,33 @@ class CoursesController < ApplicationController
       courses
     end
 
+    def load_region
+      if region_name
+        @region = Region.find_by_url_name region_name.downcase
+      end
+      if @region.nil?
+        @region = Region.new name: "New Zealand", courses: Course.upcoming
+      end
+    end
+
+    def load_category
+      if category_name
+        @category = Category.find_by_url_name category_name.downcase
+      end
+      if @category.nil?
+        @category = Category.new name: 'All Topics'
+      end
+    end
+
+    def load_channel
+      if !@channel
+        if channel_name 
+          @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
+        else
+          @channel = Channel.new(name: "All Providers")
+        end
+      end
+    end
+
+
 end
