@@ -1,5 +1,4 @@
 class Sudo::MetricsController < Sudo::BaseController
-  before_filter :set_titles
 
   def index
 
