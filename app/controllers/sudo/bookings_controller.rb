@@ -1,5 +1,4 @@
 class Sudo::BookingsController < Sudo::BaseController
-  before_filter :set_titles
   before_filter :load_booking, only: [:show, :refund, :set_status]
   before_filter :set_title, except: [:pending_refunds,:completed_refunds]
 
