@@ -11,8 +11,6 @@ $(function(){
       postal_code: 'teaching_postal_code'
     };
 
-    
-
     function initialize() {
       // Create the autocomplete object, restricting the search
       // to geographical location types.
