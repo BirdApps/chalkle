@@ -98,12 +98,10 @@ protected
     return session[:region] if session[:region]
 
     # Occasionally the geolocator API does not respond. Trying again usually gets this to behave.
-    begin  
-
+    begin
       if request && request.location && request.location.data
         request_region = request.location.data["region_name"]
       end
-
     rescue 
       retry if (reconnect_attempts -=1) > 0
     else
