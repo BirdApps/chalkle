@@ -4,11 +4,25 @@ class Sudo::MetricsController < Sudo::BaseController
 
     @bookings_chart = new_bookings_chart
     @signups_chart = new_chalkers_chart
+    @courses_chart = new_courses_chart
+
+    @course_stats = {
+      total: Course.published.in_past.count
+    }
+
+    @provider_stats = {
+      total: Channel.all.count
+    }
+
+
     @chalkler_stats = {
       week: Chalkler.stats_for_date_and_range(Date.current, :week), 
-      month: Chalkler.stats_for_date_and_range(Date.current, :month)
+      month: Chalkler.stats_for_date_and_range(Date.current, :month),
+      total: Chalkler.signed_in_since(Date.current-100.years).count
     }
+
     @booking_stats = {
+      total: Booking.all.count,
       week: Booking.stats_for_date_and_range(Date.current, :week), 
       month: Booking.stats_for_date_and_range(Date.current, :month)
     }
@@ -17,6 +31,22 @@ class Sudo::MetricsController < Sudo::BaseController
 
 
   protected
+
+
+  def new_courses_chart
+
+    LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(:text => "")
+      f.xAxis(:categories => Array.new(12){|i| d = i.months.ago.to_date; "#{d.strftime("%b")}" }.reverse )
+      f.series(:name => "Courses run", :yAxis => 0, :data => Array.new(12) {|i|
+        Course.start_at_between(i.months.ago, i.months.ago+1.month).count
+      }.reverse )
+
+      f.chart({:defaultSeriesType=>"area"})
+    end
+
+  end
+
 
   def new_chalkers_chart
 
