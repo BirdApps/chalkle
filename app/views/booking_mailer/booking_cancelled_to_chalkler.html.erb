@@ -2,8 +2,16 @@
   <%= 
     reason_text = @booking.cancelled_reason.present?  ? t("email.booking.cancelled.to_chalkler.reason")+"\"#{@booking.cancelled_reason}\"" : ""
 
-    refund_text = @booking.pending_refund? ? t("email.booking.cancelled.to_chalkler.refund") : t("email.booking.cancelled.to_chalkler.no_refund")
+    refund_text =  if @booking.pending_refund? 
+      t("email.booking.cancelled.to_chalkler.refund") 
+    else
+      unless @booking.free? 
+        t("email.booking.cancelled.to_chalkler.no_refund")
+      else
+        ""
+      end
+    end
     
-     t("email.booking.cancelled.to_chalkler.body.html", root_name: t("chalkle_url"), root_url: root_url, reason: reason_text, refund: refund_text, course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name)).to_html
+    t("email.booking.cancelled.to_chalkler.body.html", root_name: t("chalkle_url"), root_url: root_url, reason: reason_text, refund: refund_text, course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name)).to_html
   %>
 </markdown>

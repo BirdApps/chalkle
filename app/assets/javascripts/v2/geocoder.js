@@ -45,7 +45,7 @@ $(function(){
       }
 
       //set the longitude and latitude
-      document.getElementById('teaching_longitude').value = place.geometry.location['B'];
+      document.getElementById('teaching_longitude').value = place.geometry.location['D'];
       document.getElementById('teaching_latitude').value = place.geometry.location['k'];
     }
 
