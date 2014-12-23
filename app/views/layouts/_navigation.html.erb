@@ -94,7 +94,39 @@
           </ul>
         </div>
       </div>
+      <hr />
+      <div class="container sub-header">
+        <div class="col-xs-8 location-form">
+
+          <div class="navbar-form navbar-right location-form" id="location-form">
+            <div class="input-group">
+              <span class="input-group-addon btn" id="globe_holder"role="button" title="Toggle Map">
+                <img src="/assets/icons/globe.png" alt="Toggle Map View" id="toggle_map_view" />
+              </span>
+              <input type="text" name="location" id="location_autocomplete" value="<%= get_coords[:location] %>" class="form-control" placeholder="Location">
+              <%# <span class="input-group-addon"><a class="refresh_location">Refresh</a></span> %>
+              <input type="hidden" name="coord_lat" id="coord_lat" value="<%= get_coords[:lat] %>" />
+              <input type="hidden" name="coord_lng" id="coord_lng" value="<%= get_coords[:lng]  %>" />
+            </div>
+          </div>
+
+        </div>
+        <div class="col-xs-4 search-wrapper">
+          <form class="navbar-form navbar-right search-form" id="primary-search-form" method="get" action="<%= root_path params %>" role="search">
+            <script>
+              function submit_primary_form() {
+                  document.getElementById("primary-search-form").submit();
+              }
+            </script>
+            <div class="input-group">
+              <span class="input-group-addon" onclick="submit_primary_form()">
+                <img src="/assets/icons/search.png" alt="search" />
+              </span>
+              <input type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search">
+            </div>
+          </form>
+        </div>
+      </div>
     <% end %>
   </nav>
-  <%= render 'layouts/navigation_filter' %>
 </div>

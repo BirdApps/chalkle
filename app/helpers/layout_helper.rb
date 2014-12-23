@@ -1,5 +1,12 @@
 module LayoutHelper
 
+  def get_coords
+    longitude = session[:longitude] || current_user.longitude
+    latitude = session[:latitude] || current_user.latitude
+    location = session[:location] || current_user.location
+    {lng: longitude, lat: latitude, location: location}
+  end
+
   def environment_color(env)
     case env
     when "Development"

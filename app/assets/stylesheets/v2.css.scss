@@ -61,6 +61,7 @@ html {
   position: relative;
   min-height: 100%;
   height: auto;
+  -webkit-font-smoothing: antialiased;
 }
 
 body.v2 {
@@ -624,9 +625,10 @@ body.v2 {
         padding: 10px;
       }
       .coloring {
-        padding: 10px 0;
+        padding: 10px 0 0;
         transition: padding 0.5s ease;
         background: $primary-color;
+        position: relative;
         @media screen and (max-width: $col-sm) {
           padding: 10px 0 !important;
           background: $primary-color-opaque;
@@ -759,6 +761,75 @@ body.v2 {
         .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
           background: none;
           border: 0px;
+        }
+
+        hr{
+          margin-top:10px;
+          margin-bottom:0;
+        }
+        .location-form{
+          img{
+            width: 24px;
+            height: 24px;
+          }
+          #globe_holder{
+            min-width: 48px;
+            min-height: 36px;
+          }
+        }
+        .sub-header{
+          .search-wrapper{
+            padding-left: 0px;
+            border-left: 1px solid #fff;
+            .search-form{
+              padding-left: 0px;
+            }
+          }
+          .input-group-addon, .form-control{
+            background: transparent;
+            color: #fff;
+            border: 0px;
+            opacity: 0.8;
+          }
+          .input-group-addon:focus, .input-group-addon:active, .input-group-addon:hover{
+            opacity: 1;
+          }
+          .input-group-addon{
+            cursor: pointer;
+            img {
+              width: 24px;
+              height: 24px;
+            }
+          }
+          .form-control{
+            box-shadow: none;
+            opacity: 0.8;
+          }
+          .form-control:focus, .form-control:active{
+            border: 0px;
+            box-shadow: none;
+            opacity: 1;
+          }
+
+          input::-webkit-input-placeholder {
+            color: #fff;
+            font-style: italic;
+          }
+          input::-moz-placeholder {
+            color: #fff;
+            opacity: 1;
+            font-style: italic;
+          }
+          input:-moz-placeholder {   /* Older versions of Firefox */
+            color: #fff;
+            opacity: 1;
+            font-style: italic;
+          }
+          input:-ms-input-placeholder { 
+            color: #fff;
+            opacity: 1;
+            font-style: italic;
+          }
         }
       }
     }
@@ -1911,6 +1982,20 @@ body.v2 {
     .social_media_links {
       margin-top: 20px;
       margin-left: -5px;
+    }
+  }
+
+  #map_overlay{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color:#fff;
+    z-index: 10;
+    #map_holder{
+      height: 100%;
+      width: 100%;
     }
   }
 

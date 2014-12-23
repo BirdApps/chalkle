@@ -7,6 +7,28 @@ class CoursesController < ApplicationController
   before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status] 
 
   def index
+   
+  end
+
+  def locations
+    if current_user.super?
+      courses = Course.in_future.start_at_between(current_date, current_date+1.year).by_date
+    else
+      courses = Course.in_future.displayable.start_at_between(current_date, current_date+1.year).by_date
+    end
+
+    if params[:search].present?
+      courses = Course.search params[:search]
+    end
+    
+    if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
+      courses = Course.where("latitude < ? AND latitude > ? AND longitude < ? AND longitude > ?", params[:top].to_f, params[:bottom].to_f, params[:right].to_f, params[:left].to_f);
+    end
+    
+    render json: courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude } }
+  end
+
+  def load_courses
     if current_user.super?
       @courses = filter_courses(Course.in_future.start_at_between(current_date, current_date+1.year).by_date)
     else
@@ -17,6 +39,7 @@ class CoursesController < ApplicationController
         @courses = @courses.sort_by(&:start_at).uniq
       end
     end
+    render 'paginate_courses'
   end
 
   def show

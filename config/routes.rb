@@ -63,6 +63,7 @@ Chalkle::Application.routes.draw do
     collection do
       get 'calculate_cost'
       get 'mine'
+      post 'locations'
     end
     
   end
@@ -132,9 +133,10 @@ Chalkle::Application.routes.draw do
 
   resources :chalklers, path: 'people', only: [:index, :show] do
     resources :notifications, only: [:index, :show]
-
     collection do
       post 'exists'
+      post 'set_location'
+      get 'get_location' 
     end
   end
 

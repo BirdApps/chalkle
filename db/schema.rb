@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141218123940) do
+ActiveRecord::Schema.define(:version => 20141222212237) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(:version => 20141218123940) do
     t.text     "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
-    t.boolean  "chalkler_deleted",              :default => false
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -103,6 +102,7 @@ ActiveRecord::Schema.define(:version => 20141218123940) do
     t.string   "address"
     t.string   "avatar"
     t.string   "role"
+    t.string   "location"
   end
 
   create_table "channel_admins", :force => true do |t|
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(:version => 20141218123940) do
   create_table "channel_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_channel_admins"
+    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -161,7 +162,6 @@ ActiveRecord::Schema.define(:version => 20141218123940) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "max_teachers"
   end
 
   create_table "channel_regions", :force => true do |t|
@@ -210,9 +210,9 @@ ActiveRecord::Schema.define(:version => 20141218123940) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
-    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
     t.decimal  "balance"
   end
 
@@ -340,14 +340,8 @@ ActiveRecord::Schema.define(:version => 20141218123940) do
 
   create_table "notification_preferences", :force => true do |t|
     t.integer  "chalkler_id"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
-    t.boolean  "chalkler_discussion_from_chalkler", :default => true
-    t.boolean  "chalkler_discussion_from_teacher",  :default => true
-    t.boolean  "teacher_bookings",                  :default => true
-    t.boolean  "teacher_discussion",                :default => true
-    t.boolean  "provider_bookings",                 :default => true
-    t.boolean  "provider_discussion",               :default => true
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.text     "preferences"
   end
 

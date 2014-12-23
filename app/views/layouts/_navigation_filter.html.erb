@@ -75,14 +75,14 @@
         </div>
       </div> 
       <div class="col-xs-12 col-sm-3 search-wrapper">
-        <form class="navbar-form navbar-right search-form" id="primary-search-form" method="get" action="<%= root_path params %>" role="search">
+        <form class="navbar-form navbar-right search-form" id="second-search-form" method="get" action="<%= root_path params %>" role="search">
           <script>
-            function submit_primary_form() {
-                document.getElementById("primary-search-form").submit();
+            function submit_2nd_form() {
+                document.getElementById("second-search-form").submit();
             }
           </script>
           <div class="input-group">
-            <span class="input-group-addon" onclick="submit_primary_form()">
+            <span class="input-group-addon" onclick="submit_2nd_form()">
               <span class="fa fa-search"></span>
             </span>
             <input type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search">
