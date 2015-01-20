@@ -38,7 +38,7 @@ require 'HTTParty'
 namespace :slack do 
   desc "slack"
   task :deploy_starts do
-    on roles(:app) do 
+    run_locally do 
       message = HTTParty.post "https://hooks.slack.com/services/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", body: {
         username: "Deploy Boy",
         icon_emoji: ":rooster:",
@@ -48,7 +48,7 @@ namespace :slack do
   end
 
   task :deploy_complete do 
-    on roles(:app) do
+    run_locally do
       message = HTTParty.post "https://hooks.slack.com/services/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", body: {
           username: "Deploy Boy",
           icon_emoji: ":rooster:",
@@ -63,9 +63,10 @@ namespace :chalkle do
   desc "migrate images"
   task :migrate_images do
     on roles(:app) do 
-      within fetch(:latest_release_directory) do
+      within fetch(:current) do
         with rails_env: fetch(:rails_env) do
-          execute :rake, "chalkle:migrate_images"
+          info fetch(:current)
+          rake "chalkle:migrate_images"
         end 
       end
     end
@@ -73,9 +74,10 @@ namespace :chalkle do
   desc "clear_chaches" 
   task :clear_caches do 
     on roles(:app) do 
-      within fetch(:latest_release_directory) do
+      within fetch(:current) do
         with rails_env: fetch(:rails_env) do
-          execute :rake, 'chalkle:expire_caches' 
+          info fetch(:current)
+          rake 'chalkle:expire_caches' 
         end
       end
     end
