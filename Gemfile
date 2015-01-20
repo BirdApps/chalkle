@@ -95,11 +95,11 @@ group :development do
   gem 'mailcatcher',  '~> 0.5.10',  require: false
 
   # Deployment
-  gem 'capistrano',      '~> 2.14.1',  require: false
-  gem 'capistrano-ext',  '~> 1.2.1',   require: false
-  gem 'capistrano-rbenv', '~> 1.0'
+  gem 'capistrano', '~> 3.0',  require: false
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rbenv', '~> 2.0', require: false
   gem 'capistrano-unicorn', :require => false
-  gem 'hipchat'
 
   # Helpful Rails Generators
   gem 'nifty-generators',  '~> 0.4.6',  require: false

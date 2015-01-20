@@ -6,14 +6,12 @@ describe BookingsController do
       login_chalkler
       let(:channel) { FactoryGirl.create(:channel) }
 
-
       context "free courses" do 
         let(:course) { FactoryGirl.create(:course, status: 'Published', channel: channel, cost: 0, teacher_cost: 0 ) }
-        let(:booking) { FactoryGirl.create(:booking, course: course) }
+        
         it 'creates a booking' do 
-          binding.pry
-          post :create, channel_id: channel.id, course_id: course.id, :name => "mr man" , :note_to_teacher => "this is my fav"
-          expect(response).to redirect_to(channel_course_path(channel, course))
+          post :create, booking: { course_id: course.id, :name => "mr man" , :note_to_teacher => "this is my fav" }
+          expect(response).to redirect_to(channel_course_path(channel.url_name, course.url_name, course.id))
         end
       end
 
