@@ -62,11 +62,23 @@ end
 namespace :chalkle do 
   desc "migrate images"
   task :migrate_images do
-  on roles(:app) { run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake chalkle:migrate_images" }
+    on roles(:app) do 
+      within fetch(:latest_release_directory) do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "chalkle:migrate_images"
+        end 
+      end
+    end
   end
   desc "clear_chaches" 
   task :clear_caches do 
-    on roles(:app) { run 'cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake chalkle:expire_caches' }
+    on roles(:app) do 
+      within fetch(:latest_release_directory) do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'chalkle:expire_caches' 
+        end
+      end
+    end
   end
 end
 
