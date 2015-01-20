@@ -12,7 +12,7 @@ worker_processes 2
 
 timeout 64
 
-pid "/apps/chalkle/production/shared/tmp/pids/unicorn.pid"
+pid "/apps/chalkle/staging/shared/tmp/pids/unicorn.pid"
 
 preload_app true
 
