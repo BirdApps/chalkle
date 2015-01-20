@@ -13,8 +13,6 @@ set :domain,    "chalklestaging.cloudapp.net"
 set :branch,    "staging"
 set :rails_env, "staging"
 
-set :user, 'chalkle'
-
 server 'chalklestaging.cloudapp.net', user: 'chalkle', roles: %w{web app db}
 
 # Extended Server Syntax
