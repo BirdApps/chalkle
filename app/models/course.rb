@@ -77,7 +77,7 @@ class Course < ActiveRecord::Base
   scope :in_fortnight, -> (week){ start_at_between(week.first_day, (week+1).last_day) }
   
   scope :on_date, -> (date) { start_at_between(date, date) }
-  scope :in_future, -> { where( "end_at >= ?", DateTime.current) }
+  scope :in_future, -> { where( "start_at >= ?", DateTime.current) }
   scope :previous, -> { where("start_at < ?", DateTime.current) }
   #TODO: replace references to previous with in_past - time consuming because previous is common word
   scope :in_past, previous
@@ -549,6 +549,22 @@ class Course < ActiveRecord::Base
     unless self.channel_payment
       c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
       self.update_column('channel_payment_id', c_payment.id)
+    end
+  end
+
+  def call_to_action
+    if limited_spaces?
+      if spaces_left?
+        if spaces_left < 5
+          'spot'.pluralize(spaces_left) + ' left'
+        else
+          'Join'
+        end
+      else
+        'Fully booked'
+      end
+    else
+      'Join'
     end
   end
 

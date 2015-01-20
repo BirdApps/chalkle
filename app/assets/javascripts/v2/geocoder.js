@@ -45,8 +45,8 @@ $(function(){
       }
 
       //set the longitude and latitude
-      document.getElementById('teaching_longitude').value = place.geometry.location['D'];
-      document.getElementById('teaching_latitude').value = place.geometry.location['k'];
+      document.getElementById('teaching_longitude').value = place.geometry.location.lng();
+      document.getElementById('teaching_latitude').value = place.geometry.location.lat();
     }
 
     // Bias the autocomplete object to the user's geographical location,

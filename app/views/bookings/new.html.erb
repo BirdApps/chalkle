@@ -7,7 +7,7 @@
       <h3>Booking for <%= current_user.name %></h3>
       <hr />
     </div>  
-    <%= bootstrap_form_for(@booking, url: course_bookings_path,html: { method: :post, class: 'form-horizontal', role: 'form'}) do |f| %>
+    <%= bootstrap_form_for(@booking, url: course_bookings_path, html: { method: :post, class: 'form-horizontal', role: 'form'}) do |f| %>
       <%= render partial: 'form', locals: { f: f } %>
     <% end %>
   </div>

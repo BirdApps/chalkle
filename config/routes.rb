@@ -63,7 +63,7 @@ Chalkle::Application.routes.draw do
     collection do
       get 'calculate_cost'
       get 'mine'
-      post 'locations'
+      post 'fetch'
     end
     
   end

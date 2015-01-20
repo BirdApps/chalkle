@@ -11,6 +11,7 @@ class Region < ActiveRecord::Base
   #mount_uploader :hero, ChannelHeroUploader
 
   has_many :courses
+  has_many :channels, through: :courses
   
   scope :with_classes, includes(:courses).where("COUNT(courses.id) > 0")
   scope :alphabetical, order(:name)

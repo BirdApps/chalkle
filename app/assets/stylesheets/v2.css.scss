@@ -71,6 +71,9 @@ body.v2 {
   div[role=main] {
     padding-bottom:75px;
     background-color: #fff;
+    position: relative;
+    min-height: 200px;
+    transition: height 2s ease-in-out;
   }
   .dropdown {
      @media screen and (max-width: $col-sm) {
@@ -1984,7 +1987,14 @@ body.v2 {
       margin-left: -5px;
     }
   }
-
+  #courses_missing {
+    display: none;
+  }
+  #courses_loading{
+    height: 100px;
+    width: 100%;
+    position: relative;
+  }
   #map_overlay{
     height: 100%;
     width: 100%;
@@ -1998,7 +2008,6 @@ body.v2 {
       width: 100%;
     }
   }
-
 }
 
 

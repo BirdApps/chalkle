@@ -10,7 +10,7 @@ class CoursesController < ApplicationController
    
   end
 
-  def locations
+  def fetch
     if current_user.super?
       courses = Course.in_future.start_at_between(current_date, current_date+1.year).by_date
     else
@@ -24,8 +24,40 @@ class CoursesController < ApplicationController
     if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
       courses = Course.where("latitude < ? AND latitude > ? AND longitude < ? AND longitude > ?", params[:top].to_f, params[:bottom].to_f, params[:right].to_f, params[:left].to_f);
     end
-    
-    render json: courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude } }
+
+    if params[:only_location].present?
+      courses  = courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude} }
+    else
+      courses = courses.limit(20).map do |c|
+        {
+          id: c.id, 
+          name: c.name, 
+          category: c.category ? c.category.name : '', 
+          category_url: c.category ? root_path({search: c.category.name}) : '', 
+          action_call: c.call_to_action,
+          url: channel_course_path(c.channel.url_name,c.url_name,c.id), 
+          booking_url: new_course_booking_path(c.id),  
+          name: c.name, 
+          image: c.course_upload_image.url(:large), 
+          cost: c.cost? ? '$'+c.cost_formatted : 'FREE',  
+          color: c.best_colour_num, 
+          channel: c.channel.name, 
+          channel_image: c.channel.logo.url,
+          channel_url: channel_course_path(c.channel.url_name,c.url_name,c.id), 
+          teacher: (c.teacher ? c.teacher.name : 'No teacher assigned' ), 
+          teacher_url: (c.teacher ? channel_channel_teacher_path(c.channel.url_name,c.teacher) : '#'), 
+          status: c.status, 
+          status_color: 'alert-'+c.status_color,
+          type: c.course_type, 
+          address: c.venue_address,
+          lat: c.latitude, 
+          lng: c.longitude, 
+          time: (c.start_at.present? && c.end_at.present? ? ((c.class? ? DateFunctions.day_ordinal_month(c.start_at, true, false, true) : '')+(DateFunctions.pretty_time_range(c.start_at,c.end_at))) : 'No Schedule')
+        }
+      end
+    end
+
+    render json: courses
   end
 
   def load_courses
@@ -43,8 +75,11 @@ class CoursesController < ApplicationController
   end
 
   def show
-    authorize @course
-    redirect_to @course.path unless request.path == @course.path and return
+    authorize @course 
+    respond_to do |format|
+      format.json { render json: { id: @course.id, name: @course.name, url: @course.path } }
+      format.html { redirect_to @course.path unless request.path == @course.path and return }
+    end
   end
 
   def mine
