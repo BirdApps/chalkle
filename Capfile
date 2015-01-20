@@ -3,6 +3,7 @@ require 'capistrano/setup'
 
 # Include default deployment tasks
 require 'capistrano/deploy'
+
 require 'capistrano/rbenv'
 require 'capistrano/bundler'
 require 'capistrano/rails/assets'
@@ -63,7 +64,7 @@ namespace :chalkle do
   desc "migrate images"
   task :migrate_images do
     on roles(:app) do 
-      within fetch(:current) do
+      within release_path do
         with rails_env: fetch(:rails_env) do
           info fetch(:current)
           rake "chalkle:migrate_images"
@@ -74,7 +75,7 @@ namespace :chalkle do
   desc "clear_chaches" 
   task :clear_caches do 
     on roles(:app) do 
-      within fetch(:current) do
+      within release_path do
         with rails_env: fetch(:rails_env) do
           info fetch(:current)
           rake 'chalkle:expire_caches' 
