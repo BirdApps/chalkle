@@ -37,7 +37,7 @@ set :rbenv_roles, :all # default value
 
 
 # UNICORN setup
-set :unicorn_pid, "/apps/tpie/production/shared/tmp/pids/unicorn.pid"
+set :unicorn_pid, "/apps/chalkle/staging/shared/tmp/pids/unicorn.pid"
 
 
 
