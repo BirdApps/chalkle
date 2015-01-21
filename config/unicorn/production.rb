@@ -1,8 +1,8 @@
 # workin' directory 
 working_directory '/apps/chalkle/production/current/'
 
-stderr_path '/apps/chalkle/production/staging/log/unicorn.log'
-stdout_path '/apps/chalkle/production/staging/log/unicorn.log'
+stderr_path '/apps/chalkle/production/shared/log/unicorn.log'
+stdout_path '/apps/chalkle/production/shared/log/unicorn.log'
 
 #sockets
 listen 8080
