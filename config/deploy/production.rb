@@ -4,13 +4,13 @@
 # is considered to be the first unless any hosts have the primary
 # property set.  Don't declare `role :all`, it's a meta role.
 
-role :app, %w{chalkleprod.cloudapp.net}
-role :web, %w{chalkleprod.cloudapp.net}
-role :db,  %w{chalkleprod.cloudapp.net}
+role :app, %w{chalkle.com}
+role :web, %w{chalkle.com}
+role :db,  %w{chalkle.com}
 
 set :domain,    "chalkle.com"
 
-set :branch,    "production"
+set :branch,    "master"
 set :rails_env, "production"
 
 
