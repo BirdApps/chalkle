@@ -3,77 +3,122 @@
   <%= javascript_include_tag "sudo" %>
 <% end %>
 
+<div class="row">
+  <h4 class="col-md-12 col-sm-12 text-center">Courses</h4>
+
+  <div class="col-md-3 col-sm-3 text-center">
+      <div>
+        <small>Courses Run</small>
+        <h2><%= @course_stats[:total] %></h2>
+      </div>
+      <div>
+        <small>Total</small>
+        <h2></h2>
+    </div>
+  </div>
+
+  <div class="col-md-9 col-sm-9 text-center">
+    <%= high_chart 'Courses', @courses_chart %>
+  </div>
+</div>
+
+
 
 <div class="row">
-  <div class="col-md-6 col-sm-6 text-center">
+  <div class="col-md-3 col-sm-3 text-center">
+    <h4>Providers</h4>
+    <div>
+      <small>Total</small>
+      <h2><%= @provider_stats[:total] %></h2>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-3 text-center">
+    <h4>Chalklers</h4>
+
+    <div>
+      <small>Total</small>
+      <h2><%= @chalkler_stats[:total] %></h2>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-3 text-center">
     <h4>New Chalklers</h4>
       <div>
         <small>Week</small>
         <h2><%= @chalkler_stats[:week][:new] %></h2>
       </div>
       <div>
-      <small>Month</small>
-      <h2><%= @chalkler_stats[:month][:new] %></h2>
+        <small>Month</small>
+        <h2><%= @chalkler_stats[:month][:new] %></h2>
     </div>
   </div>
 
-  <div class="col-md-6 col-sm-6 text-center">
+  <div class="col-md-3 col-sm-3 text-center">
       <h4>Active Chalklers</h4>
       <div>
         <small>Week</small>
         <h2><%= @chalkler_stats[:week][:active] %></h2>
       </div>
       <div>
-      <small>Month</small>
-      <h2><%= @chalkler_stats[:month][:active] %></h2>
+        <small>Month</small>
+        <h2><%= @chalkler_stats[:month][:active] %></h2>
     </div>
   </div>
 </div>
 
 <%= high_chart 'Signups', @signups_chart %>
 <div class="row">
-  <div class="col-md-12 col-sm-12 text-center">
+  <div class="col-md-4 col-sm-4 text-center">
       <h4>Revenue</h4>
       <div>
         <small>Week</small>
         <h2> <%= number_to_currency @booking_stats[:week][:revenue] %></h2>
       </div>
       <div>
-      <small>Month</small>
-      <h2><%= number_to_currency @booking_stats[:month][:revenue] %></h2>
+        <small>Month</small>
+        <h2><%= number_to_currency @booking_stats[:month][:revenue] %></h2>
     </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6 col-sm-6 text-center">
+  </div>
+  <div class="col-md-4 col-sm-4 text-center">
       <h4>ASP (all)</h4>
       <div>
         <small>Week</small>
         <h2> <%= number_to_currency @booking_stats[:week][:asp] %></h2>
       </div>
       <div>
-      <small>Month</small>
-      <h2><%= number_to_currency @booking_stats[:month][:asp] %></h2>
+        <small>Month</small>
+        <h2><%= number_to_currency @booking_stats[:month][:asp] %></h2>
     </div>
   </div>
-  <div class="col-md-6 col-sm-6 text-center">
+  <div class="col-md-4 col-sm-4 text-center">
       <h4>ASP (only paid)</h4>
       <div>
         <small>Week</small>
         <h2><%= number_to_currency @booking_stats[:week][:asp_only_paid] %></h2>
       </div>
       <div>
-      <small>Month</small>
-      <h2><%= number_to_currency @booking_stats[:month][:asp_only_paid] %></h2>
+        <small>Month</small>
+        <h2><%= number_to_currency @booking_stats[:month][:asp_only_paid] %></h2>
     </div>
   </div>
 
 </div>
 
+<div class="row">
+  <div class="col-md-3 col-sm-3 text-center">
+    <h4>Bookings</h4>
+    <div>
+      <small>Total</small>
+      <h2> <%= @booking_stats[:total] %></h2>
+    </div>
+  </div>
+
+  <div class="col-md-9 col-sm-9 text-center">
+    <%= high_chart 'Bookings', @bookings_chart %>
+  </div>
+
+</div>
 
 
-
-  <%= high_chart 'Bookings', @bookings_chart %>
 
 
 
