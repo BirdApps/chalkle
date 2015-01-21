@@ -39,7 +39,7 @@ $(function(){
     hwaccel: true, // Whether to use hardware acceleration
     className: 'spinner', // The CSS class to assign to the spinner
     zIndex: 9, // The z-index (defaults to 2000000000)
-    top: '100px', // Top position relative to parent
+    top: '50px', // Top position relative to parent
     left: '50%' // Left position relative to parent
   };
 
@@ -77,6 +77,17 @@ $(function(){
     }
   }
 
+  function clear_markers(){
+    $(markers).each(function(marker_i){
+        markers[marker_i].setMap(null);
+    });
+  }
+
+  function search(){
+    clear_markers();
+    update_bounds(map.getBounds());
+  }
+
   function init(){
     loading_courses_start();
     if($('#course_template').length > 0){
@@ -92,13 +103,20 @@ $(function(){
            { componentRestrictions: {country: "nz"} }
           );
 
-    google.maps.event.addListener(autocomplete, 'place_changed', function(e) {
+    google.maps.event.addListener(autocomplete, 'place_changed', function(e){
       if(autocomplete.getPlace().geometry != undefined){
         $('#location_unknown').hide();
         manual_locate();
         init_map_overlay();
       }else{
         $('#location_unknown').show();
+      }
+    });
+
+    $('#search_btn').click(search);
+    $("#search_input").keypress(function(e){
+      if(e.which == 13 ){
+        search();
       }
     });
 
@@ -277,6 +295,7 @@ $(function(){
   }
 
   function update_bounds(bounds) {
+    console.log('hi');
      if(bounds != null){
         spinner_start();
         var ne = bounds.getNorthEast();
@@ -307,7 +326,7 @@ $(function(){
       getting_courses = true;
       $.post(
         '/classes/fetch.json',
-        { 'top': top, 'bottom': bottom, 'left': left, 'right': right },
+        { 'top': top, 'bottom': bottom, 'left': left, 'right': right, 'search': $("#search_input").val() },
         update_list, 
         "json").done(function(){
           getting_courses = false;
@@ -325,7 +344,7 @@ $(function(){
       getting_courses = true;
       $.post(
         '/classes/fetch.json',
-        { 'top': top, 'bottom': bottom, 'left': left, 'right': right, only_location: '1' },
+        { 'top': top, 'bottom': bottom, 'left': left, 'right': right, only_location: '1', 'search': $("#search_input").val()  },
         update_map, "json").done(function(){
           getting_courses = false;
           spinner_stop();
@@ -351,6 +370,7 @@ $(function(){
     });
   }
 
+  var markers = [];
   function update_map(classes){
     for(var i = 0; i < classes.length; i++){
       clas = classes[i];
@@ -360,6 +380,7 @@ $(function(){
           map: map,
           title: clas.id.toString()
         });
+      markers.push(marker);
       treat_marker(marker);
     }
   }
