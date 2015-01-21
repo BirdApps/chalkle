@@ -99,7 +99,7 @@ module ApplicationHelper
   end
 
   def filter_regions
-    courses = Course.displayable.in_future
+    courses = Course.published.in_future
     if @category.id.present? && @channel.id.present?
       courses = courses.in_category(@category).in_channel(@channel)
     elsif @category.id.present? && @channel.id.nil?    
@@ -111,7 +111,7 @@ module ApplicationHelper
   end
 
   def filter_topics
-    courses = Course.displayable.in_future
+    courses = Course.published.in_future
     if @region.id.present? && @channel.id.present?
       courses = courses.in_region(@region).in_channel(@channel)
     elsif @region.id.present? && @channel.id.nil?    
@@ -123,7 +123,7 @@ module ApplicationHelper
   end
 
   def filter_providers
-    courses = Course.displayable.in_future
+    courses = Course.published.in_future
     if @category.id.present? && @region.id.present?
       courses = courses.in_category(@category).in_region(@region)
     elsif @category.id.present? && @region.id.nil?    

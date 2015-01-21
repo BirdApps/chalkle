@@ -14,15 +14,15 @@ class CoursesController < ApplicationController
     if current_user.super?
       courses = Course.in_future.start_at_between(current_date, current_date+1.year).by_date
     else
-      courses = Course.in_future.displayable.start_at_between(current_date, current_date+1.year).by_date
+      courses = Course.in_future.published.start_at_between(current_date, current_date+1.year).by_date
     end
 
     if params[:search].present?
-      courses = Course.search params[:search]
+      courses = courses.search params[:search]
     end
     
     if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
-      courses = Course.where("latitude < ? AND latitude > ? AND longitude < ? AND longitude > ?", params[:top].to_f, params[:bottom].to_f, params[:right].to_f, params[:left].to_f);
+      courses = courses.where("latitude < ? AND latitude > ? AND longitude < ? AND longitude > ?", params[:top].to_f, params[:bottom].to_f, params[:right].to_f, params[:left].to_f);
     end
 
     if params[:only_location].present?
@@ -64,7 +64,7 @@ class CoursesController < ApplicationController
     if current_user.super?
       @courses = filter_courses(Course.in_future.start_at_between(current_date, current_date+1.year).by_date)
     else
-      @courses = filter_courses(Course.in_future.displayable.start_at_between(current_date, current_date+1.year).by_date)
+      @courses = filter_courses(Course.in_future.published.start_at_between(current_date, current_date+1.year).by_date)
       if current_user.chalkler?
         @courses += filter_courses(Course.taught_by_chalkler(current_user).in_future.by_date)+
                     filter_courses(Course.adminable_by(current_user).in_future.by_date)
@@ -77,7 +77,7 @@ class CoursesController < ApplicationController
   def show
     authorize @course 
     respond_to do |format|
-      format.json { render json: { id: @course.id, name: @course.name, url: @course.path } }
+      format.json { render json: { name: @course.name, url: @course.path } }
       format.html { redirect_to @course.path unless request.path == @course.path and return }
     end
   end

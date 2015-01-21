@@ -10,7 +10,7 @@ class ChannelTeachersController < ApplicationController
   end
 
   def show
-    @courses = Course.where(teacher_id: @channel_teacher.id).in_future.displayable.by_date
+    @courses = Course.where(teacher_id: @channel_teacher.id).in_future.published.by_date
   end
 
   def edit

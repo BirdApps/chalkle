@@ -67,7 +67,6 @@ class Course < ActiveRecord::Base
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-  scope :displayable, -> { published.visible }
 
   scope :start_at_between, ->(from,to) { where(:start_at => from.beginning_of_day..to.end_of_day) }
   scope :recent, visible.start_at_between(DateTime.current.advance(days: PAST), DateTime.current.advance(days: IMMEDIATE_FUTURE))
@@ -101,7 +100,7 @@ class Course < ActiveRecord::Base
 
   scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
-  scope :similar_to, -> (course){ where(channel_id: course.channel_id, url_name: course.url_name).displayable.in_future.by_date }
+  scope :similar_to, -> (course){ where(channel_id: course.channel_id, url_name: course.url_name).published.in_future.by_date }
 
   scope :need_outgoing_payments, where("cost > 0 AND status = '#{STATUS_4}' AND end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR channel_payment_id IS NULL)")
 
@@ -210,7 +209,7 @@ class Course < ActiveRecord::Base
 
   def next_class
     if repeat_course.present?
-      repetitions =  repeat_course.courses.displayable.order(:start_at)
+      repetitions =  repeat_course.courses.published.order(:start_at)
       current_index = repetitions.index(self)
       repetitions[current_index+1] if current_index && repetitions[current_index+1].present?
     end

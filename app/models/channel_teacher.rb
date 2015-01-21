@@ -39,7 +39,7 @@ class ChannelTeacher < ActiveRecord::Base
   end
 
   def next_class
-    courses.in_future.displayable.order(:start_at).first
+    courses.in_future.published.order(:start_at).first
   end
 
   def tax_registered?

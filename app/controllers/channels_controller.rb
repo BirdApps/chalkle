@@ -14,7 +14,7 @@ class ChannelsController < ApplicationController
     if current_user.super?
       @courses =  @channel.courses.in_future.start_at_between(current_date, current_date+1.year).by_date
     else
-      @courses =  @channel.courses.in_future.displayable.start_at_between(current_date, current_date+1.year).by_date
+      @courses =  @channel.courses.in_future.published.start_at_between(current_date, current_date+1.year).by_date
       if current_user.authenticated?
         @courses += @channel.courses.taught_by_chalkler(current_chalkler).in_future.by_date+
                       @channel.courses.adminable_by(current_chalkler).in_future.by_date
@@ -25,7 +25,7 @@ class ChannelsController < ApplicationController
 
   def series 
     return not_found if !@channel || @channel.new_record?
-    @courses = @channel.courses.displayable.in_future.by_date.where url_name: params[:course_url_name]
+    @courses = @channel.courses.published.in_future.by_date.where url_name: params[:course_url_name]
     return not_found if @courses.empty?
     @courses
   end
