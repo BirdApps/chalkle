@@ -103,7 +103,6 @@ class Course < ActiveRecord::Base
   scope :similar_to, -> (course){ where(channel_id: course.channel_id, url_name: course.url_name).published.in_future.by_date }
 
   scope :need_outgoing_payments, where("cost > 0 AND status = '#{STATUS_4}' AND end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR channel_payment_id IS NULL)")
-
   scope :free, where("cost IS NULL or cost = 0")
 
   before_create :set_url_name
@@ -180,8 +179,16 @@ class Course < ActiveRecord::Base
     lessons.order(:start_at)
   end
 
-  def cost_formatted
-    sprintf('%.2f', cost || 0)
+  def time_formatted
+    start_at.present? && end_at.present? ? ((class? ? DateFunctions.day_ordinal_month(start_at, true, false, true) : '')+(DateFunctions.pretty_time_range(start_at,end_at))) : 'No Schedule'
+  end
+
+  def cost_formatted(stringed =  false)
+    if stringed
+      cost? ? '$'+cost_formatted : 'FREE'
+    else
+      sprintf('%.2f', cost || 0)
+    end
   end
 
   def status_color

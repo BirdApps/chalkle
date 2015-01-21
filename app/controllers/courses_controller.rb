@@ -39,7 +39,7 @@ class CoursesController < ApplicationController
           booking_url: new_course_booking_path(c.id),  
           name: c.name, 
           image: c.course_upload_image.url(:large), 
-          cost: c.cost? ? '$'+c.cost_formatted : 'FREE',  
+          cost: c.cost_formatted(true),
           color: c.best_colour_num, 
           channel: c.channel.name, 
           channel_image: c.channel.logo.url,
@@ -52,7 +52,7 @@ class CoursesController < ApplicationController
           address: c.venue_address,
           lat: c.latitude, 
           lng: c.longitude, 
-          time: (c.start_at.present? && c.end_at.present? ? ((c.class? ? DateFunctions.day_ordinal_month(c.start_at, true, false, true) : '')+(DateFunctions.pretty_time_range(c.start_at,c.end_at))) : 'No Schedule')
+          time: c.time_formatted
         }
       end
     end
@@ -66,8 +66,7 @@ class CoursesController < ApplicationController
     else
       @courses = filter_courses(Course.in_future.published.start_at_between(current_date, current_date+1.year).by_date)
       if current_user.chalkler?
-        @courses += filter_courses(Course.taught_by_chalkler(current_user).in_future.by_date)+
-                    filter_courses(Course.adminable_by(current_user).in_future.by_date)
+        @courses += filter_courses(Course.taught_by_chalkler(current_user).in_future.by_date)+filter_courses(Course.adminable_by(current_user).in_future.by_date)
         @courses = @courses.sort_by(&:start_at).uniq
       end
     end
@@ -77,7 +76,7 @@ class CoursesController < ApplicationController
   def show
     authorize @course 
     respond_to do |format|
-      format.json { render json: { name: @course.name, url: @course.path } }
+      format.json { render json: { name: @course.name, url: @course.path, time: @course.time_formatted, cost: @course.cost_formatted(true) } }
       format.html { redirect_to @course.path unless request.path == @course.path and return }
     end
   end

@@ -284,10 +284,10 @@ $(function(){
 
         if(ne.lat() == sw.lat()){
           //approximate bounds if only have center
-          bottom = sw.lat() - 0.01;
-          top = ne.lat() + 0.01;
-          right = ne.lng() + 0.01;
-          left = sw.lng() - 0.01;
+          bottom = sw.lat() - 0.5;
+          top = ne.lat() + 0.5;
+          right = ne.lng() + 0.5;
+          left = sw.lng() - 0.5;
         }else{
           bottom = sw.lat();
           top = ne.lat();
@@ -335,12 +335,18 @@ $(function(){
     }
   }
 
+  var infoWindow;
   function treat_marker(marker){
-    google.maps.event.addListener(marker,'click', function(){
-      $.get('classes/'+marker.title, function(data){
-        $('#coursePreviewModal .modal-title').text(data.name);
-        $('#coursePreviewModal .set_url').attr('href', data.url);
-        $('#coursePreviewModal').modal('show')
+    google.maps.event.addListener(marker,'click', function() {
+      map.panTo(marker.getPosition());
+      if(infoWindow != null) {
+        infoWindow.close();
+      }
+      $.get('classes/'+marker.title, function(data) {
+        infoWindow = new google.maps.InfoWindow({
+          content: '<div class="col-xs-12"><strong><a href="'+data.url+'">'+data.name+'</a></strong></div><div class="col-xs-6">'+data.time+'</div><div class="col-xs-6 text-right">'+data.cost+'</div>'
+        });
+        infoWindow.open(map, marker);
       });
     });
   }
