@@ -10,7 +10,7 @@
           <%= link_to root_path, class:"navbar-brand", alt: "chalkle°" do%>
             <% if Rails.env.titleize != "Production" %>
               <div class="light environment alert-<%= environment_color Rails.env.titleize %>">
-                  <%= Rails.env.titleize %> <small> #<%# VERSION_NUMBER %></small>
+                  <%= Rails.env.titleize %> <small> #<%= VERSION_NUMBER %></small>
               </div>
             <% else %>
               <%= image_tag asset_path('logo.png'), class: "logo" %>
