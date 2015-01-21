@@ -21,12 +21,6 @@ server 'chalklestaging.cloudapp.net', user: 'chalkle', roles: %w{web app db}
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-set :rbenv_type, :system # or :system, depends on your rbenv setup
-set :rbenv_ruby, '2.1.5'
-set :rbenv_custom_path, '/home/chalkle/.rbenv'
-set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
-set :rbenv_map_bins, %w{rake gem bundle ruby rails}
-set :rbenv_roles, :all # default value
 
 # ignore this if you do not need SSL
 # set :nginx_use_ssl, true
