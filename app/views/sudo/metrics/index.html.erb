@@ -4,10 +4,16 @@
 <% end %>
 
 <div class="row">
+<<<<<<< HEAD
   <h4 class="text-center">Courses</h4>
 
   <div class="col-sm-3 col-xs-12 text-center">
 
+=======
+  <h4 class="col-md-12 col-sm-12 text-center">Courses</h4>
+
+  <div class="col-md-3 col-sm-3 text-center">
+>>>>>>> 94c603e777e540ed8a21570dbb733abb6316a5e0
       <div>
         <small>Courses Run</small>
         <h2><%= @course_stats[:total] %></h2>
@@ -18,8 +24,12 @@
     </div>
   </div>
 
+<<<<<<< HEAD
   <div class="col-sm-9 col-xs-12 text-center">
 
+=======
+  <div class="col-md-9 col-sm-9 text-center">
+>>>>>>> 94c603e777e540ed8a21570dbb733abb6316a5e0
     <%= high_chart 'Courses', @courses_chart %>
   </div>
 </div>
@@ -27,14 +37,22 @@
 
 
 <div class="row">
+<<<<<<< HEAD
   <div class="col-sm-3 col-xs-12 text-center">
+=======
+  <div class="col-md-3 col-sm-3 text-center">
+>>>>>>> 94c603e777e540ed8a21570dbb733abb6316a5e0
     <h4>Providers</h4>
     <div>
       <small>Total</small>
       <h2><%= @provider_stats[:total] %></h2>
     </div>
   </div>
+<<<<<<< HEAD
   <div class="col-sm-3 col-xs-12 text-center">
+=======
+  <div class="col-md-3 col-sm-3 text-center">
+>>>>>>> 94c603e777e540ed8a21570dbb733abb6316a5e0
     <h4>Chalklers</h4>
 
     <div>
@@ -42,7 +60,11 @@
       <h2><%= @chalkler_stats[:total] %></h2>
     </div>
   </div>
+<<<<<<< HEAD
   <div class="col-sm-3 col-xs-12 text-center">
+=======
+  <div class="col-md-3 col-sm-3 text-center">
+>>>>>>> 94c603e777e540ed8a21570dbb733abb6316a5e0
     <h4>New Chalklers</h4>
       <div>
         <small>Week</small>
@@ -69,7 +91,9 @@
 
 <%= high_chart 'Signups', @signups_chart %>
 <div class="row">
+
   <div class="col-sm-4 col-xs-12 text-center">
+
       <h4>Revenue</h4>
       <div>
         <small>Week</small>
@@ -81,6 +105,7 @@
     </div>
   </div>
   <div class="col-sm-4 col-xs-12 text-center">
+
       <h4>ASP (all)</h4>
       <div>
         <small>Week</small>
@@ -92,6 +117,7 @@
     </div>
   </div>
   <div class="col-sm-4 col-xs-12 text-center">
+
       <h4>ASP (only paid)</h4>
       <div>
         <small>Week</small>
@@ -107,6 +133,7 @@
 
 <div class="row">
   <div class="col-sm-3 col-xs-12 text-center">
+
     <h4>Bookings</h4>
     <div>
       <small>Total</small>
@@ -115,6 +142,7 @@
   </div>
 
   <div class="col-sm-9 col-xs-12 text-center">
+
     <%= high_chart 'Bookings', @bookings_chart %>
   </div>
 

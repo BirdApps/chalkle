@@ -25,7 +25,6 @@ describe CoursesController do
   #   end
   # end
 
-
   describe "#calculate_cost" do
     it "returns calculated cost value" do
       #TODO todo?!
