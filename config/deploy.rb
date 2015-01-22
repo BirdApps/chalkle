@@ -68,7 +68,8 @@ namespace :deploy do
 
 
   task :restart do
-    invoke 'unicorn:duplicate'
+    invoke 'unicorn:stop'
+    invoke 'unicorn:start'
   end
 
 
