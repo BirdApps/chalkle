@@ -64,11 +64,12 @@ namespace :deploy do
   after   :starting, 'slack:deploy_starts'
   after :publishing, 'slack:deploy_complete'
   after :publishing, 'airbrake:deploy'
+
+  before :publishing, 'unicorn:stop'
   after :publishing, :restart
 
 
   task :restart do
-    invoke 'unicorn:stop'
     invoke 'unicorn:start'
   end
 
