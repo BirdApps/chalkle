@@ -15,7 +15,6 @@ $(function(){
     function init(){
       $('#teaching_channel_id').change(get_teacher_list);
       $("#type .btn-group label").click(course_class_select);
-
       $('.update_class_count .number-picker-up').click(show_class_opts);
       $('.update_class_count .number-picker-down').click(show_class_opts);
       $('.update_class_count .number-picker-input').change(show_class_opts);
@@ -43,12 +42,125 @@ $(function(){
       apply_inline_validation();
       get_teacher_list();
       bind_agree_terms();
+      init_custom_fields();
       init_start_at();
       $('.new_course_form_wrapper').fadeIn();
 
       // stop changing selection away from address field when no address is set
       $('#teaching_venue_address').blur(function(){ if($('#teaching_longitude').val().length==0){ $(this).focus() } } );
     }
+
+    function custom_field_has_options(field){
+      return (['radio', 'checkbox'].indexOf(field) > -1)
+    }
+
+    function init_custom_fields(){
+      var editing_label = null;
+
+      $('#custom_field_ui .btn').click(function(){
+        $('#customFieldModal').modal('show');
+      });
+
+      $('.custom_type').change(function(){
+        var type = $(this).val();
+        if(custom_field_has_options(type)){
+          $('.check_box_options').show();
+        } else {
+          $('.check_box_options').hide();
+        }
+      });
+
+
+      $('#create_custom_field_btn').click(function(){
+        var type = $('#customFieldModal .custom_type').val();
+        var type_name = $('#customFieldModal .custom_type option:selected').text();
+        var prompt = $('#customFieldModal .custom_prompt').val();
+        var tag;
+        if(custom_field_has_options(type)){
+          var options = $('#customFieldModal .custom_options').tagsinput('items');
+          friendly_options ='<br />';
+          $(options).each(function(option_i){
+            friendly_options += '['+options[option_i]+'] '
+          });
+          tag = '<span class="label label-default" data-type="'+type+'" data-prompt="'+prompt+'" data-options="'+options+'"><span class="edit_label">'+type_name+': "'+prompt+'" '+friendly_options+'</span><span class="remove">&times;</span></span>'
+        }else{
+          tag = '<span class="label label-default" data-type="'+type+'" data-prompt="'+prompt+'"><span class="edit_label">'+type_name+': "'+prompt+'"</span><span class="remove">&times;</span></span>'
+        }
+
+        var error = "";
+        if(prompt == undefined || prompt == ""){
+          error += "Must provide a prompt."
+        }
+        if(type == undefined || type == ""){
+          error += "Must select a format."
+        }
+        if(custom_field_has_options(type) && (options == undefined || options.length == 0 || options == "")){
+          error += "Must provide options."
+        }
+        if(error == ""){
+          $('#custom_field_tags').append(tag);
+          $('#custom_field_tags .label .edit_label').click(function(){
+            editing_label = $(this).parent();
+            var prompt = $(this).parent().data('prompt');
+            var type = $(this).parent().data('type');
+            var options = $(this).parent().data('options');
+           
+            $('.custom_prompt').val(prompt);
+            $('.custom_type').val(type);
+            if(options != undefined){
+              $(options.split(",")).each(function(option_i){
+                $('.custom_options').tagsinput('add', options[option_i]);
+              });
+              $('.check_box_options').show();
+            }
+            $('#customFieldModal').modal('show');
+          });
+
+          $('#custom_field_tags .label .remove').click(function(){
+            $(this).parent().remove();
+            evaluate_custom_field_tags();
+          });
+
+          reset_custom_field_form();
+        }else{
+          alert(error);
+        }
+      });
+      
+      $('.custom_options').on('itemRemoved', function(event) {
+        evaluate_custom_field_tags();
+      });
+      
+      function evaluate_custom_field_tags(){
+        var tags =  $('#custom_field_tags').children();
+        var new_val = []
+        $(tags).each(function(tag_i){
+          var hash = {
+            type: $(tags[tag_i]).data('type'),
+            prompt: $(tags[tag_i]).data('prompt'),
+            options: $(tags[tag_i]).data('options')
+          }
+          new_val.push(hash);
+        });
+        $('#teaching_custom_fields').val(JSON.stringify(new_val));
+      }
+
+      function reset_custom_field_form(){
+        if(editing_label != null){
+          $(editing_label).remove();
+          editing_label = null;
+        }
+        evaluate_custom_field_tags();
+        $('#customFieldModal .custom_prompt').val('');
+        $('#customFieldModal .custom_type').val('text');
+        $('#customFieldModal').modal('hide');
+        $('.custom_options').tagsinput('removeAll');
+        $('.check_box_options').hide();
+      }
+
+    }//init custom fields
+
+    
 
     function display_pay_type(){
       if ( $('#teaching_cost').val() > 0 ){
@@ -503,7 +615,7 @@ $(function(){
     function apply_inline_validation(){
       $('[data-error-message]').each(function(){
         $(this).focusout(function(){
-          if(!!!$(this).val() && !$(this).is("div") && !$(elem).is('label')){
+          if(!!!$(this).val() && !$(this).is("div") && !$(this).is('label')){
             show_error_for(this, undefined, false);
           }else{
             $(this).siblings('.form-error').remove();
@@ -723,7 +835,7 @@ $(function(){
 
     function hijack_navigation(){
       window.onbeforeunload = function () {
-        if(!ready_to_submit){
+        if(!ready_to_submit && !validate_off){
           return "The class has not been saved.";
         }        
       }
