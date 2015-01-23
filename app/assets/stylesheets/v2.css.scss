@@ -1645,6 +1645,50 @@ body.v2 {
         textarea {
           height: 130px;
         }
+        .form-group {
+          .btn-group {
+            margin-top: 10px;
+          }
+        }
+        .check_box_options{
+          display: none;
+          .bootstrap-tagsinput{
+            width: 100%;
+            background: #F1F1F1;
+            padding: 6px 6px 8px;
+            border: 0px;
+            box-shadow: none;
+          }
+        }
+        #custom_field_tags{
+          padding-bottom: 10px;
+          >.label {
+            position: relative;
+            font-weight: 100;
+            padding: 10px 25px 10px 10px;
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            white-space: normal;
+            line-height: 1.4em;
+            .remove{
+              font-size: 1.6em;
+              position: absolute;
+              right: 5px;
+              top: 22%;
+              cursor: pointer;
+              &:hover{
+                color: #eeb553;
+              }
+            }
+            .edit_label{
+              cursor: pointer;
+              &:hover{
+                color: #eeb553;
+              }
+            }
+          }
+        }
         input:focus, textarea:focus, select:focus {
           background-color: #FFF3DF;
           @include box-shadow(3px 3px 0 0 rgba(52,3,63,0.11));

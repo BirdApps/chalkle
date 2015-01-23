@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :note_to_attendees, :new_channel_bank_number, :cloning_id, :bookings
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :note_to_attendees, :new_channel_bank_number, :cloning_id, :bookings, :custom_fields
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
@@ -13,6 +13,8 @@ class Teaching
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Only positive currencies are allowed" }
   validates :repeat_count, presence: true, if: :repeating?
   validates :repeat_frequency, presence: true, if: :repeating?
+
+  CUSTOM_FIELD_TYPES = [{key: 'text', value: 'Text - Single line'}, {key: 'textarea', value: 'Text - Multiple lines'}, { key: 'radio', value: 'Options - Single selection'}, { key: 'checkbox', value: 'Options - Multiple selections'}]
 
   def initialize(current_user)
   	@current_user = current_user
@@ -74,6 +76,7 @@ class Teaching
     end
     @start_at << Time.current.advance(month: 1) if @start_at.empty?
     @editing_id = args.id
+    @custom_fields = args.custom_fields
   end
 
   def course_args
@@ -105,7 +108,8 @@ class Teaching
       start_at: @start_at[0],
       teacher_pay_type: @teacher_pay_type,
       course_class_type: @course_class_type,
-      note_to_attendees: @note_to_attendees
+      note_to_attendees: @note_to_attendees,
+      custom_fields: @custom_fields
     }
   end
 
@@ -313,7 +317,15 @@ class Teaching
       @teacher_pay_type = params[:teacher_pay_type]
       @cost = params[:cost]
       @note_to_attendees = params[:note_to_attendees]
+      binding.pry
+      if params[:custom_fields].present?
+        @custom_fields = parse_custom_fields(params[:custom_fields])
+      end
       self.valid?
+    end
+
+    def parse_custom_fields(custom_fields)
+      custom_fields.to_json
     end
 
     def get_teacher_id(teacher_id)
