@@ -108,8 +108,9 @@ $(function(){
             $('.custom_prompt').val(prompt);
             $('.custom_type').val(type);
             if(options != undefined){
-              $(options.split(",")).each(function(option_i){
-                $('.custom_options').tagsinput('add', options[option_i]);
+              option_arr = options.split(",");
+              $(option_arr).each(function(option_i){
+                $('.custom_options').tagsinput('add', option_arr[option_i]);
               });
               $('.check_box_options').show();
             }
