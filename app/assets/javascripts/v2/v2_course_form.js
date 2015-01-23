@@ -45,6 +45,9 @@ $(function(){
       init_custom_fields();
       init_start_at();
       $('.new_course_form_wrapper').fadeIn();
+
+      // stop changing selection away from address field when no address is set
+      $('#teaching_venue_address').blur(function(){ if($('#teaching_longitude').val().length==0){ $(this).focus() } } );
     }
 
     function custom_field_has_options(field){
