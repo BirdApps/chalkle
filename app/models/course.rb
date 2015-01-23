@@ -6,7 +6,7 @@ class Course < ActiveRecord::Base
   GST = 0.15
 
   attr_accessible *BASIC_ATTR = [
-    :name, :status, :visible, :course_type, :teacher_id, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at
+    :name, :status, :visible, :course_type, :teacher_id, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at, :custom_fields
   ]
 
   #chalkle fee is saved exclusive of GST
