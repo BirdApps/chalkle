@@ -1,8 +1,8 @@
 # workin' directory 
 working_directory '/apps/chalkle/staging/current/'
 
-stderr_path '/apps/chalkle/staging/current/log/unicorn.log'
-stdout_path '/apps/chalkle/staging/current/log/unicorn.log'
+stderr_path '/apps/chalkle/staging/shared/log/unicorn.log'
+stdout_path '/apps/chalkle/staging/shared/log/unicorn.log'
 
 #sockets
 listen 8080
@@ -12,6 +12,7 @@ worker_processes 2
 
 timeout 64
 
+pid "/apps/chalkle/staging/shared/tmp/pids/unicorn.pid"
 
 preload_app true
 

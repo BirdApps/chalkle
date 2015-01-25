@@ -20,7 +20,7 @@ gem 'pundit'
 gem 'monthify', require: 'monthify'
 gem 'chronic',       '~> 0.9.0'
 
-gem 'airbrake',      '~> 4.0.0'
+gem 'airbrake',      '~> 4.1.0'
 gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails',  '~> 2.1.4'
 gem 'active_attr',   '~> 0.7.0'
@@ -95,11 +95,11 @@ group :development do
   gem 'mailcatcher',  '~> 0.5.10',  require: false
 
   # Deployment
-  gem 'capistrano',      '~> 2.14.1',  require: false
-  gem 'capistrano-ext',  '~> 1.2.1',   require: false
-  gem 'capistrano-rbenv', '~> 1.0'
-  gem 'capistrano-unicorn', :require => false
-  gem 'hipchat'
+  gem 'capistrano', '~> 3.0',  require: false
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rbenv', '~> 2.0', require: false
+  gem 'capistrano3-unicorn', group: :development
 
   # Helpful Rails Generators
   gem 'nifty-generators',  '~> 0.4.6',  require: false

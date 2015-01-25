@@ -11,6 +11,7 @@
 /vendor/bundle
 /public/system
 /public/uploads
+/public/assets
 /bin
 /coverage
 
