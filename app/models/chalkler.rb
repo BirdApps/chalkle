@@ -3,17 +3,11 @@ require 'avatar_uploader'
 class Chalkler < ActiveRecord::Base
   mount_uploader :avatar, AvatarUploader
 
-  # geocoded_by :address
-  # reverse_geocoded_by :latitude, :longitude
-  # after_validation :reverse_geocode
-  # after_validation :geocode
-
-
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
 
-  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :avatar ]
+  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
   attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :role, :as => :admin
 
   attr_accessor :join_channels, :set_password_token
@@ -160,6 +154,7 @@ class Chalkler < ActiveRecord::Base
       chalkler = self.new
       chalkler.name = identity.name
       chalkler.email = identity.email
+      chalkler.notification_preference = NotificationPreference.create
       chalkler.password = Devise.friendly_token[0,20]
       chalkler.identities << identity
       chalkler
