@@ -62,6 +62,7 @@ class Chalkler < ActiveRecord::Base
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_reset_password_token
+  before_validation :ensure_notification_preference
 
   def super?
     role == 'super'
@@ -247,6 +248,11 @@ class Chalkler < ActiveRecord::Base
   end
 
   private
+
+    def ensure_notification_preference
+      self.notification_preference = NotificationPreference.create unless notification_preference.present?
+    end
+
 
     # for Chalklers created outside of meetup
     def set_reset_password_token
