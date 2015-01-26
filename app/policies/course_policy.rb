@@ -15,7 +15,6 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def bookings_csv?
-    return false unless @user.super?
     read?
   end
 
