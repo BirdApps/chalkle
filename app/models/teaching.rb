@@ -14,7 +14,7 @@ class Teaching
   validates :repeat_count, presence: true, if: :repeating?
   validates :repeat_frequency, presence: true, if: :repeating?
 
-  CUSTOM_FIELD_TYPES = [{key: 'text', value: 'Text - Single line'}, {key: 'textarea', value: 'Text - Multiple lines'}, { key: 'radio', value: 'Options - Single selection'}, { key: 'checkbox', value: 'Options - Multiple selections'}]
+  CUSTOM_FIELD_TYPES = [{key: 'string', value: 'Text - Single line'}, {key: 'text', value: 'Text - Multiple lines'}, { key: 'radio_buttons', value: 'Options - Single selection'}, { key: 'check_boxes', value: 'Options - Multiple selections'}]
 
   def self.custom_field_name(type)
     CUSTOM_FIELD_TYPES.select{|s| s[:key] == type}.first[:value] if CUSTOM_FIELD_TYPES.select{|s| s[:key] == type}.present?
