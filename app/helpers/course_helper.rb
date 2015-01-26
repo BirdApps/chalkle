@@ -169,6 +169,11 @@ Your Chalkle Administrator")
     ""
   end
 
+  def show_header?
+    @show_header.nil? ? true : @show_header
+  end
+
+
   def icon(name)
     content_tag(:i, nil, class: "fa fa-#{name.to_s.gsub('_', '-')}") + ' '
   end

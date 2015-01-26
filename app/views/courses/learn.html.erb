@@ -1,3 +1,36 @@
+<div class="row" id="sign-in">
+  
+  <div class="col-xs-6 col-md-8">
+    <h1>Discover a World of Learning</h1>
+  </div>
+
+  <div class="col-xs-6 col-md-4">
+
+    <div class="well">
+      <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path('chalkler')) do |f| %>
+        <%= f.error_notification %>
+        <div class="form-inputs">
+          <%= f.input :name, :autofocus => true %>
+          <%= f.input :email, :required => true %>
+          <%= f.input :password, :required => true %>
+          <%= f.input :password_confirmation, :required => true %>
+        </div>
+        <div class="form-actions">
+          <input type="submit" name="commit" class="btn btn-primary" value="Sign up" />
+        </div>
+      <% end %>
+    </div> 
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
 <% if @upcoming_courses.present? %>
  <div class="fancy-header">
     <h3>Upcoming Bookings</h3>

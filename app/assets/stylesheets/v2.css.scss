@@ -2005,39 +2005,32 @@ body.v2 {
 
 
 
-#who, #plans-and-pricing {
-  p {
-    font-weight: 500;
-    font-size: 15px;
-    color: #666666;
-    line-height: 18px;
+.courses-learn {
+
+  color: #fff;
+
+  #sign-in {
+    background-image: image_url('learn/diver.jpg');
+    background-size: cover;
+    background-position: center top;
+    padding-top: 300px; 
   }
 
-}
-#who {
-
-  h2 {
+  h1 {
+    color: #fff;
+    font-weight: 300;
+    font-size: 48px;
+    letter-spacing: 4px;
+    line-height: 58px;
     text-align: center;
-    font-weight: 600;    font-size: 23px;
-    color: #E52541;
-    line-height: 28px;
-  }
-  
-  h3 {
+    text-transform: uppercase;
   }
 
-  .teacher-hero, .community-hero, .business-hero, .library-hero {
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
-    width:100%;
-    height: 238px;
+  .well {
+    color: #fff;
+    background-color: transparent;
   }
 
-  .teacher-hero { background-image: image-url("partners/teacher.png"); }
-  .community-hero { background-image: image-url("partners/community-garden.png"); }
-  .business-hero { background-image: image-url("partners/business.png"); }
-  .library-hero { background-image: image-url("partners/library.png"); }
 
 }
 

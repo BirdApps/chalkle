@@ -21,10 +21,10 @@
     <div id="fb-root"></div>
     <header>
       <%= render 'layouts/navigation' %>
-      <%= render 'layouts/header' %>
+      <%= render 'layouts/header' if show_header?  %>
     </header>
     <div id="wrapper">
-      <div class="container" role="main">
+      <div class="container-fluid" role="main">
         <%= render 'layouts/messages' %>
         <%= yield %>
       </div>
