@@ -57,6 +57,9 @@ $(function(){
     function init_custom_fields(){
       var editing_label = null;
 
+      apply_tag_events();
+      evaluate_custom_field_tags();
+
       $('#custom_field_ui .btn').click(function(){
         $('#customFieldModal').modal('show');
       });
@@ -99,7 +102,19 @@ $(function(){
         }
         if(error == ""){
           $('#custom_field_tags').append(tag);
-          $('#custom_field_tags .label .edit_label').click(function(){
+          apply_tag_events();
+          reset_custom_field_form();
+        }else{
+          alert(error);
+        }
+      });
+      
+      $('.custom_options').on('itemRemoved', function(event) {
+        evaluate_custom_field_tags();
+      });
+      
+      function apply_tag_events(){
+        $('#custom_field_tags .label .edit_label').click(function(){
             editing_label = $(this).parent();
             var prompt = $(this).parent().data('prompt');
             var type = $(this).parent().data('type');
@@ -121,17 +136,8 @@ $(function(){
             $(this).parent().remove();
             evaluate_custom_field_tags();
           });
+      }
 
-          reset_custom_field_form();
-        }else{
-          alert(error);
-        }
-      });
-      
-      $('.custom_options').on('itemRemoved', function(event) {
-        evaluate_custom_field_tags();
-      });
-      
       function evaluate_custom_field_tags(){
         var tags =  $('#custom_field_tags').children();
         var new_val = []

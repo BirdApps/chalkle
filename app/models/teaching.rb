@@ -16,6 +16,10 @@ class Teaching
 
   CUSTOM_FIELD_TYPES = [{key: 'text', value: 'Text - Single line'}, {key: 'textarea', value: 'Text - Multiple lines'}, { key: 'radio', value: 'Options - Single selection'}, { key: 'checkbox', value: 'Options - Multiple selections'}]
 
+  def self.custom_field_name(type)
+    CUSTOM_FIELD_TYPES.select{|s| s[:key] == type}.first[:value] if CUSTOM_FIELD_TYPES.select{|s| s[:key] == type}.present?
+  end
+
   def initialize(current_user)
   	@current_user = current_user
     @channels = current_user.channels

@@ -482,15 +482,26 @@
               </label>
             </div>
             <div id="custom_field_ui" class="col-sm-7">
-              <div id="custom_field_tags"></div>
+              <div id="custom_field_tags">
+                <% if f.object.custom_fields %>
+                  <% f.object.custom_fields.each do |f| %>
+                      <span class="label label-default" data-type="<%= f["type"] %>" data-prompt="<%= f["prompt"] %>" data-options="<%= f["options"].join(',') if f["options"] %>">
+                        <span class="edit_label"> 
+                          <%= Teaching.custom_field_name f['type'] %> : "<%= f['prompt'] %>" <%= "<br />".html_safe if f['options'] %> <%= f['options'].map{|o| "[#{o}]"}.join(' ') if f['options'] %> 
+                        </span>
+                        <span class="remove">&times;</span>
+                      </span>
+                  <% end %>
+                <% end %>
+               </div>
               <div class="btn btn-default">
                 Add Custom Field
               </div>
             </div>
           </div>
+
           <%= f.input :custom_fields, as: :hidden %>
-          
-          
+
           <div class="modal fade" id="customFieldModal" tabindex="-1" role="dialog" aria-labelledby="customFieldModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
