@@ -68,20 +68,7 @@ class Booking < ActiveRecord::Base
 
   delegate :email, to: :chalkler
 
-  def custom_fields
-    fields = read_attribute :custom_fields
-    JSON.parse(fields) if fields
-  end
-
-  def custom_fields=(value)
-    binding.pry
-    if value
-      value = value.to_json unless value.is_a? String
-      write_attribute(:custom_fields, value)
-    else
-      write_attribute(:custom_fields, nil)
-    end
-  end
+  serialize :custom_fields
 
   def paid
     self.payment.present? ? payment.total : 0
@@ -276,7 +263,10 @@ class Booking < ActiveRecord::Base
   end
 
   def self.csv_for(bookings)
+    bookings.map { |b| }
     fields_for_csv = %w{ id name email paid note_to_teacher }
+    binding.pry
+    fields_for_csv.concat bookings.map(&:custom_fields).map{|g| g.keys if g.is_a? Hash}.flatten.compact!.uniq
     CSV.generate do |csv|
       csv << fields_for_csv.map(&:to_s)
       bookings.each do |booking| 

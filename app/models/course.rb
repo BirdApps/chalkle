@@ -40,6 +40,8 @@ class Course < ActiveRecord::Base
 
   accepts_nested_attributes_for :lessons
 
+  serialize :custom_fields
+
   [:teacher, :channel, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
 
   delegate :best_colour_num, to: :category, allow_nil: true
@@ -259,20 +261,6 @@ class Course < ActiveRecord::Base
   def new? 
     true if !repeat_course || repeat_course.courses.count == 1
     false
-  end
-
-  def custom_fields
-    fields = read_attribute :custom_fields
-    JSON.parse(fields) if fields
-  end
-
-  def custom_fields=(value)
-    if value
-      value = value.to_json unless value.is_a? String
-      write_attribute(:custom_fields, value)
-    else
-      write_attribute(:custom_fields, nil)
-    end
   end
 
   def first_lesson_start_at=(lesson_start)
