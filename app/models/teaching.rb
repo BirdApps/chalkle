@@ -317,15 +317,30 @@ class Teaching
       @teacher_pay_type = params[:teacher_pay_type]
       @cost = params[:cost]
       @note_to_attendees = params[:note_to_attendees]
-      binding.pry
       if params[:custom_fields].present?
         @custom_fields = parse_custom_fields(params[:custom_fields])
       end
       self.valid?
     end
 
-    def parse_custom_fields(custom_fields)
-      custom_fields.to_json
+    def parse_custom_fields(fields)
+      valid_fields = []
+      fields = JSON.parse fields
+      fields.each do |f|
+        if f['type'] == 'radio' || f['type'] == 'checkbox'
+          valid_fields << {
+                            type: f['type'],
+                            prompt: f['prompt'],
+                            options: f['options'].split(',')
+                          }
+        elsif f['type'] == 'text' || f['type'] == 'textarea'
+          valid_fields << {
+                            type: f['type'],
+                            prompt: f['prompt']
+                          }
+        end    
+      end
+      valid_fields
     end
 
     def get_teacher_id(teacher_id)

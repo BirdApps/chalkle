@@ -261,6 +261,20 @@ class Course < ActiveRecord::Base
     false
   end
 
+  def custom_fields
+    fields = read_attribute :custom_fields
+    JSON.parse(fields) if fields
+  end
+
+  def custom_fields=(value)
+    if value
+      value = value.to_json unless value.is_a? String
+      write_attribute(:custom_fields, value)
+    else
+      write_attribute(:custom_fields, nil)
+    end
+  end
+
   def first_lesson_start_at=(lesson_start)
     first_or_new_lesson.update_attribute :start_at, lesson_start
   end
