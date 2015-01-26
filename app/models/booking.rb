@@ -4,7 +4,7 @@ class Booking < ActiveRecord::Base
 
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
-    :course_id, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
+    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields
   ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
@@ -67,6 +67,21 @@ class Booking < ActiveRecord::Base
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
 
   delegate :email, to: :chalkler
+
+  def custom_fields
+    fields = read_attribute :custom_fields
+    JSON.parse(fields) if fields
+  end
+
+  def custom_fields=(value)
+    binding.pry
+    if value
+      value = value.to_json unless value.is_a? String
+      write_attribute(:custom_fields, value)
+    else
+      write_attribute(:custom_fields, nil)
+    end
+  end
 
   def paid
     self.payment.present? ? payment.total : 0

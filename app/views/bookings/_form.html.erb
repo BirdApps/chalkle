@@ -89,8 +89,34 @@
   <div class="col-md-6 col-xs-12 center">
     <br />
     <div class="text-left">
-     <%= f.input :name, label: '<span class="small light grey">Attendee Name</small>' %>
+      <%= f.input :name, label: '<span class="small light grey">Attendee Name</small>' %>
       <%= f.input :note_to_teacher, as: :text, label: '<span class="small light grey">Note to Teacher</small>' %>
+      <% if @course.custom_fields %>
+        <%# f.input :custom_fields, as: :hidden %>
+        <% @course.custom_fields.each do |field| %>
+          <div class="form-group">
+            <label> <%= field['prompt'] %></label>
+            <% case field['type'] %>
+              <% when 'text'  %>
+                <input class="form-control" type="text" name="booking[custom_fields][<%= field['prompt'] %>]"></textarea>
+              <% when 'textarea' %>
+                <textarea class="form-control" name="booking[custom_fields][<%= field['prompt'] %>]"></textarea>
+              <% when 'radio'  %>
+                <% field['options'].each do |option| %>
+                  <label class="form-control"><%= option %>
+                    <input type="radio" class="pull-right"  name="booking[custom_fields][<%= field['prompt'] %>]" value="<%= option %>" />
+                  </label>
+                <% end %>
+              <% when 'checkbox' %>
+                <% field['options'].each do |option| %>
+                  <label class="form-control">
+                    <%= option %><input class="pull-right" type="checkbox" name="booking[custom_fields][<%= field['prompt'] %>][<%= field['option'] %>]" value="<%= option %>" />
+                  </label>
+                <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
     </div>
     <% if policy(@course).admin? && @course.paid? %>
       <br/><br />
