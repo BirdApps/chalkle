@@ -51,7 +51,7 @@ $(function(){
     }
 
     function custom_field_has_options(field){
-      return (['radio', 'checkbox'].indexOf(field) > -1)
+      return (['radio_buttons', 'check_boxes'].indexOf(field) > -1)
     }
 
     function init_custom_fields(){

@@ -331,13 +331,13 @@ class Teaching
       valid_fields = []
       fields = JSON.parse fields
       fields.each do |f|
-        if f['type'] == 'radio' || f['type'] == 'checkbox'
+        if f['type'] == 'radio_buttons' || f['type'] == 'check_boxes'
           valid_fields << {
                             type: f['type'],
                             prompt: f['prompt'],
                             options: f['options'].split(',')
                           }
-        elsif f['type'] == 'text' || f['type'] == 'textarea'
+        elsif f['type'] == 'string' || f['type'] == 'text'
           valid_fields << {
                             type: f['type'],
                             prompt: f['prompt']
