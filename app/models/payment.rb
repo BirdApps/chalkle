@@ -1,7 +1,8 @@
 class Payment < ActiveRecord::Base
   attr_accessible :booking_id, :booking, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible, :cash_payment, :swipe_transaction_id, :swipe_status, :swipe_name_on_card, :swipe_customer_email, :swipe_currency, :swipe_identifier_id, :swipe_token, :as => :admin
 
-  belongs_to :booking
+  belongs_to :booking #original
+  has_many :bookings
   has_one :chalkler, through: :booking
   has_one :course, through: :booking
 

@@ -17,11 +17,12 @@ class Booking < ActiveRecord::Base
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
   BOOKING_STATUSES = VALID_STATUSES
 
+  belongs_to  :payment
   belongs_to  :course
   belongs_to  :chalkler
   belongs_to  :booking
   has_many    :bookings, as: :guests_bookings
-  has_one     :payment
+  has_one     :payment #original
   has_one     :channel, through: :course
   has_one     :teacher, through: :course
   
