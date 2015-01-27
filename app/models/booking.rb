@@ -265,7 +265,7 @@ class Booking < ActiveRecord::Base
   def self.csv_for(bookings)
     bookings.map { |b| }
     fields_for_csv = %w{ id name email paid note_to_teacher }
-    custom_fields_for_csv = bookings.map(&:custom_fields).map{|g| g.keys if g.is_a? Hash}.flatten.compact!.uniq
+    custom_fields_for_csv = bookings.map(&:custom_fields).map{|g| g.keys if g.is_a? Hash}.flatten.uniq.compact!
     CSV.generate do |csv|
 
       headings = fields_for_csv.map(&:to_s)
