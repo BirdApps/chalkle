@@ -43,7 +43,8 @@ class BookingsController < ApplicationController
       render 'new' and return
     end
 
-    @booking.custom_fields = params[:custom_fields]
+    #only apply custom_fields if any have actually been answered
+    @booking.custom_fields = params[:custom_fields] if params[:custom_fields].present? && params[:custom_fields].values.map{|g| g if g.present? }.compact.present?   
 
     # this should handle invalid @bookings before doing anything
     if @booking.save
