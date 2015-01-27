@@ -1,17 +1,20 @@
-<p><%= @course.do_during_class %></p>
 <div class="new_form_wrapper row">
-  <div class="col-md-2 hidden-xs">
-  </div> 
-  <div class="col-md-8 col-xs-12">
+  <div class="col-md-8 col-xs-12 col-md-offset-2 col-md-inset-2">
+    <p><%= @course.do_during_class %></p>
+    <p class="light center">
+      <% if @course.cost? && @course.cost > 0 %>
+        Bookings are <span class="x1-25">$<%= @course.cost_formatted %></span>
+      <% else %>
+        This <%= @course.type %> is <strong>free to attend</strong>  
+      <% end %>
+    </p>
     <div class="fancy-header">
-      <h3>Booking for <%= current_user.name %></h3>
+      <h3>Attendees</h3>
       <hr />
-    </div>  
+    </div> 
     <%= bootstrap_form_for(@booking, url: course_bookings_path,html: { method: :post, class: 'form-horizontal', role: 'form'}) do |f| %>
       <%= render partial: 'form', locals: { f: f } %>
     <% end %>
-  </div>
-  <div class="col-md-2 hidden-xs">
   </div>
 </div>
 
