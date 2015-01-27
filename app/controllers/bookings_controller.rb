@@ -38,8 +38,13 @@ class BookingsController < ApplicationController
     end
 
     unless current_user.bookings.confirmed.where(course_id: @booking.course.id, name: @booking.name ).empty?
-      redirect_to @booking.course.path, notice: 'That attendee already has a booking for this course' and return
+      @course = Course.find(params[:course_id])
+      flash[:notice] = 'That attendee already has a booking for this course' 
+      render 'new' and return
     end
+
+    #only apply custom_fields if any have actually been answered
+    @booking.custom_fields = params[:custom_fields] if params[:custom_fields].present? && params[:custom_fields].values.map{|g| g if g.present? }.compact.present?   
 
     # this should handle invalid @bookings before doing anything
     if @booking.save

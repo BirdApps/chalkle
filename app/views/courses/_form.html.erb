@@ -474,6 +474,80 @@
         <div class="row">
             <%= f.input :note_to_attendees, as: :text, label: 'Special note only to attendees <div class="small light grey">Only visible once their booking is complete</div>', wrapper: :horizontal %>
         </div>
+        <div class="row">
+          <div class="form-group">
+            <div class="control-label col-sm-5">
+              <label class="radio_button_group optional" for="teaching_use_custom_fields">
+                Custom fields for booking form?<div class="small light grey">Collect specifics about attendees</div>
+              </label>
+            </div>
+            <div id="custom_field_ui" class="col-sm-7">
+              <div id="custom_field_tags">
+                <% if f.object.custom_fields %>
+                  <% f.object.custom_fields.each do |f| %>
+                      <span class="label label-default" data-type="<%= f[:type] %>" data-prompt="<%= f[:prompt] %>" data-options="<%= f[:options].join(',') if f[:options] %>">
+                        <span class="edit_label"> 
+                          <%= Teaching.custom_field_name f[:type] %> : "<%= f[:prompt] %>" <%= "<br />".html_safe if f[:options] %> <%= f[:options].map{|o| "[#{o}]"}.join(' ') if f[:options] %> 
+                        </span>
+                        <span class="remove">&times;</span>
+                      </span>
+                  <% end %>
+                <% end %>
+               </div>
+              <div class="btn btn-default">
+                Add Custom Field
+              </div>
+            </div>
+          </div>
+
+          <%= f.input :custom_fields, as: :hidden %>
+
+          <div class="modal fade" id="customFieldModal" tabindex="-1" role="dialog" aria-labelledby="customFieldModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title text-center" id="customFieldModalLabel">Custom Booking Field</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group row">
+                    <label class="col-xs-3">Prompt</label>
+                    <div class="col-xs-9">
+                      <input type="text" class="form-control col-xs-8 custom_prompt" placeholder="e.g. Do you have any food allergies?" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-xs-3">Format</label>
+                     <div class="col-xs-9">
+                      <select class="form-control custom_type">
+                        <% Teaching::CUSTOM_FIELD_TYPES.each do |kv| %>
+                          <option value="<%= kv[:key] %>">
+                            <%= kv[:value] %>
+                          </option>
+                        <% end %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row check_box_options">
+                    <label class="col-xs-3">Options</label>
+                    <div class="col-xs-9">
+                      <input type="text" data-role="tagsinput" class="form-control col-xs-8 custom_options" placeholder="" />
+                      <div class="small light grey">Press comma after each option</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-9 col-xs-offset-3">
+                      <div class="btn btn-primary" id="create_custom_field_btn">Save</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.modal -->
+
+        </div>
+
+
         <br class="clear" /><br />
         <br /><br />
         <div class="prevnext">
@@ -484,14 +558,14 @@
             <div class="col-md-6 next">
               <div class="checkbox center">
                 <label id="teaching_agreeterms" data-validate-complex='true'  data-error-message="You must agree in order to continue">
-                  <input type="checkbox" data-validate-complex='true'  name="teaching_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/teacher">Terms and Conditions for Teaching</a></span>
+                  <input type="checkbox" data-validate-complex='true'  name="teaching_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/teacher">Terms & Conditions for Teaching</a></span>
                 </label>
               </div>
 
               <% if current_user.channels.count == 0 %>
               <div class="checkbox center">
                 <label id="providing_agreeterms" data-validate-complex='true'  data-error-message="You must agree in order to continue">
-                  <input type="checkbox" data-validate-complex='true'  name="providing_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/provider">Terms and Conditions for Providing Classes</a></span>
+                  <input type="checkbox" data-validate-complex='true'  name="providing_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/provider">Terms & Conditions for Providing Classes</a></span>
                 </label>
               </div>
               <% end %>

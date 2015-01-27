@@ -89,8 +89,20 @@
   <div class="col-md-6 col-xs-12 center">
     <br />
     <div class="text-left">
-     <%= f.input :name, label: '<span class="small light grey">Attendee Name</small>' %>
+      <%= f.input :name, label: '<span class="small light grey">Attendee Name</small>' %>
       <%= f.input :note_to_teacher, as: :text, label: '<span class="small light grey">Note to Teacher</small>' %>
+      <% if @course.custom_fields %>
+        <% @course.custom_fields.each do |field| %>
+          <%= f.input :custom_fields, 
+              input_html: { name: "custom_fields[#{field[:prompt]}]"+(field[:type]=='check_boxes' ? '[]' : ''), 
+              value: (params[:custom_fields].is_a?(Hash) ? params[:custom_fields][field[:prompt]] : '') }, 
+              as: field[:type], 
+              label: field[:prompt], 
+              collection: field[:options], 
+              checked: (params[:custom_fields].is_a?(Hash) ? params[:custom_fields][field[:prompt]] : '') %>
+        <% end %>
+        
+      <% end %>
     </div>
     <% if policy(@course).admin? && @course.paid? %>
       <br/><br />

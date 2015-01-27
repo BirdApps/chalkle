@@ -1128,6 +1128,12 @@ body.v2 {
     h1,h2,h3,h4,h5,h6 {
       font-weight: 300;
     }
+    .bookings{
+      .odd,.even{
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+    }
     .messages {
       margin-top:20px;
       .alert {
@@ -1644,6 +1650,50 @@ body.v2 {
         }
         textarea {
           height: 130px;
+        }
+        .form-group {
+          .btn-group {
+            margin-top: 10px;
+          }
+        }
+        .check_box_options{
+          display: none;
+          .bootstrap-tagsinput{
+            width: 100%;
+            background: #F1F1F1;
+            padding: 6px 6px 8px;
+            border: 0px;
+            box-shadow: none;
+          }
+        }
+        #custom_field_tags{
+          padding-bottom: 10px;
+          >.label {
+            position: relative;
+            font-weight: 100;
+            padding: 10px 25px 10px 10px;
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            white-space: normal;
+            line-height: 1.4em;
+            .remove{
+              font-size: 1.6em;
+              position: absolute;
+              right: 5px;
+              top: 22%;
+              cursor: pointer;
+              &:hover{
+                color: #eeb553;
+              }
+            }
+            .edit_label{
+              cursor: pointer;
+              &:hover{
+                color: #eeb553;
+              }
+            }
+          }
         }
         input:focus, textarea:focus, select:focus {
           background-color: #FFF3DF;
