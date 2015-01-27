@@ -269,7 +269,7 @@ class Booking < ActiveRecord::Base
     CSV.generate do |csv|
 
       headings = fields_for_csv.map(&:to_s)
-      headings.concat custom_fields_for_csv
+      headings.concat custom_fields_for_csv if custom_fields_for_csv.present?
       csv << headings
 
       bookings.each do |booking|
