@@ -107,6 +107,7 @@ Chalkle::Application.routes.draw do
 
       collection do
         get 'notifications'
+        get 'csv'
       end
     end
     
