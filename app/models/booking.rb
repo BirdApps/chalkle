@@ -4,7 +4,7 @@ class Booking < ActiveRecord::Base
 
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
-    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields
+    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields, :payment, :payment_id
   ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
@@ -22,7 +22,6 @@ class Booking < ActiveRecord::Base
   belongs_to  :chalkler
   belongs_to  :booking
   has_many    :bookings, as: :guests_bookings
-  has_one     :payment #original
   has_one     :channel, through: :course
   has_one     :teacher, through: :course
   
@@ -33,8 +32,8 @@ class Booking < ActiveRecord::Base
 
   validates_numericality_of :chalkle_fee, :chalkle_gst, :provider_fee, :provider_gst, :teacher_fee, :provider_fee, :processing_gst, :teacher_gst, allow_nil: false
 
-  scope :free, where('NOT EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
-  scope :not_free, where('EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
+  scope :free, where(payment_id: nil)
+  scope :not_free, where("payment_id IS NOT NULL")
 
   scope :paid, not_free
   scope :unpaid, free

@@ -1,11 +1,9 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :booking_id, :booking, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible, :cash_payment, :swipe_transaction_id, :swipe_status, :swipe_name_on_card, :swipe_customer_email, :swipe_currency, :swipe_identifier_id, :swipe_token, :as => :admin
+  attr_accessible :chalkler_id, :chalkler, :bookings, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible, :cash_payment, :swipe_transaction_id, :swipe_status, :swipe_name_on_card, :swipe_customer_email, :swipe_currency, :swipe_identifier_id, :swipe_token, :as => :admin
 
-  belongs_to :booking #original
   has_many :bookings
-  has_one :chalkler, through: :booking
-  has_one :course, through: :booking
-
+  has_many :courses, through: :bookings
+  belongs_to :chalkler #purchaser
   serialize :xero_data
 
   validates_uniqueness_of :xero_id, allow_nil: true
@@ -32,10 +30,6 @@ class Payment < ActiveRecord::Base
     @@xero ||= Xeroizer::PrivateApplication.new(@@xero_consumer_key, @@xero_consumer_secret, "#{Rails.root}/config/xero/privatekey.pem")
   end
 
-  def set_metadata
-    self.visible = true
-  end
-
   def self.load_all_from_xero
     transactions = Payment.xero.BankTransaction.all(where: {type: 'RECEIVE', is_reconciled: true})
     transactions.each do |t|
@@ -47,6 +41,14 @@ class Payment < ActiveRecord::Base
       payment.date = t.date
       payment.save
     end
+  end
+
+  def course
+    courses.first if courses
+  end
+
+  def set_metadata
+    self.visible = true
   end
 
   def complete_record_download
