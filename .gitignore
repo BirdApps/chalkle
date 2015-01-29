@@ -6,6 +6,7 @@
 
 # Ignore bundler config
 /.bundle
+logfile
 
 /config/database.yml
 /vendor/bundle
