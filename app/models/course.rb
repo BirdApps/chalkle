@@ -40,6 +40,8 @@ class Course < ActiveRecord::Base
 
   accepts_nested_attributes_for :lessons
 
+  serialize :custom_fields
+
   [:teacher, :channel, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
 
   delegate :best_colour_num, to: :category, allow_nil: true

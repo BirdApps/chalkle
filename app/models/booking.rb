@@ -4,7 +4,7 @@ class Booking < ActiveRecord::Base
 
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
-    :course_id, :payment_method, :booking, :name, :note_to_teacher,:cancelled_reason 
+    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields
   ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
@@ -67,6 +67,8 @@ class Booking < ActiveRecord::Base
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
 
   delegate :email, to: :chalkler
+
+  serialize :custom_fields
 
   def paid
     self.payment.present? ? payment.total : 0
@@ -262,12 +264,19 @@ class Booking < ActiveRecord::Base
 
   def self.csv_for(bookings)
     fields_for_csv = %w{ id name email paid note_to_teacher }
+    custom_fields_for_csv = bookings.map(&:custom_fields).map{|g| g.keys if g.is_a? Hash}.flatten.uniq.compact
     CSV.generate do |csv|
-      csv << fields_for_csv.map(&:to_s)
-      bookings.each do |booking| 
-        csv << fields_for_csv.map do |field| booking.send(field) 
-        end
+
+      headings = fields_for_csv.map(&:to_s)
+      headings.concat custom_fields_for_csv if custom_fields_for_csv.present?
+      csv << headings
+
+      bookings.each do |booking|
+        new_row = fields_for_csv.map{ |field| booking.send(field) }
+        new_row.concat custom_fields_for_csv.map{ |field| f = booking.custom_fields[field.to_sym]; f.is_a?(Array) ? f.join(', ') : f } if booking.custom_fields.is_a?(Hash) && custom_fields_for_csv.is_a?(Array)
+        csv << new_row
       end
+      
     end
   end
 
