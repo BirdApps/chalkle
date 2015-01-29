@@ -103,7 +103,6 @@ ActiveRecord::Schema.define(:version => 20150126013256) do
     t.string   "address"
     t.string   "avatar"
     t.string   "role"
-    t.string   "location"
   end
 
   create_table "channel_admins", :force => true do |t|
