@@ -612,6 +612,13 @@ class Course < ActiveRecord::Base
       self.start_at = first_lesson.start_at if first_lesson.present?
     end
 
+    def name=(name) 
+      write_attribute :name, name 
+      if status == STATUS_3 #draft
+        set_url_name
+      end
+    end
+
     def set_url_name
       self.url_name = name.parameterize
     end

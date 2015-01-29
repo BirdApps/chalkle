@@ -173,6 +173,19 @@ Your Chalkle Administrator")
     @show_header.nil? ? true : @show_header
   end
 
+  def devise_mapping
+    Devise.mappings[:chalkler]
+  end
+
+  def resource_name
+    devise_mapping.name
+  end
+
+  def resource_class
+    devise_mapping.to
+  end
+
+
 
   def icon(name)
     content_tag(:i, nil, class: "fa fa-#{name.to_s.gsub('_', '-')}") + ' '
