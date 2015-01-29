@@ -63,7 +63,7 @@ module ApplicationHelper
 
   def to_html(markdown)
     return "" if markdown == nil 
-    ("<div class='markdown'>#{RDiscount.new(markdown).to_html}</div>").html_safe
+    "<div class='markdown'>#{markdown.to_html}</div>".html_safe
   end
 
 
