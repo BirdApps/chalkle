@@ -173,6 +173,14 @@ Your Chalkle Administrator")
     @show_header.nil? ? true : @show_header
   end
 
+  def fluid_layout? 
+    if request[:action].include? "learn"
+      true
+    else
+      super
+    end 
+  end
+
   def devise_mapping
     Devise.mappings[:chalkler]
   end

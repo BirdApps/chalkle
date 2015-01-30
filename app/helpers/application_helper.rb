@@ -54,6 +54,9 @@ module ApplicationHelper
     true
   end
 
+  def fluid_layout? 
+    false
+  end
 
   def truncate(string, length=16)
     return unless string

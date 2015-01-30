@@ -24,7 +24,7 @@
       <%= render 'layouts/header' if show_header?  %>
     </header>
     <div id="wrapper">
-      <div class="container-fluid" role="main">
+      <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
         <%= render 'layouts/messages' %>
         <%= yield %>
       </div>

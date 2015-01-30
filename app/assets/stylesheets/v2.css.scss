@@ -1121,7 +1121,7 @@ body.v2 {
   #wrapper {
     width:100%; background-color:#fff; 
   }
-  .container-fluid {
+  .container {
     font-family: "proxima-nova",sans-serif;
 
     letter-spacing: 1.5px;
@@ -2122,7 +2122,8 @@ body.v2 {
     height: 350px;
     background-size: cover;
     background-position: center;
-    padding-top: 170px; 
+    padding-top: 200px; 
+    min-height: 550px;
 
 /* Discover new things : */
     font-weight: 300;
@@ -2156,26 +2157,32 @@ body.v2 {
     }
 
     &#abl {
-      padding-top: 150px;
-      min-height: 500px;
+      padding-top: 250px;
+      min-height: 600px;
       height: auto;
-      background-position: right center;
-      background-image: image_url('learn/business.jpg');
-      .text {  float: left; clear: both; width: 50%;
-        margin-left: 25%;
-      }
+      background-position: right bottom;
+      background-image: image_url('learn/mic.jpg');
+      .text, h2 {   color: #333;}
 
     }
   }
 
   .sign-up-footer {
 
-    margin-top: 140px;
-    padding-top: 20px;
+    margin-top: 0;
+    margin-bottom: -75px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color: #fff;
 
-    background: rgba(0,0,0,0.70); 
+    background: rgba(55,55,55,1.0); 
 
+
+    .form-inputs label {
+      font-weight: 300;
+    }
     h2 {
+      margin: 0;
       text-align: center;
       color: #fff;
     }
