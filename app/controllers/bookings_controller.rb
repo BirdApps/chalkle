@@ -20,9 +20,9 @@ class BookingsController < ApplicationController
   end
 
   def new
+
     @channel = Course.find(params[:course_id]).channel #Find channel for hero
-    @booking = Booking.new
-    @booking.name = current_user.name unless @course.bookings_for(current_user).present?
+    @booking_set = BookingSet.new Booking.new
     @page_subtitle = "Booking for"
     @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
   end

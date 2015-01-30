@@ -1,0 +1,22 @@
+.new_booking {
+	.parts{
+		display: none;
+		clear: both;
+	}
+	.part-question {
+		.btn{
+			margin-top: 20px;
+		}
+	}
+	.booking_set_booking_custom_fields{
+		.checkbox {
+			input {
+				position: static !important;
+			}
+		}
+	}
+	.attendee {
+		display: none;
+	}
+}
+
