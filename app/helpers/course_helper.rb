@@ -169,6 +169,32 @@ Your Chalkle Administrator")
     ""
   end
 
+  def show_header?
+    @show_header.nil? ? true : @show_header
+  end
+
+  def fluid_layout? 
+    if request[:action].include? "learn"
+      true
+    else
+      super
+    end 
+  end
+
+  def devise_mapping
+    Devise.mappings[:chalkler]
+  end
+
+  def resource_name
+    devise_mapping.name
+  end
+
+  def resource_class
+    devise_mapping.to
+  end
+
+
+
   def icon(name)
     content_tag(:i, nil, class: "fa fa-#{name.to_s.gsub('_', '-')}") + ' '
   end

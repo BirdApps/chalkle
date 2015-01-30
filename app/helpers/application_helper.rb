@@ -26,7 +26,7 @@ module ApplicationHelper
   end
   
   def typekit_includes
-    render 'layouts/typekit_includes' unless Rails.env.development?
+    render 'layouts/typekit_includes'
   end
 
   def analytics_init
@@ -48,6 +48,14 @@ module ApplicationHelper
     else
       nil
     end
+  end
+
+  def show_header?
+    true
+  end
+
+  def fluid_layout? 
+    false
   end
 
   def truncate(string, length=16)
