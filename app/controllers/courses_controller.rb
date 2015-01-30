@@ -70,7 +70,7 @@ class CoursesController < ApplicationController
     @page_subtitle = "Use chalkle to"
     @page_title =  "Learn"
     @meta_title = "Learn with "
-    @show_header = false
+    @show_header = false unless chalkler_signed_in?
     @upcoming_courses = current_user.courses
     render 'learn'
   end

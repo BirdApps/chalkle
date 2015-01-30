@@ -2052,6 +2052,7 @@ body.v2 {
     .segmented-rule {
       position: relative;
       height: 22px;
+      margin: 2.5em 0; 
 
       > * { 
         display:block; 
@@ -2094,6 +2095,22 @@ body.v2 {
     input[type=submit] {
       /* Rectangle 34: */
       background: rgba(0,0,0,0.67);
+      border: 1px solid rgba(255,255,255,0.57);
+      box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.20);
+      border-radius: 3px;
+      color: #fff;
+      width: 100%;
+      &:hover {
+        background-color: rgba(5, 183, 255, 0.91);
+      }
+    }
+  }
+
+  .login-option {
+    padding-top: 1em;
+    p { color: #ddd; }
+    a.btn { 
+      background: none;
       border: 1px solid rgba(255,255,255,0.57);
       box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.20);
       border-radius: 3px;
