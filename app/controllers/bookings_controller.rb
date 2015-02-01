@@ -20,7 +20,6 @@ class BookingsController < ApplicationController
   end
 
   def new
-
     @channel = Course.find(params[:course_id]).channel #Find channel for hero
     @booking_set = BookingSet.new Booking.new
     @page_subtitle = "Booking for"
@@ -28,23 +27,21 @@ class BookingsController < ApplicationController
   end
 
   def create
-    @booking = Booking.new params[:booking]
-    @booking.name = current_user.name unless @booking.name.present?
-    @booking.chalkler = current_chalkler #unless @booking.chalkler
-    @booking.apply_fees
+    @bookingset = BookingSet.new params[:booking_set]
+    @bookingset.bookings.each do |booking|
+      booking = Booking.new params[:booking]
+      booking.name = current_user.name unless @booking.name.present?
+      booking.chalkler = @booking.booker = current_chalkler
+      booking.apply_fees
 
-    if policy(@booking.course).admin? && params[:remove_fees] == '1'
-      @booking.remove_fees
+      booking.custom_fields = params[:custom_fields] if params[:custom_fields].present? && params[:custom_fields].values.map{|g| g if g.present? }.compact.present?   
+
+      if policy(booking.course).admin? && params[:remove_fees] == '1'
+        booking.remove_fees
+      endangya
     end
-
-    unless current_user.bookings.confirmed.where(course_id: @booking.course.id, name: @booking.name ).empty?
-      @course = Course.find(params[:course_id])
-      flash[:notice] = 'That attendee already has a booking for this course' 
-      render 'new' and return
-    end
-
-    #only apply custom_fields if any have actually been answered
-    @booking.custom_fields = params[:custom_fields] if params[:custom_fields].present? && params[:custom_fields].values.map{|g| g if g.present? }.compact.present?   
+  
+ 
 
     # this should handle invalid @bookings before doing anything
     if @booking.save
