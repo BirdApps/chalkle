@@ -170,7 +170,7 @@ Your Chalkle Administrator")
   end
 
   def show_header?
-    @show_header.nil? ? true : @show_header
+    @show_header.nil? ? super : @show_header
   end
 
   def fluid_layout? 

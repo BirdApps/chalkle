@@ -51,10 +51,12 @@ module ApplicationHelper
   end
 
   def show_header?
+    return false if request[:controller] =~ /sessions/
     true
   end
 
   def fluid_layout? 
+    return true if request[:controller] =~ /sessions/
     false
   end
 

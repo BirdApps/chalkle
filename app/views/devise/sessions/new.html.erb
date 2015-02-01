@@ -1,17 +1,34 @@
-<% @page_title = "Sign in"  %>
-<div class="row">
-  <div class="hidden-xs col-md-4">
+<% @page_title = "Sign in" %>
+
+<div class="row" id='sign-in'>
+  
+
+  <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+    <h1>Log In</h1>
+    <p>
+      Find and offer fun courses and learning oppertunities in your commuity today. 
+    </p>
+
+    <%= link_to learn_path do %>
+      <div class="under-button-alternatives">
+        <p>Not a member of chalkle yet?</p>
+        <h3>Click here to join</h3>
+      </div>
+    <% end %>
+
   </div>
-  <div class="col-xs-12 col-md-4">
-    <div class="under-button-alternatives">
-          Not a member of chalkle yet?
-          <%= link_to "Join here", new_chalkler_registration_path, class: 'btn btn-primary' %>
+
+  <div class="col-xs-12 col-sm-5 col-sm-inset-1">
+    <div class="content text-right">
+      <%= render partial: '/devise/sessions/omniauth_buttons' %>
     </div>
-    <br />
+
+    <h3>– Or –</h3>
+
     <div class="well">
       <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
-        <%= f.input :email, :required => false, :autofocus => true %>
-        <%= f.input :password, :required => false %>
+            <%= f.input :name, :autofocus => true, placeholder: 'Name' %>
+            <%= f.input :email, :required => true, placeholder: 'Email' %>
         <div class="control-group">
           <div class="controls">
             <label class="checkbox">
@@ -26,10 +43,10 @@
         </div>
       <% end %>
     </div>
-    <div class="content text-right">
-      <%= render partial: '/devise/sessions/omniauth_buttons' %>
-    </div>
+
+  
   </div>
-  <div class="hidden-xs col-md-4">
-  </div>
+
+
+
 </div>
