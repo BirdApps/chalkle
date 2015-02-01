@@ -76,8 +76,10 @@ class Chalkler < ActiveRecord::Base
   end
 
   def join_psuedo_identities!
+    #TODO: make them method run on verify email, rather than on sign up
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+    Booking.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
   end
 
   def upcoming_teaching

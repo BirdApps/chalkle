@@ -2,9 +2,11 @@ class Booking < ActiveRecord::Base
 
   require 'csv'
 
+  EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
-    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields, :payment, :payment_id
+    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields, :payment, :payment_id, :email
   ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
@@ -20,6 +22,7 @@ class Booking < ActiveRecord::Base
   belongs_to  :payment
   belongs_to  :course
   belongs_to  :chalkler
+  belongs_to  :booker, class_name: "Chalkler", foreign_key: :booker_id
   belongs_to  :booking
   has_many    :bookings, as: :guests_bookings
   has_one     :channel, through: :course
@@ -31,6 +34,25 @@ class Booking < ActiveRecord::Base
   validates_presence_of :course_id, :status, :name, :chalkler_id
 
   validates_numericality_of :chalkle_fee, :chalkle_gst, :provider_fee, :provider_gst, :teacher_fee, :provider_fee, :processing_gst, :teacher_gst, allow_nil: false
+
+  validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
+
+  def email=(email_address)
+    if email_address.present? && email_address != email
+      booking_chalkler = Chalkler.exists email_address
+      self.chalkler = booking_chalkler if booking_chalkler.present?
+      self.pseudo_chalkler_email = email_address unless booking_chalkler.present?
+      #TODO: notify booking owner
+    end
+  end
+
+   def email
+    if pseudo_chalkler_email.present?
+      pseudo_chalkler_email
+    else
+      chalkler.email
+    end
+  end
 
   scope :free, where(payment_id: nil)
   scope :not_free, where("payment_id IS NOT NULL")
