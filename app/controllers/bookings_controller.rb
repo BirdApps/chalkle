@@ -33,12 +33,12 @@ class BookingsController < ApplicationController
       booking.name = current_user.name unless @booking.name.present?
       booking.chalkler = @booking.booker = current_chalkler
       booking.apply_fees
-
+      
       booking.custom_fields = params[:custom_fields] if params[:custom_fields].present? && params[:custom_fields].values.map{|g| g if g.present? }.compact.present?   
 
       if policy(booking.course).admin? && params[:remove_fees] == '1'
         booking.remove_fees
-      endangya
+      end
     end
   
  
