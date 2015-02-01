@@ -23,7 +23,7 @@
           <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
           <%= f.error_notification %>
           <div class="form-inputs">
-            <%= f.input :name, :autofocus => true, placeholder: 'Name' %>
+            <%= f.input :name, :required => true, placeholder: 'Name' %>
             <%= f.input :email, :required => true, placeholder: 'Email' %>
             <%= f.input :password, :required => true, placeholder: 'Password' %>
             <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
@@ -81,7 +81,7 @@
       <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
         <%= f.error_notification %>
         <div class="form-inputs">
-          <%= f.input :name, :autofocus => true, placeholder: 'Name' %>
+          <%= f.input :name, :required => true, placeholder: 'Name' %>
           <%= f.input :email, :required => true, placeholder: 'Email' %>
           <%= f.input :password, :required => true, placeholder: 'Password' %>
           <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
