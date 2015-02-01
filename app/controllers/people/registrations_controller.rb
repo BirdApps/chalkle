@@ -21,4 +21,13 @@ class People::RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
+
+
+  private 
+
+  def after_sign_up_path_for(resource)
+    redirect_path = super
+    redirect_path = root_path if redirect_path == learn_path
+    return redirect_path
+  end
 end

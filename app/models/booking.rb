@@ -285,18 +285,17 @@ class Booking < ActiveRecord::Base
   end
 
   def self.csv_for(bookings)
-    bookings.map { |b| }
     fields_for_csv = %w{ id name email paid note_to_teacher }
-    custom_fields_for_csv = bookings.map(&:custom_fields).map{|g| g.keys if g.is_a? Hash}.flatten.compact!.uniq
+    custom_fields_for_csv = bookings.map(&:custom_fields).map{|g| g.keys if g.is_a? Hash}.flatten.uniq.compact
     CSV.generate do |csv|
 
       headings = fields_for_csv.map(&:to_s)
-      headings.concat custom_fields_for_csv
+      headings.concat custom_fields_for_csv if custom_fields_for_csv.present?
       csv << headings
 
       bookings.each do |booking|
         new_row = fields_for_csv.map{ |field| booking.send(field) }
-        new_row.concat custom_fields_for_csv.map{ |field| booking.custom_fields[field.to_sym] } if booking.custom_fields.is_a? Hash
+        new_row.concat custom_fields_for_csv.map{ |field| f = booking.custom_fields[field.to_sym]; f.is_a?(Array) ? f.join(', ') : f } if booking.custom_fields.is_a?(Hash) && custom_fields_for_csv.is_a?(Array)
         csv << new_row
       end
       
