@@ -1,3 +1,4 @@
+@import "../_variables";
 @mixin text-shadow($x1, $y1, $blur1, $colour1, $x2: false, $y2: false, $blur2: false, $colour2: false) { 
   $shad: $x1 $y1 $blur1 $colour1;
   @if $x2 {
@@ -144,7 +145,7 @@ body.v2 {
     }
   }
   .dropdown-menu {
-    @include border-radius(0);
+    border-radius: 0;
     font-family: "proxima-nova",sans-serif; 
     left: -1px;
     background: #dfdfdf;
@@ -266,7 +267,7 @@ body.v2 {
 
   .social-links {
     background: #F3F3F3;
-    @include border-radius( 8px );
+    border-radius:  8px;
     display: inline-block;
     overflow: hidden;
     a {
@@ -581,7 +582,7 @@ body.v2 {
             @media screen and (min-width: $col-sm) {
               color: #fafafa;
               padding: 10px 15px;
-              @include border-radius(4px);
+              border-radius: 4px;
               &:hover, &.current {
                 color: #fff;
                 background-color: rgba(0,0,0,0.15);
@@ -705,7 +706,7 @@ body.v2 {
         }
         .dropdown-menu { 
           background: $primary-color;
-          @include border-radius( 0 0 3px 3px);
+          border-radius:  0 0 3px 3px;
           border: 0px;
           margin-top:10px;
           li {
@@ -838,7 +839,7 @@ body.v2 {
             }
           }
           .form-control:focus, input:focus {
-            @include box-shadow( none );
+            box-shadow: none;
             border: 0px;
           }
           .fa {
@@ -857,7 +858,7 @@ body.v2 {
           box-shadow: none;
         }
         .btn {
-          @include border-radius( 0 );
+          border-radius:  0;
           padding: 6px 8px 6px 22px;
           background: transparent;
           text-align: left;
@@ -904,7 +905,7 @@ body.v2 {
             overflow: scroll;
           }
 
-          @include border-radius(0 0 4px 4px);
+          border-radius: 0 0 4px 4px;
           font-family: "proxima-nova",sans-serif; 
           left: -1px;
           background: rgba(255,255,255,0.97);
@@ -1039,7 +1040,7 @@ body.v2 {
             font-weight: 400;
             letter-spacing: 0.07em;
             color: #EAEAEA;
-            @include text-shadow(1px, 1px, 0px, #000);
+            text-shadow: 1px, 1px, 0px, #000;
           }
         }
       }
@@ -1082,8 +1083,8 @@ body.v2 {
               color: #333;
               padding: 30px 5px;
               width: 100%;
-              @include text-shadow(0px, 1px, 2px, rgba(255,255,255,1.0));
-              @include transition( all 200ms ease-out );
+              text-shadow: 0px, 1px, 2px, rgba(255,255,255,1.0);
+              transition: all 200ms ease-out;
 
               @media screen and (max-width: $col-md) {
                 padding: 10px 5px;
@@ -1104,7 +1105,7 @@ body.v2 {
           a:hover,a:active,a:focus, li.active a {
             background-color: rgba(0,0,0,0.2);
             color: #fff !important;
-            @include text-shadow(0px, 1px, 2px, rgba(0,0,0,1.0));
+            text-shadow: 0px, 1px, 2px, rgba(0,0,0,1.0);
 
             img.reg {
               display: none !important;
@@ -1216,7 +1217,7 @@ body.v2 {
             color: #fff;
             padding: 8px 10px;
             margin-left: 10px;
-            @include border-radius(2px);
+            border-radius: 2px;
             background: #C7C7C7;
           }
         }
@@ -1370,7 +1371,7 @@ body.v2 {
         color: #fff;
         padding: 8px 5px 4px 5px;
         margin: 4px;
-        @include border-radius(2px);
+        border-radius: 2px;
         background: #C7C7C7;
       }
       .category {
@@ -1582,11 +1583,11 @@ body.v2 {
           }
           a:after {
             bottom:0;
-            @include transform(skew(-40deg));
+            transform: skew(-40deg);
           }
           a:before {
             top:0;
-            @include transform(skew(40deg));
+            transform: skew(40deg);
           }
         }
         li.active {
@@ -1698,7 +1699,7 @@ body.v2 {
         }
         input:focus, textarea:focus, select:focus {
           background-color: #FFF3DF;
-          @include box-shadow(3px 3px 0 0 rgba(52,3,63,0.11));
+          box-shadow: 3px 3px 0 0 rgba(52,3,63,0.11);
         }
         .input-group-addon {
           background: transparent;
@@ -2363,7 +2364,7 @@ body.v2 {
       line-height: 42px;
       border: solid 1px rgba(76, 126, 147, 0.65);
 
-      @include border-radius( 50px );
+      border-radius:  50px;
 
     }
     dd {

@@ -2,9 +2,11 @@ class Booking < ActiveRecord::Base
 
   require 'csv'
 
+  EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
-    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields
+    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields, :payment, :payment_id, :email
   ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
@@ -17,11 +19,12 @@ class Booking < ActiveRecord::Base
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
   BOOKING_STATUSES = VALID_STATUSES
 
+  belongs_to  :payment
   belongs_to  :course
   belongs_to  :chalkler
+  belongs_to  :booker, class_name: "Chalkler", foreign_key: :booker_id
   belongs_to  :booking
   has_many    :bookings, as: :guests_bookings
-  has_one     :payment
   has_one     :channel, through: :course
   has_one     :teacher, through: :course
   
@@ -32,8 +35,39 @@ class Booking < ActiveRecord::Base
 
   validates_numericality_of :chalkle_fee, :chalkle_gst, :provider_fee, :provider_gst, :teacher_fee, :provider_fee, :processing_gst, :teacher_gst, allow_nil: false
 
-  scope :free, where('NOT EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
-  scope :not_free, where('EXISTS (SELECT booking_id FROM payments WHERE booking_id = bookings.id)')
+  validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
+
+  def notify_owner
+     if psuedo_chalkler_email
+        # notify person of booking and suggest signup
+      elsif booker != chalkler
+        #notify chalkler booker got them a ticket
+      end
+  end
+
+  def email
+    if pseudo_chalkler_email.present?
+      pseudo_chalkler_email
+    else
+      chalkler.email if chalkler.present?
+    end
+  end
+
+  def email=(email_address)
+    if email_address.present? && email_address != email
+      booking_chalkler = Chalkler.exists email_address
+      if booking_chalkler.present?
+        self.chalkler = booking_chalkler
+        self.name = booking_chalkler.name
+      else
+        self.pseudo_chalkler_email = email_address
+      end
+    end
+  end
+
+
+  scope :free, where(payment_id: nil)
+  scope :not_free, where("payment_id IS NOT NULL")
 
   scope :paid, not_free
   scope :unpaid, free
@@ -65,8 +99,6 @@ class Booking < ActiveRecord::Base
   after_create :expire_cache!
 
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
-
-  delegate :email, to: :chalkler
 
   serialize :custom_fields
 

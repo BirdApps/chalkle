@@ -26,7 +26,7 @@
 
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <% current_user.avialable_notifications.each do |notification_type, notifications| %>
+        <% current_user.available_notifications.each do |notification_type, notifications| %>
           <% if notifications.any? %>
             <div class="notification-type-group">
               <h4><%= t("notify.notification_types.#{notification_type}.label", default: notification_type.to_s.humanize) %></h4>

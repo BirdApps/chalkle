@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150126013256) do
+ActiveRecord::Schema.define(:version => 20150201212903) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,6 +56,9 @@ ActiveRecord::Schema.define(:version => 20150126013256) do
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
     t.text     "custom_fields"
+    t.integer  "payment_id"
+    t.string   "pseudo_chalkler_email"
+    t.integer  "booker_id"
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -410,7 +413,6 @@ ActiveRecord::Schema.define(:version => 20150126013256) do
   end
 
   create_table "payments", :force => true do |t|
-    t.integer  "booking_id"
     t.string   "xero_id"
     t.string   "xero_contact_id"
     t.string   "xero_contact_name"
@@ -430,6 +432,7 @@ ActiveRecord::Schema.define(:version => 20150126013256) do
     t.string   "swipe_currency"
     t.string   "swipe_identifier_id"
     t.string   "swipe_token"
+    t.integer  "chalkler_id"
   end
 
   create_table "rails_admin_histories", :force => true do |t|

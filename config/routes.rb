@@ -102,11 +102,13 @@ Chalkle::Application.routes.draw do
 
     resources :chalklers do
       member do
+        get 'become' => 'chalklers#become'
         post 'become' => 'chalklers#become'
       end
 
       collection do
         get 'notifications'
+        get 'csv'
       end
     end
     

@@ -6,8 +6,9 @@ class SwipeWrapper
   def create_tx_identifier_for(params)
     swype_reconnection_attempts ||= 3
     @amount = params[:amount]
+    @quantity = params[:quantity]
     @currency = 'NZD'
-    @booking_id = params[:booking_id]
+    @booking_set_id = params[:booking_set_id]
     @description = params[:description]
     @return_url = params[:return_url]
     response = self.class.post(swipe_url, query: query_params)
@@ -38,6 +39,13 @@ class SwipeWrapper
     end
   end
 
+  class << self
+    def verify(tx_id)
+      wrapper = SwipeWrapper.new
+      verify = wrapper.verify tx_id
+    end
+  end
+
   private
 
 
@@ -58,7 +66,8 @@ class SwipeWrapper
       td_currency: currency,
       td_description: @description,
       td_amount: @amount,
-      td_user_data: @booking_id
+      td_user_data: @booking_set_id,
+      td_default_quantity: @quantity
     }
   end
 end

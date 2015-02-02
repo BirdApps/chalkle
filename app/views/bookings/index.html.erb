@@ -78,7 +78,7 @@
       </div>
       <div class="col-xs-6 col-sm-2 light">
         <% if booking.custom_fields.present? && booking.custom_fields != [""] %>
-          <button class="btn btn-info small" data-toggle="modal" data-target=".booking-modal-lg" data-title="Booking #<%= booking.id %> for <strong><%= booking.name %></strong>" data-content="<ul><% booking.custom_fields.each_pair{ |k,v| %> <li> <%= k %><br /><strong><%= v.is_a?(Array) ? v.join(', ') : v  %></strong><br /></li> <% } %></ul>" >Custom Fields</button>
+          <button class="btn btn-info small" data-toggle="modal" data-target=".booking-modal-lg" data-title="Booking #<%= booking.id %> for <strong><%= booking.name %></strong>" data-content="<ul><% (booking.custom_fields.is_a?(Array) ? booking.custom_fields.first : booking.custom_fields).each_pair{ |k,v| %> <li> <%= k %><br /><strong><%= v.is_a?(Array) ? v.join(', ') : v  %></strong><br /></li> <% } %></ul>" >Custom Fields</button>
         <% end %>
       </div>
     </div> 
