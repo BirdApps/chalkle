@@ -27,7 +27,7 @@
     <%= bootstrap_form_for(@booking_set, url: course_bookings_path, html: { method: :post, class: 'form-horizontal', role: 'form'}) do |f| %>   
       <div class="row">
         <div class="part-count parts col-xs-12">
-          <%= f.input :count, as: :number_picker, label: "How many people?", input_html: {:'data-min' => 1,  value: 2 }, wrapper: :horizontal %>
+          <%= f.input :count, as: :number_picker, label: "How many people?", input_html: {:'data-min' => 1,  value: 2, :'data-max' => @course.spaces_left || 20 }, wrapper: :horizontal %>
           <br /><br />
           <div data-target-part=".part-count" class="btn btn-default see_form count_attendees col-xs-12 col-sm-8 col-sm-offset-2">
             Continue
