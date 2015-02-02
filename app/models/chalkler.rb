@@ -198,7 +198,7 @@ class Chalkler < ActiveRecord::Base
     assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
 
-  def avialable_notifications
+  def available_notifications
     _available_notifications = { chalkler: NotificationPreference::CHALKLER_OPTIONS }
     if teacher?
       _available_notifications[:teacher] = NotificationPreference::TEACHER_OPTIONS
@@ -235,7 +235,10 @@ class Chalkler < ActiveRecord::Base
       valid_till:         valid_till,
       chalkler:           self
     }
-    Notification.create notification, as: :admin
+
+    #save only if not a duplicate of unread notification
+    Notification.create(notification, as: :admin) unless notifications.where(viewed_at: nil, href: notification[:href], message: notification[:message]).present?
+    
   end
 
   def first_name
