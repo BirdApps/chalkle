@@ -3,6 +3,7 @@ $(function(){
     var last_view = "part-question";
     var group_single = "single"
     var template = $('#attendee_template').html();
+    $('#attendee_template').remove();
 
     function change_attendee_count(count){
       var difference = count - $('#attendees').children().length
@@ -20,7 +21,7 @@ $(function(){
       $('.next_attendee').unbind( "click" );
 
       $('.prev_attendee').click(function(){
-        var parent = $(this).parent('.attendee');
+        var parent = $(this).parents('.attendee').first();
         var prev = $(parent).prev();
         if( $(prev).hasClass('attendee') ){
           $(parent).fadeOut(function(){
@@ -37,8 +38,8 @@ $(function(){
       });
 
       $('.next_attendee').click(function(){
-        var parent = $(this).parent('.attendee');
-        var next = $(this).parent('.attendee').next();
+        var parent = $(this).parents('.attendee').first();
+        var next = $(this).parents('.attendee').next();
         if( $(next).hasClass('attendee') ){
           $(parent).fadeOut(function(){
             $(next).fadeIn();
@@ -47,8 +48,8 @@ $(function(){
           show_summary();
         }
       });
-
-      $($("#attendees").children()[0]).show();
+      $(".attendee").hide();
+      $($(".attendee")[0]).show();
     }
 
     function show_summary(){
@@ -57,13 +58,8 @@ $(function(){
     }
 
     function back(){
-      if(group_single == "single"){
-        $('.parts').hide();
-        $('.part-question').fadeIn();
-      }else{
-        $('.parts').hide();
-        show_form();
-      }
+      $('.parts').hide();
+      show_form();
     }
 
     function show_form(){
@@ -72,6 +68,8 @@ $(function(){
 
     function bind_keys(){
       $('.set_single').click(function(){
+        change_attendee_count(1);
+        
         group_single = "single";
       });
 
@@ -95,7 +93,7 @@ $(function(){
         change_attendee_count($('#booking_set_count').val());
       });
 
-      $('#new_booking').submit(function(event){
+      $('#new_booking_set').submit(function(event){
         if($('#booking_terms_and_conditions:checked').length == 0){
           alert($('#teaching_agreeterms').data('error-message'));
           event.preventDefault();
@@ -103,8 +101,8 @@ $(function(){
       });
 
       $('button').click(function(){
-        if($(this).data('view') != undefined){
-          last_view = $(this).data('view');
+        if($(this).data('target-part') != undefined){
+          last_view = $(this).data('target-part');
         }
       });
 

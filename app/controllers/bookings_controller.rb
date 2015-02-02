@@ -22,7 +22,7 @@ class BookingsController < ApplicationController
   def new
     @channel = Course.find(params[:course_id]).channel #Find channel for hero
     @booking_set = BookingSet.new
-    @booking_set.bookings << Booking.new
+    @booking_set.bookings << Booking.new(name: current_user.name)
     @page_subtitle = "Booking for"
     @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
   end
@@ -189,7 +189,7 @@ class BookingsController < ApplicationController
     def load_booking_set
       @booking_set = BookingSet.new
       booking_ids = params[:td_user_data].present? ? params[:td_user_data].split(',') : params[:booking_id].split(',')
-      @booking_set.bookings = booking_ids.map{ |id| current_user.bookings.find id }
+      @booking_set.bookings = booking_ids.map{ |id| Booking.where(booker_id: current_chalkler.id).find id }
       redirect_to not_found and return if @booking_set.count != booking_ids.count
     end
 
