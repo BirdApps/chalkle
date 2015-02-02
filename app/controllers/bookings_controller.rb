@@ -3,8 +3,8 @@ class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!, except: [:lpn]
   before_filter :redirect_on_paid, :only => [:edit, :update]
   before_filter :class_available, :only => [:edit, :update, :new]
-  before_filter :load_booking, :only => [:payment_callback, :show, :edit, :update, :cancel, :confirm_cancel]
-
+  before_filter :load_booking, :only => [:show, :edit, :update, :cancel, :confirm_cancel]
+  before_filter :load_booking_set, only: [:payment_callback, :lpn]
   def index
     @page_subtitle = "Bookings for"
     @course = Course.find_by_id params[:course_id]
@@ -21,57 +21,51 @@ class BookingsController < ApplicationController
 
   def new
     @channel = Course.find(params[:course_id]).channel #Find channel for hero
-    @booking_set = BookingSet.new Booking.new
+    @booking_set = BookingSet.new
+    @booking_set.bookings << Booking.new
     @page_subtitle = "Booking for"
     @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
   end
 
   def create
-    @bookingset = BookingSet.new params[:booking_set]
-    @bookingset.bookings.each do |booking|
-      booking = Booking.new params[:booking]
-      booking.name = current_user.name unless @booking.name.present?
-      booking.chalkler = @booking.booker = current_chalkler
-      booking.apply_fees
-      
-      booking.custom_fields = params[:custom_fields] if params[:custom_fields].present? && params[:custom_fields].values.map{|g| g if g.present? }.compact.present?   
-
-      if policy(booking.course).admin? && params[:remove_fees] == '1'
-        booking.remove_fees
+    @course = Course.find(params[:course_id])
+    @booking_set = BookingSet.new params[:booking_set]
+    waive_fees = policy(@course).admin? && params[:remove_fees] == '1'
+    
+    if @booking_set.save({ free: waive_fees, booker: current_chalkler })
+      payment_pending = false
+      @booking_set.bookings.each do |booking|
+        if booking.free?
+          Notify.for(booking).confirmation
+        else
+          payment_pending = true
+          booking.update_attribute(:status, 'pending')
+          booking.update_attribute(:visible, false)
+        end
       end
-    end
-  
- 
 
-    # this should handle invalid @bookings before doing anything
-    if @booking.save
-      if @booking.free?
-        
-        Notify.for(@booking).confirmation
-        
-        redirect_to @booking.course.path and return
+      unless payment_pending
+        redirect_to @course.path and return
       else
-        @booking.update_attribute(:status, 'pending')
-        @booking.update_attribute(:visible, false)
         wrapper = SwipeWrapper.new
         identifier = wrapper.create_tx_identifier_for(
-                            booking_id: @booking.id,
-                            amount: @booking.cost,
-                            return_url: course_booking_payment_callback_url(@booking.course_id, @booking.id),
-                            description: @booking.name)
+                            booking_set_id: @booking_set.id,
+                            amount: @booking_set.cost_per_booking,
+                            quantity: @booking_set.count,
+                            return_url: course_booking_payment_callback_url(@course.id, @booking_set.id),
+                            description: ("Booking".pluralize(@booking_set.count)+" for "+@course.name) )
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
     else
-      @course = Course.find(params[:course_id])
-      flash[:notice] = 'Could not create booking at this time'
+      flash[:notice] = 'Booking has errors - please check fields carefully'
       render 'new'
     end
   end
 
+
   def lpn
-    @booking = Booking.find_by_id params[:td_user_data]
-    if @booking
-      payment = @booking.payment.present? ? @booking.payment : @booking.build_payment
+    @booking_set.bookings.each do |booking|
+      payment = booking.payment.present? ? booking.payment : booking.build_payment
       payment.swipe_transaction_id = params[:transaction_id]
       payment.total = params[:amount]
       payment.swipe_name_on_card= params[:name_on_card]
@@ -81,13 +75,12 @@ class BookingsController < ApplicationController
       payment.swipe_token= params[:token]
       payment.date = DateTime.current
       payment.visible = true
-      wrapper = SwipeWrapper.new
-      verify = wrapper.verify payment.swipe_transaction_id
+      verify = SwipeWrapper.verify payment.swipe_transaction_id
       if verify['data']['transaction_approved'] == "yes"   
         pay_result = payment.save
-        if payment.total >= @booking.cost
-          book_result = @booking.confirm!
-          Notify.for(@booking).confirmation
+        if payment.total >= booking.cost
+          book_result = booking.confirm!
+          Notify.for(booking).confirmation
         end
       end
     end
@@ -97,15 +90,16 @@ class BookingsController < ApplicationController
   def payment_callback
     payment_successful = (params[:result] =~ /accepted/i) || (params[:result] =~ /test/i)
     if payment_successful
-      @booking.status = 'pending'
-      @booking.visible = true
-      @booking.save
+      @booking_set.bookings.each do |booking|
+        booking.status = 'pending'
+        booking.visible = true
+        booking.save
+      end
       flash[:notice] = "Payment successful. Thank you very much!"
-
       redirect_to course_path(params[:course_id])
     else
       flash[:alert] = "Sorry, it seems that payment was declined. Would you like to try again?"
-      redirect_to new_course_booking_path(params[:course_id])
+      render 'new'
     end
   end
 
@@ -142,51 +136,6 @@ class BookingsController < ApplicationController
     return redirect_to @booking.course.path
   end
 
-  def class_available
-    valid = true
-    if params[:course_id].present?
-      @course = Course.find(params[:course_id])
-    elsif @booking.present?
-      @course = @booking.course
-    else
-      return
-    end
-    unless policy(@course).write?(true)
-      
-      redirect_url = if @course.has_public_status?
-        course_path(@course)
-      else
-        root_path
-      end
-
-      unless @course.published?
-        flash.notice = "This class is no longer available."
-        return redirect_to redirect_url
-      end
-      unless @course.start_at > DateTime.current
-        flash.notice = "This class has already started, and bookings cannot be created or altered"
-        return redirect_to redirect_url 
-      end
-      unless @course.spaces_left?
-        flash.notice = "The class is full"
-        return redirect_to redirect_url
-      end
-    end
-  end
-
-  def load_booking
-    @booking = current_user.bookings.find(params[:booking_id] || params[:id])
-    redirect_to not_found and return if !@booking
-  end
-
-  def redirect_on_paid
-    booking = Booking.find(params[:id])
-    if booking.paid?
-      flash[:alert] = 'You cannot edit a paid booking'
-      redirect_to booking_path booking
-    end
-  end
-
   def csv
     @course = Course.find_by_id params[:course_id]
     if policy(@course).bookings_csv?
@@ -196,7 +145,60 @@ class BookingsController < ApplicationController
     end
 
     send_data Booking.csv_for(@bookings), type: :csv, filename: "bookings-for-#{@course.name.parameterize}.csv"
-
   end
+
+  private
+
+    def class_available
+      valid = true
+      if params[:course_id].present?
+        @course = Course.find(params[:course_id])
+      elsif @booking.present?
+        @course = @booking.course
+      else
+        return
+      end
+      unless policy(@course).write?(true)
+        
+        redirect_url = if @course.has_public_status?
+          course_path(@course)
+        else
+          root_path
+        end
+
+        unless @course.published?
+          flash.notice = "This class is no longer available."
+          return redirect_to redirect_url
+        end
+        unless @course.start_at > DateTime.current
+          flash.notice = "This class has already started, and bookings cannot be created or altered"
+          return redirect_to redirect_url 
+        end
+        unless @course.spaces_left?
+          flash.notice = "The class is full"
+          return redirect_to redirect_url
+        end
+      end
+    end
+
+    def load_booking
+      @booking = current_user.bookings.find(params[:booking_id] || params[:id])
+      redirect_to not_found and return if !@booking
+    end
+
+    def load_booking_set
+      @booking_set = BookingSet.new
+      booking_ids = params[:td_user_data].present? ? params[:td_user_data].split(',') : params[:booking_id].split(',')
+      @booking_set.bookings = booking_ids.map{ |id| current_user.bookings.find id }
+      redirect_to not_found and return if @booking_set.count != booking_ids.count
+    end
+
+    def redirect_on_paid
+      booking = Booking.find(params[:id])
+      if booking.paid?
+        flash[:alert] = 'You cannot edit a paid booking'
+        redirect_to booking_path booking
+      end
+    end
 
 end

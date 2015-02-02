@@ -37,22 +37,34 @@ class Booking < ActiveRecord::Base
 
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
 
-  def email=(email_address)
-    if email_address.present? && email_address != email
-      booking_chalkler = Chalkler.exists email_address
-      self.chalkler = booking_chalkler if booking_chalkler.present?
-      self.pseudo_chalkler_email = email_address unless booking_chalkler.present?
-      #TODO: notify booking owner
-    end
+  def notify_owner
+     if psuedo_chalkler_email
+        # notify person of booking and suggest signup
+      elsif booker != chalkler
+        #notify chalkler booker got them a ticket
+      end
   end
 
-   def email
+  def email
     if pseudo_chalkler_email.present?
       pseudo_chalkler_email
     else
       chalkler.email
     end
   end
+
+  def email=(email_address)
+    if email_address.present? && email_address != email
+      booking_chalkler = Chalkler.exists email_address
+      if booking_chalkler.present?
+        self.chalkler = booking_chalkler
+        self.name = booking_chalkler.name
+      else
+        self.pseudo_chalkler_email = email_address
+      end
+    end
+  end
+
 
   scope :free, where(payment_id: nil)
   scope :not_free, where("payment_id IS NOT NULL")
