@@ -1122,6 +1122,38 @@ body.v2 {
   #wrapper {
     width:100%; background-color:#fff; 
   }
+
+.container-fluid {
+    font-family: "proxima-nova",sans-serif;
+
+    letter-spacing: 1.5px;
+    h1,h2,h3,h4,h5,h6 {
+      font-weight: 300;
+    }
+
+  .messages {
+    position: fixed;
+    z-index: 1000;
+    top: 112px;
+    width: 100%;
+    margin-left: 0;
+    left: 0;
+    .alert {
+      border-radius:0;
+      text-align: center;
+      font-size: 24px; 
+      &.alert-danger{
+        background-color: rgba(45,45,45,0.9);
+        border: none;
+        color: #fff;
+      }
+    }
+
+  }
+}
+
+
+
   .container {
     font-family: "proxima-nova",sans-serif;
 
@@ -2027,7 +2059,7 @@ body.v2 {
     background-image: image_url('learn/diver.jpg');
     background-size: cover;
     background-position: center center;
-    padding-top: 170px; 
+    padding-top: 220px; 
     margin-bottom: -75px;
     padding-bottom: 300px;
     a, p { color: #fff; }
@@ -2117,14 +2149,17 @@ body.v2 {
         }
       }
       label {display: none; }
+      placeholder: #ddd;
+
       input {
-        background: rgba(255,255,255,0.83);
-        border-radius: 3px;
-        font-size: 16px;
-        color: #0D7BCA;
-        letter-spacing: 1.2px;
-        line-height: 19px;
-        border: none;
+        background: rgba(255,255,255,0.10);
+        border-radius: 0px;
+        font-size: 19px;
+        color: #fff;
+        letter-spacing: 1.5px;
+        /* line-height: 16px; */
+        border:none; 
+        border-bottom: 1px solid rgba(255,255,255,0.80);
       }
       input[type=submit] {
         /* Rectangle 34: */
@@ -2214,14 +2249,14 @@ body.v2 {
     }
     label {display: none; }
     input {
-      background: rgba(255,255,255,0.83);
-      border-radius: 3px;
-      font-size: 16px;
-      color: #0D7BCA;
-      letter-spacing: 1.2px;
-      line-height: 19px;
-      border: none;
-    }
+      background: rgba(255,255,255,0.10);
+      border-radius: 0px;
+      font-size: 19px;
+      color: #fff;
+      letter-spacing: 1.5px;
+      /* line-height: 16px; */
+      border:none; 
+      border-bottom: 1px solid rgba(255,255,255,0.80);    }
     input[type=submit] {
       /* Rectangle 34: */
       background: rgba(0,0,0,0.67);

@@ -27,6 +27,7 @@
 
     <div class="well">
       <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
+            <%= f.error_notification %>
             <%= f.input :email, :autofocus => true, placeholder: 'Email' %>
             <%= f.input :password, :required => true, placeholder: 'Password' %>
         <div class="control-group">
