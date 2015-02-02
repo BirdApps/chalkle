@@ -49,7 +49,7 @@ class Booking < ActiveRecord::Base
     if pseudo_chalkler_email.present?
       pseudo_chalkler_email
     else
-      chalkler.email
+      chalkler.email if chalkler.present?
     end
   end
 
@@ -99,8 +99,6 @@ class Booking < ActiveRecord::Base
   after_create :expire_cache!
 
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
-
-  delegate :email, to: :chalkler
 
   serialize :custom_fields
 
