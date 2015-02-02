@@ -27,8 +27,8 @@
 
     <div class="well">
       <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
-            <%= f.input :name, :autofocus => true, placeholder: 'Name' %>
-            <%= f.input :email, :required => true, placeholder: 'Email' %>
+            <%= f.input :email, :autofocus => true, placeholder: 'Email' %>
+            <%= f.input :password, :required => true, placeholder: 'Password' %>
         <div class="control-group">
           <div class="controls">
             <label class="checkbox">
