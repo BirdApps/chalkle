@@ -1,61 +1,64 @@
-<% if current_user && current_user.teach_menu_badge_count > 0 %>
+<% unless current_user && current_user.teach_menu_badge_count > 0 %>
 
-  <div class="row">
-
-    <div class="col-sm-6 col-xs-12">
-      <% if current_user.channels_adminable.any? %>
-        <div class="fancy-header">
-          <h3>Providers</h3>
-          <hr />
-        </div>
-        <div class="row col-xs-12">
-          <%= render partial: '/me/channels/channel', collection: current_user.channels_adminable %>  
-        </div>
-      <% end %>
+  <div class="clearfix" id="teach">
+    <div class="clearfix">
+      <div class="col-xs-6 col-md-6">
+        <h1 class="">Teaching on Chalkle is Rewarding</h1>
+      </div>
     </div>
 
-    <div class="col-sm-6 col-xs-12">
-      <div class="fancy-header">
-        <h3>Teacher Profiles</h3>
-        <hr />
+    <div class="row">
+      <div class="col-xs-12 shade text-center">
+        Use chalkle to deliver classes and courses successfully.
       </div>
-      <% if current_chalkler.channel_teachers.any? %>
-        <div class="col-xs-12">
-          <%= render partial: '/me/channel_teachers/channel_teacher', collection: current_chalkler.channel_teachers %>  
-        </div>
-      <% else %>
-        <div class="alert alert-default center small light">
-          You don't have any teacher profiles. Go to a provider you adminstrate, click 'Settings', then 'Manage Teachers'.
-        </div>
-      <% end %>
     </div>
 
   </div>
 
-  <% 
-    teaching = current_user.upcoming_teaching
-    #teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
-    if teaching.any?
-  %>
-
-    <div class="row">
-
-      <div class="fancy-header">
-        <h3>Upcoming Classes</h3>
-        <hr />
-      </div>
-
-      <div class="row col-xs-12">
-        <%= render partial: '/me/courses/course', collection: teaching %>  
-      </div>
+  <div class="clearfix shade dark">
+    <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
+      <%= image_tag('teach/community.png') %>
+      Engage your community
     </div>
-  <% end %>
+    <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
+      <%= image_tag('teach/free_to_join.png') %>
+      No Joining or subscription fees;<br />
+      <small>We get paid only when you do</small>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
+      <%= image_tag('teach/great_classes.png') %>
+      Teach Great classes
+    </div>
+    <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
+      <%= image_tag('teach/payment_admin.png') %>
+      We take care of payment admin.<br />
+      <small>you simply set the price, and let us know how you’d like to be paid.</small>
+    </div>
+  </div>
+
+<section id="process" class="clearfix">
+  <div class="col-xs-12 col-sm-6 col-sm-inset-6">
+    Your learners sign up and pay online
+  </div>
+  <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-inset-3">
+    and we handle payments, receipts and refunds,
+  </div>
+  <div class="col-xs-12 col-sm-6 col-sm-offset-6">
+    send reminders and confirmations and even deliver learner feedback.
+  </div>
+
+</section>
+<div class="clearfix" id="our-job">
+  <div class="col-xs-12 text-center ">
+    It’s our job to make setting up and managing classes really easy,<br /> so you can focus on what is most important
+  </div>
+</div>
 
 
-<% else %>
+
+
 <section id="who" class="row">
   <div class="fancy-header col-md-12 ">
-    <h3 class="">Who uses Chalkle?</h3>
     <hr />
   </div>
 
@@ -127,6 +130,60 @@
   </div>
 
 </section>
+<% else %>
+
+  <div class="row">
+
+    <div class="col-sm-6 col-xs-12">
+      <% if current_user.channels_adminable.any? %>
+        <div class="fancy-header">
+          <h3>Providers</h3>
+          <hr />
+        </div>
+        <div class="row col-xs-12">
+          <%= render partial: '/me/channels/channel', collection: current_user.channels_adminable %>  
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-sm-6 col-xs-12">
+      <div class="fancy-header">
+        <h3>Teacher Profiles</h3>
+        <hr />
+      </div>
+      <% if current_chalkler.channel_teachers.any? %>
+        <div class="col-xs-12">
+          <%= render partial: '/me/channel_teachers/channel_teacher', collection: current_chalkler.channel_teachers %>  
+        </div>
+      <% else %>
+        <div class="alert alert-default center small light">
+          You don't have any teacher profiles. Go to a provider you adminstrate, click 'Settings', then 'Manage Teachers'.
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+  <% 
+    teaching = current_user.upcoming_teaching
+    #teaching = current_chalkler.courses_teaching.upcoming(nil, include_unpublished: true)
+    if teaching.any?
+  %>
+
+    <div class="row">
+
+      <div class="fancy-header">
+        <h3>Upcoming Classes</h3>
+        <hr />
+      </div>
+
+      <div class="row col-xs-12">
+        <%= render partial: '/me/courses/course', collection: teaching %>  
+      </div>
+    </div>
+  <% end %>
+
+
 
 
 <% end %> 

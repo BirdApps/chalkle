@@ -39,6 +39,8 @@ class CoursesController < ApplicationController
     @page_subtitle = "Use chalkle to"
     @page_title = "Teach"
     @meta_title = "Teach with "
+    @show_header = false unless chalkler_signed_in?
+
 
     @page_context_links = [
       {
