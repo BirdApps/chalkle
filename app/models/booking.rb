@@ -39,9 +39,9 @@ class Booking < ActiveRecord::Base
 
   def notify_owner
      if psuedo_chalkler_email
-        # notify person of booking and suggest signup
+        #TODO: notify person of booking and suggest signup
       elsif booker != chalkler
-        #notify chalkler booker got them a ticket
+        #TODO: notify chalkler booker got them a ticket
       end
   end
 
@@ -161,6 +161,10 @@ class Booking < ActiveRecord::Base
   #   1. booking creation (initial calculation)
   #   2. course update (in case course fees allocation between provider and teacher have changes )
   #   3. outgoing_payment.calc_flat_fee (in the case of a flat_fee payment to the teacher this is the only accurate time to calculate this)
+
+  def reproportion_fees
+
+  end
 
   def apply_fees
     #cannot recalculate fees for a paid for class
