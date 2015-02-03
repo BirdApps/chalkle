@@ -4,7 +4,7 @@
     <br />
     <p class="light center">
       <% if @course.cost? && @course.cost > 0 %>
-        Bookings are <span class="x1-25">$<%= @course.cost_formatted %></span>
+        <span class="x1-25">$<%= @course.cost_formatted %></span> per attendee
       <% else %>
         This <%= @course.type %> is <strong>free to attend</strong>  
       <% end %>
@@ -13,6 +13,11 @@
       <h3>New Booking</h3>
       <hr />
     </div> 
+    <div id="booking_names" style="display:none">
+      <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4">
+        <ol></ol>
+      </div>
+    </div>
   </div>
     
   <div class="col-xs-12 col-md-8 col-md-offset-2 col-md-inset-2">
@@ -36,7 +41,7 @@
 
         <div class="part-form parts col-xs-12">
           <%= f.error_notification %>
-          <div id="attendees">
+          <div id="attendees" class="col-xs-12">
             <% f.object.bookings.unshift(Booking.new) %>
             <% template_done = false %>
             <% f.object.bookings.each do |booking| %>
@@ -48,11 +53,9 @@
                   
                     <%= bf.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
 
-                    <%= bf.input :name, as: :string, label: '<span class="small light grey">Attendee Name</small>', input_html: { class: 'form-control' } %>
+                    <%= bf.input :name, as: :string, label: '<span class="small light grey">Attendee Name</small>', input_html: { class: 'form-control booking_names' } %>
                     
                     <%= bf.input :email, as: :string, label: '<span class="small light grey">Email - (Only enter if the attendee may manage booking themselves)</small>', input_html: { class: 'form-control' } %>
-
-                    <%= bf.input :note_to_teacher, as: :text, label: '<span class="small light grey">Note to Teacher</small>', input_html: { class: 'form-control' } %>
 
                     <% if @course.custom_fields %>
                       <% @course.custom_fields.each do |field| %>
@@ -86,10 +89,18 @@
           </div>
         </div>
 
-        <div class="part-summary parts">
+        <div class="part-summary parts col-xs-12">
 
-          <div id="summary">
-          <%# #TODO: Summary of booking %>
+          <div id="booking-summary" data-cost="<%= @course.cost %>">
+            <strong class="total-cost"></strong> - <span class="booking-count"></span> x <%= @course.name %>      
+          </div>
+          <br /><br />
+          <div class="form-group col-xs-12 text optional booking_set_bookings_note_to_teacher">
+            <label class="text optional" for="booking_set_bookings__note_to_teacher">
+              <span class="small light grey">Note to Teacher</span>
+            </label>
+            <textarea class="text optional form-control" cols="40" id="booking_set_bookings__note_to_teacher" name="note_to_teacher" rows="20"></textarea>
+            <br />
           </div>
 
           <div class="center">
@@ -116,7 +127,8 @@
             </div>
             <br />
 
-            <%= f.submit :'Complete Booking', class: 'btn btn-primary col-xs-12 col-sm-8 col-sm-offset-2' %>
+            <% submit_action = @course.free? ? "Complete Booking" : "Purchase" %>
+            <%= f.submit submit_action.to_sym, class: 'btn btn-primary col-xs-12 col-sm-8 col-sm-offset-2' %>
             
             <br /><br />
             

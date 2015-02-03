@@ -1,9 +1,14 @@
 class BookingSet
   include ActiveAttr::Model
 
-  def initialize(params = nil)
+  def initialize(params = nil, note_to_teacher = nil)
     if params
-      @bookings = params[:bookings].map{ |b| Booking.new b }
+      @bookings = params[:bookings].map do |b|
+        if note_to_teacher
+          b[:note_to_teacher] = note_to_teacher  
+        end
+        Booking.new b
+      end
     end
   end
 

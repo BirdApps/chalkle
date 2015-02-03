@@ -1,4 +1,12 @@
 .new_booking {
+	#booking_names{
+		li {
+			cursor: pointer;
+			&:hover{
+				text-decoration: underline;
+			}
+		}
+	}
 	.parts{
 		display: none;
 		clear: both;

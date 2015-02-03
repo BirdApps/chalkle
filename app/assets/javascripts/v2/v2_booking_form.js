@@ -5,6 +5,38 @@ $(function(){
     var template = $('#attendee_template').html();
     $('#attendee_template').remove();
 
+    function show_attendee(attendee_i){
+      var attendees = $('.attendee');
+      $(attendees).hide();
+      $(attendees[attendee_i]).show();
+      show_form();
+    }
+
+    function bind_attendee_links(){
+      $("#booking_names ol li").click(function(){
+        var attendee_i = $(this).data('attendee');
+        show_attendee(attendee_i);
+      });
+    }
+
+    function set_booking_names(){
+      $("#booking_names ol").html('');
+      var booking_names = $('.booking_names').filter(function(){ return $(this).val() != "" });
+      if(booking_names.length > 0){
+        $('.booking_names').each(function(name_i){
+          var name = $(this).val();
+          if(name == ""){
+            name = "New Attendee";
+          }
+          $("#booking_names ol").append("<li data-attendee="+name_i+">"+name+"</li>");
+        });
+        bind_attendee_links();
+        $("#booking_names").fadeIn();
+      }else{
+        $("#booking_names").fadeOut();
+      }
+    }
+
     function change_attendee_count(count){
       var difference = count - $('#attendees').children().length
       if(difference > 0){
@@ -39,30 +71,44 @@ $(function(){
 
       $('.next_attendee').click(function(){
         var parent = $(this).parents('.attendee').first();
-        var next = $(this).parents('.attendee').next();
-        if( $(next).hasClass('attendee') ){
-          $(parent).fadeOut(function(){
-            $(next).fadeIn();
-          });
+        var next = $(parent).next();
+        
+        if( $(parent).find('#booking_set_bookings__name').val() == "" ){
+          alert("Every booking must have a name");
         }else{
-          show_summary();
+          set_booking_names();
+          if( $(next).hasClass('attendee') ){
+            $(parent).fadeOut(function(){
+              $(next).fadeIn();
+            });
+          }else{
+            show_summary();
+          }
         }
+
       });
+      set_booking_names();
       $(".attendee").hide();
       $($(".attendee")[0]).show();
     }
 
     function show_summary(){
+      var cost = $("#booking-summary").data('cost');
+      var attendee_count = $('.attendee').length;
+      $('.booking-count').text(attendee_count);
+      if(parseFloat(cost) != 0){
+       $('.total-cost').text('$'+(attendee_count*cost).toFixed(2).toString());
+      }
       $('.parts').hide();
       $('.part-summary').fadeIn();
     }
 
     function back(){
-      $('.parts').hide();
       show_form();
     }
 
     function show_form(){
+      $('.parts').hide();
       $('.part-form').fadeIn();
     }
 
@@ -80,7 +126,6 @@ $(function(){
       });
 
       $('.see_form').click(function(){
-        $('.parts').hide();
         show_form();
       });
 
@@ -106,8 +151,16 @@ $(function(){
         }
       });
 
+      $('#new_booking_set').submit(validate);
     }
 
+    function validate(){
+      var has_names = $('.booking_names').filter(function(){ return $(this).val() != "" }).length == $('.booking_names').length;
+      if(!has_names){
+        alert('All attendees must have names');
+        return false;
+      }
+    }
    
 
     bind_keys();

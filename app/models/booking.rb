@@ -170,7 +170,7 @@ class Booking < ActiveRecord::Base
     
     self.processing_fee = course.processing_fee
     self.processing_gst = course.processing_fee*3/23
-    self.processing_fee = self.processing_fee-self.processing_gst
+    self.processing_fee = course.processing_fee-self.processing_gst
 
     #TEACHER FEE
     if provider_pays_teacher?
@@ -191,7 +191,6 @@ class Booking < ActiveRecord::Base
       self.teacher_gst = teacher_fee*3/23
       self.teacher_fee = teacher_fee-teacher_gst
     else
-      self.teacher_fee = 0
       self.teacher_gst = 0
       self.teacher_gst_number = nil
     end
@@ -217,6 +216,10 @@ class Booking < ActiveRecord::Base
 
   def cost
     (chalkle_fee||0)+(chalkle_gst||0)+(teacher_fee||0)+(teacher_gst||0)+(provider_fee||0)+(provider_gst||0)+(processing_fee||0)+(processing_gst||0)
+  end
+
+  def cost_breakdown
+    { chalkle_fee: chalkle_fee.to_f, chalkle_gst: chalkle_gst.to_f, teacher_fee: teacher_fee.to_f, teacher_gst: teacher_gst.to_f, provider_fee: provider_fee.to_f, provider_gst: provider_gst.to_f, processing_fee: processing_fee.to_f, processing_gst: processing_gst.to_f }
   end
 
   def cost_formatted
