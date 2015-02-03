@@ -713,6 +713,10 @@ $(function(){
           show_error_for($('#providing_agreeterms'));
         }
       }
+      if($('#teaching_channel_fee').val() < 0){
+        valid = false;
+        show_error_for($('#fee_summary'));
+      }
       return valid;
     }
 
