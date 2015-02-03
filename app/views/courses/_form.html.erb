@@ -235,11 +235,19 @@
           <hr />
         </div>
           
-        <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
+        <% unless f.object.has_bookings? %>
+         <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
+        <% else %>
+          <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', readonly: 'readonly' } %>
+        <% end %>
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
           <p class="small grey">
-            How much will attendees pay to attend the class? This will include any material costs, etc.
+            <% unless f.object.has_bookings? %>
+              How much will attendees pay to attend the class? This will include any material costs, etc.
+            <% else %>
+              Advertised price cannot be altered once bookings are made
+            <% end %>
           </p>
         </div>
 
