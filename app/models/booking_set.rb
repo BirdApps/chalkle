@@ -12,6 +12,14 @@ class BookingSet
     end
   end
 
+  def the_errors
+    @errors ||= []
+  end
+
+  def the_errors=(error_list)
+    @errors = error_list
+  end
+
   def bookings
     @bookings ||= []
   end
@@ -40,7 +48,7 @@ class BookingSet
       bookings.map &:save
       true
     else
-      self.errors = bookings.map(&:errors).flatten
+      the_errors = bookings.map{|b| b.errors.messages }
       false
     end
   end
