@@ -1,4 +1,3 @@
-@import "../_variables";
 @mixin text-shadow($x1, $y1, $blur1, $colour1, $x2: false, $y2: false, $blur2: false, $colour2: false) { 
   $shad: $x1 $y1 $blur1 $colour1;
   @if $x2 {
@@ -145,7 +144,7 @@ body.v2 {
     }
   }
   .dropdown-menu {
-    border-radius: 0;
+    @include border-radius(0);
     font-family: "proxima-nova",sans-serif; 
     left: -1px;
     background: #dfdfdf;
@@ -267,7 +266,7 @@ body.v2 {
 
   .social-links {
     background: #F3F3F3;
-    border-radius:  8px;
+    @include border-radius( 8px );
     display: inline-block;
     overflow: hidden;
     a {
@@ -582,7 +581,7 @@ body.v2 {
             @media screen and (min-width: $col-sm) {
               color: #fafafa;
               padding: 10px 15px;
-              border-radius: 4px;
+              @include border-radius(4px);
               &:hover, &.current {
                 color: #fff;
                 background-color: rgba(0,0,0,0.15);
@@ -706,7 +705,7 @@ body.v2 {
         }
         .dropdown-menu { 
           background: $primary-color;
-          border-radius:  0 0 3px 3px;
+          @include border-radius( 0 0 3px 3px);
           border: 0px;
           margin-top:10px;
           li {
@@ -839,7 +838,7 @@ body.v2 {
             }
           }
           .form-control:focus, input:focus {
-            box-shadow: none;
+            @include box-shadow( none );
             border: 0px;
           }
           .fa {
@@ -858,7 +857,7 @@ body.v2 {
           box-shadow: none;
         }
         .btn {
-          border-radius:  0;
+          @include border-radius( 0 );
           padding: 6px 8px 6px 22px;
           background: transparent;
           text-align: left;
@@ -905,7 +904,7 @@ body.v2 {
             overflow: scroll;
           }
 
-          border-radius: 0 0 4px 4px;
+          @include border-radius(0 0 4px 4px);
           font-family: "proxima-nova",sans-serif; 
           left: -1px;
           background: rgba(255,255,255,0.97);
@@ -1040,7 +1039,7 @@ body.v2 {
             font-weight: 400;
             letter-spacing: 0.07em;
             color: #EAEAEA;
-            text-shadow: 1px, 1px, 0px, #000;
+            @include text-shadow(1px, 1px, 0px, #000);
           }
         }
       }
@@ -1083,8 +1082,8 @@ body.v2 {
               color: #333;
               padding: 30px 5px;
               width: 100%;
-              text-shadow: 0px, 1px, 2px, rgba(255,255,255,1.0);
-              transition: all 200ms ease-out;
+              @include text-shadow(0px, 1px, 2px, rgba(255,255,255,1.0));
+              @include transition( all 200ms ease-out );
 
               @media screen and (max-width: $col-md) {
                 padding: 10px 5px;
@@ -1105,7 +1104,7 @@ body.v2 {
           a:hover,a:active,a:focus, li.active a {
             background-color: rgba(0,0,0,0.2);
             color: #fff !important;
-            text-shadow: 0px, 1px, 2px, rgba(0,0,0,1.0);
+            @include text-shadow(0px, 1px, 2px, rgba(0,0,0,1.0));
 
             img.reg {
               display: none !important;
@@ -1122,47 +1121,6 @@ body.v2 {
   #wrapper {
     width:100%; background-color:#fff; 
   }
-
-.container-fluid {
-    font-family: "proxima-nova",sans-serif;
-
-    letter-spacing: 1.5px;
-    h1,h2,h3,h4,h5,h6 {
-      font-weight: 300;
-    }
-
-  .messages {
-    position: fixed;
-    z-index: 1000;
-    top: 112px;
-    width: 100%;
-    margin-left: 0;
-    left: 0;
-    .alert {
-      border-radius:0;
-      text-align: center;
-      font-size: 24px; 
-      &.alert-danger{
-        .close {
-          color: #fff;
-        }
-        background-color: rgba(45,45,45,0.9);
-        border: none;
-        color: #fff;
-      }
-    }
-
-  }
-}
-
-@media screen and (max-width: $col-sm) {
-  .messages {
-    bottom: 0;
-    top: inherit !important;
-  }
-}
-
-
   .container {
     font-family: "proxima-nova",sans-serif;
 
@@ -1258,7 +1216,7 @@ body.v2 {
             color: #fff;
             padding: 8px 10px;
             margin-left: 10px;
-            border-radius: 2px;
+            @include border-radius(2px);
             background: #C7C7C7;
           }
         }
@@ -1412,7 +1370,7 @@ body.v2 {
         color: #fff;
         padding: 8px 5px 4px 5px;
         margin: 4px;
-        border-radius: 2px;
+        @include border-radius(2px);
         background: #C7C7C7;
       }
       .category {
@@ -1624,11 +1582,11 @@ body.v2 {
           }
           a:after {
             bottom:0;
-            transform: skew(-40deg);
+            @include transform(skew(-40deg));
           }
           a:before {
             top:0;
-            transform: skew(40deg);
+            @include transform(skew(40deg));
           }
         }
         li.active {
@@ -1740,7 +1698,7 @@ body.v2 {
         }
         input:focus, textarea:focus, select:focus {
           background-color: #FFF3DF;
-          box-shadow: 3px 3px 0 0 rgba(52,3,63,0.11);
+          @include box-shadow(3px 3px 0 0 rgba(52,3,63,0.11));
         }
         .input-group-addon {
           background: transparent;
@@ -2068,7 +2026,7 @@ body.v2 {
     background-image: image_url('learn/diver.jpg');
     background-size: cover;
     background-position: center center;
-    padding-top: 220px; 
+    padding-top: 170px; 
     margin-bottom: -75px;
     padding-bottom: 300px;
     a, p { color: #fff; }
@@ -2158,17 +2116,14 @@ body.v2 {
         }
       }
       label {display: none; }
-      @include placeholder(#ddd);
-
       input {
-        background: rgba(255,255,255,0.10);
-        border-radius: 0px;
-        font-size: 19px;
-        color: #fff;
-        letter-spacing: 1.5px;
-        /* line-height: 16px; */
-        border:none; 
-        border-bottom: 1px solid rgba(255,255,255,0.80);
+        background: rgba(255,255,255,0.83);
+        border-radius: 3px;
+        font-size: 16px;
+        color: #0D7BCA;
+        letter-spacing: 1.2px;
+        line-height: 19px;
+        border: none;
       }
       input[type=submit] {
         /* Rectangle 34: */
@@ -2257,16 +2212,18 @@ body.v2 {
       }
     }
     label {display: none; }
+
     input {
-      @include placeholder(#ddd);
-      background: rgba(255,255,255,0.10);
-      border-radius: 0px;
-      font-size: 19px;
-      color: #fff;
-      letter-spacing: 1.5px;
-      /* line-height: 16px; */
-      border:none; 
-      border-bottom: 1px solid rgba(255,255,255,0.80);    }
+
+      background: rgba(255,255,255,0.83);
+      border-radius: 3px;
+      font-size: 16px;
+      color: #0D7BCA;
+      letter-spacing: 1.2px;
+      line-height: 19px;
+      border: none;
+
+    }
     input[type=submit] {
       /* Rectangle 34: */
       background: rgba(0,0,0,0.67);
@@ -2409,7 +2366,7 @@ body.v2 {
       line-height: 42px;
       border: solid 1px rgba(76, 126, 147, 0.65);
 
-      border-radius:  50px;
+      @include border-radius( 50px );
 
     }
     dd {
