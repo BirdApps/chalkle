@@ -219,8 +219,12 @@ class Booking < ActiveRecord::Base
     if payment.present?
       payment.paid_per_booking
     else
-      (chalkle_fee||0)+(chalkle_gst||0)+(teacher_fee||0)+(teacher_gst||0)+(provider_fee||0)+(provider_gst||0)+(processing_fee||0)+(processing_gst||0)
+      calc_cost
     end
+  end
+
+  def calc_cost
+    (chalkle_fee||0)+(chalkle_gst||0)+(teacher_fee||0)+(teacher_gst||0)+(provider_fee||0)+(provider_gst||0)+(processing_fee||0)+(processing_gst||0)
   end
 
   def cost_breakdown

@@ -74,7 +74,7 @@ class BookingSet
   end
 
   def cost_per_booking
-    bookings.first.cost if bookings.present?
+    bookings.first.calc_cost if bookings.present?
   end
 
   def total_cost
