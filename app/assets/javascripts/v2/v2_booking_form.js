@@ -1,7 +1,6 @@
 $(function(){
   if($("#new_booking_set").length > 0){
     var last_view = "part-question";
-    var group_single = "single"
     var template = $('#attendee_template').html();
     $('#attendee_template').remove();
 
@@ -13,10 +12,17 @@ $(function(){
     }
 
     function bind_attendee_links(){
-      $("#booking_names ol li").click(function(){
-        var attendee_i = $(this).data('attendee');
+      $("#booking_names .attendee_name").click(function(){
+        var attendee_i = $(this).parent().data('attendee');
         show_attendee(attendee_i);
       });
+
+      $('.remove_attendee').click(function(){
+        var attendee_i = $(this).parent().data('attendee');
+        remove_attendee(attendee_i);
+      });
+
+      $('.add_attendee').click(add_attendee);
     }
 
     function set_booking_names(){
@@ -28,12 +34,42 @@ $(function(){
           if(name == ""){
             name = "New Attendee";
           }
-          $("#booking_names ol").append("<li data-attendee="+name_i+">"+name+"</li>");
+          var remove = "";
+          if(name_i != 0){
+            remove = "<span class='remove_attendee'> — </span>"
+          }
+          $("#booking_names ol").append("<li data-attendee="+name_i+"><span class='attendee_name'>"+name+"</span>"+remove+"</li>");
         });
+        $("#booking_names ol").append("<li class='add_attendee'><span></span>Add Attendee</li>");
         bind_attendee_links();
         $("#booking_names").fadeIn();
       }else{
         $("#booking_names").fadeOut();
+      }
+      ensure_attendee_visible();
+    }
+
+    function ensure_attendee_visible(){
+      if($("#attendees").is(":visible")){
+        var visible_Attendees = $('.attendee').filter(function(){ return $(this).is(":visible") });
+        if(visible_Attendees.length == 0){
+          show_attendee( $(".attendee").length-1 );
+        }
+      }
+    }
+
+    function add_attendee(){
+      $('#attendees').append(template);
+      set_booking_names();
+      show_attendee( $(".attendee").length -1 );
+      $(".booking_names").change(set_booking_names);
+    }
+
+    function remove_attendee(attendee_i){
+      if(attendee_i != 0){
+        var attendees = $('.attendee');
+        $(attendees[attendee_i]).remove();
+        set_booking_names();
       }
     }
 
@@ -49,62 +85,19 @@ $(function(){
         }
       }
 
-      $('.prev_attendee').unbind( "click" );
-      $('.next_attendee').unbind( "click" );
-
-      $('.prev_attendee').click(function(){
-        var parent = $(this).parents('.attendee').first();
-        var prev = $(parent).prev();
-        if( $(prev).hasClass('attendee') ){
-          $(parent).fadeOut(function(){
-            $(prev).fadeIn();
-          });
-        }else{
-          $('.parts').hide();
-          if(group_single == "single"){
-            $('.part-question').fadeIn();
-          }else{
-            $('.part-count').fadeIn();
-          }
-        }
-      });
-
-      $('.next_attendee').click(function(){
-        var parent = $(this).parents('.attendee').first();
-        var next = $(parent).next();
-        
-        if( $(parent).find('#booking_set_bookings__name').val() == "" ){
-          alert("Every booking must have a name");
-        }else{
-          set_booking_names();
-          if( $(next).hasClass('attendee') ){
-            $(parent).fadeOut(function(){
-              $(next).fadeIn();
-            });
-          }else{
-            show_summary();
-          }
-        }
-
-      });
       set_booking_names();
-      $(".attendee").hide();
-      $($(".attendee")[0]).show();
     }
+
+
 
     function show_summary(){
       var cost = $("#booking-summary").data('cost');
       var attendee_count = $('.attendee').length;
-      $('.booking-count').text(attendee_count);
       if(parseFloat(cost) != 0){
        $('.total-cost').text('$'+(attendee_count*cost).toFixed(2).toString()+" - ");
       }
       $('.parts').hide();
       $('.part-summary').fadeIn();
-    }
-
-    function back(){
-      show_form();
     }
 
     function show_form(){
@@ -113,58 +106,40 @@ $(function(){
     }
 
     function bind_keys(){
-      $('.set_single').click(function(){
-        change_attendee_count(1);
-        
-        group_single = "single";
+      $('.continue').click(function(){      
+        if( validate() ){
+          show_summary();
+        }
       });
 
-      $('.back').click(back);
+      $('.back').click(show_form);
   
-      $('.set_group').click(function(){
-        group_single = "group";
-      });
-
-      $('.see_form').click(function(){
-        show_form();
-      });
-
-      $('.see_number').click(function(){
-        $('.parts').hide();
-        $('.part-count').fadeIn();
-      });
-
-      $('.count_attendees').click(function(){
-        change_attendee_count($('#booking_set_count').val());
-      });
-
       $('#new_booking_set').submit(function(event){
-        if($('#booking_terms_and_conditions:checked').length == 0){
-          alert($('#teaching_agreeterms').data('error-message'));
+        if(validate()){
+          if($('#booking_terms_and_conditions:checked').length == 0){
+            alert($('#teaching_agreeterms').data('error-message'));
+            event.preventDefault();
+          }
+        }else{
           event.preventDefault();
         }
       });
-
-      $('button').click(function(){
-        if($(this).data('target-part') != undefined){
-          last_view = $(this).data('target-part');
-        }
-      });
-
-      $('#new_booking_set').submit(validate);
     }
 
     function validate(){
-      var has_names = $('.booking_names').filter(function(){ return $(this).val() != "" }).length == $('.booking_names').length;
-      if(!has_names){
-        alert('All attendees must have names');
+      var blank_names = $('.booking_names').filter(function(){ return $(this).val() == "" });
+      if(blank_names.length > 0){
+        alert('Every attendee must have a name');
         return false;
+      }else{
+        return true;
       }
     }
    
 
     bind_keys();
-
+    show_attendee(0);
+    set_booking_names();
   }
 });
 
