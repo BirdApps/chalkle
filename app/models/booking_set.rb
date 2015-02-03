@@ -61,12 +61,30 @@ class BookingSet
     names.join(',')
   end
 
+  def build_payment
+    bookings.first.build_payment if bookings.present?
+  end
+
   def cost_per_booking
     bookings.first.cost if bookings.present?
   end
 
   def total_cost
     bookings.sum &:cost
+  end
+
+  def apply_payment(payment)
+    paid = payment.total/count >= cost_per_booking
+    bookings.each do |booking|
+      booking.payment = payment
+      if paid
+        book_result = booking.confirm!
+        Notify.for(booking).confirmation
+      else
+        #TODO: notify chalkle admin that payment didn't amount to booking cost
+      end
+    end
+    paid
   end
 
 end

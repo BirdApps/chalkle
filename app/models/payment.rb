@@ -59,4 +59,8 @@ class Payment < ActiveRecord::Base
     save
   end
 
+  def paid_per_booking
+    total / bookings.count
+  end
+
 end

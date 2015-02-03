@@ -64,25 +64,20 @@ class BookingsController < ApplicationController
 
 
   def lpn
-    @booking_set.bookings.each do |booking|
-      payment = booking.payment.present? ? booking.payment : booking.build_payment
-      payment.swipe_transaction_id = params[:transaction_id]
-      payment.total = params[:amount]
-      payment.swipe_name_on_card= params[:name_on_card]
-      payment.swipe_customer_email = params[:customer_email]
-      payment.swipe_currency = params[:currency]
-      payment.swipe_identifier_id = params[:identifier_id]
-      payment.swipe_token= params[:token]
-      payment.date = DateTime.current
-      payment.visible = true
-      verify = SwipeWrapper.verify payment.swipe_transaction_id
-      if verify['data']['transaction_approved'] == "yes"   
-        pay_result = payment.save
-        if payment.total >= booking.cost
-          book_result = booking.confirm!
-          Notify.for(booking).confirmation
-        end
-      end
+    payment = @booking_set.build_payment
+    payment.swipe_transaction_id = params[:transaction_id]
+    payment.total = params[:amount]
+    payment.swipe_name_on_card = params[:name_on_card]
+    payment.swipe_customer_email = params[:customer_email]
+    payment.swipe_currency = params[:currency]
+    payment.swipe_identifier_id = params[:identifier_id]
+    payment.swipe_token = params[:token]
+    payment.date = DateTime.current
+    payment.visible = true
+    verify = SwipeWrapper.verify payment.swipe_transaction_id
+    if verify['data']['transaction_approved'] == "yes"  
+      pay_result = payment.save
+      book_result = @booking_set.apply_payment payment
     end
     render json: { pay: pay_result, book: book_result }
   end
@@ -91,9 +86,11 @@ class BookingsController < ApplicationController
     payment_successful = (params[:result] =~ /accepted/i) || (params[:result] =~ /test/i)
     if payment_successful
       @booking_set.bookings.each do |booking|
-        booking.status = 'pending'
-        booking.visible = true
-        booking.save
+        unless booking.payment.present?
+          booking.status = 'pending'
+          booking.visible = true
+          booking.save
+        end
       end
       flash[:notice] = "Payment successful. Thank you very much!"
       redirect_to course_path(params[:course_id])
@@ -189,7 +186,7 @@ class BookingsController < ApplicationController
     def load_booking_set
       @booking_set = BookingSet.new
       booking_ids = params[:td_user_data].present? ? params[:td_user_data].split(',') : params[:booking_id].split(',')
-      @booking_set.bookings = booking_ids.map{ |id| Booking.where(booker_id: current_chalkler.id).find id }
+      @booking_set.bookings = booking_ids.map{ |id| Booking.find id }
       redirect_to not_found and return if @booking_set.count != booking_ids.count
     end
 

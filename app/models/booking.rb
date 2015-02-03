@@ -103,7 +103,7 @@ class Booking < ActiveRecord::Base
   serialize :custom_fields
 
   def paid
-    self.payment.present? ? payment.total : 0
+    self.payment.present? ? payment.paid_per_booking : 0
   end
 
   def self.needs_booking_completed_mailer
@@ -285,7 +285,7 @@ class Booking < ActiveRecord::Base
       wrapper = SwipeWrapper.new
       verify = wrapper.verify payment.swipe_transaction_id
       if verify['data']['transaction_approved'] == "yes"
-        if payment.total >= cost
+        if payment.paid_per_booking >= cost
           self.status = 'yes'
           self.save
         end
