@@ -75,9 +75,11 @@ class BookingsController < ApplicationController
     payment.date = DateTime.current
     payment.visible = true
     verify = SwipeWrapper.verify payment.swipe_transaction_id
-    if verify['data']['transaction_approved'] == "yes"  
-      pay_result = payment.save
-      book_result = @booking_set.apply_payment payment
+    unless Rails.env.titleize == "Production" && verify['data']['status'].include?('test') 
+      if verify['data']['transaction_approved'] == "yes" 
+        pay_result = payment.save
+        book_result = @booking_set.apply_payment payment
+      end
     end
     render json: { pay: pay_result, book: book_result }
   end
