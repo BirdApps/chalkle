@@ -11,14 +11,17 @@
       <div class="col-xs-12 x1-25 center light">
       <% bookings.each do |booking|%>
           <div class="strong"> <%= booking.name %> </div>
-          <div class="col-xs-12 center light">
-            <span class="grey inline vmid">
-              Booking cost:
-            </span>
-            <span class="x1-25 inline vmid">
-              $<%= booking.cost_formatted %>
-            </span> 
-          </div>
+          <% unless booking.course.free? %>
+            <div class="col-xs-12 center light">
+              <span class="grey inline vmid">
+                Booking cost:
+              </span>
+              <span class="x1-25 inline vmid">
+                $<%= booking.cost_formatted %>
+              </span> 
+            </div>
+          <% end %>
+
           <% if booking.status == 'yes' %>
             <% if @course.class? %>
               <%= quick_date_time @course.start_at %>
