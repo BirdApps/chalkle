@@ -29,7 +29,7 @@ class BookingsController < ApplicationController
 
   def create
     @course = Course.find(params[:course_id])
-    @booking_set = BookingSet.new params[:booking_set]
+    @booking_set = BookingSet.new params[:booking_set], params[:note_to_teacher]
     waive_fees = policy(@course).admin? && params[:remove_fees] == '1'
     
     if @booking_set.save({ free: waive_fees, booker: current_chalkler })
