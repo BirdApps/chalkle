@@ -1,4 +1,5 @@
 <div class="bookings">
+  
   <% if policy(@course).bookings_csv? %> 
     <%= link_to "Download booking summary CSV", csv_course_bookings_path(@course) %>
     <% if @course.custom_fields.present? %>
@@ -7,46 +8,26 @@
   <% end %>
   <br />
   <br />
-  <% count = 0 %>
+
   <div class="col-xs-12 x1-25 clearfix light hidden-xs light">
     <div class="col-sm-1">
       ID
     </div>
-    <div class="col-sm-3">
-      Name
+    <div class="col-sm-2">
+      Booker
+    </div>
+    <div class="col-sm-2">
+      Learner
     </div>
     <div class="col-sm-2">
       Paid
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-5">
       Note to teacher
     </div>
   </div> 
-  <script>
-    $(function () {
-      $('#bookingsModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var title = button.data('title');
-        var content = button.data('content');
-        var modal = $(this);
-        modal.find('.modal-title').html(title);
-        modal.find('.modal-body').html(content);
-      });
-    });
-  </script>
-  <div class="modal fade booking-modal-lg" id="bookingsModal" aria-labelledby="bookingsModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title text-center" id="bookingsModalLabel"></h4>
-        </div>
-        <div class="modal-body">
-        
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <% count = 0 %>
   <% @bookings.each do |booking| %>
     <% count+=1 %>
     <div class="col-xs-12 x1-25 clearfix <%= count%2 ==0 ? 'even' : 'odd'  %>">
@@ -57,8 +38,21 @@
           <%= link_to booking.id, sudo_booking_path(booking) %>
         <% end %>
       </div>
-      <div class="col-xs-4 col-sm-3">
-        <%= link_to booking.name, chalkler_path(booking.chalkler.id) %>
+      <div class="col-xs-4 col-sm-2">
+        <%= link_to booking.booker.name, chalkler_path(booking.chalkler) %>
+      </div>
+      <div class="col-xs-4 col-sm-2">
+
+        <% if booking.chalkler != booking.booker %>
+          <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler) %>
+        <% else %>
+          <% if booking.name == booking.booker.name %>
+            <%= link_to booking.name, chalkler_path(booking.chalkler) %>
+          <% else %>
+            <%= booking.name %>
+          <% end %>
+        <% end %>
+
       </div>
       <div class="col-xs-6 col-sm-2 light">
         <span class="inline vmid">
@@ -69,7 +63,7 @@
           <% end %>
         </span> 
       </div>
-      <div class="col-xs-12 col-sm-4 light">
+      <div class="col-xs-12 col-sm-3 light">
         <% unless booking.cancelled? %>
           <%= booking.note_to_teacher %>
         <% else %>
@@ -83,4 +77,30 @@
       </div>
     </div> 
   <% end %>
+</div>
+
+<script>
+  $(function () {
+    $('#bookingsModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var title = button.data('title');
+      var content = button.data('content');
+      var modal = $(this);
+      modal.find('.modal-title').html(title);
+      modal.find('.modal-body').html(content);
+    });
+  });
+</script>
+<div class="modal fade booking-modal-lg" id="bookingsModal" aria-labelledby="bookingsModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" id="bookingsModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+      
+      </div>
+    </div>
+  </div>
 </div>

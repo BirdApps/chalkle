@@ -163,6 +163,7 @@ class Booking < ActiveRecord::Base
   #   3. outgoing_payment.calc_flat_fee (in the case of a flat_fee payment to the teacher this is the only accurate time to calculate this)
 
   def apply_fees
+    remove_fees
     #CHALKLE
     self.chalkle_gst_number = Finance::CHALKLE_GST_NUMBER
     self.chalkle_fee = course.chalkle_fee_no_tax
@@ -209,13 +210,17 @@ class Booking < ActiveRecord::Base
   end
 
   def apply_fees!
-    cost = apply_fees
+    fees = apply_fees
     save
-    cost
+    fees
   end
 
   def cost
-    (chalkle_fee||0)+(chalkle_gst||0)+(teacher_fee||0)+(teacher_gst||0)+(provider_fee||0)+(provider_gst||0)+(processing_fee||0)+(processing_gst||0)
+    if payment.present?
+      payment.paid_per_booking
+    else
+      (chalkle_fee||0)+(chalkle_gst||0)+(teacher_fee||0)+(teacher_gst||0)+(provider_fee||0)+(provider_gst||0)+(processing_fee||0)+(processing_gst||0)
+    end
   end
 
   def cost_breakdown
