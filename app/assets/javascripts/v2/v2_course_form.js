@@ -713,7 +713,7 @@ $(function(){
           show_error_for($('#providing_agreeterms'));
         }
       }
-      if($('#teaching_channel_fee').val() < 0){
+      if(parseFloat($('#teaching_channel_min_income').val().replace('$','')) < 0){
         valid = false;
         show_error_for($('#fee_summary'));
       }
