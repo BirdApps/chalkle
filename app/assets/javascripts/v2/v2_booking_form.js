@@ -120,6 +120,15 @@ $(function(){
           event.preventDefault();
         }
       });
+
+      //arrange first email
+      var first_email = $(".booking_set_bookings_email")[0];
+      $(first_email).hide();
+      var first_booking_name = $(".booking_names")[0];
+      $(first_booking_name).change(function(){
+        $(first_email).show();
+      });
+
     }
 
     function validate(){
@@ -131,7 +140,6 @@ $(function(){
         return true;
       }
     }
-   
 
     bind_keys();
     set_booking_names();
