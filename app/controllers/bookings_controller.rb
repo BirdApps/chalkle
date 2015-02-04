@@ -3,8 +3,9 @@ class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!, except: [:lpn]
   before_filter :redirect_on_paid, :only => [:edit, :update]
   before_filter :class_available, :only => [:edit, :update, :new]
-  before_filter :load_booking, :only => [:show, :edit, :update, :cancel, :confirm_cancel]
+  before_filter :load_booking, :only => [:show, :cancel, :confirm_cancel, :take_rights]
   before_filter :load_booking_set, only: [:payment_callback, :lpn]
+  
   def index
     @page_subtitle = "Bookings for"
     @course = Course.find_by_id params[:course_id]
@@ -13,10 +14,6 @@ class BookingsController < ApplicationController
     else
       @bookings = []
     end
-  end
-
-  def my_bookings
-    @upcoming_bookings = current_chalkler.bookings.visible.confirmed.paid.upcoming
   end
 
   def new
@@ -106,22 +103,8 @@ class BookingsController < ApplicationController
     redirect_to @booking.course.path
   end
 
-  def edit
-    return redirect_edit_on_paid(@booking) if @booking.paid?
-    @course = @booking.course
-  end
-
-  def update
-    @booking.update_attributes params[:booking]
-    if @booking.save
-      redirect_to booking_path @booking
-    else
-      @course = @booking.course
-      render action: 'edit'
-    end
-  end
-
   def cancel
+    authorize @booking
     @page_subtitle = "Cancel booking"
     @page_title = ('<a href="'+@booking.course.path+'">'+@booking.course.name+'</a>').html_safe
     render 'cancel'
@@ -144,6 +127,13 @@ class BookingsController < ApplicationController
     end
 
     send_data Booking.csv_for(@bookings), type: :csv, filename: "bookings-for-#{@course.name.parameterize}.csv"
+  end
+
+  def take_rights
+    authorize @booking
+    @booking.chalkler = current_chalkler
+    @booking.save
+    redirect_to @booking.course.path
   end
 
   private
@@ -181,7 +171,7 @@ class BookingsController < ApplicationController
     end
 
     def load_booking
-      @booking = current_user.bookings.find(params[:booking_id] || params[:id])
+      @booking = Booking.find(params[:booking_id] || params[:id])
       redirect_to not_found and return if !@booking
     end
 

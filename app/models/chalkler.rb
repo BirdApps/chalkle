@@ -22,6 +22,7 @@ class Chalkler < ActiveRecord::Base
   has_many :subscriptions
   has_many :channel_teachers
   has_many :bookings
+  has_many :booker_only_bookings, class_name: 'Booking', foreign_key: :booker_id
   has_many :channel_admins
   has_many :notifications
   has_many :sent_notifications, class_name: 'Notification', foreign_key: :from_chalkler_id

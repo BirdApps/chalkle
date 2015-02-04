@@ -475,7 +475,7 @@ class Course < ActiveRecord::Base
 
   def bookings_for(chalkler)
     if bookings.any?
-      chalkler.bookings.visible & bookings
+      (chalkler.bookings.visible+chalkler.booker_only_bookings) & bookings
     else
       []
     end

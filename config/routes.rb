@@ -51,10 +51,11 @@ Chalkle::Application.routes.draw do
       get 'delete/:id', to: 'course_notices#destroy', as: :delete
     end
     
-    resources :bookings do
+    resources :bookings, only: [:index, :show, :new, :create] do
       get :payment_callback
       collection { get 'csv' }
       member do
+        get 'take_rights'
         get 'cancel'
         put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
       end
