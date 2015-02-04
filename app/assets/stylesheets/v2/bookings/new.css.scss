@@ -4,7 +4,6 @@
 	#booking_names{
 		> div {
 			@media(min-width: 769px){ border-right: 1px solid #bdbdbd; }
-			@media(max-width: 769px){ border-bottom: 1px solid #bdbdbd; }
 		}
 		* { transition: all 250ms; }
 		ol { padding: 0; }
