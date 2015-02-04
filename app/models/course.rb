@@ -65,7 +65,6 @@ class Course < ActiveRecord::Base
   before_validation :check_start_at
   before_validation :check_end_at
   before_validation :check_url_name
-  after_save :clear_ivars
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -116,6 +115,7 @@ class Course < ActiveRecord::Base
   before_save :end_at!
   after_save :expire_cache!
   before_save :check_teacher_cost
+  after_save :clear_ivars
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 

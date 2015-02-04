@@ -39,9 +39,9 @@ class Booking < ActiveRecord::Base
 
   def notify_owner
      if psuedo_chalkler_email
-        # notify person of booking and suggest signup
+        #TODO: notify person of booking and suggest signup
       elsif booker != chalkler
-        #notify chalkler booker got them a ticket
+        #TODO: notify chalkler booker got them a ticket
       end
   end
 
@@ -163,53 +163,75 @@ class Booking < ActiveRecord::Base
   #   3. outgoing_payment.calc_flat_fee (in the case of a flat_fee payment to the teacher this is the only accurate time to calculate this)
 
   def apply_fees
-    #cannot recalculate fees for a paid for class
-    #TODO: allow recalculation once multi prices are done - recalculate on each price
-    if payment.blank?
-      remove_fees
-      #CHALKLE
-      self.chalkle_gst_number = Finance::CHALKLE_GST_NUMBER
-      self.chalkle_fee = course.chalkle_fee_no_tax
-      self.chalkle_gst = course.chalkle_fee_with_tax - chalkle_fee
-      
-      self.processing_fee = course.processing_fee
-      self.processing_gst = course.processing_fee*3/23
-      self.processing_fee = course.processing_fee-self.processing_gst
+    remove_fees
+    #CHALKLE
+    self.chalkle_gst_number = Finance::CHALKLE_GST_NUMBER
+    self.chalkle_fee = course.chalkle_fee_no_tax
+    self.chalkle_gst = course.chalkle_fee_with_tax - chalkle_fee
+    
+    self.processing_fee = course.processing_fee
+    self.processing_gst = course.processing_fee*3/23
+    self.processing_fee = course.processing_fee-self.processing_gst
 
-      #TEACHER FEE
-      if provider_pays_teacher?
-          self.teacher_fee = 0
-          self.teacher_gst = 0
-      else
-        if fee_per_attendee?
-          self.teacher_fee = course.teacher_cost
-        elsif flat_fee?
-          #flat fees these are calculated on the outgoing_payment rather than per booking
-          self.teacher_fee = 0
-        end
-      end
-
-      #TEACHER TAX
-      if course.teacher.present? && course.teacher.tax_number.present?
-        self.teacher_gst_number = course.teacher.tax_number
-        self.teacher_gst = teacher_fee*3/23
-        self.teacher_fee = teacher_fee-teacher_gst
-      else
+    #TEACHER FEE
+    if provider_pays_teacher?
+        self.teacher_fee = 0
         self.teacher_gst = 0
-        self.teacher_gst_number = nil
-      end
-
-      #PROVIDER
-      self.provider_fee = course.channel_fee
-      if channel.tax_number.present?
-        self.provider_gst_number = channel.tax_number
-        self.provider_gst = course.channel_fee*3/23
-        self.provider_fee = self.provider_fee-self.provider_gst
-      else
-        self.provider_gst_number = nil
-        self.provider_gst = 0
+    else
+      if fee_per_attendee?
+        self.teacher_fee = course.teacher_cost
+      elsif flat_fee?
+        #flat fees these are calculated on the outgoing_payment rather than per booking
+        self.teacher_fee = 0
       end
     end
+
+    #TEACHER TAX
+    if course.teacher.present? && course.teacher.tax_number.present?
+      self.teacher_gst_number = course.teacher.tax_number
+      self.teacher_gst = teacher_fee*3/23
+      self.teacher_fee = teacher_fee-teacher_gst
+    else
+      self.teacher_gst = 0
+      self.teacher_gst_number = nil
+    end
+
+    #PROVIDER
+    self.provider_fee = course.channel_fee
+    if channel.tax_number.present?
+      self.provider_gst_number = channel.tax_number
+      self.provider_gst = course.channel_fee*3/23
+      self.provider_fee = self.provider_fee-self.provider_gst
+    else
+      self.provider_gst_number = nil
+      self.provider_gst = 0
+    end
+
+    #adjust in case payment has been made already
+    difference = cost - calc_cost
+    if difference != 0
+      #if payment exists then adjust provider fee to ensure the payment amount matches calc_cost
+      adjustment_for_provider = difference
+      adjustment_for_teacher = 0
+
+      if provider_fee+provider_gst+difference < 0
+        #if adjusted provider_fee is negative then deduct that negative amount from teacher_fee and make provider_fee 0
+        adjustment_for_teacher = provider_fee+provider_gst+difference 
+        self.provider_fee = 0
+        self.provider_gst = 0
+      else
+        self.provider_fee = provider_fee+provider_gst+adjustment_for_provider
+        self.provider_gst = provider_fee*3/23
+        self.provider_fee = provider_fee - provider_gst
+      end
+      
+      if adjustment_for_teacher != 0
+        self.teacher_fee = teacher_fee+teacher_gst+adjustment_for_teacher
+        self.teacher_gst = teacher_fee*3/23
+        self.teacher_fee = teacher_fee-teacher_gst
+      end
+    end
+
     cost
   end
 
