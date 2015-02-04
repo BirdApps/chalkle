@@ -89,6 +89,7 @@ $(function(){
     function show_summary(){
       var cost = $("#booking-summary").data('cost');
       var attendee_count = $('.attendee').length;
+      $('.booking-count').text(attendee_count);
       if(parseFloat(cost) != 0){
        $('.total-cost').text('$'+(attendee_count*cost).toFixed(2).toString()+" - ");
       }
