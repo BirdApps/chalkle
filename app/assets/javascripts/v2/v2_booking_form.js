@@ -124,11 +124,13 @@ $(function(){
 
       //arrange first email
       var first_email = $(".booking_set_bookings_email")[0];
-      $(first_email).hide();
       var first_booking_name = $(".booking_names")[0];
-      $(first_booking_name).change(function(){
-        $(first_email).show();
-      });
+      if($(first_booking_name).val() == $("#current_user_name").val()){
+        $(first_email).hide();
+        $(first_booking_name).change(function(){
+          $(first_email).show();
+        });
+      }
 
     }
 
