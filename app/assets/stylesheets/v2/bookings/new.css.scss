@@ -3,9 +3,10 @@
 
 	#booking_names{
 		> div {
-			border-right: 1px solid #bdbdbd;
+			@media(min-width: 769px){ border-right: 1px solid #bdbdbd; }
+			@media(max-width: 769px){ border-bottom: 1px solid #bdbdbd; }
 		}
-		* { transition: all 150ms; }
+		* { transition: all 250ms; }
 		ol { padding: 0; }
 		li { 
 			border-radius: 3px;
