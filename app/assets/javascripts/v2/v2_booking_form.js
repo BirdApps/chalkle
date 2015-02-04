@@ -6,14 +6,19 @@ $(function(){
 
     function show_attendee(attendee_i){
       var attendees = $('.attendee');
+      if(attendees.length-1 < attendee_i) {
+        attendee_i = attendees.length-1;
+      }
       $(attendees).hide();
       $(attendees[attendee_i]).show();
+      $('#booking_names li').removeClass("selected");
+      $(".attendee_id_"+attendee_i).addClass("selected");
       show_form();
     }
 
     function bind_attendee_links(){
-      $("#booking_names .attendee_name").click(function(){
-        var attendee_i = $(this).parent().data('attendee');
+      $("#booking_names li").click(function(){
+        var attendee_i = $(this).data('attendee');
         show_attendee(attendee_i);
       });
 
@@ -36,25 +41,15 @@ $(function(){
           }
           var remove = "";
           if(name_i != 0){
-            remove = "<span class='remove_attendee'> — </span>"
+            remove = "<span class='remove_attendee'>×</span>"
           }
-          $("#booking_names ol").append("<li data-attendee="+name_i+"><span class='attendee_name'>"+name+"</span>"+remove+"</li>");
+          $("#booking_names ol").append("<li data-attendee="+name_i+" class='attendee_id_"+name_i+"''><span class='attendee_name'>"+name+"</span>"+remove+"</li>");
         });
-        $("#booking_names ol").append("<li class='add_attendee'><span></span>Add Attendee</li>");
+        $("#booking_names ol").append("<li class='add_attendee'><span></span>+ Attendee</li>");
         bind_attendee_links();
         $("#booking_names").fadeIn();
       }else{
         $("#booking_names").fadeOut();
-      }
-      ensure_attendee_visible();
-    }
-
-    function ensure_attendee_visible(){
-      if($("#attendees").is(":visible")){
-        var visible_Attendees = $('.attendee').filter(function(){ return $(this).is(":visible") });
-        if(visible_Attendees.length == 0){
-          show_attendee( $(".attendee").length-1 );
-        }
       }
     }
 
@@ -70,6 +65,7 @@ $(function(){
         var attendees = $('.attendee');
         $(attendees[attendee_i]).remove();
         set_booking_names();
+        show_attendee(attendee_i);
       }
     }
 
@@ -138,8 +134,8 @@ $(function(){
    
 
     bind_keys();
-    show_attendee(0);
     set_booking_names();
+    show_attendee(0);
   }
 });
 
