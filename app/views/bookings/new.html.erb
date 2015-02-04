@@ -80,9 +80,9 @@
             <br /><br />
             <div class="form-group col-xs-12 text optional booking_set_bookings_note_to_teacher">
               <label class="text optional" for="booking_set_bookings__note_to_teacher">
-                <span class="small light grey">Note to Teacher</span>
+                <span class="small light grey">Note for <%= @course.channel.name %></span>
               </label>
-              <textarea class="text optional form-control" cols="40" id="booking_set_bookings__note_to_teacher" name="note_to_teacher" rows="20"></textarea>
+              <textarea class="text optional form-control" cols="40" id="booking_set_bookings__note_to_teacher" name="note_to_teacher" rows="20" placeholder="Additional information about your booking for the provider."></textarea>
               <br />
             </div>
 
