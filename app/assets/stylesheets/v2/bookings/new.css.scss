@@ -2,7 +2,7 @@
 
 
 	#booking_names{
-		* { transition: all 250ms; }
+		* { transition: all 150ms; }
 		ol { padding: 0; }
 		li { 
 			border-radius: 3px;
@@ -12,9 +12,14 @@
 			position: relative;
 			list-style: decimal inside;
 			cursor: pointer;
+			overflow: hidden;
+			
+			&.add_attendee {
+				background-color: none !important;
+			}
 
 			&:hover {
-				background-color: #e5e5ea;
+				font-weight: 600;
 				.remove_attendee {
 					opacity: 1.0;
 				}
@@ -24,7 +29,7 @@
 
 				font-weight: 600;
 				color: #333; 
-				background-color: #e5e5ea;
+				margin-left: 1em; 
 			}
 		}
 		.attendee_name, .add_attendee {
