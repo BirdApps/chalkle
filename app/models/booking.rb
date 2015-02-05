@@ -6,7 +6,7 @@ class Booking < ActiveRecord::Base
 
   PAYMENT_METHODS = Finance::payment_methods
   attr_accessible *BASIC_ATTR = [
-    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields, :payment, :payment_id, :email
+    :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields, :payment, :payment_id, :email, :invite_chalkler
   ]
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
@@ -37,13 +37,6 @@ class Booking < ActiveRecord::Base
 
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
 
-  def notify_owner
-     if psuedo_chalkler_email
-        #TODO: notify person of booking and suggest signup
-      elsif booker != chalkler
-        #TODO: notify chalkler booker got them a ticket
-      end
-  end
 
   def email
     if pseudo_chalkler_email.present?

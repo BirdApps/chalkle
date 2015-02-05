@@ -57,7 +57,11 @@ $(function(){
       $('#attendees').append(template);
       set_booking_names();
       show_attendee( $(".attendee").length -1 );
+      $(".booking_names").keyup(set_booking_names);
       $(".booking_names").change(set_booking_names);
+      $('.email_input').keyup(check_for_existing_chalklers_by_email);
+      $('.email_input').change(check_for_existing_chalklers_by_email);
+
     }
 
     function remove_attendee(attendee_i){
@@ -66,6 +70,34 @@ $(function(){
         $(attendees[attendee_i]).remove();
         set_booking_names();
         show_attendee(attendee_i);
+      }
+    }
+
+    function check_for_existing_chalklers_by_email(e){
+      var value = $(e.target).val();
+      var re =  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      re.test(value);
+      if( value.length>0 && re.test(value) ){
+        $.ajax({
+          type: 'POST',
+          url: '/people/exists', 
+          data: { email: value },
+          success: function(data){
+            if(data) {
+              $(e.target).parent().siblings(".booking_set_bookings_invite_chalkler").fadeOut(function(){
+                $(e.target).parent().siblings(".booking-email-info").fadeIn();
+              });
+            } else {
+              $(e.target).parent().siblings(".booking-email-info").fadeOut(function(){
+                $(e.target).parent().siblings(".booking_set_bookings_invite_chalkler").fadeIn();
+              });
+            }
+          },
+          dataType: 'json'
+        })
+      } else {
+        $(e.target).parent().siblings(".booking_set_bookings_invite_chalkler").fadeOut();
+        $(e.target).parent().siblings(".booking-email-info").fadeOut();
       }
     }
 
@@ -107,7 +139,6 @@ $(function(){
           show_summary();
         }
       });
-
       $('.back').click(show_form);
   
       $('#new_booking_set').submit(function(event){
@@ -120,6 +151,15 @@ $(function(){
           event.preventDefault();
         }
       });
+
+      //arrange first email
+      var first_email = $(".booking_set_bookings_email")[0];
+      $(first_email).hide();
+      var first_booking_name = $(".booking_names")[0];
+      $(first_booking_name).keyup(function(){
+        $(first_email).fadeIn();
+      });
+
     }
 
     function validate(){

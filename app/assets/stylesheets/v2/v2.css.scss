@@ -527,7 +527,7 @@ body.v2 {
     top: -2px;
     position: relative;
     background-color: rgba(0,0,0,0.87);
-    box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.40);
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.40);
   }
 
   .btn-default.active, .btn-default:active, .btn-default:focus {
@@ -548,8 +548,8 @@ body.v2 {
   .btn-primary:hover {
     top: -2px;
     position: relative;
-    background-color: #F8BA51;
-    box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.40);
+    background-color: #ffb605;
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.40);
   }
   .btn-primary:active, .btn-primary:focus {
     top: -0px;
@@ -2116,7 +2116,6 @@ body.v2 {
 
 
       .btn.btn-primary {
-        /* Rectangle 34: */
         background: rgba(0,0,0,0.67);
         box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.20);
         border-radius: 3px;
@@ -2277,14 +2276,21 @@ body.v2 {
     label {display: none; }
     input {
       @include placeholder(#ddd);
-      background: rgba(255,255,255,0.10);
+      background-color: rgba(255,255,255,0.10);
       border-radius: 0px;
       font-size: 19px;
       color: #fff;
       letter-spacing: 1.5px;
       /* line-height: 16px; */
       border:none; 
-      border-bottom: 1px solid rgba(255,255,255,0.80);    }
+      border-bottom: 1px solid rgba(255,255,255,0.80); 
+      position: relative;
+      transition: all 120ms;
+      &:focus {
+        background-color: rgba(0,0,0,0.80);
+        top: -2px;
+      }
+    }
     input[type=submit] {
       /* Rectangle 34: */
       background: rgba(0,0,0,0.67);

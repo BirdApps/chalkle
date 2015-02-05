@@ -9,6 +9,7 @@ gem 'entity_events'
 
 # Authentication
 gem 'devise',           '~> 2.2.4'
+gem 'devise_invitable'
 gem 'omniauth',         '~> 1.1.4'
 gem 'omniauth-meetup',  '~> 0.0.7'
 gem 'omniauth-facebook'

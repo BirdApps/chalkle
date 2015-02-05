@@ -31,7 +31,6 @@ class ChalklersController < ApplicationController
   end
 
   def exists
-    authorize Chalkler.new
     if Chalkler.exists? params[:email]
       render json: true
     else
