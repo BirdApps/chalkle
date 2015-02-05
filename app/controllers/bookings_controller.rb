@@ -129,10 +129,18 @@ class BookingsController < ApplicationController
     send_data Booking.csv_for(@bookings), type: :csv, filename: "bookings-for-#{@course.name.parameterize}.csv"
   end
 
+  def edit
+    #TODO: edit a booking's attendee name and email
+  end
+
+  def update
+  end
+
   def take_rights
     authorize @booking
     @booking.chalkler = current_chalkler
     @booking.save
+    #TODO: email old owner telling them what happened to their booking
     redirect_to @booking.course.path
   end
 
