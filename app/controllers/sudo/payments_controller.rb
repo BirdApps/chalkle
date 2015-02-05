@@ -13,4 +13,8 @@ class Sudo::PaymentsController < Sudo::BaseController
     def load_payment
       @payment = Payment.find_by_id params[:id]
     end
+
+    def set_titles
+      @page_title = "Payments"
+    end
 end
