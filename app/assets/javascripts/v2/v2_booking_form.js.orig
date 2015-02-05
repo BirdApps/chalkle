@@ -157,8 +157,13 @@ $(function(){
       var first_email = $(".booking_set_bookings_email")[0];
       $(first_email).hide();
       var first_booking_name = $(".booking_names")[0];
+<<<<<<< HEAD
       $(first_booking_name).keyup(function(){
         $(first_email).fadeIn();
+=======
+      $(first_booking_name).change(function(){
+        $(first_email).show();
+>>>>>>> staging
       });
 
     }
