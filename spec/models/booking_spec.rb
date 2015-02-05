@@ -16,6 +16,16 @@ describe Booking do
     end
   end
 
+  describe "creates paid bookings" do 
+    let(:booking) {FactoryGirl.create(:booking)}
+    it "creates a paid booking" do 
+      expect(booking).to be_valid
+    end
+    it "ensures booking cost equals course cost" do
+      expect(booking.cost).to eq(booking.course.cost)
+    end
+  end
+
   describe ".confirmed" do
     let!(:booking_unconfirmed) {FactoryGirl.create(:booking, status: 'no')}
     let!(:booking) {FactoryGirl.create(:booking, status: 'yes')}
