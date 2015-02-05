@@ -159,7 +159,6 @@ class Booking < ActiveRecord::Base
       self.teacher_gst = teacher_fee*3/23
       self.teacher_fee = teacher_fee-teacher_gst
     else
-      self.teacher_fee = 0
       self.teacher_gst = 0
       self.teacher_gst_number = nil
     end
