@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20150204225604) do
-=======
 ActiveRecord::Schema.define(:version => 20150205022408) do
->>>>>>> multi booking and invitable
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
