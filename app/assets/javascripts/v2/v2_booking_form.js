@@ -30,6 +30,13 @@ $(function(){
       $('.add_attendee').click(add_attendee);
     }
 
+    function update_selected_booking_name(){
+      var selected_i = $('.attendee').index( $('.attendee:visible') );
+      var new_val = $('.attendee:visible .booking_names').val();
+      $('.attendee_id_'+selected_i+' .attendee_name').html(new_val);
+      return false;
+    }
+
     function set_booking_names(){
       $("#booking_names ol").html('');
       var booking_names = $('.booking_names').filter(function(){ return $(this).val() != "" });
@@ -45,7 +52,7 @@ $(function(){
           }
           $("#booking_names ol").append("<li data-attendee="+name_i+" class='attendee_id_"+name_i+"''><span class='attendee_name'>"+name+"</span>"+remove+"</li>");
         });
-        $("#booking_names ol").append("<li class='add_attendee'><span></span>+ Attendee</li>");
+        $("#booking_names ol").append("<li class='add_attendee'><a class='add_attendee'><span></span>+ Attendee</a></li>");
         bind_attendee_links();
         $("#booking_names").fadeIn();
       }else{
@@ -53,15 +60,15 @@ $(function(){
       }
     }
 
-    function add_attendee(){
+    function add_attendee(event){
+      event.preventDefault();
       $('#attendees').append(template);
       set_booking_names();
       show_attendee( $(".attendee").length -1 );
-      $(".booking_names").keyup(set_booking_names);
-      $(".booking_names").change(set_booking_names);
+      $(".booking_names").keyup(update_selected_booking_name);
+      $(".booking_names").change(update_selected_booking_name);
       $('.email_input').keyup(check_for_existing_chalklers_by_email);
       $('.email_input').change(check_for_existing_chalklers_by_email);
-
     }
 
     function remove_attendee(attendee_i){
