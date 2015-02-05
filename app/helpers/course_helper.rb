@@ -63,7 +63,7 @@ Your Chalkle Administrator")
     ordinalDay = date.day.ordinalize
     wday = include_wday ? date.strftime("%A, ") : ""
     if include_year || date.year != DateTime.current.year
-      wday+date.strftime("%B #{ordinalDay}, %y")
+      wday+date.strftime("%B #{ordinalDay}, %Y")
     else
       wday+date.strftime("%B #{ordinalDay}")
     end
