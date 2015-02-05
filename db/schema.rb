@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20150204225604) do
+=======
+ActiveRecord::Schema.define(:version => 20150205022408) do
+>>>>>>> multi booking and invitable
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -59,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20150204225604) do
     t.integer  "payment_id"
     t.string   "pseudo_chalkler_email"
     t.integer  "booker_id"
+    t.boolean  "invite_chalkler"
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -80,7 +85,7 @@ ActiveRecord::Schema.define(:version => 20150204225604) do
     t.text     "bio"
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
-    t.string   "encrypted_password",     :default => "",       :null => false
+    t.string   "encrypted_password",     :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -106,7 +111,16 @@ ActiveRecord::Schema.define(:version => 20150204225604) do
     t.string   "address"
     t.string   "avatar"
     t.string   "role"
+    t.string   "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer  "invitation_limit"
+    t.integer  "invited_by_id"
+    t.string   "invited_by_type"
   end
+
+  add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true
 
   create_table "channel_admins", :force => true do |t|
     t.integer "channel_id",            :null => false

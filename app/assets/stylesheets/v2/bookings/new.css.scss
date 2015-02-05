@@ -2,9 +2,6 @@
 
 
 	#booking_names{
-		> div {
-			@media(min-width: 769px){ border-right: 1px solid #bdbdbd; }
-		}
 		* { transition: all 250ms; }
 		ol { padding: 0; }
 		li { 
@@ -69,9 +66,25 @@
 		display: none;
 		clear: both;
 	}
-	.part-form {
+	.part-form, .part-summary {
+		@media(min-width: 769px){ border-left: 1px solid #bdbdbd; }
 		display: block;
 	}
+
+	.booking_set_bookings_invite_chalkler{
+		position: relative;
+		display: none;
+		label { 
+			margin-left: 20px;
+			margin-top: 0;
+		}
+		input {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	}
+
 	.booking_set_booking_custom_fields{
 		.checkbox {
 			input {

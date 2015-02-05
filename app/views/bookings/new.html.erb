@@ -40,7 +40,13 @@
 
                       <%= bf.input :name, as: :string, label: '<span class="small light grey">Attendee Name</small>', input_html: { class: 'form-control booking_names' } %>
                       
-                      <%= bf.input :email, as: :string, label: '<span class="small light grey">Email (optional)</small>', input_html: { class: 'form-control' } %>
+                      <%= bf.input :email, as: :string, label: '<span class="small light grey">Email (optional)</small>', input_html: { class: 'form-control email_input' } %>
+
+                      <div class="form-group booking-email-info" style="display:none;">
+                        <small class=''>We found a user with this account. This booking will be transferred to them automatically.</small>
+                      </div>
+
+                      <%= bf.input :invite_chalkler, as: :boolean, boolean_style: :inline, label: '<span class="small light grey">Invite this attendee to chalkle. This booking will be transferred to them when they sign up.</span>', class: 'form-control invite_chalkler', style: "display:none;" %>
 
                       <% if @course.custom_fields %>
                         <% @course.custom_fields.each do |field| %>
@@ -68,7 +74,7 @@
 
             </div>
             <div class="text-right">
-              <div class="continue btn btn-default">Continue</div>
+              <div class="continue btn btn-primary">Continue</div>
             </div>
           </div>
 
@@ -110,8 +116,7 @@
               </div>
               <br />
 
-              <% submit_action = @course.free? ? "Complete Booking" : "Purchase" %>
-              <%= f.submit submit_action.to_sym, class: 'btn btn-primary col-xs-12 col-sm-8 col-sm-offset-2' %>
+              <%= f.submit (@course.free? ? "Complete Booking" : "Purchase"), class: 'btn btn-primary col-xs-12 col-sm-8 col-sm-offset-2' %>
               
               <br /><br />
               
