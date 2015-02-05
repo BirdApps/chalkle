@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150201212903) do
+ActiveRecord::Schema.define(:version => 20150204225604) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -433,6 +433,7 @@ ActiveRecord::Schema.define(:version => 20150201212903) do
     t.string   "swipe_identifier_id"
     t.string   "swipe_token"
     t.integer  "chalkler_id"
+    t.decimal  "refunded",                                                 :default => 0.0
   end
 
   create_table "rails_admin_histories", :force => true do |t|

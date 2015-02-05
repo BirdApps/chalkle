@@ -187,7 +187,7 @@ class Course < ActiveRecord::Base
     sprintf('%.2f', cost || 0)
   end
 
-  def status_color
+  def self.status_color(status)
     case status
       when "Processing"
         'warning'
@@ -200,6 +200,10 @@ class Course < ActiveRecord::Base
       when "Published"
         'success'
     end
+  end
+
+  def status_color
+    Course.status_color status
   end
 
   def repeating_class?

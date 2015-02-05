@@ -115,8 +115,13 @@ class Booking < ActiveRecord::Base
   end
 
   def refund!
-    self.status = STATUS_4
-    save
+    if payment.present? && payment.refundable?
+      self.status = STATUS_4
+      payment.refund!(self)
+      channel_payment.recalculate! if channel_payment.present?
+      teacher_payment.recalculate! if teacher_payment.present?
+      save
+    end
   end
 
   def confirmed?
@@ -134,7 +139,6 @@ class Booking < ActiveRecord::Base
           self.status = 'refund_pending'
         end
       end
-      
       save
     end
   end
@@ -284,6 +288,25 @@ class Booking < ActiveRecord::Base
 
   def status_formatted
     Booking.status_formatted self.status
+  end
+
+   def self.status_color(status)
+    case status
+      when STATUS_1
+        'success'
+      when STATUS_2
+        'info'
+      when STATUS_3
+        'danger'
+      when STATUS_4
+        'info'
+      when STATUS_5
+        'warning'
+    end
+  end
+
+  def status_color
+    Booking.status_color status
   end
 
   def refundable?
