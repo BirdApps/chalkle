@@ -36,7 +36,7 @@ class Notify::BookingNotification < Notify::Notifier
 
   #booked_in and booked_in_with_invite notificaiton for non chalklers
   def booked_in
-    message = I18n.t('notify.booking.booked_in', course_name: booking.course.name, , booker: booking.booker.name)
+    message = I18n.t('notify.booking.booked_in', course_name: booking.course.name, booker: booking.booker.name)
     BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver! 
   end
 
