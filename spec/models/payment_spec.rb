@@ -3,9 +3,6 @@ require 'spec_helper'
 describe Payment do
   it { should validate_uniqueness_of(:xero_id) }
   it { should validate_numericality_of(:total) }
-  it "should not allow a nil value for total" do
-    expect(FactoryGirl.build(:payment, total: nil)).not_to be_valid
-  end
 
   it "should have a valid factory" do
     expect(FactoryGirl.build(:payment)).to be_valid
