@@ -80,7 +80,6 @@ Devise.setup do |config|
   # When invite_for is 0 (the default), the invitation won't expire.
   # config.invite_for = 2.weeks
 
-
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
   # using other encryptors, it sets how many times you want the password re-encrypted.

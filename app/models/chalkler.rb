@@ -46,7 +46,9 @@ class Chalkler < ActiveRecord::Base
   after_create :create_channel_associations
   after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }
   after_create -> (chalkler) { Notify.for(chalkler).welcome unless chalkler.invited_to_sign_up? }
-  after_invitation_accepted -> { Notify.for(chalkler).welcome } 
+  after_invitation_accepted -> (chalkler) { 
+    chalkler.join_psuedo_identities!
+    Notify.for(chalkler).welcome } 
 
   scope :visible, where(visible: true)
   scope :with_email_region_id, 
