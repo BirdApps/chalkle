@@ -108,23 +108,6 @@ $(function(){
       }
     }
 
-    function change_attendee_count(count){
-      var difference = count - $('#attendees').children().length
-      if(difference > 0){
-        for(var i = 0; i < difference; i++){
-          $('#attendees').append(template);
-        }
-      }else{
-        for(var i = 0; i < difference; i++){
-          $('#attendees').children().last().remove();
-        }
-      }
-
-      set_booking_names();
-    }
-
-
-
     function show_summary(){
       var cost = $("#booking-summary").data('cost');
       var attendee_count = $('.attendee').length;
