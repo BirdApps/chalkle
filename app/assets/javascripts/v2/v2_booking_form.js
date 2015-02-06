@@ -43,7 +43,7 @@ $(function(){
       if(booking_names.length > 0){
         $('.booking_names').each(function(name_i){
           var name = $(this).val();
-          if(name == ""){
+          if(name.trim() == ""){
             name = "New Attendee";
           }
           var remove = "";
@@ -163,11 +163,15 @@ $(function(){
       //arrange first email
       var first_email = $(".booking_set_bookings_email")[0];
       var first_booking_name = $(".booking_names")[0];
-      if($(first_booking_name).val() == $("#current_user_name").val()){
+      if($(first_booking_name).val() == $("#current_user_name").val()) {
         $(first_email).hide();
         $(first_booking_name).keyup(function(){
           $(first_email).fadeIn();
         });
+        $(first_booking_name).change(function(){
+          $(first_email).fadeIn();
+        });
+      }
     }
 
     function validate(){

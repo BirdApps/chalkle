@@ -46,7 +46,14 @@
                         <small class=''>We found a user with this account. This booking will be transferred to them automatically.</small>
                       </div>
 
-                      <%= bf.input :invite_chalkler, as: :boolean, boolean_style: :inline, label: '<span class="small light grey">Invite this attendee to chalkle. This booking will be transferred to them when they sign up.</span>', class: 'form-control invite_chalkler', style: "display:none;" %>
+                      <%# bf.input :invite_chalkler, as: :check_boxes, label: '<span class="small light grey">Invite this attendee to chalkle. This booking will be transferred to them when they sign up.</span>', class: 'form-control invite_chalkler', style: "display:none;" %>
+
+                      <div class="form-group check_boxes optional booking_set_bookings_invite_chalkler">
+                        <label class="check_boxes optional" for="booking_set_bookings__invite_chalkler">
+                          <input class="check_boxes optional" id="booking_set_bookings__invite_chalkler" name="booking_set[bookings][][invite_chalkler]" type="checkbox" value="true">
+                          <span class="small light grey">Invite this attendee to chalkle. This booking will be transferred to them when they sign up.</span>
+                        </label>
+                      </div>
 
                       <% if @course.custom_fields %>
                         <% @course.custom_fields.each do |field| %>
