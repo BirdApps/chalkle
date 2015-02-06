@@ -45,8 +45,9 @@ class Chalkler < ActiveRecord::Base
 
   after_create :create_channel_associations
   after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }
-  after_create -> (chalkler) { Notify.for(chalkler).welcome }
-  
+  after_create -> (chalkler) { Notify.for(chalkler).welcome unless chalkler.invited_to_sign_up? }
+  after_invitation_accepted -> { Notify.for(chalkler).welcome } 
+
   scope :visible, where(visible: true)
   scope :with_email_region_id, 
     lambda {|region| 
@@ -81,7 +82,7 @@ class Chalkler < ActiveRecord::Base
     #TODO: make them method run on verify email, rather than on sign up
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
-    Booking.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+    Booking.where(pseudo_chalkler_email: email, invite_chalkler: true).update_all(chalkler_id: id)
   end
 
   def upcoming_teaching

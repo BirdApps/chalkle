@@ -29,9 +29,9 @@ en-NZ:
 
               The booking details are as follows:
 
-              %{booking_name}
+              booked by – %{booking_name}
 
-              %{course_name}
+              course name – %{course_name}
 
               %{start_at}
               %{time_range}

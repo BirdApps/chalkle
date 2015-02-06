@@ -38,8 +38,10 @@
           <% if current_chalkler == booking.chalkler %>
             <%= link_to "Cancel booking", cancel_course_booking_path(booking.course, booking), class: 'text-danger small light' %>
           <% else %>
-            <p class="small light">Booking belongs to <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler)  %></p>
-            <%= link_to "Take Ownership", take_rights_course_booking_path(booking.course,booking), class: 'text-danger small light' %>
+            <p class="small light">
+              This booking has been transferred to <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler)  %>
+            </p>
+            <%= link_to "Take back ownership", take_rights_course_booking_path(booking.course,booking), class: 'text-danger small light' %>
           <% end %>
         <% else %>
           <span class="small light text-warning"><%= booking.status_formatted %></span>

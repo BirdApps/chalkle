@@ -18,7 +18,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @booker = booking.booker
     @course = booking.course
-    mail(to: @booking.psudo_chalkler_email,  subject: I18n.t("email.booking.confirmation.to_non_chalkler.subject", name: @booking.name, course_name: @course.name)) do |format| 
+    mail(to: @booking.pseudo_chalkler_email,  subject: I18n.t("email.booking.confirmation.to_non_chalkler.subject", name: @booking.name, course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end

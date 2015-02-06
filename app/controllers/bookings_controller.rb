@@ -32,11 +32,10 @@ class BookingsController < ApplicationController
     if @booking_set.save({ free: waive_fees, booker: current_chalkler })
       payment_pending = false
       @booking_set.bookings.each do |booking|
-
-        if booking.booker != booking.chalkler && booking.psuedo_chalkler_email
+        if booking.pseudo_chalkler_email
           Notify.for(booking).booked_in
           #TODO: notify person of booking and suggest signup
-          Chalkler.invite!(email: booking.psuedo_chalkler_email) if booking.invite_chalkler
+          Chalkler.invite!({email: booking.pseudo_chalkler_email, name: booking.name}, booking.booker) if booking.invite_chalkler
         end
 
         if booking.free?
