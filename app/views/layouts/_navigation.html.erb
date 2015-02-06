@@ -83,14 +83,14 @@
               <li>
                 <%= link_to 'Login', new_chalkler_session_path,  class: (current_page?(controller: 'chalkler') ? "current": "") %>
               </li>
+              <li class="divider visible-xs"></li>
+              <li class="visible-xs">
+                <%= link_to "Learn#{ nav_badge_format { current_user.learn_menu_badge_count }}", learn_path,  class: (current_page?(learn_path) ? "current": "")  %>
+              </li>
+              <li class="visible-xs">
+                <%= link_to "Teach#{ nav_badge_format { current_user.teach_menu_badge_count }}", teach_path,  class: (current_page?(teach_path) ? "current": "") %>
+              </li>
             <% end %>
-            <li class="divider visible-xs"></li>
-            <li class="visible-xs">
-              <%= link_to "Learn#{ nav_badge_format { current_user.learn_menu_badge_count }}", learn_path,  class: (current_page?(learn_path) ? "current": "")  %>
-            </li>
-            <li class="visible-xs">
-              <%= link_to "Teach#{ nav_badge_format { current_user.teach_menu_badge_count }}", teach_path,  class: (current_page?(teach_path) ? "current": "") %>
-            </li>
           </ul>
         </div>
       </div>

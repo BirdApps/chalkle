@@ -697,10 +697,16 @@ body.v2 {
                   letter-spacing: 1px;
                   .small{
                     font-size: 0.7em; 
-                    margin: 5px 0 0px 0;
+                    margin: 5px 0 0 0;
                     font-weight: 700;
                     color: rgba(255,255,255,0.8);
-
+                    @media (max-width: 768px){
+                      color: #000;
+                      margin: 0px;
+                      line-height: 1em;
+                      position: absolute;
+                      right: 10px;
+                    }
                   }
                   .avatar64{
                     background: transparent;
