@@ -159,7 +159,7 @@ body.v2 {
     }
     li{
       @media screen and (max-width: $col-sm) {
-        line-height: 2.3em;
+        line-height: normal;
         &:hover {
           a{
             color: #000 !important;
@@ -679,7 +679,10 @@ body.v2 {
           .dropdown-menu{
             ul{
               z-index: 100;
-              min-width: 460px;
+              max-width: 100%;
+              @media (min-width: 768px){
+                min-width: 460px;
+              }
               transition: height 0.2s linear;
               max-height: 400px;
               overflow-y: scroll;
@@ -688,6 +691,7 @@ body.v2 {
                 font-size: 1.2em;
                 height: auto !important;
                 min-height: 65px !important;
+                position: relative;
                 a {
                   padding: 5px !important;
                   font-weight: 500;
@@ -695,12 +699,22 @@ body.v2 {
                   line-height: 1.3em !important;
                   overflow: hidden;
                   letter-spacing: 1px;
+                  .markdown{
+                    @media (max-width: 768px){
+                      margin-top: 10px;
+                    }
+                  }
                   .small{
                     font-size: 0.7em; 
-                    margin: 5px 0 0px 0;
+                    margin: 5px 0 0 0;
                     font-weight: 700;
                     color: rgba(255,255,255,0.8);
-
+                     @media (max-width: 768px){
+                      color: #000 ;
+                      margin: 0px;
+                      position: absolute;
+                      right: 10px;
+                    }
                   }
                   .avatar64{
                     background: transparent;
