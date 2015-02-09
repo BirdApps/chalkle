@@ -33,4 +33,20 @@ class ChannelAdmin < ActiveRecord::Base
     #TODO: email chalkler or non-chalkler to tell them they are an admin
   end
 
+  def self.csv_for(channel_admins)
+    fields_for_csv = %w{ id name email channel_name }
+    CSV.generate do |csv|
+      csv << fields_for_csv.map(&:to_s)
+
+      channel_admins.each do |channel_admin|
+        csv << fields_for_csv.map{ |field| channel_admin.send(field) }
+      end
+      
+    end
+  end
+
+  def channel_name
+    channel.name if channel
+  end
+
 end

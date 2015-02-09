@@ -65,7 +65,6 @@ class Course < ActiveRecord::Base
   before_validation :check_start_at
   before_validation :check_end_at
   before_validation :check_url_name
-  after_save :clear_ivars
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -116,6 +115,7 @@ class Course < ActiveRecord::Base
   before_save :end_at!
   after_save :expire_cache!
   before_save :check_teacher_cost
+  after_save :clear_ivars
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 
@@ -187,7 +187,7 @@ class Course < ActiveRecord::Base
     sprintf('%.2f', cost || 0)
   end
 
-  def status_color
+  def self.status_color(status)
     case status
       when "Processing"
         'warning'
@@ -200,6 +200,10 @@ class Course < ActiveRecord::Base
       when "Published"
         'success'
     end
+  end
+
+  def status_color
+    Course.status_color status
   end
 
   def repeating_class?
@@ -475,7 +479,7 @@ class Course < ActiveRecord::Base
 
   def bookings_for(chalkler)
     if bookings.any?
-      chalkler.bookings.visible & bookings
+      (chalkler.bookings.visible+chalkler.booker_only_bookings) & bookings
     else
       []
     end

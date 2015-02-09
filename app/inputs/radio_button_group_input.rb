@@ -1,6 +1,6 @@
 class RadioButtonGroupInput < SimpleForm::Inputs::Base
   def input(default_value="")
-    default_value = input_html_options[:options].first if input_html_options[:options].present? && default_value = ""
+    default_value = input_html_options[:options].first if input_html_options[:options].present? && default_value == ""
     output = "<div class='btn-group' data-toggle='buttons'>".html_safe
     options = input_html_options[:options]
     input_html_options.delete :options

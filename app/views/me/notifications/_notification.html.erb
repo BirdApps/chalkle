@@ -4,9 +4,9 @@
       <div class="img" style="background-image: url(<%= notification.image %>)">
       </div>
     </div>
-    <p class="small">
+    <span class="small">
       <%= quick_date_time notification.valid_from %>
-    </p>
+    </span>
     <%= to_html(notification.message) %>
   <% end %>
 </li>

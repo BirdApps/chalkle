@@ -13,6 +13,19 @@ class BookingMailer < BaseChalkleMailer
     end
   end
 
+  #for non chalklers
+  def booking_confirmation_to_non_chalkler(booking)
+    @booking = booking
+    @booker = booking.booker
+    @course = booking.course
+    mail(to: @booking.pseudo_chalkler_email,  subject: I18n.t("email.booking.confirmation.to_non_chalkler.subject", name: @booking.name, course_name: @course.name)) do |format| 
+      format.text { render layout: 'standard_mailer' }
+      format.html { render layout: 'standard_mailer' }
+    end
+  end
+
+
+
   def booking_confirmation_to_teacher(booking)
     @booking = booking
     @teacher = booking.teacher

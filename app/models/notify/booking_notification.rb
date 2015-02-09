@@ -34,12 +34,18 @@ class Notify::BookingNotification < Notify::Notifier
 
   end
 
+  #booked_in and booked_in_with_invite notificaiton for non chalklers
+  def booked_in
+    message = I18n.t('notify.booking.booked_in', course_name: booking.course.name, booker: booking.booker.name)
+    BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver! 
+  end
+
   def completed
     message = I18n.t('notify.booking.completed', course_name: booking.course.name)
 
     booking.chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 
-    BookingMailer.booking_completed(booking).deliver! if booking.chalkler.email_about? :booking_completed
+    BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver! if booking.chalkler.email_about? :booking_completed
   end
 
   def cancelled

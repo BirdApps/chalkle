@@ -9,6 +9,7 @@ gem 'entity_events'
 
 # Authentication
 gem 'devise',           '~> 2.2.4'
+gem 'devise_invitable'
 gem 'omniauth',         '~> 1.1.4'
 gem 'omniauth-meetup',  '~> 0.0.7'
 gem 'omniauth-facebook'
@@ -22,7 +23,7 @@ gem 'chronic',       '~> 0.9.0'
 
 gem 'airbrake',      '~> 4.1.0'
 gem 'analytical',    '~> 3.0.12'
-gem 'jquery-rails',  '~> 2.1.4'
+gem 'jquery-rails'
 gem 'active_attr',   '~> 0.7.0'
 gem 'dragonfly',     '~> 0.9.14'
 gem 'rack-cache', require: 'rack/cache'

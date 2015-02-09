@@ -1,0 +1,32 @@
+<% @page_title = "Create a password" %>
+
+
+<div class="row">
+
+  <% if (bookings = Booking.where(pseudo_chalkler_email: resource.email) ).any?  %> 
+    <div  class="col-xs-12 col-sm-6">
+      You have <%= bookings.count %> bookings waiting for you for the following classes:
+      <ul>
+        <% bookings.each do |booking| %> 
+          <li><%= link_to booking.course.name, course_url(booking.course) %> Invited by: <%= booking.booker.name %></li>
+        <% end %>
+      </ul>    
+    </div>
+  <% end %> 
+  <div class="col-xs-12 col-sm-6">
+    <div class="well">
+      <h3>Your account is almost ready</h3>
+      <sub> Just create a password to finalize your account</sub>
+
+      <%= bootstrap_form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f| %>
+        <%= devise_error_messages! %>
+        <%= f.hidden_field :invitation_token %>
+
+        <%= f.input :password %>
+        <%= f.input :password_confirmation %>
+
+        <%= f.submit t("devise.invitations.edit.submit_button"), class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -235,19 +235,13 @@
           <hr />
         </div>
           
-        <% unless f.object.has_bookings? %>
-         <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
-        <% else %>
-          <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', readonly: 'readonly' } %>
-        <% end %>
+        
+        <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
+
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
           <p class="small grey">
-            <% unless f.object.has_bookings? %>
-              How much will attendees pay to attend the class? This will include any material costs, etc.
-            <% else %>
-              Advertised price cannot be altered once bookings are made
-            <% end %>
+            How much will attendees pay to attend the class? This will include any material costs, etc.
           </p>
         </div>
 
@@ -267,7 +261,6 @@
               <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
             </div>
 
-            
             <div class="teaching_fee_wrapper">
               <%= f.input :teacher_cost, as: :currency, :label => "<strong class='teacher_fee_label'>Teacher Fee</strong>", wrapper: :horizontal, input_html: {:'data-error-message'=>'Specify the teacher fee', value: money_formatted(f.object.teacher_cost) || '0.00'} %>
               <div class="col-sm-5"></div>
@@ -311,7 +304,7 @@
           <p class="light">The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> will run</p>
           <p id="summary_times_summary"></p>
         </div>
-        <div class="row summary-part fee-summary">
+        <div class="row summary-part fee-summary" id="fee_summary" data-error-message="Minimum provider income must be a positive amount.">
           <div class="col-xs-6 text-right light teaching_cost">
             The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> is priced at:
           </div>
@@ -570,7 +563,10 @@
               </div>
               <% end %>
 
-              <a href="#submit" class="submit_btn col-xs-12 part_link btn btn-primary">Submit <span class="class_only">Class</span><span class="course_only">Course</span></a>
+              <a href="#submit" id="submit_btn" class="submit_btn col-xs-12 part_link btn btn-primary">
+                Submit <span class="class_only">Class</span><span class="course_only">Course</span>
+              </a>
+              
             </div>
             <div class="col-md-3">
             </div>

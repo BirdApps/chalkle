@@ -1,10 +1,10 @@
 class Payment < ActiveRecord::Base
-  attr_accessible :booking_id, :booking, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible, :cash_payment, :swipe_transaction_id, :swipe_status, :swipe_name_on_card, :swipe_customer_email, :swipe_currency, :swipe_identifier_id, :swipe_token, :as => :admin
+  attr_accessible :chalkler_id, :chalkler, :bookings, :xero_id, :xero_contact_id, :xero_contact_name, :date, :complete_record_downloaded, :total, :reconciled, :reference, :visible, :cash_payment, :swipe_transaction_id, :swipe_status, :swipe_name_on_card, :swipe_customer_email, :swipe_currency, :swipe_identifier_id, :swipe_token, :refunded, :as => :admin
 
-  belongs_to :booking
-  has_one :chalkler, through: :booking
-  has_one :course, through: :booking
+  has_many :bookings
+  has_many :courses, through: :bookings
 
+  belongs_to :chalkler #purchaser
   serialize :xero_data
 
   validates_uniqueness_of :xero_id, allow_nil: true
@@ -31,10 +31,6 @@ class Payment < ActiveRecord::Base
     @@xero ||= Xeroizer::PrivateApplication.new(@@xero_consumer_key, @@xero_consumer_secret, "#{Rails.root}/config/xero/privatekey.pem")
   end
 
-  def set_metadata
-    self.visible = true
-  end
-
   def self.load_all_from_xero
     transactions = Payment.xero.BankTransaction.all(where: {type: 'RECEIVE', is_reconciled: true})
     transactions.each do |t|
@@ -48,12 +44,61 @@ class Payment < ActiveRecord::Base
     end
   end
 
+  def channel_outgoing
+    c_out = bookings.confirmed.collect(&:channel_payment)
+    c_out.present? ? c_out.first : nil
+  end
+
+  def teacher_outgoing
+    t_out = bookings.confirmed.collect(&:teacher_payment)
+    t_out.present? ? t_out.first : nil
+  end
+
+  def outgoings
+    [channel_outgoing, teacher_outgoing].uniq.compact
+  end
+
+  def total
+    read_attribute(:total)-refunded
+  end
+
+  def inital_amount_paid
+    read_attribute(:total)
+  end
+
+  def refund!(booking)
+    if refundable? && bookings.confirmed.include?(booking)
+      self.refunded = self.refunded + booking.paid
+      save
+    end
+  end 
+
+  def refundable?
+    #Can only refund if the money hasn't already been given to channel and teacher
+    refundable = true
+    refundable = channel_outgoing.not_approved? if channel_outgoing.present?
+    refundable = teacher_outgoing.not_approved? if teacher_outgoing.present? && refundable
+    refundable
+  end
+
+  def course
+    courses.first if courses
+  end
+
+  def set_metadata
+    self.visible = true
+  end
+
   def complete_record_download
     transaction = Payment.xero.BankTransaction.find(xero_id)
     self.total = transaction.total
     self.complete_record_downloaded = true
     cash_payment = false
     save
+  end
+
+  def paid_per_booking
+    read_attribute(:total) / bookings.count
   end
 
 end

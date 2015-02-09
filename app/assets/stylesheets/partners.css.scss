@@ -105,7 +105,7 @@
     
   .navbar-brand{
     float:left;
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 767px){
       float:right;
     }
   }
@@ -518,7 +518,7 @@
         color: #E52541;
         line-height: 23px;
         
-        @media screen and (max-width: 768px){
+        @media screen and (max-width: 767px){
           background-size: 80% !important;
           padding: 20px 105px 155px 105px;
         }

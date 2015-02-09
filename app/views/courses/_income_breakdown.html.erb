@@ -10,6 +10,9 @@
         <%= link_to course_path(course.id), target: :blank do %>
           <div class="col-sm-3">
             <%= quick_date course.start_at %>
+            <span class="label label-<%= course.status_color %>">
+              <%= course.status %>
+            </span>
           </div>
           <div class="col-sm-2">
             <%= course.id %>
@@ -42,7 +45,9 @@
           <%= link_to ( current_user.super? ? sudo_booking_path(booking.id) : course_bookings_path(course.id)), class: 'clearfix', target: :blank do %>
             
             <div class="col-sm-3">
-              <%= quick_date booking.start_at %>
+              <span class="label label-<%= booking.status_color %>">
+                <%= booking.status_formatted %>
+              </span>
             </div>
             <div class="col-xs-2">
               <%= booking.id %>
