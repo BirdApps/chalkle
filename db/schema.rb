@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20141222212237) do
-=======
 ActiveRecord::Schema.define(:version => 20150209012643) do
->>>>>>> dev
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -59,14 +55,11 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.text     "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
-<<<<<<< HEAD
-=======
     t.text     "custom_fields"
     t.integer  "payment_id"
     t.string   "pseudo_chalkler_email"
     t.integer  "booker_id"
     t.boolean  "invite_chalkler"
->>>>>>> dev
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -114,9 +107,6 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.string   "address"
     t.string   "avatar"
     t.string   "role"
-<<<<<<< HEAD
-    t.string   "location"
-=======
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -124,7 +114,7 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
->>>>>>> dev
+    t.string   "location"
   end
 
   add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true
