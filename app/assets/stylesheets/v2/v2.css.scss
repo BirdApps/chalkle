@@ -569,6 +569,9 @@ body.v2 {
     }
     .navbar-fixed-top{
       border-width: 0px;
+      @media screen and (max-width: $col-sm) {
+        position: absolute;
+      }
     }
     .navbar {
       font-size: 20px;
@@ -803,6 +806,7 @@ body.v2 {
       background-color: rgba(255, 255, 255, 0.82);
       @media screen and (max-width: $col-sm) {
         top: 68px;
+        position: absolute;
       }
       .search-wrapper {
         @media screen and (max-width: $col-sm) {
