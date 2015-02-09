@@ -433,7 +433,7 @@ class Course < ActiveRecord::Base
   end
 
   def teacher_min_income
-    if min_attendee.present?
+    if teacher_pay_variable.present? && min_attendee.present?
       teacher_pay_variable * min_attendee
     else
       0
