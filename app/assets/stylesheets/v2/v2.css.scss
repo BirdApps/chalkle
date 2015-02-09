@@ -62,9 +62,11 @@ html {
   position: relative;
   min-height: 100%;
   height: auto;
+  overflow-x: hidden;
 }
 
 body.v2 {
+  overflow-x: hidden;
   margin-bottom: 52px;
   height: auto;
   color: #727272;
