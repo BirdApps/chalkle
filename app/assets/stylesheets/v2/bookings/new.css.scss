@@ -99,6 +99,22 @@
 	}
 	.attendee {
 		display: none;
+		.check_boxes{
+			>label{
+				display:block;
+			}
+			.checkbox {
+				padding-top: 0px;
+				float: left;
+				padding-right: 30px;
+			}
+		}
+		
+		select {
+			min-width: 150px;
+			padding: 5px 10px;
+			display: block;
+		}
 	}
 }
 
