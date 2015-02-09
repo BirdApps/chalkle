@@ -148,7 +148,7 @@ Chalkle::Application.routes.draw do
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
   #match '/image' => 'image#generate'
-
+  get 'chalklers' => redirect("/")
 
   %w(blog).each do |name|
 #  %w(welcome about blog learn).each do |name|
