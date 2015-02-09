@@ -14,7 +14,7 @@ class Teaching
   validates :repeat_count, presence: true, if: :repeating?
   validates :repeat_frequency, presence: true, if: :repeating?
 
-  CUSTOM_FIELD_TYPES = [{key: 'string', value: 'Text - Single line'}, {key: 'text', value: 'Text - Multiple lines'}, { key: 'radio_buttons', value: 'Options - Single selection'}, { key: 'check_boxes', value: 'Options - Multiple selections'}]
+  CUSTOM_FIELD_TYPES = [{key: 'string', value: 'Text - Single line'}, {key: 'text', value: 'Text - Multiple lines'}, { key: 'select', value: 'Options - Single selection'}, { key: 'check_boxes', value: 'Options - Multiple selections'}]
 
   def self.custom_field_name(type)
     CUSTOM_FIELD_TYPES.select{|s| s[:key] == type}.first[:value] if CUSTOM_FIELD_TYPES.select{|s| s[:key] == type}.present?
@@ -331,7 +331,7 @@ class Teaching
       valid_fields = []
       fields = JSON.parse fields
       fields.each do |f|
-        if f['type'] == 'radio_buttons' || f['type'] == 'check_boxes'
+        if f['type'] == 'radio_buttons' || f['type'] == 'select' || f['type'] == 'check_boxes'
           valid_fields << {
                             type: f['type'],
                             prompt: f['prompt'],
