@@ -5,7 +5,7 @@ class Chalkler < ActiveRecord::Base
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :omniauth_providers => [:facebook, :meetup]
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :invitable, :omniauth_providers => [:facebook, :meetup]
 
   attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
   attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :role, :as => :admin
@@ -22,6 +22,7 @@ class Chalkler < ActiveRecord::Base
   has_many :subscriptions
   has_many :channel_teachers
   has_many :bookings
+  has_many :booker_only_bookings, class_name: 'Booking', foreign_key: :booker_id
   has_many :channel_admins
   has_many :notifications
   has_many :sent_notifications, class_name: 'Notification', foreign_key: :from_chalkler_id
@@ -44,8 +45,11 @@ class Chalkler < ActiveRecord::Base
 
   after_create :create_channel_associations
   after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }
-  after_create -> (chalkler) { Notify.for(chalkler).welcome }
-  
+  after_create -> (chalkler) { Notify.for(chalkler).welcome unless chalkler.invited_to_sign_up? }
+  after_invitation_accepted -> (chalkler) { 
+    chalkler.join_psuedo_identities!
+    Notify.for(chalkler).welcome } 
+
   scope :visible, where(visible: true)
   scope :with_email_region_id, 
     lambda {|region| 
@@ -62,6 +66,7 @@ class Chalkler < ActiveRecord::Base
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
   before_create :set_reset_password_token
+  before_validation :ensure_notification_preference
 
   def super?
     role == 'super'
@@ -76,8 +81,10 @@ class Chalkler < ActiveRecord::Base
   end
 
   def join_psuedo_identities!
+    #TODO: make them method run on verify email, rather than on sign up
     ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+    Booking.where(pseudo_chalkler_email: email, invite_chalkler: true).update_all(chalkler_id: id)
   end
 
   def upcoming_teaching
@@ -154,6 +161,7 @@ class Chalkler < ActiveRecord::Base
       chalkler = self.new
       chalkler.name = identity.name
       chalkler.email = identity.email
+      chalkler.notification_preference = NotificationPreference.create
       chalkler.password = Devise.friendly_token[0,20]
       chalkler.identities << identity
       chalkler
@@ -194,7 +202,7 @@ class Chalkler < ActiveRecord::Base
     assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
 
-  def avialable_notifications
+  def available_notifications
     _available_notifications = { chalkler: NotificationPreference::CHALKLER_OPTIONS }
     if teacher?
       _available_notifications[:teacher] = NotificationPreference::TEACHER_OPTIONS
@@ -231,7 +239,10 @@ class Chalkler < ActiveRecord::Base
       valid_till:         valid_till,
       chalkler:           self
     }
-    Notification.create notification, as: :admin
+
+    #save only if not a duplicate of unread notification
+    Notification.create(notification, as: :admin) unless notifications.where(viewed_at: nil, href: notification[:href], message: notification[:message]).present?
+    
   end
 
   def first_name
@@ -246,6 +257,11 @@ class Chalkler < ActiveRecord::Base
   end
 
   private
+
+    def ensure_notification_preference
+      self.notification_preference = NotificationPreference.create unless notification_preference.present?
+    end
+
 
     # for Chalklers created outside of meetup
     def set_reset_password_token

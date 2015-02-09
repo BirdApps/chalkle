@@ -1,155 +1,83 @@
-require "capistrano-rbenv"
-require "bundler/capistrano"
-require 'hipchat/capistrano'
-# require 'capistrano-unicorn'
+# config valid only for current version of Capistrano
+lock '3.3.5'
+
+set :application, 'chalkle'
+set :repo_url, "git@github.com:enspiral/#{fetch(:application)}.git"
+
+set :user, fetch(:application)
 
 set :bundle_flags, "--deployment --quiet --binstubs"
 
-
-set :default_environment, {
-  'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
-}
-
 set :rbenv_ruby_version, "2.1.5"
-
-default_run_options[:pty] = true
-ssh_options[:forward_agent] = true
 set :rbenv_setup_default_environment, false
 
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
-set :application, "chalkle"
-set :repository,  "git@github.com:enspiral/#{application}.git"
-set :user,        application
-set :rake, "bundle exec rake"
+set :deploy_to, "/apps/#{fetch(:application)}/#{fetch(:stage)}"
 
-set :use_sudo,    false
-set :scm, :git
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
-set :whenever_command, "bundle exec whenever"
-set :whenever_environment, defer { rails_env }
-set :whenever_identifier, defer { "#{application}_#{rails_env}" }
+# Default deploy_to directory is /var/www/my_app_name
+# set :deploy_to, '/var/www/my_app_name'
 
-set :hipchat_token, "LtCXRyFQRGwiDiiAO9G7H74dBRCpMoXhrO0xM82p"
-set :hipchat_room_name, "Chalkle"
-set :hipchat_announce, true # notify users?
-set :hipchat_options, {
-  :api_version  => "v2" # Set "v2" to send messages with API v2
-}
-set :hipchat_color, 'yellow' #normal message color
-set :hipchat_success_color, 'green' #finished deployment message color
-set :hipchat_failed_color, 'red' #cancelled deployment message color
-set :hipchat_message_format, 'html' # Sets the deployment message format, see https://www.hipchat.com/docs/api/method/rooms/message
-set :hipchat_commit_log, true
-# Optional
-set :hipchat_commit_log_message_format, "^CHAL-\d+" # extracts ticket number from message
+# Default value for :scm is :git
+# set :scm, :git
+
+# Default value for :format is :pretty
+# set :format, :pretty
+
+# Default value for :log_level is :debug
+# set :log_level, :debug
+
+# Default value for :pty is false
+# set :pty, true
 
 
-task :staging do
-  set :domain,    "chalklestaging.cloudapp.net"
-  set :branch,    "staging"
-  set :rails_env, "staging"
-  set :deploy_to, "/apps/chalkle/staging"
-  set :bundle_without, [:development, :test]
+set :rbenv_type, :system # or :system, depends on your rbenv setup
+set :rbenv_ruby, '2.1.5'
+set :rbenv_custom_path, '/home/chalkle/.rbenv'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all # default value
 
-  role :web, domain
-  role :app, domain
-  role :db,  domain, :primary => true
-end
 
-task :production do
-  set :domain,    "chalkleprod.cloudapp.net"
-  set :branch,    "master"
-  set :rails_env, "production"
-  set :deploy_to, "/apps/chalkle/production"
-  set :bundle_without, [:development, :test]
 
-  role :web, domain
-  role :app, domain
-  role :db,  domain, :primary => true
-end
+
+# Default value for :linked_files is []
+set :linked_files, fetch(:linked_files, []).push('config/database.yml')
+
+# Default value for linked_dirs is []
+set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'tmp/dragonfly')
+
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+
+# Default value for keep_releases is 5
+set :keep_releases, 5
+
+
+
 
 namespace :deploy do
-  task :start do ; end
-  task :stop do ; end
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "touch #{File.join(current_path,'tmp','restart.txt')}"
+
+  after   :starting, 'slack:deploy_starts'
+  after :publishing, 'slack:deploy_complete'
+  after :publishing, 'airbrake:deploy'
+
+  before :publishing, 'unicorn:stop'
+  after :publishing, :restart
+
+
+  task :restart do
+    invoke 'unicorn:start'
   end
 
-  task :symlink_configs do
-    run %( cd #{release_path} &&
-      ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml
-    )
-  end
-end
 
-namespace :assets do
-  task :precompile, :roles => :web do
-    run "cd #{release_path} && RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
-  end
-
-  task :cleanup, :roles => :web do
-    run "cd #{release_path} && RAILS_ENV=#{rails_env} bundle exec rake assets:clean"
-  end
-end
-
-namespace :dragonfly do
-  desc "Symlink the Rack::Cache files"
-  task :symlink, :roles => [:app] do
-    run "mkdir -p #{shared_path}/tmp/dragonfly && ln -nfs #{shared_path}/tmp/dragonfly #{release_path}/tmp/dragonfly"
-  end
-end
-
-namespace :chalkle do 
-  desc "migrate images"
-  task :migrate_images, :roles => [:app] do 
-    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake chalkle:migrate_images"
-  end
-  desc "clear_chaches" 
-  task :clear_caches, :roles => [:app] do 
-    run 'cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake chalkle:expire_caches'
-  end
-end
-
-
-namespace :slack do 
-  desc "slack"
-  task :deploy_starts, :roles => [:app] do 
-    message = HTTParty.post "https://hooks.slack.com/services/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", body: {
-        username: "Deploy Boy",
-        icon_emoji: ":rooster:",
-        text: "Deploy to #{rails_env} has begun!"
-      }.to_json,  :headers => { 'Content-Type' => 'application/json' }
-
-  end
-  task :deploy_complete, :roles => [:app] do 
-    message = HTTParty.post "https://hooks.slack.com/services/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", body: {
-        username: "Deploy Boy",
-        icon_emoji: ":rooster:",
-        text: "Successfully deployed to #{rails_env}"
-      }.to_json,  :headers => { 'Content-Type' => 'application/json' }
-
+  after :restart, :clear_cache do
+    on roles(:app), in: :groups, limit: 3, wait: 10 do
+      invoke "chalkle:clear_caches"
+    end
   end
 
 end
-
-after "deploy:update_code", "dragonfly:symlink", "deploy:symlink_configs", "deploy:migrate"
-after "deploy:update", "deploy:cleanup"
-after "deploy", "unicorn:restart"
-
-before 'deploy', 'slack:deploy_starts'
-after 'deploy', 'slack:deploy_complete'
-
-
-namespace :unicorn do 
-  desc "unicorn things"
-  task :restart, :roles => :app do 
-    run "#{sudo} service unicorn restart"
-  end
-end
-
-
-require './config/boot'
-load 'deploy/assets'
-require 'bundler/capistrano'
-require 'airbrake/capistrano'
-require 'whenever/capistrano'

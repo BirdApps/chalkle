@@ -6,11 +6,13 @@
 
 # Ignore bundler config
 /.bundle
+logfile
 
 /config/database.yml
 /vendor/bundle
 /public/system
 /public/uploads
+/public/assets
 /bin
 /coverage
 

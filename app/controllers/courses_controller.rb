@@ -5,7 +5,6 @@ class CoursesController < ApplicationController
   before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
   before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status] 
-
   def index
    
   end
@@ -128,6 +127,7 @@ class CoursesController < ApplicationController
     @page_subtitle = "Use chalkle to"
     @page_title =  "Learn"
     @meta_title = "Learn with "
+    @show_header = false unless chalkler_signed_in?
     @upcoming_courses = current_user.courses
     render 'learn'
   end

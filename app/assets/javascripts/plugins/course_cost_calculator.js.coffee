@@ -66,7 +66,7 @@ class LessonCostCalculator
   _sourceData: ->
     result = {}
     for field_name in @input_field_names
-      result[field_name] = @fields[field_name].attr('value')
+      result[field_name] = @fields[field_name].val()
     result
 
   _inputFields: ->

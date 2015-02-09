@@ -6,7 +6,7 @@ class Course < ActiveRecord::Base
   GST = 0.15
 
   attr_accessible *BASIC_ATTR = [
-    :name, :status, :visible, :course_type, :teacher_id, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at
+    :name, :status, :visible, :course_type, :teacher_id, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at, :custom_fields
   ]
 
   #chalkle fee is saved exclusive of GST
@@ -40,6 +40,8 @@ class Course < ActiveRecord::Base
 
   accepts_nested_attributes_for :lessons
 
+  serialize :custom_fields
+
   [:teacher, :channel, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
 
   delegate :best_colour_num, to: :category, allow_nil: true
@@ -63,7 +65,6 @@ class Course < ActiveRecord::Base
   before_validation :check_start_at
   before_validation :check_end_at
   before_validation :check_url_name
-  after_save :clear_ivars
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
@@ -112,6 +113,7 @@ class Course < ActiveRecord::Base
   before_save :end_at!
   after_save :expire_cache!
   before_save :check_teacher_cost
+  after_save :clear_ivars
 
   def self.upcoming(limit=nil, options={:include_unpublished => false})
     unless options[:include_unpublished] 
@@ -191,7 +193,7 @@ class Course < ActiveRecord::Base
     end
   end
 
-  def status_color
+  def self.status_color(status)
     case status
       when "Processing"
         'warning'
@@ -204,6 +206,10 @@ class Course < ActiveRecord::Base
       when "Published"
         'success'
     end
+  end
+
+  def status_color
+    Course.status_color status
   end
 
   def repeating_class?
@@ -479,7 +485,7 @@ class Course < ActiveRecord::Base
 
   def bookings_for(chalkler)
     if bookings.any?
-      chalkler.bookings.visible & bookings
+      (chalkler.bookings.visible+chalkler.booker_only_bookings) & bookings
     else
       []
     end
@@ -574,6 +580,13 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def name=(name) 
+    write_attribute :name, name 
+    if status == STATUS_3 #draft
+      set_url_name
+    end
+  end
+    
   private
     def clear_ivars
       @channel_income_with_tax = nil
@@ -633,6 +646,7 @@ class Course < ActiveRecord::Base
     def check_start_at
       self.start_at = first_lesson.start_at if first_lesson.present?
     end
+
 
     def set_url_name
       self.url_name = name.parameterize

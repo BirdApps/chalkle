@@ -1,19 +1,142 @@
-<p><%= @course.do_during_class %></p>
-<div class="new_form_wrapper row">
-  <div class="col-md-2 hidden-xs">
-  </div> 
-  <div class="col-md-8 col-xs-12">
+<div class="new_form_wrapper new_booking">
+  <div class="col-xs-12">
+    <p><%= to_html @course.do_during_class %></p>
+    <br />
+    <p class="light center">
+      <% if @course.cost? && @course.cost > 0 %>
+        <span class="x1-25">$<%= @course.cost_formatted %></span> per attendee
+      <% else %>
+        This <%= @course.type %> is <strong>free to attend</strong>  
+      <% end %>
+    </p>
     <div class="fancy-header">
-      <h3>Booking for <%= current_user.name %></h3>
+      <h3>New Booking</h3>
       <hr />
-    </div>  
-    <%= bootstrap_form_for(@booking, url: course_bookings_path, html: { method: :post, class: 'form-horizontal', role: 'form'}) do |f| %>
-      <%= render partial: 'form', locals: { f: f } %>
-    <% end %>
+    </div> 
+    <div id="booking_names">
+      <div class="col-xs-12 col-sm-4">
+        <ol></ol>
+      </div>
+    </div>
+    <input type="hidden" id="current_user_name" value="<%= current_user.name %>" />
+    <div class="col-xs-12 col-sm-8">
+     
+      <%= bootstrap_form_for(@booking_set, url: course_bookings_path, html: { method: :post, class: 'form-horizontal', role: 'form'}) do |f| %>   
+        <div class="row">
+
+          <div class="part-form parts col-xs-12">
+            <%= f.error_notification %>
+            <div id="attendees" class="col-xs-12">
+              <% f.object.bookings.unshift(Booking.new) %>
+              <% template_done = false %>
+              <% f.object.bookings.each do |booking| %>
+                <% unless template_done %>
+                  <div id="attendee_template">
+                <% end %>
+                  <div class="attendee">
+                    <%= f.fields_for "bookings[]", booking do |bf| %>
+                    
+                      <%= bf.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
+
+                      <%= bf.input :name, as: :string, label: '<span class="small light grey">Attendee Name</small>', input_html: { class: 'form-control booking_names' } %>
+                      
+                      <%= bf.input :email, as: :string, label: '<span class="small light grey">Email (optional)</small>', input_html: { class: 'form-control email_input' } %>
+
+                      <div class="form-group booking-email-info" style="display:none;">
+                        <small class=''>We found a user with this account. This booking will be transferred to them automatically.</small>
+                      </div>
+
+                      <%# bf.input :invite_chalkler, as: :check_boxes, label: '<span class="small light grey">Invite this attendee to chalkle. This booking will be transferred to them when they sign up.</span>', class: 'form-control invite_chalkler', style: "display:none;" %>
+
+                      <div class="form-group check_boxes optional booking_set_bookings_invite_chalkler">
+                        <label class="check_boxes optional" for="booking_set_bookings__invite_chalkler">
+                          <input class="check_boxes optional" id="booking_set_bookings__invite_chalkler" name="booking_set[bookings][][invite_chalkler]" type="checkbox" value="true" checked=true>
+                          <span class="small light grey">Invite this attendee to chalkle. This booking will be transferred to them when they sign up.</span>
+                        </label>
+                      </div>
+
+                      <% if @course.custom_fields %>
+                        <% @course.custom_fields.each do |field| %>
+                          <% name_append = field[:type] == 'check_boxes' ? "[]" : ""  %>
+                          <%= bf.input :custom_fields, 
+                              input_html: { 
+                                class: ( field[:type] == 'string' || field[:type] == 'text' ? 'form-control' : ''),
+                                name: "booking_set[bookings][][custom_fields][][#{field[:prompt]}]#{name_append}",
+                                value: bf.object.custom_fields.is_a?(Hash) ? bf.custom_fields[field[:prompt]] : "" },
+                              as: field[:type],
+                              label: field[:prompt],
+                              collection: field[:options],
+                              checked: bf.object.custom_fields.is_a?(Hash) ? bf.custom_fields[field[:prompt]] : "" %>
+                        <% end %>
+                      <% end #if custom_fields %>
+
+                    <% end #fields_for %>
+                    
+
+                  </div>
+                <% unless template_done %>
+                  </div>
+                  <% template_done = true %>
+                <% end %>
+              <% end #each booking %>
+
+            </div>
+            <div class="text-right">
+              <div class="continue btn btn-primary">Continue</div>
+            </div>
+          </div>
+
+          <div class="part-summary parts col-xs-12">
+
+            <div id="booking-summary" data-cost="<%= @course.cost %>">
+              <strong class="total-cost"></strong> <span class="booking-count"></span> x <%= @course.name %>      
+            </div>
+            <br /><br />
+            <div class="form-group col-xs-12 text optional booking_set_bookings_note_to_teacher">
+              <label class="text optional" for="booking_set_bookings__note_to_teacher">
+                <span class="small light grey">Note for <%= @course.channel.name %></span>
+              </label>
+              <textarea class="text optional form-control" cols="40" id="booking_set_bookings__note_to_teacher" name="note_to_teacher" rows="20" placeholder="Additional information about your booking for the provider."></textarea>
+              <br />
+            </div>
+
+            <div class="center">
+              <% if policy(@course).admin? && @course.paid? %>
+                <div class="alert-danger alert clearfix">
+                  <div class="light small col-xs-6">
+                    Admin options
+                  </div>
+                  <div class="checkbox col-xs-6">
+                    <label id="wavefees">
+                      <input type="checkbox" id="wavefees" name="remove_fees" value="1" />
+                      <span style="position:relative; bottom:10px;">Waive fees</span>
+                    </label>
+                  </div>
+                </div>
+              <% end #policy %>
+              
+              
+              <div class="checkbox col-xs-12">
+                <label id="teaching_agreeterms" data-error-message="You must agree to the terms and conditions to continue">
+                  <input type="checkbox" id="booking_terms_and_conditions" value="1" />
+                  <span style="position:relative; bottom:10px;"> I agree to the <a data-toggle="modal" href="#termsModal">Terms and Conditions</a></span>
+                </label>
+              </div>
+              <br />
+
+              <%= f.submit (@course.free? ? "Complete Booking" : "Purchase"), class: 'btn btn-primary col-xs-12 col-sm-8 col-sm-offset-2' %>
+              
+              <br /><br />
+              
+              <div class="btn btn-default back col-xs-12 col-sm-8 col-sm-offset-2">Back</div>
+
+            </div>
+          </div>
+        </div>
+      <% end #form %>
+
+    </div>
   </div>
-  <div class="col-md-2 hidden-xs">
-  </div>
-</div>
 
 </div>
 <%= render 'terms' %>

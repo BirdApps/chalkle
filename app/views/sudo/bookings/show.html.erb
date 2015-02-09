@@ -8,7 +8,7 @@
 </div>
 <br />
 <div>
-  <%= "Paid: $"+@booking.paid.to_s %>
+  <%= "Paid: $"+@booking.paid_formatted %>
 </div>
 <div>
   <br />
@@ -25,17 +25,17 @@
 <div>
   <br />
   <% if @booking.payment %>
-    <%= link_to 'Learner Payment $'+@booking.payment.total.to_s, sudo_payment_path(@booking.payment.id), class: 'btn btn-default' %>
+    <%= link_to 'Learner Payment $'+@booking.paid_formatted, sudo_payment_path(@booking.payment.id), class: 'btn btn-default' %>
   <% else %>
     <button disabled="disabled" class="btn btn-danger">! No Payment</button>
   <% end %>
   <% if @booking.channel_payment %>
-    <%= link_to 'Channel Payment $'+@booking.channel_payment.total.to_s, sudo_outgoing_payment_path(@booking.channel_payment), class: 'btn btn-default' %>
+    <%= link_to 'Channel Payment $'+money_formatted(@booking.channel_payment.total), sudo_outgoing_payment_path(@booking.channel_payment), class: 'btn btn-default' %>
   <% else %>
     <button disabled="disabled" class="btn btn-danger">No Channel Payment</button>
   <% end %>
   <% if @booking.teacher_payment %>
-    <%= link_to 'Teacher Payment $'+@booking.channel_payment.total.to_s, sudo_outgoing_payment_path(@booking.teacher_payment), class: 'btn btn-default' %>
+    <%= link_to 'Teacher Payment $'+money_formatted(@booking.teacher_payment.total), sudo_outgoing_payment_path(@booking.teacher_payment), class: 'btn btn-default' %>
   <% else %>
     <button disabled="disabled" class="btn btn-danger">No Teacher Payment</button>
   <% end %>

@@ -6,14 +6,6 @@ class BookingPolicy < ApplicationPolicy
     @booking = booking
   end
 
-  def edit?
-     admin?
-  end
-
-  def update?
-    admin?
-  end
-
   def admin?
     @user.channel_teachers.where(id: @booking.course.teacher_id).present? or @user.channel_admins.where(channel_id: @booking.course.channel_id).present? or @booking.chalkler == @user.chalkler or @user.super?
   end
@@ -26,8 +18,20 @@ class BookingPolicy < ApplicationPolicy
     admin?
   end
 
+  def take_rights?
+    @user == @booking.booker
+  end
+
   def cancel?
     admin?
+  end
+
+  def take_rights
+    @user == @booking.booker
+  end
+
+  def csv
+    
   end
 
 end

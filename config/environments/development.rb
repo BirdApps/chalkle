@@ -46,7 +46,7 @@ Chalkle::Application.configure do
 
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-    :address => '127.0.0.1',
+    :address => 'localhost',
     :port => '1025'
   }
 end

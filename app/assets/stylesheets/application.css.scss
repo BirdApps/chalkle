@@ -1,3 +1,6 @@
+/*
+	*= require_tree ./v2
+*/
 @import "_variables";
 @import "twitter/bootstrap";
 @import "font-awesome";
@@ -7,14 +10,14 @@
 @import "bootstrap3-forms";
 @import "forms";
 @import "tabs";
-@import "bookings";
 @import "modules/chalklers";
 @import "front_end/front_end";
 @import "partners";
 @import "chalklers";
 @import "bootstrap-datepicker3";
 @import "plugins/bootstrap-timepicker";
-@import "v2";
+@import "plugins/bootstrap-tagsinput";
+
 
 .center {
   text-align: center;

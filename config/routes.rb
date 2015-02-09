@@ -6,7 +6,7 @@ Chalkle::Application.routes.draw do
   match '(*any)' => redirect { |p, req| req.url.sub!('my.', '') } , :constraints => { :host => /^my\./ }
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
 
-  devise_for :chalklers, controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations' }
+  devise_for :chalklers, controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations', invitations: 'invitations' }
   
   constraints(Subdomain) do
     match '/' => 'channels#show'
@@ -51,10 +51,11 @@ Chalkle::Application.routes.draw do
       get 'delete/:id', to: 'course_notices#destroy', as: :delete
     end
     
-    resources :bookings do
+    resources :bookings, only: [:index, :show, :new, :create] do
       get :payment_callback
       collection { get 'csv' }
       member do
+        get 'take_rights'
         get 'cancel'
         put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
       end
@@ -103,11 +104,13 @@ Chalkle::Application.routes.draw do
 
     resources :chalklers do
       member do
+        get 'become' => 'chalklers#become'
         post 'become' => 'chalklers#become'
       end
 
       collection do
         get 'notifications'
+        get 'csv'
       end
     end
     
@@ -147,7 +150,7 @@ Chalkle::Application.routes.draw do
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
   #match '/image' => 'image#generate'
-
+  get 'chalklers' => redirect("/")
 
   %w(blog).each do |name|
 #  %w(welcome about blog learn).each do |name|

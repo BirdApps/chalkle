@@ -1,6 +1,8 @@
 en-NZ:
   notify:
     booking:
+      booked_in: "You have a new booking for **%{course_name}**. The booking was made for you by **%{booker}**"
+      booked_in_with_invite: "You have a new booking for **%{course_name}**. The booking was made for you by **%{booker}**."
       refund: "**full refund** will be made shortly."
       completed: "We hope you enjoyed **%{course_name}**!"
       reminder: "**%{course_name}** is coming up shortly. Check the class notices for any important info you might need."
@@ -8,5 +10,5 @@ en-NZ:
         to_chalkler: "Your booking for **%{course_name}** has been **cancelled**. %{refund}"
         to_teacher: "Cancelled booking on **%{course_name}** for **%{from_name}**"
       confirmation: 
-        to_chalkler: "You are booked in for **%{course_name}**"
+        to_chalkler: "You have a new booking for **%{course_name}**"
         to_teacher: "New booking on **%{course_name}** for **%{from_name}**"

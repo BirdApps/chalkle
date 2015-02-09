@@ -21,10 +21,10 @@
     <div id="fb-root"></div>
     <header>
       <%= render 'layouts/navigation' %>
-      <%= render 'layouts/header' %>
+      <%= render 'layouts/header' if show_header? %>
     </header>
     <div id="wrapper">
-      <div class="container" role="main">
+      <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
         <%= render 'layouts/messages' %>
         <%= yield %>
       </div>
@@ -51,6 +51,6 @@
        }(document, 'script', 'facebook-jssdk'));
     </script>
     <%= typekit_includes %>
-    <%= analytics_init if Rails.env.production? %>
+    <%= analytics_init if Rails.env.production? && !current_user.super? %>
   </body>
 </html>

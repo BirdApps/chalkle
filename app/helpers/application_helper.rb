@@ -26,7 +26,7 @@ module ApplicationHelper
   end
   
   def typekit_includes
-    render 'layouts/typekit_includes' unless Rails.env.development?
+    render 'layouts/typekit_includes'
   end
 
   def analytics_init
@@ -50,6 +50,16 @@ module ApplicationHelper
     end
   end
 
+  def show_header?
+    return false if request[:controller] =~ /sessions/
+    true
+  end
+
+  def fluid_layout? 
+    return true if request[:controller] =~ /sessions/
+    false
+  end
+
   def truncate(string, length=16)
     return unless string
     truncated = string.split[0..string[0..length].split(" ").count-1].join(" ")
@@ -63,7 +73,7 @@ module ApplicationHelper
 
   def to_html(markdown)
     return "" if markdown == nil 
-    ("<div class='markdown'>#{RDiscount.new(markdown).to_html}</div>").html_safe
+    "<div class='markdown'>#{markdown.to_html}</div>".html_safe
   end
 
 
