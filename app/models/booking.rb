@@ -96,7 +96,11 @@ class Booking < ActiveRecord::Base
   serialize :custom_fields
 
   def custom_fields_merged
-    custom_fields.map{|cf| cf if cf.is_a? Hash }.compact.reduce Hash.new, :merge
+    if custom_fields.present?
+      custom_fields.map{|cf| cf if cf.is_a? Hash }.compact.reduce Hash.new, :merge
+    else
+      Hash.new
+    end
   end
 
   def paid
