@@ -13,8 +13,8 @@ class Sudo::MetricsController < Sudo::BaseController
     end
 
     @month = month
-    @bookings_chart = new_bookings_chart
-    @signups_chart = new_chalkers_chart
+    @bookings_chart = new_bookings_chart(month)
+    @signups_chart = new_chalkers_chart(month)
     @courses_chart = new_courses_chart(month)
 
     @course_stats = {
@@ -31,7 +31,8 @@ class Sudo::MetricsController < Sudo::BaseController
     }
 
     @provider_stats = {
-      total: Channel.all.count
+      total: Channel.all.count,
+      created: Channel.where(created_at: month.first_day..month.last_day).count
     }
 
     @chalkler_stats = {
