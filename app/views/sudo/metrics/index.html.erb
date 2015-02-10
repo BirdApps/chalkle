@@ -3,130 +3,82 @@
   <%= javascript_include_tag "sudo" %>
 <% end %>
 
-<div class="row">
+<div id="metrics-filters">
+  <h3 id="current_month"><%= @month.first_day.strftime("%B, %Y") %></h3>
+  <span class="light">Change Month</span>
+  <input class="typeahead form-control" id="month_select" type="text" placeholder="Month, Year">
+</div>
+<hr />
 
-  <h4 class="text-center">Courses</h4>
-
-  <div class="col-sm-3 col-xs-12 text-center">
-      <div>
-        <small>Courses Run</small>
-        <h2><%= @course_stats[:total] %></h2>
-      </div>
-      <div>
-        <small>Total</small>
-        <h2></h2>
-    </div>
-  </div>
-
-  <div class="col-sm-9 col-xs-12 text-center">
-
-    <%= high_chart 'Courses', @courses_chart %>
-  </div>
+<div id="overview">
 </div>
 
+<script>
+  $(function(){
 
+    var months = [
+      <% (Date.new(2012,7,1)..Date.current).map{|d| Month.new(d.year,d.month) }.uniq.each do |month| %>
+        {value: '<%= month.first_day.strftime("%Y-%m-%d") %>', name: '<%= month.first_day.strftime("%B, %Y") %>'},
+      <% end %>
+    ];
 
-<div class="row">
-  <div class="col-sm-3 col-xs-12 text-center">
-    <h4>Providers</h4>
-    <div>
-      <small>Total</small>
-      <h2><%= @provider_stats[:total] %></h2>
-    </div>
-  </div>
-  <div class="col-sm-3 col-xs-12 text-center">
+    function init_typeahead(){
+      var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+          var matches, substrRegex;
+       
+          // an array that will be populated with substring matches
+          matches = [];
+       
+          // regex used to determine if a string contains the substring `q`
+          substrRegex = new RegExp(q, 'i');
+       
+          // iterate through the pool of strings and for any string that
+          // contains the substring `q`, add it to the `matches` array
+          $.each(strs, function(i, str) {
+            if (substrRegex.test(str.name)) {
+              // the typeahead jQuery plugin expects suggestions to a
+              // JavaScript object, refer to typeahead docs for more info
+              matches.push({ name: str.name , value: str.value });
+            }
+          });
+          cb(matches);
+        };
+      };
+       
+      $('#metrics-filters .typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+      },
+      {
+        name: 'months',
+        displayKey: 'name',
+        valueKey: 'value',
+        source: substringMatcher(months)
+      });
+    }
 
-    <h4>Chalklers</h4>
+    function load_overview(){
+      var selected = $("#month_select").typeahead('val');
+      var val = months.filter(function(month){ return month.name == selected});
+      var data = {}
+      if(val.length > 0){
+        data = { month: val[0].value};
+      }
+      $("#overview").html("Loading...");
+      $.post("<%= overview_sudo_metrics_path %>", data , function(view){
+        $("#overview").html(view);
+        $("#current_month").text($('#hidden_current_month').val());
+      });
+    }
 
-    <div>
-      <small>Total</small>
-      <h2><%= @chalkler_stats[:total] %></h2>
-    </div>
-  </div>
-  <div class="col-sm-3 col-xs-12 text-center">
+    $('#month_select').bind('typeahead:selected', load_overview);
 
-    <h4>New Chalklers</h4>
-      <div>
-        <small>Week</small>
-        <h2><%= @chalkler_stats[:week][:new] %></h2>
-      </div>
-      <div>
-        <small>Month</small>
-        <h2><%= @chalkler_stats[:month][:new] %></h2>
-    </div>
-  </div>
-
-  <div class="col-sm-3 col-xs-12 text-center">
-      <h4>Active Chalklers</h4>
-      <div>
-        <small>Week</small>
-        <h2><%= @chalkler_stats[:week][:active] %></h2>
-      </div>
-      <div>
-        <small>Month</small>
-        <h2><%= @chalkler_stats[:month][:active] %></h2>
-    </div>
-  </div>
-</div>
-
-<%= high_chart 'Signups', @signups_chart %>
-<div class="row">
-
-  <div class="col-sm-4 col-xs-12 text-center">
-
-      <h4>Revenue</h4>
-      <div>
-        <small>Week</small>
-        <h2> <%= number_to_currency @booking_stats[:week][:revenue] %></h2>
-      </div>
-      <div>
-        <small>Month</small>
-        <h2><%= number_to_currency @booking_stats[:month][:revenue] %></h2>
-    </div>
-  </div>
-  <div class="col-sm-4 col-xs-12 text-center">
-
-      <h4>ASP (all)</h4>
-      <div>
-        <small>Week</small>
-        <h2> <%= number_to_currency @booking_stats[:week][:asp] %></h2>
-      </div>
-      <div>
-        <small>Month</small>
-        <h2><%= number_to_currency @booking_stats[:month][:asp] %></h2>
-    </div>
-  </div>
-  <div class="col-sm-4 col-xs-12 text-center">
-
-      <h4>ASP (only paid)</h4>
-      <div>
-        <small>Week</small>
-        <h2><%= number_to_currency @booking_stats[:week][:asp_only_paid] %></h2>
-      </div>
-      <div>
-        <small>Month</small>
-        <h2><%= number_to_currency @booking_stats[:month][:asp_only_paid] %></h2>
-    </div>
-  </div>
-
-</div>
-
-<div class="row">
-  <div class="col-sm-3 col-xs-12 text-center">
-
-    <h4>Bookings</h4>
-    <div>
-      <small>Total</small>
-      <h2> <%= @booking_stats[:total] %></h2>
-    </div>
-  </div>
-
-  <div class="col-sm-9 col-xs-12 text-center">
-
-    <%= high_chart 'Bookings', @bookings_chart %>
-  </div>
-
-</div>
+    init_typeahead();
+    load_overview();
+  });
+</script>
 
 
 

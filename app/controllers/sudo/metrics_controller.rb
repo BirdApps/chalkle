@@ -1,85 +1,131 @@
 class Sudo::MetricsController < Sudo::BaseController
 
   def index
+    @month = Month.current
+  end
 
+  def overview
+    if params[:month].present?
+      date = params[:month].to_date 
+      month = Month.new date.year, date.month
+    else
+      month = Month.current
+    end
+
+    @month = month
     @bookings_chart = new_bookings_chart
     @signups_chart = new_chalkers_chart
-    @courses_chart = new_courses_chart
+    @courses_chart = new_courses_chart(month)
 
     @course_stats = {
-      total: Course.published.in_past.count
+      total: Course.in_month(month).count,
+      paid: Course.in_month(month).paid.count,
+      free: Course.in_month(month).free.count
+    }
+
+    @user_stats = {
+      total: Chalkler.where(created_at: month.first_day..month.last_day).count,
+      learned: Chalkler.learned.where(created_at: month.first_day..month.last_day).count,
+      taught: Chalkler.taught.where(created_at: month.first_day..month.last_day).count,
+      provided: Chalkler.provided.where(created_at: month.first_day..month.last_day).count,
     }
 
     @provider_stats = {
       total: Channel.all.count
     }
 
-
     @chalkler_stats = {
-      week: Chalkler.stats_for_date_and_range(Date.current, :week), 
-      month: Chalkler.stats_for_date_and_range(Date.current, :month),
+      month: Chalkler.stats_for_date_and_range(month.first_day, :month),
       total: Chalkler.signed_in_since(Date.current-100.years).count
     }
 
     @booking_stats = {
-      total: Booking.all.count,
-      week: Booking.stats_for_date_and_range(Date.current, :week), 
-      month: Booking.stats_for_date_and_range(Date.current, :month)
+      total: Booking.confirmed.count,
+      month: Booking.stats_for_date_and_range( month.first_day, :month)
     }
 
+    @current_booking_stats = {
+      total: Booking.confirmed.where(created_at: month.first_day..month.last_day).count,
+      paid: Booking.confirmed.paid.where(created_at: month.first_day..month.last_day).count, 
+      unpaid: Booking.confirmed.unpaid.where(created_at: month.first_day..month.last_day).count
+    }
+    render layout: false
   end
 
 
   protected
 
-
-  def new_courses_chart
-
+  def new_courses_chart(month = Month.current)
+    data = (month.first_day..month.last_day).map {|date| Course.on_date(date).count }
     LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "")
-      f.xAxis(:categories => Array.new(12){|i| d = i.months.ago.to_date; "#{d.strftime("%b")}" }.reverse )
-      f.series(:name => "Courses run", :yAxis => 0, :data => Array.new(12) {|i|
-        Course.start_at_between(i.months.ago, i.months.ago+1.month).count
-      }.reverse )
-
+      f.title :text => "Courses run in #{month.first_day.strftime("%B, %Y")}"
+      f.xAxis type: 'datetime'
+      f.series(
+        :name => "", 
+        :yAxis => 0, 
+        :data => data,
+        :pointInterval => 86400,
+        :pointStart => month.first_day, 
+        :yAxis => 0,
+        :connectNulls => true)
       f.chart({:defaultSeriesType=>"area"})
+      f.legend(  :enabled => false)
     end
 
   end
 
 
-  def new_chalkers_chart
-
+  def new_chalkers_chart(month = Month.current)
+    data = (month.first_day..month.last_day).map {|date| Chalkler.where(created_at: date.beginning_of_day..date.end_of_day).count }
     LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "Weekly Signups")
-      f.xAxis(:categories => Array.new(30){|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
-      f.series(:name => "Signups", :yAxis => 0, :data => Array.new(30) {|i|
-        Chalkler.created_week_of(i.weeks.ago).count
-      }.reverse )
-
+      f.title :text => "User Signups for #{month.first_day.strftime("%B, %Y")}"
+      f.xAxis type: 'datetime'
+      f.series(
+        :name => "Signups",
+        :yAxis => 0, 
+        :data => data,
+        :pointInterval => 86400,
+        :pointStart => month.first_day, 
+        :yAxis => 0,
+        :connectNulls => true)
       f.chart({:defaultSeriesType=>"area"})
+      f.legend(  :enabled => false)
     end
 
   end
 
-  def new_bookings_chart
+  def new_bookings_chart(month = Month.current)
+    free_data = (month.first_day..month.last_day).map {|date| Booking.confirmed.unpaid.where(created_at: date.beginning_of_day..date.end_of_day).count }
+    paid_data = (month.first_day..month.last_day).map {|date| Booking.confirmed.paid.where(created_at: date.beginning_of_day..date.end_of_day).count }
+    all_data = (month.first_day..month.last_day).map {|date| Booking.confirmed.where(created_at: date.beginning_of_day..date.end_of_day).count }
     LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "Weekly Bookings")
-      f.xAxis(:categories => Array.new(30) {|i| d = i.weeks.ago.to_date; "#{d.day}/#{d.month}" }.reverse )
-      f.series(:name => "All Bookings", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.created_week_of(i.weeks.ago).count
-      }.reverse )
-
-      f.series(:name => "Free", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.created_week_of(i.weeks.ago).confirmed.free.count
-      }.reverse )
-
-      f.series(:name => "Paid", :yAxis => 0, :data => Array.new(30) {|i|
-        Booking.created_week_of(i.weeks.ago).confirmed.not_free.count
-      }.reverse )
+      f.title text: "Bookings in #{month.first_day.strftime("%B, %Y")}"
+      f.xAxis  type: 'datetime'
+      f.series(
+        :name => "All Bookings", 
+        :yAxis => 0, 
+        :data => all_data,
+        :pointInterval => 86400,
+        :pointStart => month.first_day, 
+        :yAxis => 0,
+        :connectNulls => true)
+      f.series(
+        :name => "Free", 
+        :yAxis => 0, 
+        :data => free_data,
+        :pointInterval => 86400,
+        :pointStart => month.first_day, 
+        :yAxis => 0,
+        :connectNulls => true)
+      f.series(
+        :name => "Paid", 
+        :yAxis => 0, 
+        :data => paid_data,
+        :pointInterval => 86400,
+        :pointStart => month.first_day, 
+        :yAxis => 0,
+        :connectNulls => true)
       f.legend(:align => 'center', :verticalAlign => 'bottom', :y => -30, :x => 0, :layout => 'horizontal')
-      f.yAxis(max: 125)
-
       f.chart({:defaultSeriesType=>"line"})
     end
   end

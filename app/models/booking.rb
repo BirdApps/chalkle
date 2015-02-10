@@ -385,7 +385,7 @@ class Booking < ActiveRecord::Base
   end
 
   def self.stats_for_date_and_range(date, range)
-        base_scope_for_stats = send("created_#{range}_of", date)
+        base_scope_for_stats = send("created_#{range}_of", date).confirmed
         {
           asp: asp_for( base_scope_for_stats ),
           asp_only_paid: asp_for( base_scope_for_stats.where('provider_fee > 0') ),
