@@ -10,8 +10,8 @@ FactoryGirl.define do
     email {generate(:email)}
 
     payment {|i| i.association(:payment) }
-    chalkler { |i| i.association(:chalkler)}
-    course { |i| i.association(:course)}
+    chalkler {|i| i.association(:chalkler)}
+    course {|i| i.association(:course)}
     
     teacher_fee     8.50
     teacher_gst     1.50

@@ -95,6 +95,14 @@ class Booking < ActiveRecord::Base
 
   serialize :custom_fields
 
+  def custom_fields_merged
+    if custom_fields.present?
+      custom_fields.map{|cf| cf if cf.is_a? Hash }.compact.reduce Hash.new, :merge
+    else
+      Hash.new
+    end
+  end
+
   def paid
     self.payment.present? ? payment.paid_per_booking : 0
   end
@@ -349,17 +357,27 @@ class Booking < ActiveRecord::Base
   end
 
   def self.csv_for(bookings)
-    fields_for_csv = %w{ id name email paid note_to_teacher }
-    custom_fields_for_csv = bookings.map(&:custom_fields).map{|g| g.keys if g.is_a? Hash}.flatten.uniq.compact
-    CSV.generate do |csv|
+    headings = %w{ id name email paid note_to_teacher }
+    basic_attr = headings.map &:to_s
+    
+    custom_fields = bookings.map(&:custom_fields_merged).map{|g| g.keys }.flatten.uniq.compact
 
-      headings = fields_for_csv.map(&:to_s)
-      headings.concat custom_fields_for_csv if custom_fields_for_csv.present?
+    headings.concat custom_fields if custom_fields.present?
+
+    CSV.generate do |csv|
+      
       csv << headings
 
       bookings.each do |booking|
-        new_row = fields_for_csv.map{ |field| booking.send(field) }
-        new_row.concat custom_fields_for_csv.map{ |field| f = booking.custom_fields[field.to_sym]; f.is_a?(Array) ? f.join(', ') : f } if booking.custom_fields.is_a?(Hash) && custom_fields_for_csv.is_a?(Array)
+        new_row = basic_attr.map{ |field| booking.send(field) }
+        
+        if custom_fields.present?
+          new_row.concat (custom_fields.map do |field|
+            f = booking.custom_fields_merged[field]
+            f.is_a?(Array) ? f.join(', ') : f 
+          end)
+        end
+        
         csv << new_row
       end
       

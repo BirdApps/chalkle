@@ -49,6 +49,6 @@
        }(document, 'script', 'facebook-jssdk'));
     </script>
     <%= typekit_includes %>
-    <%= analytics_init if Rails.env.production? %>
+    <%= analytics_init if Rails.env.production? && !current_user.super? %>
   </body>
 </html>

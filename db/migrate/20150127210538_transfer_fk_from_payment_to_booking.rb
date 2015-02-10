@@ -8,11 +8,14 @@ class TransferFkFromPaymentToBooking < ActiveRecord::Migration
 
     Booking.transaction do
       Payment.all.map do |payment|
-        booking = Booking.find(payment.booking_id) if payment.booking_id
-        if booking
-          booking.update_column "payment_id", payment.id
-          Payment.transaction do
-            payment.update_column "chalkler_id", booking.chalkler_id
+        if payment.booking_id
+          booking = Booking.where(id: payment.booking_id)
+          if booking.present?
+            booking = booking.first
+            booking.update_column "payment_id", payment.id
+            Payment.transaction do
+              payment.update_column "chalkler_id", booking.chalkler_id
+            end
           end
         end
       end

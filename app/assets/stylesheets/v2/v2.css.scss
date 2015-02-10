@@ -62,9 +62,11 @@ html {
   position: relative;
   min-height: 100%;
   height: auto;
+  overflow-x: hidden;
 }
 
 body.v2 {
+  overflow-x: hidden;
   margin-bottom: 52px;
   height: auto;
   color: #727272;
@@ -569,6 +571,9 @@ body.v2 {
     }
     .navbar-fixed-top{
       border-width: 0px;
+      @media screen and (max-width: $col-sm) {
+        position: absolute;
+      }
     }
     .navbar {
       font-size: 20px;
@@ -803,6 +808,7 @@ body.v2 {
       background-color: rgba(255, 255, 255, 0.82);
       @media screen and (max-width: $col-sm) {
         top: 68px;
+        position: absolute;
       }
       .search-wrapper {
         @media screen and (max-width: $col-sm) {
@@ -2100,6 +2106,7 @@ body.v2 {
     background-image: image_url('learn/diver.jpg');
     background-size: cover;
     background-position: center center;
+    background-color: #081F48;
     padding-top: 220px; 
     margin-bottom: -75px;
     padding-bottom: 300px;

@@ -60,6 +60,7 @@ class BookingsController < ApplicationController
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return
       end
     else
+      @booking_set.bookings.unshift Booking.new(name: current_user.name)
       flash[:notice] = 'Booking has errors - please check fields carefully'
       render 'new'
     end
