@@ -37,7 +37,7 @@ class Sudo::MetricsController < Sudo::BaseController
 
     @chalkler_stats = {
       month: Chalkler.stats_for_date_and_range(month.first_day, :month),
-      total: Chalkler.signed_in_since(Date.current-100.years).count
+      total: Chalkler.where(created_at: 100.years.ago..month.last_day).count
     }
 
     @booking_stats = {
