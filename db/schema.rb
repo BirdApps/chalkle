@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150209012643) do
+ActiveRecord::Schema.define(:version => 20150210023029) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.string   "location"
   end
 
   add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true
@@ -185,16 +186,18 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
   add_index "channel_regions", ["channel_id", "region_id"], :name => "index_channel_regions_on_channel_id_and_region_id", :unique => true
 
   create_table "channel_teachers", :force => true do |t|
-    t.integer "channel_id",                               :null => false
-    t.integer "chalkler_id"
-    t.string  "name"
-    t.text    "bio"
-    t.string  "pseudo_chalkler_email"
-    t.boolean "can_make_classes",      :default => false
-    t.string  "tax_number"
-    t.string  "account"
-    t.string  "avatar"
-    t.decimal "balance"
+    t.integer  "channel_id",                               :null => false
+    t.integer  "chalkler_id"
+    t.string   "name"
+    t.text     "bio"
+    t.string   "pseudo_chalkler_email"
+    t.boolean  "can_make_classes",      :default => false
+    t.string   "tax_number"
+    t.string   "account"
+    t.string   "avatar"
+    t.decimal  "balance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "channel_teachers", ["channel_id", "chalkler_id"], :name => "index_channel_teachers_on_channel_id_and_chalkler_id"
