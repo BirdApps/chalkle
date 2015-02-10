@@ -6,7 +6,7 @@ class Notify::PartnerInquiryNotification < Notify::Notifier
   end
   
   def created
-    message = "New partner inquiry from #{@partner_inquiry.name}}"
+    message = "New partner inquiry from #{@partner_inquiry.name}"
 
     chalklers_to_notify = Chalkler.super
 
