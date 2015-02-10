@@ -59,6 +59,7 @@ class Chalkler < ActiveRecord::Base
   scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month ) }
 
   scope :signed_in_since, lambda{|date| where('last_sign_in_at > ?', date) }
+  scope :super, -> { where(role: 'super') }
 
   scope :learned, includes(:bookings).where("bookings.id IS NOT NULL")
   scope :taught, includes(:channel_teachers).where("channel_teachers.id IS NOT NULL" )
@@ -215,6 +216,10 @@ class Chalkler < ActiveRecord::Base
     if channel_admin?
       _available_notifications[:channel_admin] = NotificationPreference::PROVIDER_OPTIONS
     end
+    if channel_admin?
+      _available_notifications[:super_admin] = NotificationPreference::SUPER_OPTIONS
+    end
+
     _available_notifications
   end
 
