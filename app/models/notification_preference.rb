@@ -11,7 +11,9 @@ class NotificationPreference < ActiveRecord::Base
 
   PROVIDER_OPTIONS = []
 
-  *ALL_NOTIFICATIONS = CHALKLER_OPTIONS + TEACHER_OPTIONS + PROVIDER_OPTIONS
+  SUPER_OPTIONS = [:new_partner_inquiry]
+
+  *ALL_NOTIFICATIONS = CHALKLER_OPTIONS + TEACHER_OPTIONS + PROVIDER_OPTIONS + SUPER_OPTIONS
 
   attr_accessible *BASE, *ALL_NOTIFICATIONS
 
@@ -20,7 +22,8 @@ class NotificationPreference < ActiveRecord::Base
   PROVIDER = :provider
   TEACHER = :teacher
   CHALKLER = :chalkler
-  ROLES = [PROVIDER,TEACHER,CHALKLER]
+  SUPER = :super
+  ROLES = [PROVIDER,TEACHER,CHALKLER, SUPER]
 
   before_validation :reset_to_default, unless: -> (not_pref){ not_pref.preferences }
 

@@ -28,6 +28,7 @@ class PartnersController < ApplicationController
     
     if @partner_inquiry.save
       flash[:notice] = "Thank you for your request. We will get in touch with you shortly."
+      Notify.for(@partner_inquiry).created
       render 'say_hello'
     else 
       flash[:errors] = @partner_inquiry.errors.messages
