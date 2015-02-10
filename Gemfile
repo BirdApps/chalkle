@@ -59,6 +59,8 @@ gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 gem 'google-webfonts-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'twitter-typeahead-rails'
+gem 'autoprefixer-rails'
 
 #attachments
 gem 'carrierwave'
