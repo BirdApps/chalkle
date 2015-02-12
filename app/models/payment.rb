@@ -45,6 +45,10 @@ class Payment < ActiveRecord::Base
     end
   end
 
+  def receipt(resend=false)
+    PaymentMailer.receipt_to_chalkler(self).deliver! unless receipt_sent || resend
+  end
+
   def channel_outgoing
     c_out = bookings.confirmed.collect(&:channel_payment)
     c_out.present? ? c_out.first : nil
