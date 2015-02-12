@@ -5,6 +5,7 @@ describe Notify::ChalklerNotification  do
 
   describe '.welcome' do
     it "notifies chalkler" do
+      chalkler.notifications = []
       expect { Notify.for(chalkler).welcome }.to change { chalkler.notifications.count }.by(1)
     end
 

@@ -49,7 +49,7 @@ class Notify::BookingNotification < Notify::Notifier
 
     booking.chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 
-    BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver! if booking.chalkler.email_about? :booking_completed
+    BookingMailer.booking_completed(booking).deliver! if booking.chalkler.email_about? :booking_completed
   end
 
   def cancelled
@@ -68,8 +68,23 @@ class Notify::BookingNotification < Notify::Notifier
 
       booking.teacher.chalkler.send_notification(Notification::REMINDER, course_path(booking.course), message, booking) if booking.teacher.chalkler
 
+      #always send notificaitons to pseudo teachers, otherwise check notification prefs
       if booking.teacher.chalkler.blank? || booking.teacher.chalkler.email_about?(:booking_cancelled_to_teacher)
         BookingMailer.booking_cancelled_to_teacher(booking).deliver!
+      end
+    end
+
+
+    if role == :chalkler or :teacher
+      #to channel admin
+      message = I18n.t('notify.booking.cancelled.to_channel_admin', course_name: booking.course.name, from_name: booking.name)
+
+      booking.channel.channel_admins.map(&:chalkler).each do |channel_admin|
+        channel_admin.send_notification(Notification::REMINDER, course_path(booking.course), message, booking)
+        if channel_admin != booking.teacher.chalkler && channel_admin.email_about?(:booking_cancelled_to_provider)
+          BookingMailer.booking_cancelled_to_channel_admin(booking, channel_admin).deliver!
+        end
+
       end
     end
   end
