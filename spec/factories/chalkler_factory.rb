@@ -1,5 +1,4 @@
 FactoryGirl.define do
-  sequence(:email) { |n| "example_#{n}@example.com" }
 
   factory :chalkler do
     name "Ben Smith"

@@ -41,8 +41,7 @@ describe Notify::BookingNotification  do
 
 
   describe ".completed" do
-
-     it "notifies chalkler" do
+    it "notifies chalkler" do
       expect { Notify.for(booking).completed }.to change { booking.chalkler.notifications.count }.by(1)
     end
 
@@ -70,6 +69,12 @@ describe Notify::BookingNotification  do
 
     it "emails teacher" do
       booking.teacher.chalkler = FactoryGirl.create :teacher_chalkler
+      expect { Notify.for(booking).cancelled }.to change { ActionMailer::Base.deliveries.select{ |mail| mail.to.include? booking.teacher.email }.count }.by(1)
+    end
+
+    it "emails channel admin" do
+      booking.channel = FactoryGirl.create :channel
+      channel_admin = ChannelAdmin.create(chalkler: FactoryGirl.create(:admin_chalkler), channel: booking.channel)
       expect { Notify.for(booking).cancelled }.to change { ActionMailer::Base.deliveries.select{ |mail| mail.to.include? booking.teacher.email }.count }.by(1)
     end
 
