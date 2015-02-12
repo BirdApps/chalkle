@@ -68,7 +68,6 @@ class Course < ActiveRecord::Base
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
-
   scope :start_at_between, ->(from,to) { where(:start_at => from.beginning_of_day..to.end_of_day) }
   scope :recent, visible.start_at_between(DateTime.current.advance(days: PAST), DateTime.current.advance(days: IMMEDIATE_FUTURE))
   scope :last_week, visible.start_at_between(DateTime.current.advance(weeks: -1), DateTime.current)
@@ -84,7 +83,7 @@ class Course < ActiveRecord::Base
   scope :by_date, order(:start_at)
   scope :by_date_desc, order('start_at DESC')
 
-  scope :Draft, visible.where(status: STATUS_3)
+  scope :draft, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
   scope :completed, visible.where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
@@ -98,6 +97,8 @@ class Course < ActiveRecord::Base
   scope :not_repeat_course, where(repeat_course_id: nil)
   scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
   scope :adminable_by, -> (chalkler){ joins(:provider => :provider_admins).where('provider_admins.chalkler_id = ?', chalkler.id)}
+
+  scope :displayable, visible.published
 
   scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
