@@ -70,7 +70,9 @@ class BookingSet
   end
 
   def build_payment
-    bookings.first.build_payment if bookings.present?
+    payment = bookings.first.build_payment if bookings.present?
+    payment.chalkler = bookings.first.booker
+    payment
   end
 
   def cost_per_booking
