@@ -1,5 +1,5 @@
 <%= 
-   t("payment.receipt.body.html_1", booker_name: @chalkler.name, provider_name: @provider.name).to_html
+   t("payment.receipt.body.html_1", booker_name: @chalkler.name, provider_name: @provider.name, tx_id: @payment.swipe_identifier_id).to_html
 %>
 <br />
 <p><strong><%= t("payment.receipt.breakdown.details") %></strong></p>
@@ -15,9 +15,22 @@
     <td  class="td_underline" valign="top" data-shq="ignore">&nbsp;</td>
   </tr>
   <tr>
-    <td class="td_underline" valign="top" data-shq="ignore"><%= @course.name %>&nbsp;</td>
+    <td class="td_underline" valign="top" data-shq="ignore"><%= @course.id %> - <%= @course.name %>&nbsp;</td>
     <td  class="td_underline" style="text-align: center" valign="top" data-shq="ignore"><%= @payment.bookings.count %>&nbsp;</td>
-    <td  class="td_underline" style="text-align: right" valign="top" data-shq="ignore">$<%= @payment.inital_amount_paid %>&nbsp;</td>
+    <td  class="td_underline" style="text-align: right" valign="top" data-shq="ignore"><%= number_to_currency @payment.paid_per_booking(false) %>&nbsp;</td>
+  </tr>
+  <tr>
+    <td  class="td_underline" valign="top" data-shq="ignore">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="td_underline" valign="top" data-shq="ignore"><strong><%= t("payment.receipt.breakdown.subtotal") %></strong>&nbsp;</td>
+    <td  class="td_underline" style="text-align: center" valign="top" data-shq="ignore">&nbsp;</td>
+    <td  class="td_underline" style="text-align: right" valign="top" data-shq="ignore"><%= number_to_currency @payment.inital_amount_paid(false) %>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="td_underline" valign="top" data-shq="ignore"><strong><%= t("payment.receipt.breakdown.tax") %></strong>&nbsp;</td>
+    <td  class="td_underline" style="text-align: center" valign="top" data-shq="ignore">&nbsp;</td>
+    <td  class="td_underline" style="text-align: right" valign="top" data-shq="ignore"><%= number_to_currency @payment.calculate_tax %>&nbsp;</td>
   </tr>
   <tr>
     <td  class="td_underline" valign="top" data-shq="ignore">&nbsp;</td>
@@ -25,7 +38,7 @@
   <tr>
     <td class="td_underline"  data-shq="ignore"><%= t("payment.receipt.body.html_2").to_html%>&nbsp;</td>
     <td  class="td_underline" valign="top" data-shq="ignore"></td>
-    <td  class="td_underline" valign="top" data-shq="ignore"><h2 style="text-align:right">$<%=  @payment.inital_amount_paid %></h2>&nbsp;</td>
+    <td  class="td_underline" valign="top" data-shq="ignore"><h2 style="text-align:right"><%= number_to_currency @payment.inital_amount_paid %></h2>&nbsp;</td>
   </tr>
 </table>
 <br />
@@ -38,7 +51,7 @@
   </tr>
   <% if @provider.tax_registered? %>
     <tr>
-        <td valign="top"><strong><%= t("payment.receipt.provider.tax") %></strong></td>
+        <td valign="top"><strong><%= t("payment.receipt.provider.tax") %>:</strong></td>
         <td valign="top" data-shq="ignore"><%= @provider.tax_number %></td>
     </tr>
   <% end %>
