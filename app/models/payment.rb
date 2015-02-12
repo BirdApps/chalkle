@@ -86,7 +86,7 @@ class Payment < ActiveRecord::Base
   end 
 
   def has_tax?
-    channel.tax_number.present? 
+    provider.tax_number.present? 
   end
 
   def refundable?
@@ -101,8 +101,8 @@ class Payment < ActiveRecord::Base
     courses.first if courses
   end
 
-  def channel
-    course.channel
+  def provider
+    course.provider
   end
 
   def set_metadata

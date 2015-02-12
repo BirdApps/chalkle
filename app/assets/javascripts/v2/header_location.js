@@ -402,8 +402,8 @@ $(function(){
           $(ele).find('.set_action_call').text(clas.action_call);
           $(ele).find('.set_category').text(clas.category);
           $(ele).find('.set_category_url').attr('href', clas.category_url);
-          $(ele).find('.set_channel').text(clas.channel);
-          $(ele).find('.set_channel_url').attr('href', clas.channel_url);
+          $(ele).find('.set_provider').text(clas.provider);
+          $(ele).find('.set_provider_url').attr('href', clas.provider_url);
           $(ele).find('.set_booking').text(clas.booking);
           $(ele).find('.set_booking_url').attr('href', clas.booking_url);
           $(ele).find('.set_teacher').text(clas.teacher);
@@ -419,8 +419,8 @@ $(function(){
           if(clas.image != null){
             $(ele).find('.set_image').css('background', 'url('+clas.image+')');
           }
-          if(clas.channel_image != null){
-            $(ele).find('.set_channel_image').attr('src', clas.channel_image );
+          if(clas.provider_image != null){
+            $(ele).find('.set_provider_image').attr('src', clas.provider_image );
           }
         }
       }
