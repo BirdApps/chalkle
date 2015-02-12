@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
 
   before_filter :load_region
-  before_filter :load_channel
+  before_filter :load_provider
   before_filter :load_category
   before_filter :skip_cache!
   before_filter :check_user_data
@@ -109,8 +109,8 @@ protected
     end
     (request_region == "") ? nil : request_region
   end
-  def channel_name
-    (params[:provider] || params[:channel_url_name]).encode("UTF-8", "ISO-8859-1").parameterize if (params[:provider] || params[:channel_url_name]).present?
+  def provider_name
+    (params[:provider] || params[:provider_url_name]).encode("UTF-8", "ISO-8859-1").parameterize if (params[:provider] || params[:provider_url_name]).present?
   rescue ArgumentError 
     nil
   end
@@ -131,17 +131,17 @@ protected
     end
   end
 
-  def load_channel
+  def load_provider
     redirect_to_subdomain
-    if !@channel
-      if channel_name 
-        @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
-      elsif params[:channel_id].present?
-        @channel = Channel.find(params[:channel_id])
+    if !@provider
+      if provider_name 
+        @provider = Provider.find_by_url_name(provider_name) || Provider.new(name: "All Providers")
+      elsif params[:provider_id].present?
+        @provider = Provider.find(params[:provider_id])
       end
     end
-    if !@channel
-      @channel = Channel.new(name: "All Providers")
+    if !@provider
+      @provider = Provider.new(name: "All Providers")
     end
   end
 

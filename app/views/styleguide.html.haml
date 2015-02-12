@@ -495,7 +495,7 @@
     %a.btn.btn-inverse{href: "#"} .btn-inverse normal
 
 .lists.row
-  -@data = [{ id: 1, name: "Sirius Snape", channel: "Chalkler", money: "$11.10"}, { id: 20, name: "Harry Potter", channel: "Sonny", money: "$10.50"}, { id: 2591, name: "Longbottom Long Name", channel: "Twice Wordly", money: "$1.50"}]
+  -@data = [{ id: 1, name: "Sirius Snape", provider: "Chalkler", money: "$11.10"}, { id: 20, name: "Harry Potter", provider: "Sonny", money: "$10.50"}, { id: 2591, name: "Longbottom Long Name", provider: "Twice Wordly", money: "$1.50"}]
   .col-md-12
     %h2 Lists
     %ul.nav.nav-tabs
@@ -518,7 +518,7 @@
                         %a Oldest
                     %ul.unstyled
                       %li.li-header.color-gray-light.font-bold
-                        By channel:
+                        By provider:
                       %li
                         %a Chalkle
                       %li
@@ -554,7 +554,7 @@
               %th
               %th ID
               %th Name
-              %th Channel
+              %th Provider
               %th Money
               %th.delete-col
           %tbody
@@ -565,7 +565,7 @@
                     %i.icon.icon-pencil
                 %td=d[:id]
                 %td= link_to d[:name], "#"
-                %td=d[:channel]
+                %td=d[:provider]
                 %td=d[:money]
                 %td
                   =link_to "#", class: "destroy", confirm: "Really delete #{d[:name]}" do
@@ -600,7 +600,7 @@
                         %a Oldest
                     %ul.unstyled
                       %li.li-header.color-gray-light.font-bold
-                        By channel:
+                        By provider:
                       %li
                         %a Chalkle
                       %li

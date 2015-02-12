@@ -8,7 +8,7 @@ class Booking < ActiveRecord::Base
   attr_accessible *BASIC_ATTR = [
     :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields, :payment, :payment_id, :email, :invite_chalkler
   ]
-  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:provider_payment,:provider_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   #booking statuses
   STATUS_5 = "pending" #payment pending
@@ -25,11 +25,11 @@ class Booking < ActiveRecord::Base
   belongs_to  :booker, class_name: "Chalkler", foreign_key: :booker_id
   belongs_to  :booking
   has_many    :bookings, as: :guests_bookings
-  has_one     :channel, through: :course
+  has_one     :provider, through: :course
   has_one     :teacher, through: :course
   
   has_one :teacher_payment, through: :course
-  has_one :channel_payment, through: :course
+  has_one :provider_payment, through: :course
 
   validates_presence_of :course_id, :status, :name, :chalkler_id
 
@@ -119,7 +119,7 @@ class Booking < ActiveRecord::Base
     if payment.present? && payment.refundable?
       self.status = STATUS_4
       payment.refund!(self)
-      channel_payment.recalculate! if channel_payment.present?
+      provider_payment.recalculate! if provider_payment.present?
       teacher_payment.recalculate! if teacher_payment.present?
       save
     end
@@ -202,10 +202,10 @@ class Booking < ActiveRecord::Base
     end
 
     #PROVIDER
-    self.provider_fee = course.channel_fee
-    if channel.tax_number.present?
-      self.provider_gst_number = channel.tax_number
-      self.provider_gst = course.channel_fee*3/23
+    self.provider_fee = course.provider_fee
+    if provider.tax_number.present?
+      self.provider_gst_number = provider.tax_number
+      self.provider_gst = course.provider_fee*3/23
       self.provider_fee = self.provider_fee-self.provider_gst
     else
       self.provider_gst_number = nil

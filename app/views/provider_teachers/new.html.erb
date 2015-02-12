@@ -1,0 +1,58 @@
+<div class="hidden-xs col-sm-2">
+</div>
+<div class="new_form_wrapper col-xs-12 col-sm-8">
+  <%= bootstrap_form_for(@provider_teacher, wrapper: :simple_bootstrap3, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+    <div class="fancy-header">
+      <h3>Add Teacher</h3>
+      <hr />
+    </div>
+
+
+    <p class="small grey center">
+      If the teacher is already registered with chalkle,<br /> be sure to use the email they used when signing up.
+    </p>
+
+    <%= f.text_field :provider_id, type: :hidden  %>
+    
+    <div class="form-group email required provider_teacher_email">
+      <div class="control-label col-sm-5">
+        <label class="email required" for="provider_teacher_email">
+          <abbr title="required">*</abbr>
+          Name
+        </label>
+      </div>
+      <div class="col-sm-7">
+        <%= f.text_field :name, :'data-error-message' => 'The name was invalid', class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group email required provider_teacher_email">
+
+      <div class="control-label col-sm-5">
+        <label class="email required" for="provider_teacher_email">
+          <abbr title="required">*</abbr> 
+          Email
+        </label>
+      </div>
+      <div class="col-sm-7">
+        <%= f.text_field :email, :'data-error-message' => 'You must enter an email', class: 'form-control' %>
+      </div>
+    </div>
+
+    <%= f.input :can_make_classes, collection: [['Can Publish & Manage Classes',true],['Cannot Publish or Manage Classes',false]], include_blank: true, required: true,  label: "Permissions", wrapper: :horizontal %>
+
+    <label class="vertical-borders exists-success" style="display:none">
+      Great, that person is already registered on Chalkle. <br /> We'll add them as a teacher for the provider <%= @provider.name %>
+    </label>
+
+    <label class="vertical-borders exists-warning" style="display:none">
+      Even though that person isn't on Chalkle yet, they can still be a teacher - you can make classes for them and they'll receive reminders and notices via email.<br /><br />At any point in time they can sign up to Chalkle to take advantage of the website's features. We'll email them to let them know.
+    </label>
+    <br />
+    <div class="col-xs-12 center">
+      <input class="btn btn-primary" value="Add Teacher" type="submit" />  
+    </div>
+  <% end  %>
+</div>
+<div class="hidden-xs col-sm-2">
+</div>

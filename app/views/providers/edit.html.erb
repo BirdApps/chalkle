@@ -1,0 +1,205 @@
+<div class="new_form_wrapper container">  
+  <%= link_to "Manage Teachers", providers_teachers_path(@provider.url_name), { class: 'btn btn-warning'} %>
+   <%= link_to "Manage Admins", providers_admins_path(@provider.url_name), { class: 'btn btn-warning'} %>
+
+  <%= bootstrap_form_for(@provider, wrapper: :simple_bootstrap3, url: provider_settings_path, html: { method: :post, class: 'provider-form form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+    <input type="hidden" value="put" name="_method" />
+
+    <div class="fancy-header">
+      <h3><%= @provider.name %></h3>
+      <hr />
+    </div>
+    
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="center">
+          <%= @provider.name %> is a <strong><%= @provider.plan.name %> provider</strong>
+          <br /><br />
+          <strong>
+            <%# @provider.remaining_free_class_attendees.to_s+'free class attendees left this month' %>
+          </strong> 
+          <% if current_user.super? %>
+            <div class="alert alert-danger">
+              <h4>Super Admin only</h4>
+              <p>If this provider is affordanced special fees and limits enter them here</p>
+              <hr />
+              <%= f.input :provider_plan_id, collection: ProviderPlan.all, label: "Provider Plan", wrapper: :horizontal %>
+              <%= f.input :plan_class_attendee_cost, label: "Class fee Override, default: $"+@provider.plan.class_attendee_cost.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_course_attendee_cost, label: "Course fee Override, default: $"+@provider.plan.course_attendee_cost.to_s, wrapper: :horizontal %>
+               <%= f.input :plan_processing_fee_percent, label: "Processing fee, default: "+(@provider.plan.processing_fee_percent*100).to_s+'%', wrapper: :horizontal %>
+              <%= f.input :plan_max_teachers, label: "Maximum Teachers, default: "+@provider.plan.max_teachers.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_max_provider_admins, label: "Maximum Provider Admins, default: "+@provider.plan.max_provider_admins.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_max_free_class_attendees, label: "Monthly free class attendees, default: "+@provider.plan.max_free_class_attendees.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_annual_cost, label: "Annual Cost, default: $"+@provider.plan.annual_cost.to_s, wrapper: :horizontal %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="fancy-header">
+          <h3>Provider Details</h3>
+          <hr />
+        </div>
+        <input type="hidden" id="provider_id" name="provider_id" value="<%= f.object.id %>" />
+        <%= f.input :name, label: "Name", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
+        
+        <div class="form-group url required provider_url_name">
+          <div class="control-label col-sm-5">
+            <label class="url required" for="provider_url_name">
+              <abbr title="required">*</abbr> Web Address
+            </label>
+          </div>
+          <div class="col-sm-7">
+            <div class="input-group">  
+              <%= f.text_field :url_name, class: 'form-control', :'data-error-message' => 'That subdomain is not available', autocomplete: :off  %>
+              <div class="input-group-addon">.chalkle.com</div>
+            </div>
+            <label class="label form-label" id="check_url_available" style="display: none"></label>
+          </div>
+        </div>
+
+
+
+        <%= f.input :description, as: :text, label: "Caption", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
+        
+        <%= f.input :region_ids, collection: Region.alphabetical, label: "Region", wrapper: :horizontal, input_html: { value: f.object.regions.first, name: :'provider[region_ids][]', :'data-error-message' => 'You must specify class activities.' } %>
+      </div>
+    </div>
+
+    <div class="fancy-header">
+      <h3>Header Image</h3>
+      <hr />
+    </div>
+    <div class="row">
+      <div class="hidden-xs col-sm-1">
+      </div>
+      <div class="col-sm-10 center">
+        <p>
+          <strong>
+              This image will show in headers of pages focused on the provider.
+          </strong><br />
+          In order for your provider to look its best, follow these guidelines when selecting a provider image
+        </p>
+      </div>
+      <div class="hidden-xs col-sm-1">
+      </div>
+      <div class="col-sm-5 small grey">
+        <p>
+          <strong class="text-danger">Do not include a logo</strong><br />
+          The logo is uploaded seperately to make sure it is always visible
+        </p>
+        <p>
+          <strong class="text-danger">Do not use text in your header image</strong><br />
+          As the image may be cropped or blurred, text will not always be legible. Use the caption and name above for information.
+        </p>
+        <p>
+          <strong class="text-success">Do choose a colourful photograph</strong><br />
+          Your page will look warm and inviting with a photograph that has colour and warmth
+        </p>
+        <p>
+          <strong class="text-success">Do put people in your header image</strong><br />
+          Showing a person engaged in a subject your classes teach is a great way to what what you are about without reading a single word.
+        </p>
+        <p>
+          <strong class="text-success">Do relate the photo to your class subject</strong><br />
+          If you only have classes in the ocean, show the ocean! If you make things - show someone working with tools.
+        </p>
+        <p>
+          <strong class="text-success">Do upload as large an image as you can</strong><br />
+          We will take care of resizing it as needed throughout the site
+        </p>
+      </div>
+      <div class="col-sm-7">
+        <div class="hero image-preview">
+          <div class="img hero_preview" style="background-image: url(<%= f.object.hero %>);"></div>
+        </div>
+        
+        <%= f.input :hero, as: :styled_file, input_html: { value: "", :'data-preview' => 'hero_preview', class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
+      </div>
+    </div>
+
+    <div class="fancy-header">
+      <h3>Logo Image</h3>
+      <hr />
+    </div>
+    
+    <div class="row">
+      <div class="hidden-xs col-sm-1">
+      </div>
+      <div class="col-sm-10 center">
+        <p>
+          The <strong>logo image</strong> is used to represent you. It will be shown at varying sizes and against many different backgrounds. Simple distinctive images look best.
+        </p>
+      </div>
+      <div class="hidden-xs col-sm-1">
+      </div>
+      <div class="col-sm-5 small grey">
+        <p>
+          <strong class="text-danger">Do not use text in your logo</strong><br />
+          Unless it is a core part of your logo. The image will be displayed in many sizes through the site, so text in a logo will not always be legible.
+        </p>
+        <p>
+          <strong class="text-success">Do use your organisation's logo</strong><br />
+          If your organisation has a logo or common graphic, use it here!
+        </p>
+        <p>
+          <strong class="text-success">Do use a logo version with a transparent background</strong><br />
+          If possible! The logo if often displayed over the your header image, and usually looks best without a white bounding box.
+        </p>
+        <p>
+          <strong class="text-success">Do upload as large an image as you can</strong><br />
+          We will take care of resizing it as needed throughout the site
+        </p>
+      </div>
+      <div class="col-sm-7">
+        <div class="provider-logo image-preview">
+          <div class="img logo_preview" style="background-image: url(<%= f.object.logo %>);"></div>
+        </div>
+          
+        <%= f.input :logo, as: :styled_file, input_html: { value: "", :'data-preview' => 'logo_preview', class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
+      </div>
+    </div>
+
+    <div class="fancy-header">
+      <h3>Payment Details</h3>
+      <hr />
+    </div>
+
+    <div class="row">
+       <%= f.input :account, label: "Bank account number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
+
+       <%= f.input :tax_number, label: "GST number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
+    <div class="col-sm-7 col-sm-offset-5">
+      <p class="small grey center">
+        Only include a GST Number if you are GST registered
+      </p>
+     </div>
+    </div>
+    <br /><br /><br />
+    <div class="row">
+      <label class="form-label label label-danger" style="display:none" id="checkbox_error">
+          To save, you must agree to the terms.
+        </label>
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4 next">
+        <div class="checkbox center">
+        <label id="teaching_agreeterms" data-error-message="You must agree in order to continue">
+          <input type="checkbox" name="provider_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/provider">Terms and Conditions</a></span>
+        </label>
+      </div>
+      <div class="center">
+        <input class="btn btn-primary col-xs-12" type="submit" value="Save" />
+      </div>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+    <br />
+    <div class="row prev">
+      <a href="<%= provider_path @provider.url_name %>" class="part_link block center">
+        Cancel
+      </a>
+    </div>
+
+  <% end %>
+</div>

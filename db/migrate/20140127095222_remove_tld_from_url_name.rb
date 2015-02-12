@@ -1,11 +1,11 @@
 class RemoveTldFromUrlName < ActiveRecord::Migration
-  class Channel < ActiveRecord::Base
+  class Provider < ActiveRecord::Base
   end
 
   def up
-    Channel.all.each do |channel|
-      channel.url_name = channel.url_name.gsub('.chalkle.com', '')
-      channel.save!
+    Provider.all.each do |provider|
+      provider.url_name = provider.url_name.gsub('.chalkle.com', '')
+      provider.save!
     end
   end
 

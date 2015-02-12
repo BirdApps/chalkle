@@ -1,0 +1,14 @@
+<div class="_provider">
+  <%= link_to(provider_path(provider.url_name)) do %>
+    <% if provider.logo.file %>
+      <img src="<%= provider.logo.url %>" class='provider-img inline' > 
+    <% end %>
+    <h5 class="inline">
+      <%= provider.name %>
+      <% upcoming_count = provider.courses.upcoming.taught_by_chalkler(current_user).count %> 
+      <% if upcoming_count > 0 %>
+          <%= "(#{upcoming_count})" %>
+      <% end %>
+    </h5>
+  <% end %>
+</div>

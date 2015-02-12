@@ -16,8 +16,8 @@ describe ChalklerDigest do
                          max_attendee: 10)
     }
     let(:category){FactoryGirl.create(:category)}
-    let(:channel){FactoryGirl.create(:channel, visible: true)}
-    let(:chalkler){ FactoryGirl.create(:chalkler, email_categories: [category.id], email_frequency: 'daily', channels: [channel])}
+    let(:provider){FactoryGirl.create(:provider, visible: true)}
+    let(:chalkler){ FactoryGirl.create(:chalkler, email_categories: [category.id], email_frequency: 'daily', providers: [provider])}
     let(:digest){ChalklerDigest.new(chalkler)}
     let(:lesson){FactoryGirl.create(:lesson, start_at: 3.days.from_now, duration: 3600)}
     let(:course){FactoryGirl.create(:course,
@@ -27,23 +27,23 @@ describe ChalklerDigest do
                                    do_during_class: 'x',
                                    max_attendee: 15,
                                    category: category,
-                                   channel: channel)}
+                                   provider: provider)}
 
     it "only loads new/open courses once" do
-      channel = FactoryGirl.create(:channel, visible: true)
-      course.channel = channel
+      provider = FactoryGirl.create(:provider, visible: true)
+      course.provider = provider
       course.save!
-      chalkler.channels << channel
+      chalkler.providers << provider
       courses = digest.new_courses
       courses.concat digest.open_courses
       expect(courses).to eq [course]
     end
 
     it "only loads default new/open courses once" do
-      channel = FactoryGirl.create(:channel, visible: true)
-      course.channel = channel
+      provider = FactoryGirl.create(:provider, visible: true)
+      course.provider = provider
       course.save!
-      chalkler.channels << channel
+      chalkler.providers << provider
       courses = digest.default_new_courses
       courses.concat digest.default_open_courses
       expect(courses).to eq [course]
@@ -52,14 +52,14 @@ describe ChalklerDigest do
     describe "#new_courses" do
       it "loads a course that a chalkler is interested in" do
         course1.category = FactoryGirl.create(:category)
-        course1.channel = channel
+        course1.provider = provider
         course1.save!
         expect(digest.new_courses).to eq [course]
       end
 
-      it "loads a courses from channels that chalkler belongs to" do
+      it "loads a courses from providers that chalkler belongs to" do
         course1.category = category
-        course1.channel = FactoryGirl.create(:channel)
+        course1.provider = FactoryGirl.create(:provider)
         course1.save!
         expect(digest.new_courses).to eq [course]
       end
@@ -74,8 +74,8 @@ describe ChalklerDigest do
         expect(digest.instance_eval{ new_courses }).to be_empty
       end
 
-      it "won't load a course from a hidden channel" do
-        channel.update_attribute :visible, false
+      it "won't load a course from a hidden provider" do
+        provider.update_attribute :visible, false
         expect(digest.new_courses).to be_empty
       end
 
@@ -93,8 +93,8 @@ describe ChalklerDigest do
     end
 
     describe "#default_new_courses" do
-      it "loads a courses from channels that chalkler belongs to" do
-        course1.channel = FactoryGirl.create(:channel)
+      it "loads a courses from providers that chalkler belongs to" do
+        course1.provider = FactoryGirl.create(:provider)
         course1.save!
         expect(digest.default_new_courses).to eq [course]
       end
@@ -109,8 +109,8 @@ describe ChalklerDigest do
         expect(digest.default_new_courses).to be_empty
       end
 
-      it "won't load a course from a hidden channel" do
-        channel.update_attribute :visible, false
+      it "won't load a course from a hidden provider" do
+        provider.update_attribute :visible, false
         expect(digest.default_new_courses).to be_empty
       end
     end
@@ -123,14 +123,14 @@ describe ChalklerDigest do
 
       it "loads a course that a chalkler is interested in" do
         course1.category = FactoryGirl.create(:category)
-        course1.channel = channel
+        course1.provider = provider
         course1.save!
         expect(digest.open_courses).to eq [course]
       end
 
-      it "loads a courses from channels that chalkler belongs to" do
+      it "loads a courses from providers that chalkler belongs to" do
         course1.category = category
-        course1.channel = FactoryGirl.create(:channel)
+        course1.provider = FactoryGirl.create(:provider)
         course1.save!
         expect(digest.open_courses).to eq [course]
       end
@@ -152,8 +152,8 @@ describe ChalklerDigest do
         expect(digest.open_courses).to be_empty
       end
 
-      it "won't load a course from a hidden channel" do
-        channel.update_attribute :visible, false
+      it "won't load a course from a hidden provider" do
+        provider.update_attribute :visible, false
         expect(digest.open_courses).to be_empty
       end
     end
@@ -164,9 +164,9 @@ describe ChalklerDigest do
         course1.update_attribute :published_at, 3.days.ago
       end
 
-      it "loads a course from channels that chalkler belongs to" do
+      it "loads a course from providers that chalkler belongs to" do
         course1.category = category
-        course1.channel = FactoryGirl.create(:channel)
+        course1.provider = FactoryGirl.create(:provider)
         course1.save!
         expect(digest.default_open_courses).to eq [course]
       end
@@ -188,8 +188,8 @@ describe ChalklerDigest do
         expect(digest.default_open_courses).to be_empty
       end
 
-      it "won't load a course from a hidden channel" do
-        channel.update_attribute :visible, false
+      it "won't load a course from a hidden provider" do
+        provider.update_attribute :visible, false
         expect(digest.default_open_courses).to be_empty
       end
     end

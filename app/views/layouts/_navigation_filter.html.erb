@@ -18,7 +18,7 @@
           <ul class="dropdown-menu" role="menu" aria-labelledby="locationDropDown">
             <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('region','all')) %>">All of New Zealand</a></li>
             <li role="presentation" class="divider"></li>
-            <% cache "region_filter_list_#{@category.name}_#{@channel.name}_#{params[:search]}", skip_digest: true do %>
+            <% cache "region_filter_list_#{@category.name}_#{@provider.name}_#{params[:search]}", skip_digest: true do %>
               <% filter_regions.each do |region| %>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('region',region.url_name)) %>"><%= region.name.titlecase %></a></li>
               <% end %>
@@ -42,7 +42,7 @@
           <ul class="dropdown-menu" role="menu" aria-labelledby="topicDropDown">
             <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic','all')) %>">All Topics</a></li>
             <li role="presentation" class="divider"></li>
-            <% cache "category_filter_list_#{@region.name}_#{@channel.name}_#{params[:search]}", skip_digest: true do %>
+            <% cache "category_filter_list_#{@region.name}_#{@provider.name}_#{params[:search]}", skip_digest: true do %>
               <% filter_topics.each do |category| %>        
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('topic', category.url_name)) %>"><%= category.name.titlecase %></a></li>
               <% end %>
@@ -57,7 +57,7 @@
               <img src="/assets/unfolded-paper-plane.png" />
             </div>
             <div class="col-2 hidden-xs">
-              <%= @channel.name.titlecase %>
+              <%= @provider.name.titlecase %>
             </div>
             <div class="col-3">
               <img class="hidden-xs" src="/assets/caret-down.png" />
@@ -66,9 +66,9 @@
           <ul class="dropdown-menu" role="menu" aria-labelledby="providerDropDown">
             <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', 'all')) %>">All Providers</a></li>
             <li role="presentation" class="divider"></li>
-            <% cache "channel_filter_list_#{@region.name}_#{@category.name}_#{params[:search]}", skip_digest: true do %>
-              <% filter_providers.each do |channel| %>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', channel.url_name)) %>"><%= channel.name.titlecase %></a></li>
+            <% cache "provider_filter_list_#{@region.name}_#{@category.name}_#{params[:search]}", skip_digest: true do %>
+              <% filter_providers.each do |provider| %>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= root_path(filter_params('provider', provider.url_name)) %>"><%= provider.name.titlecase %></a></li>
               <% end %>
             <% end %>
           </ul>

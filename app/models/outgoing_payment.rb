@@ -1,5 +1,5 @@
 class OutgoingPayment < ActiveRecord::Base
-  attr_accessible :bookings, :teacher_id, :teacher, :channel_id, :channel, :paid_date, :fee, :tax, :status,:bank_account, :tax_number, :reference, :as => :admin
+  attr_accessible :bookings, :teacher_id, :teacher, :provider_id, :provider, :paid_date, :fee, :tax, :status,:bank_account, :tax_number, :reference, :as => :admin
 
   STATUS_1 = "pending"
   STATUS_2 = "approved"
@@ -21,32 +21,32 @@ class OutgoingPayment < ActiveRecord::Base
  
   scope :by_date, order(:updated_at)
 
-  belongs_to :teacher, class_name: 'ChannelTeacher'
-  belongs_to :channel
+  belongs_to :teacher, class_name: 'ProviderTeacher'
+  belongs_to :provider
 
-  has_many :channel_courses,  class_name: 'Course', foreign_key: :channel_payment_id
+  has_many :provider_courses,  class_name: 'Course', foreign_key: :provider_payment_id
   has_many :teacher_courses,  class_name: 'Course', foreign_key: :teacher_payment_id
 
   has_many :teacher_bookings, through: :teacher_courses,  source: :bookings
-  has_many :channel_bookings, through: :channel_courses,  source: :bookings
+  has_many :provider_bookings, through: :provider_courses,  source: :bookings
   
   has_many :teacher_payments, through: :teacher_bookings, source: :payment
-  has_many :channel_payments, through: :channel_bookings, source: :payment
+  has_many :provider_payments, through: :provider_bookings, source: :payment
 
   validates_presence_of :fee, :tax, :status
-  validate :teacher_or_channel_presence
+  validate :teacher_or_provider_presence
 
   def self.valid
     #TODO: OutgoingPayment.valid should be sql instead of ruby
-    OutgoingPayment.select{|o| o.courses.select{ |c| (o.for_teacher? ? c.teacher_income_with_tax : c.channel_income_with_tax) != 0 }.present? }
+    OutgoingPayment.select{|o| o.courses.select{ |c| (o.for_teacher? ? c.teacher_income_with_tax : c.provider_income_with_tax) != 0 }.present? }
   end
 
   def self.pending_payment_for_teacher(teacher)
     OutgoingPayment.where(status: STATUS_1, teacher_id: teacher.id).first || OutgoingPayment.create({teacher: teacher, status: STATUS_1, tax: 0, fee: 0, tax_number: teacher.tax_number, bank_account: teacher.account }, as: :admin)
   end
 
-  def self.pending_payment_for_channel(channel)
-    OutgoingPayment.where(status: STATUS_1, channel_id: channel.id).first || OutgoingPayment.create({channel: channel, status: STATUS_1, tax: 0, fee: 0, tax_number: channel.tax_number, bank_account: channel.account }, as: :admin)
+  def self.pending_payment_for_provider(provider)
+    OutgoingPayment.where(status: STATUS_1, provider_id: provider.id).first || OutgoingPayment.create({provider: provider, status: STATUS_1, tax: 0, fee: 0, tax_number: provider.tax_number, bank_account: provider.account }, as: :admin)
   end
 
   def first_booking
@@ -94,8 +94,8 @@ class OutgoingPayment < ActiveRecord::Base
     OutgoingPayment.status_formatted(status)
   end
 
-  def teacher_or_channel_presence
-    (teacher || channel).present?
+  def teacher_or_provider_presence
+    (teacher || provider).present?
   end
 
   def self.status_formatted(status)
@@ -119,13 +119,13 @@ class OutgoingPayment < ActiveRecord::Base
     teacher.present?
   end
 
-  def for_channel?
-    channel.present?
+  def for_provider?
+    provider.present?
   end
 
   def name
-    if for_channel?
-      channel.name
+    if for_provider?
+      provider.name
     else
       teacher.name
     end
@@ -135,8 +135,8 @@ class OutgoingPayment < ActiveRecord::Base
     if bank_account.present?
       bank_account
     else
-      if for_channel?
-        channel.account
+      if for_provider?
+        provider.account
       else
         teacher.account
       end
@@ -148,8 +148,8 @@ class OutgoingPayment < ActiveRecord::Base
     if tax_number.present?
       tax_number
     else
-      if for_channel?
-        channel.tax_number
+      if for_provider?
+        provider.tax_number
       else
         teacher.tax_number
       end
@@ -161,7 +161,7 @@ class OutgoingPayment < ActiveRecord::Base
     if for_teacher?
       teacher_courses
     else
-      channel_courses
+      provider_courses
     end
   end
 
@@ -169,7 +169,7 @@ class OutgoingPayment < ActiveRecord::Base
     if for_teacher?
       teacher_payments
     else
-      channel_payments
+      provider_payments
     end
   end
 
@@ -177,7 +177,7 @@ class OutgoingPayment < ActiveRecord::Base
     if for_teacher?
       teacher_bookings.confirmed.not_free
     else
-      channel_bookings.confirmed.not_free
+      provider_bookings.confirmed.not_free
     end
   end
 
@@ -196,7 +196,7 @@ class OutgoingPayment < ActiveRecord::Base
       bookings.map{ |b| b.apply_fees! }
       #remove any courses which are no longer marked as complete
       remove_courses = courses.where("status != '#{Course::STATUS_4}'")
-      remove_courses.update_all(channel_payment_id: nil)
+      remove_courses.update_all(provider_payment_id: nil)
       remove_courses.update_all(teacher_payment_id: nil)
       calculate!
     end
@@ -204,14 +204,14 @@ class OutgoingPayment < ActiveRecord::Base
 
   def calc_fee(recalculate = false)
     if recalculate || self.fee.blank?
-      self.fee = courses.inject(0){|sum,c| sum += (for_channel? ? c.channel_income_no_tax : c.teacher_income_no_tax) }
+      self.fee = courses.inject(0){|sum,c| sum += (for_provider? ? c.provider_income_no_tax : c.teacher_income_no_tax) }
     end
     self.fee
   end
 
   def calc_tax(recalculate = false)
     if self.tax.blank? || recalculate
-      self.tax = courses.inject(0){|sum,c| sum+= (for_channel? ? c.channel_income_tax : c.teacher_income_tax) }
+      self.tax = courses.inject(0){|sum,c| sum+= (for_provider? ? c.provider_income_tax : c.teacher_income_tax) }
     end
     self.tax
   end

@@ -8,7 +8,7 @@ class Region < ActiveRecord::Base
   before_validation :check_url_name
   after_create :set_url_name!
 
-  #mount_uploader :hero, ChannelHeroUploader
+  #mount_uploader :hero, ProviderHeroUploader
 
   has_many :courses
   

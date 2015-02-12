@@ -2,19 +2,19 @@ class VenueImporter
 
   attr_accessor :results
 
-  def initialize(channel)
-    @channel = channel
+  def initialize(provider)
+    @provider = provider
     @results = []
   end
 
-  def self.import(channel)
-    v = VenueImporter.new channel
+  def self.import(provider)
+    v = VenueImporter.new provider
     v.fetch_venues
     v.update_records
   end
 
   def fetch_venues
-    self.results = RMeetup::Client.fetch(:venues, { group_urlname: @channel.url_name })
+    self.results = RMeetup::Client.fetch(:venues, { group_urlname: @provider.url_name })
   end
 
   def update_records

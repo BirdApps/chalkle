@@ -2,8 +2,8 @@ class Category < ActiveRecord::Base
   attr_accessible :name, :colour_num, :parent_id, :parent, as: :default
   attr_accessible :name, :colour_num, :parent_id, :parent, :primary, as: :admin
 
-  has_many    :channel_categories
-  has_many    :channels, :through => :channel_categories
+  has_many    :provider_categories
+  has_many    :providers, :through => :provider_categories
   has_many    :courses
   belongs_to  :parent, class_name: 'Category'
   has_many    :children, class_name: 'Category', foreign_key: :parent_id

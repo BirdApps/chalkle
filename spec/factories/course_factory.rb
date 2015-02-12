@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :course do
     lessons { |i| [i.association(:lesson)]}
-    channel { |i| i.association(:channel) }
-    teacher { |i| i.association(:channel_teacher) }
+    provider { |i| i.association(:provider) }
+    teacher { |i| i.association(:provider_teacher) }
     
     name "Learn Foo with Bar"
     learning_outcomes "Bar the foo, it's all about how far you can boo"

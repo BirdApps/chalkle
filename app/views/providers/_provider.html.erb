@@ -1,0 +1,12 @@
+<div class="col-xs-12 col-sm-6">
+  <div class="_provider">
+    <%= link_to(provider_path(provider.url_name)) do %>
+      <% if provider.logo.file %>
+        <img src="<%= provider.logo.url %>" class='provider-img inline' > 
+      <% end %>
+        <h4 class="inline">
+          <%= provider.name %> 
+        </h4>
+    <% end %>
+  </div>
+</div>

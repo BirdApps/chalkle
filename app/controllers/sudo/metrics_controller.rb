@@ -11,7 +11,7 @@ class Sudo::MetricsController < Sudo::BaseController
     }
 
     @provider_stats = {
-      total: Channel.all.count
+      total: Provider.all.count
     }
 
 

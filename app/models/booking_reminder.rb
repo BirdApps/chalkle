@@ -14,7 +14,7 @@ class BookingReminder
 
   def remindable
     bookings = @chalkler.bookings.upcoming.visible.confirmed.billable.unpaid
-    bookings.delete_if { |b| (b.teacher? == true || !b.course.channel || b.course_start_at.present? == false || b.cost == 0) }
+    bookings.delete_if { |b| (b.teacher? == true || !b.course.provider || b.course_start_at.present? == false || b.cost == 0) }
   end
 
   def remind_now

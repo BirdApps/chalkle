@@ -128,8 +128,8 @@ Your Chalkle Administrator")
   end
 
   def path_for_course(course)
-    if (@channel || course.channel)
-      channel_course_path(@channel || course.channel, course)
+    if (@provider || course.provider)
+      provider_course_path(@provider || course.provider, course)
     end
   end
 
@@ -206,11 +206,11 @@ Your Chalkle Administrator")
       else
         "Welcome to chalkle° in #{@region.name}"
       end
-    elsif @channel
+    elsif @provider
       if chalkler_signed_in?
-        "Welcome to chalkle° in #{@channel.name} #{current_chalkler.name}"
+        "Welcome to chalkle° in #{@provider.name} #{current_chalkler.name}"
       else
-        "Welcome to chalkle° in #{@channel.name}"
+        "Welcome to chalkle° in #{@provider.name}"
       end
     else
       if chalkler_signed_in?

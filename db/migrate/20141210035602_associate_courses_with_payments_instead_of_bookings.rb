@@ -2,7 +2,7 @@ class AssociateCoursesWithPaymentsInsteadOfBookings < ActiveRecord::Migration
   def up
     transaction do
       add_column :courses, :teacher_payment_id, :integer
-      add_column :courses, :channel_payment_id, :integer
+      add_column :courses, :provider_payment_id, :integer
       Course.reset_column_information
 
       OutgoingPayment.not_valid.delete_all
@@ -13,14 +13,14 @@ class AssociateCoursesWithPaymentsInsteadOfBookings < ActiveRecord::Migration
         end
       end
 
-       Booking.where("channel_payment_id IS NOT NULL").each do |booking|
-        if booking.course.channel_payment_id.blank? && booking.channel_payment_id.present?
-          booking.course.update_attribute("channel_payment_id", booking.channel_payment_id)
+       Booking.where("provider_payment_id IS NOT NULL").each do |booking|
+        if booking.course.provider_payment_id.blank? && booking.provider_payment_id.present?
+          booking.course.update_attribute("provider_payment_id", booking.provider_payment_id)
         end
       end
 
       remove_column :bookings, :teacher_payment_id
-      remove_column :bookings, :channel_payment_id
+      remove_column :bookings, :provider_payment_id
     end
 
   end

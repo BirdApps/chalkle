@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150209012643) do
+ActiveRecord::Schema.define(:version => 20150212020511) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -114,120 +114,10 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.string   "location"
   end
 
   add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true
-
-  create_table "channel_admins", :force => true do |t|
-    t.integer "channel_id",            :null => false
-    t.integer "chalkler_id"
-    t.string  "pseudo_chalkler_email"
-  end
-
-  create_table "channel_categories", :id => false, :force => true do |t|
-    t.integer "channel_id",  :null => false
-    t.integer "category_id", :null => false
-  end
-
-  add_index "channel_categories", ["channel_id", "category_id"], :name => "index_channel_categories_on_channel_id_and_category_id", :unique => true
-
-  create_table "channel_contacts", :force => true do |t|
-    t.integer  "channel_id"
-    t.integer  "chalkler_id"
-    t.string   "to"
-    t.string   "from"
-    t.string   "subject"
-    t.text     "message"
-    t.string   "status"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "channel_course_suggestions", :id => false, :force => true do |t|
-    t.integer "channel_id",           :null => false
-    t.integer "course_suggestion_id", :null => false
-  end
-
-  add_index "channel_course_suggestions", ["channel_id", "course_suggestion_id"], :name => "cha_les_sug_index", :unique => true
-
-  create_table "channel_courses", :id => false, :force => true do |t|
-    t.integer "channel_id", :null => false
-    t.integer "course_id",  :null => false
-  end
-
-  add_index "channel_courses", ["channel_id", "course_id"], :name => "index_channel_courses_on_channel_id_and_course_id", :unique => true
-
-  create_table "channel_photos", :force => true do |t|
-    t.integer  "channel_id"
-    t.string   "image"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "channel_plans", :force => true do |t|
-    t.string   "name"
-    t.integer  "max_channel_admins"
-    t.integer  "max_teachers"
-    t.integer  "max_free_class_attendees"
-    t.decimal  "class_attendee_cost"
-    t.decimal  "course_attendee_cost"
-    t.decimal  "annual_cost"
-    t.decimal  "processing_fee_percent"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
-  end
-
-  create_table "channel_regions", :force => true do |t|
-    t.integer "channel_id"
-    t.integer "region_id"
-  end
-
-  add_index "channel_regions", ["channel_id", "region_id"], :name => "index_channel_regions_on_channel_id_and_region_id", :unique => true
-
-  create_table "channel_teachers", :force => true do |t|
-    t.integer "channel_id",                               :null => false
-    t.integer "chalkler_id"
-    t.string  "name"
-    t.text    "bio"
-    t.string  "pseudo_chalkler_email"
-    t.boolean "can_make_classes",      :default => false
-    t.string  "tax_number"
-    t.string  "account"
-    t.string  "avatar"
-    t.decimal "balance"
-  end
-
-  add_index "channel_teachers", ["channel_id", "chalkler_id"], :name => "index_channel_teachers_on_channel_id_and_chalkler_id"
-
-  create_table "channels", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at",                                                                     :null => false
-    t.datetime "updated_at",                                                                     :null => false
-    t.string   "url_name"
-    t.string   "email"
-    t.decimal  "channel_rate_override",         :precision => 8, :scale => 4
-    t.decimal  "teacher_percentage",            :precision => 8, :scale => 4, :default => 0.75
-    t.string   "account"
-    t.boolean  "visible",                                                     :default => false
-    t.text     "description"
-    t.string   "website_url"
-    t.string   "logo"
-    t.string   "meetup_url"
-    t.string   "short_description"
-    t.string   "hero"
-    t.integer  "channel_plan_id"
-    t.string   "plan_name"
-    t.integer  "plan_max_channel_admins"
-    t.integer  "plan_max_free_class_attendees"
-    t.decimal  "plan_class_attendee_cost"
-    t.decimal  "plan_course_attendee_cost"
-    t.decimal  "plan_annual_cost"
-    t.decimal  "plan_processing_fee_percent"
-    t.string   "tax_number"
-    t.string   "average_hero_color"
-    t.integer  "plan_max_teachers"
-    t.decimal  "balance"
-  end
 
   create_table "cities", :force => true do |t|
     t.string   "name",       :null => false
@@ -278,7 +168,7 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.decimal  "chalkle_payment",     :precision => 8, :scale => 2
     t.string   "course_upload_image"
     t.integer  "category_id"
-    t.integer  "channel_id"
+    t.integer  "provider_id"
     t.integer  "region_id"
     t.integer  "repeat_course_id"
     t.string   "url_name"
@@ -296,7 +186,7 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.text     "cancelled_reason"
     t.datetime "end_at"
     t.integer  "teacher_payment_id"
-    t.integer  "channel_payment_id"
+    t.integer  "provider_payment_id"
     t.text     "custom_fields"
   end
 
@@ -399,7 +289,7 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
 
   create_table "outgoing_payments", :force => true do |t|
     t.integer  "teacher_id"
-    t.integer  "channel_id"
+    t.integer  "provider_id"
     t.datetime "paid_date"
     t.decimal  "fee"
     t.decimal  "tax"
@@ -446,6 +336,119 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.decimal  "refunded",                                                 :default => 0.0
   end
 
+  create_table "provider_admins", :force => true do |t|
+    t.integer "provider_id",           :null => false
+    t.integer "chalkler_id"
+    t.string  "pseudo_chalkler_email"
+  end
+
+  create_table "provider_categories", :id => false, :force => true do |t|
+    t.integer "provider_id", :null => false
+    t.integer "category_id", :null => false
+  end
+
+  add_index "provider_categories", ["provider_id", "category_id"], :name => "index_channel_categories_on_channel_id_and_category_id", :unique => true
+
+  create_table "provider_contacts", :force => true do |t|
+    t.integer  "provider_id"
+    t.integer  "chalkler_id"
+    t.string   "to"
+    t.string   "from"
+    t.string   "subject"
+    t.text     "message"
+    t.string   "status"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "provider_course_suggestions", :id => false, :force => true do |t|
+    t.integer "provider_id",          :null => false
+    t.integer "course_suggestion_id", :null => false
+  end
+
+  add_index "provider_course_suggestions", ["provider_id", "course_suggestion_id"], :name => "cha_les_sug_index", :unique => true
+
+  create_table "provider_courses", :id => false, :force => true do |t|
+    t.integer "provider_id", :null => false
+    t.integer "course_id",   :null => false
+  end
+
+  add_index "provider_courses", ["provider_id", "course_id"], :name => "index_channel_courses_on_channel_id_and_course_id", :unique => true
+
+  create_table "provider_photos", :force => true do |t|
+    t.integer  "provider_id"
+    t.string   "image"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "provider_plans", :force => true do |t|
+    t.string   "name"
+    t.integer  "max_provider_admins"
+    t.integer  "max_teachers"
+    t.integer  "max_free_class_attendees"
+    t.decimal  "class_attendee_cost"
+    t.decimal  "course_attendee_cost"
+    t.decimal  "annual_cost"
+    t.decimal  "processing_fee_percent"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  create_table "provider_regions", :force => true do |t|
+    t.integer "provider_id"
+    t.integer "region_id"
+  end
+
+  add_index "provider_regions", ["provider_id", "region_id"], :name => "index_channel_regions_on_channel_id_and_region_id", :unique => true
+
+  create_table "provider_teachers", :force => true do |t|
+    t.integer  "provider_id",                              :null => false
+    t.integer  "chalkler_id"
+    t.string   "name"
+    t.text     "bio"
+    t.string   "pseudo_chalkler_email"
+    t.boolean  "can_make_classes",      :default => false
+    t.string   "tax_number"
+    t.string   "account"
+    t.string   "avatar"
+    t.decimal  "balance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "provider_teachers", ["provider_id", "chalkler_id"], :name => "index_channel_teachers_on_channel_id_and_chalkler_id"
+
+  create_table "providers", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",                                                                     :null => false
+    t.datetime "updated_at",                                                                     :null => false
+    t.string   "url_name"
+    t.string   "email"
+    t.decimal  "provider_rate_override",        :precision => 8, :scale => 4
+    t.decimal  "teacher_percentage",            :precision => 8, :scale => 4, :default => 0.75
+    t.string   "account"
+    t.boolean  "visible",                                                     :default => false
+    t.text     "description"
+    t.string   "website_url"
+    t.string   "logo"
+    t.string   "meetup_url"
+    t.string   "short_description"
+    t.string   "hero"
+    t.integer  "provider_plan_id"
+    t.string   "plan_name"
+    t.integer  "plan_max_provider_admins"
+    t.integer  "plan_max_free_class_attendees"
+    t.decimal  "plan_class_attendee_cost"
+    t.decimal  "plan_course_attendee_cost"
+    t.decimal  "plan_annual_cost"
+    t.decimal  "plan_processing_fee_percent"
+    t.string   "tax_number"
+    t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
+    t.decimal  "balance"
+  end
+
   create_table "rails_admin_histories", :force => true do |t|
     t.text     "message"
     t.string   "username"
@@ -474,11 +477,11 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
   end
 
   create_table "subscriptions", :force => true do |t|
-    t.integer "channel_id",  :null => false
+    t.integer "provider_id", :null => false
     t.integer "chalkler_id", :null => false
   end
 
-  add_index "subscriptions", ["channel_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
+  add_index "subscriptions", ["provider_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
 
   create_table "venues", :force => true do |t|
     t.string   "name",       :null => false
@@ -492,14 +495,6 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
     t.string   "address_2"
   end
 
-  add_foreign_key "channel_admins", "chalklers", name: "channel_admins_chalkler_id_fk"
-
-  add_foreign_key "channel_regions", "channels", name: "channel_regions_channel_id_fk"
-  add_foreign_key "channel_regions", "regions", name: "channel_regions_region_id_fk"
-
-  add_foreign_key "channel_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
-  add_foreign_key "channel_teachers", "channels", name: "channel_teachers_channel_id_fk"
-
   add_foreign_key "course_notices", "chalklers", name: "course_notices_chalkler_id_fk"
   add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"
 
@@ -510,5 +505,13 @@ ActiveRecord::Schema.define(:version => 20150209012643) do
 
   add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
   add_foreign_key "notifications", "chalklers", name: "notifications_from_chalkler_id_fk"
+
+  add_foreign_key "provider_admins", "chalklers", name: "channel_admins_chalkler_id_fk"
+
+  add_foreign_key "provider_regions", "providers", name: "channel_regions_channel_id_fk"
+  add_foreign_key "provider_regions", "regions", name: "channel_regions_region_id_fk"
+
+  add_foreign_key "provider_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
+  add_foreign_key "provider_teachers", "providers", name: "channel_teachers_channel_id_fk"
 
 end

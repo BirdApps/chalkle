@@ -7,7 +7,7 @@ class PaymentMailer < BaseChalkleMailer
     @payment = payment
     @chalkler = payment.chalkler
     @course = payment.course
-    @provider = @course.channel
+    @provider = @course.provider
     @no_hello = true
     mail(to: @chalkler.email,  subject: I18n.t("payment.receipt.subject", name: @chalkler.first_name, course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }

@@ -1,26 +1,26 @@
 <div class="row dashboard">
 
   <div class="col-xs-12 col-md-6">
-    <% if current_chalkler.channels.any? %>
+    <% if current_chalkler.providers.any? %>
       <div class="fancy-header">
         <h3>Following</h3>
         <hr />
       </div>
       <div class="col-xs-12">
-        <%= render current_chalkler.channels.order('name ASC') %>  
+        <%= render current_chalkler.providers.order('name ASC') %>  
       </div>
     <% end %>
   </div>
 
   <div class="col-xs-12 col-md-6">
 
-     <% if current_chalkler.channel_teachers.any? %>
+     <% if current_chalkler.provider_teachers.any? %>
       <div class="fancy-header">
         <h3>Your Teacher Profiles</h3>
         <hr />
       </div>
       <div class="col-xs-12">
-        <%= render current_chalkler.channel_teachers %>  
+        <%= render current_chalkler.provider_teachers %>  
       </div>
     <% end %>
 
@@ -31,7 +31,7 @@
           Your Providers
         </div>
         <div class="inline">
-          <%= link_to new_channel_path, class: 'btn btn-primary' do %>
+          <%= link_to new_provider_path, class: 'btn btn-primary' do %>
             <span class="fa fa-plus"></span>
              <span class="small" style="position:relative; bottom:2px; color:#fff">new</span>
           <% end %>
@@ -40,7 +40,7 @@
       <hr />
     </div>
     <div class="row col-xs-12">
-      <%= render current_user.channels_adminable %>  
+      <%= render current_user.providers_adminable %>  
     </div>
 
   </div>

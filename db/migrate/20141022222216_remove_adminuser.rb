@@ -10,7 +10,7 @@ class RemoveAdminuser < ActiveRecord::Migration
     end
 
     drop_table :admin_users
-    remove_column :channel_admins, :admin_user_id
+    remove_column :provider_admins, :admin_user_id
   end
 
   def down

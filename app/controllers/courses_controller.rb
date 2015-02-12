@@ -24,9 +24,9 @@ class CoursesController < ApplicationController
   end
 
   def mine
-    if current_user.channels_adminable.count == 1
-      channel = current_user.channels_adminable.first
-      @page_subtitle = "<a href='#{channel_path(channel.url_name)}'>#{channel.name}</a>".html_safe
+    if current_user.providers_adminable.count == 1
+      provider = current_user.providers_adminable.first
+      @page_subtitle = "<a href='#{provider_path(provider.url_name)}'>#{provider.name}</a>".html_safe
     else
         @page_subtitle = "From all your providers"
     end
@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
     @page_context_links = [
       {
         img_name: "people",
-        link: new_channel_path,
+        link: new_provider_path,
         active: false,
         title: "New Provider"
       },
@@ -159,7 +159,7 @@ class CoursesController < ApplicationController
 
   def calculate_cost
     @course = Course.new params[:course]
-    render json: @course.as_json(methods: [:channel_fee, :chalkle_fee, :processing_fee, :teacher_max_income, :teacher_min_income, :channel_min_income, :channel_max_income, :teacher_pay_variable, :teacher_pay_flat])
+    render json: @course.as_json(methods: [:provider_fee, :chalkle_fee, :processing_fee, :teacher_max_income, :teacher_min_income, :provider_min_income, :provider_max_income, :teacher_pay_variable, :teacher_pay_flat])
   end
 
 
@@ -182,7 +182,7 @@ class CoursesController < ApplicationController
       if @category.id.blank?
         session[:topic] = nil
       end
-      if @channel.id.blank?
+      if @provider.id.blank?
         session[:provider] = nil
       end
     end
@@ -202,19 +202,19 @@ class CoursesController < ApplicationController
     end
 
     def filter_courses(courses)
-      if @region.id.present? && @category.id.present? && @channel.id.present?
-        courses = courses.in_region(@region).in_category(@category).in_channel(@channel)
-      elsif @region.id.present? && @category.id.present? && @channel.id.nil?    
+      if @region.id.present? && @category.id.present? && @provider.id.present?
+        courses = courses.in_region(@region).in_category(@category).in_provider(@provider)
+      elsif @region.id.present? && @category.id.present? && @provider.id.nil?    
         courses = courses.in_region(@region).in_category(@category) 
-      elsif @region.id.present? && @category.id.nil? && @channel.id.present?
-        courses = courses.in_region(@region).in_channel(@channel)
-      elsif @region.id.nil? && @category.id.present? && @channel.id.present?  
-        courses = courses.in_category(@category).in_channel(@channel)
-      elsif @region.id.nil? && @category.id.nil? && @channel.id.present?  
-        courses = courses.in_channel(@channel)
-      elsif @region.id.nil? && @category.id.present? && @channel.id.nil? 
+      elsif @region.id.present? && @category.id.nil? && @provider.id.present?
+        courses = courses.in_region(@region).in_provider(@provider)
+      elsif @region.id.nil? && @category.id.present? && @provider.id.present?  
+        courses = courses.in_category(@category).in_provider(@provider)
+      elsif @region.id.nil? && @category.id.nil? && @provider.id.present?  
+        courses = courses.in_provider(@provider)
+      elsif @region.id.nil? && @category.id.present? && @provider.id.nil? 
         courses = courses.in_category(@category)   
-      elsif @region.id.present? && @category.id.nil? && @channel.id.nil?
+      elsif @region.id.present? && @category.id.nil? && @provider.id.nil?
         courses = courses.in_region(@region)
       end
       if params[:search].present?
@@ -258,12 +258,12 @@ class CoursesController < ApplicationController
       end
     end
 
-    def load_channel
-      if !@channel
-        if channel_name 
-          @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
+    def load_provider
+      if !@provider
+        if provider_name 
+          @provider = Provider.find_by_url_name(provider_name) || Provider.new(name: "All Providers")
         else
-          @channel = Channel.new(name: "All Providers")
+          @provider = Provider.new(name: "All Providers")
         end
       end
     end

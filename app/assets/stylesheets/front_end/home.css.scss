@@ -177,7 +177,7 @@
           &.active {
             display: block;
           }
-          .channel { 
+          .provider { 
             background-color: $grayLighter; 
           }
         }
@@ -204,17 +204,17 @@
     }
   }
 
-  #join_a_channel {
+  #join_a_provider {
     text-align: center;
 
-    .channel_links {
+    .provider_links {
       margin: 20px 0;
 
-      a.channel_link {
+      a.provider_link {
         text-decoration: none;
         margin: 0 5px;
 
-        img.channel_logo {
+        img.provider_logo {
           height: 165px;
           width: 165px;
         }

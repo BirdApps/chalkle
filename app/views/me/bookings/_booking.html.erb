@@ -31,7 +31,7 @@
         <% end %>
         |
         <% if booking.course.teacher  %>
-          <%= link_to 'Taught by '+booking.course.teacher.name, channel_channel_teacher_path(booking.course.channel.url_name, booking.course.teacher.id) %>
+          <%= link_to 'Taught by '+booking.course.teacher.name, provider_provider_teacher_path(booking.course.provider.url_name, booking.course.teacher.id) %>
         <% else %>
           No teacher assigned
         <% end %>
