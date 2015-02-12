@@ -10,7 +10,17 @@ describe BookingsController do
         let(:course) { FactoryGirl.create(:course, status: 'Published', channel: channel, cost: 0, teacher_cost: 0 ) }
         
         it 'creates a booking' do 
-          post :create, booking: { course_id: course.id, :name => "mr man" , :note_to_teacher => "this is my fav" }
+          post :create, {
+            course_id: course.id, 
+            booking_set: {
+              bookings: [{
+                course_id: course.id, 
+                :name => "mr man" , 
+                :note_to_teacher => "this is my fav" 
+              }]
+            }
+          }
+
           expect(response).to redirect_to(channel_course_path(channel.url_name, course.url_name, course.id))
         end
       end
