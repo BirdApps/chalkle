@@ -49,7 +49,7 @@ class Notify::BookingNotification < Notify::Notifier
 
     booking.chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 
-    BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver! if booking.chalkler.email_about? :booking_completed
+    BookingMailer.booking_completed(booking).deliver! if booking.chalkler.email_about? :booking_completed
   end
 
   def cancelled

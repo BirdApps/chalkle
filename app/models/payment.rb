@@ -9,6 +9,7 @@ class Payment < ActiveRecord::Base
 
   validates_uniqueness_of :xero_id, allow_nil: true
   validates_numericality_of :total, allow_nil: false
+  validates_presence_of :chalkler
 
   scope :unreconciled, where("reconciled IS NOT true")
   scope :hidden, where(visible: false)

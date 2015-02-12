@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Notify::BookingNotification  do
 
-  let(:booking) { FactoryGirl.create(:booking) }
-
+  let(:chalkler) {FactoryGirl.create(:chalkler) }
+  let(:booking) { FactoryGirl.create(:booking, chalkler: chalkler) }
   describe ".confirmation" do
 
     it "notifies chalkler" do
@@ -46,7 +46,7 @@ describe Notify::BookingNotification  do
     end
 
     it "emails chalkler" do
-      expect { Notify.for(booking).completed }.to change { ActionMailer::Base.deliveries.select{ |mail| mail.to.include? booking.chalkler.email }.count }.by(1)
+      expect { Notify.for(booking).completed }.to change { ActionMailer::Base.deliveries.select{ |mail| mail.to.include? chalkler.email }.count }.by(1)
     end
 
   end
