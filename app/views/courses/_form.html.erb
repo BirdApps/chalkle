@@ -50,13 +50,11 @@
           </div>
           <p class="col-sm-12 center"><small class="">You cannot change between class or course while copying a <%= f.object.course_class_type %>. </small></p>
         <% else %>
-          <p>Do you want to create a class, or a course with many classes?</p>
+          <p>Will learners attend one class, or multiple classes?</p>
           <div class="btn-group" data-toggle="buttons">
-          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class', class: :'course-class-radio' %>Create class</label>
-          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course', class: :'course-class-radio' %>Create a course</label>
+            <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class', class: :'course-class-radio' %>Single</label>
+            <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course', class: :'course-class-radio' %>Multiple</label>
           </div>
-          <p class="col-sm-6 text-right"><small class="">Classes are for learning that is all in the one class</small></p>
-          <p class="col-sm-6 text-left"><small class="small grey">Courses are for learning across multiple classes</small></p>
         <% end %>
       </div>
 
@@ -73,9 +71,9 @@
           <p class="small grey">ie. Gardening for beginners. The <span class="class_only">class</span><span class="course_only">course</span>  name should be short, descriptive and clear</p>
         </div>
 
-        <%= f.input :category_id, as: :select, collection: Category.select_options,label: "Select a <strong>Category</strong> for this <span class='class_only'>class</span><span class='course_only'>course</span>", wrapper: :horizontal %>
+        <%# f.input :category_id, as: :select, collection: Category.select_options,label: "Select a <strong>Category</strong> for this <span class='class_only'>class</span><span class='course_only'>course</span>", wrapper: :horizontal %>
 
-        <%= f.input :course_skill, as: :select, :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }, wrapper: :horizontal, label: "What is the <strong>skill level</strong>?" %>
+        <%# f.input :course_skill, as: :select, :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }, wrapper: :horizontal, label: "What is the <strong>skill level</strong>?" %>
 
         <% if !f.object.editing? && !f.object.cloning? %>
           <div class="class_only">
