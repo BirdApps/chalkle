@@ -80,8 +80,9 @@
       <table>
         <tr>
           <td>
-            <h2><%= t 'hello' %><%= @chalkler ? " "+@chalkler.first_name : "" %>,</h2>
-            
+            <% unless @no_hello %>
+              <h2><%= t 'hello' %><%= @chalkler ? " "+@chalkler.first_name : "" %>,</h2>
+            <% end %>
             <p class="lead">
             </p>
               
@@ -161,11 +162,15 @@
         <tr>
           <td align="center">
             <p>
-              <a href="<%= terms_url %>">Terms</a> |
-              <a href="<%= privacy_url %>">Privacy</a> |
-              <a href="<%= me_notification_preference_url %>">
-                <unsubscribe>Unsubscribe via email Preferences</unsubscribe>
-              </a>
+              <a href="<%= terms_url %>">Terms</a> 
+              <% unless true %>| <%#  #TODO: make a privacy page  %>
+                <a href="<%= privacy_url %>">Privacy</a> 
+              <% end %>
+              <% unless @skip_unsubscribe == true %>|
+                <a href="<%= me_notification_preference_url %>">
+                  <unsubscribe>Unsubscribe via email Preferences</unsubscribe>
+                </a>
+              <% end %>
             </p>
           </td>
         </tr>

@@ -7,6 +7,10 @@ class Notify::BookingNotification < Notify::Notifier
 
   def confirmation
     #to chalkler
+    if booking.payment.present?
+      PaymentMailer.receipt_to_chalkler(booking.payment).deliver!
+    end
+
     message = I18n.t('notify.booking.confirmation.to_chalkler', course_name: booking.course.name)
     booking.chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 

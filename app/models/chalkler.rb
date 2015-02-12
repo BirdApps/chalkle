@@ -32,6 +32,7 @@ class Chalkler < ActiveRecord::Base
   has_many :courses_adminable, through: :channels_adminable, source: :courses
   has_many :courses_teaching, through: :channel_teachers, source: :courses
   has_many :courses, through: :bookings
+  has_many :providers_attended, through: :bookings, source: :channel, uniq: true
   has_many :channels, through: :subscriptions, source: :channel
   has_many :channel_contacts
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
