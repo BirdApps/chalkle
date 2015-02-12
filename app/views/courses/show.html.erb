@@ -53,7 +53,7 @@
                   <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
                 </div>
             <% elsif Course.similar_to(@course).count > 1 %>
-              <%= link_to "Find similar #{ @course.type.pluralize }", channel_course_series_path(@course.channel.url_name, @course.url_name) %>
+              <%= link_to "Find similar #{ @course.type.pluralize }", provider_course_series_path(@course.provider.url_name, @course.url_name) %>
             <% end %>
           </div>
 
@@ -82,7 +82,7 @@
   <div class="row">
     <div class="col-sm-3 col-sm-offset-1 col-xs-6 clearfix">
       <% if @course.teacher.present? %>
-        <%= link_to channel_teacher_path(@course.channel, @course.teacher) do %>
+        <%= link_to provider_teacher_path(@course.provider, @course.teacher) do %>
           <div class="teacher">
             <div class="img" style='background-image: url(<%= @course.teacher.avatar %>)'>
             </div>

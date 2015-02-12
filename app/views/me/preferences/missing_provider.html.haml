@@ -1,0 +1,13 @@
+:markdown
+  ## Oops! Something went wrong.
+
+  **It looks like you have not been assigned to a provider yet.**
+
+  - If you have been given a password but signed in via Meetup, try using your password to log in.
+  - If you have just joined chalkle&deg; through Meetup, please wait an hour and then sign in again.
+
+  If you still cannot log in, contact your Provider Admin or join one of our Providers on Meetup:
+
+%ul
+  - @providers.each do |c|
+    %li= link_to c.name, "http://meetup.com/#{c.url_name}"

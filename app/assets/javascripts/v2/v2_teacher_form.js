@@ -2,7 +2,7 @@ $(function(){
   var existing_account = false;
   function check_if_chalkler(email){
     if(email){
-      var channel_id = $("#channel_id").val();
+      var provider_id = $("#provider_id").val();
       var url = '/people/exists';
 
       var jx = $.ajax({
@@ -23,11 +23,11 @@ $(function(){
     }
   }
 
-  $('#channel_teacher_email').change(function(){
+  $('#provider_teacher_email').change(function(){
     check_if_chalkler($(this).val());
   });
 
-   $('#channel_admin_email').change(function(){
+   $('#provider_admin_email').change(function(){
     check_if_chalkler($(this).val());
   });
 });

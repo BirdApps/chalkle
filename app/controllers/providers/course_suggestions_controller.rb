@@ -4,13 +4,13 @@ class Providers::CourseSuggestionsController < Me::BaseController
   end
 
   def create
-    if params[:course_suggestion][:join_channels]
-      params[:course_suggestion][:join_channels].reject!(&:empty?)
+    if params[:course_suggestion][:join_providers]
+      params[:course_suggestion][:join_providers].reject!(&:empty?)
     end
     @course_suggestion = CourseSuggestion.new params[:course_suggestion]
     @course_suggestion.chalkler = current_chalkler
-    if current_chalkler.channels.count == 1
-      @course_suggestion.join_channels = [ current_chalkler.channel_ids ]
+    if current_chalkler.providers.count == 1
+      @course_suggestion.join_providers = [ current_chalkler.provider_ids ]
     end
     if @course_suggestion.save
       redirect_to :root, notice: 'Thank you for your suggestion!'

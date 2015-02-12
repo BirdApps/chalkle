@@ -80,8 +80,9 @@
       <table>
         <tr>
           <td>
-            <h2><%= t 'hello' %><%= @chalkler ? " "+@chalkler.first_name : "" %>,</h2>
-            
+            <% unless @no_hello %>
+              <h2><%= t 'hello' %><%= @chalkler ? " "+@chalkler.first_name : "" %>,</h2>
+            <% end %>
             <p class="lead">
             </p>
               

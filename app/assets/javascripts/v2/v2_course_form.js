@@ -13,7 +13,7 @@ $(function(){
 
     /* initilizes on page load */
     function init(){
-      $('#teaching_channel_id').change(get_teacher_list);
+      $('#teaching_provider_id').change(get_teacher_list);
       $("#type .btn-group label").click(course_class_select);
       $('.update_class_count .number-picker-up').click(show_class_opts);
       $('.update_class_count .number-picker-down').click(show_class_opts);
@@ -272,15 +272,15 @@ $(function(){
       
     }
 
-    /* Retrieves list of teachers for a given channel and populates select element */
+    /* Retrieves list of teachers for a given provider and populates select element */
     function get_teacher_list(){
-      var channel_id = $('#teaching_channel_id').val();
+      var provider_id = $('#teaching_provider_id').val();
       var selected_val = -1;
       if($('#saved_teacher_id').length){
         selected_val = $('#saved_teacher_id').val();
       }
-      if(!isNaN(channel_id)){
-        $.getJSON('/providers/'+channel_id+'/teachers.json', function(data){
+      if(!isNaN(provider_id)){
+        $.getJSON('/providers/'+provider_id+'/teachers.json', function(data){
             $('#teaching_teacher_id').empty();
             if(data.length < 2){
               $('.teacher-select').hide();
@@ -713,7 +713,7 @@ $(function(){
           show_error_for($('#providing_agreeterms'));
         }
       }
-      if(parseFloat($('#teaching_channel_min_income').val().replace('$','')) < 0){
+      if(parseFloat($('#teaching_provider_min_income').val().replace('$','')) < 0){
         valid = false;
         show_error_for($('#fee_summary'));
       }

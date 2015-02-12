@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
   let(:the_user) { FactoryGirl.create(:the_user) }
-  let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.1, teacher_percentage: 0.5) }
-  let(:channel2) { FactoryGirl.create(:channel, channel_rate_override: 0.6, teacher_percentage: 0.1) }
+  let(:provider) { FactoryGirl.create(:provider, provider_rate_override: 0.1, teacher_percentage: 0.5) }
+  let(:provider2) { FactoryGirl.create(:provider, provider_rate_override: 0.6, teacher_percentage: 0.1) }
   let(:category) { FactoryGirl.create(:category, name: "music and dance") }
   let(:region)   { FactoryGirl.create(:region, name: 'Auckland') }
   let(:params) { {
@@ -21,7 +21,7 @@ describe "Teachings" do
     availabilities: '' ,
     additional_comments: '',
     category_primary_id: category.id,
-    channel_id: channel.id,
+    provider_id: provider.id,
     region_id: region.id,
     repeating: false,
     repeat_frequency: '',
@@ -30,8 +30,8 @@ describe "Teachings" do
   let!(:chalkler_teaching){ Teaching.new(chalkler) }
 
   before(:each) do
-    chalkler.channels << channel
-    chalkler.channels << channel2
+    chalkler.providers << provider
+    chalkler.providers << provider2
   end
 
   describe "initialize" do

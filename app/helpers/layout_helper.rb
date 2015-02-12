@@ -20,12 +20,12 @@ module LayoutHelper
 
   def page_title
     return @page_title if @page_title.present?
-    if @channel_teacher.present? && @channel_teacher.id.present?
-      title = @channel_teacher.name
+    if @provider_teacher.present? && @provider_teacher.id.present?
+      title = @provider_teacher.name
     elsif @course.present? && @course.id.present?
       title = link_to @course.name, @course.path
-    elsif @channel.id.present?
-      title = @channel.name
+    elsif @provider.id.present?
+      title = @provider.name
     elsif @category.id.present?
       title = @category.name
     elsif @region.id.present? || @region.name == "New Zealand"
@@ -38,28 +38,28 @@ module LayoutHelper
 
   def page_title_logo
     return @page_title_logo if @page_title_logo.present?
-    if @channel_teacher.present? && @channel_teacher.id.present? 
-      if @channel_teacher.avatar.present?
-        @channel_teacher.avatar
+    if @provider_teacher.present? && @provider_teacher.id.present? 
+      if @provider_teacher.avatar.present?
+        @provider_teacher.avatar
       end
     elsif @course.present? && @course.id.present?
       @course.course_upload_image
-    elsif @channel.logo.present?
-      @channel.logo
+    elsif @provider.logo.present?
+      @provider.logo
     end
   end
 
   def page_subtitle
     return @page_subtitle if @page_subtitle.present?
     subtitle = ''
-    if @channel_teacher.present? && @channel_teacher.id.present?
-        subtitle = link_to @channel_teacher.channel.name, channel_path(@channel_teacher.channel.url_name)
+    if @provider_teacher.present? && @provider_teacher.id.present?
+        subtitle = link_to @provider_teacher.provider.name, provider_path(@provider_teacher.provider.url_name)
     elsif @course.present? && @course.id.present?
-        subtitle = link_to @course.channel.name, channel_path(@course.channel.url_name)
+        subtitle = link_to @course.provider.name, provider_path(@course.provider.url_name)
     elsif @teaching.present?
       
     elsif @courses
-      if @channel.id.present?
+      if @provider.id.present?
         subtitle += @region.name+' '    if @region.id.present?
         subtitle += @category.name+' '  if @category.id.present?
         subtitle += ' classes from'
@@ -78,8 +78,8 @@ module LayoutHelper
     meta_title = ''
     if params[:action] == 'index' && params[:controller] == 'courses'
       meta_title = page_subtitle+' '+page_title
-    elsif !@channel.new_record? && params[:controller] == 'channels'
-      meta_title = @channel.name
+    elsif !@provider.new_record? && params[:controller] == 'providers'
+      meta_title = @provider.name
     elsif params[:action] == 'new'
       meta_title = 'New '+ page_title
     elsif @course && !@course.new_record?
@@ -109,26 +109,26 @@ module LayoutHelper
   end
 
   def find_hero
-    if @channel_teacher.present? && @channel_teacher.id.present? && @channel_teacher.channel.hero.present?
+    if @provider_teacher.present? && @provider_teacher.id.present? && @provider_teacher.provider.hero.present?
         {
-          default: @channel_teacher.channel.hero,
-          blurred: @channel_teacher.channel.hero.blurred
+          default: @provider_teacher.provider.hero,
+          blurred: @provider_teacher.provider.hero.blurred
         }
 
-    elsif @channel.hero.present?
+    elsif @provider.hero.present?
         {
-          default: @channel.hero,
-          blurred: @channel.hero.blurred
+          default: @provider.hero,
+          blurred: @provider.hero.blurred
         }
-    elsif @booking && !@booking.new_record? && @booking.course.channel.hero.present?
+    elsif @booking && !@booking.new_record? && @booking.course.provider.hero.present?
         {
-          default: @booking.course.channel.hero,
-          blurred: @booking.course.channel.hero.blurred
+          default: @booking.course.provider.hero,
+          blurred: @booking.course.provider.hero.blurred
         }
-    elsif @bookings && @bookings.any? && @bookings.first.course.channel.hero.present?
+    elsif @bookings && @bookings.any? && @bookings.first.course.provider.hero.present?
         {
-          default: @bookings.first.course.channel.hero,
-          blurred: @bookings.first.course.channel.hero.blurred
+          default: @bookings.first.course.provider.hero,
+          blurred: @bookings.first.course.provider.hero.blurred
         }
       elsif @category.hero.present? 
         {
@@ -153,25 +153,25 @@ module LayoutHelper
     controller_parts = request.path_parameters[:controller].split("/")
     action_parts = request.path_parameters[:action].split("/")
     nav_links = []
-    if @channel_teacher.present? && @channel_teacher.id.present?
+    if @provider_teacher.present? && @provider_teacher.id.present?
       nav_links << {
         img_name: "bolt",
-        link: channel_channel_teacher_path(@channel_teacher.channel.url_name,@channel_teacher.id),
+        link: provider_provider_teacher_path(@provider_teacher.provider.url_name,@provider_teacher.id),
         active: action_parts.include?("show"),
         title: "Classes"
       }
-      if policy(@channel_teacher).edit?
+      if policy(@provider_teacher).edit?
         nav_links <<  {
           img_name: "settings",
-          link: edit_channel_teacher_path(@channel_teacher),
+          link: edit_provider_teacher_path(@provider_teacher),
           active: action_parts.include?("edit"),
           title: "Edit"
         }
       end
-      if current_user.super? && @channel_teacher.chalkler_id.present?
+      if current_user.super? && @provider_teacher.chalkler_id.present?
         nav_links <<  {
           img_name: "people",
-          link: become_sudo_chalkler_path(@channel_teacher.chalkler_id),
+          link: become_sudo_chalkler_path(@provider_teacher.chalkler_id),
           active: false,
           title: "Become"
         }
@@ -209,26 +209,26 @@ module LayoutHelper
           title: "Copy"
         }
       end
-    elsif @channel.id.present?
+    elsif @provider.id.present?
       nav_links << {
           img_name: "bolt",
-          link: channel_path(@channel.url_name),
+          link: provider_path(@provider.url_name),
           active: action_parts.include?("show"),
           title: "Classes"
         }
       nav_links << {
           img_name: "people",
-          link: channels_teachers_path(@channel.url_name),
-          active: action_parts.include?("teachers") || controller_parts.include?("channel_teachers") ,
+          link: providers_teachers_path(@provider.url_name),
+          active: action_parts.include?("teachers") || controller_parts.include?("provider_teachers") ,
           title: "People"
         }
       nav_links << {
           img_name: "contact",
-          link: channel_contact_path(@channel.url_name),
+          link: provider_contact_path(@provider.url_name),
           active: action_parts.include?("contact"),
           title: "contact"
         }
-      # if policy(@channel).metrics?
+      # if policy(@provider).metrics?
       #   nav_links << {
       #     img_name: "metrics",
       #     link: metrics_path,
@@ -236,7 +236,7 @@ module LayoutHelper
       #     title: "Metrics"
       #   }
       # end
-      # if policy(@channel).resources?
+      # if policy(@provider).resources?
       #   nav_links <<  {
       #     img_name: "book",
       #     link: resources_path,
@@ -244,10 +244,10 @@ module LayoutHelper
       #     title: "Resources"
       #   }
       # end
-      if policy(@channel).edit?
+      if policy(@provider).edit?
         nav_links <<  {
           img_name: "settings",
-          link: channel_settings_path(@channel.url_name),
+          link: provider_settings_path(@provider.url_name),
           active: action_parts.include?("resources"),
           title: "Settings"
         }

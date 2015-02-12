@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :category_id, :channels, :channel, :channel_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_channel_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_channel_tax_number, :note_to_attendees, :new_channel_bank_number, :cloning_id, :bookings, :custom_fields
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :category_id, :providers, :provider, :provider_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_provider_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_provider_tax_number, :note_to_attendees, :new_provider_bank_number, :cloning_id, :bookings, :custom_fields
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
@@ -22,7 +22,7 @@ class Teaching
 
   def initialize(current_user)
   	@current_user = current_user
-    @channels = current_user.channels
+    @providers = current_user.providers
     @start_at = [ Time.new.advance(weeks: 1) ]
     @duration_hours = [1]
     @duration_minutes = [0]
@@ -58,9 +58,9 @@ class Teaching
     @longitude = args.longitude
     @latitude = args.latitude
     @venue = args.venue
-    @channel_id = args.channel_id
+    @provider_id = args.provider_id
     @teacher_id = args.teacher_id unless args.teacher.blank?
-    @channel = args.channel
+    @provider = args.provider
     @teacher = args.teacher
     @min_attendee = args.min_attendee
     @max_attendee = args.max_attendee
@@ -101,7 +101,7 @@ class Teaching
       longitude: @longitude,
       latitude: @latitude,
       venue: @venue,
-      channel_id: @channel_id,
+      provider_id: @provider_id,
       teacher_id: @teacher_id,
       min_attendee: @min_attendee.to_i,
       max_attendee: @max_attendee.to_i,
@@ -308,9 +308,9 @@ class Teaching
       @latitude = params[:latitude]
       @longitude = params[:longitude]
       @venue = params[:venue]
-      @new_channel_bank_number = params[:new_channel_bank_number]
-      @new_channel_tax_number = params[:new_channel_tax_number]
-      @channel_id = get_channel_id params[:channel_id]
+      @new_provider_bank_number = params[:new_provider_bank_number]
+      @new_provider_tax_number = params[:new_provider_tax_number]
+      @provider_id = get_provider_id params[:provider_id]
       @teacher_id = get_teacher_id params[:teacher_id]
       @min_attendee = params[:min_attendee]
       @max_attendee = params[:max_attendee]
@@ -349,38 +349,38 @@ class Teaching
 
     def get_teacher_id(teacher_id)
       if teacher_id.blank?
-        if @channel.channel_teachers.present?
-          teacher = @channel.channel_teachers.first
+        if @provider.provider_teachers.present?
+          teacher = @provider.provider_teachers.first
         else
-          teacher = ChannelTeacher.create chalkler: @current_user.chalkler, channel: @channel, name: @current_user.name
+          teacher = ProviderTeacher.create chalkler: @current_user.chalkler, provider: @provider, name: @current_user.name
         end
       else
-        teacher = @channel.channel_teachers.find teacher_id
+        teacher = @provider.provider_teachers.find teacher_id
       end
       teacher.id
     end
 
-    #If a channel was specified: use that, Else if user has a channel: use that, Else: create a new channel.
-    def get_channel_id(channel_id)
-      if channel_id.present?
-        channel = Channel.find_by_id channel_id
-        channel = nil unless @channels.include? channel || current_user.super?
+    #If a provider was specified: use that, Else if user has a provider: use that, Else: create a new provider.
+    def get_provider_id(provider_id)
+      if provider_id.present?
+        provider = Provider.find_by_id provider_id
+        provider = nil unless @providers.include? provider || current_user.super?
       end
-      if channel.blank?
-        #no channel
-        if @channels.empty?
-          #create a personal channel and grant user all permissions
-          channel = Channel.create({name: @current_user.name+" Classes", regions: [ region ], email: @current_user.email, account: @new_channel_bank_number, tax_number: @new_channel_tax_number, visible: true, channel_plan: ChannelPlan.default}, as: :admin)
-          channel_admin = ChannelAdmin.create channel: channel, chalkler: @current_user.chalkler
-          channel_teacher = ChannelTeacher.create channel: channel, chalkler: @current_user.chalkler, name: @current_user.name, account: @new_channel_bank_number, tax_number: @new_channel_tax_number
+      if provider.blank?
+        #no provider
+        if @providers.empty?
+          #create a personal provider and grant user all permissions
+          provider = Provider.create({name: @current_user.name+" Classes", regions: [ region ], email: @current_user.email, account: @new_provider_bank_number, tax_number: @new_provider_tax_number, visible: true, provider_plan: ProviderPlan.default}, as: :admin)
+          provider_admin = ProviderAdmin.create provider: provider, chalkler: @current_user.chalkler
+          provider_teacher = ProviderTeacher.create provider: provider, chalkler: @current_user.chalkler, name: @current_user.name, account: @new_provider_bank_number, tax_number: @new_provider_tax_number
         else
-          if @channels.count == 1
-            channel = @channels[0]
+          if @providers.count == 1
+            provider = @providers[0]
           end
         end
       end
-      @channel = channel
-      channel.id
+      @provider = provider
+      provider.id
     end
 
     def get_category_id(category_id)

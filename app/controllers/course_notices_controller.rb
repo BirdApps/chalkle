@@ -14,7 +14,7 @@ class CourseNoticesController < ApplicationController
     notice.photo = params[:course_notice_photo] if params[:course_notice_photo]
     
     if params[:course_notice_photo].blank? && notice.body.blank?
-      return redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id), notice: t('flash.discussion.error')
+      return redirect_to provider_course_path(@course.provider.url_name, @course.url_name, @course.id), notice: t('flash.discussion.error')
     else
       notice.save
     end
@@ -22,7 +22,7 @@ class CourseNoticesController < ApplicationController
     role = current_chalkler == @course.teacher.chalkler ? :teacher : :chalkler
     Notify.for(notice).as(role).from(current_chalkler).created
 
-    redirect_to channel_course_path(@course.channel.url_name, @course.url_name, @course.id, anchor: 'discuss-'+notice.id.to_s)
+    redirect_to provider_course_path(@course.provider.url_name, @course.url_name, @course.id, anchor: 'discuss-'+notice.id.to_s)
   end
 
   def update
@@ -35,13 +35,13 @@ class CourseNoticesController < ApplicationController
       @course_notice.save
     end
 
-    redirect_to channel_course_path(@course_notice.channel.url_name, @course_notice.course.url_name, @course_notice.course.id, anchor: 'discuss-'+@course_notice.id.to_s)
+    redirect_to provider_course_path(@course_notice.provider.url_name, @course_notice.course.url_name, @course_notice.course.id, anchor: 'discuss-'+@course_notice.id.to_s)
   end
 
   def destroy
     @course_notice.visible = !@course_notice.visible
     @course_notice.save
-    redirect_to channel_course_path(@course_notice.channel.url_name, @course_notice.course.url_name, @course_notice.course.id, anchor: 'discuss-'+@course_notice.id.to_s)
+    redirect_to provider_course_path(@course_notice.provider.url_name, @course_notice.course.url_name, @course_notice.course.id, anchor: 'discuss-'+@course_notice.id.to_s)
   end
 
   private 

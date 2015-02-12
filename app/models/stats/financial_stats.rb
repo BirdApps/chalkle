@@ -1,9 +1,9 @@
-class FinancialStats < ChannelStats
+class FinancialStats < ProviderStats
 
   attr_accessor :turnover, :percent_turnover, :cost, :percent_cost
 
   def turnover
-    l = channel.course_ran(start, end_time)
+    l = provider.course_ran(start, end_time)
     total = 0.0
     l.each do |course|
       total = course.collected_turnover + total
@@ -12,7 +12,7 @@ class FinancialStats < ChannelStats
   end
 
   def cost
-    l = channel.course_ran(start, end_time)
+    l = provider.course_ran(start, end_time)
     total = 0.0
     l.each do |course|
       total = course.total_cost + total
@@ -21,7 +21,7 @@ class FinancialStats < ChannelStats
   end
 
   def profit
-    l = channel.course_ran(start, end_time)
+    l = provider.course_ran(start, end_time)
     total = 0.0
     l.each do |course|
       total = course.income + total
@@ -30,7 +30,7 @@ class FinancialStats < ChannelStats
   end
 
   def previous
-    FinancialStats.new(start - period, period, channel)
+    FinancialStats.new(start - period, period, provider)
   end
 
   def percent_turnover

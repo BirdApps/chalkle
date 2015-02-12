@@ -17,7 +17,7 @@ class BookingsController < ApplicationController
   end
 
   def new
-    @channel = Course.find(params[:course_id]).channel #Find channel for hero
+    @provider = Course.find(params[:course_id]).provider #Find provider for hero
     @booking_set = BookingSet.new
     @booking_set.bookings << Booking.new(name: current_user.name)
     @page_subtitle = "Booking for"

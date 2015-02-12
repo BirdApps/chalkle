@@ -1,11 +1,11 @@
-class CourseStats < ChannelStats
+class CourseStats < ProviderStats
 
   def previous
-    CourseStats.new(start - period, period, channel)
+    CourseStats.new(start - period, period, provider)
   end
 
   def courses_announced
-    channel.course_announced(start,end_time).count
+    provider.course_announced(start,end_time).count
   end
 
   def percent_courses_announced
@@ -13,11 +13,11 @@ class CourseStats < ChannelStats
   end
 
   def new_courses_announced
-    new_course(channel.course_announced(start,end_time))
+    new_course(provider.course_announced(start,end_time))
   end
 
   def courses_ran
-    channel.course_ran(start,end_time).count
+    provider.course_ran(start,end_time).count
   end
 
   def percent_courses_ran
@@ -25,11 +25,11 @@ class CourseStats < ChannelStats
   end
 
   def new_courses_ran
-    channel.course_ran(start,end_time).not_repeat_course.count
+    provider.course_ran(start,end_time).not_repeat_course.count
   end
 
   def cancelled_courses
-    channel.cancel_courses(start,end_time).count
+    provider.cancel_courses(start,end_time).count
   end
 
   def percent_cancelled_courses
@@ -37,11 +37,11 @@ class CourseStats < ChannelStats
   end
 
   def new_cancelled_courses
-    channel.cancel_courses(start,end_time).not_repeat_course.count
+    provider.cancel_courses(start,end_time).not_repeat_course.count
   end
 
   def paid_courses
-    channel.paid_courses(start,end_time).count
+    provider.paid_courses(start,end_time).count
   end
 
   def percent_paid_courses

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Course do
   
-  it { should belong_to :channel }
+  it { should belong_to :provider }
   it { should belong_to :teacher }
 
   it { should accept_nested_attributes_for :lessons }
@@ -115,9 +115,9 @@ describe Course do
   end
   describe "warning flag on courses" do
 
-      let(:teacher)  { FactoryGirl.create(:channel_teacher, name: "Teacher") }
+      let(:teacher)  { FactoryGirl.create(:provider_teacher, name: "Teacher") }
       let(:chalkler) { FactoryGirl.create(:chalkler, name: "Chalkler") }
-      let(:channel) { FactoryGirl.create(:channel) }
+      let(:provider) { FactoryGirl.create(:provider) }
       let(:lesson) { FactoryGirl.create(:lesson, start_at: 2.days.from_now, duration: 1.5) }
       let(:course) { FactoryGirl.create(:course, name: "Test class", teacher_id: teacher.id, lessons: [lesson], do_during_class: "Nothing much", teacher_cost: 10, min_attendee: 2, venue: "Town Hall") }
       let(:booking) { FactoryGirl.create(:booking, chalkler: chalkler, course: course, status: 'yes', guests: 5) }
@@ -134,9 +134,9 @@ describe Course do
 
   describe "course costs" do
 
-    let(:channel) { FactoryGirl.create(:channel, channel_rate_override: 0.2, teacher_percentage: 0.5) }
+    let(:provider) { FactoryGirl.create(:provider, provider_rate_override: 0.2, teacher_percentage: 0.5) }
 
-    let(:course) { FactoryGirl.create(:course, channel: channel, cost: 20) }
+    let(:course) { FactoryGirl.create(:course, provider: provider, cost: 20) }
       
     describe "cost validations" do
 
@@ -154,15 +154,15 @@ describe Course do
   end
 
   describe ".create_outgoing_payments!" do
-    let(:channel) { FactoryGirl.create(:channel) }
-    let(:teacher){ FactoryGirl.create(:channel_teacher, channel: channel )}
+    let(:provider) { FactoryGirl.create(:provider) }
+    let(:teacher){ FactoryGirl.create(:provider_teacher, provider: provider )}
     let(:lesson){ FactoryGirl.create(:past_lesson)}
-    let(:course) { FactoryGirl.create(:course_with_bookings, channel: channel, teacher: teacher, status: 'Completed', lessons: [lesson])}
+    let(:course) { FactoryGirl.create(:course_with_bookings, provider: provider, teacher: teacher, status: 'Completed', lessons: [lesson])}
 
-    it "should associate a completed course with a teacher_payment and a channel_payment" do
+    it "should associate a completed course with a teacher_payment and a provider_payment" do
       course.create_outgoing_payments!
       expect(course.teacher_payment).to(be_valid) && 
-      expect(course.channel_payment).to(be_valid)
+      expect(course.provider_payment).to(be_valid)
     end
   end
 end

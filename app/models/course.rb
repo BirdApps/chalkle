@@ -6,11 +6,11 @@ class Course < ActiveRecord::Base
   GST = 0.15
 
   attr_accessible *BASIC_ATTR = [
-    :name, :status, :visible, :course_type, :teacher_id, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :channel, :channel_id, :suggested_audience,  :region_id, :region, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at, :custom_fields
+    :name, :status, :visible, :course_type, :teacher_id, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :provider, :provider_id, :suggested_audience,  :region_id, :region, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at, :custom_fields
   ]
 
   #chalkle fee is saved exclusive of GST
-  #channel fee is saved inclusive of GST
+  #provider fee is saved inclusive of GST
   #teacher cost is saved inclusive of GST
 
   #Course statuses
@@ -24,11 +24,11 @@ class Course < ActiveRecord::Base
 
   belongs_to :repeat_course
   belongs_to :region
-  belongs_to :channel
-  belongs_to :teacher,          class_name: "ChannelTeacher"
+  belongs_to :provider
+  belongs_to :teacher,          class_name: "ProviderTeacher"
   belongs_to :category
   belongs_to :teacher_payment,  class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
-  belongs_to :channel_payment,  class_name: 'OutgoingPayment', foreign_key: :channel_payment_id
+  belongs_to :provider_payment,  class_name: 'OutgoingPayment', foreign_key: :provider_payment_id
 
   has_many  :lessons
   has_many  :bookings
@@ -42,7 +42,7 @@ class Course < ActiveRecord::Base
 
   serialize :custom_fields
 
-  [:teacher, :channel, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
+  [:teacher, :provider, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
 
   delegate :best_colour_num, to: :category, allow_nil: true
   
@@ -53,7 +53,7 @@ class Course < ActiveRecord::Base
 
   validates_presence_of :name
   validates_presence_of :lessons, if: :published?
-  validates_presence_of :channel
+  validates_presence_of :provider
   validates_presence_of :teacher
   validates_presence_of :start_at
 
@@ -91,19 +91,20 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
-  scope :taught_by_chalkler, -> (chalkler){ joins(:teacher).where('channel_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
+  scope :taught_by_chalkler, -> (chalkler){ joins(:teacher).where('provider_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
   scope :in_region, -> (region){ where(region_id: region.id) }
-  scope :in_channel, -> (channel){ where(channel_id: channel.id) }
+  scope :in_provider, -> (provider){ where(provider_id: provider.id) }
   scope :in_category, -> (category){ includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
   scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
-  scope :adminable_by, -> (chalkler){ joins(:channel => :channel_admins).where('channel_admins.chalkler_id = ?', chalkler.id)}
+  scope :adminable_by, -> (chalkler){ joins(:provider => :provider_admins).where('provider_admins.chalkler_id = ?', chalkler.id)}
 
   scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
 
-  scope :similar_to, -> (course){ where(channel_id: course.channel_id, url_name: course.url_name).published.in_future.by_date }
+  scope :similar_to, -> (course){ where(provider_id: course.provider_id, url_name: course.url_name).displayable.in_future.by_date }
 
-  scope :need_outgoing_payments, where("cost > 0 AND status = '#{STATUS_4}' AND end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR channel_payment_id IS NULL)")
+  scope :need_outgoing_payments, where("cost > 0 AND status = '#{STATUS_4}' AND end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR provider_payment_id IS NULL)")
+
   scope :free, where("cost IS NULL or cost = 0")
 
   before_create :set_url_name
@@ -330,24 +331,24 @@ class Course < ActiveRecord::Base
     @teacher_income_no_tax ||= calc_teacher_income(false)
   end
 
-  def channel_income_with_tax
-    @channel_income_with_tax ||= calc_channel_income(true)
+  def provider_income_with_tax
+    @provider_income_with_tax ||= calc_provider_income(true)
   end
 
-  def channel_income_no_tax
-    @channel_income_no_tax ||= calc_channel_income(false)
+  def provider_income_no_tax
+    @provider_income_no_tax ||= calc_provider_income(false)
   end
 
-  def channel_income_tax
-    channel.tax_registered? ? channel_income_no_tax*3/23 : 0
+  def provider_income_tax
+    provider.tax_registered? ? provider_income_no_tax*3/23 : 0
   end
 
   def teacher_income_tax
     teacher.tax_registered? ? teacher_income_no_tax*3/23 : 0
   end
 
-  def channel_plan
-    @channel_plan ||= calc_channel_plan
+  def provider_plan
+    @provider_plan ||= calc_provider_plan
   end
 
   def chalkle_fee
@@ -362,13 +363,13 @@ class Course < ActiveRecord::Base
     @chalkle_fee_no_tax ||= calc_chalkle_fee(false)
   end
 
-  def channel_fee
-    @channel_fee ||= calc_channel_fee
+  def provider_fee
+    @provider_fee ||= calc_provider_fee
   end
 
   def processing_fee
     if cost.present?
-      cost * channel_plan.processing_fee_percent
+      cost * provider_plan.processing_fee_percent
     else
       0
     end
@@ -406,9 +407,9 @@ class Course < ActiveRecord::Base
     teacher_pay_flat
   end
 
-  def channel_max_income
+  def provider_max_income
      if max_attendee.present?
-      channel_fee * max_attendee - fixed_costs
+      provider_fee * max_attendee - fixed_costs
     else
       0
     end
@@ -422,9 +423,9 @@ class Course < ActiveRecord::Base
     end
   end
 
-  def channel_min_income
+  def provider_min_income
     if min_attendee.present?
-      channel_fee * min_attendee - fixed_costs
+      provider_fee * min_attendee - fixed_costs
     else
       0
     end
@@ -439,7 +440,7 @@ class Course < ActiveRecord::Base
   end
 
   def teacher_min_income
-    if min_attendee.present?
+    if teacher_pay_variable.present? && min_attendee.present?
       teacher_pay_variable * min_attendee
     else
       0
@@ -500,14 +501,14 @@ class Course < ActiveRecord::Base
   end
 
   def path
-    if channel.nil?
-      self.channel = Course.find(self.id).channel
+    if provider.nil?
+      self.provider = Course.find(self.id).provider
     end
-    "/#{channel.url_name}/#{url_name}/#{id}"
+    "/#{provider.url_name}/#{url_name}/#{id}"
   end
 
   def path_series
-    "/#{channel.url_name}/#{url_name}"
+    "/#{provider.url_name}/#{url_name}"
   end
 
   def lesson_in_progress
@@ -558,9 +559,9 @@ class Course < ActiveRecord::Base
       t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
       self.update_column('teacher_payment_id', t_payment.id)
     end
-    unless self.channel_payment
-      c_payment = OutgoingPayment.pending_payment_for_channel(channel) 
-      self.update_column('channel_payment_id', c_payment.id)
+    unless self.provider_payment
+      c_payment = OutgoingPayment.pending_payment_for_provider(provider) 
+      self.update_column('provider_payment_id', c_payment.id)
     end
   end
 
@@ -589,12 +590,12 @@ class Course < ActiveRecord::Base
     
   private
     def clear_ivars
-      @channel_income_with_tax = nil
-      @channel_income_no_tax = nil
+      @provider_income_with_tax = nil
+      @provider_income_no_tax = nil
       @teacher_income_with_tax = nil
       @teacher_income_no_tax = nil
-      @channel_plan = nil
-      @channel_fee = nil
+      @provider_plan = nil
+      @provider_fee = nil
       @chalkle_fee_with_tax = nil
       @chalkle_fee_no_tax = nil
       @first_or_new_lesson = nil
@@ -603,20 +604,20 @@ class Course < ActiveRecord::Base
     def calc_chalkle_fee(incl_tax)
       return 0 if free?
       single = course_class_type.nil? ? single_class? : course_class_type == 'course'
-      no_tax_fee = (single ? channel_plan.course_attendee_cost : channel_plan.class_attendee_cost);
+      no_tax_fee = (single ? provider_plan.course_attendee_cost : provider_plan.class_attendee_cost);
       incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
     end
 
-    def calc_channel_income(incl_tax)
+    def calc_provider_income(incl_tax)
       income = bookings.confirmed.paid.sum(&:provider_fee) - teacher_pay_flat
-      income - (incl_tax ? 0 : (channel.tax_registered? ? income*3/23 : 0))
+      income - (incl_tax ? 0 : (provider.tax_registered? ? income*3/23 : 0))
     end
 
-    def calc_channel_plan
-      (channel && channel.plan) ? channel.plan : ChannelPlan.default
+    def calc_provider_plan
+      (provider && provider.plan) ? provider.plan : ProviderPlan.default
     end
 
-    def calc_channel_fee
+    def calc_provider_fee
       (cost||0) - (variable_costs||0) - (processing_fee||0) - (chalkle_fee_with_tax||0)
     end
 

@@ -7,43 +7,44 @@ class Chalkler < ActiveRecord::Base
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :invitable, :omniauth_providers => [:facebook, :meetup]
 
-  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
-  attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :role, :as => :admin
+  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :provider_teachers, :provider_admins, :providers_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
+  attr_accessible *BASIC_ATTR, :provider_ids, :provider, :uid, :join_providers, :email_region_ids, :role, :as => :admin
 
-  attr_accessor :join_channels, :set_password_token
+  attr_accessor :join_providers, :set_password_token
 
   validates_presence_of :name
   validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }
   validates_uniqueness_of :email, { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
-  validates_associated :subscriptions, :channels
+  validates_associated :subscriptions, :providers
   validates_presence_of :notification_preference, :if => :persisted?
 
   has_many :subscriptions
-  has_many :channel_teachers
+  has_many :provider_teachers
   has_many :bookings
   has_many :booker_only_bookings, class_name: 'Booking', foreign_key: :booker_id
-  has_many :channel_admins
+  has_many :provider_admins
   has_many :notifications
   has_many :sent_notifications, class_name: 'Notification', foreign_key: :from_chalkler_id
   has_many :payments, through: :bookings
-  has_many :channels_teachable, through: :channel_teachers, source: :channel
-  has_many :channels_adminable, through: :channel_admins, source: :channel
-  has_many :courses_adminable, through: :channels_adminable, source: :courses
-  has_many :courses_teaching, through: :channel_teachers, source: :courses
+  has_many :providers_teachable, through: :provider_teachers, source: :provider
+  has_many :providers_adminable, through: :provider_admins, source: :provider
+  has_many :courses_adminable, through: :providers_adminable, source: :courses
+  has_many :courses_teaching, through: :provider_teachers, source: :courses
   has_many :courses, through: :bookings
-  has_many :channels, through: :subscriptions, source: :channel
-  has_many :channel_contacts
+  has_many :providers_attended, through: :bookings, source: :provider, uniq: true
+  has_many :providers, through: :subscriptions, source: :provider
+  has_many :provider_contacts
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
     def for_provider(provider)
       where(provider: provider).first
     end
   end
   has_many :course_notices
-  has_many :courses_teaching, through: :channel_teachers, source: :courses
+  has_many :courses_teaching, through: :provider_teachers, source: :courses
   has_one  :notification_preference
 
-  after_create :create_channel_associations
+  after_create :create_provider_associations
   after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }
   after_create -> (chalkler) { Notify.for(chalkler).welcome unless chalkler.invited_to_sign_up? }
   after_invitation_accepted -> (chalkler) { 
@@ -59,6 +60,7 @@ class Chalkler < ActiveRecord::Base
   scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month ) }
 
   scope :signed_in_since, lambda{|date| where('last_sign_in_at > ?', date) }
+  scope :super, -> { where(role: 'super') }
 
   serialize :email_categories
   serialize :email_region_ids
@@ -73,17 +75,17 @@ class Chalkler < ActiveRecord::Base
   end
 
   def teacher? 
-    channel_teachers.any? 
+    provider_teachers.any? 
   end
 
-  def channel_admin? 
-    channel_admins.any?
+  def provider_admin? 
+    provider_admins.any?
   end
 
   def join_psuedo_identities!
     #TODO: make them method run on verify email, rather than on sign up
-    ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
-    ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+    ProviderTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+    ProviderAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     Booking.where(pseudo_chalkler_email: email, invite_chalkler: true).update_all(chalkler_id: id)
   end
 
@@ -168,8 +170,8 @@ class Chalkler < ActiveRecord::Base
     end
   end
 
-  def is_following?(channel)
-    channels.exists?(channel)
+  def is_following?(provider)
+    providers.exists?(provider)
   end
 
   def email_required?
@@ -207,9 +209,13 @@ class Chalkler < ActiveRecord::Base
     if teacher?
       _available_notifications[:teacher] = NotificationPreference::TEACHER_OPTIONS
     end
-    if channel_admin?
-      _available_notifications[:channel_admin] = NotificationPreference::PROVIDER_OPTIONS
+    if provider_admin?
+      _available_notifications[:provider_admin] = NotificationPreference::PROVIDER_OPTIONS
     end
+    if provider_admin?
+      _available_notifications[:super_admin] = NotificationPreference::SUPER_OPTIONS
+    end
+
     _available_notifications
   end
 
@@ -271,11 +277,11 @@ class Chalkler < ActiveRecord::Base
       self.reset_password_sent_at = Time.current
     end
 
-    def create_channel_associations  
-      return unless join_channels.is_a?(Array)
-      join_channels.reject(&:empty?).each do |channel_id|
-        if Subscription.where(chalkler_id: id, channel_id: channel_id).count == 0
-          channels << Channel.find(channel_id)
+    def create_provider_associations  
+      return unless join_providers.is_a?(Array)
+      join_providers.reject(&:empty?).each do |provider_id|
+        if Subscription.where(chalkler_id: id, provider_id: provider_id).count == 0
+          providers << Provider.find(provider_id)
         end
       end
       save!

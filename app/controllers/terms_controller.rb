@@ -10,17 +10,17 @@ class TermsController < ApplicationController
   end
 
   def provider
-    load_channel
-    if @channel.id.blank? && current_user.authenticated?
-      @channel = current_user.channels.first || @channel
+    load_provider
+    if @provider.id.blank? && current_user.authenticated?
+      @provider = current_user.providers.first || @provider
     end
-    @meta_title = 'Channel Terms'
+    @meta_title = 'Provider Terms'
     @page_subtitle = 'Chalkle Website'
-    if false #TODO: customize terms per channel @channel.name.present?
-      @page_title = @channel.name+': Terms and Conditions'
+    if false #TODO: customize terms per provider @provider.name.present?
+      @page_title = @provider.name+': Terms and Conditions'
       @page_context_links = Hash.new
     else
-      @page_title = 'Channel: Terms and Conditions' 
+      @page_title = 'Provider: Terms and Conditions' 
     end
   end
 

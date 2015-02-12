@@ -6,7 +6,7 @@ class ChalklerPolicy < ApplicationPolicy
 
 
   def show?
-    @user.super? or @chalkler.visible or @user.channel_teachers.collect{ |channel_teacher| channel_teacher.students }.flatten.include?(@chalkler) 
+    @user.super? or @chalkler.visible or @user.provider_teachers.collect{ |provider_teacher| provider_teacher.students }.flatten.include?(@chalkler) 
   end
 
 end

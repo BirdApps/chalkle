@@ -7,6 +7,10 @@ class Notify::BookingNotification < Notify::Notifier
 
   def confirmation
     #to chalkler
+    if booking.payment.present?
+      PaymentMailer.receipt_to_chalkler(booking.payment).deliver!
+    end
+
     message = I18n.t('notify.booking.confirmation.to_chalkler', course_name: booking.course.name)
     booking.chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 
@@ -50,7 +54,7 @@ class Notify::BookingNotification < Notify::Notifier
 
   def cancelled
     #to chalkler
-    refund_text = booking.pending_refund? ? t('notify.booking.refund') : ""
+    refund_text = booking.pending_refund? ? I18n.t('notify.booking.refund') : ""
     message = I18n.t('notify.booking.cancelled.to_chalkler', course_name: booking.course.name, refund: refund_text)
     booking.chalkler.send_notification Notification::REMINDER, course_path(booking.course), message, booking
 

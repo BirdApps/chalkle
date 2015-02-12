@@ -11,15 +11,15 @@ begin
 
     desc "Migration tasks"
     task "migrate_images" => :environment do 
-      # channel_photo 
-      #   -> "http://chalkle-production.s3.amazonaws.com/channel_photo/image/:id" 
-      #   channel_photo_uploader
+      # provider_photo 
+      #   -> "http://chalkle-production.s3.amazonaws.com/provider_photo/image/:id" 
+      #   provider_photo_uploader
 
-      channels = Channel.all.select{|c| c.logo.url =~ /amazonaws\.com.*/ }
-      channels.each_with_index do |channel, index|
-        channel.remote_logo_url = channel.logo.url.gsub("system/uploads/production/", "")
-        channel.save
-        puts "#{index+1}/#{channels.count} migrated image for: #{channel.id} - #{channel.name}\n" 
+      providers = Provider.all.select{|c| c.logo.url =~ /amazonaws\.com.*/ }
+      providers.each_with_index do |provider, index|
+        provider.remote_logo_url = provider.logo.url.gsub("system/uploads/production/", "")
+        provider.save
+        puts "#{index+1}/#{providers.count} migrated image for: #{provider.id} - #{provider.name}\n" 
       end
 
       courses = Course.all.select{|c| c.course_upload_image.url =~ /amazonaws\.com.*/ }
@@ -53,10 +53,10 @@ begin
     desc "Pull chalklers from meetup"
     task "load_chalklers" => :environment do
       EventLog.log('load_chalklers') do
-        channel_importer = ChalkleMeetup::ChannelImporter.new
+        provider_importer = ChalkleMeetup::ProviderImporter.new
 
-        Channel.where("url_name IS NOT NULL").all.each do |channel|
-          channel_importer.import_chalklers(channel)
+        Provider.where("url_name IS NOT NULL").all.each do |provider|
+          provider_importer.import_chalklers(provider)
         end
       end
     end
@@ -64,10 +64,10 @@ begin
     desc "Pull events from meetup"
     task "load_classes" => :environment do
       EventLog.log('load_classes') do
-        channel_importer = ChalkleMeetup::ChannelImporter.new
+        provider_importer = ChalkleMeetup::ProviderImporter.new
 
-        Channel.where("url_name IS NOT NULL").all.each do |channel|
-          channel_importer.import_courses(channel)
+        Provider.where("url_name IS NOT NULL").all.each do |provider|
+          provider_importer.import_courses(provider)
         end
       end
     end
@@ -90,10 +90,10 @@ begin
     desc "Pull venues from meetup"
     task "load_venues" => :environment do
       EventLog.log('load_venues') do
-        channels = Channel.where{(url_name == 'sixdegrees') | (url_name == 'whanau')}
-        channels.each do |channel|
-          puts "Importing venues for #{channel.name}"
-          VenueImporter.import channel
+        providers = Provider.where{(url_name == 'sixdegrees') | (url_name == 'whanau')}
+        providers.each do |provider|
+          puts "Importing venues for #{provider.name}"
+          VenueImporter.import provider
         end
       end
     end

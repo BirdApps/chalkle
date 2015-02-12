@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CourseSuggestion do
   it { should belong_to(:category)}
-  it { should have_many(:channels).through(:channel_course_suggestions) }
+  it { should have_many(:providers).through(:provider_course_suggestions) }
 
   specify { expect(FactoryGirl.build(:course_suggestion)).to be_valid }
 

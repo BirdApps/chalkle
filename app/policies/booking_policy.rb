@@ -7,7 +7,7 @@ class BookingPolicy < ApplicationPolicy
   end
 
   def admin?
-    @user.channel_teachers.where(id: @booking.course.teacher_id).present? or @user.channel_admins.where(channel_id: @booking.course.channel_id).present? or @booking.chalkler == @user.chalkler or @user.super?
+    @user.provider_teachers.where(id: @booking.course.teacher_id).present? or @user.provider_admins.where(provider_id: @booking.course.provider_id).present? or @booking.chalkler == @user.chalkler or @user.super?
   end
 
   def cancel?

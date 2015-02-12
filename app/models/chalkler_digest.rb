@@ -21,10 +21,10 @@ class ChalklerDigest
   end
 
   def new_courses
-    scope = base_scope.where("courses.published_at > ? AND courses.do_during_class IS NOT NULL AND channels.visible=true", @date_offset)
+    scope = base_scope.where("courses.published_at > ? AND courses.do_during_class IS NOT NULL AND providers.visible=true", @date_offset)
     scope = scope_courses_by_categories(scope)
     scope = scope_courses_by_regions(scope)
-    scope = scope_courses_by_channels(scope)
+    scope = scope_courses_by_providers(scope)
     scope.limit(@limit).uniq
   end
 
@@ -32,10 +32,10 @@ class ChalklerDigest
     scope = base_scope.where(
       "courses.published_at > ? AND
        courses.do_during_class IS NOT NULL AND
-       channels.visible=true",
+       providers.visible=true",
        @date_offset)
     scope = scope.limit(@limit)
-    scope = scope_courses_by_channels(scope)
+    scope = scope_courses_by_providers(scope)
     scope = scope_courses_by_regions(scope)
     scope.uniq
   end
@@ -45,10 +45,10 @@ class ChalklerDigest
       "lessons.start_at > ? AND
        courses.published_at <= ? AND
        courses.do_during_class IS NOT NULL AND
-       channels.visible=true",
+       providers.visible=true",
       Time.current + 1.day, @date_offset)
     scope = scope_courses_by_categories(scope)
-    scope = scope_courses_by_channels(scope)
+    scope = scope_courses_by_providers(scope)
     scope = scope_courses_by_regions(scope)
 
     courses = scope.uniq
@@ -61,9 +61,9 @@ class ChalklerDigest
       "lessons.start_at > ? AND
        courses.published_at <= ? AND
        courses.do_during_class IS NOT NULL AND
-       channels.visible=true",
+       providers.visible=true",
       Time.current + 1.day, @date_offset)
-    scope = scope_courses_by_channels(scope)
+    scope = scope_courses_by_providers(scope)
     scope = scope_courses_by_regions(scope)
     courses = scope.uniq
     filter_out_bookable(courses)
@@ -73,7 +73,7 @@ class ChalklerDigest
   private
 
     def base_scope
-      Course.visible.published.joins(:channel)
+      Course.visible.published.joins(:provider)
     end
 
     def scope_courses_by_categories(scope)
@@ -90,9 +90,9 @@ class ChalklerDigest
       scope
     end
 
-    def scope_courses_by_channels(scope)
-      if @chalkler.channels.present?
-        return scope.where("courses.channel_id IN (?)", @chalkler.channels)
+    def scope_courses_by_providers(scope)
+      if @chalkler.providers.present?
+        return scope.where("courses.provider_id IN (?)", @chalkler.providers)
       end
       scope
     end

@@ -1,11 +1,11 @@
 class CreateEmptyUrlNames < ActiveRecord::Migration
-  class Channel < ActiveRecord::Base
+  class Provider < ActiveRecord::Base
   end
 
   def up
-    Channel.where("url_name IS NULL OR url_name = ''").each do |channel|
-      channel.url_name = channel.name.gsub(' ', '').downcase
-      channel.save
+    Provider.where("url_name IS NULL OR url_name = ''").each do |provider|
+      provider.url_name = provider.name.gsub(' ', '').downcase
+      provider.save
     end
   end
 

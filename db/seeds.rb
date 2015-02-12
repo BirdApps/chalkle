@@ -4,18 +4,18 @@
 #
 # Examples:
 #
-# Create some channel plans
-if ChannelPlan.all.empty?
-  community_plan = ChannelPlan.create(name: 'Community', max_channel_admins: 1,max_free_class_attendees: 20, class_attendee_cost: 2, course_attendee_cost: 6, annual_cost: 0, processing_fee_percent: 0.04, max_teachers: 1 )
-  ChannelPlan.create(name: 'Standard',max_channel_admins: 2,max_free_class_attendees: 0,class_attendee_cost: 4,course_attendee_cost: 10,annual_cost: 0,processing_fee_percent: 0.04, max_teachers: 10 )
-  ChannelPlan.create( name: 'Enterprise',max_channel_admins: 2, max_teachers: 10, max_free_class_attendees: nil,class_attendee_cost: 4,course_attendee_cost: 10, annual_cost: 3000,processing_fee_percent: 0.04 )
-  ChannelPlan.all.each do |channel_plan|
-    puts 'Channel plan created: #{channel_plan.name}'
+# Create some provider plans
+if ProviderPlan.all.empty?
+  community_plan = ProviderPlan.create(name: 'Community', max_provider_admins: 1,max_free_class_attendees: 20, class_attendee_cost: 2, course_attendee_cost: 6, annual_cost: 0, processing_fee_percent: 0.04, max_teachers: 1 )
+  ProviderPlan.create(name: 'Standard',max_provider_admins: 2,max_free_class_attendees: 0,class_attendee_cost: 4,course_attendee_cost: 10,annual_cost: 0,processing_fee_percent: 0.04, max_teachers: 10 )
+  ProviderPlan.create( name: 'Enterprise',max_provider_admins: 2, max_teachers: 10, max_free_class_attendees: nil,class_attendee_cost: 4,course_attendee_cost: 10, annual_cost: 3000,processing_fee_percent: 0.04 )
+  ProviderPlan.all.each do |provider_plan|
+    puts 'Provider plan created: #{provider_plan.name}'
   end
 end
 
-# Create some Channels
-if Channel.find_by_name('Enspiral').blank?
+# Create some Providers
+if Provider.find_by_name('Enspiral').blank?
   [
     { name: 'Enspiral',
       url_name: "enspiral",
@@ -26,11 +26,11 @@ if Channel.find_by_name('Enspiral').blank?
     { name: 'Wellington Whānau',
       url_name: "whanau",
       email: "whanau@chalkle.com" }
-  ].each do |channel_attrs|
-    channel = Channel.new
-    channel_attrs.map {|name, value| channel.update_attribute name, value } 
-    channel.save
-    puts "Channel Created: #{channel.name}"
+  ].each do |provider_attrs|
+    provider = Provider.new
+    provider_attrs.map {|name, value| provider.update_attribute name, value } 
+    provider.save
+    puts "Provider Created: #{provider.name}"
   end
 end
 
@@ -58,8 +58,8 @@ if Course.all.empty?
    puts "Set category for #{l.name} to: #{l.category.name}"
   end
 
-  channel_admin.channels << Channel.find_by_name("Enspiral")
-  puts "Channel Admin \"#{channel_admin.name}\" belongs to channel: #{channel_admin.channels.name}"
+  provider_admin.providers << Provider.find_by_name("Enspiral")
+  puts "Provider Admin \"#{provider_admin.name}\" belongs to provider: #{provider_admin.providers.name}"
 end
 
 #make some regions
