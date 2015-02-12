@@ -62,8 +62,20 @@ class Payment < ActiveRecord::Base
     read_attribute(:total)-refunded
   end
 
-  def inital_amount_paid
-    read_attribute(:total)
+  def inital_amount_paid(incl_tax = true)
+    amount = read_attribute(:total)
+    if !incl_tax && has_tax?
+      amount = amount - amount*3/23
+    end
+    amount 
+  end
+
+  def calculate_tax
+    unless has_tax?
+      0
+    else
+      inital_amount_paid*3/23
+    end
   end
 
   def refund!(booking)
@@ -72,6 +84,10 @@ class Payment < ActiveRecord::Base
       save
     end
   end 
+
+  def has_tax?
+    channel.tax_number.present? 
+  end
 
   def refundable?
     #Can only refund if the money hasn't already been given to provider and teacher
@@ -83,6 +99,10 @@ class Payment < ActiveRecord::Base
 
   def course
     courses.first if courses
+  end
+
+  def channel
+    course.channel
   end
 
   def set_metadata
@@ -97,8 +117,13 @@ class Payment < ActiveRecord::Base
     save
   end
 
-  def paid_per_booking
-    read_attribute(:total) / bookings.count
+  def paid_per_booking(incl_tax = true)
+    if incl_tax
+      amount = inital_amount_paid(true)
+    else
+      amount = inital_amount_paid(false)
+    end
+    amount / bookings.count
   end
 
 end

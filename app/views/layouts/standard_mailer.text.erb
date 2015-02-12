@@ -2,4 +2,7 @@
 
 <%= yield -%>
 
-<%= t "email.settings.text", settings_url: me_preferences_url %>
+
+<% unless @skip_unsubscribe == true %>
+  Unsubscribe via email Preferences at <%= me_preferences_url %>
+<% end %>
