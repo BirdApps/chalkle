@@ -824,6 +824,7 @@ $(function(){
         var mapOptions = {
           center: latlng,
           zoom: 15,
+          scrollwheel: false,
           mapTypeControlOptions: {
             mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
           }

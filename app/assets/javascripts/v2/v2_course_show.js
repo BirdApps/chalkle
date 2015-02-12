@@ -23,6 +23,7 @@ $(function(){
           var mapOptions = {
             center: offcenter,
             zoom: 15,
+            scrollwheel: false,
             zoomControlOptions: {
               position: google.maps.ControlPosition.TOP_RIGHT
             },
