@@ -39,16 +39,16 @@
         <input type="hidden" id="teaching_course_class_type" value="<%= f.object.course_class_type %>" />
         <% if f.object.editing? %>
           <input type="hidden" name="_method" value="put" />
+          <p class="col-sm-12 center"><small class="">You cannot change between single or multiple classes. </small></p>
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-default" id="type_unchangable"><%= f.radio_button :course_class_type, f.object.course_class_type , class: :'course-class-radio' %>Edit <%= f.object.course_class_type.capitalize %></label>
           </div>
-          <p class="col-sm-12 center"><small class="">You cannot change between class or course once the <%= f.object.course_class_type %> is published. </small></p>
         <% elsif f.object.cloning? %>
           <input type="hidden" name="teaching[cloning_id]" value="<%= f.object.cloning_id %>" />
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-default" id="type_unchangable"><%= f.radio_button :course_class_type, f.object.course_class_type , class: :'course-class-radio' %>Copy <%= f.object.course_class_type.capitalize %></label>
           </div>
-          <p class="col-sm-12 center"><small class="">You cannot change between class or course while copying a <%= f.object.course_class_type %>. </small></p>
+          <p class="col-sm-12 center"><small class="">You cannot change between single or multiple classes while copying a <%= f.object.course_class_type %>. </small></p>
         <% else %>
           <p>Will learners attend one class, or multiple classes?</p>
           <div class="btn-group" data-toggle="buttons">
@@ -140,18 +140,19 @@
           <h3><span class="class_only">Class</span><span class="course_only">Course</span>  Details</h3>
           <hr />
         </div>
-        <%= f.input :do_during_class, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Activities</strong>", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
 
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">What activities can learners expect from this <span class="class_only">class</span><span class="course_only">course</span>?</p>
-        </div>
-        
         <%= f.input :learning_outcomes, as: :text, label: "Learning <strong>Outcomes</strong>", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify learning outcomes' } %>
 
         <div class="col-sm-5"></div>
         <div class="col-sm-7">
           <p class="small grey">What should learners come away with at the end of the <span class="class_only">class</span><span class="course_only">course</span>?</p>
+        </div>
+
+        <%= f.input :do_during_class, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Activities</strong>", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
+
+        <div class="col-sm-5"></div>
+        <div class="col-sm-7">
+          <p class="small grey">What activities can learners expect from this <span class="class_only">class</span><span class="course_only">course</span>?</p>
         </div>
 
         <%= f.input :suggested_audience, as: :text, label: "<strong>Who</strong> is the <span class='class_only'>class</span><span class='course_only'>course</span> for?", wrapper: :horizontal %>
