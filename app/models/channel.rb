@@ -83,6 +83,16 @@ class Channel < ActiveRecord::Base
     tax_number.present?
   end
 
+  def has_location?
+    false
+    #TODO: must add location for over $1000 purchases
+  end
+
+  def has_phone?
+    false
+    #TODO: ability to add phone
+  end
+
   def financial_table(first_day, period, num_rows)
     financials = StatsMath.new()
     num_rows.times do |i|
