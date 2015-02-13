@@ -72,7 +72,9 @@ $(function(){
 
   function spinner_stop(){
     if($('#toggle_map_view').is(":hidden")){
-      spinner.stop();
+      if(spinner != undefined){
+        spinner.stop();
+      }
       $('#toggle_map_view').show();
     }
   }
@@ -328,7 +330,7 @@ $(function(){
         '/classes/fetch.json',
         { 'top': top, 'bottom': bottom, 'left': left, 'right': right, 'search': $("#search_input").val() },
         update_list, 
-        "json").done(function(){
+        "json").always(function(){
           getting_courses = false;
           spinner_stop();
           loading_courses_stop();
