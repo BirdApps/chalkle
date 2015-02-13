@@ -89,7 +89,6 @@ class Booking < ActiveRecord::Base
 
   before_validation :set_free_course_attributes
 
-  after_create :expire_cache!
 
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
 
@@ -408,7 +407,4 @@ class Booking < ActiveRecord::Base
       end
     end
 
-    def expire_cache!
-      course.expire_cache!
-    end
 end
