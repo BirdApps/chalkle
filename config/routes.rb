@@ -162,7 +162,7 @@ Chalkle::Application.routes.draw do
   #get '/partners/pricing' => 'partners#pricing'
   get '/partners/team' => 'partners#team'
   get '/partners/say_hello' => 'partners#say_hello'
-  post '/partners/said_hello', as: 'said_hello', controller: 'partners'
+  post '/partners/say_hello' =>'partners#said_hello', as: 'said_hello', controller: 'partners'
 
   get 'resources', to: 'resources#index', as: :resources
   get 'metrics', to: 'metrics#index', as: :metrics

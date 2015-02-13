@@ -1,26 +1,25 @@
 <section id="hello" class="row"> 
-  <div class="col-sm-7 col-sm-offset-2">
+  <div class="col-sm-8 col-sm-offset-2 text-center">
   <p>
-    In order to be as helpful as possible, we’d love to learn a little bit more about your organisation. Answer the questions below and we’ll be in touch directly with the next steps.
+    We’d love to learn a little bit more about your organisation - where applicable, answer the questions below and we’ll be in touch soon.
   </p>
   <p>
-  Or if you have a question, grab us directly here: <%= mail_to "hello@chalkle.com", 'hello@chalkle.com' %>.
+    Or if you prefer, email us directly at <%= mail_to "hello@chalkle.com", 'hello@chalkle.com' %>.
   </p>
 
 </section>
-
+<br /><br />
 <section class="row" id="hello-form">
 
-  <div class="col-sm-8 col-sm-offset-2">
+  <div class="col-sm-8 col-sm-offset-2 new_form_wrapper">
 
 
-    <%= bootstrap_form_for 'said_hello', url: 'said_hello' do |f| %> 
+    <%= bootstrap_form_for @partner_inquiry, wrapper: :simple_bootstrap3, url: 'said_hello', html: { method: :post, class: 'form-horizontal', role: 'form'} do |f| %> 
       
       <% if @partner_inquiry.errors.any? %>
 
-        
         <div class="col-sm-12 errors">
-          <h3>There were some errors on your form: </h3>
+          <h3>There were some problems: </h3>
           <% @partner_inquiry.errors.full_messages.each do |msg| %>
             <div class="error"><%= msg %></div>
           <% end %>
@@ -29,39 +28,23 @@
       <% end %>
 
       <div class="col-sm-12 flush">
-        <h1 class="col-sm-12">Contact Details</h1>
 
-        <div class="form-item">
-          <%= f.label :name, "What is your name?*", class: "col-sm-5" %>
-          <%= f.text_field :name, class: "col-sm-6" %> 
-        </div>
+        <%= f.input :name, label: "What is your name?", wrapper: :horizontal %>
+      
+        <%= f.input :contact_details, label: "What email or phone number is best used to contact you?", wrapper: :horizontal %>
 
-        <div class="form-item">
-          <%= f.label :organisation, "What is your organisation called?", class: "col-sm-5" %>
-          <%= f.text_field :organisation, class: "col-sm-6" %>
-        </div>
+        <%= f.input :organisation, label: "What is your organisation called?", wrapper: :horizontal %>
 
-        <div class="form-item">
-          <%= f.label :location, "Where are you based?", class: "col-sm-5" %> 
-          <%= f.text_field :location, class: "col-sm-6" %>
-        </div>
-
-        <div class="form-item">
-          <%= f.label :contact_details, "What email or phone number is best used to contact you?*", class: "col-sm-5" %>
-          <%= f.text_field :contact_details, class: "col-sm-6" %>
-        </div>
+        <%= f.input :location, label: "Where city are you in?", wrapper: :horizontal %>
+        
+        <%= f.input :comment, as: :text, label: "What do you want to achieve with Chalkle°?", wrapper: :horizontal %>
 
       </div>
 
-      <div class="col-sm-12">
-        <div class="form-item">
-          <%= f.label :comment, "What do you want to achieve with Chalkle°?", class: "col-sm-12" %>
-          <%= f.text_area :comment, class: "col-sm-12", rows: 4  %> 
-        </div>
-        <br />
-        <div class="submit-wrapper col-sm-12">
-          <%= f.submit "Say Hello", class: 'hello-button'%> 
-        </div>
+      <br />
+      
+      <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+        <%= f.submit "Say Hello", class: 'submit_btn col-xs-12 part_link btn btn-primary'%> 
       </div>
 
     <% end %>

@@ -49,6 +49,13 @@
                   <li role="presentation">
                     <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
                   </li>
+                  <li class="divider"></li>
+                  <li>
+                    <%= link_to "About", partners_path,  class: (current_page?(partners_path) ? "current": "") %>
+                  </li>
+                  <li>
+                    <%= link_to "Contact", partners_say_hello_path,  class: (current_page?(partners_say_hello_path) ? "current": "") %>
+                  </li>
                 </ul>
               </li>
               <li class="dropdown notifications-drop">

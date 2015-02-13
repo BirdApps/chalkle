@@ -48,7 +48,7 @@
   }
 }
 
-$primary-color: rgba(76,126,147,0.85);
+$primary-color: rgba(76,126,147,0.93);
 $primary-color-opaque: rgba(76,126,147,1);
 $col-sm: 768px;
 $col-md: 992px;
@@ -2142,48 +2142,6 @@ body.v2 {
   }
 }
 
-
-
-
-#benefits {
-  h1 {
-    font-weight: 500;
-    font-size: 38px;
-    color: rgba(76, 126, 147, 1);
-    line-height: 46px;
-    padding: 2em 0;
-    text-align: center;
-  }
-
-  .benefits {
-    padding: 2em 0.5em 2em 120px;
-
-    background-repeat: no-repeat;
-    background-position: 20px; 
-
-    font-size: 17px;
-    color: #646661;
-    line-height: 20px;
-    letter-spacing: 0px;    
-  }
-
-  .benefits-right  { border-left: solid #DCDCDC 1px; }
-  .benefits-bottom {  border-top: solid #DCDCDC 1px; }
-
-  h2 {
-    font-weight: 200;    font-size: 20px;
-    color: #2D2D2C;
-    line-height: 34px;
-    letter-spacing: 0px;
-    margin: 0; 
-  }
-
-  .benefits-community { background-image: image-url('partners/community.png') }
-  .benefits-revenue   { background-image: image-url('partners/revenue.png')   }
-  .benefits-organise  { background-image: image-url('partners/organise.png')  }
-  .benefits-classes   { background-image: image-url('partners/classes.png')   }
-
-}
 
 .sessions-new {
 

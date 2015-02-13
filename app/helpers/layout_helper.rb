@@ -153,7 +153,26 @@ module LayoutHelper
     controller_parts = request.path_parameters[:controller].split("/")
     action_parts = request.path_parameters[:action].split("/")
     nav_links = []
-    if @provider_teacher.present? && @provider_teacher.id.present?
+    if controller_parts.include? "partners"
+      nav_links << {
+        img_name: "bolt",
+        link: partners_path,
+        active: action_parts.include?("index"),
+        title: "About Chalkle"
+      }
+      nav_links << {
+        img_name: "people",
+        link: partners_team_path,
+        active: action_parts.include?("team"),
+        title: "The Team"
+      }
+      nav_links << {
+        img_name: "contact",
+        link: partners_say_hello_path,
+        active: action_parts.include?("say_hello") || action_parts.include?("said_hello"),
+        title: "Contact"
+      }
+    elsif @provider_teacher.present? && @provider_teacher.id.present?
       nav_links << {
         img_name: "bolt",
         link: provider_provider_teacher_path(@provider_teacher.provider.url_name,@provider_teacher.id),
