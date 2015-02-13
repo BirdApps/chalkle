@@ -1,5 +1,5 @@
 <%= 
-   t("payment.receipt.body.html_1", booker_name: @chalkler.name, provider_name: @provider.name, tx_id: @payment.swipe_identifier_id).to_html
+   t("payment.receipt.body.html_1", booker_name: @chalkler.name, provider_name: @provider.name, tx_id: @payment.swipe_transaction_id).to_html
 %>
 <br />
 <p><strong><%= t("payment.receipt.breakdown.details") %></strong></p>
