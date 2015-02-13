@@ -55,6 +55,7 @@ class BookingsController < ApplicationController
                             booking_set_id: @booking_set.id,
                             amount: @booking_set.cost_per_booking,
                             quantity: @booking_set.count,
+                            email: current_chalkler.email,
                             return_url: course_booking_payment_callback_url(@course.id, @booking_set.id),
                             description: ("Booking".pluralize(@booking_set.count)+" for "+@course.name) )
         redirect_to "https://payment.swipehq.com/?identifier_id=#{identifier}" and return

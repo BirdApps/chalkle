@@ -9,6 +9,7 @@ class SwipeWrapper
     @quantity = params[:quantity]
     @currency = 'NZD'
     @booking_set_id = params[:booking_set_id]
+    @email = params[:email]
     @description = params[:description]
     @return_url = params[:return_url]
     response = self.class.post(swipe_url, query: query_params)
@@ -66,6 +67,7 @@ class SwipeWrapper
       td_currency: currency,
       td_description: @description,
       td_amount: @amount,
+      td_email: @email,
       td_user_data: @booking_set_id,
       td_default_quantity: @quantity
     }
