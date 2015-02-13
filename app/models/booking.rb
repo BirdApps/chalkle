@@ -129,18 +129,22 @@ class Booking < ActiveRecord::Base
   end
 
   def cancel!(reason = nil, override_refund = false)
+    # override_refund = true is probaby a teacher
     if status == STATUS_1
-      refunding = false
-      self.status = 'no'
-      self.cancelled_reason = reason if reason
-      if refundable? || override_refund
-        if paid? && paid > 0
-          refunding = true
-          self.status = 'refund_pending'
+      if !override_refund && chalkler != booker
+        self.chalkler = booker
+      else
+        self.cancelled_reason = reason if reason
+        self.status = 'no'
+        if refundable? || override_refund
+          if paid? && paid > 0
+            self.status = 'refund_pending'
+          end          
         end
       end
-      save
+      return save
     end
+    return false
   end
 
   def confirm!
