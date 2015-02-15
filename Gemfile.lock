@@ -180,6 +180,7 @@ GEM
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
+    engtagger (0.2.0)
     entity_events (0.1.0)
       rails (~> 3.2)
     erubis (2.7.0)
@@ -649,6 +650,7 @@ DEPENDENCIES
   dragonfly (~> 0.9.14)
   draper (~> 1.0)
   email_spec
+  engtagger
   entity_events
   execjs (~> 1.4.0)
   factory_girl_rails (~> 4.2.1)

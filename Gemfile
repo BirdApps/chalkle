@@ -7,6 +7,8 @@ gem 'unicorn-worker-killer'
 
 gem 'entity_events'
 
+gem 'engtagger'
+
 # Authentication
 gem 'devise',           '~> 2.2.4'
 gem 'devise_invitable'

@@ -56,6 +56,10 @@ class Provider < ActiveRecord::Base
     provider.map { |c| [c.name, c.id] }
   end
   
+  def followers
+    chalklers
+  end
+
   def fee
     provider_rate_override || Provider.DEFAULT_FEE
   end

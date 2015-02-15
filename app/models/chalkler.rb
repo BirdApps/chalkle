@@ -262,6 +262,17 @@ class Chalkler < ActiveRecord::Base
     self.notification_preference.send preference_attr
   end
 
+  def recommended_providers
+    common_followers = providers.map{ |p| p.followers }.flatten.uniq
+    common_providers = common_followers.map{ |p| p.providers }.flatten.uniq
+    common_providers - self.providers
+  end
+
+
+  def recommended_courses
+    recommended_providers.map{|p| p.courses.displayable.in_future }.flatten.sort{ |a,b| a.created_at <=> b.created_at }
+  end
+
   private
 
     def ensure_notification_preference
