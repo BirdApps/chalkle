@@ -86,8 +86,12 @@ $(function(){
   }
 
   function search(){
-    clear_markers();
-    update_bounds(map.getBounds());
+    if($(map_overlay).is(':hidden') && window.location.pathname != "/"){
+      window.location.href = "/?search="+$("#search_input").val();
+    }else{
+      clear_markers();
+      update_bounds(map.getBounds());
+    }
   }
 
   function init(){
@@ -255,7 +259,6 @@ $(function(){
     }
 
     var latlng = new google.maps.LatLng(lat, lng);
-    
 
     var styles = [
       {
@@ -297,7 +300,6 @@ $(function(){
   }
 
   function update_bounds(bounds) {
-    console.log('hi');
      if(bounds != null){
         spinner_start();
         var ne = bounds.getNorthEast();
