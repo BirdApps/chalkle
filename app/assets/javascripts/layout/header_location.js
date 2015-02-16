@@ -1,7 +1,7 @@
 // =require '//www.google.com/jsapi';
 $(function(){
 
-  var map, map_overlay, autocomplete, geocoder, location, lng, lat, spinner, bounds, loading_courses, course_template;
+  var autocomplete, geocoder, location, lng, lat, spinner, loading_courses, course_template;
   var already_requested = false, getting_courses = false;
   var bottom, top, right, left;
 
@@ -79,18 +79,21 @@ $(function(){
     }
   }
 
-  function clear_markers(){
-    $(markers).each(function(marker_i){
-        markers[marker_i].setMap(null);
-    });
-  }
-
   function search(){
-    if($(map_overlay).is(':hidden') && window.location.pathname != "/"){
+    if(window.location.pathname != "/"){
       window.location.href = "/?search="+$("#search_input").val();
     }else{
-      clear_markers();
-      update_bounds(map.getBounds());
+      list_courses();
+    }
+  }
+
+  function location_changed(){
+    if(autocomplete != undefined && autocomplete.getPlace() != undefined){
+      if(autocomplete.getPlace().geometry != undefined){
+        $('#location_unknown').hide();
+      }else{
+        $('#location_unknown').show();
+      }
     }
   }
 
@@ -102,8 +105,6 @@ $(function(){
 
     $('[data-toggle="tooltip"]').tooltip()
 
-    map_overlay = $('#map_overlay');
-
     autocomplete = new google.maps.places.Autocomplete(
           /** @type {HTMLInputElement} */(document.getElementById('location_autocomplete')) ,
            { componentRestrictions: {country: "nz"} }
@@ -111,12 +112,9 @@ $(function(){
 
     google.maps.event.addListener(autocomplete, 'place_changed', function(e){
       if(autocomplete.getPlace().geometry != undefined){
-        $('#location_unknown').hide();
         manual_locate();
-        init_map_overlay();
-      }else{
-        $('#location_unknown').show();
       }
+      location_changed();
     });
 
     $('#search_btn').click(search);
@@ -129,7 +127,7 @@ $(function(){
     lat = $('#coord_lat').val();
     lng = $('#coord_lng').val();
     location = $("#location_autocomplete").val();
-    $('#toggle_map_view').click(toggle_map_view);
+    $('#toggle_map_view').click(auto_locate);
     $('.refresh_location').click(get_location);
     
     if( !has_location() ){
@@ -138,8 +136,8 @@ $(function(){
       after_location(location == "", false);
     }
 
-    if( $('#courses_wrapper').length > 0 ){
-      init_map_overlay();
+     if( $('#courses_wrapper').length > 0 ){
+      loading_courses_start();
     }
   }
 
@@ -168,6 +166,8 @@ $(function(){
       }
       spinner_stop();
     }
+    location_changed();
+    search();
   }
   
 
@@ -240,94 +240,16 @@ $(function(){
     $.post('/people/set_location', data);
   }
 
-  function toggle_map_view(){
-    if($(map_overlay).is(':visible')){
-      $('#map_overlay').fadeOut();
-      list_courses();
-    }else{
-      $('#map_overlay').fadeIn();
-      init_map_overlay();
-    }
-  }
-
-  function init_map_overlay(){
-    if( $('#courses_wrapper').length > 0 ){
-      loading_courses_start();
-    }
-    if(!has_location()){
-      get_location();
-    }
-
-    var latlng = new google.maps.LatLng(lat, lng);
-
-    var styles = [
-      {
-        stylers: [
-          { visibility: "simplified" },
-          { weight: 1.3 },
-          { hue: "#5e00ff" },
-          { saturation: -85 },
-          { gamma: 1.16 },
-          { lightness: 13 }
-        ]
-      }
-    ];
-
-    var styledMap = new google.maps.StyledMapType(styles, {name: "Styled Map"});
-    var mapOptions = {
-      center: latlng,
-      zoom: 12,
-      streetViewControl: false,
-      mapTypeControl: false,
-      panControl: true,
-      panControlOptions: {
-          position: google.maps.ControlPosition.BOTTOM_LEFT
-      },
-      zoomControl: true,
-      zoomControlOptions: {
-        position: google.maps.ControlPosition.BOTTOM_LEFT
-      }
-    };
-    map = new google.maps.Map(document.getElementById("map_holder"), mapOptions);
-    map.mapTypes.set('map_style', styledMap);
-    map.setMapTypeId('map_style');
-
-    google.maps.event.addListener(map, 'bounds_changed', function() {
-      lng = map.getCenter().lng();
-      lat = map.getCenter().lat();
-      update_bounds(map.getBounds());
-    });
-  }
-
-  function update_bounds(bounds) {
-     if(bounds != null){
-        spinner_start();
-        var ne = bounds.getNorthEast();
-        var sw = bounds.getSouthWest();
-
-        if(ne.lat() == sw.lat()){
-          //approximate bounds if only have center
-          bottom = sw.lat() - 0.5;
-          top = ne.lat() + 0.5;
-          right = ne.lng() + 0.5;
-          left = sw.lng() - 0.5;
-        }else{
-          bottom = sw.lat();
-          top = ne.lat();
-          right = ne.lng();
-          left = sw.lng();
-        }
-        if($(map_overlay).is(':visible')){
-          map_courses();
-        }else{
-          list_courses();
-        }
-    }
-  }
-
   function list_courses(){
     if(!getting_courses) {
+      spinner_start();
       getting_courses = true;
+
+      top = parseFloat(lat) + 1.5;
+      right = parseFloat(lng) + 1.5;
+      bottom = parseFloat(lat) - 1.5;
+      left = parseFloat(lng) - 1.5;
+
       $.post(
         '/classes/fetch.json',
         { 'top': top, 'bottom': bottom, 'left': left, 'right': right, 'search': $("#search_input").val() },
@@ -340,52 +262,6 @@ $(function(){
     } else {
       loading_courses_stop();
       spinner_stop();
-    }
-  }
-
-  function map_courses() {
-    if(!getting_courses) {
-      getting_courses = true;
-      $.post(
-        '/classes/fetch.json',
-        { 'top': top, 'bottom': bottom, 'left': left, 'right': right, only_location: '1', 'search': $("#search_input").val()  },
-        update_map, "json").done(function(){
-          getting_courses = false;
-          spinner_stop();
-        });
-    } else {
-      spinner_stop();
-    }
-  }
-
-  var infoWindow;
-  function treat_marker(marker){
-    google.maps.event.addListener(marker,'click', function() {
-      map.panTo(marker.getPosition());
-      if(infoWindow != null) {
-        infoWindow.close();
-      }
-      $.get('classes/'+marker.title, function(data) {
-        infoWindow = new google.maps.InfoWindow({
-          content: '<div class="col-xs-12"><strong><a href="'+data.url+'">'+data.name+'</a></strong></div><div class="col-xs-6">'+data.time+'</div><div class="col-xs-6 text-right">'+data.cost+'</div>'
-        });
-        infoWindow.open(map, marker);
-      });
-    });
-  }
-
-  var markers = [];
-  function update_map(classes){
-    for(var i = 0; i < classes.length; i++){
-      clas = classes[i];
-      var latlng = new google.maps.LatLng(clas.lat, clas.lng);
-      var marker = new google.maps.Marker({
-          position: latlng,
-          map: map,
-          title: clas.id.toString()
-        });
-      markers.push(marker);
-      treat_marker(marker);
     }
   }
 
