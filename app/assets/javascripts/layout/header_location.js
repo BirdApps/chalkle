@@ -1,6 +1,5 @@
 // =require '//www.google.com/jsapi';
 $(function(){
-
   var autocomplete, geocoder, location, lng, lat, spinner, loading_courses, course_template;
   var already_requested = false, getting_courses = false;
   var bottom, top, right, left;
@@ -89,13 +88,15 @@ $(function(){
 
   function location_changed(){
     if(autocomplete != undefined && autocomplete.getPlace() != undefined){
-      if(autocomplete.getPlace().geometry != undefined){
+      var place = autocomplete.getPlace();
+      if(place.geometry != undefined){
         $('#location_unknown').hide();
       }else{
         $('#location_unknown').show();
       }
     }
   }
+
 
   function init(){
     loading_courses_start();
@@ -167,7 +168,9 @@ $(function(){
       spinner_stop();
     }
     location_changed();
-    search();
+    if(window.location.pathname == "/"){
+      search();
+    }
   }
   
 
@@ -240,16 +243,39 @@ $(function(){
     $.post('/people/set_location', data);
   }
 
-  function list_courses(){
-    if(!getting_courses) {
-      spinner_start();
-      getting_courses = true;
-
+   function update_bounds() {
+    var place;
+    if(autocomplete != undefined){
+      place = autocomplete.getPlace();
+    }
+    if(place != undefined && place != null && place.geometry != undefined && place.geometry.viewport != undefined){
+      var ne = place.geometry.viewport.getNorthEast();
+      var sw = place.geometry.viewport.getSouthWest();
+      if(ne.lat() == sw.lat()){
+        //approximate bounds if only have center
+        bottom = sw.lat() - 0.5;
+        top = ne.lat() + 0.5;
+        right = ne.lng() + 0.5;
+        left = sw.lng() - 0.5;
+      }else{
+        bottom = sw.lat();
+        top = ne.lat();
+        right = ne.lng();
+        left = sw.lng();
+      }
+    }else{
       top = parseFloat(lat) + 1.5;
       right = parseFloat(lng) + 1.5;
       bottom = parseFloat(lat) - 1.5;
       left = parseFloat(lng) - 1.5;
+    }
+  }
 
+  function list_courses(){
+    if(!getting_courses) {
+      spinner_start();
+      getting_courses = true;
+      update_bounds();
       $.post(
         '/classes/fetch.json',
         { 'top': top, 'bottom': bottom, 'left': left, 'right': right, 'search': $("#search_input").val() },
@@ -277,8 +303,8 @@ $(function(){
           $(ele).find('.set_url').attr('href', clas.url);
           $(ele).find('.set_title').attr('title', clas.name);
           $(ele).find('.set_name').text(clas.name);
-          $(ele).find('.set_bgcolor').addClass('bg-color'+clas.color);
-          $(ele).find('.set_color').addClass('color'+clas.color);
+          $(ele).find('.set_bgcolor').css('background-color', clas.color);
+          $(ele).find('.set_color').css('color',clas.color);
           $(ele).find('.set_action_call').text(clas.action_call);
           $(ele).find('.set_category').text(clas.category);
           $(ele).find('.set_category_url').attr('href', clas.category_url);
