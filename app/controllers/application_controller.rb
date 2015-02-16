@@ -88,12 +88,12 @@ protected
   end
 
   def country_code
-    params[:country_code] unless params[:country_code].blank?
+    params[:country_code].encode("UTF-8", "ISO-8859-1") unless params[:country_code].blank?
   end
   
   def region_name
     reconnect_attempts ||= 3
-    session[:region] = params[:region] unless params[:region].blank?
+    session[:region] = params[:region].encode("UTF-8", "ISO-8859-1") unless params[:region].blank?
 
     return session[:region] if session[:region]
 
@@ -116,7 +116,7 @@ protected
   end
 
   def category_name
-    params[:topic]
+    params[:topic].encode("UTF-8", "ISO-8859-1") if params[:topic]
   end
 
   def load_region

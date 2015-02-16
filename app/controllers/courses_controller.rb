@@ -17,7 +17,7 @@ class CoursesController < ApplicationController
     end
 
     if params[:search].present?
-      courses = courses.search params[:search]
+      courses = courses.search params[:search].encode("UTF-8", "ISO-8859-1")
     end
     
     if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
