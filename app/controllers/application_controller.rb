@@ -110,7 +110,7 @@ protected
     (request_region == "") ? nil : request_region
   end
   def provider_name
-    (params[:provider] || params[:provider_url_name]).encode("UTF-8", "ISO-8859-1").parameterize if (params[:provider] || params[:provider_url_name]).present?
+    params[:provider_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:provider_url_name].present?
   rescue ArgumentError 
     nil
   end
