@@ -22,7 +22,11 @@ Your Chalkle Administrator")
   end
 
   def pretty_time(date)
-    date.strftime("%l:%M%P")
+    unless date.min == 0
+      date.strftime("%l:%M%P")
+    else
+      date.strftime("%l%P")
+    end
   end
 
 
