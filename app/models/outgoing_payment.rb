@@ -194,8 +194,8 @@ class OutgoingPayment < ActiveRecord::Base
       self.tax_number = nil
       self.bank_account = nil
       bookings.map{ |b| b.apply_fees! }
-      #remove any courses which are no longer marked as complete
-      remove_courses = courses.where("status != '#{Course::STATUS_4}'")
+      #remove any courses which are no longer marked as published or complete
+      remove_courses = courses.where("status != '#{Course::STATUS_4}' AND status != '#{Course::STATUS_1}'")
       remove_courses.update_all(channel_payment_id: nil)
       remove_courses.update_all(teacher_payment_id: nil)
       calculate!

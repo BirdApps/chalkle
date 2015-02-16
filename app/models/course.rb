@@ -105,7 +105,7 @@ class Course < ActiveRecord::Base
 
   scope :similar_to, -> (course){ where(channel_id: course.channel_id, url_name: course.url_name).displayable.in_future.by_date }
 
-  scope :need_outgoing_payments, where("cost > 0 AND status = '#{STATUS_4}' AND end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR channel_payment_id IS NULL)")
+  scope :need_outgoing_payments, where("cost > 0 AND (status = '#{STATUS_4}' or status = '#{STATUS_1}') AND start_at < '#{DateTime.current.to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR channel_payment_id IS NULL)")
 
   before_create :set_url_name
   before_save :update_published_at
@@ -547,7 +547,7 @@ class Course < ActiveRecord::Base
   end
 
   def create_outgoing_payments!
-    unless self.teacher_payment
+    unless self.teacher_payment || teacher.nil?
       t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
       self.update_column('teacher_payment_id', t_payment.id)
     end
