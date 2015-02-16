@@ -203,7 +203,14 @@ protected
   end
 
   def set_locale
-    I18n.locale = params[:locale] || extract_locale_from_tld || I18n.default_locale
+    locale = params[:locale].encode("UTF-8", "ISO-8859-1") if params[:locale].present?
+    unless locale.present? && I18n.available_locales.include?(locale.to_sym)
+      locale = extract_locale_from_tld
+      unless locale.present? && I18n.available_locales.include?(locale.to_sym)
+        locale = I18n.default_locale
+      end
+    end
+    I18n.locale = locale
   end
 
   def extract_locale_from_tld
