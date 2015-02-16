@@ -131,7 +131,7 @@ class Booking < ActiveRecord::Base
   def cancel!(reason = nil, override_refund = false)
     # override_refund = true is probaby a teacher
     if status == STATUS_1
-      if !override_refund && chalkler != booker
+      if !override_refund && booker.present? && chalkler != booker 
         self.chalkler = booker
       else
         self.cancelled_reason = reason if reason
@@ -218,6 +218,14 @@ class Booking < ActiveRecord::Base
     #adjust in case payment has been made already
     difference = cost - calc_cost
     if difference != 0
+      #adjust processing_fee
+      self.processing_fee = cost * course.channel_plan.processing_fee_percent
+      self.processing_gst = self.processing_fee*3/23
+      self.processing_fee = self.processing_fee-self.processing_gst
+
+      #reset difference to adjust for processing_fee changes
+      difference = cost - calc_cost
+
       #if payment exists then adjust provider fee to ensure the payment amount matches calc_cost
       adjustment_for_provider = difference
       adjustment_for_teacher = 0
