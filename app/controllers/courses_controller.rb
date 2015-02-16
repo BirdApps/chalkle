@@ -39,7 +39,7 @@ class CoursesController < ApplicationController
           name: c.name, 
           image: c.course_upload_image.url(:large), 
           cost: c.cost_formatted(true),
-          color: c.best_colour_num, 
+          color: c.provider.header_color, 
           provider: c.provider.name, 
           provider_image: c.provider.logo.url,
           provider_url: provider_course_path(c.provider.url_name,c.url_name,c.id), 
@@ -48,7 +48,7 @@ class CoursesController < ApplicationController
           status: c.status, 
           status_color: 'alert-'+c.status_color,
           type: c.course_type, 
-          address: c.venue_address,
+          address: c.address,
           lat: c.latitude, 
           lng: c.longitude, 
           time: c.time_formatted
