@@ -1,0 +1,4 @@
+en-NZ:
+  notify:
+    enquiry:
+      from_chalkler: "New enquiry from **%{from_name}** on **%{provider_name}**"

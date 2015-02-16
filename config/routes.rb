@@ -96,7 +96,11 @@ Chalkle::Application.routes.draw do
   namespace :sudo do
     root to: 'metrics#index'
     
-    resources :metrics, only: :index
+    resources :metrics, only: :index do
+      collection do
+        post 'overview'
+      end
+    end
 
     resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
     
@@ -104,7 +108,6 @@ Chalkle::Application.routes.draw do
 
     resources :chalklers do
       member do
-        get 'become' => 'chalklers#become'
         post 'become' => 'chalklers#become'
       end
 

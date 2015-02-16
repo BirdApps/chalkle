@@ -62,6 +62,11 @@ class Chalkler < ActiveRecord::Base
   scope :signed_in_since, lambda{|date| where('last_sign_in_at > ?', date) }
   scope :super, -> { where(role: 'super') }
 
+  scope :learned, includes(:bookings).where("bookings.id IS NOT NULL")
+  scope :taught, includes(:provider_teachers).where("provider_teachers.id IS NOT NULL" )
+  scope :provided, includes(:provider_admins).where("provider_admins.id IS NOT NULL" )
+
+
   serialize :email_categories
   serialize :email_region_ids
 

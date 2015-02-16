@@ -9,6 +9,8 @@ en-NZ:
       cancelled: 
         to_chalkler: "Your booking for **%{course_name}** has been **cancelled**. %{refund}"
         to_teacher: "Cancelled booking on **%{course_name}** for **%{from_name}**"
+        to_provider_admin: "Cancelled booking on **%{course_name}** for **%{from_name}**"
       confirmation: 
         to_chalkler: "You have a new booking for **%{course_name}**"
         to_teacher: "New booking on **%{course_name}** for **%{from_name}**"
+        to_provider_admin: "New booking on **%{course_name}** for **%{from_name}**"

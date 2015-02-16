@@ -320,8 +320,8 @@ ActiveRecord::Schema.define(:version => 20150213023058) do
     t.boolean  "complete_record_downloaded"
     t.decimal  "total",                      :precision => 8, :scale => 2, :default => 0.0
     t.boolean  "reconciled"
-    t.datetime "created_at",                                                                :null => false
-    t.datetime "updated_at",                                                                :null => false
+    t.datetime "created_at",                                                                  :null => false
+    t.datetime "updated_at",                                                                  :null => false
     t.string   "reference"
     t.boolean  "visible"
     t.boolean  "cash_payment"
@@ -334,6 +334,7 @@ ActiveRecord::Schema.define(:version => 20150213023058) do
     t.string   "swipe_token"
     t.integer  "chalkler_id"
     t.decimal  "refunded",                                                 :default => 0.0
+    t.boolean  "receipt_sent",                                             :default => false
   end
 
   create_table "provider_admins", :force => true do |t|
@@ -403,16 +404,18 @@ ActiveRecord::Schema.define(:version => 20150213023058) do
   add_index "provider_regions", ["provider_id", "region_id"], :name => "index_channel_regions_on_channel_id_and_region_id", :unique => true
 
   create_table "provider_teachers", :force => true do |t|
-    t.integer "provider_id",                              :null => false
-    t.integer "chalkler_id"
-    t.string  "name"
-    t.text    "bio"
-    t.string  "pseudo_chalkler_email"
-    t.boolean "can_make_classes",      :default => false
-    t.string  "tax_number"
-    t.string  "account"
-    t.string  "avatar"
-    t.decimal "balance"
+    t.integer  "provider_id",                              :null => false
+    t.integer  "chalkler_id"
+    t.string   "name"
+    t.text     "bio"
+    t.string   "pseudo_chalkler_email"
+    t.boolean  "can_make_classes",      :default => false
+    t.string   "tax_number"
+    t.string   "account"
+    t.string   "avatar"
+    t.decimal  "balance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "provider_teachers", ["provider_id", "chalkler_id"], :name => "index_channel_teachers_on_channel_id_and_chalkler_id"

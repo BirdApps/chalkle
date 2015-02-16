@@ -91,6 +91,7 @@ class Course < ActiveRecord::Base
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
   scope :taught_by_chalkler, -> (chalkler){ joins(:teacher).where('provider_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
+  scope :free, where("cost IS NULL or cost = 0")
   scope :in_region, -> (region){ where(region_id: region.id) }
   scope :in_provider, -> (provider){ where(provider_id: provider.id) }
   scope :in_category, -> (category){ includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
@@ -104,9 +105,8 @@ class Course < ActiveRecord::Base
 
   scope :similar_to, -> (course){ where(provider_id: course.provider_id, url_name: course.url_name).displayable.in_future.by_date }
 
-  scope :need_outgoing_payments, where("cost > 0 AND status = '#{STATUS_4}' AND end_at < '#{DateTime.current.advance(day: -1).to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR provider_payment_id IS NULL)")
+  scope :need_outgoing_payments, where("cost > 0 AND (status = '#{STATUS_4}' or status = '#{STATUS_1}') AND start_at < '#{DateTime.current.to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR provider_payment_id IS NULL)")
 
-  scope :free, where("cost IS NULL or cost = 0")
 
   before_create :set_url_name
   before_save :update_published_at
@@ -556,7 +556,7 @@ class Course < ActiveRecord::Base
   end
 
   def create_outgoing_payments!
-    unless self.teacher_payment
+    unless self.teacher_payment || teacher.nil?
       t_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
       self.update_column('teacher_payment_id', t_payment.id)
     end

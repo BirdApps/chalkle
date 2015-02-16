@@ -89,7 +89,6 @@ class Booking < ActiveRecord::Base
 
   before_validation :set_free_course_attributes
 
-  after_create :expire_cache!
 
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
 
@@ -130,18 +129,22 @@ class Booking < ActiveRecord::Base
   end
 
   def cancel!(reason = nil, override_refund = false)
+    # override_refund = true is probaby a teacher
     if status == STATUS_1
-      refunding = false
-      self.status = 'no'
-      self.cancelled_reason = reason if reason
-      if refundable? || override_refund
-        if paid? && paid > 0
-          refunding = true
-          self.status = 'refund_pending'
+      if !override_refund && booker.present? && chalkler != booker 
+        self.chalkler = booker
+      else
+        self.cancelled_reason = reason if reason
+        self.status = 'no'
+        if refundable? || override_refund
+          if paid? && paid > 0
+            self.status = 'refund_pending'
+          end          
         end
       end
-      save
+      return save
     end
+    return false
   end
 
   def confirm!
@@ -215,6 +218,14 @@ class Booking < ActiveRecord::Base
     #adjust in case payment has been made already
     difference = cost - calc_cost
     if difference != 0
+      #adjust processing_fee
+      self.processing_fee = cost * course.provider_plan.processing_fee_percent
+      self.processing_gst = self.processing_fee*3/23
+      self.processing_fee = self.processing_fee-self.processing_gst
+
+      #reset difference to adjust for processing_fee changes
+      difference = cost - calc_cost
+
       #if payment exists then adjust provider fee to ensure the payment amount matches calc_cost
       adjustment_for_provider = difference
       adjustment_for_teacher = 0
@@ -385,7 +396,7 @@ class Booking < ActiveRecord::Base
   end
 
   def self.stats_for_date_and_range(date, range)
-        base_scope_for_stats = send("created_#{range}_of", date)
+        base_scope_for_stats = send("created_#{range}_of", date).confirmed
         {
           asp: asp_for( base_scope_for_stats ),
           asp_only_paid: asp_for( base_scope_for_stats.where('provider_fee > 0') ),
@@ -408,7 +419,4 @@ class Booking < ActiveRecord::Base
       end
     end
 
-    def expire_cache!
-      course.expire_cache!
-    end
 end
