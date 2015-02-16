@@ -30,9 +30,7 @@ class CoursesController < ApplicationController
       courses = courses.limit(20).map do |c|
         {
           id: c.id, 
-          name: c.name, 
-          category: c.category ? c.category.name : '', 
-          category_url: c.category ? root_path({search: c.category.name}) : '', 
+          name: c.name,
           action_call: c.call_to_action,
           url: provider_course_path(c.provider.url_name,c.url_name,c.id), 
           booking_url: new_course_booking_path(c.id),  
@@ -233,12 +231,6 @@ class CoursesController < ApplicationController
   private
 
     def check_clear_filters
-      if @region.id.blank?
-        session[:region] = nil
-      end
-      if @category.id.blank?
-        session[:topic] = nil
-      end
       if @provider.id.blank?
         session[:provider] = nil
       end
@@ -259,20 +251,8 @@ class CoursesController < ApplicationController
     end
 
     def filter_courses(courses)
-      if @region.id.present? && @category.id.present? && @provider.id.present?
-        courses = courses.in_region(@region).in_category(@category).in_provider(@provider)
-      elsif @region.id.present? && @category.id.present? && @provider.id.nil?    
-        courses = courses.in_region(@region).in_category(@category) 
-      elsif @region.id.present? && @category.id.nil? && @provider.id.present?
-        courses = courses.in_region(@region).in_provider(@provider)
-      elsif @region.id.nil? && @category.id.present? && @provider.id.present?  
-        courses = courses.in_category(@category).in_provider(@provider)
-      elsif @region.id.nil? && @category.id.nil? && @provider.id.present?  
+      if @provider.id.present?
         courses = courses.in_provider(@provider)
-      elsif @region.id.nil? && @category.id.present? && @provider.id.nil? 
-        courses = courses.in_category(@category)   
-      elsif @region.id.present? && @category.id.nil? && @provider.id.nil?
-        courses = courses.in_region(@region)
       end
       if params[:search].present?
         courses = Course.search params[:search], courses
@@ -281,7 +261,6 @@ class CoursesController < ApplicationController
     end
 
     def mine_filter(courses)
-    
       if params[:start].present? || params[:end].present?
         range_start = params[:start].to_datetime.in_time_zone(current_user.timezone) if params[:start].present?
         range_end = params[:end].to_datetime.in_time_zone(current_user.timezone) if params[:end].present?
@@ -295,24 +274,6 @@ class CoursesController < ApplicationController
       end
 
       courses
-    end
-
-    def load_region
-      if region_name
-        @region = Region.find_by_url_name region_name.downcase
-      end
-      if @region.nil?
-        @region = Region.new name: "New Zealand", courses: Course.upcoming
-      end
-    end
-
-    def load_category
-      if category_name
-        @category = Category.find_by_url_name category_name.downcase
-      end
-      if @category.nil?
-        @category = Category.new name: 'All Topics'
-      end
     end
 
     def load_provider

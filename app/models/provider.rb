@@ -28,11 +28,7 @@ class Provider < ActiveRecord::Base
   has_many :bookings, through: :courses
   has_many :payments, through: :bookings
   has_many :outgoing_payments
-  has_many :provider_categories
-  has_many :categories, through: :provider_categories
   has_many :photos, class_name: 'ProviderPhoto', dependent: :destroy
-  has_many :provider_regions, dependent: :destroy
-  has_many :regions, through: :provider_regions
   has_many :provider_teachers
   has_many :teaching_chalklers, through: :provider_teachers, source: :chalkler
   has_many  :admin_chalklers, through: :provider_admins, source: :chalkler

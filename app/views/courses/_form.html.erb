@@ -70,11 +70,7 @@
         <div class="col-sm-7">
           <p class="small grey">ie. Gardening for beginners. The <span class="class_only">class</span><span class="course_only">course</span>  name should be short, descriptive and clear</p>
         </div>
-
-        <%# f.input :category_id, as: :select, collection: Category.select_options,label: "Select a <strong>Category</strong> for this <span class='class_only'>class</span><span class='course_only'>course</span>", wrapper: :horizontal %>
-
-        <%# f.input :course_skill, as: :select, :collection => [['Beginner', 'Beginner'], ['Intermediate','Intermediate'], ['Advanced','Advanced']], :input_html => { :multiple => false }, wrapper: :horizontal, label: "What is the <strong>skill level</strong>?" %>
-
+        
         <% if !f.object.editing? && !f.object.cloning? %>
           <div class="class_only">
             <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizontal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>

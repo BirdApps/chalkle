@@ -84,12 +84,6 @@ module DateFunctions
     parts.join('').html_safe
   end
 
-  def self.relative_date_class(date, current = Date.current)
-    return "past" if date < current
-    return "present" if date == current
-    "future"
-  end
-
   def self.relative_day_name(day, current = Date.current)
     return "Yesterday" if day == current - 1
     return "Today" if day == current

@@ -56,7 +56,7 @@ describe Chalkler do
       end
     end
 
-    it "defaults to receiving weekly emails for all categories" do
+    it "defaults to receiving weekly emails" do
       expect(Chalkler.new.email_frequency).to eq 'weekly'
     end
   end

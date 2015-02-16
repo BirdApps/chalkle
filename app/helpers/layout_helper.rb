@@ -26,12 +26,6 @@ module LayoutHelper
       title = link_to @course.name, @course.path
     elsif @provider.id.present?
       title = @provider.name
-    elsif @category.id.present?
-      title = @category.name
-    elsif @region.id.present? || @region.name == "New Zealand"
-      if @courses.present?
-        title = @region.name
-      end
     end
     title || ''
   end
@@ -60,14 +54,7 @@ module LayoutHelper
       
     elsif @courses
       if @provider.id.present?
-        subtitle += @region.name+' '    if @region.id.present?
-        subtitle += @category.name+' '  if @category.id.present?
         subtitle += ' classes from'
-      elsif @category.id.present?
-        subtitle += @region.name+' '    if @region.id.present?
-        subtitle += ' classes in'
-      elsif @region.id.present? || @region.name == "New Zealand"
-        subtitle += ' classes in'
       end
     end
     subtitle || ''
@@ -96,7 +83,7 @@ module LayoutHelper
   end
 
   def filter_params(type, value, include_type = nil)
-    types = %w( topic region provider search take start end )
+    types = %w( provider search take start end )
     types << include_type if include_type
     params_copy = Hash.new
     types.each do |type_i|
@@ -129,16 +116,6 @@ module LayoutHelper
         {
           default: @bookings.first.course.provider.hero,
           blurred: @bookings.first.course.provider.hero.blurred
-        }
-      elsif @category.hero.present? 
-        {
-          default: @category.hero,
-          blurred: @category.hero.blurred
-        }
-      elsif @region.hero.present?
-        {
-          default: @region.hero,
-          blurred: @region.hero.blurred
         }
       else
         {

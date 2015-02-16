@@ -8,10 +8,7 @@ class ApplicationController < ActionController::Base
   layout 'layouts/application'
 
   before_filter :set_locale
-
-  before_filter :load_region
   before_filter :load_provider
-  before_filter :load_category
   before_filter :skip_cache!
   before_filter :check_user_data
   after_filter :store_location
@@ -86,49 +83,12 @@ protected
       end
     end
   end
-
-  def country_code
-    params[:country_code].encode("UTF-8", "ISO-8859-1") unless params[:country_code].blank?
-  end
   
-  def region_name
-    reconnect_attempts ||= 3
-    session[:region] = params[:region].encode("UTF-8", "ISO-8859-1") unless params[:region].blank?
 
-    return session[:region] if session[:region]
-
-    # Occasionally the geolocator API does not respond. Trying again usually gets this to behave.
-    begin
-      if request && request.location && request.location.data
-        request_region = request.location.data["region_name"]
-      end
-    rescue 
-      retry if (reconnect_attempts -=1) > 0
-    else
-      nil
-    end
-    (request_region == "") ? nil : request_region
-  end
   def provider_name
     params[:provider_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:provider_url_name].present?
   rescue ArgumentError 
     nil
-  end
-
-  def category_name
-    params[:topic].encode("UTF-8", "ISO-8859-1") if params[:topic]
-  end
-
-  def load_region
-    if @region.nil?
-      @region = Region.new name: "New Zealand"
-    end
-  end
-
-  def load_category
-    if @category.nil?
-      @category = Category.new name: 'All Topics'
-    end
   end
 
   def load_provider
@@ -155,7 +115,7 @@ protected
       if response[:notices].nil?
         response[:notices] = []
       end
-      response[:notices] << notice || "There are no courses that match the current filter"
+      response[:notices] << notice unless notice.nil?
   end
 
   def current_date

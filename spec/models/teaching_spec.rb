@@ -5,11 +5,8 @@ describe "Teachings" do
   let(:the_user) { FactoryGirl.create(:the_user) }
   let(:provider) { FactoryGirl.create(:provider, provider_rate_override: 0.1, teacher_percentage: 0.5) }
   let(:provider2) { FactoryGirl.create(:provider, provider_rate_override: 0.6, teacher_percentage: 0.1) }
-  let(:category) { FactoryGirl.create(:category, name: "music and dance") }
-  let(:region)   { FactoryGirl.create(:region, name: 'Auckland') }
   let(:params) { {
     name: 'My new class',
-    course_skill: '',
     do_during_class: 'We will play with Wii',
     learning_outcomes: 'and become experts at tennis',
     duration_hours: '1',
@@ -20,9 +17,7 @@ describe "Teachings" do
     min_attendee: '',
     availabilities: '' ,
     additional_comments: '',
-    category_primary_id: category.id,
     provider_id: provider.id,
-    region_id: region.id,
     repeating: false,
     repeat_frequency: '',
     repeat_count: 1

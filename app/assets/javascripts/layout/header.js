@@ -38,9 +38,9 @@ $(function() {
 $(function(){
   $('.facebook-share').click(function(){
     FB.ui({
-        method: 'share',
-        href: window.location.href,
-      }, function(response){});
+      method: 'share',
+      href: window.location.href,
+    }, function(response){});
   });
 });
 
@@ -50,7 +50,6 @@ $(function(){
 
   var header = $('#header');
   var header_content_bg = $('body.v2 .header_content_bg');
-  var filter_bar = $('.filter-nav');
   var coloring = $('.coloring');
   scrolltop = function(){ return $(document).scrollTop(); };
 
@@ -71,41 +70,6 @@ $(function(){
   big_color = function(){
     coloring.css('padding-top','10px');
   }
-
-  fade_filterbar = function(){
-      var can_hide_filter =  $(".filter-nav .dropdown.open").length == 0;
-      var can_shrink_color = can_hide_filter && $(".coloring .dropdown.open").length == 0;
-      var hardtop = parseInt(coloring.css('padding-top'))*2+42;
-      var breakPoint = $(document).width() > 768 ? 300 : 65;
-      if(scrolltop() > breakPoint && can_hide_filter) {
-        filter_bar.css("top", ((-scrolltop()+breakPoint)/85*30) +hardtop);
-      }else{
-        filter_bar.css("top", hardtop);
-      }
-
-      if(scrolltop() > breakPoint && can_shrink_color) {
-        coloring.css( { "padding-top" : ((-scrolltop()+breakPoint)/85*10) + 10 +"px" } );
-        coloring.css( { "padding-bottom" : ((-scrolltop()+breakPoint)/85*10) + 10 +"px" } );
-      } else {
-        coloring.css( { "padding-top" : '10px' } );
-      };
-
-      if(scrolltop() > breakPoint+100 && can_hide_filter) { 
-        filter_bar.css("display", 'none' );
-      } else {
-        filter_bar.css("display", 'block' );
-        if (can_hide_filter){
-          filter_bar.css("opacity", (-scrolltop()+breakPoint+100)/65 ); 
-        }else{
-          filter_bar.css("opacity", 1); 
-        }
-      }
-
-      if(scrolltop() > breakPoint+100 && can_shrink_color) { 
-        coloring.css( { "padding-top" : '0' } );
-        coloring.css( { "padding-bottom" : '0' } );
-      }
-  };
 
   check_notification_height = function(){
     $('.notifications-drop ul').css('max-height', window.innerHeight - 140 );
@@ -177,7 +141,6 @@ $(function(){
   };
 
   background_size_for_header_images();
-  //fade_filterbar();
   check_notification_height();
 
   var ORIGINAL_TITLE = $('title').html();
@@ -192,8 +155,6 @@ $(function(){
   coloring.click(big_color);
   window.addEventListener("resize", background_size_for_header_images);
   window.addEventListener("resize", check_notification_height);
-  //window.addEventListener("resize", fade_filterbar);
-  //window.addEventListener("scroll", fade_filterbar);
   window.addEventListener("scroll", header_image_parallax);
 
 });

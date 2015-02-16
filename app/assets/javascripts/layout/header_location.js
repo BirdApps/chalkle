@@ -61,7 +61,7 @@ $(function(){
   function spinner_start(geocoding){
     if($('#toggle_map_view').is(":visible")){
       if(geocoding){
-        $("#location_autocomplete").val('Finding classes near...');
+        $("#location_autocomplete").val('Finding location...');
       }
       $('#toggle_map_view').hide();
       spinner = new Spinner(spinner_opts).spin();
@@ -306,8 +306,6 @@ $(function(){
           $(ele).find('.set_bgcolor').css('background-color', clas.color);
           $(ele).find('.set_color').css('color',clas.color);
           $(ele).find('.set_action_call').text(clas.action_call);
-          $(ele).find('.set_category').text(clas.category);
-          $(ele).find('.set_category_url').attr('href', clas.category_url);
           $(ele).find('.set_provider').text(clas.provider);
           $(ele).find('.set_provider_url').attr('href', clas.provider_url);
           $(ele).find('.set_booking').text(clas.booking);

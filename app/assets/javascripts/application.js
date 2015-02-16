@@ -29,5 +29,3 @@
 //= require bootstrap-tagsinput.min
 
 //= require_tree .
-
-

@@ -41,31 +41,12 @@ if Chalkler.all.empty?
 
 end
 
-# Create some categories
-if Category.all.empty?
-  Category.create([{name: 'one'}, {name: 'two'}, {name: 'three'}], as: :admin)
-  Category.all.map {|category| puts "Category Created: #{category.name}"}
-end
-
 if Course.all.empty?
 #Create some lessons
   courses = Course.create([{name: 'Lesson 1'}, {name: 'Lesson 2'}, {name: 'Lesson 3'}], as: :admin)
   courses.each {|course| puts "Create course: #{course.name}"}
 
-  courses.each do |l|
-   l.category = Category.all[rand(0..Category.all.count-1)]
-   l.save
-   puts "Set category for #{l.name} to: #{l.category.name}"
-  end
-
   provider_admin.providers << Provider.find_by_name("Enspiral")
   puts "Provider Admin \"#{provider_admin.name}\" belongs to provider: #{provider_admin.providers.name}"
 end
 
-#make some regions
-if Region.all.empty?
-  %w{Northland Thames\ Valley Waikato Bay\ of\ Plenty Tongariro East\ Cape Hawkes\ Bay Taranaki Whanganui Wairarapa Manawatu Horowhenua Nelson\ Bays Marlborough Canterbury West\ Coast Central\ Otago Southland}.each do|region_name|
-    region = Region.create name: region_name
-    puts "Create region: #{region.name}"
-  end
-end

@@ -108,39 +108,7 @@ module ApplicationHelper
     list.drop(paginate_skip).take(paginate_take)
   end
 
-  def filter_regions
-    courses = Course.displayable.in_future
-    if @category.id.present? && @provider.id.present?
-      courses = courses.in_category(@category).in_provider(@provider)
-    elsif @category.id.present? && @provider.id.nil?    
-      courses = courses.in_category(@category) 
-    elsif @category.id.nil? && @provider.id.present?
-      courses = courses.in_provider(@provider)
-    end
-    (courses.map &:region).compact.uniq.sort_by{|c| c.name.downcase } 
-  end
-
-  def filter_topics
-    courses = Course.displayable.in_future
-    if @region.id.present? && @provider.id.present?
-      courses = courses.in_region(@region).in_provider(@provider)
-    elsif @region.id.present? && @provider.id.nil?    
-      courses = courses.in_region(@region) 
-    elsif @region.id.nil? && @provider.id.present?
-      courses = courses.in_provider(@provider)
-    end
-    (courses.map &:category).compact.uniq.sort_by{|c| c.name.downcase } 
-  end
-
   def filter_providers
-    courses = Course.published.in_future
-    if @category.id.present? && @region.id.present?
-      courses = courses.in_category(@category).in_region(@region)
-    elsif @category.id.present? && @region.id.nil?    
-      courses = courses.in_category(@category) 
-    elsif @category.id.nil? && @region.id.present?
-      courses = courses.in_region(@region)
-    end
     (courses.map &:provider).compact.uniq.sort_by{|c| c.name.downcase }
   end
 

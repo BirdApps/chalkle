@@ -147,7 +147,6 @@ Chalkle::Application.routes.draw do
   end
 
   resources :providers, path: 'providers', only: [:index, :teachers, :new, :create] do
-    #resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
     resources :subscriptions, only: [:create, :destroy], path: 'follow'
   end
 
@@ -170,14 +169,6 @@ Chalkle::Application.routes.draw do
   get 'resources', to: 'resources#index', as: :resources
   get 'metrics', to: 'metrics#index', as: :metrics
 
-  get 'topics', to: 'categories#index', as: :categories
-  get 'categories', to: 'categories#index', as: :categories
-  get '/classes/:year/:month/:day', to: 'courses#index', as: :classes_in_week
-
-  #get '/regions/:region', to: 'courses#index', as: :region
-  #get '/topics/:topic', to: 'courses#index', as: :category
-  #get '/providers/:provider', to: 'courses#show', as: :provider_filter
-
   #TODO: find an easier way of doing these provider routes!
   get ':provider_url_name/admins', to: 'providers#admins', as: :providers_admins
   get 'providers/:provider_id/admins', to: 'providers#admins', as: :provider_provider_admins
@@ -199,9 +190,5 @@ Chalkle::Application.routes.draw do
   get '*provider_url_name/*course_url_name/:id', to: 'courses#show', as: :provider_course
   get ':provider_url_name', to: 'providers#show', as: :provider
 
-  #TODO: will never be hit because of provider_course_series
-  # constraints(MainDomain) do
-  #   get ':country_code/:region_name', to: 'courses#index', constraints: {country_code: /[a-zA-Z]{2}/}
-  # end
   match '*a', :to => 'application#not_found'
 end

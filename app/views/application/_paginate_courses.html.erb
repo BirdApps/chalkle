@@ -1,8 +1,6 @@
 <% 
   if @courses.empty?  
     problem = "No classes match "
-    problem += '"'+params["region"]+'" ' if params[:region].present?
-    problem += '"'+params["topic"]+'" ' if params[:topic].present?
     problem += '"'+params["provider"]+'" ' if params[:provider].present?
     problem += '"'+params["search"]+'" ' if params[:search].present?
   %>

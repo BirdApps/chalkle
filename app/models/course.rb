@@ -2,11 +2,10 @@ require 'carrierwave/orm/activerecord'
 require 'course_upload_image_uploader'
 
 class Course < ActiveRecord::Base
-  include Categorizable
   GST = 0.15
 
   attr_accessible *BASIC_ATTR = [
-    :name, :status, :visible, :course_type, :teacher_id, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :course_skill, :venue, :category_id, :category, :provider, :provider_id, :suggested_audience,  :region_id, :region, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at, :custom_fields
+    :name, :status, :visible, :course_type, :teacher_id, :do_during_class, :learning_outcomes, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :provider, :provider_id, :suggested_audience, :street_number, :street_name, :city, :postal_code, :longitude, :latitude, :teacher, :course_upload_image, :venue_address, :cost, :teacher_cost, :course_class_type, :teacher_pay_type, :note_to_attendees, :start_at, :custom_fields
   ]
 
   #chalkle fee is saved exclusive of GST
@@ -23,10 +22,8 @@ class Course < ActiveRecord::Base
   PUBLIC_STATUSES = [STATUS_1, STATUS_2, STATUS_4]
 
   belongs_to :repeat_course
-  belongs_to :region
   belongs_to :provider
   belongs_to :teacher,          class_name: "ProviderTeacher"
-  belongs_to :category
   belongs_to :teacher_payment,  class_name: 'OutgoingPayment', foreign_key: :teacher_payment_id
   belongs_to :provider_payment,  class_name: 'OutgoingPayment', foreign_key: :provider_payment_id
 
@@ -42,9 +39,11 @@ class Course < ActiveRecord::Base
 
   serialize :custom_fields
 
-  [:teacher, :provider, :region, :category].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
+  [:teacher, :provider].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
 
-  delegate :best_colour_num, to: :category, allow_nil: true
+  def best_color_num
+    4 #must refactor to reference provider color
+  end
   
   #Time span for classes requiring attention
   PAST = 3
@@ -92,9 +91,7 @@ class Course < ActiveRecord::Base
   scope :paid, where("cost > 0")
   scope :taught_by_chalkler, -> (chalkler){ joins(:teacher).where('provider_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
   scope :free, where("cost IS NULL or cost = 0")
-  scope :in_region, -> (region){ where(region_id: region.id) }
   scope :in_provider, -> (provider){ where(provider_id: provider.id) }
-  scope :in_category, -> (category){ includes(:category).where("categories.id = :cat_id OR categories.parent_id = :cat_id", {cat_id: category.id}) }
   scope :not_repeat_course, where(repeat_course_id: nil)
   scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
   scope :adminable_by, -> (chalkler){ joins(:provider => :provider_admins).where('provider_admins.chalkler_id = ?', chalkler.id)}
@@ -586,7 +583,6 @@ class Course < ActiveRecord::Base
     fields = [name, do_during_class, learning_outcomes, additional_comments, suggested_audience, venue, venue_address, note_to_attendees, prerequisites]
     fields << provider.name if provider.present?
     fields << teacher.name if teacher.present?
-    fields << category.name if category.present?
     self.searchable = fields.compact.join(' ').gsub(/[^0-9a-z ]/i, '').gsub(/\s+/, ' ').strip
   end
 

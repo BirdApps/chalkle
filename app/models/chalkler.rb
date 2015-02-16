@@ -7,8 +7,8 @@ class Chalkler < ActiveRecord::Base
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :invitable, :omniauth_providers => [:facebook, :meetup]
 
-  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :provider_teachers, :provider_admins, :providers_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
-  attr_accessible *BASIC_ATTR, :provider_ids, :provider, :uid, :join_providers, :email_region_ids, :role, :as => :admin
+  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :phone_number, :provider_teachers, :provider_admins, :providers_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
+  attr_accessible *BASIC_ATTR, :provider_ids, :provider, :uid, :join_providers, :role, :as => :admin
 
   attr_accessor :join_providers, :set_password_token
 
@@ -52,10 +52,6 @@ class Chalkler < ActiveRecord::Base
     Notify.for(chalkler).welcome } 
 
   scope :visible, where(visible: true)
-  scope :with_email_region_id, 
-    lambda {|region| 
-      where("email_region_ids LIKE '%?%'", region)
-    }
   scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week ) }
   scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month ) }
 
@@ -66,9 +62,6 @@ class Chalkler < ActiveRecord::Base
   scope :taught, includes(:provider_teachers).where("provider_teachers.id IS NOT NULL" )
   scope :provided, includes(:provider_admins).where("provider_admins.id IS NOT NULL" )
 
-
-  serialize :email_categories
-  serialize :email_region_ids
 
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
@@ -199,14 +192,6 @@ class Chalkler < ActiveRecord::Base
 
   def meetup_identity
     identities.for_provider('meetup')
-  end
-
-  def email_regions
-    Region.find (email_region_ids || [])
-  end
-
-  def email_regions=(email_region)
-    assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
   end
 
   def available_notifications

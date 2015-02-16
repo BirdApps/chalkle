@@ -1,15 +1,10 @@
 $fe-heading-color:      rgba(76,126,147,1);
-$single-category-color: $category1;
 $chalky-font: 'Shadows Into Light Two', cursive;
 $chalkboard-background-color: #2B2B2B;
 $chalkboard-background: $chalkboard-background-color asset-url("texture-chalkboard.jpg", "image") repeat;
 
-@import "courses/categories";
 @import "front_end/old_design";
-@import "courses/browse_courses";
-@import "courses/show_course";
 @import "front_end/home";
-@import "front_end/providers/show";
 @import "front_end/social_media";
 @import "front_end/dropdowns";
 
@@ -76,38 +71,6 @@ ul.simple-nav {
       }
     }
   }
-}
-
-.colour1 {
-  color: $category1;
-}
-.colour2 {
-  color: $category2;
-}
-.colour3 {
-  color: $category3;
-}
-.colour4 {
-  color: $category4;
-}
-.colour5 {
-  color: $category5;
-}
-
-.bg-colour1 {
-  background-color: $category1 !important;
-}
-.bg-colour2 {
-  background-color: $category2 !important;
-}
-.bg-colour3 {
-  background-color: $category3 !important;
-}
-.bg-colour4 {
-  background-color: $category4 !important;
-}
-.bg-colour5 {
-  background-color: $category5 !important;
 }
 
 .thumbnail {

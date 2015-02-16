@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :course_skill, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :category_id, :providers, :provider, :provider_id, :suggested_audience, :cost, :region_id, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_provider_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_provider_tax_number, :note_to_attendees, :new_provider_bank_number, :cloning_id, :bookings, :custom_fields
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :providers, :provider, :provider_id, :suggested_audience, :cost, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :country, :postal_code, :override_provider_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_provider_tax_number, :note_to_attendees, :new_provider_bank_number, :cloning_id, :bookings, :custom_fields
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
@@ -43,8 +43,6 @@ class Teaching
 
     @class_count = args.lessons.count
     @title = args.name
-    @category_id = args.category_id
-    @course_skill = args.course_skill
     @do_during_class = args.do_during_class
     @learning_outcomes = args.learning_outcomes
     @suggested_audience = args.suggested_audience
@@ -53,7 +51,6 @@ class Teaching
     @street_number = args.street_number
     @street_name = args.street_name
     @city = args.city
-    @region = args.region
     @postal_code = args.postal_code
     @longitude = args.longitude
     @latitude = args.latitude
@@ -86,8 +83,6 @@ class Teaching
   def course_args
     {
       name: @title,
-      category_id: @category_id,
-      course_skill: @course_skill,
       do_during_class: @do_during_class,
       learning_outcomes: @learning_outcomes,
       suggested_audience: @suggested_audience,
@@ -96,7 +91,6 @@ class Teaching
       street_number: @street_number,
       street_name: @street_name,
       city: @city,
-      region: @region,
       postal_code: @postal_code,
       longitude: @longitude,
       latitude: @latitude,
@@ -282,8 +276,6 @@ class Teaching
       else
         @title = params[:name]
       end
-      @category_id = get_category_id params[:category_id]
-      @course_skill = params[:course_skill]
       @repeating = params[:repeating]
       @repeating = "once-off" if @repeating.blank?
       @repeat_frequency = params[:repeat_frequency]
@@ -301,8 +293,6 @@ class Teaching
       @street_number = params[:street_number]
       @street_name = params[:street_name]
       @city = params[:city]
-      @region = get_region params[:region]
-      @region_id = @region.present? ? @region.id : nil
       @country = params[:country]
       @postal_code = params[:postal_code]
       @latitude = params[:latitude]
@@ -370,7 +360,7 @@ class Teaching
         #no provider
         if @providers.empty?
           #create a personal provider and grant user all permissions
-          provider = Provider.create({name: @current_user.name+" Classes", regions: [ region ], email: @current_user.email, account: @new_provider_bank_number, tax_number: @new_provider_tax_number, visible: true, provider_plan: ProviderPlan.default}, as: :admin)
+          provider = Provider.create({name: @current_user.name+" Classes", email: @current_user.email, account: @new_provider_bank_number, tax_number: @new_provider_tax_number, visible: true, provider_plan: ProviderPlan.default}, as: :admin)
           provider_admin = ProviderAdmin.create provider: provider, chalkler: @current_user.chalkler
           provider_teacher = ProviderTeacher.create provider: provider, chalkler: @current_user.chalkler, name: @current_user.name, account: @new_provider_bank_number, tax_number: @new_provider_tax_number
         else
@@ -381,22 +371,6 @@ class Teaching
       end
       @provider = provider
       provider.id
-    end
-
-    def get_category_id(category_id)
-      if category_id.present?
-        category = Category.find category_id.to_i
-        category.id unless category.nil?
-      end
-    end
-
-    def get_region(region_name)
-      region_name = region_name.present? ? region_name : @city
-      region = Region.find_by_name(region_name)
-      if region.nil? && region_name.present?
-        region = Region.create name: region_name, url_name: region_name.parameterize
-      end
-      region
     end
 
 end
