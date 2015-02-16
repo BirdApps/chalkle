@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150213023058) do
+ActiveRecord::Schema.define(:version => 20150216024944) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -188,6 +188,7 @@ ActiveRecord::Schema.define(:version => 20150213023058) do
     t.integer  "teacher_payment_id"
     t.integer  "provider_payment_id"
     t.text     "custom_fields"
+    t.text     "searchable"
   end
 
   add_index "courses", ["region_id"], :name => "index_courses_on_region_id"

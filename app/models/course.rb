@@ -110,6 +110,7 @@ class Course < ActiveRecord::Base
 
   before_create :set_url_name
   before_save :update_published_at
+  before_save :build_searchable
   before_save :save_first_lesson
   before_save :start_at!
   before_save :end_at!
@@ -132,9 +133,9 @@ class Course < ActiveRecord::Base
       courses = Course.arel_table
       query_parts = query.split(/\W+/).map {|part| "%#{part}%" }
       if course_set
-        course_set.where courses[:name].matches_any(query_parts)
+        course_set.where courses[:searchable].matches_any(query_parts)
       else
-        Course.where courses[:name].matches_any(query_parts)
+        Course.where courses[:searchable].matches_any(query_parts)
       end
     end
   end
@@ -184,7 +185,7 @@ class Course < ActiveRecord::Base
   end
 
   def time_formatted
-    start_at.present? && end_at.present? ? ((class? ? DateFunctions.day_ordinal_month(start_at, true, false, true) : '')+(DateFunctions.pretty_time_range(start_at,end_at))) : 'No Schedule'
+    start_at.present? && end_at.present? ? ((class? ? DateFunctions.day_ordinal_month(start_at, true, false, true) : '')+' '+(DateFunctions.pretty_time_range(start_at,end_at))) : 'No Schedule'
   end
 
   def cost_formatted(stringed =  false)
@@ -235,7 +236,7 @@ class Course < ActiveRecord::Base
   end
 
   def address
-    venue_address
+    venue_address.gsub(', New Zealand', '')
   end
 
   def address_formatted
@@ -567,18 +568,10 @@ class Course < ActiveRecord::Base
   end
 
   def call_to_action
-    if limited_spaces?
-      if spaces_left?
-        if spaces_left < 5
-          'spot'.pluralize(spaces_left) + ' left'
-        else
-          'Join'
-        end
-      else
-        'Fully booked'
-      end
+    if limited_spaces? && !spaces_left?
+      'Fully booked'
     else
-      'Join'
+      'Book in'
     end
   end
 
@@ -587,6 +580,19 @@ class Course < ActiveRecord::Base
     if status == STATUS_3 #draft
       set_url_name
     end
+  end
+
+  def build_searchable
+    fields = [name, do_during_class, learning_outcomes, additional_comments, suggested_audience, venue, venue_address, note_to_attendees, prerequisites]
+    fields << provider.name if provider.present?
+    fields << teacher.name if teacher.present?
+    fields << category.name if category.present?
+    self.searchable = fields.compact.join(' ').gsub(/[^0-9a-z ]/i, '').gsub(/\s+/, ' ').strip
+  end
+
+  def build_searchable!
+    build_searchable
+    save
   end
     
   private
