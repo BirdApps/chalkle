@@ -1,11 +1,31 @@
+
 .navbar-form {
   border: 0px !important;
   box-shadow: none !important;
 }
-@media (max-width: 768px){
-  .coloring{
-    hr,.sub-header{
-      display: none;
+
+.coloring {
+  >.container{
+    @media screen and (max-width: 768px){
+      padding: 0 5px;
+      .search-wrapper {
+        margin: 0 10px 0 0 !important;
+      }
+      #search_btn{
+        display: none;
+      }
     }
   }
+  .sub-header{
+    display: none;
+  }
+  @media screen and (max-width: 768px){
+    hr{
+      margin: 0 !important;
+    }
+  }
+}
+
+.navbar-left{
+  width: 55%;
 }

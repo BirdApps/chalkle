@@ -99,6 +99,15 @@ class Chalkler < ActiveRecord::Base
     courses.merge(Booking.confirmed).uniq.in_future.by_date
   end
 
+  def initials
+    initials = name[0]
+    parts = name.split ' '
+    if parts.count > 1
+      initials.concat parts.last[0]
+    end
+    initials.upcase
+  end
+
   def chalkler
     self
   end

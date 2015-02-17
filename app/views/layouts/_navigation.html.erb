@@ -1,6 +1,7 @@
 <div class="navbar-wrapper">
   <nav class="navbar navbar-fixed-top" role="navigation" >
-    <%= content_tag :div, class:"coloring", style: "background-color: #{header_color if header_color};"  do %>
+    <% color_style = header_color ? "background-color: #{header_color}" : "" %>
+    <%= content_tag :div, class: "coloring", style: color_style  do %>
       <div class="container">
         <div class="navbar-header">
           <button class="navbar-toggle" data-target="#primary-navigation" data-toggle="collapse" type="button">
@@ -8,68 +9,44 @@
             <span class="fa fa-bars"></span>
           </button>
           <%= link_to root_path, class:"navbar-brand", alt: "chalkle°" do%>
-            <% if Rails.env.titleize != "Production" %>
+            <% if false #Rails.env.titleize != "Production" %>
               <div class="light environment alert-<%= environment_color Rails.env.titleize %>">
                   <%= Rails.env.titleize %> <small> #<%= VERSION_NUMBER %></small>
               </div>
             <% else %>
-              <%= image_tag asset_path('logo.png'), class: "logo" %>
+              <%= image_tag asset_path('logo.png'), alt: 'Chalkle', class: "logo hidden-xs" %>
+              <img src="/favicon-192x192.png" alt: 'Chalkle' class="logo visible-xs" />
             <% end %>
           <% end %>
         </div>
 
-        <div id="primary-navigation" class="collapse navbar-collapse">
+        <div id="primary-navigation">
+          <ul class="nav navbar-nav navbar-left">
+            <li>
+              <div class="search-wrapper">
+                <form class="navbar-form search-form" id="primary-search-form" method="get" action="<%= root_path params %>" onsubmit="return false" role="search">
+                  <div class="input-group">
+                    <span class="input-group-addon" id="search_btn">
+                      <img src="/assets/icons/search.png" alt="search" />
+                    </span>
+                    <input id="search_input" type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search">
+                  </div>
+                </form>
+              </div>
+            </li>
+          </ul>
+
           <ul class="nav navbar-nav navbar-right">
-            <li class="hidden-xs">
-              <%= link_to "Learn#{ nav_badge_format { current_user.learn_menu_badge_count }}", learn_path,  class: (current_page?(learn_path) ? "current": "")  %>
-            </li>
-            <li class="hidden-xs">
-              <%= link_to "Teach#{ nav_badge_format { current_user.teach_menu_badge_count }}", teach_path,  class: (current_page?(teach_path) ? "current": "") %>
-            </li>
             <% if chalkler_signed_in? %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                  <span class="hidden-xs">
-                    <%= current_user.name %>
-                    <span class="caret"></span>
-                  </span>
-                  <span class="visible-xs">
-                    <%= current_user.name %>
-                  </span>
-                </a>
-                <ul class="dropdown-menu pull-right" role="menu" style="background-color: <%= header_color if header_color %>" >
-                  <li class="divider flush visible-xs"></li>
-                  <li role="presentation">  
-                    <%= link_to "Dashboard", me_root_path, class: (current_page?(me_root_path) ? "current": "") %>
-                  </li role="presentation">
-                  <li role="presentation">
-                    <%= link_to "Settings", me_preferences_path, class: (current_page?(me_preferences_path) ? "current": "") %>
-                  </li>
-                    <%# <li><a href="/muni-wallet-stuff">Account</a></li> %>
-                  <li role="presentation">
-                    <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
-                  </li>
-                  <li class="divider"></li>
-                  <li role="presentation">
-                    <%= link_to "About", partners_path,  class: (current_page?(partners_path) ? "current": "") %>
-                  </li>
-                  <li role="presentation">
-                    <%= link_to "Contact", partners_say_hello_path,  class: (current_page?(partners_say_hello_path) ? "current": "") %>
-                  </li>
-                </ul>
-              </li>
+            
               <li class="dropdown notifications-drop">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                 <span class="hidden-xs">
+                 <span>
                    <img src="/assets/icons/bell.png" />
                    <span class="notification-count"></span>
                  </span>
-                 <span class="visible-xs">
-                    Notifications
-                   <span class="notification-count brackets"></span>
-                 </span>
                 </a>
-                <div class="dropdown-menu pull-right no-padding" role="menu" style="background-color: <%= header_color if header_color %>" >
+                <div class="dropdown-menu pull-right no-padding" role="menu" style="<%= color_style %>" >
                   <ul class="flush" id="notifications_container">
                   </ul>
                   <div class="divider flush"></div>
@@ -78,39 +55,42 @@
                   </div>
                 </div>
               </li>
-              <li class="divider visible-xs"></li>
-              <li class="visible-xs">
-                <%= link_to "Learn#{ nav_badge_format { current_user.learn_menu_badge_count }}", learn_path,  class: (current_page?(learn_path) ? "current": "")  %>
-              </li>
-              <li class="visible-xs">
-                <%= link_to "Teach#{ nav_badge_format { current_user.teach_menu_badge_count }}", teach_path,  class: (current_page?(teach_path) ? "current": "") %>
-              </li>
 
-            <% else %>
-              <li class="hidden-xs">
-                <%= link_to "About Chalkle", partners_path,  class: (current_page?(partners_path) ? "current": "") %>
+              <li class="dropdown profile-img">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                  <% if current_user.avatar? %>
+                    <div class="img-wrapper" style="background-image: url(<%= current_user.avatar %>)"></div>
+                  <% else %>
+                    <div class="img-wrapper">
+                      <%= current_user.initials %>
+                    </div>
+                  <% end %>
+                </a>
+                <div class="dropdown-menu pull-right" role="menu" style="<%= color_style %>" >
+                  <div role="presentation">  
+                    <%= link_to current_user.name, chalkler_path(current_user) %>
+                  </div>
+                  <div role="presentation">
+                    <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
+                  </div>
+                </div>
               </li>
+  
+            <% else %>
+
               <li>
                 <%= link_to 'Login', new_chalkler_session_path,  class: (current_page?(controller: 'chalkler') ? "current": "") %>
               </li>
-              <li class="divider visible-xs"></li>
-              <li class="visible-xs">
-                <%= link_to "Learn#{ nav_badge_format { current_user.learn_menu_badge_count }}", learn_path,  class: (current_page?(learn_path) ? "current": "")  %>
-              </li>
-              <li class="visible-xs">
-                <%= link_to "Teach#{ nav_badge_format { current_user.teach_menu_badge_count }}", teach_path,  class: (current_page?(teach_path) ? "current": "") %>
-              </li>
-              <li class="visible-xs">
-                <%= link_to "About Chalkle", partners_path,  class: (current_page?(partners_path) ? "current": "") %>
-              </li>
+            
             <% end %>
+
           </ul>
+
         </div>
       </div>
       <hr />
       <div class="container sub-header">
         <div class="col-xs-8 location-form">
-
           <div class="navbar-form navbar-right location-form" id="location-form">
             <div class="input-group">
               <span class="input-group-addon btn" id="globe_holder" role="button" title="Auto-locate" data-toggle="tooltip" data-placement="bottom">
@@ -120,23 +100,13 @@
               <div class="input-group-addon" id="location_unknown" style="display:none">
                 <span class="fa-exclamation-triangle fa" data-toggle="tooltip" data-placement="bottom" title="Unrecognized address"></span>
               </div>
-              <%# <span class="input-group-addon"><a class="refresh_location">Refresh</a></span> %>
               <input type="hidden" name="coord_lat" id="coord_lat" value="<%= get_coords[:lat] %>" />
               <input type="hidden" name="coord_lng" id="coord_lng" value="<%= get_coords[:lng]  %>" />
             </div>
           </div>
 
         </div>
-        <div class="col-xs-4 search-wrapper">
-          <form class="navbar-form navbar-right search-form" id="primary-search-form" method="get" action="<%= root_path params %>" onsubmit="return false" role="search">
-            <div class="input-group">
-              <span class="input-group-addon" id="search_btn">
-                <img src="/assets/icons/search.png" alt="search" />
-              </span>
-              <input id="search_input" type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search">
-            </div>
-          </form>
-        </div>
+        
       </div>
     <% end %>
   </nav>

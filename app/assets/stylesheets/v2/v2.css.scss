@@ -66,6 +66,10 @@ html {
   overflow-x: hidden;
 }
 
+.no-hover-bg:hover{
+  background-color: transparent;
+}
+
 body.v2 {
   overflow-x: hidden;
   margin-bottom: 52px;
@@ -79,7 +83,7 @@ body.v2 {
     transition: height 2s ease-in-out;
   }
   .dropdown {
-     @media screen and (max-width: $col-sm) {
+     /*@media screen and (max-width: $col-sm) {
       >a{
         :after{
           display: inline-block;
@@ -98,57 +102,61 @@ body.v2 {
           top: 18px;
         }
       }
-    }
+    }*/
   }
   .dropdown.open, .navbar-collapse {
     @media screen and (max-width: $col-sm) {
-      button {
-        border: 0;
-        background: #efefef !important;
-      }
-      position: fixed !important;
-      left: 0;
-      width: 100%;
-      top: 64px;
-      z-index: 100;
-      background: #fff;
-      height: 100% !important;
-      max-height: none;
-      margin: 0;
-      padding: 0;
-      >a{
-        padding-left: 55px !important;
-        :before{
-          display: inline-block;
-          width: 0;
-          height: 0;
-          vertical-align: middle;
-          border-right: 15px solid #F5BA56;
-          border-top: 8px solid transparent;
-          border-left: 0 dotted; 
-          border-bottom: 8px solid transparent;
-          vertical-align: middle;
-          margin-left: 2px;
-          content:'';
-          position: absolute;
-          left: 30px;
-          top: 18px;
+      .dropdown-menu{
+        button {
+          border: 0;
+          background: #efefef !important;
         }
-        :after{
-          border: none;
+        position: fixed !important;
+        left: 0;
+        width: 100%;
+        top: 64px;
+        z-index: 100;
+        background: #fff;
+        height: 100% !important;
+        max-height: none;
+        margin: 0;
+        padding: 0;
+        >a{
+          padding-left: 55px !important;
+          :before{
+            display: inline-block;
+            width: 0;
+            height: 0;
+            vertical-align: middle;
+            border-right: 15px solid #F5BA56;
+            border-top: 8px solid transparent;
+            border-left: 0 dotted; 
+            border-bottom: 8px solid transparent;
+            vertical-align: middle;
+            margin-left: 2px;
+            content:'';
+            position: absolute;
+            left: 30px;
+            top: 18px;
+          }
+          :after{
+            border: none;
+          }
         }
-      }
-      li{
-        .btn, a {
-          color: #333;
-          text-align: left;
-          line-height: 2.5em;
-          img{
-            margin-top: 0 !important;
+        li{
+          .btn, a {
+            color: #333;
+            text-align: left;
+            line-height: 2.5em;
+            img{
+              margin-top: 0 !important;
+            }
           }
         }
       }
     }
+
+
   }
   .dropdown-menu {
     border-radius: 0;
@@ -580,26 +588,38 @@ body.v2 {
       }
     }
     .navbar {
+      .profile-img {
+        a{
+          padding: 5px !important;
+          @media screen and (max-height: $col-sm){  
+            padding: 10px 5px !important;
+          }
+          &:hover {
+            background-color: transparent !important;
+          }
+          .img-wrapper{
+            background-size: 100%;
+            height: 32px;
+            width: 32px;
+            border-radius: 2px;
+            border: solid 1px rgba(0,0,0,0.1);
+          }
+        }
+      }
       font-size: 20px;
       .nav {
-        min-height: $line-height;
-        @media screen and (max-width: $col-sm) {
-          min-height: $mob-line-height;
+        @media screen and (min-height: $col-sm){
+          min-height: $line-height;
         }
         margin: 0px;
         li {
-          height: $line-height;
-          @media screen and (max-width: $col-sm) {
-            min-height: $mob-line-height;
+          @media screen and (min-height: $col-sm){
+            height: $line-height;
           }
           margin-bottom: 0;
           a {
             color: #555;
-            @media screen and (max-width: $col-sm) {
-              min-height: $mob-line-height;
-              line-height: $mob-line-height;
-              padding: 0 25px;
-            }
+            
             display: block;
             text-decoration: none;
             &:hover, &.current {
@@ -652,12 +672,13 @@ body.v2 {
         padding: 10px;
       }
       .coloring {
-        padding: 10px 0 0;
+        @media screen and (min-width: $col-sm){
+          padding: 10px 0 0;
+        }
         transition: padding 0.5s ease;
         background: $primary-color;
         position: relative;
         @media screen and (max-width: $col-sm) {
-          padding: 10px 0 !important;
           background: $primary-color-opaque;
           a:hover{
             background-color: transparent;
@@ -675,8 +696,13 @@ body.v2 {
           padding: 0;
           img.logo {
             padding-top: 8px;
-            height: 35px;
             margin: 0px;
+            @media screen and (min-width: $col-sm) {
+              height: 35px;
+            }
+            @media screen and (max-width: $col-sm) {
+              height: 43px;
+            }
           }
         }
         .notifications-drop{
@@ -687,7 +713,7 @@ body.v2 {
             }
           }
           .dropdown-menu{
-            ul{
+            ul {
               z-index: 100;
               max-width: 100%;
               @media (min-width: 768px){
@@ -697,7 +723,7 @@ body.v2 {
               max-height: 400px;
               overflow-y: scroll;
               padding: 0;
-              li._notification{
+              li._notification {
                 font-size: 1.2em;
                 height: auto !important;
                 min-height: 65px !important;
@@ -747,11 +773,29 @@ body.v2 {
           }
         }
         .dropdown-menu { 
-          background: $primary-color;
+          background: $primary-color-opaque;
           border-radius:  0 0 3px 3px;
           border: 0px;
           margin-top:10px;
+          @media screen and (min-width: $col-sm) {
+            margin-top:18px;
+            box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+            border-radius: 1px;
+            padding-top: 15px;
+            &:after {
+              content: ' ';
+              width: 20px;
+              height: 15px;
+              transform: skew(0,-36deg);
+              box-shadow: 1px -1px 0.5px rgba(255, 255, 255, 0.1);
+              background-color: inherit;
+              position: absolute;
+              top: -6px;
+              right: 25px;
+            }
+          }
           li {
+            z-index: 1001;
             margin-left: 0 !important;
             a {
               @media screen and (min-width: $col-sm) {    
@@ -795,7 +839,6 @@ body.v2 {
             margin-left: 0 !important;
             >a{
               color: #333;
-              line-height: 2.8em;
             }
           }
         }
@@ -809,6 +852,9 @@ body.v2 {
           margin-bottom:0;
         }
         .location-form{
+          #location-form{
+            width: 100%;
+          }
           img{
             width: 24px;
             height: 24px;
@@ -818,60 +864,64 @@ body.v2 {
             min-height: 36px;
           }
         }
-        .sub-header{
-          .search-wrapper{
+        .search-wrapper{
+          margin: 0 20px;
+          #search_btn {
+            @media screen and (min-width: $col-sm) {
+              border-left: 1px solid #fff;
+            }            
+            border-radius: 0px;
+          }
+          .search-form{
             padding-left: 0px;
-            border-left: 1px solid #fff;
-            .search-form{
-              padding-left: 0px;
-            }
-          }
-          .input-group-addon, .form-control{
-            background: transparent;
-            color: #fff;
-            border: 0px;
-            opacity: 0.8;
-          }
-          .input-group-addon:focus, .input-group-addon:active, .input-group-addon:hover{
-            opacity: 1;
-          }
-          .input-group-addon{
-            cursor: pointer;
-            img {
-              width: 24px;
-              height: 24px;
-            }
-          }
-          .form-control{
-            box-shadow: none;
-            opacity: 0.8;
-          }
-          .form-control:focus, .form-control:active{
-            border: 0px;
-            box-shadow: none;
-            opacity: 1;
-          }
-
-          input::-webkit-input-placeholder {
-            color: #fff;
-            font-style: italic;
-          }
-          input::-moz-placeholder {
-            color: #fff;
-            opacity: 1;
-            font-style: italic;
-          }
-          input:-moz-placeholder {   /* Older versions of Firefox */
-            color: #fff;
-            opacity: 1;
-            font-style: italic;
-          }
-          input:-ms-input-placeholder { 
-            color: #fff;
-            opacity: 1;
-            font-style: italic;
           }
         }
+        .input-group-addon, .form-control{
+          background: transparent;
+          color: #fff;
+          border: 0px;
+          opacity: 0.8;
+        }
+        .input-group-addon:focus, .input-group-addon:active, .input-group-addon:hover{
+          opacity: 1;
+        }
+        .input-group-addon{
+          cursor: pointer;
+          img {
+            width: 24px;
+            height: 24px;
+          }
+        }
+        .form-control{
+          box-shadow: none;
+          opacity: 0.8;
+        }
+        .form-control:focus, .form-control:active{
+          border: 0px;
+          box-shadow: none;
+          opacity: 1;
+        }
+
+        input::-webkit-input-placeholder {
+          color: #fff;
+          font-style: italic;
+        }
+        input::-moz-placeholder {
+          color: #fff;
+          opacity: 1;
+          font-style: italic;
+        }
+        input:-moz-placeholder {   /* Older versions of Firefox */
+          color: #fff;
+          opacity: 1;
+          font-style: italic;
+        }
+        input:-ms-input-placeholder { 
+          color: #fff;
+          opacity: 1;
+          font-style: italic;
+        }
+        
       }
     }
   }
