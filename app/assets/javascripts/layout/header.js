@@ -66,11 +66,7 @@ $(function(){
     header_content_bg.css("background-position", 
       ( 'center bottom ' + ((-scrolltop())/$(window).height()*200) + 'px' ) );
   };
-
-  big_color = function(){
-    coloring.css('padding-top','10px');
-  }
-
+  
   check_notification_height = function(){
     $('.notifications-drop ul').css('max-height', window.innerHeight - 140 );
   }
@@ -152,7 +148,6 @@ $(function(){
   }
 
 
-  coloring.click(big_color);
   window.addEventListener("resize", background_size_for_header_images);
   window.addEventListener("resize", check_notification_height);
   window.addEventListener("scroll", header_image_parallax);
