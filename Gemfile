@@ -86,7 +86,6 @@ group :assets do
   gem 'haml_assets',         '~> 0.2.2'
   gem 'kalendae_assets',     '~> 0.2.1'
   gem 'execjs',              '~> 1.4.0'
-  gem 'bower-rails'
   gem 'turbo-sprockets-rails3'
 end
 
