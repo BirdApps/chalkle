@@ -3,7 +3,7 @@ require 'avatar_uploader'
 class ChalklerPreferences
   include ActiveAttr::Model
 
-  attr_accessor :chalkler, :email, :email_frequency :bio, :phone_number, :visible, :avatar, :address, :name
+  attr_accessor :chalkler, :email, :email_frequency, :bio, :phone_number, :visible, :avatar, :address, :name
 
   validates :email, allow_blank: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, :message => "Email must be in the correct format"}
 
