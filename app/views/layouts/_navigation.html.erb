@@ -15,28 +15,24 @@
               </div>
             <% else %>
               <%= image_tag asset_path('logo.png'), alt: 'Chalkle', class: "logo hidden-xs" %>
-              <img src="/favicon-192x192.png" alt: 'Chalkle' class="logo visible-xs" />
             <% end %>
           <% end %>
         </div>
 
         <div id="primary-navigation">
-          <ul class="nav navbar-nav navbar-left">
-            <li>
-              <div class="search-wrapper">
-                <form class="navbar-form search-form" id="primary-search-form" method="get" action="<%= root_path params %>" onsubmit="return false" role="search">
-                  <div class="input-group">
-                    <span class="input-group-addon" id="search_btn">
-                      <img src="/assets/icons/search.png" alt="search" />
-                    </span>
-                    <input id="search_input" type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search">
-                  </div>
-                </form>
-              </div>
-            </li>
-          </ul>
 
-          <ul class="nav navbar-nav navbar-right">
+          <div class="search-wrapper">
+            <form class="navbar-form search-form" id="primary-search-form" method="get" action="<%= discover_path %>" onsubmit="<%= "return false" if current_page? discover_path %>" role="search">
+              <div class="input-group">
+                <span class="input-group-addon" id="search_btn">
+                  <img src="/assets/icons/search.png" alt="search" />
+                </span>
+                <input id="search_input" type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search Chalkle">
+              </div>
+            </form>
+          </div>
+
+          <ul id="primary-menu" class="nav navbar-nav">
             <% if chalkler_signed_in? %>
             
               <li class="dropdown notifications-drop">
@@ -51,7 +47,7 @@
                   </ul>
                   <div class="divider flush"></div>
                   <div class="small center">
-                      <%= link_to "See more", me_notifications_path  %>
+                      <%= link_to "All Notifications", me_notifications_path  %>
                   </div>
                 </div>
               </li>
@@ -68,7 +64,7 @@
                 </a>
                 <div class="dropdown-menu pull-right" role="menu" style="<%= color_style %>" >
                   <div role="presentation">  
-                    <%= link_to current_user.name, chalkler_path(current_user) %>
+                    <%= link_to current_user.name, chalkler_path(current_chalkler) %>
                   </div>
                   <div role="presentation">
                     <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
@@ -79,7 +75,11 @@
             <% else %>
 
               <li>
-                <%= link_to 'Login', new_chalkler_session_path,  class: (current_page?(controller: 'chalkler') ? "current": "") %>
+                <% if current_page? new_chalkler_session_path %>
+                  <%= link_to 'Sign up', new_chalkler_registration_path %>
+                <% else %>
+                  <%= link_to 'Login', new_chalkler_session_path  %>
+                <% end %>
               </li>
             
             <% end %>
@@ -87,26 +87,6 @@
           </ul>
 
         </div>
-      </div>
-      <hr />
-      <div class="container sub-header">
-        <div class="col-xs-8 location-form">
-          <div class="navbar-form navbar-right location-form" id="location-form">
-            <div class="input-group">
-              <span class="input-group-addon btn" id="globe_holder" role="button" title="Auto-locate" data-toggle="tooltip" data-placement="bottom">
-                <img src="/assets/icons/globe.png" alt="Toggle Map View" id="toggle_map_view" />
-              </span>
-              <input type="text" name="location" id="location_autocomplete" value="<%= get_coords[:location] %>" class="form-control" placeholder="Location">
-              <div class="input-group-addon" id="location_unknown" style="display:none">
-                <span class="fa-exclamation-triangle fa" data-toggle="tooltip" data-placement="bottom" title="Unrecognized address"></span>
-              </div>
-              <input type="hidden" name="coord_lat" id="coord_lat" value="<%= get_coords[:lat] %>" />
-              <input type="hidden" name="coord_lng" id="coord_lng" value="<%= get_coords[:lng]  %>" />
-            </div>
-          </div>
-
-        </div>
-        
       </div>
     <% end %>
   </nav>

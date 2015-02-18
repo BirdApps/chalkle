@@ -6,15 +6,15 @@ Chalkle::Application.routes.draw do
   match '(*any)' => redirect { |p, req| req.url.sub!('my.', '') } , :constraints => { :host => /^my\./ }
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
 
-  devise_for :chalklers, controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations', invitations: 'invitations' }
+  devise_for :chalklers, path: 'people', controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations', invitations: 'invitations' }
   
   constraints(Subdomain) do
     match '/' => 'providers#show'
   end
 
-  root to: 'courses#index'
+  root to: 'application#home'
   
-  get '/about' => 'application#about', as: :about
+  get '/about' => 'partners#index', as: :about
 
   get '/terms' => 'terms#chalkler', as: :terms
 
@@ -32,8 +32,8 @@ Chalkle::Application.routes.draw do
   resources :provider_plans, path: 'plans'
 
   match '/teach' => 'courses#teach'
-  match '/learn' => 'courses#learn'
-
+  match '/learn' => redirect("/discover")
+  match '/discover' => 'courses#index'
 
   resources :courses, path: 'classes' do
 

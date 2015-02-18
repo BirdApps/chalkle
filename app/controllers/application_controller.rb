@@ -40,10 +40,8 @@ class ApplicationController < ActionController::Base
     stored_location_for(resource) || params[:redirect_to]  || root_path
   end
 
-  def about
-
+  def home
   end
-
 
   def not_found
     render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
