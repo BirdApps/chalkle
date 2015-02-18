@@ -1,0 +1,17 @@
+<div class="container location_form">
+  <div class="col-xs-12">
+    <div class="location-form" id="location-form">
+      <div class="input-group">
+        <span class="input-group-addon btn" id="globe_holder" role="button" title="Auto-locate" data-toggle="tooltip" data-placement="bottom">
+          <img src="/assets/icons/globe.png" alt="Toggle Map View" id="toggle_map_view" />
+        </span>
+        <input type="text" name="location" id="location_autocomplete" value="<%= get_coords[:location] %>" class="form-control" placeholder="Location">
+        <div class="input-group-addon" id="location_unknown" style="display:none">
+          <span class="fa-exclamation-triangle fa" data-toggle="tooltip" data-placement="bottom" title="Unrecognized address"></span>
+        </div>
+        <input type="hidden" name="coord_lat" id="coord_lat" value="<%= get_coords[:lat] %>" />
+        <input type="hidden" name="coord_lng" id="coord_lng" value="<%= get_coords[:lng]  %>" />
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,8 +5,9 @@ class CoursesController < ApplicationController
   before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
   before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status] 
+  
   def index
-   
+   @location_form = true
   end
 
   def fetch

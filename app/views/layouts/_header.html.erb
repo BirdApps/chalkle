@@ -2,7 +2,7 @@
   current_hero = page_hero
   links = page_context_links
 %>
-<div class="header" style="background-image: url( <%= current_hero[:default] if current_hero.present? %> )">
+<div class="header">
   <div class="container header_content">
     <div class="header_content_bg_wrapper">
       <div class="header_content_bg" style="background-image: url( <%= current_hero[:blurred] if current_hero.present? %> )">
@@ -41,6 +41,8 @@
             </ul>
           </nav>
         </div>
+      <% elsif @location_form == true %>
+        <%= render 'location_form' %>
       <% end %>
     </div>
   </div>

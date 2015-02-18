@@ -3,41 +3,11 @@ $(function(){
   var autocomplete, place, geocoder, location, lng, lat, spinner_location, spinner_location_opts, spinner_courses, spinner_courses_opts, course_template, tried_auto = false, fetching_courses = false, bottom, top, right, left;
 
   function spinner_courses_spin(){   
-    if(spinner_courses_opts == undefined){
-        spinner_courses_opts = {
-        lines: 9, // The number of lines to draw
-        length: 20, // The length of each line
-        width: 4, // The line thickness
-        radius: 18, // The radius of the inner circle
-        corners: 1, // Corner roundness (0..1)
-        rotate: 0, // The rotation offset
-        direction: 1, // 1: clockwise, -1: counterclockwise
-        color: $('.coloring').css('background-color'), // #rgb or #rrggbb or array of colors
-        speed: 1.4, // Rounds per second
-        trail: 77, // Afterglow percentage
-        shadow: false, // Whether to render a shadow
-        hwaccel: true, // Whether to use hardware acceleration
-        className: 'spinner', // The CSS class to assign to the spinner
-        zIndex: 9, // The z-index (defaults to 2000000000)
-        top: '50px', // Top position relative to parent
-        left: '50%' // Left position relative to parent
-      };
-    }
-
-    $('#courses_missing').fadeOut();
-
-    $("#courses_wrapper").fadeOut(function(){
-      spinner_courses = new Spinner(spinner_courses_opts).spin();
-      $('#courses_loading').show();
-      $('#courses_loading').append(spinner_courses.el);
-    });
+    $('.body-content').css('opacity',0);
   }
 
   function spinner_courses_stop(){
-    $('#courses_loading').fadeOut(function(){
-      spinner_courses.stop();
-      $("#courses_wrapper").fadeIn();
-    });
+    $('.body-content').css('opacity',1);
   }
 
   function spinner_location_start(finding_location){
@@ -218,8 +188,8 @@ $(function(){
   }
 
   function search(relocate){
-    if(window.location.pathname != "/"){
-      window.location.href = "/?search="+$("#search_input").val();
+    if(relocate && window.location.pathname != "/discover"){
+      $("#primary-search-form").submit();
     }else{
       fetch_courses();
     }
@@ -315,10 +285,10 @@ $(function(){
       check_valid_location();
     });
 
-    $('#search_btn').click(search);
+    $('#search_btn').click(function(){search(true)});
     $("#search_input").keypress(function(e){
       if(e.which == 13 ){
-        search();
+        search(true);
       }
     });
 

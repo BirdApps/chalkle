@@ -1,3 +1,19 @@
+$(function(){
+  $('a').click(function(e){
+    e.preventDefault();
+    var new_location = $(this).attr('href');
+    if(new_location != undefined && new_location[0] != "#"){
+      $('.body-content').css('opacity',0);
+      window.setTimeout(function(){ window.location = new_location }, 400);
+    }
+  });
+});
+
+$(window).load(function(){
+  $('.body-content').css('opacity',1);
+});
+
+
 $(function() {
   function text_to_fit(){
     if($('.text-to-fit').length > 0){
@@ -28,6 +44,7 @@ $(function() {
           }
           text.css('font-size', fontSize.toString() + 'px');
       } while ($('.text-to-fit').parent().height() > 108);
+      text.css('opacity', 1);
     }
   }
 
@@ -48,23 +65,22 @@ $(function(){
 
 $(function(){
 
-  var header = $('#header');
+  var header = $('body');
   var header_content_bg = $('body.v2 .header_content_bg');
   var coloring = $('.coloring');
   scrolltop = function(){ return $(document).scrollTop(); };
 
   background_size_for_header_images = function(){
     var window_width = $(window).width();
-    header.css("background-size", window_width);
-    header_content_bg.css("background-size", window_width);
+    header.css("background-size", window_width*1.1);
+    header_content_bg.css("background-size", window_width*1.1);
   };
 
   header_image_parallax = function(){
-    var header = $('.header');
-    header.css("background-position", 
-      ( 'center bottom ' + ((-scrolltop())/$(window).height()*200) + 'px' ) );
-    header_content_bg.css("background-position", 
-      ( 'center bottom ' + ((-scrolltop())/$(window).height()*200) + 'px' ) );
+    var header = $('body');
+    new_position = ((-scrolltop())/$(window).height()*200) + 'px';
+    header.css("background-position", 'center top -' + new_position );
+    header_content_bg.css("background-position", 'center top -' + new_position );
   };
   
   check_notification_height = function(){
@@ -137,6 +153,7 @@ $(function(){
   };
 
   background_size_for_header_images();
+  //header_image_parallax();
   check_notification_height();
 
   var ORIGINAL_TITLE = $('title').html();
