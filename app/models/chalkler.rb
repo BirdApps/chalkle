@@ -5,7 +5,7 @@ class Chalkler < ActiveRecord::Base
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :invitable, :omniauth_providers => [:facebook, :meetup]
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :invitable, :omniauth_providers => [:facebook]
 
   attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :phone_number, :provider_teachers, :provider_admins, :providers_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
   attr_accessible *BASIC_ATTR, :provider_ids, :provider, :uid, :join_providers, :role, :as => :admin
