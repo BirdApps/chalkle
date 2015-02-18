@@ -56,7 +56,7 @@ module ApplicationHelper
   end
 
   def fluid_layout? 
-    return true if request[:controller] =~ /sessions/
+    return true if request[:controller] =~ /sessions/ || @fluid_layout == true
     false
   end
 
