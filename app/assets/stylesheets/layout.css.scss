@@ -1,52 +1,35 @@
 html {
   overflow-y: scroll;
-}
 
-body {
-  font-family: $font_family_normal;
-  padding-top: 0;
-}
-
-// Bootstrap override, for some reason when a modal openned it was adding a margin to the body.
-body.modal-open {
-  margin-right: 0px;
-}
-
-.jumbotron {
-  font-family: $font_family_normal;
-  background: #e2e2e2;
-  padding: 20px 60px;
-  h2 {
+  body {
     font-family: $font_family_normal;
-    font-weight: normal;
-  }
-}
+    padding-top: 0;
 
-.content-right .box {
-  font-size: $font-size-small;
-  border: 1px solid darken($grayLighter, 4%);
-  @include border-radius(4px);
-  margin: 0.5em 0;
-  .start-time {
-    font-size: 1.3em;
-    font-weight: bold;
-  }
-  .header {
-    padding: 0.25em 0.5em;
-    background-color: $grayLighter;
-    border-bottom: 1px solid darken($grayLighter, 4%);
-    h3 {
-      font-size: 1em;
-      color: $grayLight;
-      line-height: 1em;
-      margin: 0;
-      padding: 0;
+    .center {
+      text-align: center;
     }
-  }
-  .content {
-    padding: 0 0.5em;
-    h4 {
-      font-size: 1em;
+
+    .text-right {
+      text-align: right;
     }
+
+    .text-left {
+      text-align: left;
+    }
+
+    .row {
+      margin-bottom: $line-height-base;
+    }
+
+    &.modal-open {
+      margin-right: 0px;
+    }
+
+    .dropdown-toggle { cursor: pointer; }
+
+    .modal form {
+      margin: 0px;
+    }
+
   }
 }
