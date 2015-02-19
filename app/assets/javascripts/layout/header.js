@@ -1,14 +1,3 @@
-$(function(){
-  $('a').click(function(e){
-    e.preventDefault();
-    var new_location = $(this).attr('href');
-    if(new_location != undefined && new_location[0] != "#"){
-      $('.body-content').css('opacity',0);
-      window.setTimeout(function(){ window.location = new_location }, 400);
-    }
-  });
-});
-
 $(window).load(function(){
   $('.body-content').css('opacity',1);
 });
