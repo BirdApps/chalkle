@@ -27,7 +27,7 @@
     <meta property="og:title" content="<%= strip_tags("#{meta_title}").titleize %>" />  
     <meta property="og:type" content="product.group" />
     <meta property="og:description" content="Find classes on chalkle." />
-    <meta property="og:image" content="<%= (page_title_logo && page_title_logo.respond_to?(:url) ? page_title_logo.url : page_title_logo) || asset_path('social-logo.jpg') %>" /> 
+    <meta property="og:image" content="<%= (@page_title_logo && @page_title_logo.respond_to?(:url) ? @page_title_logo.url : @page_title_logo) || asset_path('social-logo.jpg') %>" /> 
 
 <% end %>
 <!-- END Open Graph -->

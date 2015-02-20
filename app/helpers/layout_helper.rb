@@ -18,48 +18,6 @@ module LayoutHelper
     end
   end
 
-  def page_title
-    return @page_title if @page_title.present?
-    if @provider_teacher.present? && @provider_teacher.id.present?
-      title = @provider_teacher.name
-    elsif @course.present? && @course.id.present?
-      title = link_to @course.name, @course.path
-    elsif @provider.id.present?
-      title = @provider.name
-    end
-    title || ''
-  end
-
-  def page_title_logo
-    return @page_title_logo if @page_title_logo.present?
-    if @provider_teacher.present? && @provider_teacher.id.present? 
-      if @provider_teacher.avatar.present?
-        @provider_teacher.avatar
-      end
-    elsif @course.present? && @course.id.present?
-      @course.course_upload_image
-    elsif @provider.logo.present?
-      @provider.logo
-    end
-  end
-
-  def page_subtitle
-    return @page_subtitle if @page_subtitle.present?
-    subtitle = ''
-    if @provider_teacher.present? && @provider_teacher.id.present?
-        subtitle = link_to @provider_teacher.provider.name, provider_path(@provider_teacher.provider.url_name)
-    elsif @course.present? && @course.id.present?
-        subtitle = link_to @course.provider.name, provider_path(@course.provider.url_name)
-    elsif @teaching.present?
-      
-    elsif @courses
-      if @provider.id.present?
-        subtitle += ' classes from'
-      end
-    end
-    subtitle || ''
-  end
-
   def meta_title
     return @meta_title if @meta_title
     meta_title = ''
@@ -95,6 +53,18 @@ module LayoutHelper
     params_copy
   end
 
+  def page_title
+    @page_title ||= ""
+  end
+
+  def page_subtitle
+    @page_subtitle ||= ""
+  end
+
+  def page_title_logo
+    @page_title_logo ||= ""
+  end
+
   def find_hero
     if @provider_teacher.present? && @provider_teacher.id.present? && @provider_teacher.provider.hero.present?
         {
@@ -123,151 +93,5 @@ module LayoutHelper
           blurred: '/assets/partners/index-hero-invert.jpg'
         }
       end
-  end
-
-  def page_context_links 
-    return @page_context_links if @page_context_links
-    controller_parts = request.path_parameters[:controller].split("/")
-    action_parts = request.path_parameters[:action].split("/")
-    nav_links = []
-    if controller_parts.include? "partners"
-      nav_links << {
-        img_name: "bolt",
-        link: partners_path,
-        active: action_parts.include?("index"),
-        title: "About Chalkle"
-      }
-      nav_links << {
-        img_name: "people",
-        link: partners_team_path,
-        active: action_parts.include?("team"),
-        title: "The Team"
-      }
-      nav_links << {
-        img_name: "contact",
-        link: partners_say_hello_path,
-        active: action_parts.include?("say_hello") || action_parts.include?("said_hello"),
-        title: "Contact"
-      }
-    elsif @provider_teacher.present? && @provider_teacher.id.present?
-      nav_links << {
-        img_name: "bolt",
-        link: provider_provider_teacher_path(@provider_teacher.provider.url_name,@provider_teacher.id),
-        active: action_parts.include?("show"),
-        title: "Classes"
-      }
-      if policy(@provider_teacher).edit?
-        nav_links <<  {
-          img_name: "settings",
-          link: edit_provider_teacher_path(@provider_teacher),
-          active: action_parts.include?("edit"),
-          title: "Edit"
-        }
-      end
-      if current_user.super? && @provider_teacher.chalkler_id.present?
-        nav_links <<  {
-          img_name: "people",
-          link: become_sudo_chalkler_path(@provider_teacher.chalkler_id),
-          active: false,
-          title: "Become"
-        }
-      end
-    elsif @booking.present?
-    elsif @course.present? && @course.id.present?
-      if policy(@course).read?
-        nav_links << {
-            img_name: "bolt",
-            link: course_bookings_path(@course),
-            active: controller_parts.include?("bookings"),
-            title: "Bookings"
-          }
-      elsif @course.spaces_left?
-          nav_links << {
-            img_name: "bolt",
-            link: new_course_booking_path(@course.id),
-            active: action_parts.include?("new"),
-            title: "Join"
-          }
-      end
-      if policy(@course).edit?
-        nav_links << {
-          img_name: "settings",
-          link: edit_course_path(@course),
-          active: action_parts.include?("edit"),
-          title: "Edit"
-        }
-      end
-      if policy(@course).write?(true)
-        nav_links << {
-          img_name: "people",
-          link: clone_course_path(@course),
-          active: false,
-          title: "Copy"
-        }
-      end
-    elsif @provider.id.present?
-      nav_links << {
-          img_name: "bolt",
-          link: provider_path(@provider.url_name),
-          active: action_parts.include?("show"),
-          title: "Classes"
-        }
-      nav_links << {
-          img_name: "people",
-          link: providers_teachers_path(@provider.url_name),
-          active: action_parts.include?("teachers") || controller_parts.include?("provider_teachers") ,
-          title: "People"
-        }
-      nav_links << {
-          img_name: "contact",
-          link: provider_contact_path(@provider.url_name),
-          active: action_parts.include?("contact"),
-          title: "contact"
-        }
-      # if policy(@provider).metrics?
-      #   nav_links << {
-      #     img_name: "metrics",
-      #     link: metrics_path,
-      #     active: action_parts.include?("metrics"),
-      #     title: "Metrics"
-      #   }
-      # end
-      # if policy(@provider).resources?
-      #   nav_links <<  {
-      #     img_name: "book",
-      #     link: resources_path,
-      #     active: action_parts.include?("resources"),
-      #     title: "Resources"
-      #   }
-      # end
-      if policy(@provider).edit?
-        nav_links <<  {
-          img_name: "settings",
-          link: provider_settings_path(@provider.url_name),
-          active: action_parts.include?("resources"),
-          title: "Settings"
-        }
-      end
-    elsif controller_parts.include?("me")
-       nav_links << {
-          img_name: "bolt",
-          link: me_root_path,
-          active: action_parts.include?("index"),
-          title: "Dashboard"
-        }
-      nav_links << {
-        img_name: "settings",
-          link: me_preferences_path,
-          active: action_parts.include?("show"),
-          title: "Settings"
-      }
-      nav_links << {
-        img_name: "plane", 
-        link: me_notification_preference_path,
-        active: action_parts.include?("notifications"),
-        title: "Email Options"
-      }
-    end
-    nav_links
   end
 end

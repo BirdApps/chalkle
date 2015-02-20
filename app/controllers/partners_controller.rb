@@ -1,6 +1,7 @@
 class PartnersController < ApplicationController
+  before_filter :header_partners
 
-    # GET /partners
+  # GET /partners
   def index
     @page_subtitle = "How does it all work?"
     @page_title = "About Chalkle"
@@ -41,4 +42,24 @@ class PartnersController < ApplicationController
 
   end
 
+  private
+
+    def header_partners
+      @nav_links = [{
+        img_name: "bolt",
+        link: partners_path,
+        active: request.path.include?("index"),
+        title: "About Chalkle"
+      },{
+        img_name: "people",
+        link: partners_team_path,
+        active: request.path.include?("team"),
+        title: "The Team"
+      },{
+        img_name: "contact",
+        link: partners_say_hello_path,
+        active: request.path.include?("say_hello") || request.path.include?("said_hello"),
+        title: "Contact"
+      }]
+    end
 end

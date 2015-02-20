@@ -1,11 +1,13 @@
 class CoursesController < ApplicationController
   before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
+  before_filter :header_course, only: [:show, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
   before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status] 
-  
+  before_filter :header_teach, only: :teach
+  before_filter :header_mine, only: :mine
   def index
    @location_form = true
   end
@@ -58,19 +60,6 @@ class CoursesController < ApplicationController
     render json: courses
   end
 
-  def load_courses
-    if current_user.super?
-      @courses = filter_courses(Course.in_future.start_at_between(current_date, current_date+1.year).by_date)
-    else
-      @courses = filter_courses(Course.in_future.published.start_at_between(current_date, current_date+1.year).by_date)
-      if current_user.chalkler?
-        @courses += filter_courses(Course.taught_by_chalkler(current_user).in_future.by_date)+filter_courses(Course.adminable_by(current_user).in_future.by_date)
-        @courses = @courses.sort_by(&:start_at).uniq
-      end
-    end
-    render 'paginate_courses'
-  end
-
   def show
     authorize @course 
     respond_to do |format|
@@ -80,45 +69,10 @@ class CoursesController < ApplicationController
   end
 
   def mine
-    if current_user.providers_adminable.count == 1
-      provider = current_user.providers_adminable.first
-      @page_subtitle = "<a href='#{provider_path(provider.url_name)}'>#{provider.name}</a>".html_safe
-    else
-        @page_subtitle = "From all your providers"
-    end
-
-    @page_title = "All Classes"
     @courses = current_user.super? ? mine_filter(Course.order(:start_at)).uniq : (mine_filter(current_user.courses_adminable)+mine_filter(current_user.courses_teaching)).sort_by(&:start_at).uniq
   end
 
   def teach
-    @page_subtitle = "Use chalkle to"
-    @page_title = "Teach"
-    @meta_title = "Teach with "
-
-    @page_context_links = [
-      {
-        img_name: "people",
-        link: new_provider_path,
-        active: false,
-        title: "New Provider"
-      },
-      {
-        img_name: "bolt",
-        link: new_course_path,
-        active: false,
-        title: "New Class"
-      }
-    ]
-
-    if current_user.all_teaching.count > 0
-      @page_context_links << {
-        img_name: "book",
-        link: mine_courses_path,
-        active: false,
-        title: "My Classes"
-      }
-    end
     render 'teach'
   end
 
@@ -241,7 +195,47 @@ class CoursesController < ApplicationController
       @course = Course.find_by_id(params[:id])
       return not_found unless @course
       authorize @course
-    end  
+    end
+
+    def header_course
+      @page_title_logo = @course.provider.logo
+
+      @page_title = "[#{@course.name}](#{@course.path})"
+      @page_subtitle = "[#{@course.provider.name}](#{provider_path(@course.provider.url_name)})"
+      @nav_links = []
+      if @course.spaces_left?
+          @nav_links << {
+            img_name: "bolt",
+            link: new_course_booking_path(@course.id),
+            active: request.path.include?("new"),
+            title: "Join"
+          }
+      end
+      if policy(@course).read?
+        @nav_links << {
+            img_name: "bolt",
+            link: course_bookings_path(@course),
+            active: request.path.include?("bookings"),
+            title: "Bookings"
+          }
+      end
+      if policy(@course).edit?
+        @nav_links << {
+          img_name: "settings",
+          link: edit_course_path(@course),
+          active: request.path.include?("edit"),
+          title: "Edit"
+        }
+      end
+      if policy(@course).write?(true)
+        @nav_links << {
+          img_name: "people",
+          link: clone_course_path(@course),
+          active: false,
+          title: "Copy"
+        }
+      end
+    end
 
     def take_me_to
       if params[:search].present?
@@ -287,5 +281,42 @@ class CoursesController < ApplicationController
       end
     end
 
+    def header_mine
+      if current_user.providers_adminable.count == 1
+        provider = current_user.providers_adminable.first
+        @page_subtitle = "[#{provider.name}](#{provider_path(provider.url_name)})"
+      else
+        @page_subtitle = "From all your providers"
+      end
+
+      @page_title = "All Classes"
+    end
+
+    def header_teach
+      @page_subtitle = "Use chalkle to"
+      @page_title = "Teach"
+      @meta_title = "Teach with "
+
+      @nav_links = [{
+          img_name: "people",
+          link: new_provider_path,
+          active: false,
+          title: "New Provider"
+        },{
+          img_name: "bolt",
+          link: new_course_path,
+          active: false,
+          title: "New Class"
+        }]
+
+      if current_user.all_teaching.count > 0
+        @nav_links << {
+          img_name: "book",
+          link: mine_courses_path,
+          active: false,
+          title: "My Classes"
+        }
+      end
+    end
 
 end

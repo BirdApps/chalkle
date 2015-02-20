@@ -1,8 +1,9 @@
 class TermsController < ApplicationController
+  before_filter :header_provider, only: :provider
+  before_filter :header_teacher, only: :teacher
+  before_filter :header_chalkler, only: :chalkler
+
   def chalkler
-    @meta_title = 'Terms'
-    @page_subtitle = 'Chalkle Website'
-    @page_title = 'Terms of Use for Chalklers'
   end
 
   def privacy
@@ -10,23 +11,27 @@ class TermsController < ApplicationController
   end
 
   def provider
-    load_provider
-    if @provider.id.blank? && current_user.authenticated?
-      @provider = current_user.providers.first || @provider
-    end
-    @meta_title = 'Provider Terms'
-    @page_subtitle = 'Chalkle Website'
-    if false #TODO: customize terms per provider @provider.name.present?
-      @page_title = @provider.name+': Terms and Conditions'
-      @page_context_links = Hash.new
-    else
-      @page_title = 'Provider: Terms and Conditions' 
-    end
   end
 
   def teacher
-    @meta_title = 'Teacher Terms'
+    @meta_title = 'Terms'
     @page_subtitle = 'Chalkle Website'
-    @page_title = 'Terms of Use for Teachers'
+    @page_title = 'Terms of Use for Chalklers'
   end
+
+  private
+    def header_chalkler
+    end
+
+    def header_teacher
+      @meta_title = 'Teacher Terms'
+      @page_subtitle = 'Chalkle Website'
+      @page_title = 'Terms of Use for Teachers'
+    end
+
+    def header_provider
+      @meta_title = 'Provider Terms'
+      @page_subtitle = 'Chalkle Website'
+      @page_title = 'Provider: Terms and Conditions'
+    end
 end

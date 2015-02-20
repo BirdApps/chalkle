@@ -1,5 +1,6 @@
 class ProviderTeachersController < ApplicationController
   before_filter :load_teacher, only: [:show,:update,:edit]
+  before_filter :header_teacher, only: [:show,:update,:edit]
 
   def index
     @teachers = ProviderTeacher.all
@@ -80,5 +81,37 @@ class ProviderTeachersController < ApplicationController
     def load_teacher
       @provider_teacher = ProviderTeacher.find params[:id]
       return not_found if !@provider_teacher
+    end
+
+    def header_teacher
+      @page_title_logo = @provider_teacher.provider.logo
+      @page_title = @provider_teacher.name
+      @page_subtitle = "<a href='#{provider_path(@provider_teacher.provider.url_name)}'>#{@provider_teacher.provider.name}</a>"
+      @nav_links = [
+        {
+          img_name: "bolt",
+          link: provider_provider_teacher_path(@provider_teacher.provider.url_name,@provider_teacher.id),
+          active: request.path.include?("show"),
+          title: "Classes"
+        }
+      ]
+
+      if policy(@provider_teacher).edit?
+        @nav_links <<  {
+          img_name: "settings",
+          link: edit_provider_teacher_path(@provider_teacher),
+          active: request.path.include?("edit"),
+          title: "Edit"
+        }
+      end
+
+      if current_user.super? && @provider_teacher.chalkler_id.present?
+        @nav_links <<  {
+          img_name: "people",
+          link: become_sudo_chalkler_path(@provider_teacher.chalkler_id),
+          active: false,
+          title: "Become"
+        }
+      end
     end
 end

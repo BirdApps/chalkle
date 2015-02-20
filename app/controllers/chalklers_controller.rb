@@ -1,4 +1,7 @@
 class ChalklersController < ApplicationController
+  before_filter :header_chalkler, only: [:show]
+  before_filter :page_titles, only: [:show]
+  
   def index
     @chalklers = Chalkler.visible
   end
@@ -7,27 +10,6 @@ class ChalklersController < ApplicationController
     @chalkler = Chalkler.find params[:id]
     return not_found if !@chalkler
     authorize @chalkler
-    @page_subtitle = '<a href="/people">Chalklers</a>'.html_safe
-    @page_title = @chalkler.name
-    @page_title_logo = @chalkler.avatar
-    @page_context_links = []
-    if current_user.super?
-     @page_context_links << {
-        img_name: "people",
-        link: become_sudo_chalkler_path(@chalkler.id),
-        active: false,
-        title: "Become"
-      }
-    end
-    if @chalkler == current_chalkler
-     @page_context_links << {
-        img_name: "settings",
-        link: me_preferences_path,
-        active: false,
-        title: "Settings"
-      }
-    end
-    
   end
 
   def exists
@@ -70,5 +52,36 @@ class ChalklersController < ApplicationController
 
     render json: {lng: lng, lat: lat, location: location};
   end
+
+  private
+
+    def page_titles
+      @page_subtitle = "[Chalklers](#{people_path})"
+      @page_title = @chalkler.name
+      @page_title_logo = @chalkler.avatar
+    end
+
+    def header_chalkler
+      @nav_links = []
+
+      if current_user.super?
+       @nav_links << {
+          img_name: "people",
+          link: become_sudo_chalkler_path(@chalkler.id),
+          active: false,
+          title: "Become"
+        }
+      end
+
+      if @chalkler == current_chalkler || current_user.super?
+       @nav_links << {
+          img_name: "settings",
+          link: me_preferences_path,
+          active: false,
+          title: "Settings"
+        }
+      end
+
+    end
 
 end

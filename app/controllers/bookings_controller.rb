@@ -114,7 +114,7 @@ class BookingsController < ApplicationController
   def cancel
     authorize @booking
     @page_subtitle = "Cancel booking"
-    @page_title = ('<a href="'+@booking.course.path+'">'+@booking.course.name+'</a>').html_safe
+    @page_title = "[#{@booking.course.name}](#{@booking.course.path})"
     render 'cancel'
   end
 
