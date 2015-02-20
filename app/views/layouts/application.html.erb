@@ -16,26 +16,24 @@
     <%= yield :header if content_for? :header %>
   </head>
 
-  <body class="<%= body_class %> v2" role="document" style="background-color: <%= header_color ? header_color : 'rgba(76, 126, 147, 1)' %>; background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
+  <body class="<%= body_class %> v2" role="document" style=" background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
     <div id="fb-root"></div>
 
-      <div class="white-bg">
-        <header>
-          <%= render 'layouts/navigation' %>
-          <div class="body-content">
-            <%= render 'layouts/header' if show_header? %>
-          </div>
-        </header>
-        <div class="body-content">
-          <div id="wrapper">
-            <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
-              <%= render 'layouts/messages' %>
-              <%= yield %>
-            </div>
-           <%#  <div id="map_overlay" style="display: none"><div id="map_holder"></div></div> %>
-          </div>
-        </div>
+    <header>
+      <%= render 'layouts/navigation' %>
+      <div class="body-content">
+        <%= render 'layouts/header' if show_header? %>
       </div>
+    </header>
+    <div class="body-content">
+      <div id="wrapper">
+        <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
+          <%= render 'layouts/messages' %>
+          <%= yield %>
+        </div>
+       <%#  <div id="map_overlay" style="display: none"><div id="map_holder"></div></div> %>
+      </div>
+    </div>
 
     <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script>

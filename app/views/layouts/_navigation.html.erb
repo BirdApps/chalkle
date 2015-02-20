@@ -1,7 +1,7 @@
 <div class="navbar-wrapper">
   <nav class="navbar navbar-fixed-top" role="navigation" >
-    <% color_style = header_color ? "background-color: #{header_color}" : "" %>
-    <%= content_tag :div, class: "coloring", style: color_style  do %>
+    <% blur_style = "background-image: url( #{page_hero[:blurred]} );" if page_hero.present? %>
+    <%= content_tag :div, class: "coloring", style: blur_style  do %>
       <div class="container">
         <div class="navbar-header">
           <button class="navbar-toggle" data-target="#primary-navigation" data-toggle="collapse" type="button">
@@ -25,7 +25,7 @@
             <form class="navbar-form search-form" id="primary-search-form" method="get" action="<%= discover_path %>" onsubmit="<%= "return false" if current_page? discover_path %>" role="search">
               <div class="input-group">
                 <span class="input-group-addon" id="search_btn">
-                  <img src="/assets/icons/search.png" alt="search" />
+                  <button class="btn no-btn"><img src="/assets/icons/search.png" alt="search" /></button>
                 </span>
                 <input id="search_input" type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search Chalkle">
               </div>
@@ -38,11 +38,11 @@
               <li class="dropdown notifications-drop">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                  <span>
-                   <img src="/assets/icons/bell.png" />
+                   <img class="nav_img" src="/assets/icons/bell.png" />
                    <span class="notification-count"></span>
                  </span>
                 </a>
-                <div class="dropdown-menu pull-right no-padding" role="menu" style="<%= color_style %>" >
+                <div class="dropdown-menu pull-right" role="menu" >
                   <ul class="flush" id="notifications_container">
                   </ul>
                   <div class="divider flush"></div>
@@ -52,23 +52,56 @@
                 </div>
               </li>
 
-              <li class="dropdown profile-img">
+              <li class="dropdown favourites-drop">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                  <% if current_user.avatar? %>
-                    <div class="img-wrapper" style="background-image: url(<%= current_user.avatar %>)"></div>
+                 <% if current_user.avatar? %>
+                    <span>
+                      <img class="nav_img" src="<%= current_user.avatar %>" />
+                    </span>
                   <% else %>
-                    <div class="img-wrapper">
+                    <div class="nav_img">
                       <%= current_user.initials %>
                     </div>
                   <% end %>
                 </a>
-                <div class="dropdown-menu pull-right" role="menu" style="<%= color_style %>" >
-                  <div role="presentation">  
-                    <%= link_to current_user.name, chalkler_path(current_chalkler) %>
+                <div class="dropdown-menu pull-right" role="menu" >
+                 
+                  <% unless current_user.avatar? %>
+                    <div role="presentation" class="personal-links">
+                      <%= link_to "Upload Profile Image", me_preferences_path %>
+                    </div>
+                  <% end %>
+                    
+                  <div class="row personal-links" role="presentation">
+                    <div class="col-xs-8">
+                      <%= link_to current_user.name, chalkler_path(current_chalkler) %>
+                    </div>
+                    <div class="col-xs-2">
+                      <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
+                    </div>
                   </div>
-                  <div role="presentation">
-                    <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
-                  </div>
+
+                  <div class="divider flush"></div>
+                  <ul class="flush">
+                    <% current_chalkler.providers.each do |provider| %>
+                      <li role="presentation" class="_notification">
+                        <%= link_to provider_path(provider.url_name) do %>
+                          <div class="avatar64">
+                            <div class="img" style="background-image: url(<%= provider.logo %>)">
+                            </div>
+                          </div>
+
+                          <h4 class="flush">
+                           <%= provider.name %>
+                          </h4>
+                          <p>
+                            <% course_count = provider.courses.in_future.displayable.count %>
+                            <%= course_count %> upcoming <%= "class".pluralize(course_count) %>
+                          </p>
+                        <% end %>
+                      </li>
+                    <% end %>
+                  </ul>
                 </div>
               </li>
   

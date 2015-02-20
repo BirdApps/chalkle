@@ -1,5 +1,5 @@
 $(window).load(function(){
-  $('.body-content').css('opacity',1);
+  $('#wrapper').css('opacity',1);
 });
 
 
@@ -55,7 +55,7 @@ $(function(){
 $(function(){
 
   var header = $('body');
-  var header_content_bg = $('body.v2 .header_content_bg');
+  var header_content_bg = $('body.v2 .coloring');
   var coloring = $('.coloring');
   scrolltop = function(){ return $(document).scrollTop(); };
 
