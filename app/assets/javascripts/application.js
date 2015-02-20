@@ -27,5 +27,4 @@
 //= require bootstrap-datepicker/core
 //= require bootstrap-timepicker.min
 //= require bootstrap-tagsinput.min
-
 //= require_tree .
