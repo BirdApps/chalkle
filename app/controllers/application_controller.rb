@@ -29,8 +29,8 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     Chalkler::DataCollection.new(resource, { original_path: session[:previous_url], default_path: root_path }).path
-
-    session[:previous_url] || root_path
+    path = session[:previous_url] || root_path
+    path == new_chalkler_session_path ? root_path : path
   end
   def styleguide
     render "/styleguide"
