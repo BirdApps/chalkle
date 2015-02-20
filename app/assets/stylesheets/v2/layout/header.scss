@@ -4,7 +4,7 @@ $navbar-height: 62px;
 $vertical-padding: 10px;
 $line-height: $navbar-height - ($vertical-padding * 2);
 
-.header, .header_content_bg, .navbar-wrapper .navbar {
+.header, .coloring, .navbar-wrapper .navbar {
   background-size: 100%;
   width: 100%;
   background-repeat: no-repeat !important;
@@ -30,15 +30,10 @@ body {
       left: 0;
       z-index: 20;
       #primary-navigation {
-        position: relative;
         #primary-menu {
           position: absolute;
-          @media screen and (max-width: 768px){  
-            top: -10px;
-          }
-          @media screen and (min-width: 769px){  
-            top: 0;
-          }
+          height: 100%;
+          top: 0;
           right: 15px;
         }
         font-weight: 500;
@@ -51,18 +46,13 @@ body {
       .navbar {
         .profile-img {
           a{
-            padding: 2px 15px !important;
-            @media screen and (max-width: 768px){  
-              padding: 10px 5px !important;
+            span {
+              width: 24px;
+              height: 24px;
             }
-            &:hover {
-              background-color: transparent !important;
-            }
-            .img-wrapper{
-              background-size: 100%;
-              height: 32px;
-              width: 32px;
-              border-radius: 2px;
+            img{
+              height: 100%;
+              width: 100%;
             }
           }
         }
@@ -73,30 +63,47 @@ body {
           }
           margin: 0px;
           li {
-            @media screen and (min-width: 769px){
-              height: $line-height;
-            }
+            height: 100%;
             margin-bottom: 0;
-            a {
-              color: rgba(255,255,255,0.8);
-              display: block;
-              text-decoration: none;
-              &:hover, &.current {
-                color: #fff;
-                text-shadow: none;
-                text-decoration: none;
-              }
-              @media screen and (min-width: 769px) {
-                color: #fafafa;
-                padding: 6px 15px;
-                border-radius: 4px;
-                &:hover, &.current {
-                  color: #fff;
-                  background-color: rgba(0,0,0,0.15);
+            display: block;
+            &.notifications-drop{
+              .nav_img{
+                @media screen and (min-width: 769px){
+                  margin: 19px 0;
+                }
+                @media screen and (max-width: 769px){
+                  margin: 14px 0;
                 }
               }
             }
+            div.nav_img {
+              padding: 6px;
+            }
+            .nav_img{
+              max-height: 32px;
+              @media screen and (min-width: 769px){
+                margin: 15px 0;
+              }
+              @media screen and (max-width: 769px){
+                margin: 10px 0;
+              }
+            }
+            a {
+              color: #fafafa;
+              padding: 0 15px;
+              height: 100%;
+              width: 100%;
+              color: rgba(255,255,255,0.8);
+              text-decoration: none;
+              &:hover, &.current {
+                color: #fff;
+                background-color: $primary-color-opaque;
+                text-shadow: none;
+                text-decoration: none;
+              }
+            }
             .dropdown-menu a {
+              text-align: left;
               @media screen and (min-width: 769px) {    
                 color: #fff;
               }
@@ -138,8 +145,10 @@ body {
         }
         .coloring {
           transition: padding 0.5s ease;
-          background: $primary-color;
+          //background-color: $primary-color;
           position: relative;
+          overflow: 0;
+          border-bottom: 0;
           .navbar-brand {
             padding: 0;
             margin: 5px 10px 0 0;
@@ -154,6 +163,7 @@ body {
             }
           }
           >.container{
+            position: relative;
             @media screen and (max-width: 768px){
               padding: 0 5px;
               a:hover{
@@ -172,7 +182,7 @@ body {
               @media screen and (max-width: 768px) {
                 margin: auto 0;
               }
-            }      
+            }
             
             .notifications-drop{
               .dropdown-toggle{
@@ -181,7 +191,23 @@ body {
                   width: 20px;
                 }
               }
-              .dropdown-menu{
+            }
+            
+            .notifications-drop, .favourites-drop{
+              .dropdown-menu {
+                .personal-links{
+                  a {
+                    font-weight: 500;
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                    color: #fff;
+                    display: block;
+                    width: 100%;
+                    &:hover {
+                      background-color: rgba(0,0,0,0.12); 
+                    }
+                  }
+                }
                 ul {
                   z-index: 100;
                   max-width: 100%;
@@ -195,7 +221,7 @@ body {
                   li._notification {
                     font-size: 1.2em;
                     height: auto !important;
-                    min-height: 65px !important;
+                    min-height: 85px !important;
                     position: relative;
                     a {
                       padding: 5px !important;
@@ -203,26 +229,29 @@ body {
                       font-size: 0.75em;
                       line-height: 1.3em !important;
                       overflow: hidden;
-                      letter-spacing: 1px;
-                      .markdown{
-                        @media (max-width: 768px){
-                          margin-top: 10px;
-                        }
-                      }
                       .small{
                         font-size: 0.7em; 
                         margin: 5px 0 0 0;
                         font-weight: 700;
                         color: rgba(255,255,255,0.8);
-                         @media (max-width: 768px){
-                          color: #000 ;
-                          margin: 0px;
-                          position: absolute;
-                          right: 10px;
+                        @media screen and (max-width: 768px){ color: #000 ; }    
+                        margin: 0px;
+                        position: absolute;
+                        right: 10px;
+                        top: 7px;
+                      }
+                      p {
+                        margin-right: 10px;
+                        margin-bottom: 0;
+                      }
+                      .markdown {
+                        p {
+                          @media screen and (min-width: 769px){ text-align: right; }
                         }
                       }
                       .avatar64{
-                        background: transparent;
+                        background: rgba(255,255,255,0.80);
+                        margin: 10px;
                       }
                     }
                   }
@@ -241,40 +270,11 @@ body {
                 height: 60px;
               }
             }
-            #notifications_drop{
-              @media screen and (min-width: 769px) {
-                max-height: 600px;
-                width: 460px;
-              }
-              @media screen and (max-width: 768px) {
-                li{
-                  padding: 10px 35px;
-                  height: auto;
-                }
-              }
-            }
+            
             .dropdown-menu { 
               background: $primary-color-opaque;
               border-radius:  0 0 3px 3px;
               border: 0px;
-              margin-top:10px;
-              @media screen and (min-width: 769px) {
-                box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
-                border-radius: 1px;
-                padding-top: 15px;
-                &:after {
-                  content: ' ';
-                  width: 15px;
-                  height: 15px;
-                  border-radius: 4px;
-                  transform: rotate(-45deg);
-                  box-shadow: 1px -1px 0.5px rgba(255, 255, 255, 0.1);
-                  background-color: inherit;
-                  position: absolute;
-                  top: -6px;
-                  right: 25px;
-                }
-              }
               li {
                 z-index: 1001;
                 margin-left: 0 !important;
@@ -297,11 +297,12 @@ body {
                 background-color: rgba(0, 0, 0, 0.15);
               }
               @media screen and (max-width: 768px) {
-                top: 40px !important;
+                top: 52px !important;
                 padding: 5px 10px;
               }
             }
             .dropdown.open{
+              background: $primary-color-opaque;
               @media screen and (max-width: 768px) {
                 margin-left: 0 !important;
                 >a{
