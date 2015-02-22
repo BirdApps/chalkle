@@ -4,7 +4,7 @@
   <p class="center light">Send a message to the administrator of <%= @provider.name %></p>
   <br />
   </div>
-  <%= bootstrap_form_for(@contact, wrapper: :simple_bootstrap3, class: 'form-horizontal', role: 'form', url: provider_contact_path(@contact.provider.url_name)) do |f| %>
+  <%= bootstrap_form_for(@contact, wrapper: :simple_bootstrap3, method: :post, class: 'form-horizontal', role: 'form', url: provider_contact_path(@contact.provider.url_name)) do |f| %>
     <% if !current_user.email.present? %>
       <%= f.input :from, label: "Email", input_html: { :'data-error-message' => 'You must write a email' }, wrapper: :horizontal %>
     <% end %>
