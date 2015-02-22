@@ -10,7 +10,7 @@ class Provider < ActiveRecord::Base
 
   attr_accessible *BASIC_ATTR = [:name, :logo, :hero, :region_ids, :regions,:provider_teachers, :url_name,:account, :tax_number,:description, :website_url ]
 
-  attr_accessible *BASIC_ATTR, :provider_rate_override, :teacher_percentage, :email, :visible, :short_description, :photos_attributes,:provider_plan, :provider_plan_id, :plan_name, :plan_max_provider_admins, :plan_max_teachers, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee_percent, :as => :admin
+  attr_accessible *BASIC_ATTR, :provider_rate_override, :teacher_percentage, :email, :visible, :short_description,:provider_plan, :provider_plan_id, :plan_name, :plan_max_provider_admins, :plan_max_teachers, :plan_class_attendee_cost, :plan_course_attendee_cost, :plan_max_free_class_attendees, :plan_annual_cost, :plan_processing_fee_percent, :as => :admin
 
   validates_presence_of :name
   validates_presence_of :provider_plan
@@ -33,8 +33,6 @@ class Provider < ActiveRecord::Base
   has_many  :admin_chalklers, through: :provider_admins, source: :chalkler
 
   belongs_to :provider_plan
-
-  accepts_nested_attributes_for :photos
 
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
