@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150216231823) do
+ActiveRecord::Schema.define(:version => 20150222225103) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -350,20 +350,6 @@ ActiveRecord::Schema.define(:version => 20150216231823) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "provider_courses", :id => false, :force => true do |t|
-    t.integer "provider_id", :null => false
-    t.integer "course_id",   :null => false
-  end
-
-  add_index "provider_courses", ["provider_id", "course_id"], :name => "index_channel_courses_on_channel_id_and_course_id", :unique => true
-
-  create_table "provider_photos", :force => true do |t|
-    t.integer  "provider_id"
-    t.string   "image"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
   create_table "provider_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_provider_admins"
@@ -450,30 +436,12 @@ ActiveRecord::Schema.define(:version => 20150216231823) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
-  create_table "streams", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "subscriptions", :force => true do |t|
     t.integer "provider_id", :null => false
     t.integer "chalkler_id", :null => false
   end
 
   add_index "subscriptions", ["provider_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
-
-  create_table "venues", :force => true do |t|
-    t.string   "name",       :null => false
-    t.integer  "meetup_id"
-    t.string   "address_1",  :null => false
-    t.float    "lat"
-    t.float    "lon"
-    t.integer  "city_id",    :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "address_2"
-  end
 
   add_foreign_key "course_notices", "chalklers", name: "course_notices_chalkler_id_fk"
   add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"

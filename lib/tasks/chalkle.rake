@@ -3,10 +3,6 @@ begin
 
     desc "Migration tasks"
     task "migrate_images" => :environment do 
-      # provider_photo 
-      #   -> "http://chalkle-production.s3.amazonaws.com/provider_photo/image/:id" 
-      #   provider_photo_uploader
-
       providers = Provider.all.select{|c| c.logo.url =~ /amazonaws\.com.*/ }
       providers.each_with_index do |provider, index|
         provider.remote_logo_url = provider.logo.url.gsub("system/uploads/production/", "")
