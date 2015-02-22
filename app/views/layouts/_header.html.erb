@@ -2,15 +2,15 @@
   <div class="container header_content">
     <div class="header_content">
       
-      <% if (title = @page_title).present? %>
+      <% if (title = page_title).present? %>
 
-        <div class="title-wrapper" <%= 'style=width:85%' if @nav_links.blank?  %>>
+        <div class="title-wrapper" <%= 'style=width:85%' if nav_links.blank?  %>>
           <div class="page_title_logo img hidden-xs" style="background-image: url(<%= @page_title_logo.present? ? @page_title_logo : ''%>)">
           </div>
           <div class="title">
-            <em class="hidden-xs"><%= @page_subtitle.to_html %></em>
+            <em class="hidden-xs"><%= page_subtitle.to_html %></em>
             <h1 class="text-to-fit">
-              <%= @page_title.to_html %>
+              <%= page_title.to_html %>
             </h1>
           </div>
         </div>
@@ -18,8 +18,8 @@
           <nav>
             <ul>
             <% 
-              col_width = 100 / @nav_links.count if @nav_links.count > 0
-              @nav_links.each do |nav_link| %>
+              col_width = 100 / nav_links.count if nav_links.count > 0
+              nav_links.each do |nav_link| %>
                 <li class="<%= "active" if nav_link[:active] %>" style="width:<%= col_width %>%">
                   <%= link_to nav_link[:link], title: nav_link[:title], class: 'nav_links' do %>
                     <span class="img-wrapper">

@@ -53,6 +53,10 @@ module LayoutHelper
     params_copy
   end
 
+  def nav_links
+    @nav_links ||= []
+  end
+
   def page_title
     @page_title ||= ""
   end
