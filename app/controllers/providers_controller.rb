@@ -1,5 +1,4 @@
 class ProvidersController < ApplicationController
-  before_filter :expire_filter_cache!, only: [:create, :update, :destroy]
   after_filter  :check_presence_of_courses, only: [:show, :series]
   before_filter :load_provider, only: [:show, :series, :edit, :update, :contact, :followers, :teachers, :admins]
   before_filter :header_provider, only: [:show, :series, :edit, :update, :contact, :followers, :teachers, :admins]

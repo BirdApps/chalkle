@@ -5,7 +5,6 @@ class CoursesController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
-  before_filter :expire_filter_cache!, only: [:update,:create,:confirm_cancel,:change_status] 
   before_filter :header_teach, only: :teach
   before_filter :header_mine, only: :mine
   def index

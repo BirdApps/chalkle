@@ -111,7 +111,6 @@ class Course < ActiveRecord::Base
   before_save :save_first_lesson
   before_save :start_at!
   before_save :end_at!
-  after_save :expire_cache!
   before_save :check_teacher_cost
   after_save :clear_ivars
 
@@ -547,10 +546,6 @@ class Course < ActiveRecord::Base
   def end_at!
     new_end_at = last_lesson.end_at if last_lesson.present? && last_lesson.valid?
     update_attribute("end_at", new_end_at) if end_at != new_end_at
-  end
-
-  def expire_cache!
-    ActionController::Base.new.expire_fragment("_course_#{id}")
   end
 
   def create_outgoing_payments!

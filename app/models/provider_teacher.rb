@@ -18,7 +18,6 @@ class ProviderTeacher < ActiveRecord::Base
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
 
   before_save :check_name
-  after_save :expire_cache!
 
   def email
     unless chalkler.nil?
@@ -53,12 +52,6 @@ class ProviderTeacher < ActiveRecord::Base
       elsif email
         self.name = email.split('@')[0]
       end
-    end
-  end
-
-  def expire_cache!
-    courses.each do |course|
-      course.expire_cache!
     end
   end
 

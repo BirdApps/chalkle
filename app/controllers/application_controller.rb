@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_locale
   before_filter :load_provider
-  before_filter :skip_cache!
   before_filter :check_user_data
   after_filter :store_location
 
@@ -141,19 +140,6 @@ protected
       Month.current
     end
   end
-
-  def expire_cache!
-    CacheManager.expire_cache!
-  end
-
-  def skip_cache!
-    expire_cache! if params[:skip_cache].present?
-  end
-
-  def expire_filter_cache!
-    expire_fragment(/.*filter_list.*/)
-  end
-
 
   def entity_events
     auto_log = true

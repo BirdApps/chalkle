@@ -73,11 +73,4 @@ namespace :deploy do
     invoke 'unicorn:start'
   end
 
-
-  after :restart, :clear_cache do
-    on roles(:app), in: :groups, limit: 3, wait: 10 do
-      invoke "chalkle:clear_caches"
-    end
-  end
-
 end

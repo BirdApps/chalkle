@@ -1,14 +1,6 @@
 begin
   namespace :chalkle do
 
-    desc "I got 99 problems and cache invalidation is handled by this"
-    task "expire_caches" => :environment do 
-      EventLog.log('expire_caches') do
-        CacheManager.expire_cache!
-      end
-    end
-
-
     desc "Migration tasks"
     task "migrate_images" => :environment do 
       # provider_photo 

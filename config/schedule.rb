@@ -8,7 +8,6 @@
 set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 
 every :hour do 
-  rake "chalkle:expire_caches"
   rake "chalkle:complete_courses"
 end
 

@@ -46,7 +46,6 @@ class Provider < ActiveRecord::Base
 
   before_validation :check_url_name
   after_create :set_url_name!
-  after_save :expire_cache!
 
   def self.select_options(provider)
     provider.map { |c| [c.name, c.id] }
@@ -193,9 +192,4 @@ class Provider < ActiveRecord::Base
     )
   end
 
-  def expire_cache!
-    courses.each do |course|
-      course.expire_cache!
-    end
-  end
 end
