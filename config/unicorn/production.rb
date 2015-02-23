@@ -28,7 +28,6 @@ before_fork do |server, worker|
       rescue Errno::ENOENT, Errno::ESRCH
       end
     end
-  end
 
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
