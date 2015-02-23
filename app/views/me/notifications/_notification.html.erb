@@ -7,7 +7,9 @@
     <span class="small">
       <%= quick_date_time notification.valid_from %>
     </span>
-    <%= to_html(notification.message) %>
+    <div class="content">
+      <%= to_html(notification.message) %>
+    </div>
   <% end %>
 </li>
 <li class="divider flush"></li>

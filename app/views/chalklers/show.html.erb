@@ -1,7 +1,80 @@
 <div class="chalkler row">
+  <div class='col-xs-12'>
+    <% if @upcoming_courses.present? %>
+      <div class="fancy-header">
+        <h3>Upcoming Bookings</h3>
+        <hr />
+      </div>
+      <div class="row">
+        <% @upcoming_courses.each do |course| %>
+          <% bookings = course.bookings.confirmed.where(chalkler_id: current_user.id) %>
+            <% if bookings.present? %>
+                <% @bookings_count = bookings.count %>
+                <%= render partial: 'me/bookings/booking', locals: {booking: bookings.first } %>
+            <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
   <div class="col-xs-12">
-    <p>
-      <%= to_html @chalkler.bio %>
-    </p>
+ 
+    <% if current_chalkler == @chalkler || current_chalkler.super?  %>
+
+      <% if @chalkler.provider_teachers.any? %>
+        <div class="fancy-header">
+          <h3>Teacher Profiles</h3>
+          <hr />
+        </div>
+        <div class="col-xs-12">
+          <%= render current_chalkler.provider_teachers %>  
+        </div>
+      <% end %>
+
+    <% else %>
+      <%= to_html @chalkler.bio %> 
+    <% end %>
+
+  </div>
+
+  <div class="favourites col-xs-12">
+    <div class="fancy-header">
+      <h3>Following</h3>
+      <hr />
+    </div>
+    <% @chalkler.providers.each do |provider| %>
+      <div role="presentation" class="_favourite row">
+        <div class="col-xs-10">
+          <%= link_to provider_path(provider.url_name) do %>
+            <div class="avatar64">
+              <div class="img" style="background-image: url(<%= provider.logo %>)">
+              </div>
+            </div>
+            <div class="content">
+              <h4 class="flush">
+               <%= provider.name %>
+              </h4>
+              <p>
+                <% course_count = provider.courses.in_future.displayable.count %>
+                <%= course_count %> upcoming <%= "class".pluralize(course_count) %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-xs-2 text-right">
+          <% subscription = current_user.subscriptions.where(provider_id: provider.id) %>
+          <% unless subscription.present? %>
+            <%= bootstrap_form_for(Subscription.new, url: provider_subscriptions_path(provider.id), html: { method: :post }) do |f| %>
+              <input value="Follow" type="submit" class="btn btn-success" /> 
+            <% end %>
+          <% else %>
+            <%= bootstrap_form_for(subscription[0], url: provider_subscription_path(provider.id, subscription[0].id), html: { method: :delete }) do |f| %>
+              <input type="hidden" name="return_to" value="<%= chalkler_path(@chalkler) %>" />
+              <input value="Unfollow" type="submit" class="btn btn-warning" /> 
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

@@ -15,7 +15,7 @@ class SubscriptionsController < ApplicationController
   def destroy
     Subscription.where(provider_id: @provider.id, chalkler_id: current_chalkler.id).destroy_all
     flash[:notice] = "You are no longer following "+@provider.name
-    redirect_to provider_path @provider.url_name
+    redirect_to params[:return_to] || provider_path(@provider.url_name) 
   end
 
 private

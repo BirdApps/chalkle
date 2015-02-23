@@ -1,12 +1,11 @@
 <div class="teacher row">
   <div class="col-xs-12 col-sm-8">
-    <img class="avatar" src="<%= provider_teacher.avatar %>">
+    <img class="avatar64" src="<%= provider_teacher.avatar %>">
     <div class="pull-left"> 
       <div class="name">
         <%= link_to provider_teacher.name, provider_provider_teacher_path(provider_teacher.provider.url_name, provider_teacher.id) %>
       </div>
       <div>
-        <%= image_tag(asset_path("icons/bolt-alt.png"),{ class: "context-img" })  %>
         <div class="pull-left light">
           <% if provider_teacher.next_class.present? %>
             <div>

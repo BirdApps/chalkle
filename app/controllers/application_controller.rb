@@ -47,6 +47,41 @@ class ApplicationController < ActionController::Base
 
 protected
 
+  def header_chalkler
+    @nav_links = []
+    @chalkler = current_chalkler if @chalkler.nil?
+    
+    if current_user.super? && @chalkler != current_chalkler
+     @nav_links << {
+        img_name: "people",
+        link: sudo_chalklers_path({anchor: "chalkler-#{@chalkler.id}"}),
+        active: false,
+        title: "Become"
+      }
+    end
+
+    if @chalkler == current_chalkler || current_user.super?
+       @nav_links.concat [{
+          img_name: "bolt",
+          link: chalkler_path(@chalkler.id),
+          active: request.path.include?("show"),
+          title: "Profile"
+        },{
+        img_name: "settings",
+          link: me_preferences_path,
+          active: request.path.include?("show"),
+          title: "Settings"
+      },{
+        img_name: "plane", 
+        link: me_notification_preference_path,
+        active: request.path.include?("notifications"),
+        title: "Email Options"
+      }]
+    end
+
+  end
+
+
   def authorize(record)
     super record unless current_user.super?
   end

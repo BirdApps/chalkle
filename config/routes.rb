@@ -80,8 +80,6 @@ Chalkle::Application.routes.draw do
     get '/notifications/count' => 'notifications#list', as: :count_notifications
     get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
     get '/notification/:id' => 'notifications#show', as: :show_notification
-
-    get '/bookings' => 'dashboard#bookings', as: :bookings
     
     get '/preferences' => 'preferences#show', as: :preferences
     put '/preferences' => 'preferences#update', as: :preferences

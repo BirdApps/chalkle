@@ -7,6 +7,7 @@ class CoursesController < ApplicationController
   before_filter :take_me_to, only: [:index]
   before_filter :header_teach, only: :teach
   before_filter :header_mine, only: :mine
+  
   def index
    @location_form = true
   end
