@@ -43,7 +43,6 @@ gem 'lazy_high_charts'
 gem 'rdiscount'
 
 #apis
-gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'
 gem 'xeroizer'
 gem "geocoder"
 gem 'newrelic_rpm'

@@ -17,7 +17,6 @@ class People::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   alias_method :facebook, :all
-  alias_method :meetup, :all
 
   def after_sign_in_path_for(resource)
     '/'

@@ -134,24 +134,6 @@ class Chalkler < ActiveRecord::Base
       EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
     end
 
-    def find_by_meetup_id(meetup_id)
-      identity = OmniauthIdentity.where(uid: meetup_id.to_s, provider: 'meetup').first
-      identity.user if identity
-    end
-
-    def find_for_meetup_oauth(auth, signed_in_resource=nil)
-      chalkler = where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
-      unless chalkler
-        chalkler = self.new
-        chalkler.name = auth[:extra][:raw_info][:name]
-        chalkler.provider = auth[:provider]
-        chalkler.uid = auth[:uid].to_s
-        chalkler.email = auth[:info][:email]
-        chalkler.password = Devise.friendly_token[0,20]
-      end
-      chalkler
-    end
-
     def find_or_create_for_identity(identity)
       return identity.user if identity.user
 
@@ -187,20 +169,6 @@ class Chalkler < ActiveRecord::Base
 
   def password_required?
     false
-  end
-
-  def meetup_data
-    identity = meetup_identity
-    identity ? identity.provider_data : {}
-  end
-
-  def meetup_id
-    identity = identities.for_provider('meetup')
-    identity.uid.to_i if identity
-  end
-
-  def meetup_identity
-    identities.for_provider('meetup')
   end
 
   def available_notifications
@@ -278,8 +246,6 @@ class Chalkler < ActiveRecord::Base
       self.notification_preference = NotificationPreference.create unless notification_preference.present?
     end
 
-
-    # for Chalklers created outside of meetup
     def set_reset_password_token
       return unless self.set_password_token
       self.password = Chalkler.reset_password_token
@@ -296,6 +262,5 @@ class Chalkler < ActiveRecord::Base
       end
       save!
     end
-
-
+    
 end

@@ -7,12 +7,6 @@ GIT
       sass (>= 3.2)
 
 GIT
-  remote: git://github.com/kiesia/rmeetup.git
-  revision: eedaafcfe87c9aa952c05cc67b4cd9799abc9bd7
-  specs:
-    rMeetup (1.0)
-
-GIT
   remote: git://github.com/zlx/simple_form_bootstrap3.git
   revision: 64d9e31c8b0d3fdc9e1ffd82883d00ea455b55ab
   branch: rails_3
@@ -422,9 +416,6 @@ GEM
       rack
     omniauth-facebook (1.6.0)
       omniauth-oauth2 (~> 1.1)
-    omniauth-meetup (0.0.7)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.0)
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
@@ -688,7 +679,6 @@ DEPENDENCIES
   omni_avatar!
   omniauth (~> 1.1.4)
   omniauth-facebook
-  omniauth-meetup (~> 0.0.7)
   pg (~> 0.17.1)
   premailer-rails (~> 1.4.0)
   pry-coolline
@@ -696,7 +686,6 @@ DEPENDENCIES
   pry-stack_explorer
   pundit
   quiet_assets (~> 1.0.1)
-  rMeetup!
   rack-cache
   rails (= 3.2.21)
   rb-readline

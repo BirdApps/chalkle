@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ChalklerDecorator do
   describe ".provider_links" do
     let(:providers) {[
-      FactoryGirl.create(:provider, name: 'Meetup', url_name: 'meetup', visible: true),
+      FactoryGirl.create(:provider, name: 'Gregs Classes', url_name: 'greg-class', visible: true),
       FactoryGirl.create(:provider, name: 'Local', url_name: '', visible: true)
     ]}
     let(:chalkler) { 

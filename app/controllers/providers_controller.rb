@@ -188,13 +188,6 @@ class ProvidersController < ApplicationController
     end
   end
 
-  def redirect_meetup_providers
-    #if @provider.meetup_url.present?
-    #  redirect_to @provider.meetup_url
-      return false
-    #end
-  end
-
   def courses_for_time
     @courses_for_time ||= Querying::CoursesForTime.new(@provider.courses)
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150222225103) do
+ActiveRecord::Schema.define(:version => 20150223044946) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -29,11 +29,9 @@ ActiveRecord::Schema.define(:version => 20150222225103) do
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
 
   create_table "bookings", :force => true do |t|
-    t.integer  "meetup_id"
     t.integer  "course_id"
     t.integer  "chalkler_id"
     t.string   "status",                        :default => "yes"
-    t.text     "meetup_data"
     t.datetime "created_at",                                       :null => false
     t.datetime "updated_at",                                       :null => false
     t.boolean  "visible",                       :default => true
@@ -393,7 +391,6 @@ ActiveRecord::Schema.define(:version => 20150222225103) do
     t.text     "description"
     t.string   "website_url"
     t.string   "logo"
-    t.string   "meetup_url"
     t.string   "short_description"
     t.string   "hero"
     t.integer  "provider_plan_id"

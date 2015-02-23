@@ -12,9 +12,6 @@ describe Chalkler do
     it { should validate_presence_of :name }
     it { should validate_uniqueness_of :email }
 
-    context "non-meetup" do
-      it { should validate_presence_of :email }
-    end
   end
 
   describe "sets a notification preference for new chalklers" do
