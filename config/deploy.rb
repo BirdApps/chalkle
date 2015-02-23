@@ -68,10 +68,7 @@ namespace :deploy do
   # before :publishing, 'unicorn:stop'
   # after :publishing, :restart
 
-  after :publishing, 'unicorn:duplicate'
-  task :restart do
-    invoke 'unicorn:start'
-  end
+  after :publishing, 'unicorn:restart'
 
 
   after :restart, :clear_cache do
