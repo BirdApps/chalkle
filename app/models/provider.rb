@@ -22,6 +22,7 @@ class Provider < ActiveRecord::Base
   validates :short_description, length: { maximum: 250 }
 
   has_many :provider_admins
+  has_many :provider_chalklers, through: :provider_admins, source: :chalkler
   has_many :subscriptions
   has_many :chalklers, through: :subscriptions, source: :chalkler
   has_many :courses
