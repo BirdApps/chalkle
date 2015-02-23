@@ -1,9 +1,9 @@
-<div class="row">
+<div class="row admin-bar alert alert-warning">
   <div class="col-xs-12 col-sm-10 col-sm-offset-1">
     <% if policy(@course).read?  %>
 
       <% if @course.status == 'Published' %>
-        <div class="alert alert-warning clearfix text-right" role="alert"> 
+        <div class="clearfix text-right" role="alert"> 
      
           <span class="pad-top inline pull-left">   
             <strong><%= @course.status+'!' %></strong> 
