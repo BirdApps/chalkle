@@ -73,31 +73,34 @@
                   <% end %>
                     
                   <div class="row personal-links" role="presentation">
-                    <div class="col-xs-8">
-                      <%= link_to current_user.name, chalkler_path(current_chalkler) %>
-                    </div>
-                    <div class="col-xs-2">
-                      <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
+                    <div class="role">
+                      <div class="col-xs-8">
+                        <%= link_to current_user.name, chalkler_path(current_chalkler) %>
+                      </div>
+                      <div class="col-xs-4 text-center">
+                        <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
+                      </div>
                     </div>
                   </div>
 
                   <div class="divider flush"></div>
                   <ul class="flush">
                     <% current_chalkler.providers.each do |provider| %>
-                      <li role="presentation" class="_notification">
+                      <li role="presentation" class="_favourite">
                         <%= link_to provider_path(provider.url_name) do %>
                           <div class="avatar64">
                             <div class="img" style="background-image: url(<%= provider.logo %>)">
                             </div>
                           </div>
-
-                          <h4 class="flush">
-                           <%= provider.name %>
-                          </h4>
-                          <p>
-                            <% course_count = provider.courses.in_future.displayable.count %>
-                            <%= course_count %> upcoming <%= "class".pluralize(course_count) %>
-                          </p>
+                          <div class="content">
+                            <h4 class="flush">
+                             <%= provider.name %>
+                            </h4>
+                            <p>
+                              <% course_count = provider.courses.in_future.displayable.count %>
+                              <%= course_count %> upcoming <%= "class".pluralize(course_count) %>
+                            </p>
+                          </div>
                         <% end %>
                       </li>
                     <% end %>

@@ -91,6 +91,7 @@ body {
             a {
               color: #fafafa;
               padding: 0 15px;
+              display: inline-block;
               height: 100%;
               width: 100%;
               color: rgba(255,255,255,0.8);
@@ -103,12 +104,8 @@ body {
               }
             }
             .dropdown-menu a {
-              text-align: left;
-              @media screen and (min-width: 769px) {    
-                color: #fff;
-              }
+              color: #fff;
               @media screen and (max-width: 768px) {    
-                color: #727272;
                 padding: 20px;
                 font-weight: 400;
               }
@@ -211,18 +208,21 @@ body {
                 ul {
                   z-index: 100;
                   max-width: 100%;
-                  @media (min-width: 768px){
+                  @media screen and (min-width: 768px){
                     min-width: 460px;
+                    max-height: 400px;
                   }
                   transition: height 0.2s linear;
-                  max-height: 400px;
                   overflow-y: scroll;
                   padding: 0;
-                  li._notification {
+                  li._notification, li._favourite {
                     font-size: 1.2em;
                     height: auto !important;
                     min-height: 85px !important;
                     position: relative;
+                    .content {
+                      margin-top: 20px;
+                    }
                     a {
                       padding: 5px !important;
                       font-weight: 500;
@@ -233,8 +233,7 @@ body {
                         font-size: 0.7em; 
                         margin: 5px 0 0 0;
                         font-weight: 700;
-                        color: rgba(255,255,255,0.8);
-                        @media screen and (max-width: 768px){ color: #000 ; }    
+                        color: rgba(255,255,255,0.8);  
                         margin: 0px;
                         position: absolute;
                         right: 10px;
@@ -298,7 +297,6 @@ body {
               }
               @media screen and (max-width: 768px) {
                 top: 52px !important;
-                padding: 5px 10px;
               }
             }
             .dropdown.open{
