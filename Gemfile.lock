@@ -167,9 +167,6 @@ GEM
       devise (>= 2.1.2)
       railties (~> 3.0)
     diff-lcs (1.2.5)
-    dragonfly (0.9.15)
-      multi_json (~> 1.0)
-      rack
     draper (1.4.0)
       actionpack (>= 3.0)
       activemodel (>= 3.0)
@@ -652,7 +649,6 @@ DEPENDENCIES
   delayed_job_active_record
   devise (~> 2.2.4)
   devise_invitable
-  dragonfly (~> 0.9.14)
   draper (~> 1.0)
   email_spec
   engtagger
