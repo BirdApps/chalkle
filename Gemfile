@@ -19,10 +19,8 @@ gem 'pundit'
 
 # Time / Date
 gem 'monthify', require: 'monthify'
-gem 'chronic',       '~> 0.9.0'
 
 gem 'airbrake',      '~> 4.1.0'
-gem 'analytical',    '~> 3.0.12'
 gem 'jquery-rails'
 gem 'active_attr',   '~> 0.7.0'
 gem 'rack-cache', require: 'rack/cache'
@@ -34,7 +32,6 @@ gem 'premailer-rails', '~> 1.4.0'
 gem 'kaminari'
 gem 'httparty'
 gem 'inherited_resources'
-gem 'foreigner'
 gem 'color'
 
 #formatting
