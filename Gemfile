@@ -49,14 +49,10 @@ gem 'mandrill-rails'
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml', '~> 4.0.5'
 gem 'haml-rails',    '~> 0.4.0'
-#gem 'simple_form'
 gem 'simple_form', github: 'zlx/simple_form_bootstrap3', branch: 'rails_3'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 gem 'google-webfonts-rails'
-gem 'bootstrap-datepicker-rails'
-gem 'twitter-typeahead-rails'
-gem 'autoprefixer-rails'
 
 #attachments
 gem 'carrierwave'
@@ -71,7 +67,11 @@ gem 'omni_avatar', path: 'vendor/gems/omni_avatar'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'bootstrap-sass'
   gem 'sass-rails'
+  gem 'bootstrap-datepicker-rails'
+  gem 'twitter-typeahead-rails'
+  gem 'autoprefixer-rails'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
   gem 'font-awesome-rails'
@@ -116,8 +116,6 @@ group :development do
   # gem 'guard-zeus'
   gem 'guard-cucumber'
   gem 'guard-livereload'
-
-
 end
 
 group :test, :development do
