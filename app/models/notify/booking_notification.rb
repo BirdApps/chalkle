@@ -76,13 +76,13 @@ class Notify::BookingNotification < Notify::Notifier
 
 
     if role == :chalkler or :teacher
-      #to channel admin
-      message = I18n.t('notify.booking.cancelled.to_channel_admin', course_name: booking.course.name, from_name: booking.name)
+      #to provider admin
+      message = I18n.t('notify.booking.cancelled.to_provider_admin', course_name: booking.course.name, from_name: booking.name)
 
-      booking.channel.channel_admins.map(&:chalkler).each do |channel_admin|
-        channel_admin.send_notification(Notification::REMINDER, course_path(booking.course), message, booking)
-        if channel_admin != booking.teacher.chalkler && channel_admin.email_about?(:booking_cancelled_to_provider)
-          BookingMailer.booking_cancelled_to_channel_admin(booking, channel_admin).deliver!
+      booking.provider.provider_admins.map(&:chalkler).each do |provider_admin|
+        provider_admin.send_notification(Notification::REMINDER, course_path(booking.course), message, booking)
+        if provider_admin != booking.teacher.chalkler && provider_admin.email_about?(:booking_cancelled_to_provider)
+          BookingMailer.booking_cancelled_to_provider_admin(booking, provider_admin).deliver!
         end
 
       end

@@ -1,0 +1,9 @@
+<%= @provider_contact.subject %>
+<% if @provider_contact.chalkler.present? %>
+    From: <%= link_to @provider_contact.chalkler.name, chalkler_url(@provider_contact.chalkler) %>
+    Email: <% @provider_contact.from %>
+<% else %>
+    From: User was not signed in when form was sent
+    Email: <% @provider_contact.from %>  
+<% end %>
+<%= @provider_contact.message %>

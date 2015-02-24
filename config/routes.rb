@@ -6,15 +6,15 @@ Chalkle::Application.routes.draw do
   match '(*any)' => redirect { |p, req| req.url.sub!('my.', '') } , :constraints => { :host => /^my\./ }
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
 
-  devise_for :chalklers, controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations', invitations: 'invitations' }
+  devise_for :chalklers, path: 'people', controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations', invitations: 'invitations' }
   
   constraints(Subdomain) do
-    match '/' => 'channels#show'
+    match '/' => 'providers#show'
   end
 
-  root to: 'courses#index'
+  root to: 'application#home'
   
-  get '/about' => 'application#about', as: :about
+  get '/about' => 'partners#index', as: :about
 
   get '/terms' => 'terms#chalkler', as: :terms
 
@@ -25,15 +25,15 @@ Chalkle::Application.routes.draw do
   get '/terms/teacher' => 'terms#teacher', as: :teacher_terms
 
 
-  resources :channel_teachers, path: 'teachers', except: [:new, :show, :index]
+  resources :provider_teachers, path: 'teachers', except: [:new, :show, :index]
 
-  resources :channel_admins, path: 'admins', except: [:new, :show, :index] 
+  resources :provider_admins, path: 'admins', except: [:new, :show, :index] 
 
-  resources :channel_plans, path: 'plans'
+  resources :provider_plans, path: 'plans'
 
   match '/teach' => 'courses#teach'
-  match '/learn' => 'courses#learn'
-
+  match '/learn' => redirect("/discover")
+  match '/discover' => 'courses#index'
 
   resources :courses, path: 'classes' do
 
@@ -64,6 +64,7 @@ Chalkle::Application.routes.draw do
     collection do
       get 'calculate_cost'
       get 'mine'
+      post 'fetch'
     end
     
   end
@@ -79,8 +80,6 @@ Chalkle::Application.routes.draw do
     get '/notifications/count' => 'notifications#list', as: :count_notifications
     get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
     get '/notification/:id' => 'notifications#show', as: :show_notification
-
-    get '/bookings' => 'dashboard#bookings', as: :bookings
     
     get '/preferences' => 'preferences#show', as: :preferences
     put '/preferences' => 'preferences#update', as: :preferences
@@ -138,14 +137,14 @@ Chalkle::Application.routes.draw do
 
   resources :chalklers, path: 'people', only: [:index, :show] do
     resources :notifications, only: [:index, :show]
-
     collection do
       post 'exists'
+      post 'set_location'
+      get 'get_location' 
     end
   end
 
-  resources :channels, path: 'providers', only: [:index, :teachers, :new, :create] do
-    #resources :course_suggestions, only: [:new, :create], path: 'class_suggestions'
+  resources :providers, path: 'providers', only: [:index, :teachers, :new, :create] do
     resources :subscriptions, only: [:create, :destroy], path: 'follow'
   end
 
@@ -163,43 +162,31 @@ Chalkle::Application.routes.draw do
   #get '/partners/pricing' => 'partners#pricing'
   get '/partners/team' => 'partners#team'
   get '/partners/say_hello' => 'partners#say_hello'
-  post '/partners/said_hello', as: 'said_hello', controller: 'partners'
+  post '/partners/say_hello' =>'partners#said_hello', as: 'said_hello', controller: 'partners'
 
   get 'resources', to: 'resources#index', as: :resources
   get 'metrics', to: 'metrics#index', as: :metrics
 
-  get 'topics', to: 'categories#index', as: :categories
-  get 'categories', to: 'categories#index', as: :categories
-  get '/classes/:year/:month/:day', to: 'courses#index', as: :classes_in_week
-
-  #get '/regions/:region', to: 'courses#index', as: :region
-  #get '/topics/:topic', to: 'courses#index', as: :category
-  #get '/providers/:provider', to: 'courses#show', as: :channel_filter
-
-  #TODO: find an easier way of doing these channel routes!
-  get ':channel_url_name/admins', to: 'channels#admins', as: :channels_admins
-  get 'providers/:channel_id/admins', to: 'channels#admins', as: :channel_channel_admins
-  get ':channel_url_name/admins/new', to: 'channel_admins#new', as: :new_channel_admin
-  get ':channel_url_name/admin/:id/edit', to: 'channel_admins#edit', as: :edit_channel_admin
+  #TODO: find an easier way of doing these provider routes!
+  get ':provider_url_name/admins', to: 'providers#admins', as: :providers_admins
+  get 'providers/:provider_id/admins', to: 'providers#admins', as: :provider_provider_admins
+  get ':provider_url_name/admins/new', to: 'provider_admins#new', as: :new_provider_admin
+  get ':provider_url_name/admin/:id/edit', to: 'provider_admins#edit', as: :edit_provider_admin
   
-  get 'providers/:channel_id/url_available/:url_name', to: 'channels#url_available', as: :channel_url_available
-  get ':channel_url_name/teachers', to: 'channels#teachers', as: :channels_teachers
-  get 'providers/:channel_id/teachers', to: 'channels#teachers', as: :channel_channel_teachers
-  get ':channel_url_name/teachers/new', to: 'channel_teachers#new', as: :new_channel_teacher
-  get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_channel_teacher
-  get ':channel_url_name/teacher/:id', to: 'channel_teachers#show', as: :channel_teacher
-  get ':channel_url_name/settings', to: 'channels#edit', as: :channel_settings
-  put ':channel_url_name/settings', to: 'channels#update', as: :channel_settings
-  get ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
-  post ':channel_url_name/contact', to: 'channels#contact', as: :channel_contact
-  get ':channel_url_name/followers', to: 'channels#followers', as: :channel_followers
-  get ':channel_url_name/:course_url_name', to: 'channels#series', as: :channel_course_series
-  get '*channel_url_name/*course_url_name/:id', to: 'courses#show', as: :channel_course
-  get ':channel_url_name', to: 'channels#show', as: :channel
+  get 'providers/:provider_id/url_available/:url_name', to: 'providers#url_available', as: :provider_url_available
+  get ':provider_url_name/teachers', to: 'providers#teachers', as: :providers_teachers
+  get 'providers/:provider_id/teachers', to: 'providers#teachers', as: :provider_provider_teachers
+  get ':provider_url_name/teachers/new', to: 'provider_teachers#new', as: :new_provider_teacher
+  get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_provider_teacher
+  get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_teacher
+  get ':provider_url_name/settings', to: 'providers#edit', as: :provider_settings
+  put ':provider_url_name/settings', to: 'providers#update', as: :provider_settings
+  get ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
+  post ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
+  get ':provider_url_name/followers', to: 'providers#followers', as: :provider_followers
+  get ':provider_url_name/:course_url_name', to: 'providers#series', as: :provider_course_series
+  get '*provider_url_name/*course_url_name/:id', to: 'courses#show', as: :provider_course
+  get ':provider_url_name', to: 'providers#show', as: :provider
 
-  #TODO: will never be hit because of channel_course_series
-  # constraints(MainDomain) do
-  #   get ':country_code/:region_name', to: 'courses#index', constraints: {country_code: /[a-zA-Z]{2}/}
-  # end
   match '*a', :to => 'application#not_found'
 end

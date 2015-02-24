@@ -1,24 +1,27 @@
 <div class="course-show">
+  
   <%= render 'show_admin_bar' %>
-  <%= render 'show_my_booking' %>
+  
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+      <h2 class="visible-xs">
+        <%= @course.name %>
+      </h2>
+
       <div class="right-col">
         <%= render 'social_links' %>
+        <%= render 'show_my_booking' %>
+
         <% if @course.bookable? || policy(@course).write?(true) %>    
-          <div class="join-link">
-            <a href="<%= new_course_booking_path @course.id %>" class="bg-colour<%= @course.best_colour_num %> btn btn-default">
-              JOIN NOW
-            </a>
-          </div>
+          <a href="<%= new_course_booking_path @course.id %>" class="join-link bg-colour<%= @course.best_colour_num %> btn btn-default">
+            JOIN NOW
+          </a>
         <% else %>
-          <div class="join-link">
-            <a href="#" class="btn btn-default">
-              Not Bookable
-            </a>
-          </div>
+          <a href="#" class="btn btn-default join-link">
+            Not Bookable
+          </a>
         <% end %>
-        <div class=" small light grey">
+        <div class="text-right small light grey">
           <% if @course.limited_spaces?  %>
             <%= @course.spaces_left? ? @course.spaces_left.to_s + " spots left" : "Booked out" %> 
           <% end %>
@@ -53,7 +56,7 @@
                   <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
                 </div>
             <% elsif Course.similar_to(@course).count > 1 %>
-              <%= link_to "Find similar #{ @course.type.pluralize }", channel_course_series_path(@course.channel.url_name, @course.url_name) %>
+              <%= link_to "Find similar #{ @course.type.pluralize }", provider_course_series_path(@course.provider.url_name, @course.url_name) %>
             <% end %>
           </div>
 
@@ -71,20 +74,42 @@
           <% end %>
         </div>
       </div>
-      <%= to_html @course.do_during_class %>
+
+      <h1 class="hidden-xs">
+        <%= @course.name %>
+      </h1>
+      <%= to_html @course.learning_outcomes %>
       <br /><br />
       <small>
-        <%= to_html @course.learning_outcomes %>
+        <%= to_html @course.do_during_class %>
       </small>
     </div>
   </div>
-  <br /> <br />
+  <div class="row">
+    <% if @course.suggested_audience.present?  %>
+      <div class="col-md-5 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light small">
+        <h5 class="upper">This class is suitable for</h5>
+        <p>
+          <%= to_html @course.suggested_audience %>
+        </p>
+      </div>
+    <% end %>
+    <% if @course.prerequisites.present?  %>
+      <div class="col-md-5 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light small">
+        <h5 class="upper">Be sure to bring</h5>
+        <p>
+          <%= to_html @course.prerequisites %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+  <br /> <hr /> <br />
   <div class="row">
     <div class="col-sm-3 col-sm-offset-1 col-xs-6 clearfix">
       <% if @course.teacher.present? %>
-        <%= link_to channel_teacher_path(@course.channel, @course.teacher) do %>
+        <%= link_to provider_teacher_path(@course.provider, @course.teacher) do %>
           <div class="teacher">
-            <div class="img" style='background-image: url(<%= @course.teacher.avatar %>)'>
+            <div class="avatar64" style='background-image: url(<%= @course.teacher.avatar %>)'>
             </div>
             <div class="light grey upper small">Your Teacher</div>
             <%= @course.teacher.name %>
@@ -93,7 +118,7 @@
       <% end %>
     </div>
     <div class="col-sm-4 hidden-xs small grey light pad-top">
-      <a href="#map-canvas"
+      <a href="#map-canvas">
         <span class="fa fa-map-marker"></span>
         <%= @course.address || to_html(@course.venue) %>
       </a>
@@ -107,50 +132,8 @@
       <%= pretty_time_range @course.start_at, @course.end_at %>
     </div>
   </div>
-  <br /> <hr /><br />
-  <div class="row">
-      <div class="map-wrap"> 
-        <div class="col-sm-6 col-xs-12 map-overlay">
-          <div class="col-xs-12 xol-sm-10 col-sm-offset-2">
-            <p class="grey light">
-              <%= to_html @course.venue_truncated(200) %>
-            </p>
-            <p class="grey light hidden-xs">
-              <%= @course.address_formatted %>
-            </p>
-            <p class="grey light visible-xs">
-              <%= @course.address %>
-            </p>
-          </div>
-        </div>
-        <div class="col-xs-12">
-          <input type="hidden" id="longitude" value="<%= @course.longitude %>" />
-          <input type="hidden" id="latitude" value="<%= @course.latitude %>" />
-          <div id="map-canvas"></div>
-        </div>
-
-      </div>
-  </div>
-  <br /> <br />
-  <div class="row">
-    <div class="col-md-5 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light small">
-      <% if @course.suggested_audience.present?  %>
-        <h5 class="upper">This class is suitable for</h5>
-        <p>
-          <%= to_html @course.suggested_audience %>
-        </p>
-      <% end %>
-      
-    </div>
-    <div class="col-md-5 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light small">
-      <% if @course.prerequisites.present?  %>
-        <h5 class="upper">Be sure to bring</h5>
-        <p>
-          <%= to_html @course.prerequisites %>
-        </p>
-      <% end %>
-    </div>
-  </div>
+  <br />
+  <hr />
   <br class="hidden-sm hidden-xs" /><br class="hidden-xs hidden-sm" />
   <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-xs-12 light small">
@@ -162,7 +145,32 @@
       <% end %>
     </div>
   </div>
-
-
-  <%= render partial: 'notice_board' %>
+  <div class="row">
+    <%= render partial: 'notice_board' %>
+  </div>
+  <br />
+  <hr />
+  <br />
+  <div class="row">
+    <div class="map-wrap"> 
+      <div class="col-sm-6 col-xs-12 map-overlay">
+        <div class="col-xs-12 xol-sm-10 col-sm-offset-2">
+          <p class="grey light">
+            <%= to_html @course.venue_truncated(200) %>
+          </p>
+          <p class="grey light hidden-xs">
+            <%= @course.address_formatted %>
+          </p>
+          <p class="grey light visible-xs">
+            <%= @course.address %>
+          </p>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <input type="hidden" id="longitude" value="<%= @course.longitude %>" />
+        <input type="hidden" id="latitude" value="<%= @course.latitude %>" />
+        <div id="map-canvas"></div>
+      </div>
+    </div>
+  </div>
 </div>

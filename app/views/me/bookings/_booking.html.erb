@@ -31,7 +31,7 @@
         <% end %>
         |
         <% if booking.course.teacher  %>
-          <%= link_to 'Taught by '+booking.course.teacher.name, channel_channel_teacher_path(booking.course.channel.url_name, booking.course.teacher.id) %>
+          <%= link_to 'Taught by '+booking.course.teacher.name, provider_provider_teacher_path(booking.course.provider.url_name, booking.course.teacher.id) %>
         <% else %>
           No teacher assigned
         <% end %>
@@ -39,7 +39,7 @@
       
     </div>
   </div>
-  <div class="col-sm-2 col-xs-12">
+  <div class="col-sm-2 hidden-xs">
     <a href="<%= booking.course.path %>" class="no-margin clear-both block center alert alert-success small">
       <%= @bookings_count %>
       <br /> <%= 'Booking'.pluralize(@bookings_count) %>

@@ -1,0 +1,27 @@
+<div class="teacher row">
+  <div class="col-xs-12 col-sm-8">
+    <img class="avatar64" src="<%= provider_teacher.avatar %>">
+    <div class="pull-left"> 
+      <div class="name">
+        <%= link_to provider_teacher.name, provider_provider_teacher_path(provider_teacher.provider.url_name, provider_teacher.id) %>
+      </div>
+      <div>
+        <div class="pull-left light">
+          <% if provider_teacher.next_class.present? %>
+            <div>
+              Next class: <span><%= quick_date_time provider_teacher.next_class.start_at %></span>
+            </div>
+            <div>
+              <%= link_to provider_teacher.next_class.name, course_path(provider_teacher.next_class), class: "colour#{ provider_teacher.next_class.best_colour_num.to_s}" %>
+            </div>
+          <% else %>
+            <div>No scheduled classes</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    
+  </div>
+</div>

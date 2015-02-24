@@ -2,12 +2,12 @@
 <meta property="fb:app_id" content="709387515738435" />   
 <meta property="og:site_name" content="Chalkle" />  
 
-  <% if @channel_teacher.present? && @channel_teacher.id.present? %>
-<!-- channel_teacher --> 
-    <meta property="og:title" content="<%= @channel_teacher.name.titleize %>" />  
+  <% if @provider_teacher.present? && @provider_teacher.id.present? %>
+<!-- provider_teacher --> 
+    <meta property="og:title" content="<%= @provider_teacher.name.titleize %>" />  
     <meta property="og:type" content="profile" />  
-    <meta property="og:description" content="<%= @channel_teacher.bio || 'Classes taught by '+@channel_teacher.name %>" />
-    <meta property="og:image" content="<%= @channel_teacher.avatar.present? ? @channel_teacher.avatar : asset_path('social-logo.jpg') %>" />
+    <meta property="og:description" content="<%= @provider_teacher.bio || 'Classes taught by '+@provider_teacher.name %>" />
+    <meta property="og:image" content="<%= @provider_teacher.avatar.present? ? @provider_teacher.avatar : asset_path('social-logo.jpg') %>" />
 
   <% elsif @course && @course.present? %>
 <!-- course -->
@@ -16,33 +16,18 @@
     <meta property="og:description" content="<%= truncate @course.do_during_class, 150 %>" />
     <meta property="og:image" content="<%= @course.course_upload_image.present? ? @course.course_upload_image : asset_path('social-logo.jpg') %>" />
 
-  <% elsif @channel.present? && @channel.id %>
-<!-- channel -->
-    <meta property="og:title" content="<%= @channel.name.titleize %>" /> 
+  <% elsif @provider.present? && @provider.id %>
+<!-- provider -->
+    <meta property="og:title" content="<%= @provider.name.titleize %>" /> 
     <meta property="og:type" content="product.group" />
-    <meta property="og:description" content="<%= truncate @channel.description, 150 %>" />  
-    <meta property="og:image" content="<%= @channel.logo.present? ? @channel.logo : asset_path('social-logo.jpg') %>" />
-
-  <% elsif @region.present? && @region.id %>
-<!-- region -->
-    <meta property="og:title" content="<%= @region.name.titleize %>" /> 
-    <meta property="og:type" content="place" />
-    <meta property="og:description" content="Find classes in <%= @region.name %> on chalkle." />
-    <meta property="og:image" content="<%= @region.hero.present? ? @region.hero : asset_path('social-logo.jpg') %>" />
-
-  <% elsif @category.present? && @category.id %>
-<!-- category -->
-    <meta property="og:title" content="<%= @category.name.titleize %>" />  
-    <meta property="og:type" content="product.group" />
-    <meta property="og:description" content="Find classes about <%= @category.name %> and more on chalkle." />
-    <meta property="og:image" content="<%= asset_path('social-logo.jpg') %>" />
-
+    <meta property="og:description" content="<%= truncate @provider.description, 150 %>" />  
+    <meta property="og:image" content="<%= @provider.logo.present? ? @provider.logo : asset_path('social-logo.jpg') %>" />
   <% else %>
 <!-- else -->
     <meta property="og:title" content="<%= strip_tags("#{meta_title}").titleize %>" />  
     <meta property="og:type" content="product.group" />
-    <meta property="og:description" content="Find classes on every topic on chalkle." />
-    <meta property="og:image" content="<%= (page_title_logo && page_title_logo.respond_to?(:url) ? page_title_logo.url : page_title_logo) || asset_path('social-logo.jpg') %>" /> 
+    <meta property="og:description" content="Find classes on chalkle." />
+    <meta property="og:image" content="<%= (@page_title_logo && @page_title_logo.respond_to?(:url) ? @page_title_logo.url : @page_title_logo) || asset_path('social-logo.jpg') %>" /> 
 
 <% end %>
 <!-- END Open Graph -->

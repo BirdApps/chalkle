@@ -72,17 +72,6 @@ namespace :chalkle do
       end
     end
   end
-  desc "clear_chaches" 
-  task :clear_caches do 
-    on roles(:app) do 
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          info fetch(:current)
-          rake 'chalkle:expire_caches' 
-        end
-      end
-    end
-  end
 end
 
 # Load custom tasks from `lib/capistrano/tasks' if you have any defined

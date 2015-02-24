@@ -24,12 +24,7 @@
 //= require twitter/bootstrap/collapse
 //= require underscore
 //= require modernizr
-//= require front_end/front_end
-//= require utils
-//= require month_calendar_view
 //= require bootstrap-datepicker/core
-//= require plugins/bootstrap-timepicker.min
-//= require plugins/bootstrap-tagsinput.min
-//= require_tree ./inputs
-//= require_tree ./v2
-//= require header
+//= require bootstrap-timepicker.min
+//= require bootstrap-tagsinput.min
+//= require_tree .

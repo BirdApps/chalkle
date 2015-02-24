@@ -18,10 +18,6 @@ class Me::PreferencesController < Me::BaseController
     render template: 'me/preferences/settings'
   end
 
-  def meetup_email_settings
-    render 'me/preferences/meetup_email_settings'
-  end
-
   def enter_email
     @chalkler = current_chalkler
     unless params[:chalkler].blank?

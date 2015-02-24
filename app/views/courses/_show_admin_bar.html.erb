@@ -1,9 +1,9 @@
-<div class="row">
+<div class="row admin-bar alert alert-warning">
   <div class="col-xs-12 col-sm-10 col-sm-offset-1">
     <% if policy(@course).read?  %>
 
       <% if @course.status == 'Published' %>
-        <div class="alert alert-warning clearfix text-right" role="alert"> 
+        <div class="clearfix text-right" role="alert"> 
      
           <span class="pad-top inline pull-left">   
             <strong><%= @course.status+'!' %></strong> 
@@ -64,7 +64,7 @@
 
           <% else %>
             <span class="pad-top inline pull-left text-left">   
-              <strong>Your class is a Draft!</strong><br /> To publish it you'll need to contact an adminstrator of the provider <em><%= link_to @course.channel.name, channels_admins_path(@course.channel.url_name) %></em>
+              <strong>Your class is a Draft!</strong><br /> To publish it you'll need to contact an adminstrator of the provider <em><%= link_to @course.provider.name, providers_admins_path(@course.provider.url_name) %></em>
             </span> 
 
           <% end %>
@@ -132,7 +132,7 @@
         <% if @course.course? %>
           <div class="alert alert-warning clearfix">
             <p>
-              The classes in this course have already started. <%= link_to "Check out the provider's other courses as it may run again", channel_path(@course.channel.url_name)  %>
+              The classes in this course have already started. <%= link_to "Check out the provider's other courses as it may run again", provider_path(@course.provider.url_name)  %>
             </p>
           </div>
         <% end %>

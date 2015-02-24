@@ -9,7 +9,7 @@ describe CourseNoticesController do
       before { post :create, course_notice: FactoryGirl.attributes_for(:course_notice) }
 
       it "redirects to the course path" do
-        expect(response).to redirect_to(channel_course_path(@course.channel.url_name, @course.url_name, @course.id)
+        expect(response).to redirect_to(provider_course_path(@course.provider.url_name, @course.url_name, @course.id)
       end
     end
   describe "#create" do

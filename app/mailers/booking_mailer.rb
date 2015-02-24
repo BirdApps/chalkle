@@ -56,13 +56,13 @@ class BookingMailer < BaseChalkleMailer
     end
   end
 
-  def booking_cancelled_to_channel_admin(booking, channel_admin)
+  def booking_cancelled_to_provider_admin(booking, provider_admin)
     @booking = booking
     @teacher = booking.teacher
     @course = booking.course
-    @channel_admin = channel_admin
+    @provider_admin = provider_admin
 
-    mail(to: @channel_admin.email, subject: I18n.t("email.booking.cancelled.to_channel_admin.subject", course_name: @course.name)) do |format| 
+    mail(to: @provider_admin.email, subject: I18n.t("email.booking.cancelled.to_provider_admin.subject", course_name: @course.name)) do |format| 
       format.html { render layout: 'standard_mailer' }
     end
   end

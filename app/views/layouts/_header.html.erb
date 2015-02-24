@@ -1,22 +1,16 @@
-<% 
-  current_hero = page_hero
-  links = page_context_links
-%>
-<div class="header" style="background-image: url( <%= current_hero[:default] if current_hero.present? %> )">
+<div class="header" style=" background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
   <div class="container header_content">
-    <div class="header_content_bg_wrapper">
-      <div class="header_content_bg" style="background-image: url( <%= current_hero[:blurred] if current_hero.present? %> )">
-      </div>
-    </div>
-    <div class="header_content_fg">
+    <div class="clearfix header_content">
+      
       <% if (title = page_title).present? %>
-        <div class="title-wrapper" <%= 'style=width:85%' if links.empty?  %>>
-          <div class="page_title_logo img hidden-xs" style="background-image: url(<%= page_title_logo.present? ? page_title_logo : ''%>)">
+
+        <div class="title-wrapper" <%= 'style=width:85%' if nav_links.blank?  %>>
+          <div class="page_title_logo hero img hidden-xs" style="background-image: url(<%= @page_title_logo.present? ? @page_title_logo : ''%>)">
           </div>
           <div class="title">
-            <em class="hidden-xs"><%= page_subtitle %></em>
+            <em class="hidden-xs"><%= page_subtitle.to_html %></em>
             <h1 class="text-to-fit">
-              <%= title %>
+              <%= page_title.to_html %>
             </h1>
           </div>
         </div>
@@ -24,8 +18,8 @@
           <nav>
             <ul>
             <% 
-              col_width = 100 / links.count if links.count > 0
-              links.each do |nav_link| %>
+              col_width = 100 / nav_links.count if nav_links.count > 0
+              nav_links.each do |nav_link| %>
                 <li class="<%= "active" if nav_link[:active] %>" style="width:<%= col_width %>%">
                   <%= link_to nav_link[:link], title: nav_link[:title], class: 'nav_links' do %>
                     <span class="img-wrapper">
@@ -41,7 +35,11 @@
             </ul>
           </nav>
         </div>
+      
+      <% elsif @location_form == true %>
+        <%= render 'location_form' %>
       <% end %>
+
     </div>
   </div>
 </div>

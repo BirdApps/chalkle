@@ -1,0 +1,62 @@
+<div class="provider_plan">
+  <div class="fancy-header">
+      <h3><%= provider_plan.name %></h3>
+      <hr />
+  </div>
+   <div class="row">
+    <div class="col-xs-4">
+      <strong>Class</strong> attendee fee
+    </div>
+    <div class="col-xs-8">
+     $<%= provider_plan.class_attendee_cost %>
+    </div>
+  </div>
+   <div class="row">
+    <div class="col-xs-4">
+      <strong>Course</strong> attendee fee
+    </div>
+    <div class="col-xs-8">
+     $<%= provider_plan.course_attendee_cost %>
+    </div>
+  </div>
+   <div class="row">
+    <div class="col-xs-4">
+      Annual cost
+    </div>
+    <div class="col-xs-8">
+     $<%= provider_plan.annual_cost %>
+    </div>
+  </div>
+   <div class="row">
+    <div class="col-xs-4">
+      Processing fee
+    </div>
+    <div class="col-xs-8">
+     <%= provider_plan.processing_fee_percent*10 %>%
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-4">
+      Maximum Provider Admins
+    </div>
+    <div class="col-xs-8">
+      <%= provider_plan.max_provider_admins || '∞' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-4">
+      Maximum Teachers
+    </div>
+    <div class="col-xs-8">
+      <%= provider_plan.max_teachers || '∞' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-4">
+      Maximum free class attendee fee waivers
+    </div>
+    <div class="col-xs-8">
+     <%= provider_plan.max_free_class_attendees || '∞' %>
+    </div>
+  </div>
+</div>

@@ -72,9 +72,9 @@ describe Notify::BookingNotification  do
       expect { Notify.for(booking).cancelled }.to change { ActionMailer::Base.deliveries.select{ |mail| mail.to.include? booking.teacher.email }.count }.by(1)
     end
 
-    it "emails channel admin" do
-      booking.channel = FactoryGirl.create :channel
-      channel_admin = ChannelAdmin.create(chalkler: FactoryGirl.create(:admin_chalkler), channel: booking.channel)
+    it "emails provider admin" do
+      booking.provider = FactoryGirl.create :provider
+      provider_admin = ProviderAdmin.create(chalkler: FactoryGirl.create(:admin_chalkler), provider: booking.provider)
       expect { Notify.for(booking).cancelled }.to change { ActionMailer::Base.deliveries.select{ |mail| mail.to.include? booking.teacher.email }.count }.by(1)
     end
 

@@ -29,10 +29,10 @@
   <% else %>
     <button disabled="disabled" class="btn btn-danger">! No Payment</button>
   <% end %>
-  <% if @booking.channel_payment %>
-    <%= link_to 'Channel Payment $'+money_formatted(@booking.channel_payment.total), sudo_outgoing_payment_path(@booking.channel_payment), class: 'btn btn-default' %>
+  <% if @booking.provider_payment %>
+    <%= link_to 'Provider Payment $'+money_formatted(@booking.provider_payment.total), sudo_outgoing_payment_path(@booking.provider_payment), class: 'btn btn-default' %>
   <% else %>
-    <button disabled="disabled" class="btn btn-danger">No Channel Payment</button>
+    <button disabled="disabled" class="btn btn-danger">No Provider Payment</button>
   <% end %>
   <% if @booking.teacher_payment %>
     <%= link_to 'Teacher Payment $'+money_formatted(@booking.teacher_payment.total), sudo_outgoing_payment_path(@booking.teacher_payment), class: 'btn btn-default' %>

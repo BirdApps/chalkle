@@ -46,7 +46,6 @@ class BookingSet
 
     if bookings_valid
       bookings.map &:save
-      course.expire_cache!
       true
     else
       the_errors = bookings.map{|b| b.errors.messages }

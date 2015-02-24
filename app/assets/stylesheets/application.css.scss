@@ -1,50 +1,16 @@
 /*
 	*= require_tree ./v2
 */
-@import "_variables";
+$grid-float-breakpoint: 0px;
+$font_family_normal: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
 @import "twitter/bootstrap";
 @import "font-awesome";
-@import "border-radius";
 @import "layout";
-@import "typography";
 @import "bootstrap3-forms";
-@import "forms";
-@import "tabs";
-@import "modules/chalklers";
-@import "front_end/front_end";
 @import "partners";
 @import "chalklers";
 @import "bootstrap-datepicker3";
-@import "plugins/bootstrap-timepicker";
-@import "plugins/bootstrap-tagsinput";
+@import "bootstrap-timepicker";
+@import "bootstrap-tagsinput";
 @import "sudo/metrics";
-
-
-.center {
-  text-align: center;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-left {
-  text-align: left;
-}
-
-
-.row {
-  margin-bottom: $line-height-base;
-}
-
-.no-bottom-margin {
-  margin-bottom: 0;
-}
-
-.ajax-sending {
-  opacity: 0.2;
-}
-
-.ajax-error {
-  color: red;
-}
+@import "controls";

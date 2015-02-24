@@ -118,13 +118,13 @@
   <div class="row">
 
     <div class="col-sm-6 col-xs-12">
-      <% if current_user.channels_adminable.any? %>
+      <% if current_user.providers_adminable.any? %>
         <div class="fancy-header">
           <h3>Providers</h3>
           <hr />
         </div>
         <div class="row col-xs-12">
-          <%= render partial: '/me/channels/channel', collection: current_user.channels_adminable %>  
+          <%= render partial: '/me/providers/provider', collection: current_user.providers_adminable %>  
         </div>
       <% end %>
     </div>
@@ -134,9 +134,9 @@
         <h3>Teacher Profiles</h3>
         <hr />
       </div>
-      <% if current_chalkler.channel_teachers.any? %>
+      <% if current_chalkler.provider_teachers.any? %>
         <div class="col-xs-12">
-          <%= render partial: '/me/channel_teachers/channel_teacher', collection: current_chalkler.channel_teachers %>  
+          <%= render partial: '/me/provider_teachers/provider_teacher', collection: current_chalkler.provider_teachers %>  
         </div>
       <% else %>
         <div class="alert alert-default center small light">

@@ -31,8 +31,8 @@ class Sudo::MetricsController < Sudo::BaseController
     }
 
     @provider_stats = {
-      total: Channel.all.count,
-      created: Channel.where(created_at: month.first_day..month.last_day).count
+      total: Provider.all.count,
+      created: Provider.where(created_at: month.first_day..month.last_day).count
     }
 
     @chalkler_stats = {

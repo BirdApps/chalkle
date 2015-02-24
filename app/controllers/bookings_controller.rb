@@ -17,7 +17,7 @@ class BookingsController < ApplicationController
   end
 
   def new
-    @channel = Course.find(params[:course_id]).channel #Find channel for hero
+    @provider = Course.find(params[:course_id]).provider #Find provider for hero
     @booking_set = BookingSet.new
     @booking_set.bookings << Booking.new(name: current_user.name)
     @page_subtitle = "Booking for"
@@ -114,7 +114,7 @@ class BookingsController < ApplicationController
   def cancel
     authorize @booking
     @page_subtitle = "Cancel booking"
-    @page_title = ('<a href="'+@booking.course.path+'">'+@booking.course.name+'</a>').html_safe
+    @page_title = "[#{@booking.course.name}](#{@booking.course.path})"
     render 'cancel'
   end
 
