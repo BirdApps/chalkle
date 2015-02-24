@@ -1,6 +1,20 @@
-@import "../_variables";
-@import "../_mixins";
-
+@mixin placeholder($color) {
+  input::-webkit-input-placeholder {
+    color: $color;
+  }
+  input::-moz-placeholder {
+     color: $color;
+     opacity: 1;
+  }
+  input:-moz-placeholder {   /* Older versions of Firefox */
+     color: $color;
+      opacity: 1;
+  }
+  input:-ms-input-placeholder { 
+     color: $color;
+      opacity: 1;
+  }
+}
 
 .courses-teach {
   color: #fff;
@@ -80,11 +94,10 @@
     background-color: #ddd;
     color: #000;
     height: 300px;
-    // @include transition(all 200 ease-out);
 
     &:hover {
       background-color: #fff;
-      @include transform( scale(1.1) );
+      transform: scale(1.1);
     }
 
     small {
