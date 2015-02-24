@@ -117,7 +117,7 @@ protected
   
 
   def provider_name
-    params[:provider_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:provider_url_name].present?
+    @provider_name ||= params[:provider_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:provider_url_name].present?
   rescue ArgumentError 
     nil
   end
@@ -125,14 +125,13 @@ protected
   def load_provider
     redirect_to_subdomain
     if !@provider
-      if provider_name 
-        @provider = Provider.find_by_url_name(provider_name) || Provider.new(name: "All Providers")
-      elsif params[:provider_id].present?
+     
+      if params[:provider_id].present?
         @provider = Provider.find(params[:provider_id])
+      elsif provider_name
+        @provider = Provider.find_by_url_name(provider_name)
       end
-    end
-    if !@provider
-      @provider = Provider.new(name: "All Providers")
+        
     end
   end
 

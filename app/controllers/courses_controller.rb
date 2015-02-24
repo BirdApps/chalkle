@@ -3,7 +3,6 @@ class CoursesController < ApplicationController
   before_filter :header_course, only: [:show, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new, :mine]
-  before_filter :check_clear_filters, only: [:index]
   before_filter :take_me_to, only: [:index]
   before_filter :header_teach, only: :teach
   before_filter :header_mine, only: :mine
@@ -190,12 +189,6 @@ class CoursesController < ApplicationController
 
   private
 
-    def check_clear_filters
-      if @provider.id.blank?
-        session[:provider] = nil
-      end
-    end
-
     def load_course
       @course = Course.find_by_id(params[:id])
       return not_found unless @course
@@ -272,16 +265,6 @@ class CoursesController < ApplicationController
       end
 
       courses
-    end
-
-    def load_provider
-      if !@provider
-        if provider_name 
-          @provider = Provider.find_by_url_name(provider_name) || Provider.new(name: "All Providers")
-        else
-          @provider = Provider.new(name: "All Providers")
-        end
-      end
     end
 
     def header_mine

@@ -23,13 +23,13 @@ module LayoutHelper
     meta_title = ''
     if params[:action] == 'index' && params[:controller] == 'courses'
       meta_title = page_subtitle+' '+page_title
-    elsif !@provider.new_record? && params[:controller] == 'providers'
+    elsif @provider.present? && !@provider.new_record? && params[:controller] == 'providers'
       meta_title = @provider.name
     elsif params[:action] == 'new'
       meta_title = 'New '+ page_title
-    elsif @course && !@course.new_record?
+    elsif @course.present? && !@course.new_record?
       meta_title = @course.name
-    elsif @teaching && @teaching.editing_id
+    elsif @teaching.present? && @teaching.editing_id
       meta_title = @teaching.title
     end
     meta_title += ' ' if meta_title
@@ -76,7 +76,7 @@ module LayoutHelper
           blurred: @provider_teacher.provider.hero.blurred
         }
 
-    elsif @provider.hero.present?
+    elsif  @provider.present? && @provider.hero.present?
         {
           default: @provider.hero,
           blurred: @provider.hero.blurred

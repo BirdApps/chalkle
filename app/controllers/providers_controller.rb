@@ -9,8 +9,6 @@ class ProvidersController < ApplicationController
   end
 
   def show
-    not_found if @provider.new_record?
-
     if current_user.super?
       @courses =  @provider.courses.in_future.start_at_between(current_date, current_date+1.year).by_date
     else
@@ -24,7 +22,6 @@ class ProvidersController < ApplicationController
   end
 
   def series 
-    return not_found if !@provider || @provider.new_record?
     @courses = @provider.courses.displayable.in_future.by_date.where url_name: params[:course_url_name]
     return not_found if @courses.empty?
     @courses
@@ -55,14 +52,11 @@ class ProvidersController < ApplicationController
   end
 
   def edit
-    return not_found if !@provider
     authorize @provider
     @page_subtitle = 'Settings'
-    not_found if !@provider
   end
 
   def update
-    return not_found if !@provider
     authorize @provider
     provider_params = params[:provider]
     @provider = Provider.find params[:provider_id]
@@ -93,7 +87,6 @@ class ProvidersController < ApplicationController
   end
 
   def contact
-    return not_found if !@provider
     @contact = ProviderContact.new provider: @provider
     if params[:submit] == 'send'
       @contact = ProviderContact.create from: params[:provider_contact][:from], subject: params[:provider_contact][:subject], message: params[:provider_contact][:message], provider: @provider, chalkler: current_chalkler
@@ -106,12 +99,10 @@ class ProvidersController < ApplicationController
   end
 
   def followers
-    return not_found if !@provider
     @chalklers = @provider.chalklers
   end
 
   def teachers
-    return not_found if !@provider
     @teachers = ProviderTeacher.where provider_id:  @provider.id
     respond_to do |format|
       format.json { render json: @teachers.to_json(only: [:id, :name]) }
@@ -121,7 +112,6 @@ class ProvidersController < ApplicationController
 
 
   def admins
-    return not_found if !@provider
     authorize @provider
     @admins = ProviderAdmin.where provider_id:  @provider.id
     respond_to do |format|
@@ -150,13 +140,14 @@ class ProvidersController < ApplicationController
 
   def load_provider
     redirect_to_subdomain
-    if provider_name 
-      @provider = Provider.find_by_url_name(provider_name) || Provider.new(name: "All Providers")
-    elsif params[:id].present?
+    if params[:id].present?
       @provider = Provider.find(params[:id])
     elsif params[:provider_id].present?
       @provider = Provider.find(params[:provider_id])
+    elsif provider_name 
+      @provider = Provider.find_by_url_name(provider_name) 
     end
+    not_found and return if @provider.blank?
   end
 
   def header_provider
