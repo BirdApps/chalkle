@@ -1,16 +1,10 @@
 /*
- *= require_tree ./v2
+ *= require_tree ./web
  */
-$grid-float-breakpoint: 0px;
-$font_family_normal: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
-@import "twitter/bootstrap";
-@import "font-awesome";
-@import "layout";
-@import "bootstrap3-forms";
-@import "partners";
-@import "chalklers";
+
+@import "web/_vars";
+@import "bootstrap-sprockets";
+@import "bootstrap";
 @import "bootstrap-datepicker3";
 @import "bootstrap-timepicker";
 @import "bootstrap-tagsinput";
-@import "sudo/metrics";
-@import "controls";

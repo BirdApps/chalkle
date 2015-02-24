@@ -1,6 +1,5 @@
-@import "../_variables";
-@import "../_mixins";
-
+@import "_vars";
+@import "_placeholder";
 
 .no-hover-bg:hover{
   background-color: transparent;

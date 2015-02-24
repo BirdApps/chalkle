@@ -1,21 +1,9 @@
-$primary-color: rgba(76,126,147,0.9);
-$primary-color-opaque: rgba(76,126,147,1);
-$navbar-height: 62px;
-$vertical-padding: 10px;
-$line-height: $navbar-height - ($vertical-padding * 2);
-
-
-$col-sm: 768px;
-$col-md: 992px;
-$col-lg: 1200px;
-$line-height: $navbar-height - ($vertical-padding * 2);
-$mob-line-height: $line-height+15;
-$white: #fff;
+@import "../_vars";
+@import "../_placeholder";
 
 html{
   background-color: $primary-color-opaque; 
 }
-
 body {
 
   .navbar-form {
@@ -58,9 +46,6 @@ body {
         }
         font-size: 20px;
         .nav {
-          @media screen and (min-width: 769px){
-            min-height: $line-height;
-          }
           margin: 0px;
           li {
             height: 100%;
@@ -121,19 +106,6 @@ body {
             }
           }
         }
-
-        .navbar-toggle {
-          padding: 0;
-          margin-top: 0;
-          margin-bottom: 0;
-
-          .fa-bars {
-            color: white;
-            font-size: $line-height * 0.8;
-            line-height: $line-height !important;
-            height: $line-height;
-          }
-        }
         .environment{
           float: left;
           font-size: 12px;
@@ -148,11 +120,10 @@ body {
           border-bottom: 0;
           .navbar-brand {
             padding: 0;
-            margin: 5px 10px 0 0;
+            margin-right: 10px;
             width: 110px;
             img.logo {
-              padding-top: 8px;
-              margin: 0px;
+              margin: 17px 0;
               width: 100%;
             }
             &:hover{
@@ -162,7 +133,6 @@ body {
           >.container{
             position: relative;
             @media screen and (max-width: 768px){
-              padding: 0 5px;
               a:hover{
                 background-color: transparent;
               }
@@ -170,14 +140,12 @@ body {
                 color: #333;
               }
             }
-            @media screen and (min-width: 769px){
-              padding: 5px 0;
-            }
+            
             .navbar-header {
               z-index: 1;
               position: relative;
               @media screen and (max-width: 768px) {
-                margin: auto 0;
+                display: none;
               }
             }
             
@@ -313,12 +281,17 @@ body {
               border: 0px;
             }
             .search-wrapper{
-              #search_btn {
-                @media screen and (min-width: 769px) {
-                  border-left: 1px solid #fff;
-                }            
-                border-radius: 0px;
+              @media screen and (max-width: 768px) {
+                 margin: 7px 0;
               }
+              @media screen and (min-width: 769px) {
+                margin: 13px 0;
+                #search_btn {
+                  border-left: 1px solid #fff;         
+                  border-radius: 0px;
+                }
+              }
+              
               .search-form{
                 padding-left: 0px;
               }
@@ -348,26 +321,7 @@ body {
               box-shadow: none;
               opacity: 1;
             }
-
-            input::-webkit-input-placeholder {
-              color: #fff;
-              font-style: italic;
-            }
-            input::-moz-placeholder {
-              color: #fff;
-              opacity: 1;
-              font-style: italic;
-            }
-            input:-moz-placeholder {   /* Older versions of Firefox */
-              color: #fff;
-              opacity: 1;
-              font-style: italic;
-            }
-            input:-ms-input-placeholder { 
-              color: #fff;
-              opacity: 1;
-              font-style: italic;
-            }
+            @include placeholder(#fff, normal);
           }
         }
       }
@@ -454,11 +408,6 @@ body {
 }
 
 .header {
-    -webkit-transition: all none;
-    -moz-transition: all none;
-    -ms-transition: all none;
-    -o-transition: all none;
-    transition: all none;
     background-size: cover;
     background-repeat: no-repeat !important;
     background-position: center;
@@ -525,7 +474,7 @@ body {
             font-family: "proxima-nova",sans-serif;
             color: #E8E8E8;
             font-weight: 100;
-            @media screen and (max-width: $col-md) {
+            @media screen and (max-width: 992px) {
               padding-top:4px;
             }
           }
@@ -543,7 +492,7 @@ body {
       .title-wrapper,.context_nav_wrapper {
         float:left;
         overflow:hidden;
-        @media screen and (max-width: $col-md) {
+        @media screen and (max-width: 992px) {
           width:100% !important;
           float: none;
         }
@@ -582,7 +531,7 @@ body {
               text-shadow: 0px, 1px, 2px, rgba(255,255,255,1.0);
               transition: all 200ms ease-out;
 
-              @media screen and (max-width: $col-md) {
+              @media screen and (max-width: 992px) {
                 padding: 10px 5px;
               }
               .img-wrapper {

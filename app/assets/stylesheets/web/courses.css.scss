@@ -1,20 +1,5 @@
-@mixin placeholder($color) {
-  input::-webkit-input-placeholder {
-    color: $color;
-  }
-  input::-moz-placeholder {
-     color: $color;
-     opacity: 1;
-  }
-  input:-moz-placeholder {   /* Older versions of Firefox */
-     color: $color;
-      opacity: 1;
-  }
-  input:-ms-input-placeholder { 
-     color: $color;
-      opacity: 1;
-  }
-}
+@import "_vars";
+@import "_placeholder";
 
 .courses-teach {
   color: #fff;
@@ -103,7 +88,7 @@
     color: #000;
     height: 300px;
     box-shadow: 0 2px 6px #000;
-    transition:all 100ms ease-out;
+    transition: all 100ms ease-out;
 
     &:hover {
       background-color: #fff !important;
