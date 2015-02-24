@@ -80,11 +80,15 @@
     background-color: #ddd;
     color: #000;
     height: 300px;
-    // @include transition(all 200 ease-out);
+    box-shadow: 0 2px 6px #000;
+    @include transition(all 100ms ease-out);
 
     &:hover {
       background-color: #fff;
-      @include transform( scale(1.1) );
+      @include transform( scale(1.05) );
+      .circle {
+        @include transform( scale(1.05) );
+      }
     }
 
     small {
@@ -121,6 +125,7 @@
       background: #4c7e93;
       color: #fff;
       border-radius: 80px;
+      @include transition(all 100ms ease-out);
 
       sub {
         display: block;
