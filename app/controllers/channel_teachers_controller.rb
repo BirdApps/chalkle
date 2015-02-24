@@ -11,6 +11,12 @@ class ChannelTeachersController < ApplicationController
 
   def show
     @courses = Course.where(teacher_id: @channel_teacher.id).in_future.displayable.by_date
+    if current_user.chalkler?
+      @courses += filter_courses(Course.taught_by_chalkler(current_user).in_future.by_date)+
+                    filter_courses(Course.adminable_by(current_user).in_future.by_date)
+      @courses = @courses.sort_by(&:start_at).uniq
+    end
+
   end
 
   def edit
