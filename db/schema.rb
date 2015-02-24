@@ -440,19 +440,4 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
 
   add_index "subscriptions", ["provider_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
 
-  add_foreign_key "course_notices", "chalklers", name: "course_notices_chalkler_id_fk"
-  add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"
-
-  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_chalkler_id_fk"
-  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_from_chalkler_id_fk"
-
-  add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
-  add_foreign_key "notifications", "chalklers", name: "notifications_from_chalkler_id_fk"
-
-  add_foreign_key "provider_admins", "chalklers", name: "channel_admins_chalkler_id_fk"
-
-  add_foreign_key "provider_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
-  add_foreign_key "provider_teachers", "providers", name: "channel_teachers_channel_id_fk"
-
-
 end
