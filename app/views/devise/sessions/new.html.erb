@@ -1,12 +1,12 @@
 <% @page_title = "Sign in" %>
 
-<div class="row" id='sign-in'>
+<div class="clearfix" id='sign-in'>
   
 
   <div class="col-xs-12 col-sm-5 col-sm-offset-1">
     <h1>Log In</h1>
     <p>
-      Find and offer fun courses and learning oppertunities in your commuity today. 
+      Find and offer fun courses and learning opportunities in your community today. 
     </p>
 
     <%= link_to learn_path do %>
@@ -27,8 +27,9 @@
 
     <div class="well">
       <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
-            <%= f.input :name, :autofocus => true, placeholder: 'Name' %>
-            <%= f.input :email, :required => true, placeholder: 'Email' %>
+            <%= f.error_notification %>
+            <%= f.input :email, :autofocus => true, placeholder: 'Email' %>
+            <%= f.input :password, :required => true, placeholder: 'Password' %>
         <div class="control-group">
           <div class="controls">
             <label class="checkbox">

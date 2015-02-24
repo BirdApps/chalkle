@@ -26,9 +26,9 @@ Your Chalkle Administrator")
   end
 
 
-  def pretty_time_range(start, finish, abbr = false)
+  def pretty_time_range(start, finish, abbr = false, force_date = false)
     return unless start && finish
-    if(finish - start < 24*3600)
+    if(finish - start < 24*3600 && !force_date)
       pretty_time(start)+" - "+pretty_time(finish)
     elsif abbr
       quick_date(start)+" - "+quick_date(finish)
@@ -63,7 +63,7 @@ Your Chalkle Administrator")
     ordinalDay = date.day.ordinalize
     wday = include_wday ? date.strftime("%A, ") : ""
     if include_year || date.year != DateTime.current.year
-      wday+date.strftime("%B #{ordinalDay}, %y")
+      wday+date.strftime("%B #{ordinalDay}, %Y")
     else
       wday+date.strftime("%B #{ordinalDay}")
     end

@@ -13,6 +13,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/typeahead.min
 //= require twitter/bootstrap
 //= require twitter/bootstrap/tab
 //= require twitter/bootstrap/transition

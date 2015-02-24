@@ -9,6 +9,7 @@ FactoryGirl.define do
     complete_record_downloaded false
     total 20
     reconciled false
+    chalkler {|i| i.association :chalkler }
   end
 end
 

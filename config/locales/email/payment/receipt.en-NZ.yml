@@ -1,0 +1,37 @@
+en-NZ:
+  payment:
+    receipt:
+      subject: "Thank you for your business"
+      body:
+        html_1: |
+          ### Receipt from Chalkle on behalf of %{provider_name} ##
+          This receipt is for a payment made via credit or debit card through Swipe HQ
+
+          ** Transaction ID: ** %{tx_id}
+
+
+          ** To: ** %{booker_name}
+        html_2: |
+          ** Total Amount Paid: ** 
+        text_1: |
+          Receipt from Chalkle on behalf of %{provider_name}
+          This receipt is for a payment made via credit or debit card through Swipe HQ
+
+          Transaction ID: %{tx_id}
+
+          To: %{booker_name}
+        text_2: |
+          Total Amount Paid: 
+      breakdown:
+        item: "Booking for"
+        count: "Quantity"
+        price: "Unit Price"
+        details: "Order Details:"
+        tax: "GST"
+        subtotal: "Subtotal"
+      provider:
+        tax: "GST Number"
+        name: "Provider:"
+        email: "Email:"
+        phone: "Phone:"
+        address: "Address:"

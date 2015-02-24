@@ -16,5 +16,9 @@ class Sudo::ChalklersController < Sudo::BaseController
     @notifications = Notification.by_date
   end
 
+  def csv(role = "channel_admin")
+    send_data ChannelAdmin.csv_for(ChannelAdmin.all.uniq_by(&:email)), type: :csv, filename: "channel_admins_#{DateTime.current.strftime('%Y%m%d')}.csv"
+  end
+
 end
 

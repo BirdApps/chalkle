@@ -1,0 +1,5 @@
+<%= 
+  paid_text = @course.paid? ? t("email.booking.confirmation.to_chalkler.paid") : ""
+
+   t("email.booking.confirmation.to_chalkler.body.text", booking_name: @booking.name, course_name: @course.name, course_url: course_url(@course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name), venue: @course.venue, address: @course.address, start_at: day_ordinal_month(@course.start_at), time_range: pretty_time_range(@course.start_at, @course.end_at), paid: paid_text)
+%>

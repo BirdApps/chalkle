@@ -1,0 +1,137 @@
+<input id="hidden_current_month" type="hidden" value="<%= @month.first_day.strftime("%B, %Y")  %>" />
+<div class="row">
+  <div class="col-sm-3 col-xs-12 text-center">
+      <br /><br />
+      <div>
+        <small>Classes/Courses</small>
+        <h2><%= @course_stats[:total] %></h2>
+      </div>
+      <div>
+        <small>Paid</small>
+        <h2><%= @course_stats[:paid] %></h2>
+      </div>
+      <div>
+        <small>Free</small>
+        <h2><%= @course_stats[:free] %></h2>
+      </div>
+  </div>
+
+  <div class="col-sm-9 col-xs-12 text-center">
+    <%= high_chart 'Courses', @courses_chart %>
+  </div>
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-sm-3 col-xs-12 text-center">
+      <div>
+        <small>New Users</small>
+        <h2><%= @user_stats[:total] %></h2>
+      </div>
+      <div>
+        <small>Made Booking since</small>
+        <h2><%= @user_stats[:learned] %></h2>
+      </div>
+      <div>
+        <small>Made Teacher since</small>
+        <h2><%= @user_stats[:taught] %></h2>
+      </div>
+      <div>
+        <small>Made Provider since</small>
+        <h2><%= @user_stats[:provided] %></h2>
+      </div>
+  </div>
+  <div class="col-sm-9 col-xs-12 text-center">
+    <%= high_chart 'Signups', @signups_chart %>
+  </div>
+  
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-sm-3 col-xs-12 text-center">
+
+    <h4>Bookings</h4>
+    <div>
+      <small>Total</small>
+      <h2> <%= @current_booking_stats[:total] %></h2>
+    </div>
+    <div>
+      <small>Paid</small>
+      <h2> <%= @current_booking_stats[:paid] %></h2>
+    </div>
+    <div>
+      <small>Free</small>
+      <h2> <%= @current_booking_stats[:unpaid] %></h2>
+    </div>
+  </div>
+
+  <div class="col-sm-9 col-xs-12 text-center">
+    <%= high_chart 'Bookings', @bookings_chart %>
+  </div>
+
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-sm-4 col-xs-12 text-center">
+    <h4>Revenue</h4>
+    <div>
+      <h2><%= number_to_currency @booking_stats[:month][:revenue] %></h2>
+    </div>
+  </div>
+  <div class="col-sm-4 col-xs-12 text-center">
+    <h4>Average Selling Price (all)</h4>
+    <div>
+      <h2><%= number_to_currency @booking_stats[:month][:asp] %></h2>
+    </div>
+  </div>
+  <div class="col-sm-4 col-xs-12 text-center">
+    <h4>Average Selling Price (only paid)</h4>
+    <div>
+      <h2><%= number_to_currency @booking_stats[:month][:asp_only_paid] %></h2>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-sm-3 col-xs-12 text-center">
+    <h4>Total Providers</h4>
+    <div>
+      <h2><%= @provider_stats[:total] %></h2>
+    </div>
+  </div>
+
+  <div class="col-sm-3 col-xs-12 text-center">
+    <h4>Total Users</h4>
+    <div>
+      <h2><%= @chalkler_stats[:total] %></h2>
+    </div>
+  </div>
+
+  <div class="col-sm-3 col-xs-12 text-center">
+    <h4>New Providers</h4>
+    <div>
+      <h2><%= @provider_stats[:created] %></h2>
+    </div>
+  </div>
+
+  <div class="col-sm-3 col-xs-12 text-center">
+    <h4>Active Users Since</h4>
+    <div>
+      <h2><%= @chalkler_stats[:month][:active] %></h2>
+    </div>
+  </div>
+
+  <div class="col-sm-3 col-xs-12 text-center">
+    <h4>Active Providers</h4>
+    <div>
+      <h2>TO DO</h2>
+      <%# TODO %>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,19 @@ class BookingMailer < BaseChalkleMailer
     end
   end
 
+  #for non chalklers
+  def booking_confirmation_to_non_chalkler(booking)
+    @booking = booking
+    @booker = booking.booker
+    @course = booking.course
+    mail(to: @booking.pseudo_chalkler_email,  subject: I18n.t("email.booking.confirmation.to_non_chalkler.subject", name: @booking.name, course_name: @course.name)) do |format| 
+      format.text { render layout: 'standard_mailer' }
+      format.html { render layout: 'standard_mailer' }
+    end
+  end
+
+
+
   def booking_confirmation_to_teacher(booking)
     @booking = booking
     @teacher = booking.teacher
@@ -42,6 +55,18 @@ class BookingMailer < BaseChalkleMailer
       format.html { render layout: 'standard_mailer' }
     end
   end
+
+  def booking_cancelled_to_channel_admin(booking, channel_admin)
+    @booking = booking
+    @teacher = booking.teacher
+    @course = booking.course
+    @channel_admin = channel_admin
+
+    mail(to: @channel_admin.email, subject: I18n.t("email.booking.cancelled.to_channel_admin.subject", course_name: @course.name)) do |format| 
+      format.html { render layout: 'standard_mailer' }
+    end
+  end
+
 
   def booking_reminder(booking)
     @booking = booking

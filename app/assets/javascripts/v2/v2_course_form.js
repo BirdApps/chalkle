@@ -51,7 +51,7 @@ $(function(){
     }
 
     function custom_field_has_options(field){
-      return (['radio_buttons', 'check_boxes'].indexOf(field) > -1)
+      return (['radio_buttons', 'check_boxes', 'select'].indexOf(field) > -1)
     }
 
     function init_custom_fields(){
@@ -712,6 +712,10 @@ $(function(){
           valid = false;
           show_error_for($('#providing_agreeterms'));
         }
+      }
+      if(parseFloat($('#teaching_channel_min_income').val().replace('$','')) < 0){
+        valid = false;
+        show_error_for($('#fee_summary'));
       }
       return valid;
     }

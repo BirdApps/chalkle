@@ -8,7 +8,8 @@ class OutgoingPayment < ActiveRecord::Base
   STATUS_5 = "confirmed_paid"
   STATUS_6 = "not_valid"
   STATUSES = [STATUS_1,STATUS_2,STATUS_4,STATUS_6]
-  APPROVED_STATUSES = [STATUS_2,STATUS_4]
+  APPROVED_STATUSES = [STATUS_2,STATUS_4,STATUS_5]
+  PAID_STATUSES = [STATUS_5,STATUS_4]
 
   scope :pending, where(status: STATUS_1)
   scope :approved, where(status: STATUS_2)
@@ -58,6 +59,14 @@ class OutgoingPayment < ActiveRecord::Base
 
   def approved?
     APPROVED_STATUSES.include? self.status
+  end
+
+  def paid?
+    PAID_STATUSES.include? self.status
+  end
+
+  def not_paid?
+    !paid?
   end
 
   def not_approved?
@@ -181,14 +190,16 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def recalculate!
-    self.tax_number = nil
-    self.bank_account = nil
-    bookings.map{ |b| b.apply_fees! }
-    #remove any courses which are no longer marked as complete
-    remove_courses = courses.where("status != '#{Course::STATUS_4}'")
-    remove_courses.update_all(channel_payment_id: nil)
-    remove_courses.update_all(teacher_payment_id: nil)
-    calculate!
+    unless approved?
+      self.tax_number = nil
+      self.bank_account = nil
+      bookings.map{ |b| b.apply_fees! }
+      #remove any courses which are no longer marked as published or complete
+      remove_courses = courses.where("status != '#{Course::STATUS_4}' AND status != '#{Course::STATUS_1}'")
+      remove_courses.update_all(channel_payment_id: nil)
+      remove_courses.update_all(teacher_payment_id: nil)
+      calculate!
+    end
   end
 
   def calc_fee(recalculate = false)

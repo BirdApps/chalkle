@@ -48,7 +48,7 @@ set :rbenv_roles, :all # default value
 set :linked_files, fetch(:linked_files, []).push('config/database.yml')
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'tmp/dragonfly')
+set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -65,13 +65,10 @@ namespace :deploy do
   after :publishing, 'slack:deploy_complete'
   after :publishing, 'airbrake:deploy'
 
-  before :publishing, 'unicorn:stop'
-  after :publishing, :restart
+  # before :publishing, 'unicorn:stop'
+  # after :publishing, :restart
 
-
-  task :restart do
-    invoke 'unicorn:start'
-  end
+  after :publishing, 'unicorn:restart'
 
 
   after :restart, :clear_cache do

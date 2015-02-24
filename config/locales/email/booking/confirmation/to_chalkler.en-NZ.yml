@@ -2,12 +2,61 @@ en-NZ:
   email:
     booking:
       confirmation:
-        to_chalkler:
-          paid: "You should have also received a payment receipt separately."
-          subject: "%{name}, congrats! You are booked in to %{course_name}"
+        to_non_chalkler:
+          subject: "%{name}, you have a new booking for %{course_name} on Chalkle.com"
           body:
             html: |
-              Thanks! You are all booked in for [%{course_name}](%{course_url}). 
+              %{booker_name} has successfully booked you in to [%{course_name}](%{course_url}). 
+
+              The booking details are as follows:
+
+              [%{booking_name}](%{course_url})
+
+              [%{course_name}](%{course_url})
+
+              %{start_at}
+              %{time_range}
+              %{address}
+              %{venue}
+
+              If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
+
+              %{paid}
+
+              Happy learning!
+            text: |
+              %{booker_name} has successfully booked you in to [%{course_name}](%{course_url}). 
+
+              The booking details are as follows:
+
+              booked by – %{booking_name}
+
+              course name – %{course_name}
+
+              %{start_at}
+              %{time_range}
+              %{address}
+              %{venue}
+
+              If you have any questions please contact the provider, %{provider_name} directly.
+
+              %{paid}
+
+
+              Happy learning!
+
+              =======================
+
+              %{course_url}
+              %{provider_url}
+
+              =======================
+        to_chalkler:
+          paid: "You should have also received a payment receipt separately, unless you were invited by another person."
+          subject: "%{name}, you have a new booking for %{course_name}"
+          body:
+            html: |
+              Your booking is confirmed for [%{course_name}](%{course_url}). 
 
               The booking details are as follows:
 
@@ -27,7 +76,7 @@ en-NZ:
 
               Happy learning!
             text: |
-              Thanks! You are all booked in for %{course_name}. 
+              Your booking is confirmed for %{course_name}. 
 
               The booking details are as follows:
 

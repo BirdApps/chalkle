@@ -1,0 +1,78 @@
+<%= 
+   t("payment.receipt.body.html_1", booker_name: @chalkler.name, provider_name: @provider.name, tx_id: @payment.swipe_transaction_id).to_html
+%>
+<br />
+<p><strong><%= t("payment.receipt.breakdown.details") %></strong></p>
+<hr />
+<br />
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="item_table">
+  <tr style="text-align: left;">
+    <th width="59%" valign="top" class="td_head"><%= t("payment.receipt.breakdown.item") %>&nbsp;</td>
+    <th width="18%" valign="top" style="text-align: center" class="td_head"><%= t("payment.receipt.breakdown.count") %>&nbsp;</td>
+    <th width="23%" valign="top" style="text-align:right" class="td_head"><%= t("payment.receipt.breakdown.price") %>&nbsp;</td>
+  </tr>
+  <tr>
+    <td  class="td_underline" valign="top" data-shq="ignore">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="td_underline" valign="top" data-shq="ignore"><%= @course.id %> - <%= @course.name %>&nbsp;</td>
+    <td  class="td_underline" style="text-align: center" valign="top" data-shq="ignore"><%= @payment.bookings.count %>&nbsp;</td>
+    <td  class="td_underline" style="text-align: right" valign="top" data-shq="ignore"><%= number_to_currency @payment.paid_per_booking(false) %>&nbsp;</td>
+  </tr>
+  <tr>
+    <td  class="td_underline" valign="top" data-shq="ignore">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="td_underline" valign="top" data-shq="ignore"><strong><%= t("payment.receipt.breakdown.subtotal") %></strong>&nbsp;</td>
+    <td  class="td_underline" style="text-align: center" valign="top" data-shq="ignore">&nbsp;</td>
+    <td  class="td_underline" style="text-align: right" valign="top" data-shq="ignore"><%= number_to_currency @payment.inital_amount_paid(false) %>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="td_underline" valign="top" data-shq="ignore"><strong><%= t("payment.receipt.breakdown.tax") %></strong>&nbsp;</td>
+    <td  class="td_underline" style="text-align: center" valign="top" data-shq="ignore">&nbsp;</td>
+    <td  class="td_underline" style="text-align: right" valign="top" data-shq="ignore"><%= number_to_currency @payment.calculate_tax %>&nbsp;</td>
+  </tr>
+  <tr>
+    <td  class="td_underline" valign="top" data-shq="ignore">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="td_underline"  data-shq="ignore"><%= t("payment.receipt.body.html_2").to_html%>&nbsp;</td>
+    <td  class="td_underline" valign="top" data-shq="ignore"></td>
+    <td  class="td_underline" valign="top" data-shq="ignore"><h2 style="text-align:right"><%= number_to_currency @payment.inital_amount_paid %></h2>&nbsp;</td>
+  </tr>
+</table>
+<br />
+<hr />
+<br />
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+  <tr>
+    <td width="49%" valign="top"><strong><%= t("payment.receipt.provider.name") %></strong></td>
+    <td width="51%" valign="top" data-shq="ignore"><%= @provider.name %></td>
+  </tr>
+  <% if @provider.tax_registered? %>
+    <tr>
+        <td valign="top"><strong><%= t("payment.receipt.provider.tax") %>:</strong></td>
+        <td valign="top" data-shq="ignore"><%= @provider.tax_number %></td>
+    </tr>
+  <% end %>
+  <% if @provider.has_location? %>
+    <tr>
+      <td valign="top"><strong><%= t("payment.receipt.provider.address") %></strong></td>
+      <td valign="top" data-shq="ignore"><%= @provider.physical_address %></td>
+    </tr>
+  <% end %>
+  <% if @provider.has_phone? %>
+    <tr>
+      <td valign="top"><strong><%= t("payment.receipt.provider.phone") %></strong></td>
+      <td valign="top" data-shq="ignore"><%= @provider.phone %></td>
+    </tr>
+  <% end %>
+  <% if @provider.email.present? %>
+    <tr>
+      <td valign="top"><strong><%= t("payment.receipt.provider.email") %></strong></td>
+      <td valign="top" data-shq="ignore"><%= @provider.email %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<br />

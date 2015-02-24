@@ -10,7 +10,7 @@ class Notify::ChalklerNotification < Notify::Notifier
 
     chalkler.send_notification Notification::CHALKLE, me_preferences_path, message
 
-    ChalklerMailer.welcome(chalkler).deliver!
+    ChalklerMailer.welcome(chalkler).deliver! 
   end
 
 
