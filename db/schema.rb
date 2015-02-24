@@ -495,23 +495,4 @@ ActiveRecord::Schema.define(:version => 20150212215809) do
     t.string   "address_2"
   end
 
-  add_foreign_key "channel_admins", "chalklers", name: "channel_admins_chalkler_id_fk"
-
-  add_foreign_key "channel_regions", "channels", name: "channel_regions_channel_id_fk"
-  add_foreign_key "channel_regions", "regions", name: "channel_regions_region_id_fk"
-
-  add_foreign_key "channel_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
-  add_foreign_key "channel_teachers", "channels", name: "channel_teachers_channel_id_fk"
-
-  add_foreign_key "course_notices", "chalklers", name: "course_notices_chalkler_id_fk"
-  add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"
-
-  add_foreign_key "courses", "regions", name: "courses_region_id_fk"
-
-  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_chalkler_id_fk"
-  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_from_chalkler_id_fk"
-
-  add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
-  add_foreign_key "notifications", "chalklers", name: "notifications_from_chalkler_id_fk"
-
 end

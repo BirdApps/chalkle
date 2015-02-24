@@ -82,6 +82,18 @@ $category5: #17ABAB;
 $categories: ("category1" $category1, "category2" $category2, "category3" $category3, "category4" $category4, "category5" $category5);
 
 
+
+$primary-color: rgba(76,126,147,0.85);
+$primary-color-opaque: rgba(76,126,147,1);
+$col-sm: 768px;
+$col-md: 992px;
+$col-lg: 1200px;
+$navbar-height: 62px;
+$vertical-padding: 10px;
+$line-height: $navbar-height - ($vertical-padding * 2);
+$mob-line-height: $line-height+15;
+
+
 // for font-awesome
 $iconSpritePath: '';
 $iconWhiteSpritePath: '';
