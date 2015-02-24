@@ -12,36 +12,6 @@
   -khtml-text-shadow: $shad;
 }
 
-@mixin transform($args) {
-  -webkit-transform: $args;
-  -moz-transform: $args;
-  -o-transform: $args;
-  -ms-transform: $args;
-  transform: $args;
-}
-
-@mixin transition($args) {
-  -webkit-transition: $args;
-  -moz-transition: $args;
-  -ms-transition: $args;
-  -o-transition: $args;
-  transition: $args;
-}
-
-@mixin filter($args) {
-  filter: $args;
-  -webkit-filter: $args;
-  -moz-filter: $args;
-  -o-filter: $args;
-  -ms-filter: $args;
-}
-
-@mixin box-shadow($args) {
-  -moz-box-shadow: $args;
-  box-shadow: $args;
-}
-
-
 @mixin placeholder($color) {
   input::-webkit-input-placeholder {
     color: $color;

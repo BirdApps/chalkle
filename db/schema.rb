@@ -104,7 +104,6 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
     t.string   "address"
     t.string   "avatar"
     t.string   "role"
-    t.string   "location"
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -112,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.string   "location"
   end
 
   add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true
@@ -439,20 +439,5 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
   end
 
   add_index "subscriptions", ["provider_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true
-
-  add_foreign_key "course_notices", "chalklers", name: "course_notices_chalkler_id_fk"
-  add_foreign_key "course_notices", "courses", name: "course_notices_course_id_fk"
-
-  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_chalkler_id_fk"
-  add_foreign_key "notification_preferences", "chalklers", name: "notification_preferences_from_chalkler_id_fk"
-
-  add_foreign_key "notifications", "chalklers", name: "notifications_chalkler_id_fk"
-  add_foreign_key "notifications", "chalklers", name: "notifications_from_chalkler_id_fk"
-
-  add_foreign_key "provider_admins", "chalklers", name: "channel_admins_chalkler_id_fk"
-
-  add_foreign_key "provider_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
-  add_foreign_key "provider_teachers", "providers", name: "channel_teachers_channel_id_fk"
-
 
 end
