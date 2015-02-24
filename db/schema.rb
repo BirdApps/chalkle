@@ -454,4 +454,5 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
   add_foreign_key "provider_teachers", "chalklers", name: "channel_teachers_chalkler_id_fk"
   add_foreign_key "provider_teachers", "providers", name: "channel_teachers_channel_id_fk"
 
+
 end

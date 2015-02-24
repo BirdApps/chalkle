@@ -108,7 +108,7 @@ Your Chalkle Administrator")
   end
 
   def fluid_layout? 
-    if request[:action].include?("learn") && !chalkler_signed_in?
+    if request[:action]=~/learn|teach/ && !chalkler_signed_in?
       true
     else
       super

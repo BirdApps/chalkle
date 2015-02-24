@@ -34,6 +34,7 @@ $mob-line-height: $line-height+15;
 .center{
   text-align: center;
 }
+
 body.v2 {
 
   .datepicker-dropdown{
@@ -344,30 +345,23 @@ body.v2 {
     }
   }
   .btn-3d {
-    -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.08);
-    box-shadow:         1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.08);
-    -webkit-transition: all 200ms ease-out;
-    -moz-transition: all 200ms ease-out;
-    -ms-transition: all 200ms ease-out;
-    -o-transition: all 200ms ease-out;
-    transition: all 200ms ease-out;
+    box-shadow: 1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.08);
+    @include transition(all 200ms ease-out);
   }
   .btn-3d:hover {
     position:relative;
-    -moz-box-shadow:    1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.15);
-    box-shadow:         1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.15);
+    box-shadow: 1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.15);
   }
   .btn-3d:active {
     position:relative;
     bottom: -1px;
     right: -1px;
-    -moz-box-shadow:    1px 1px 0px 0px rgba(0,0,0,0.08);
-    box-shadow:         1px 1px 0px 0px rgba(0,0,0,0.08);
+    @include box-shadow(1px 1px 0px 0px rgba(0,0,0,0.08));
   }
   .btn-default {
     background-color: rgba(0,0,0,0.67);
     border: none;
-    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.20);
+    @include box-shadow(0px 0px 0px 0px rgba(0,0,0,0.20));
     border-radius: 5px;
     color: #FFFFFF;
     letter-spacing: 1.2px;
@@ -377,15 +371,14 @@ body.v2 {
     top: -2px;
     position: relative;
     background-color: rgba(0,0,0,0.87);
-    box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.40);
+    @include box-shadow(2px 2px 0px 0px rgba(0,0,0,0.40));
   }
 
   .btn-default.active, .btn-default:active, .btn-default:focus {
     top: -0px;
     position: relative;
     background-color: rgba(0,0,0,1.0);
-    box-shadow: 0px -1px 0px 0px rgba(255,255,255,0.6);
-
+    @include box-shadow(0px -1px 0px 0px rgba(255,255,255,0.6));
   }
   .btn-primary {
     transition: all 120ms;
@@ -399,12 +392,12 @@ body.v2 {
     top: -2px;
     position: relative;
     background-color: #ffb605;
-    box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.40);
+    @include box-shadow(2px 2px 0px 0px rgba(0,0,0,0.40));
   }
   .btn-primary:active, .btn-primary:focus {
     top: -0px;
     position: relative;
-    box-shadow: 0px -1px 0px 0px rgba(255,255,255,0.6);
+    @include box-shadow(0px -1px 0px 0px rgba(255,255,255,0.6));
     background-color: #EA9300;
   }
   

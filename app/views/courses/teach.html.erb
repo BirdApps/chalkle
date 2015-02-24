@@ -1,4 +1,119 @@
-<% if current_user && current_user.teach_menu_badge_count > 0 %>
+<% unless current_user && current_user.teach_menu_badge_count > 0 %>
+
+  <div class="clearfix" id="teach">
+    <div class="clearfix">
+      <div class="col-xs-6 col-md-6">
+        <h1 class="">Teach with Chalkle</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 shade text-center">
+        Use chalkle to deliver classes and courses successfully.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="clearfix shade dark">
+    <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
+      <%= image_tag('teach/community.png') %>
+      Engage your community
+    </div>
+    <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
+      <%= image_tag('teach/great_classes.png') %>
+      Teach Great classes
+    </div>
+  </div>
+
+<section id="process" class="clearfix">
+  
+  <div class="col-xs-12 col-sm-6 col-sm-offset-2">
+    <h3 class="text-center">Any learning experience;</h3> 
+      <small><strong>chalkle.com</strong> can handle workshops and one-off classes, 8 week courses to conferences and special events.</small>
+  </div>
+  <div class="col-xs-0 col-sm-4"></div>
+
+  <div class="col-xs-12 col-sm-6 col-sm-offset-4">
+    <h3 class="text-center">A great booking experience;</h3> 
+    <small>learners book and pay online easily. Chalkle handles all the reminders, confirmations, and receipts for you.</small>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-sm-offset-2">
+    <div>
+        <h3 class="text-center">Don’t worry about money;</h3>
+        <%= image_tag('teach/payment_admin.png') %> 
+        <small>We handle all the payment administration, receipts and refunds. You simply set the price, and let us know how you’d like to be paid. </small>
+    </div>
+
+  </div>
+  <div class="col-xs-0 col-sm-4"></div>
+
+  <div class="col-xs-6 col-sm-6 col-sm-offset-4">
+    <h3 class="text-center">Connect with your learners;</h3>
+    <small>See who is coming to your class, share resources and connect on our class noticeboard.</small>
+  </div>
+
+
+</section>
+
+<div class="row" id="plan-price">
+  <div class="col-xs-12 text-center">
+    <%= image_tag('teach/free_to_join.png') %>
+    Free to set up and join; We succeed when you succeed. Simple as that. 
+  </div>
+</div>
+
+<section class="shade dark clearfix">
+
+
+  <div class="col-xs-6 col-xs-offset-3 col-md-2 col-md-offset-1 text-center plan free">
+    <h3>Chalkle Free</h3>
+    <div class="circle">
+      $0
+    </div>
+    <small>
+      <p>for free classes</p>
+    </small>
+  </div>
+
+
+  <div class="col-xs-6 col-xs-offset-3 col-md-3 col-md-offset-1 text-center plan">
+    <h3>Chalkle Basic</h3>
+    <div class="circle">
+      $2
+      <sub>+GST+4%</sub>
+    </div>
+    <small>
+      <p>payment processing per paid booking</p>
+    </small>
+  </div>
+
+  <div class="col-xs-6 col-xs-offset-3 col-md-3 col-md-offset-1 text-center plan">
+    <h3>Chalkle Pro</h3>
+    <div class="circle">
+      $2
+      <sub>+GST+4%</sub>
+    </div>
+    <small>
+      <p>payment processing per paid booking</p>
+    </small>
+  </div>
+
+
+
+</section>
+    [Set up your class] [Learn more]
+
+ <div class="col-md-12 text-center">
+    Ready to set up your first class? <%= link_to "Create a Class", new_course_path, class: "btn btn-primary" %>
+  </div>
+
+
+
+
+
+<% else %>
 
   <div class="row">
 
@@ -52,132 +167,9 @@
   <% end %>
 
 
-<% else %>
-<section id="who" class="row">
-  <div class="fancy-header col-md-12 ">
-    <h3 class="">Who uses Chalkle?</h3>
-    <hr />
-  </div>
-
-  <div class="who col-xs-12 col-md-3 text-center">
-    <h4 class='text-center'>Teachers</h4>
-    <div class="teacher-hero"></div>
-    <h3>Brandon’s Ukes</h3>
-    <p>
-      Brandon is a ukulele teacher in Wellington who has used Chalkle to grow a community of learners and a personal brand around these ukulele classes.
-    </p>
-  </div>
-
-  <div class="who col-xs-12 col-md-3 text-center">
-    <h4 class='text-center'>Community Groups</h4>
-    <div class="community-hero"></div>
-
-    <h3>Innermost Gardens</h3>
-    <p>
-      Innermost Gardens hosts local food production, preparation and natural building workshops through Chalkle to a growing community of learners.
-    </p>
-  </div>
-
-  <div class="who col-xs-12 col-md-3 text-center">
-  <h4 class='text-center'>Small Business</h4>
-    <div class="business-hero"></div>
-    <h3>Enspiral</h3>
-    <p>
-      Enspiral hosts highly practical Social Entrepreneurship development classes, delivered by a network of practicing Entrepreneurs.
-    </p>
-  </div>
-
-  <div class="who col-xs-12 col-md-3 text-center">
-  <h4 class='text-center'>Libraries</h4>
-    <div class="library-hero"></div>
-
-    <h3>Te Takere</h3>
-    <p>
-      Te Takere is a Cultural Community Centre and Library in Horowhenua. They use Chalkle to manage and promote their classes and run a huge range of lifelong learning opportunities.
-    </p>
-  </div>
-</section>
-
-
-<section id="benefits" class="row">
-  <div class="fancy-header col-md-12 ">
-    <h3 class="">Chalkle will help you:</h3>
-    <hr />
-  </div>
-
-  <div class="benefits col-xs-12 col-md-6 benefits-community benefits-top">
-    <h2>Meet new people and grow your community</h2>
-    Launch your own provider page on Chalkle.com and promote your classes to a wider audience.
-  </div>
-
-  <div class="benefits col-xs-12 col-md-6 benefits-revenue benefits-top benefits-right">
-    <h2>Earn revenue and save money</h2>
-      Set your own prices for your classes, set your own rates for paying teachers and community organisers.
-  </div>
-  <div class="clear"></div>
-  <div class="benefits col-xs-12 col-md-6 benefits-organise benefits-bottom">
-    <h2>Make organising classes easy</h2>
-      We make it easy to manage your bookings, connect with your learners and access resources to help you run great classes.
-  </div>
-
-  <div class="benefits col-xs-12 col-md-6  benefits-classes benefits-bottom benefits-right">
-    
-    <h2>Deliver great classes to lifelong learners!</h2>
-      We take away the stress so you can focus on what you do best; <strong>teach great classes</strong>.
-  </div>
-
-</section>
 
 
 <% end %> 
-
-
-<section id="getting_started" class="row">
-  <div class="fancy-header">
-    <h3 class="">Getting Started on Chalkle </h3><hr />
-  </div>
-
-  <dl class="col-xs-12 col-md-8 col-md-offset-2">
-
-    <dt>1</dt>
-    <dd>
-      <h4>Create your first Class or Course</h4>
-      <p>
-        When you create your first class, your chalkle account becomes a provider account on the community plan.
-      </p>
-      <p>
-        Your classes will be listed on chalkle.com for all users in your region to see. 
-      </p>
-    </dd>
-    <div class="clear"></div>
-
-    <dt>2</dt>
-    <dd>
-      <h4>Watch Chalklers get interested and create bookings to attend</h4>
-      <p>
-        Learners sign up and pay for your class through chalkle.com. They get all the information they need automatically. You can monitor progress  
-      </p>
-    </dd>
-    <div class="clear"></div>
-
-    <dt>3</dt>
-    <dd>
-      <h4>Run your class!</h4>
-      <p>
-        If you have any questions, we are here to help
-      </p>
-      <p>
-        <%= link_to 'Contact Us', partners_say_hello_path %>
-      </p>
-    </dd>
-  </dl>
-
-</section>
- <div class="col-md-12 text-center">
-    Ready to set up your first class? <%= link_to "Create a Class", new_course_path, class: "btn btn-primary" %>
-  </div>
-
-
 
 
 
