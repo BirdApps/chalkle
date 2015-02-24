@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
           color: c.provider.header_color, 
           provider: c.provider.name, 
           provider_image: c.provider.logo.url,
-          provider_url: provider_course_path(c.provider.url_name,c.url_name,c.id), 
+          provider_url: provider_path(c.provider.url_name), 
           teacher: (c.teacher ? c.teacher.name : 'No teacher assigned' ), 
           teacher_url: (c.teacher ? provider_provider_teacher_path(c.provider.url_name,c.teacher) : '#'), 
           status: c.status, 
@@ -199,9 +199,7 @@ class CoursesController < ApplicationController
 
     def header_course
       @page_title_logo = @course.provider.logo
-
-      @page_title = "[#{@course.name}](#{@course.path})"
-      @page_subtitle = "[#{@course.provider.name}](#{provider_path(@course.provider.url_name)})"
+      @page_title = "[#{@course.provider.name}](#{provider_path(@course.provider.url_name)})"
       @nav_links = []
       if @course.spaces_left?
           @nav_links << {

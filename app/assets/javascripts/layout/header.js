@@ -2,7 +2,6 @@ $(window).load(function(){
   $('#wrapper').css('opacity',1);
 });
 
-
 $(function() {
   function text_to_fit(){
     if($('.text-to-fit').length > 0){
@@ -54,33 +53,62 @@ $(function(){
 
 $(function(){
 
-  var header = $('body');
-  var header_content_bg = $('body.v2 .coloring');
+  var header = $('.header');
   var coloring = $('.coloring');
-  scrolltop = function(){ return $(document).scrollTop(); };
 
-  background_size_for_header_images = function(){
+  var bg_image;
+  var bg_img = function(){
+    if(bg_image == undefined){
+      bg_image = new Image;
+      bg_image.src = $('.fixed_hero').css('background-image').replace(/url\(|\)$/ig, "");
+
+      var scale = ($(document).width()/bg_image.width)
+      var max_scroll_height
+    }
+    return bg_image;
+  }
+
+  var max_scroll_height = function(){
+    var bg_scale = $(document).width() / bg_img().width;
+    return bg_img().height * bg_scale - $('.fixed_hero').height();
+  }
+
+  var scrolltop = function(){ return $(document).scrollTop(); };
+
+  function overscroll_header(scroll) {
+    console.log( (scroll*-1)+'px' );
+
+    header.css('margin-top', (scroll)+'px' );
+    header.css('padding-top', (scroll*-1)+'px' );
+  }
+
+  function background_size_for_header_images(){
+    if(scrolltop() < 0){
+      overscroll_header(scrolltop());
+    }
     var window_width = $(window).width();
     header.css("background-size", window_width*1.1);
-    header_content_bg.css("background-size", window_width*1.1);
-  };
+  }
 
-  header_image_parallax = function(){
-    var header = $('body');
-    new_position = ((-scrolltop())/$(window).height()*200) + 'px';
-    header.css("background-position", 'center top -' + new_position );
-    header_content_bg.css("background-position", 'center top -' + new_position );
-  };
+  function header_image_parallax() {
+    //new_position = ((-scrolltop())/$(window).height()*200) + 'px';
+
+    //scroll_hero.css("background-position", 'center top -' + new_position );
+
+    var new_fixed_position = (-1*(scrolltop())-100);
+
+    if( (max_scroll_height()*-1) > new_fixed_position ){
+      //scrolled past the point of no image
+      new_fixed_position = (max_scroll_height()*-1);
+    }
+    header.css("background-position", 'center top ' + new_fixed_position  + 'px');
+  }
   
-  check_notification_height = function(){
+  function check_notification_height(){
     $('.notifications-drop ul').css('max-height', window.innerHeight - 140 );
   }
 
-  $('.notifications-drop .dropdown-toggle').click(function(){
-    $.get('/me/notifications/seen');
-  });
-
-  update_notification_badge = function(count) {
+  function update_notification_badge(count) {
 
     // update the nav
     $(".notification-count").each(function(){
@@ -103,11 +131,11 @@ $(function(){
     return false;
   };
 
-  current_notifications = function(){ 
+  function current_notifications(){ 
     return $('#notifications_container').children("li._notification");
   };
 
-  update_notification_list = function(init){
+  function update_notification_list(init){
     
     var notification_badge_count = current_notifications().filter(".unseen").size();
     
@@ -141,21 +169,31 @@ $(function(){
     update_notification_badge(notification_badge_count);
   };
 
-  background_size_for_header_images();
-  //header_image_parallax();
-  check_notification_height();
+  var ORIGINAL_TITLE;
+  var NOTIFICATIONS_LOADED;
 
-  var ORIGINAL_TITLE = $('title').html();
-  var NOTIFICATIONS_LOADED = false;
+  function init(){
+    background_size_for_header_images();
+    //header_image_parallax();
+    check_notification_height();
 
-  if($(".notifications-drop").length > 0){ 
-    update_notification_list(true);
-    window.setInterval(update_notification_list, 7000);
+    ORIGINAL_TITLE = $('title').html();
+    NOTIFICATIONS_LOADED = false;
+
+    if($(".notifications-drop").length > 0){ 
+      update_notification_list(true);
+      window.setInterval(update_notification_list, 7000);
+    }
+
+    $('.notifications-drop .dropdown-toggle').click(function(){
+      $.get('/me/notifications/seen');
+    });
+
+    window.addEventListener("resize", background_size_for_header_images);
+    window.addEventListener("resize", check_notification_height);
+    window.addEventListener("scroll", background_size_for_header_images);
   }
 
-
-  window.addEventListener("resize", background_size_for_header_images);
-  window.addEventListener("resize", check_notification_height);
-  window.addEventListener("scroll", header_image_parallax);
+  init();
 
 });

@@ -16,7 +16,7 @@
     <%= yield :header if content_for? :header %>
   </head>
 
-  <body class="<%= body_class %> v2" role="document" style=" background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
+  <body class="<%= body_class %> v2" role="document">
     <div id="fb-root"></div>
 
     <header>
@@ -25,6 +25,7 @@
         <%= render 'layouts/header' if show_header? %>
       </div>
     </header>
+
     <div class="body-content">
       <div id="wrapper">
         <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">

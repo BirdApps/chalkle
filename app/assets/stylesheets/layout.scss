@@ -1,19 +1,21 @@
-html, body, .body-content, #wrapper {
+html {
   height: 100%;
   min-height: 100%;
   overflow-x: hidden;
-  overflow-y: scroll;
   position: relative;
   -webkit-font-smoothing: antialiased;
 }
 
 html {
   body.v2 {
+    height: 100%;
+    min-height: 100%;
     color: #727272;
     font-family: $font_family_normal;
     padding-top: 0; 
-    background: rgba(76,126,147,1);
-    
+    background-color: transparent;
+    margin-bottom: 0;
+
     header .body-content{
       @media screen and (max-width: 768px){
         margin-top: 50px;
@@ -28,9 +30,10 @@ html {
       background-position: center 150px;
       background-size: 43px 43px;
       background-repeat: no-repeat;
+      min-height: 100%;
       background-color: #fff;
-    
       #wrapper{
+        height: 100%;
         opacity: 0;
         transition: opacity 0.2s;
         div[role=main] {

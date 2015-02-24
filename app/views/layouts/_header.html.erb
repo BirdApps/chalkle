@@ -1,11 +1,11 @@
-<div class="header">
+<div class="header" style=" background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
   <div class="container header_content">
-    <div class="header_content">
+    <div class="clearfix header_content">
       
       <% if (title = page_title).present? %>
 
         <div class="title-wrapper" <%= 'style=width:85%' if nav_links.blank?  %>>
-          <div class="page_title_logo img hidden-xs" style="background-image: url(<%= @page_title_logo.present? ? @page_title_logo : ''%>)">
+          <div class="page_title_logo hero img hidden-xs" style="background-image: url(<%= @page_title_logo.present? ? @page_title_logo : ''%>)">
           </div>
           <div class="title">
             <em class="hidden-xs"><%= page_subtitle.to_html %></em>
