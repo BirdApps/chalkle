@@ -73,6 +73,11 @@ class CoursesController < ApplicationController
   end
 
   def teach
+    @page_subtitle = "Teach with Chalkle"
+    @page_title =  "Teach"
+    @meta_title = "Teach with "
+
+    @show_header = false unless chalkler_signed_in?
     render 'teach'
   end
 

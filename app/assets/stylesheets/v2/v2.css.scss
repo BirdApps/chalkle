@@ -1,30 +1,5 @@
-@mixin placeholder($color) {
-  input::-webkit-input-placeholder {
-    color: $color;
-  }
-  input::-moz-placeholder {
-     color: $color;
-     opacity: 1;
-  }
-  input:-moz-placeholder {   /* Older versions of Firefox */
-     color: $color;
-      opacity: 1;
-  }
-  input:-ms-input-placeholder { 
-     color: $color;
-      opacity: 1;
-  }
-}
-
-$primary-color: rgba(76,126,147,0.9);
-$primary-color-opaque: rgba(76,126,147,1);
-$col-sm: 768px;
-$col-md: 992px;
-$col-lg: 1200px;
-$navbar-height: 62px;
-$vertical-padding: 10px;
-$line-height: $navbar-height - ($vertical-padding * 2);
-$mob-line-height: $line-height+15;
+@import "../_variables";
+@import "../_mixins";
 
 
 .no-hover-bg:hover{
