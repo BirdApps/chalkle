@@ -377,13 +377,15 @@ body.v2 {
   
  
   #wrapper {
-    width:100%; background-color:#fff; 
+    width:100%;
     min-height: 100%;
+    background-color: #fff;
   }
 
 .container-fluid {
     font-family: "proxima-nova",sans-serif;
-
+    padding-right: 0;
+    padding-left: 0;
     letter-spacing: 1.5px;
     h1,h2,h3,h4,h5,h6 {
       font-weight: 300;
@@ -1119,11 +1121,15 @@ body.v2 {
     text-align: center;
   }
 
+  >.body-content {
+    background-image: image_url('learn/diver.jpg') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    #wrapper {
+       background-color: transparent;
+    }
+  }
   #sign-in {
-    background-image: image_url('learn/diver.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-color: #081F48;
     @media screen and (min-width: 769px){
       padding-top: 220px; 
     }

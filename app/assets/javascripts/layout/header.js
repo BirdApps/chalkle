@@ -56,30 +56,18 @@ $(function(){
   var header = $('.header');
   var coloring = $('.coloring');
 
-  var bg_image;
-  var bg_img = function(){
-    if(bg_image == undefined){
-      bg_image = new Image;
-      bg_image.src = $('.fixed_hero').css('background-image').replace(/url\(|\)$/ig, "");
-
-      var scale = ($(document).width()/bg_image.width)
-      var max_scroll_height
-    }
-    return bg_image;
-  }
-
   var max_scroll_height = function(){
     var bg_scale = $(document).width() / bg_img().width;
     return bg_img().height * bg_scale - $('.fixed_hero').height();
   }
 
-  var scrolltop = function(){ return $(document).scrollTop(); };
+  var scrolltop = function(){ return $('body').scrollTop(); };
 
   function overscroll_header(scroll) {
-    console.log( (scroll*-1)+'px' );
-
-    header.css('margin-top', (scroll)+'px' );
-    header.css('padding-top', (scroll*-1)+'px' );
+    if(scroll*-1 > header.height()){
+      scroll = header.height()*-1;
+    }
+    header.css('padding-top', (coloring.height()+(scroll*5*-1))+'px' );
   }
 
   function background_size_for_header_images(){
@@ -87,7 +75,7 @@ $(function(){
       overscroll_header(scrolltop());
     }
     var window_width = $(window).width();
-    header.css("background-size", window_width*1.1);
+    //header.css("background-size", window_width*1.1);
   }
 
   function header_image_parallax() {

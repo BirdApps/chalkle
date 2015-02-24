@@ -17,12 +17,12 @@ html {
     background-color: transparent;
     margin-bottom: 0;
 
-    header .body-content{
+    .header {
       @media screen and (max-width: 768px){
-        margin-top: 50px;
+        padding-top: 50px;
       }
       @media screen and (min-width: 769px){
-        margin-top: 62px;
+        padding-top: 62px;
       }
     }
 
@@ -39,7 +39,6 @@ html {
         transition: opacity 0.2s;
         div[role=main] {
           padding-bottom:75px;
-          background-color: #fff;
           position: relative;
           min-height: 200px;
         } // div[role=main] 
