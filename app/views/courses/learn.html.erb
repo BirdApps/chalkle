@@ -111,13 +111,13 @@
       <% end %>
   </div>
    <div class="row">
-    <% if current_chalkler && current_chalkler.channels.any? %>
+    <% if current_chalkler && current_chalkler.providers.any? %>
       <div class="fancy-header">
         <h3>Following</h3>
         <hr />
       </div>
       <div class="col-xs-12">
-        <%= render partial: 'me/channels/channel', collection: current_chalkler.channels.order('name ASC') %>
+        <%= render partial: 'me/providers/provider', collection: current_chalkler.providers.order('name ASC') %>
       </div>
     <% end %>
   </div>

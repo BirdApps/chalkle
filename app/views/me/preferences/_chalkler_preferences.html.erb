@@ -35,7 +35,7 @@
     <hr />
   </div>
   <div class="row col-xs-12">
-    <%= render current_chalkler.channels.order('name ASC')  %>  
+    <%= render current_chalkler.providers.order('name ASC')  %>  
   </div>
   <br />
   <%= f.input :email_frequency, label: 'Frequency of emails about providers you follow', :collection => Chalkler.email_frequency_select_options, include_blank: false, wrapper: :horizontal %>

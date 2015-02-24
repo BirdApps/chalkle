@@ -1,0 +1,21 @@
+<div class="teacher row">
+  <div class="col-xs-8 col-sm-10">
+    <img class="avatar32" src="<%= provider_admin.avatar %>">
+    <div class="pull-left"> 
+      <div class="name">
+        <% if provider_admin.chalkler %>
+          <%= link_to provider_admin.name, chalkler_path(provider_admin.chalkler.id) %>
+        <% else %>
+          <%= provider_admin.email %> <span class="small light">(user has not signed up)</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4 col-sm-2 text-right">
+    <% if provider_admin.chalkler.blank? %>
+      <%= link_to(edit_provider_admin_path(provider_admin.provider.url_name,provider_admin.id), class: 'btn btn-default') do %>
+        <span class="fa fa-cog"></span> Edit 
+      <% end %>
+    <% end %>
+  </div>
+</div>

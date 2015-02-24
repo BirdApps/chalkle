@@ -1,68 +1,83 @@
 <% if (current_chalkler && (bookings = @course.bookings_for(current_chalkler)).present? && bookings.any?) || current_user.super? %>
-    <div class="col-sm-8 col-sm-offset-2 col-sm-inset-2"> 
-      <% if bookings.any? %>
-        <div class="fancy-header">
-          <h3>Your <%= "Booking".pluralize(bookings.count) %></h3>
-          <hr />
-        </div>  
-      <% end %>
-      <div class="col-xs-12 x1-25 center light">
-      <% bookings.each do |booking|%>
-        <div class="strong"> 
-          <%= booking.name %> 
-        </div>
-        <% unless booking.course.free? %>
-          <div class="col-xs-12 center light">
-            <span class="grey inline vmid">
-              Booking cost:
-            </span>
-            <span class="x1-25 inline vmid">
-              $<%= booking.cost_formatted %>
-            </span> 
-          </div>
-        <% end %>
 
-        <% if booking.status == 'yes' %>
-          <% if @course.class? %>
-            <%= quick_date_time @course.start_at %>
-          <% else %>
-            <% count = 0 %>
-            <% booking.course.classes.each do |lesson| %>
-              <span class="strong">
-                Class <%= count+=1 %> -
-              </span>
-              <%= quick_date_time lesson.start_at %><br />
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookingsModal">
+    My Bookings (<%= bookings.count  %>)
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="bookingsModal" tabindex="-1" role="dialog" aria-labelledby="bookingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="bookingsModalLabel">
+            <%= "Booking".pluralize(bookings.count) %>
+          </h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="col-xs-12 x1-25 center light">
+            <% bookings.each do |booking|%>
+              <div class="strong"> 
+                <%= booking.name %> 
+              </div>
+              <% unless booking.course.free? %>
+                <div class="col-xs-12 center light">
+                  <span class="grey inline vmid">
+                    Booking cost:
+                  </span>
+                  <span class="x1-25 inline vmid">
+                    $<%= booking.cost_formatted %>
+                  </span> 
+                </div>
+              <% end %>
+
+              <% if booking.status == 'yes' %>
+                <% if @course.class? %>
+                  <%= quick_date_time @course.start_at %>
+                <% else %>
+                  <% count = 0 %>
+                  <% booking.course.classes.each do |lesson| %>
+                    <span class="strong">
+                      Class <%= count+=1 %> -
+                    </span>
+                    <%= quick_date_time lesson.start_at %><br />
+                  <% end %>
+                <% end %>
+                <br />
+                <% if current_chalkler == booking.chalkler %>
+                  <%= link_to "Cancel booking", cancel_course_booking_path(booking.course, booking), class: 'text-danger small light' %>
+                <% else %>
+                  <p class="small light">
+                    This booking has been transferred to <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler)  %>
+                  </p>
+                  <%= link_to "Take back ownership", take_rights_course_booking_path(booking.course,booking), class: 'text-danger small light' %>
+                <% end %>
+              <% else %>
+                <span class="small light text-warning"><%= booking.status_formatted %></span>
+              <% end %>
+
+              <br />
+              
+              <div class="clearfix">
+                <hr class="dark" />
+              </div>
+            
             <% end %>
-          <% end %>
-          <br />
-          <% if current_chalkler == booking.chalkler %>
-            <%= link_to "Cancel booking", cancel_course_booking_path(booking.course, booking), class: 'text-danger small light' %>
-          <% else %>
-            <p class="small light">
-              This booking has been transferred to <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler)  %>
-            </p>
-            <%= link_to "Take back ownership", take_rights_course_booking_path(booking.course,booking), class: 'text-danger small light' %>
-          <% end %>
-        <% else %>
-          <span class="small light text-warning"><%= booking.status_formatted %></span>
-        <% end %>
-
-        <br />
-        
-        <div class="clearfix">
-          <hr class="dark" />
-        </div>
-      
-      <% end %>
-      
-      <% if (bookings.any? || current_user.super?) && @course.note_to_attendees.present? %>
-          <div class="">
-            <br />
-            <div class="small light">Special note for attendees</div>
-            <%= @course.note_to_attendees %>
+            
+            <% if (bookings.any? || current_user.super?) && @course.note_to_attendees.present? %>
+              <div class="">
+                <br />
+                <div class="small light">Special note for attendees</div>
+                <%= @course.note_to_attendees %>
+              </div>
+            <% end %>
           </div>
-        <% end %>
-      </div>
 
+        </div>
+      </div>
     </div>
-  <% end %>
+  </div>
+
+<% end %>

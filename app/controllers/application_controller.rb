@@ -8,11 +8,7 @@ class ApplicationController < ActionController::Base
   layout 'layouts/application'
 
   before_filter :set_locale
-
-  before_filter :load_region
-  before_filter :load_channel
-  before_filter :load_category
-  before_filter :skip_cache!
+  before_filter :load_provider
   before_filter :check_user_data
   after_filter :store_location
 
@@ -31,9 +27,8 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    Chalkler::DataCollection.new(resource, { original_path: session[:previous_url], default_path: root_path }).path
-
-    session[:previous_url] || root_path
+    path = session[:previous_url] || root_path
+    path == new_chalkler_session_path ? root_path : path
   end
   def styleguide
     render "/styleguide"
@@ -43,16 +38,49 @@ class ApplicationController < ActionController::Base
     stored_location_for(resource) || params[:redirect_to]  || root_path
   end
 
-  def about
-
+  def home
   end
-
 
   def not_found
     render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
   end
 
 protected
+
+  def header_chalkler
+    @nav_links = []
+    @chalkler = current_chalkler if @chalkler.nil?
+    
+    if current_user.super? && @chalkler != current_chalkler
+     @nav_links << {
+        img_name: "people",
+        link: sudo_chalklers_path({anchor: "chalkler-#{@chalkler.id}"}),
+        active: false,
+        title: "Become"
+      }
+    end
+
+    if @chalkler == current_chalkler || current_user.super?
+       @nav_links.concat [{
+          img_name: "bolt",
+          link: chalkler_path(@chalkler.id),
+          active: request.path.include?("show"),
+          title: "Profile"
+        },{
+        img_name: "settings",
+          link: me_preferences_path,
+          active: request.path.include?("show"),
+          title: "Settings"
+      },{
+        img_name: "plane", 
+        link: me_notification_preference_path,
+        active: request.path.include?("notifications"),
+        title: "Email Options"
+      }]
+    end
+
+  end
+
 
   def authorize(record)
     super record unless current_user.super?
@@ -86,62 +114,25 @@ protected
       end
     end
   end
-
-  def country_code
-    params[:country_code] unless params[:country_code].blank?
-  end
   
-  def region_name
-    reconnect_attempts ||= 3
-    session[:region] = params[:region] unless params[:region].blank?
 
-    return session[:region] if session[:region]
-
-    # Occasionally the geolocator API does not respond. Trying again usually gets this to behave.
-    begin
-      if request && request.location && request.location.data
-        request_region = request.location.data["region_name"]
-      end
-    rescue 
-      retry if (reconnect_attempts -=1) > 0
-    else
-      nil
-    end
-    (request_region == "") ? nil : request_region
-  end
-  def channel_name
-    (params[:provider] || params[:channel_url_name]).encode("UTF-8", "ISO-8859-1").parameterize if (params[:provider] || params[:channel_url_name]).present?
+  def provider_name
+    params[:provider_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:provider_url_name].present?
   rescue ArgumentError 
     nil
   end
 
-  def category_name
-    params[:topic]
-  end
-
-  def load_region
-    if @region.nil?
-      @region = Region.new name: "New Zealand"
-    end
-  end
-
-  def load_category
-    if @category.nil?
-      @category = Category.new name: 'All Topics'
-    end
-  end
-
-  def load_channel
+  def load_provider
     redirect_to_subdomain
-    if !@channel
-      if channel_name 
-        @channel = Channel.find_by_url_name(channel_name) || Channel.new(name: "All Providers")
-      elsif params[:channel_id].present?
-        @channel = Channel.find(params[:channel_id])
+    if !@provider
+      if provider_name 
+        @provider = Provider.find_by_url_name(provider_name) || Provider.new(name: "All Providers")
+      elsif params[:provider_id].present?
+        @provider = Provider.find(params[:provider_id])
       end
     end
-    if !@channel
-      @channel = Channel.new(name: "All Providers")
+    if !@provider
+      @provider = Provider.new(name: "All Providers")
     end
   end
 
@@ -155,7 +146,7 @@ protected
       if response[:notices].nil?
         response[:notices] = []
       end
-      response[:notices] << notice || "There are no courses that match the current filter"
+      response[:notices] << notice unless notice.nil?
   end
 
   def current_date
@@ -184,26 +175,20 @@ protected
     end
   end
 
-  def expire_cache!
-    CacheManager.expire_cache!
-  end
-
-  def skip_cache!
-    expire_cache! if params[:skip_cache].present?
-  end
-
-  def expire_filter_cache!
-    expire_fragment(/.*filter_list.*/)
-  end
-
-
   def entity_events
     auto_log = true
     EntityEvents.record(request, current_chalkler, auto_log)
   end
 
   def set_locale
-    I18n.locale = params[:locale] || extract_locale_from_tld || I18n.default_locale
+    locale = params[:locale].encode("UTF-8", "ISO-8859-1") if params[:locale].present?
+    unless locale.present? && I18n.available_locales.include?(locale.to_sym)
+      locale = extract_locale_from_tld
+      unless locale.present? && I18n.available_locales.include?(locale.to_sym)
+        locale = I18n.default_locale
+      end
+    end
+    I18n.locale = locale
   end
 
   def extract_locale_from_tld

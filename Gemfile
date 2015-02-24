@@ -7,11 +7,12 @@ gem 'unicorn-worker-killer'
 
 gem 'entity_events'
 
+gem 'engtagger'
+
 # Authentication
 gem 'devise',           '~> 2.2.4'
 gem 'devise_invitable'
 gem 'omniauth',         '~> 1.1.4'
-gem 'omniauth-meetup',  '~> 0.0.7'
 gem 'omniauth-facebook'
 
 # Authorisation
@@ -39,7 +40,6 @@ gem 'lazy_high_charts'
 gem 'rdiscount'
 
 #apis
-gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'
 gem 'xeroizer'
 gem "geocoder"
 gem 'newrelic_rpm'
@@ -80,7 +80,6 @@ group :assets do
   gem 'haml_assets',         '~> 0.2.2'
   gem 'kalendae_assets',     '~> 0.2.1'
   gem 'execjs',              '~> 1.4.0'
-  gem 'bower-rails'
   gem 'turbo-sprockets-rails3'
 end
 

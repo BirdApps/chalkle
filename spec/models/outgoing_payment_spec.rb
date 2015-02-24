@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 describe OutgoingPayment do
-  let(:channel) { FactoryGirl.create(:channel) }
-  let(:teacher){ FactoryGirl.create(:channel_teacher, channel: channel )}
+  let(:provider) { FactoryGirl.create(:provider) }
+  let(:teacher){ FactoryGirl.create(:provider_teacher, provider: provider )}
   let(:lesson){ FactoryGirl.create(:past_lesson)}
-  let(:course) { FactoryGirl.create(:course_with_bookings, channel: channel, teacher: teacher, status: 'Completed', lessons: [lesson])}
+  let(:course) { FactoryGirl.create(:course_with_bookings, provider: provider, teacher: teacher, status: 'Completed', lessons: [lesson])}
 
   it 'should total no more than the sum of the payments' do
     course.create_outgoing_payments!
    
     teacher_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
-    channel_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
+    provider_payment = OutgoingPayment.pending_payment_for_teacher(teacher)
     payments_sum = course.payments.sum(&:total)
    
-    expect(teacher_payment.total + channel_payment.total).to be <= payments_sum
+    expect(teacher_payment.total + provider_payment.total).to be <= payments_sum
   end
   
   describe '.pending_payment_for_teacher' do    
@@ -30,16 +30,16 @@ describe OutgoingPayment do
     end
   end
 
-  describe '.pending_payment_for_channel' do
-    it "should return a new channel_payment if none are pending" do
-      old_count = channel.outgoing_payments.count
-      outgoing = OutgoingPayment.pending_payment_for_channel(channel)
-      expect(channel.outgoing_payments.count).to eq(old_count + 1)
+  describe '.pending_payment_for_provider' do
+    it "should return a new provider_payment if none are pending" do
+      old_count = provider.outgoing_payments.count
+      outgoing = OutgoingPayment.pending_payment_for_provider(provider)
+      expect(provider.outgoing_payments.count).to eq(old_count + 1)
     end
 
-    it "should return the pending channel_payment if one is pending" do
-      outgoing1 = OutgoingPayment.pending_payment_for_channel(channel)
-      outgoing2 = OutgoingPayment.pending_payment_for_channel(channel)
+    it "should return the pending provider_payment if one is pending" do
+      outgoing1 = OutgoingPayment.pending_payment_for_provider(provider)
+      outgoing2 = OutgoingPayment.pending_payment_for_provider(provider)
       expect(outgoing1).to eq(outgoing2)
     end
   end

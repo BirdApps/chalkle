@@ -1,4 +1,13 @@
 class People::RegistrationsController < Devise::RegistrationsController
+  
+  def new
+    @page_subtitle = "Use chalkle to"
+    @page_title =  "Learn"
+    @meta_title = "Learn with "
+    @show_header = false
+    @fluid_layout = true
+  end
+
   def create
     build_resource
     unless params[:chalkler][:password] == params[:chalkler][:password_confirmation]
@@ -27,7 +36,7 @@ class People::RegistrationsController < Devise::RegistrationsController
 
   def after_sign_up_path_for(resource)
     redirect_path = super
-    redirect_path = root_path if redirect_path == learn_path
+    redirect_path = root_path if redirect_path == new_chalkler_registration_path
     return redirect_path
   end
 end

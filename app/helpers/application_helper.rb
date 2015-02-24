@@ -42,9 +42,9 @@ module ApplicationHelper
   end
 
   def header_color
-    if @channel && @channel.header_color || @course && @course.channel.header_color
-      (@channel || @course.channel).header_color || @booking && @booking.course.channel.header_color
-      (@channel || @course.channel || @booking.course.channel).header_color
+    if @provider && @provider.header_color || @course && @course.provider.header_color
+      (@provider || @course.provider).header_color || @booking && @booking.course.provider.header_color
+      (@provider || @course.provider || @booking.course.provider).header_color
     else
       nil
     end
@@ -56,7 +56,7 @@ module ApplicationHelper
   end
 
   def fluid_layout? 
-    return true if request[:controller] =~ /sessions/
+    return true if request[:controller] =~ /sessions/ || @fluid_layout == true
     false
   end
 
@@ -108,40 +108,8 @@ module ApplicationHelper
     list.drop(paginate_skip).take(paginate_take)
   end
 
-  def filter_regions
-    courses = Course.displayable.in_future
-    if @category.id.present? && @channel.id.present?
-      courses = courses.in_category(@category).in_channel(@channel)
-    elsif @category.id.present? && @channel.id.nil?    
-      courses = courses.in_category(@category) 
-    elsif @category.id.nil? && @channel.id.present?
-      courses = courses.in_channel(@channel)
-    end
-    (courses.map &:region).compact.uniq.sort_by{|c| c.name.downcase } 
-  end
-
-  def filter_topics
-    courses = Course.displayable.in_future
-    if @region.id.present? && @channel.id.present?
-      courses = courses.in_region(@region).in_channel(@channel)
-    elsif @region.id.present? && @channel.id.nil?    
-      courses = courses.in_region(@region) 
-    elsif @region.id.nil? && @channel.id.present?
-      courses = courses.in_channel(@channel)
-    end
-    (courses.map &:category).compact.uniq.sort_by{|c| c.name.downcase } 
-  end
-
   def filter_providers
-    courses = Course.displayable.in_future
-    if @category.id.present? && @region.id.present?
-      courses = courses.in_category(@category).in_region(@region)
-    elsif @category.id.present? && @region.id.nil?    
-      courses = courses.in_category(@category) 
-    elsif @category.id.nil? && @region.id.present?
-      courses = courses.in_region(@region)
-    end
-    (courses.map &:channel).compact.uniq.sort_by{|c| c.name.downcase }
+    (courses.map &:provider).compact.uniq.sort_by{|c| c.name.downcase }
   end
 
 end

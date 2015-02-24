@@ -7,7 +7,7 @@ class PaymentMailer < BaseChalkleMailer
     @payment = payment
     @chalkler = payment.chalkler
     @course = payment.course
-    @provider = @course.channel
+    @provider = @course.provider
     @no_hello = true
     @skip_unsubscribe = true
 

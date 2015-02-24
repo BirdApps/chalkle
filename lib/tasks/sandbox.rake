@@ -21,11 +21,11 @@ namespace :sandbox do
     puts "Moving files to S3"
     require 'chalkle_base_uploader'
 
-    Channel.all.each do |record|
+    Provider.all.each do |record|
       upload_file record, :logo
     end
 
-    ChannelPhoto.all.each do |record|
+    ProviderPhoto.all.each do |record|
       upload_file record, :image
     end
 

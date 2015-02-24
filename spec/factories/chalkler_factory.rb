@@ -1,9 +1,13 @@
 FactoryGirl.define do
+<<<<<<< HEAD
+ # sequence(:email) { |n| "example_#{n}@example.com" }
+=======
+>>>>>>> dev
 
   factory :chalkler do
     name "Ben Smith"
     email {generate(:email)}
-    join_channels 'skip'
+    join_providers 'skip'
     bio "All about me!!"
 
     factory :admin_chalkler do 

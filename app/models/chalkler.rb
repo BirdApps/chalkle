@@ -5,46 +5,46 @@ class Chalkler < ActiveRecord::Base
 
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :invitable, :omniauth_providers => [:facebook, :meetup]
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :registerable, :invitable, :omniauth_providers => [:facebook]
 
-  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :email_categories, :phone_number, :email_regions, :channel_teachers, :channel_admins, :channels_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
-  attr_accessible *BASIC_ATTR, :channel_ids, :provider, :uid, :join_channels, :email_region_ids, :role, :as => :admin
+  attr_accessible *BASIC_ATTR = [:bio, :email, :name, :password, :password_confirmation, :remember_me, :email_frequency, :phone_number, :provider_teachers, :provider_admins, :providers_adminable, :visible, :address, :longitude, :latitude, :location, :avatar ]
+  attr_accessible *BASIC_ATTR, :provider_ids, :provider, :uid, :join_providers, :role, :as => :admin
 
-  attr_accessor :join_channels, :set_password_token
+  attr_accessor :join_providers, :set_password_token
 
   validates_presence_of :name
   validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }
   validates_uniqueness_of :email, { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
-  validates_associated :subscriptions, :channels
+  validates_associated :subscriptions, :providers
   validates_presence_of :notification_preference, :if => :persisted?
 
   has_many :subscriptions
-  has_many :channel_teachers
+  has_many :provider_teachers
   has_many :bookings
   has_many :booker_only_bookings, class_name: 'Booking', foreign_key: :booker_id
-  has_many :channel_admins
+  has_many :provider_admins
   has_many :notifications
   has_many :sent_notifications, class_name: 'Notification', foreign_key: :from_chalkler_id
   has_many :payments, through: :bookings
-  has_many :channels_teachable, through: :channel_teachers, source: :channel
-  has_many :channels_adminable, through: :channel_admins, source: :channel
-  has_many :courses_adminable, through: :channels_adminable, source: :courses
-  has_many :courses_teaching, through: :channel_teachers, source: :courses
+  has_many :providers_teachable, through: :provider_teachers, source: :provider
+  has_many :providers_adminable, through: :provider_admins, source: :provider
+  has_many :courses_adminable, through: :providers_adminable, source: :courses
+  has_many :courses_teaching, through: :provider_teachers, source: :courses
   has_many :courses, through: :bookings
-  has_many :providers_attended, through: :bookings, source: :channel, uniq: true
-  has_many :channels, through: :subscriptions, source: :channel
-  has_many :channel_contacts
+  has_many :providers_attended, through: :bookings, source: :provider, uniq: true
+  has_many :providers, through: :subscriptions, source: :provider
+  has_many :provider_contacts
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
     def for_provider(provider)
       where(provider: provider).first
     end
   end
   has_many :course_notices
-  has_many :courses_teaching, through: :channel_teachers, source: :courses
+  has_many :courses_teaching, through: :provider_teachers, source: :courses
   has_one  :notification_preference
 
-  after_create :create_channel_associations
+  after_create :create_provider_associations
   after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }
   after_create -> (chalkler) { Notify.for(chalkler).welcome unless chalkler.invited_to_sign_up? }
   after_invitation_accepted -> (chalkler) { 
@@ -52,10 +52,6 @@ class Chalkler < ActiveRecord::Base
     Notify.for(chalkler).welcome } 
 
   scope :visible, where(visible: true)
-  scope :with_email_region_id, 
-    lambda {|region| 
-      where("email_region_ids LIKE '%?%'", region)
-    }
   scope :created_week_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_week, date.end_of_week ) }
   scope :created_month_of, lambda{|date| where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month ) }
 
@@ -63,12 +59,9 @@ class Chalkler < ActiveRecord::Base
   scope :super, -> { where(role: 'super') }
 
   scope :learned, includes(:bookings).where("bookings.id IS NOT NULL")
-  scope :taught, includes(:channel_teachers).where("channel_teachers.id IS NOT NULL" )
-  scope :provided, includes(:channel_admins).where("channel_admins.id IS NOT NULL" )
+  scope :taught, includes(:provider_teachers).where("provider_teachers.id IS NOT NULL" )
+  scope :provided, includes(:provider_admins).where("provider_admins.id IS NOT NULL" )
 
-
-  serialize :email_categories
-  serialize :email_region_ids
 
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
@@ -80,17 +73,17 @@ class Chalkler < ActiveRecord::Base
   end
 
   def teacher? 
-    channel_teachers.any? 
+    provider_teachers.any? 
   end
 
-  def channel_admin? 
-    channel_admins.any?
+  def provider_admin? 
+    provider_admins.any?
   end
 
   def join_psuedo_identities!
     #TODO: make them method run on verify email, rather than on sign up
-    ChannelTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
-    ChannelAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+    ProviderTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
+    ProviderAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     Booking.where(pseudo_chalkler_email: email, invite_chalkler: true).update_all(chalkler_id: id)
   end
 
@@ -104,6 +97,15 @@ class Chalkler < ActiveRecord::Base
 
   def confirmed_courses
     courses.merge(Booking.confirmed).uniq.in_future.by_date
+  end
+
+  def initials
+    initials = name[0]
+    parts = name.split ' '
+    if parts.count > 1
+      initials.concat parts.last[0]
+    end
+    initials.upcase
   end
 
   def chalkler
@@ -132,24 +134,6 @@ class Chalkler < ActiveRecord::Base
       EMAIL_FREQUENCY_OPTIONS.map { |eo| [eo.titleize, eo] }
     end
 
-    def find_by_meetup_id(meetup_id)
-      identity = OmniauthIdentity.where(uid: meetup_id.to_s, provider: 'meetup').first
-      identity.user if identity
-    end
-
-    def find_for_meetup_oauth(auth, signed_in_resource=nil)
-      chalkler = where(:provider => auth[:provider], :uid => auth[:uid].to_s).first
-      unless chalkler
-        chalkler = self.new
-        chalkler.name = auth[:extra][:raw_info][:name]
-        chalkler.provider = auth[:provider]
-        chalkler.uid = auth[:uid].to_s
-        chalkler.email = auth[:info][:email]
-        chalkler.password = Devise.friendly_token[0,20]
-      end
-      chalkler
-    end
-
     def find_or_create_for_identity(identity)
       return identity.user if identity.user
 
@@ -175,8 +159,8 @@ class Chalkler < ActiveRecord::Base
     end
   end
 
-  def is_following?(channel)
-    channels.exists?(channel)
+  def is_following?(provider)
+    providers.exists?(provider)
   end
 
   def email_required?
@@ -187,37 +171,15 @@ class Chalkler < ActiveRecord::Base
     false
   end
 
-  def meetup_data
-    identity = meetup_identity
-    identity ? identity.provider_data : {}
-  end
-
-  def meetup_id
-    identity = identities.for_provider('meetup')
-    identity.uid.to_i if identity
-  end
-
-  def meetup_identity
-    identities.for_provider('meetup')
-  end
-
-  def email_regions
-    Region.find (email_region_ids || [])
-  end
-
-  def email_regions=(email_region)
-    assign_attributes({ :email_region_ids => email_region.select{|id| Region.exists?(id)}.map!(&:to_i) }, :as => :admin)
-  end
-
   def available_notifications
     _available_notifications = { chalkler: NotificationPreference::CHALKLER_OPTIONS }
     if teacher?
       _available_notifications[:teacher] = NotificationPreference::TEACHER_OPTIONS
     end
-    if channel_admin?
-      _available_notifications[:channel_admin] = NotificationPreference::PROVIDER_OPTIONS
+    if provider_admin?
+      _available_notifications[:provider_admin] = NotificationPreference::PROVIDER_OPTIONS
     end
-    if channel_admin?
+    if provider_admin?
       _available_notifications[:super_admin] = NotificationPreference::SUPER_OPTIONS
     end
 
@@ -267,14 +229,23 @@ class Chalkler < ActiveRecord::Base
     self.notification_preference.send preference_attr
   end
 
+  def recommended_providers
+    common_followers = providers.map{ |p| p.followers }.flatten.uniq
+    common_providers = common_followers.map{ |p| p.providers }.flatten.uniq
+    common_providers - self.providers
+  end
+
+
+  def recommended_courses
+    recommended_providers.map{|p| p.courses.displayable.in_future }.flatten.sort{ |a,b| a.created_at <=> b.created_at }
+  end
+
   private
 
     def ensure_notification_preference
       self.notification_preference = NotificationPreference.create unless notification_preference.present?
     end
 
-
-    # for Chalklers created outside of meetup
     def set_reset_password_token
       return unless self.set_password_token
       self.password = Chalkler.reset_password_token
@@ -282,15 +253,14 @@ class Chalkler < ActiveRecord::Base
       self.reset_password_sent_at = Time.current
     end
 
-    def create_channel_associations  
-      return unless join_channels.is_a?(Array)
-      join_channels.reject(&:empty?).each do |channel_id|
-        if Subscription.where(chalkler_id: id, channel_id: channel_id).count == 0
-          channels << Channel.find(channel_id)
+    def create_provider_associations  
+      return unless join_providers.is_a?(Array)
+      join_providers.reject(&:empty?).each do |provider_id|
+        if Subscription.where(chalkler_id: id, provider_id: provider_id).count == 0
+          providers << Provider.find(provider_id)
         end
       end
       save!
     end
-
-
+    
 end

@@ -32,188 +32,13 @@
     font-size: 49px;
   }
 
-  .errors {
-    .error {
-      padding: 0em;
-      color: #E52541;
-      font-weight: 200;
-      font-size: 18px;
-    }
-  }
 
-  #footer {
-    bottom: 0;
-    width: 100%;
-    z-index: -2; 
 
-    background-repeat: none !important;
-    background-size: cover !important;
-    background-position: top center;
-    background-color: #ddf0dd;
-    height:600px;
-  }
-
-  #header{
-
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: -1; 
-    letter-spacing: 0.1em;
-
-    background-repeat: none !important;
-    background-size: cover !important;
-    background-position: bottom center;
-
-    background-color: #999;
-    
-    height:600px;
-
-    h1 {
-      font-weight: 400;
-      font-size: 2.0em;
-      color: #FFFFFF;
-      line-height: 2em;
-      letter-spacing: 0px;
-
-      text-align: center; 
-      margin-top: 220px;
-      text-shadow: 0 3px 5px #000;
-      padding: 0 50px;
-
-      @media screen and (min-width : 768px) and (max-width : 992px) {
-        font-size: 2.5em;
-        margin-top: 250px;
-      } 
-      @media screen and (min-width : 993px){
-        font-size: 3em;
-        margin-top: 300px;
-      } 
-    } 
-  }
-
-  nav {
-
-    position: fixed;
-    top: 0;
-    z-index: 100;
-
-    .logo-container {
-      margin-top: -5px;
-      a:hover  { background-color: transparent; }
-    }
-    
-  .navbar-brand{
-    float:left;
-    @media screen and (min-width: 767px){
-      float:right;
-    }
-  }
-
-    width: 100%;
-    padding: 20px 0;
-    font-size: 20px; 
-
-    text-shadow: 0 1px 1px rgba(0,0,0,0.2); 
-
-    text-align: right;
-
-    a {
-      border-radius: 4px;
-      margin: 0 0.5em;
-      transition-property: all;
-      transition-duration:0.3s;
-      transition-timing-function: ease-in-out;
-      transition-delay:0s;
-
-      font-weight: 600;
-      font-size: 18px;
-
-      color: #ffffff;
-    }
-    
-
-    @media screen and (min-width : 768px) {
-      .action {
-        color: #E52541;
-        background: #fff;
-        text-shadow: 0 0 0 rgba(0,0,0,0.0); 
-      }
-    }
+  section {
+    clear: both;
   }
 
 
-  #header-mask {
-    position: relative;
-    z-index: 1;
-    margin-top: 570px;
-    width: 100%;
-    padding: 0;
-    display: block;
-    height: 30px;
-
-    * {
-      height: 30px;
-      float: left;
-    }
-
-    .mask {
-      background: white;
-      width:48%;
-      border: none;
-    }
-    
-    .arrows-mask-left {
-      background-image: image-url('partners/left-arrow-mask.png');
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-      width: 2%;
-    }
-    .arrows-mask-right {
-          background-size: 100% 100%;
-          background-repeat: no-repeat;
-      background-image: image-url('partners/right-arrow-mask.png');
-      width: 2%;
-    }
-  }
-
-  #main {
-    z-index: 1;
-     width: 100%;
-    position: relative;  
-    background-color: white;
-
-    section {
-      clear: both;
-    }
-  }
-
-
-
-  /*
-  THIS IS FOR ALL THE SECTIONS OUT THERE 
-  */
-
-
-
-
-  #byline {
-
-    text-align: center;
-
-    padding: 5em 0;  
-
-    font-size: 20px;
-    color: #666666;
-    line-height: 24px;
-
-    h2 {
-      font-weight: 500;
-      font-size: 38px;
-      color: #015B28;
-    }
-
-  }
 
   #software {
 
@@ -319,8 +144,9 @@
     }
 
     .benefits {
-      padding: 2em 0.5em 2em 120px;
-
+      div{
+        padding: 2em 0.5em 2em 120px;
+      }
       background-repeat: no-repeat;
       background-position: 20px; 
 
@@ -330,9 +156,10 @@
       letter-spacing: 0px;    
     }
 
-    .benefits-right  { border-left: solid #DCDCDC 1px; }
-    .benefits-bottom {  border-top: solid #DCDCDC 1px; }
-
+    @media screen and (min-width: 768px){
+      .benefits-right  { border-left: solid #DCDCDC 1px; }
+      .benefits-bottom { border-top: solid #DCDCDC 1px; }
+    }
     h2 {
       font-weight: 600;    font-size: 20px;
       color: #2D2D2C;

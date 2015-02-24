@@ -8,7 +8,6 @@
 set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 
 every :hour do 
-  rake "chalkle:expire_caches"
   rake "chalkle:complete_courses"
 end
 
@@ -28,14 +27,6 @@ end
 every :day, :at => '02:30pm' do
   rake "mailer:booking_completed"
 end
-
-# every :day, :at => '01:00pm' do
-#   rake "mailer:chalkler_digest['daily']"
-# end
-
-# every :monday, :at => '01:30pm' do
-#   rake "mailer:chalkler_digest['weekly']"
-# end
 
 every :hour do
   path = "/apps/chalkle/db_backups/hourly/"

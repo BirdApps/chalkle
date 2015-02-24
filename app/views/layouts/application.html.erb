@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title> 
       <%# content_for?(:title) ? yield(:title) : 'chalkle°' %>
@@ -16,22 +16,28 @@
     <%= yield :header if content_for? :header %>
   </head>
 
-  <body class="<%= body_class %> v2" role="document" style="background-color: <%= header_color ? header_color : 'rgba(76, 126, 147, 1)' %>;">
-   
+  <body class="<%= body_class %> v2" role="document">
     <div id="fb-root"></div>
+
     <header>
       <%= render 'layouts/navigation' %>
-      <%= render 'layouts/header' if show_header? %>
+      <div class="body-content">
+        <%= render 'layouts/header' if show_header? %>
+      </div>
     </header>
-    <div id="wrapper">
-      <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
-        <%= render 'layouts/messages' %>
-        <%= yield %>
+
+    <div class="body-content">
+      <div id="wrapper">
+        <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
+          <%= render 'layouts/messages' %>
+          <%= yield %>
+        </div>
+       <%#  <div id="map_overlay" style="display: none"><div id="map_holder"></div></div> %>
       </div>
     </div>
-    <%= render 'layouts/footer' %> 
+
     <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-  <script>
+    <script>
       window.fbAsyncInit = function() {
         FB.init({
           appId      : <%= Facebook.keys[:app_id] %>,

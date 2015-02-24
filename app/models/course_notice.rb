@@ -9,7 +9,7 @@ class CourseNotice < ActiveRecord::Base
   belongs_to  :course
   before_save :check_body_or_photo
 
-  has_one :channel, through: :course
+  has_one :provider, through: :course
   has_one :teacher, through: :course
 
   scope :visible, where(visible: true)

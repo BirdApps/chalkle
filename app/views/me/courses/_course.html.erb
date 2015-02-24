@@ -18,7 +18,7 @@
     <header>
       <div class="title-wrapper">
         <strong>
-          <%= link_to course.name, channel_course_path(course.channel.url_name,course.url_name,course.id), { :class => "colour"+course.best_colour_num.to_s } %>
+          <%= link_to course.name, provider_course_path(course.provider.url_name,course.url_name,course.id), { :class => "colour"+course.best_colour_num.to_s } %>
         </strong>
       </div>
     </header>
@@ -28,13 +28,13 @@
         <%= quick_date_time course.start_at %>
         </span> |
         <% if course.teacher  %>
-          <%= link_to 'Taught by '+course.teacher.name, channel_channel_teacher_path(course.channel.url_name,course.teacher) %>
+          <%= link_to 'Taught by '+course.teacher.name, provider_provider_teacher_path(course.provider.url_name,course.teacher) %>
         <% else %>
           No teacher assigned
         <% end %>
         <% if current_user.courses_adminable.count > 1 %>
           | 
-          <%= link_to course.channel.name, channel_path(course.channel.url_name) %>
+          <%= link_to course.provider.name, provider_path(course.provider.url_name) %>
         <% end %>
       </div>
       
