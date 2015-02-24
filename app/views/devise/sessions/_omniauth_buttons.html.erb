@@ -2,7 +2,7 @@
   <div class="social-media-buttons">
     <% resource_class.omniauth_providers.each do |provider| %>
       <% if params[:controller] == "devise/sessions" || provider.to_s == "facebook" %>
-        <%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), class: "col-xs-12 btn btn-social-media btn-#{provider} btn-large login" %>
+        <%= link_to "Sign in with #{provider.to_s.titleize}", chalkler_omniauth_authorize_path(provider), class: "col-xs-12 btn btn-social-media btn-#{provider} btn-large login" %>
       <% end %>
     <% end %>
   </div>
