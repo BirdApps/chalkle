@@ -152,9 +152,6 @@ class Provider < ActiveRecord::Base
     plan.apply_custom(self)
   end
 
-  def region_names
-    regions.map(&:name)
-  end
 
   def country_name
     'New Zealand'

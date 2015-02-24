@@ -61,7 +61,6 @@
 
         <%= f.input :description, as: :text, label: "Caption", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
         
-        <%= f.input :region_ids, collection: Region.alphabetical, label: "Region", wrapper: :horizontal, input_html: { value: f.object.regions.first, name: :'provider[region_ids][]', :'data-error-message' => 'You must specify class activities.' } %>
       </div>
     </div>
 
