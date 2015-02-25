@@ -8,6 +8,8 @@ FactoryGirl.define do
     learning_outcomes "Bar the foo, it's all about how far you can boo"
     do_during_class "You will take a foo and bar it"
     cost 20
+    venue_address "3 Courtany Place, Wellington, New Zealand"
+
 
     status 'Published'
     teacher_pay_type 'Fee per attendee'

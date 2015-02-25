@@ -1,50 +1,47 @@
-<div class="clearfix" id="sign-in">
-  
-  <div class="clearfix">
-    <div class="hidden-xs col-sm-6 col-md-8">
-      <h1>Discover a World<br /> of Learning</h1>
-    </div>
+<div id="sign-in" class="row">
 
-
-    <div class="col-xs-12 col-sm-5 col-md-3 well">
-      
-      <div class="segmented-rule hidden-xs">
-        <div class="left-segment"></div>
-        <h2>Sign Up</h2>
-        <em class="text-center">it's free!</em>
-        <div class="right-segment"></div>
-      </div>
-
-        <%= render partial: '/devise/sessions/omniauth_buttons' %>
-      
-        <h3>– Or –</h3>
-
-        <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
-        <%= f.error_notification %>
-        <div class="form-inputs">
-          <%= f.input :name, :required => true, placeholder: 'Name' %>
-          <%= f.input :email, :required => true, placeholder: 'Email' %>
-          <%= f.input :password, :required => true, placeholder: 'Password' %>
-          <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
-        </div>
-        <div class="form-actions">
-          <input type="submit" name="commit" class="btn btn-primary" value="Join Now" />
-        </div>
-      <% end %>
-      <div class="login-option text-center">
-        <%= link_to "Already have a chalkle login?", new_session_path(Chalkler.new), class: 'col-xs-12 btn-primary btn' %>
-      </div>
-    </div> 
+  <div class="hidden-xs col-sm-6 col-md-8">
+    <h1>Discover a World<br /> of Learning</h1>
   </div>
 
-  <div class="col-xs-12 col-md-12 clearfix" id="callout">
+  <div class="col-xs-12 col-sm-5 col-md-3 well">
+    
+    <div class="segmented-rule hidden-xs">
+      <div class="left-segment"></div>
+      <h2>Sign Up</h2>
+      <em class="text-center">it's free!</em>
+      <div class="right-segment"></div>
+    </div>
+
+      <%= render partial: '/devise/sessions/omniauth_buttons' %>
+    
+      <h3>– Or –</h3>
+
+      <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
+      <%= f.error_notification %>
+      <div class="form-inputs">
+        <%= f.input :name, :required => true, placeholder: 'Name' %>
+        <%= f.input :email, :required => true, placeholder: 'Email' %>
+        <%= f.input :password, :required => true, placeholder: 'Password' %>
+        <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
+      </div>
+      <div class="form-actions">
+        <input type="submit" name="commit" class="btn btn-primary" value="Join Now" />
+      </div>
+    <% end %>
+    <div class="login-option text-center">
+      <%= link_to "Already have a chalkle login?", new_session_path(Chalkler.new), class: 'col-xs-12 btn-primary btn' %>
+    </div>
+  </div> 
+
+  <div class="col-xs-12 col-md-12" id="callout">
     <h4>Find out more</h4>
     about how chalkle works
   </div>
 
 </div>
 
-<div class="clearfix">
+<div class="row">
   <div class="col-xs-12 col-md-6 feature-box" id="inspired">
     <h2>Be Inspired</h2>
     <p>Discover new things to learn delivered by a great network of teachers</p>
@@ -56,9 +53,9 @@
   </div>
 </div>
 
-<div class="col-xs-12 col-md-12 feature-box" id="abl">
-  <div class="row">
-    <div class="text col-xs-10 col-xs-offset-2 clearfix">
+<div class="row">
+  <div class="col-xs-12 col-md-12 feature-box" id="abl">
+    <div class="text col-xs-10 col-xs-offset-2">
       <h2>Always be learning</h2>
       <p>Enjoy meeting great people <br />and be inspired learning new skills</p>
     </div>
@@ -66,7 +63,7 @@
 </div>
 
 
-<div class="sign-up-footer col-xs-12 clearfix">
+<div class="sign-up-footer row">
     
   <h2 class="col-xs-12">Sign Up</h2>
   <div class="col-xs-12 text-center"><em>It's free</em></div>
@@ -87,5 +84,4 @@
       </div>
     <% end %>
   </div>
-
 </div>
