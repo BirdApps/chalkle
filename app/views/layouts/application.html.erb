@@ -13,6 +13,13 @@
     <%= csrf_meta_tag %>
     <%= stylesheet_link_tag "application", media: "all" %>
     <%= javascript_include_tag "application" %>
+    <% if chalkler_signed_in? %>
+      <script src='//cdn.goroost.com/roostjs/e7a09481b0d145b784c6b9dd5dd97cb0' async></script>
+        <script>
+          _roost.push(["alias", "<%= current_user.id %>"]);
+      </script>
+    <% end %>
+
     <%= yield :header if content_for? :header %>
   </head>
 
