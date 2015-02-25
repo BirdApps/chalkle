@@ -3,28 +3,14 @@
 <div class="row" id='sign-in'>
   
 
-  <div class="col-xs-12 col-sm-5 col-sm-offset-1">
-    <h1 class="hidden-xs">Sign up</h1>
-    <p class="hidden-xs">
-      Find and offer fun courses and learning opportunities in your community today. 
-    </p>
 
-    <%= link_to new_chalkler_registration_path do %>
-      <div class="under-button-alternatives">
-        <p>Not a member of chalkle yet?</p>
-        <h3>Join Now</h3>
-      </div>
-    <% end %>
-
-  </div>
-
-  <div class="col-xs-12 col-sm-5 col-sm-inset-1">
-    <h1 class="hidden-xs">Log In</h1>
-    <div class="content text-right">
+  <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+    <h1 class="">Log In</h1>
+    <div class="content text-right clearfix">
       <%= render partial: '/devise/sessions/omniauth_buttons' %>
     </div>
 
-    <h3 class="flush">– Or –</h3>
+    <h3>– Or –</h3>
 
     <div class="sign-in-form">
       <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
@@ -45,9 +31,19 @@
         </div>
       <% end %>
     </div>
-
-  
   </div>
+
+
+  <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+        <h3>What are you waiting for?</h3>
+    <%= link_to new_chalkler_registration_path do %>
+      <div class="under-button-alternatives">
+        <h3>Join Chalkle Now</h3>
+      </div>
+    <% end %>
+
+  </div>
+
 
 
 

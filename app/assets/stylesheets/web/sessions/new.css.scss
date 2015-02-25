@@ -3,10 +3,10 @@
 .sessions-new {
   color: #fff;
   h3 {
-    font-size: 14px;
-    color: rgba(255,255,255,0.69);
+    padding: 1em 0;
+    font-size: 19px;
+    color: rgba(255,255,255,1.0);
     letter-spacing: 1px;
-    line-height: 17px;
     text-align: center;
   }
 
@@ -43,10 +43,13 @@
 
       h3 {
         font-size: 19px;
-        color: rgba(255,255,255,1);
+        color: white;
         letter-spacing: 1px;
         line-height: 17px;
         text-align: center;
+        padding: 0em 0;
+        margin: 0 0 13px 0;
+        font-weight: 300;
       }
 
 
@@ -87,8 +90,9 @@
       
 
       h3 {
-        font-size: 14px;
-        color: rgba(255,255,255,0.69);
+        padding: 1em 0; 
+        font-size: 16px;
+        color: rgba(255,255,255,1.0);
         letter-spacing: 1px;
         line-height: 17px;
         text-align: center;

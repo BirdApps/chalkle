@@ -26,23 +26,42 @@
     font-size: 18px;
     color: #000000;
     letter-spacing: 1.5px;
-    padding-top: 32px; padding-bottom: 32px;
+    padding-top: 32px; 
+
+    h2 {
+      margin: 0 0 32px;
+    }
     h3 {
       margin: 0 0 10px;
-    }
-    >div {
-      margin-bottom: 32px;
-      margin-top: 32px;
-      padding-left: 15px;
     }
     img {
       height: 72px;
       margin-right: 10px;
     }
 
+    .learner, .provider {
+      padding-top: 200px;
+      padding-bottom: 200px;
+      > div {
+        margin-bottom: 32px;
+        margin-top: 32px;
+        padding-left: 15px;
+      }
+    }
 
   }
 
+  .camp {
+    background-size: cover;
+    background-position: right bottom;
+    background-image: image_url('learn/stars.jpg');
+  }
+
+  .bottom-line {
+    padding-top: 200px;
+    padding-bottom: 32px;
+
+  }
 
   .icons {
     .abl, .inspired {
@@ -52,8 +71,8 @@
       color: #fff;
       opacity: 0.89;
       font-size: 18px;
-      padding-top: 140px;
-      height: 290px;
+      padding-top: 240px;
+      height: 450px;
       background-position: right bottom;
       background-image: image_url('learn/mic.jpg');
     }
@@ -104,18 +123,18 @@
   }
 
   .plan {
-    border-radius:  30px;
-    background-color: #ddd;
-    color: #000;
+    border-radius:  25px;
+    background-color: rgba(0,0,0,0.4);
+    color: #fff;
     height: 300px;
-    box-shadow: 0 2px 6px #000;
     transition: all 100ms ease-out;
+    border: solid rgba(255,255,255,0.6) 1px;
 
     &:hover {
-      background-color: #fff !important;
+      background-color: rgba(80,80,80,0.4);
       transform: scale(1.05);
       .circle {
-        transform: scale(1.05);
+        transform: scale(0.95);
         box-shadow: 0 0 8px rgba(0,0,0,0.2);
 
       }
@@ -128,46 +147,23 @@
       left: 0;
     }
 
-    &.free {
-      background-color: transparent;
-      border: 1px solid rgba(255,255,255,0.2); 
-      color: #fff;
-  
-      &:hover {
-        background-color: rgba(255,255,255,0.2) !important;
-        transform: scale(1.05);
-      }
-      .circle {
-        height: 80px;
-        width: 80px;
-        font-size: 40px;
-        padding-top: 0;
-        line-height: 85px;
-      }
-    }
-
-
     .circle {
       height: 160px;
       width: 160px;
       display: inline-block;
       text-align: center;
-      font-weight: 100;
-      font-size: 24px;
-      color: #4c7e93;
       line-height: 115px;
       padding-top: 20px;
       font-size: 100px;
       font-weight: 100;
-      background: #4c7e93;
+      background: rgba(0,0,0,0.7);
       color: #fff;
+      border: solid #fff 2px;
       border-radius: 80px;
-      transition:all 100ms ease-out;
-      &.outline {
-        background-color: transparent;
-        border: 1px solid #4c7e93;
-        color: #4c7e93;
-      }
+
+      margin: 18px; 
+
+      transition: all 100ms ease-out;
 
       sub {
         display: block;
