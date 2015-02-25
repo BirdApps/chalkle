@@ -1,59 +1,109 @@
 <% unless current_user && current_user.teach_menu_badge_count > 0 %>
 
-  <div class="clearfix" id="teach">
+  <div class="row" id="teach">
     <div class="clearfix">
       <div class="col-xs-6 col-md-6">
         <h1 class="">Teach with Chalkle</h1>
       </div>
     </div>
 
-    <div class="row">
+    <div class="clearfix">
       <div class="col-xs-12 shade text-center">
-        Use chalkle to deliver classes and courses successfully.
-      </div>
-    </div>
-
-    <div class="clearfix shade icons">
-      <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
-        <%= image_tag('teach/community.png') %>
-        Engage your community
-      </div>
-      <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
-        <%= image_tag('teach/great_classes.png') %>
-        Teach Great classes
+        <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 col-xs-12">
+          Chalkle.com makes setting up and managing classes really easy, so you can focus on what is most important
+        </div>
       </div>
     </div>
 
 
   </div>
 
+  <section class="clearfix icons">
 
-<section id="process" class="clearfix">
+    <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix abl">
+      <div class="media">
+        <div class="media-left media-middle">
+          <%= image_tag('teach/community.png') %>
+        </div>
+        <div class="media-body">
+          Engaging your community.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-4 col-sm-inset-1 col-sm-offset-1 clearfix">
+      <div class="media">
+        <div class="media-left media-middle">
+          <%= image_tag('teach/great_classes.png') %>
+        </div>
+        <div class="media-body">
+          Teaching great classes.
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+<section id="process" class="row">
+
+
   
+
   <div class="col-xs-12 col-sm-6 col-sm-offset-2">
-    <h3 class="text-center">Any learning experience;</h3> 
+    <div class="media">
+      <div class="media-left media-middle">
+        <%= image_tag 'teach/payment_admin.png', class: 'media-object' %> 
+      </div>
+      <div class="media-body">
+        <h3>Any learning experience;</h3>
       <small><strong>chalkle.com</strong> can handle workshops and one-off classes, 8 week courses to conferences and special events.</small>
+      </div>
+    </div>
   </div>
   <div class="col-xs-0 col-sm-4"></div>
+
+
+
 
   <div class="col-xs-12 col-sm-6 col-sm-offset-4">
-    <h3 class="text-center">A great booking experience;</h3> 
+    <div class="media">
+      <div class="media-left media-middle">
+        <%= image_tag 'teach/free_to_join.png', class: 'media-object' %> 
+      </div>
+      <div class="media-body">
+        <h3>A great booking experience;</h3>
     <small>learners book and pay online easily. Chalkle handles all the reminders, confirmations, and receipts for you.</small>
+      </div>
+    </div>
   </div>
 
-  <div class="col-xs-12 col-sm-6 col-sm-offset-2">
-    <div>
-        <h3 class="text-center">Don’t worry about money;</h3>
-        <%= image_tag('teach/payment_admin.png') %> 
-        <small>We handle all the payment administration, receipts and refunds. You simply set the price, and let us know how you’d like to be paid. </small>
-    </div>
 
+
+  <div class="col-xs-12 col-sm-6 col-sm-offset-2">
+    <div class="media">
+      <div class="media-left media-middle">
+        <%= image_tag 'teach/payment_admin.png', class: 'media-object' %> 
+      </div>
+      <div class="media-body">
+        <h3>Don’t worry about money;</h3>
+        <small>We handle all the payment administration, receipts and refunds. You simply set the price, and let us know how you’d like to be paid. </small>
+      </div>
+    </div>
   </div>
   <div class="col-xs-0 col-sm-4"></div>
 
-  <div class="col-xs-6 col-sm-6 col-sm-offset-4">
-    <h3 class="text-center">Connect with your learners;</h3>
+
+
+  <div class="col-xs-12 col-sm-6 col-sm-offset-4">
+    <div class="media">
+      <div class="media-left media-middle">
+        <%= image_tag 'teach/payment_admin.png', class: 'media-object' %> 
+      </div>
+      <div class="media-body">
+        <h3>Connect with your learners;</h3>
     <small>See who is coming to your class, share resources and connect on our class noticeboard.</small>
+      </div>
+    </div>
   </div>
 
 
@@ -61,21 +111,18 @@
 
 <div class="row" id="plan-price">
   <div class="col-xs-12 text-center">
-    <%= image_tag('teach/free_to_join.png') %>
-    Free to set up and join; We succeed when you succeed. Simple as that. 
+    <h2><strong>Chalkle</strong> is free to set up and join;<br /> We succeed when you succeed. Simple as that. </h2>
   </div>
 </div>
 
 <section class="shade dark clearfix">
 
   <div class="clearfix">
-    <div class="col-xs-6 col-xs-offset-3 col-md-2 col-md-offset-1 text-center plan free">
+    <div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1 text-center plan free">
       <h3>Chalkle Free</h3>
-      <div class="circle">
-        $0
-      </div>
+
       <small>
-        <p>for free classes</p>
+        <p>Free to set up and join; We succeed when you succeed. Simple as that.</p>
       </small>
     </div>
 
@@ -92,16 +139,16 @@
     </div>
 
     <div class="col-xs-6 col-xs-offset-3 col-md-3 col-md-offset-1 text-center plan">
-      <h3>Chalkle Pro</h3>
+      <h3>Chalkle Services</h3>
       <div class="circle outline">
         ?
         <sub></sub>
       </div>
       <small>
-        <p>Coming soon</p>
+        <p>Need help developing up classes?</p>
       </small>
     </div>
-    
+
   </div>
 
  <div class="col-xs-12 text-center clearfix">
