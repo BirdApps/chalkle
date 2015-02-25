@@ -55,6 +55,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :provider
   validates_presence_of :teacher
   validates_presence_of :start_at
+  validates_presence_of :venue_address
 
   validates :status, :inclusion => { :in => VALID_STATUSES, :message => "%{value} is not a valid status"}
   validates :teacher_cost, :allow_blank => true, :numericality => {:greater_than_or_equal_to => 0, :message => "Teacher fee must be positive" }
