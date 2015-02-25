@@ -15,12 +15,10 @@ class ProviderTeachersController < ApplicationController
   end
 
   def edit
-    @page_subtitle = "editing"
     authorize @provider_teacher
   end
 
   def update
-    @page_subtitle = "editing"
     authorize @provider_teacher
     if @provider_teacher.chalkler.blank?
       existing_chalkler = Chalkler.exists params[:provider_teacher][:email]
@@ -42,7 +40,6 @@ class ProviderTeachersController < ApplicationController
   def new
       @provider_teacher =ProviderTeacher.new provider_id: @provider.id
       authorize @provider_teacher 
-      @page_subtitle = "Create a New"
       @page_title = "Teacher"
   end
 
@@ -71,7 +68,6 @@ class ProviderTeachersController < ApplicationController
         @provider_teacher.errors.each do |attribute,error|
           add_response_notice attribute.to_s+" "+error
         end
-        @page_subtitle = "Create a New"
         @page_title = "Teacher"
         render 'new'
       end
@@ -86,7 +82,6 @@ class ProviderTeachersController < ApplicationController
     def header_teacher
       @page_title_logo = @provider_teacher.provider.logo
       @page_title = @provider_teacher.name
-      @page_subtitle = "<a href='#{provider_path(@provider_teacher.provider.url_name)}'>#{@provider_teacher.provider.name}</a>"
       @nav_links = [
         {
           img_name: "bolt",

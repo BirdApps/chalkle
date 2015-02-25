@@ -370,7 +370,7 @@ class Booking < ActiveRecord::Base
   end
 
   def self.csv_for(bookings)
-    headings = %w{ id name email paid note_to_teacher }
+    headings = %w{ id name paid note_to_teacher }
     basic_attr = headings.map &:to_s
     
     custom_fields = bookings.map(&:custom_fields_merged).map{|g| g.keys }.flatten.uniq.compact

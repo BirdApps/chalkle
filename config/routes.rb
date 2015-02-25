@@ -1,8 +1,6 @@
 require 'routing_constraints'
 Chalkle::Application.routes.draw do
 
-  #ActiveAdmin.routes(self)
-
   match '(*any)' => redirect { |p, req| req.url.sub!('my.', '') } , :constraints => { :host => /^my\./ }
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
 

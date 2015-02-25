@@ -35,7 +35,6 @@ class Me::NotificationsController < Me::BaseController
     end  
 
     def page_titles
-      @page_subtitle = current_user.name
       @page_title = 'Notifications'
       @page_title_logo = current_user.avatar
     end

@@ -7,7 +7,6 @@ class BookingsController < ApplicationController
   before_filter :load_booking_set, only: [:payment_callback, :lpn]
   
   def index
-    @page_subtitle = "Bookings for"
     @course = Course.find_by_id params[:course_id]
     if policy(@course).read?
       @bookings = @course.bookings.visible.order(:status) if @course.present?
@@ -20,7 +19,6 @@ class BookingsController < ApplicationController
     @provider = Course.find(params[:course_id]).provider #Find provider for hero
     @booking_set = BookingSet.new
     @booking_set.bookings << Booking.new(name: current_user.name)
-    @page_subtitle = "Booking for"
     @page_title_logo = @course.course_upload_image if @course.course_upload_image.present?
   end
 
@@ -113,7 +111,6 @@ class BookingsController < ApplicationController
 
   def cancel
     authorize @booking
-    @page_subtitle = "Cancel booking"
     @page_title = "[#{@booking.course.name}](#{@booking.course.path})"
     render 'cancel'
   end

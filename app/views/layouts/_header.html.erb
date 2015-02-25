@@ -1,45 +1,7 @@
 <div class="header" style=" background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
-  <div class="container header_content">
-    <div class="clearfix header_content">
-      
-      <% if (title = page_title).present? %>
-
-        <div class="title-wrapper" <%= 'style=width:85%' if nav_links.blank?  %>>
-          <div class="page_title_logo hero img hidden-xs" style="background-image: url(<%= @page_title_logo.present? ? @page_title_logo : ''%>)">
-          </div>
-          <div class="title">
-            <em class="hidden-xs"><%= page_subtitle.to_html %></em>
-            <h1 class="text-to-fit">
-              <%= page_title.to_html %>
-            </h1>
-          </div>
-        </div>
-        <div class="context_nav_wrapper">
-          <nav>
-            <ul>
-            <% 
-              col_width = 100 / nav_links.count if nav_links.count > 0
-              nav_links.each do |nav_link| %>
-                <li class="<%= "active" if nav_link[:active] %>" style="width:<%= col_width %>%">
-                  <%= link_to nav_link[:link], title: nav_link[:title], class: 'nav_links' do %>
-                    <span class="img-wrapper">
-                      <%= image_tag(asset_path("icons/"+nav_link[:img_name]+"-alt.png"), { class: "reg" }) %>
-                      <%= image_tag(asset_path("icons/"+nav_link[:img_name]+".png"), { class: "alt" }) %>
-                    </span>
-                    <span class="link_title">
-                      <%= nav_link[:title] %>
-                    </span>
-                  <% end # link_to %>
-                </li>
-              <% end %>
-            </ul>
-          </nav>
-        </div>
-      
-      <% elsif @location_form == true %>
-        <%= render 'location_form' %>
-      <% end %>
-
+  <div class="header_bg">
+    <div class="container">
+      <%= render @header_partial if @header_partial.present? %>
     </div>
   </div>
 </div>

@@ -22,7 +22,7 @@ module LayoutHelper
     return @meta_title if @meta_title
     meta_title = ''
     if params[:action] == 'index' && params[:controller] == 'courses'
-      meta_title = page_subtitle+' '+page_title
+      meta_title = page_title
     elsif @provider.present? && !@provider.new_record? && params[:controller] == 'providers'
       meta_title = @provider.name
     elsif params[:action] == 'new'
@@ -59,10 +59,6 @@ module LayoutHelper
 
   def page_title
     @page_title ||= ""
-  end
-
-  def page_subtitle
-    @page_subtitle ||= ""
   end
 
   def page_title_logo

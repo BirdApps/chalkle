@@ -1,3 +1,5 @@
+@import "../_vars";
+
 .course-show {
   margin-top:20px;
   h1{
@@ -10,6 +12,24 @@
   }
   .admin-bar{
     
+  }
+  .social-links {
+    background: #F3F3F3;
+    border-radius:  8px;
+    display: inline-block;
+    overflow: hidden;
+    a {
+      text-align: center;
+      width:43px;
+      padding: 10px;
+      display: inline-block;
+      img {
+        height: 16px;
+      }
+      &:hover {
+        background: #e3e3e3; 
+      }
+    }
   }
   .map-wrap {
     position:relative;

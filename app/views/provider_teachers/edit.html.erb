@@ -40,12 +40,16 @@
     <% end %>
     <%= f.input :bio, as: :text, label: "About", wrapper: :horizontal %>
 
-    <label class="vertical-borders exists-success" style="display:none">
+    <label class="exists-success" style="display:none">
+      <hr />
       Great, that person is already registered on Chalkle. <br /> We'll add them as a teacher for the provider <%= @provider_teacher.provider.name %>
+      <hr />
     </label>
 
-    <label class="vertical-borders exists-warning" style="display:none">
+    <label class="exists-warning" style="display:none">
+      <hr />
       Even though that person isn't on Chalkle yet, they can still be a teacher - you can make classes for them and they'll receive reminders and notices via email.<br /><br />At any point in time they can sign up to Chalkle to take advantage of the website's features. We'll email them to let them know.
+      <hr />
     </label>
     <div class="fancy-header">
       <h3>Payments</h3>

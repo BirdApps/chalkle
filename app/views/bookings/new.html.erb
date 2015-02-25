@@ -4,7 +4,7 @@
     <br />
     <p class="light center">
       <% if @course.cost? && @course.cost > 0 %>
-        <span class="x1-25">$<%= @course.cost_formatted %></span> per attendee
+        <span class="big">$<%= @course.cost_formatted %></span> per attendee
       <% else %>
         This <%= @course.type %> is <strong>free to attend</strong>  
       <% end %>

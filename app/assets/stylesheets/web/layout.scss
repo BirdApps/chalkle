@@ -1,4 +1,5 @@
 @import "_vars";
+
 html {
   height: 100%;
   min-height: 100%;
@@ -16,15 +17,46 @@ html {
     padding-top: 0; 
     background-color: transparent;
     margin-bottom: 0;
+    letter-spacing: $letter-spacing;
 
-    header .body-content{
-      @media screen and (max-width: 768px){
-        margin-top: 50px;
-      }
-      @media screen and (min-width: 769px){
-        margin-top: 62px;
+    h1,h2,h3,h4,h5,h6 {
+      font-weight: 300;
+    }
+
+    a:focus, a:hover, a:active { text-decoration: none !important; }
+
+    .container-fluid {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+    
+    .messages {
+      margin-top:20px;
+      position: fixed;
+      z-index: 1000;
+      width: 100%;
+      margin-left: 0;
+      left: 0;
+      @media screen and (min-width: 769px) { top: 112px; }
+      @media screen and (max-width: 768px) { bottom: 0;  }
+
+      .alert {
+        border-radius:0;
+        text-align: center;
+        font-size: 24px; 
+        &.alert-danger{
+          .close {
+            color: #fff;
+          }
+          background-color: rgba(45,45,45,0.9);
+          border: none;
+          color: #fff;
+        }
       }
     }
+
+
 
     >.body-content{
       background-image: asset-url('icons/body-content-loader.gif', images);
@@ -37,9 +69,11 @@ html {
         height: 100%;
         opacity: 0;
         transition: opacity 0.2s;
+        width:100%;
+        min-height: 100%;
+        background-color: #fff;
         div[role=main] {
           padding-bottom:75px;
-          background-color: #fff;
           position: relative;
           min-height: 200px;
         } // div[role=main] 

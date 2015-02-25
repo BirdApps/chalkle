@@ -17,7 +17,7 @@ $(function() {
       } while (text.width() >= limit);
        do {
           fontSize++;
-          if(fontSize > 50){
+          if(fontSize > 35){
             break;
           }
           text.css('font-size', fontSize.toString() + 'px');
@@ -54,32 +54,28 @@ $(function(){
 $(function(){
 
   var header = $('.header');
+  var header_bg = $('.header .header_bg')
   var coloring = $('.coloring');
-
-  var bg_image;
-  var bg_img = function(){
-    if(bg_image == undefined){
-      bg_image = new Image;
-      bg_image.src = $('.fixed_hero').css('background-image').replace(/url\(|\)$/ig, "");
-
-      var scale = ($(document).width()/bg_image.width)
-      var max_scroll_height
-    }
-    return bg_image;
-  }
-
+  var header_bg_opacity = 0.5;
   var max_scroll_height = function(){
     var bg_scale = $(document).width() / bg_img().width;
     return bg_img().height * bg_scale - $('.fixed_hero').height();
   }
 
-  var scrolltop = function(){ return $(document).scrollTop(); };
+  var scrolltop = function(){ return $('body').scrollTop(); };
 
   function overscroll_header(scroll) {
-    console.log( (scroll*-1)+'px' );
-
-    header.css('margin-top', (scroll)+'px' );
-    header.css('padding-top', (scroll*-1)+'px' );
+    if(scroll*-1 > header.height()){
+      scroll = header.height()*-1;
+    }
+    new_padding = coloring.height()+(scroll*5*-1);
+    if(new_padding < coloring.height()+6){
+      new_padding = coloring.height();
+    }
+    header_bg_opacity = 1-(scroll*-1/75);
+    console.log(header_bg_opacity);
+    header_bg.css('opacity', header_bg_opacity );
+    header_bg.css('padding-top', new_padding+'px' );
   }
 
   function background_size_for_header_images(){
@@ -87,7 +83,7 @@ $(function(){
       overscroll_header(scrolltop());
     }
     var window_width = $(window).width();
-    header.css("background-size", window_width*1.1);
+    //header.css("background-size", window_width*1.1);
   }
 
   function header_image_parallax() {
