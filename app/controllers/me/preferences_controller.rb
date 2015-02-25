@@ -8,13 +8,12 @@ class Me::PreferencesController < Me::BaseController
     if @chalkler_email_preferences.update_attributes(params[:chalkler_preferences])
       redirect_to me_preferences_path, notice: 'Your preferences have been saved.'
     else
-      render template: 'me/dashboard/index'
+      redirect_to me_root_path
     end
   end
 
   def show
     @chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
-
     render template: 'me/preferences/settings'
   end
 
@@ -39,7 +38,6 @@ class Me::PreferencesController < Me::BaseController
   def notifications
     @notification_preference = current_user.notification_preference || NotificationPreference.create(chalkler: current_user.chalkler)
     render template: 'me/preferences/notifications'
-
   end
 
   def update_notifications 
