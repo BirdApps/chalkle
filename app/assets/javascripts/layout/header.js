@@ -17,7 +17,7 @@ $(function() {
       } while (text.width() >= limit);
        do {
           fontSize++;
-          if(fontSize > 50){
+          if(fontSize > 35){
             break;
           }
           text.css('font-size', fontSize.toString() + 'px');
@@ -54,8 +54,9 @@ $(function(){
 $(function(){
 
   var header = $('.header');
+  var header_bg = $('.header .header_bg')
   var coloring = $('.coloring');
-
+  var header_bg_opacity = 0.5;
   var max_scroll_height = function(){
     var bg_scale = $(document).width() / bg_img().width;
     return bg_img().height * bg_scale - $('.fixed_hero').height();
@@ -67,7 +68,14 @@ $(function(){
     if(scroll*-1 > header.height()){
       scroll = header.height()*-1;
     }
-    header.css('padding-top', (coloring.height()+(scroll*5*-1))+'px' );
+    new_padding = coloring.height()+(scroll*5*-1);
+    if(new_padding < coloring.height()+6){
+      new_padding = coloring.height();
+    }
+    header_bg_opacity = 1-(scroll*-1/75);
+    console.log(header_bg_opacity);
+    header_bg.css('opacity', header_bg_opacity );
+    header_bg.css('padding-top', new_padding+'px' );
   }
 
   function background_size_for_header_images(){
