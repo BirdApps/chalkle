@@ -1,3 +1,5 @@
+@import "../_vars";
+
 .chalklers-show {
   ._favourite {
     clear: both;
@@ -5,6 +7,19 @@
     min-height: 64px;
     .content {
       padding-top: 10px;
+    }
+  }
+  ._teacher{
+    line-height:2em;
+    margin-bottom: 10px;
+  }
+  ._provider {
+    line-height:2em;
+    margin-bottom: 10px;
+   .provider-img {
+      height: 45px;
+      width: 45px;
+      background: #ccc;
     }
   }
 }

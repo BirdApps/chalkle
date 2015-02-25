@@ -1,177 +1,18 @@
-@import "_vars";
+@import "../_vars";
 
-.courses-teach {
+.registrations-new {
   color: #fff;
-  #teach {
-    background-image: image_url('teach/reward.jpg');
-    background-size: cover;
-    background-position: right center;
-    padding-top: 170px; 
-  }
-
-  h1 {
-    margin-bottom: 120px;
-    margin-top: 100px;
-    color: #fff;
-    font-weight: 300;
-    font-size: 48px;
-    letter-spacing: 4px;
-    line-height: 58px;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
-  #process {
-    opacity: 0.89;
-    font-size: 18px;
-    color: #000000;
-    letter-spacing: 1.5px;
-    padding-top: 32px; padding-bottom: 32px;
-    >div {
-      margin-bottom: 32px;
-      margin-top: 32px;
-      padding-left: 15px;
-    }
-    img {
-      display: block;
-      float: left;
-      height: 52px;
-
-      margin-right: 15px;
-    }
-
-  }
-
-  #our-job {
-    opacity: 0.89;
-    font-size: 24px;
-    color: #000000;
-    letter-spacing: 1.6px;
-  }
-
-  .shade {
-    background-color: rgba(0,0,0,0.6);
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
-    opacity: 0.89;
-    font-weight: 400;
-    font-size: 20px;
-    color: #FFFFFF;
-    letter-spacing: 2.5px;
-
-    &.icons {
-      img {
-        display: block;
-        float: left;
-        height: 52px;
-
-        margin-right: 15px;
-      }
-    }
-
-    &.dark {
-      background-color: rgba(0,0,0,0.95);
-      font-size: 16px;
-      letter-spacing: 1.5px;
-      line-height: 1.2em;
-      > div {
-        margin-top: 2em;
-        margin-bottom: 2em;
-      }
-    }
-  }
-
-  .plan {
-    border-radius:  30px;
-    background-color: #ddd;
-    color: #000;
-    height: 300px;
-    box-shadow: 0 2px 6px #000;
-    transition: all 100ms ease-out;
-
-    &:hover {
-      background-color: #fff !important;
-      transform: scale(1.05);
-      .circle {
-        transform: scale(1.05);
-        box-shadow: 0 0 8px rgba(0,0,0,0.2);
-
-      }
-    }
-
-    small {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      left: 0;
-    }
-
-    &.free {
-      background-color: transparent;
-      border: 1px solid rgba(255,255,255,0.2); 
-      color: #fff;
   
-      &:hover {
-        background-color: rgba(255,255,255,0.2) !important;
-        transform: scale(1.05);
-      }
-      .circle {
-        height: 80px;
-        width: 80px;
-        font-size: 40px;
-        padding-top: 0;
-        line-height: 85px;
-      }
-    }
-
-
-    .circle {
-      height: 160px;
-      width: 160px;
-      display: inline-block;
-      text-align: center;
-      font-weight: 100;
-      font-size: 24px;
-      color: #4c7e93;
-      line-height: 115px;
-      padding-top: 20px;
-      font-size: 100px;
-      font-weight: 100;
-      background: #4c7e93;
-      color: #fff;
-      border-radius: 80px;
-      transition:all 100ms ease-out;
-      &.outline {
-        background-color: transparent;
-        border: 1px solid #4c7e93;
-        color: #4c7e93;
-      }
-
-      sub {
-        display: block;
-        font-size: 14px;
-
-      }
-
-    }
-
-  }
-
-}
-
-
-
-
-
-.courses-learn {
-
-  color: #fff;
-
   #sign-in {
     background-image: image_url('learn/diver.jpg');
     background-size: cover;
     background-position: center center;
-    padding-top: 170px; 
+    @media screen and (min-width: 769px){
+      padding-top: 220px; 
+    }
+    @media screen and (max-width: 768px){
+      padding-top: 70px; 
+    }
   }
 
   h1 {
@@ -204,7 +45,6 @@
       position: relative;
       height: 22px;
       margin: 2.5em 0; 
-
       > * { 
         display:block; 
         padding: 0; 
@@ -234,8 +74,8 @@
       }
     }
     label {display: none; }
+    @include placeholder(#fff);
     input {
-      @include placeholder(#ddd);
       background-color: rgba(255,255,255,0.10);
       border-radius: 0px;
       font-size: 19px;
@@ -267,6 +107,7 @@
 
   .login-option {
     padding-top: 1em;
+    background-color: rgba(0, 0, 0, 0.3);
     p { color: #ddd; }
     a.btn { 
       background: none;
@@ -307,7 +148,7 @@
     padding-top: 200px; 
     min-height: 550px;
 
-/* Discover new things : */
+    /* Discover new things : */
     font-weight: 300;
     font-size: 16px;
     color: rgba(255,255,255,0.8);
@@ -369,7 +210,4 @@
       color: #fff;
     }
   }
-
-
 }
-
