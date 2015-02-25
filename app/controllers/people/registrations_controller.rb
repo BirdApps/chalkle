@@ -1,7 +1,6 @@
 class People::RegistrationsController < Devise::RegistrationsController
   
   def new
-    @page_subtitle = "Use chalkle to"
     @page_title =  "Learn"
     @meta_title = "Learn with "
     @show_header = false

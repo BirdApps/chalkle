@@ -6,7 +6,6 @@ class Me::BaseController < ApplicationController
   private
     def page_titles
       @page_title = current_user.name
-      @page_subtitle = 'Dashboard'
       @page_title_logo = current_user.avatar
     end
 

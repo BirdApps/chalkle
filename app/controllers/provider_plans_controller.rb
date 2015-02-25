@@ -1,7 +1,6 @@
 class ProviderPlansController < ApplicationController
   before_filter :load_provider_plan, except: [:index]
   def index
-    @page_subtitle = 'Provider'
     @page_title = 'Plans'
     @provider_plans = ProviderPlan.all
     authorize ProviderPlan.new

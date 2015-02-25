@@ -28,7 +28,6 @@ class ProvidersController < ApplicationController
   end
 
   def new
-    @page_subtitle = "Create a new"
     @page_title = "Provider"
     @new_provider = Provider.new
   end
@@ -53,7 +52,6 @@ class ProvidersController < ApplicationController
 
   def edit
     authorize @provider
-    @page_subtitle = 'Settings'
   end
 
   def update

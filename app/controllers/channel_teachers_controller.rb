@@ -20,12 +20,10 @@ class ChannelTeachersController < ApplicationController
   end
 
   def edit
-    @page_subtitle = "editing"
     authorize @channel_teacher
   end
 
   def update
-    @page_subtitle = "editing"
     authorize @channel_teacher
     if @channel_teacher.chalkler.blank?
       existing_chalkler = Chalkler.exists params[:channel_teacher][:email]
@@ -47,7 +45,6 @@ class ChannelTeachersController < ApplicationController
   def new
       @channel_teacher =ChannelTeacher.new channel_id: @channel.id
       authorize @channel_teacher 
-      @page_subtitle = "Create a New"
       @page_title = "Teacher"
   end
 
@@ -76,7 +73,6 @@ class ChannelTeachersController < ApplicationController
         @channel_teacher.errors.each do |attribute,error|
           add_response_notice attribute.to_s+" "+error
         end
-        @page_subtitle = "Create a New"
         @page_title = "Teacher"
         render 'new'
       end

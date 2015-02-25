@@ -3,7 +3,6 @@ module Sudo::BaseHelper
   def set_titles
       @page_title_logo = 'http://i.imgur.com/Y4kT12T.jpg'
       @page_title = "Chalkle Admin"
-      @page_subtitle = "Sudo"
       controller_parts = request.path_parameters[:controller].split("/")
       action_parts = request.path_parameters[:action].split("/")
       @page_context_links = [

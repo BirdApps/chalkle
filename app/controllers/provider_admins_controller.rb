@@ -4,7 +4,6 @@ class ProviderAdminsController < ApplicationController
   def new
       @provider_admin = ProviderAdmin.new provider: @provider
       authorize @provider_admin
-      @page_subtitle = "Create a New"
       @page_title = "Admin"
   end
 
@@ -32,7 +31,6 @@ class ProviderAdminsController < ApplicationController
       @provider_admin.errors.each do |attribute,error|
         add_response_notice attribute.to_s+" "+error
       end
-      @page_subtitle = "Create a New"
       @page_title = "Teacher"
       render 'new'
     end
@@ -72,7 +70,6 @@ class ProviderAdminsController < ApplicationController
       @provider_admin = ProviderAdmin.find params[:id]
       return not_found if !@provider_admin
       @provider = @provider_admin.provider
-      @page_subtitle = "<a href='#{provider_path(@provider_admin.provider.url_name)}'>#{@provider_admin.provider.name}</a>".html_safe
       @page_title = "<a href='#{providers_admins_path(@provider_admin.provider.url_name)}'>Admins</a>".html_safe
     end
  

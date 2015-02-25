@@ -8,7 +8,7 @@ class CoursesController < ApplicationController
   before_filter :header_mine, only: :mine
   
   def index
-   @location_form = true
+   @header_partial = '/layouts/headers/discover'
   end
 
   def fetch
@@ -72,7 +72,6 @@ class CoursesController < ApplicationController
   end
 
   def teach
-    @page_subtitle = "Teach with Chalkle"
     @page_title =  "Teach"
     @meta_title = "Teach with "
 
@@ -81,7 +80,6 @@ class CoursesController < ApplicationController
   end
 
   def learn
-    @page_subtitle = "Use chalkle to"
     @page_title =  "Learn"
     @meta_title = "Learn with "
     @show_header = false unless chalkler_signed_in?
@@ -106,7 +104,6 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    @page_subtitle = 'Editing'
     authorize @course
     @teaching = Teaching.new current_user
     @teaching.course_to_teaching @course
@@ -193,9 +190,11 @@ class CoursesController < ApplicationController
       @course = Course.find_by_id(params[:id])
       return not_found unless @course
       authorize @course
+      @provider = @course.provider
     end
 
     def header_course
+      @header_partial = '/layouts/headers/provider'
       @page_title_logo = @course.provider.logo
       @page_title = "[#{@course.provider.name}](#{provider_path(@course.provider.url_name)})"
       @nav_links = []
@@ -270,19 +269,14 @@ class CoursesController < ApplicationController
     def header_mine
       if current_user.providers_adminable.count == 1
         provider = current_user.providers_adminable.first
-        @page_subtitle = "[#{provider.name}](#{provider_path(provider.url_name)})"
-      else
-        @page_subtitle = "From all your providers"
       end
 
       @page_title = "All Classes"
     end
 
     def header_teach
-      @page_subtitle = "Use chalkle to"
       @page_title = "Teach"
       @meta_title = "Teach with "
-
       @nav_links = [{
           img_name: "people",
           link: new_provider_path,
