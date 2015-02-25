@@ -27,51 +27,59 @@ html {
     
     .site-messages {
       overflow:hidden;
-      bottom: 0;
+      top: 0;
       position: fixed;
       left: 0;
       width: 100%;
-      z-index: 999;
+      z-index: 3000;
       background: #333;
-      box-shadow: 0px 0px 5px  rgba(0, 0, 0, 0.3);   
-
+      box-shadow: 0px 0px 5px  rgba(0, 0, 0, 0.3);  
+      opacity: 0;
+      &:hover{
+       .dismiss {
+          color: #eee !important;
+        } 
+      }
       .container {
         text-align:center;
-        transition: height 200ms ease-out;
-        height: 0;
         max-width: 720px;
+        position: relative;
+        font-size: 20px;
+
         .dismiss {
-          font-size: 30px;
-          padding: 0;
-          &:hover{
-            color: #bfc3c6
-          }
+          font-size: 12px;
+          padding: 10px 0 5px;
+          position: absolute;
+          bottom: 0;
+          width: 50%;
+          left: 25%;
+          color: #aaa;
         }
-        .scroll {
-          overflow-y: scroll;
-        }
-        div{
-          position: relative;
-          color: #fff;
-          padding: 10px 20px;
-          &:before{
-            content: '';
-            width: 10px;
-            height: 10px;
-            border-radius: 20px;
-            position: absolute;
-            top: 15px;
-            left: 0;
-          }
-          &.success{
+        .flash {
+          padding: 12px 0 22px;
+          div{
+            position: relative;
+            color: #fff;
+            padding: 5px 30px;
             &:before{
-              background-color: #d6e9c6;
+              content: '';
+              width: 10px;
+              height: 10px;
+              border-radius: 20px;
+              position: absolute;
+              top: 13px;
+              left: 0;
             }
-          }
-          &.danger{
-            &:before{
-              background-color: #a94442;
-            } 
+            &.success{
+              &:before{
+                background-color: #d6e9c6;
+              }
+            }
+            &.danger{
+              &:before{
+                background-color: #a94442;
+              } 
+            }
           }
         }
 

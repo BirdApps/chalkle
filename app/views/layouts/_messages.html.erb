@@ -1,17 +1,18 @@
 <% if flash.present? %>
   <div class="site-messages">
     <div class="container">
-      <div class="dismiss">
-        <span class="fa fa-chevron-down"></span>
-      </div>
-      <div class="scroll">
-        <% flash.each do |name, msg| %>
-          <% if msg.is_a?(String) && !msg.blank? %>
-            <%= content_tag :div, msg, id: "flash_#{name}", class: (name == :notice ? 'success inline' : 'danger inline') %>
+      <div class="flash">
+        <% flash.each do |name, msgs| %>
+          <% if !msgs.blank? %>
+            <% [msgs].flatten.each do |msg| %>
+              <%= content_tag :div, msg, id: "flash_#{name}", class: (name == :notice ? 'success inline' : 'danger inline') %><br />
+            <% end %>
           <% end %>
         <% end %>
       </div>
+      <div class="dismiss">
+        <span class="fa fa-chevron-up"></span>
+      </div>
     </div>
-
   </div>
 <% end %>

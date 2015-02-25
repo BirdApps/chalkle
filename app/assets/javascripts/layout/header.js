@@ -2,43 +2,6 @@ $(window).load(function(){
   $('#wrapper').css('opacity',1);
 });
 
-$(function() {
-  function text_to_fit(){
-    if($('.text-to-fit').length > 0){
-      var text = $('.text-to-fit');
-      var limit = $('.text-to-fit').parent().width();
-      var fontSize = parseInt(text.css('font-size'));
-      do {
-          fontSize--;
-          if(fontSize < 15){
-            break;
-          }
-          text.css('font-size', fontSize.toString() + 'px');
-      } while (text.width() >= limit);
-       do {
-          fontSize++;
-          if(fontSize > 35){
-            break;
-          }
-          text.css('font-size', fontSize.toString() + 'px');
-      } while (text.width() <= limit-10);
-
-
-      var vert_limit = $('.text-to-fit').parent().height();
-      do {
-          fontSize--;
-          if(fontSize < 15){
-            break;
-          }
-          text.css('font-size', fontSize.toString() + 'px');
-      } while ($('.text-to-fit').parent().height() > 108);
-      text.css('opacity', 1);
-    }
-  }
-
-  text_to_fit();
-  window.addEventListener("resize", text_to_fit);
-});
 
 $(function(){
   $('.facebook-share').click(function(){
@@ -50,13 +13,12 @@ $(function(){
 });
 
 
-
 $(function(){
 
   var header = $('.header');
   var header_bg = $('.header .header_bg')
   var coloring = $('.coloring');
-  var header_bg_opacity = 0.5;
+
   var max_scroll_height = function(){
     var bg_scale = $(document).width() / bg_img().width;
     return bg_img().height * bg_scale - $('.fixed_hero').height();
@@ -64,12 +26,15 @@ $(function(){
 
   var scrolltop = function(){ return $('body').scrollTop(); };
 
-
   function site_messages(){
-    if($('.site-messages').length > 0){
-      $('.site-messages .container').height(130); 
-      $('.site-messages .dismiss').click(function(){
-         $('.site-messages .container').height(0);
+    var messages = $('.site-messages');
+    if(messages.length > 0){
+      var height = messages.height();
+      messages.css('top', height*-1);
+      messages.css('opacity',1);
+      messages.animate({top: 0}, 200);
+      messages.click(function(){
+        messages.animate({top: height*-1}, 200);
       });
     }
   }
@@ -78,11 +43,11 @@ $(function(){
     if(scroll*-1 > header.height()){
       scroll = header.height()*-1;
     }
-    new_padding = coloring.height()+(scroll*5*-1);
+    new_padding = coloring.height()+(scroll*4.5*-1);
     if(new_padding < coloring.height()+6){
       new_padding = coloring.height();
     }
-    header_bg_opacity = 1-(scroll*-1/75);
+    var header_bg_opacity = 1-(scroll*-1/75);
     header_bg.css('opacity', header_bg_opacity );
     header_bg.css('padding-top', new_padding+'px' );
   }
@@ -203,3 +168,53 @@ $(function(){
   init();
 
 });
+
+
+// $(function() {
+//   function text_to_fit(){
+//     if($('.text-to-fit').length > 0){
+//       var text = $('.text-to-fit');
+//       var parentRatio = text.parent().width() /  text.parent().height();
+//       var textRatio = text.width() / text.height();
+
+//       console.log(parentRatio);
+
+//       console.log(textRatio);
+//       if(parentRatio > textRatio){
+//         //vertical limit
+//       }else{
+//         //horizontal limit
+//       }
+
+//       var fontSize = parseInt(text.css('font-size'));
+//       do {
+//           fontSize--;
+//           if(fontSize < 15){
+//             break;
+//           }
+//           text.css('font-size', fontSize.toString() + 'px');
+//       } while (text.width() - limit > 0 text.width() - limit >);
+//        do {
+//           fontSize++;
+//           if(fontSize > 35){
+//             break;
+//           }
+//           text.css('font-size', fontSize.toString() + 'px');
+//       } while (text.width() <= limit-10);
+
+
+//       var vert_limit = $('.text-to-fit').parent().height();
+//       do {
+//           fontSize--;
+//           if(fontSize < 15){
+//             break;
+//           }
+//           text.css('font-size', fontSize.toString() + 'px');
+//       } while ($('.text-to-fit').parent().height() > 108);
+//       text.css('opacity', 1);
+//     }
+//   }
+
+//   text_to_fit();
+//   window.addEventListener("resize", text_to_fit);
+// });
