@@ -1,8 +1,9 @@
 /*
  *= require_tree ./web
  */
-
 @import "web/_vars";
+@import "font-awesome-sprockets";
+@import "font-awesome";
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "bootstrap-datepicker3";

@@ -74,7 +74,7 @@ group :assets do
   gem 'autoprefixer-rails'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
-  gem 'font-awesome-rails'
+  gem 'font-awesome-sass', '~> 4.3.0'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.16'
   gem 'haml_assets',         '~> 0.2.2'
