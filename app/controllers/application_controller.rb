@@ -141,12 +141,6 @@ protected
     end
   end
 
-  def add_response_notice(notice = nil)
-      if response[:notices].nil?
-        response[:notices] = []
-      end
-      response[:notices] << notice unless notice.nil?
-  end
 
   def current_date
     return @current_date if @current_date.present?

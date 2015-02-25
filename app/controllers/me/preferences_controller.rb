@@ -29,7 +29,7 @@ class Me::PreferencesController < Me::BaseController
         end
       else
         @chalkler.errors.each do |attribute,error|
-          add_response_notice attribute.to_s+" "+error
+          flash[:notice] = attribute.to_s+" "+error
         end
       end
     end

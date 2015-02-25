@@ -29,11 +29,11 @@ class ChannelTeachersController < ApplicationController
       existing_chalkler = Chalkler.exists params[:channel_teacher][:email]
       if existing_chalkler.present?
         if existing_chalkler.channels_teachable.include? @channel_teacher.channel
-          add_response_notice "That email belongs to a chalkler already teaching on this channel"
+          flash[:notice] = "That email belongs to a chalkler already teaching on this channel"
           params[:channel_teacher][:email] = @channel_teacher.email
         else
           @channel_teacher.chalkler = existing_chalkler 
-          add_response_notice "Great! We found that chalkler and associated this teacher profile with them"
+          flash[:notice] = "Great! We found that chalkler and associated this teacher profile with them"
         end
         @channel_teacher.save
       end
@@ -54,13 +54,13 @@ class ChannelTeachersController < ApplicationController
       authorize @channel_teacher
 
       if @channel_teacher.email.blank?
-        add_response_notice "You must supply an email"
+        flash[:notice] = "You must supply an email"
       else
         exists = @channel_teacher.channel.channel_teachers.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @channel_teacher.email.strip.downcase]).present?
         exists = @channel_teacher.channel.teaching_chalklers.find(:first, conditions: ["lower(email) = ?", @channel_teacher.email.strip.downcase]).present? unless exists
 
         if exists
-          add_response_notice "That person is already a teacher on your channel"
+          flash[:notice] = "That person is already a teacher on your channel"
         else
           @channel_teacher.name = @channel_teacher.name || @channel_teacher.email.split('@')[0]
           result = @channel_teacher.save
@@ -71,7 +71,7 @@ class ChannelTeachersController < ApplicationController
         redirect_to channel_channel_teacher_path(@channel_teacher.channel.url_name, @channel_teacher)
       else
         @channel_teacher.errors.each do |attribute,error|
-          add_response_notice attribute.to_s+" "+error
+          flash[:notice] = attribute.to_s+" "+error
         end
         @page_title = "Teacher"
         render 'new'

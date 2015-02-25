@@ -13,13 +13,13 @@ class ProviderAdminsController < ApplicationController
     authorize @provider_admin
 
     if @provider_admin.email.blank?
-      add_response_notice "You must supply an email"
+      flash[:notice] = "You must supply an email"
     else
       exists = @provider_admin.provider.provider_admins.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @provider_admin.email.strip.downcase]).present?
       exists = @provider_admin.provider.admin_chalklers.find(:first, conditions: ["lower(email) = ?", @provider_admin.email.strip.downcase]).present?
 
      if exists
-        add_response_notice "That person is already an admin on your provider"
+        flash[:notice] = "That person is already an admin on your provider"
       else
         result = @provider_admin.save
       end
@@ -29,7 +29,7 @@ class ProviderAdminsController < ApplicationController
       redirect_to edit_provider_admin_path(@provider_admin.provider.url_name, @provider_admin.id), notice: 'Admin created successfully'
     else
       @provider_admin.errors.each do |attribute,error|
-        add_response_notice attribute.to_s+" "+error
+        flash[:notice] = attribute.to_s+" "+error
       end
       @page_title = "Teacher"
       render 'new'
@@ -45,9 +45,9 @@ class ProviderAdminsController < ApplicationController
     if @provider_admin.chalkler.blank?
       new_email = params[:provider_admin][:email]
       if new_email.blank?
-        add_response_notice "You must supply an email"
+        flash[:notice] = "You must supply an email"
       elsif @provider_admin.provider.admin_chalklers.find_by_email(new_email).present? || @provider_admin.provider.provider_admins.find_by_pseudo_chalkler_email(new_email).present?
-        add_response_notice "That person is already an admin on your provider"
+        flash[:notice] = "That person is already an admin on your provider"
       else
         @provider_admin.email = new_email
         result = @provider_admin.save
@@ -57,7 +57,7 @@ class ProviderAdminsController < ApplicationController
         redirect_to edit_provider_admin_path(@provider_admin.provider.url_name, @provider_admin.id), notice: 'Email updated successfully'
       else
         @provider_admin.errors.each do |attribute,error|
-        add_response_notice attribute.to_s+" "+error
+        flash[:notice] = attribute.to_s+" "+error
         end
         render 'edit'
       end

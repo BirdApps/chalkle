@@ -24,11 +24,11 @@ class ProviderTeachersController < ApplicationController
       existing_chalkler = Chalkler.exists params[:provider_teacher][:email]
       if existing_chalkler.present?
         if existing_chalkler.providers_teachable.include? @provider_teacher.provider
-          add_response_notice "That email belongs to a chalkler already teaching on this provider"
+          flash[:notice] = "That email belongs to a chalkler already teaching on this provider"
           params[:provider_teacher][:email] = @provider_teacher.email
         else
           @provider_teacher.chalkler = existing_chalkler 
-          add_response_notice "Great! We found that chalkler and associated this teacher profile with them"
+          flash[:notice] = "Great! We found that chalkler and associated this teacher profile with them"
         end
         @provider_teacher.save
       end
@@ -49,13 +49,13 @@ class ProviderTeachersController < ApplicationController
       authorize @provider_teacher
 
       if @provider_teacher.email.blank?
-        add_response_notice "You must supply an email"
+        flash[:notice] = "You must supply an email"
       else
         exists = @provider_teacher.provider.provider_teachers.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @provider_teacher.email.strip.downcase]).present?
         exists = @provider_teacher.provider.teaching_chalklers.find(:first, conditions: ["lower(email) = ?", @provider_teacher.email.strip.downcase]).present? unless exists
 
         if exists
-          add_response_notice "That person is already a teacher on your provider"
+          flash[:notice] = "That person is already a teacher on your provider"
         else
           @provider_teacher.name = @provider_teacher.name || @provider_teacher.email.split('@')[0]
           result = @provider_teacher.save
@@ -66,7 +66,7 @@ class ProviderTeachersController < ApplicationController
         redirect_to provider_provider_teacher_path(@provider_teacher.provider.url_name, @provider_teacher)
       else
         @provider_teacher.errors.each do |attribute,error|
-          add_response_notice attribute.to_s+" "+error
+          flash[:notice] = attribute.to_s+" "+error
         end
         @page_title = "Teacher"
         render 'new'

@@ -25,28 +25,56 @@ html {
 
     a:focus, a:hover, a:active { text-decoration: none !important; }
     
-    .messages {
-      margin-top:20px;
+    .site-messages {
+      overflow:hidden;
+      bottom: 0;
       position: fixed;
-      z-index: 1000;
-      width: 100%;
-      margin-left: 0;
       left: 0;
-      @media screen and (min-width: 769px) { top: 112px; }
-      @media screen and (max-width: 768px) { bottom: 0;  }
+      width: 100%;
+      z-index: 999;
+      background: #333;
+      box-shadow: 0px 0px 5px  rgba(0, 0, 0, 0.3);   
 
-      .alert {
-        border-radius:0;
-        text-align: center;
-        font-size: 24px; 
-        &.alert-danger{
-          .close {
-            color: #fff;
+      .container {
+        text-align:center;
+        transition: height 200ms ease-out;
+        height: 0;
+        max-width: 720px;
+        .dismiss {
+          font-size: 30px;
+          padding: 0;
+          &:hover{
+            color: #bfc3c6
           }
-          background-color: rgba(45,45,45,0.9);
-          border: none;
-          color: #fff;
         }
+        .scroll {
+          overflow-y: scroll;
+        }
+        div{
+          position: relative;
+          color: #fff;
+          padding: 10px 20px;
+          &:before{
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 20px;
+            position: absolute;
+            top: 15px;
+            left: 0;
+          }
+          &.success{
+            &:before{
+              background-color: #d6e9c6;
+            }
+          }
+          &.danger{
+            &:before{
+              background-color: #a94442;
+            } 
+          }
+        }
+
       }
     }
 

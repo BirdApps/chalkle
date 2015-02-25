@@ -18,7 +18,7 @@
 
   <body class="<%= body_class %> v2" role="document">
     <div id="fb-root"></div>
-
+    <%= render 'layouts/messages' %>
     <header>
       <%= render 'layouts/navigation' %>
       <div class="body-content">
@@ -29,7 +29,6 @@
     <div class="body-content">
       <div id="wrapper">
         <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
-          <%= render 'layouts/messages' %>
           <%= yield %>
         </div>
        <%#  <div id="map_overlay" style="display: none"><div id="map_holder"></div></div> %>

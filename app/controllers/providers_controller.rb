@@ -44,7 +44,7 @@ class ProvidersController < ApplicationController
         redirect_to provider_settings_path(@new_provider.url_name), notice: "Provider #{@new_provider.name} has been created"
       else
         @new_provider.errors.each do |attribute,error|
-          add_response_notice attribute.to_s+" "+error
+          flash[:notice] = attribute.to_s+" "+error
         end
         render 'new'
       end

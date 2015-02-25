@@ -64,6 +64,16 @@ $(function(){
 
   var scrolltop = function(){ return $('body').scrollTop(); };
 
+
+  function site_messages(){
+    if($('.site-messages').length > 0){
+      $('.site-messages .container').height(130); 
+      $('.site-messages .dismiss').click(function(){
+         $('.site-messages .container').height(0);
+      });
+    }
+  }
+
   function overscroll_header(scroll) {
     if(scroll*-1 > header.height()){
       scroll = header.height()*-1;
@@ -185,6 +195,7 @@ $(function(){
       $.get('/me/notifications/seen');
     });
 
+    site_messages();
     window.addEventListener("resize", background_size_for_header_images);
     window.addEventListener("resize", check_notification_height);
     window.addEventListener("scroll", background_size_for_header_images);
