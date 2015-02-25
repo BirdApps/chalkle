@@ -45,24 +45,25 @@
 
 
   .icons {
-    .abl {
-
-
-      height: 350px;
+    .abl, .inspired {
       background-size: cover;
       background-position: center;
-      padding-top: 200px; 
-      min-height: 550px;
 
+      color: #fff;
       opacity: 0.89;
       font-size: 18px;
-      padding-top: 250px;
-      min-height: 200px;
-      height: auto;
+      padding-top: 140px;
+      height: 290px;
       background-position: right bottom;
       background-image: image_url('learn/mic.jpg');
-      .text, h2 {   color: #333;}
     }
+
+    .inspired {
+      background-position: right top;
+      background-image: image_url('learn/bottle.jpg');
+      * {  float: right; clear: both; width: 50%;  }
+    }
+
 
   }
 
@@ -95,9 +96,6 @@
 
     &.dark {
       background-color: rgba(0,0,0,0.95);
-      font-size: 16px;
-      letter-spacing: 1.5px;
-      line-height: 1.2em;
       > div {
         margin-top: 2em;
         margin-bottom: 2em;
