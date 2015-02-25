@@ -83,7 +83,6 @@ $(function(){
       new_padding = coloring.height();
     }
     header_bg_opacity = 1-(scroll*-1/75);
-    console.log(header_bg_opacity);
     header_bg.css('opacity', header_bg_opacity );
     header_bg.css('padding-top', new_padding+'px' );
   }
