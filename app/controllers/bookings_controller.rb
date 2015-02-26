@@ -90,7 +90,7 @@ class BookingsController < ApplicationController
   end
 
   def payment_callback
-    payment_successful = (params[:result] =~ /accepted/i) || (params[:result] =~ /test/i)
+    payment_successful = (params[:result] =~ /accepted/i) || (params[:result] == 'test-accepted')
     if payment_successful
       @booking_set.bookings.each do |booking|
         unless booking.payment.present?
