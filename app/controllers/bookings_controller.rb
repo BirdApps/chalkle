@@ -102,6 +102,7 @@ class BookingsController < ApplicationController
       flash[:notice] = "Payment successful. Thank you very much!"
       redirect_to course_path(params[:course_id])
     else
+      @course = Course.find params[:course_id]
       flash[:alert] = "Sorry, it seems that payment was declined. Would you like to try again?"
       render 'new'
     end
