@@ -57,7 +57,7 @@ $(function(){
       overscroll_header(scrolltop());
     }
     var window_width = $(window).width();
-    //header.css("background-size", window_width*1.1);
+    coloring.parent().css("width", window_width);
   }
 
   function header_image_parallax() {
