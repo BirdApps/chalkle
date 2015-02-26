@@ -14,22 +14,19 @@ class ApplicationController < ActionController::Base
 
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
-    return unless request.get? 
-    if (request.path != "/chalklers/sign_in" &&
-        request.path != "/chalklers/sign_up" &&
-        request.path != "/chalklers/password/new" &&
-        request.path != "/chalklers/password/edit" &&
-        request.path != "/chalklers/confirmation" &&
-        request.path != "/chalklers/sign_out" &&
-        !request.xhr?) # don't store ajax calls
+    return unless request.get?
+    return if request.xhr?
+    unless (request.path == new_chalkler_session_path        ||
+            request.path == new_chalkler_registration_path   ||
+            request.path == chalkler_omniauth_authorize_path(:facebook) )
       session[:previous_url] = request.fullpath 
     end
   end
 
   def after_sign_in_path_for(resource)
-    path = session[:previous_url] || root_path
-    path == new_chalkler_session_path ? root_path : path
+    session[:previous_url] || root_path
   end
+
   def styleguide
     render "/styleguide"
   end
