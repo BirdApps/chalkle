@@ -2,11 +2,24 @@
 
 .courses-teach {
   color: #fff;
+  .container-fluid {
+    padding-bottom: 0 !important;
+  }
+
+
   #teach {
     background-image: image_url('teach/reward.jpg');
     background-size: cover;
     background-position: right center;
     padding-top: 170px; 
+    min-height: 700px;
+
+    @media screen and (max-width: 820px) {
+      background-position:  -300px center;
+      min-height: 400px;
+
+    }
+
   }
 
   h1 {
@@ -34,9 +47,32 @@
     h3 {
       margin: 0 0 10px;
     }
-    img {
-      height: 72px;
+    .iconify {
+      width: 65px;
       margin-right: 10px;
+    }
+    .media-left {
+      @media screen and (max-width: 400px) {
+        display: block;
+        text-align: center;
+        padding:0 0 1em 0;
+        img {
+          width: 100px; 
+        }
+      }
+    }
+
+    .media-body {
+      @media screen and (max-width: 400px) {
+        h3 { text-align: center; }
+      }
+      @media screen and (min-width: 720px) {
+        padding-left: 24px;
+      }
+    }
+
+    .media {
+      margin-bottom: 2em;
     }
 
     .learner, .provider {
@@ -75,6 +111,10 @@
       height: 450px;
       background-position: right bottom;
       background-image: image_url('learn/mic.jpg');
+      @media screen and (max-width: 400px) {
+        text-align: right;
+      }
+
     }
 
     .inspired {
@@ -130,15 +170,15 @@
     transition: all 100ms ease-out;
     border: solid rgba(255,255,255,0.6) 1px;
 
-    &:hover {
-      background-color: rgba(80,80,80,0.4);
-      transform: scale(1.05);
-      .circle {
-        transform: scale(0.95);
-        box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    // &:hover {
+    //   background-color: rgba(80,80,80,0.4);
+    //   transform: scale(1.05);
+    //   .circle {
+    //     transform: scale(0.95);
+    //     box-shadow: 0 0 8px rgba(0,0,0,0.2);
 
-      }
-    }
+    //   }
+    // }
 
     small {
       position: absolute;
@@ -153,7 +193,7 @@
       display: inline-block;
       text-align: center;
       line-height: 115px;
-      padding-top: 20px;
+      padding-top: 17px;
       font-size: 100px;
       font-weight: 100;
       background: rgba(0,0,0,0.7);
@@ -165,10 +205,16 @@
 
       transition: all 100ms ease-out;
 
+
+      @media screen and (max-width: 400px) {
+        height: 160px;
+        width: 160px;
+        font-size: 80px;
+      }
+
       sub {
         display: block;
-        font-size: 14px;
-
+        font-size: 22px;
       }
 
     }

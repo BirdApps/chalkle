@@ -2,7 +2,7 @@
 
    <section>
     <div class="row" id="teach">
-      <div class="col-xs-6 col-md-6">
+      <div class="col-xs-3 col-sm-6 col-sm-offset-0">
         <h1 class="">Teach with Chalkle</h1>
       </div>
     </div>
@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-xs-12 shade dark text-center">
         <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
-          Setting up and managing classes is really easy on Chalkle. You can focus on what is most important. 
+          Setting up and managing classes is easy on Chalkle. You can focus on what is most important. 
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
 
   <section class=" icons">
     <div class="row">
-      <div class="col-xs-12 col-sm-6 abl">
+      <div class="col-xs-12 col-sm-6 abl text-right">
         <h2>Engaging your community.</h2>
       </div>
 
@@ -41,7 +41,7 @@
       <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-3">
         <div class="media">
           <div class="media-left media-middle">
-            <%= image_tag 'teach/payment_admin.png', class: 'media-object' %> 
+            <%= image_tag 'teach/payment_admin.png', class: 'media-object iconify' %> 
           </div>
           <div class="media-body">
             <h3>For learners</h3>
@@ -53,7 +53,7 @@
       <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-3">
         <div class="media">
           <div class="media-left media-middle">
-            <%= image_tag 'teach/free_to_join.png', class: 'media-object' %> 
+            <%= image_tag 'teach/free_to_join.png', class: 'media-object iconify' %> 
           </div>
           <div class="media-body">
             <h3>Effortless booking</h3>
@@ -74,7 +74,7 @@
       <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-3">
         <div class="media">
           <div class="media-left media-middle">
-            <%= image_tag 'teach/payment_admin.png', class: 'media-object' %> 
+            <%= image_tag 'teach/shopping.png', class: 'media-object iconify' %> 
           </div>
           <div class="media-body">
             <h3>Never worry about money again;</h3>
@@ -88,7 +88,7 @@
       <div class="ccol-xs-12 col-sm-10 col-md-6 col-md-offset-3">
         <div class="media">
           <div class="media-left media-middle">
-            <%= image_tag 'teach/payment_admin.png', class: 'media-object' %> 
+            <%= image_tag 'teach/talk.png', class: 'media-object iconify' %> 
           </div>
           <div class="media-body">
             <h3>Connect with your learners;</h3>
@@ -116,18 +116,23 @@
       </div>
 
 
-      <div class="col-xs-6 col-xs-offset-3 col-md-3 col-md-offset-1 text-center plan">
-        <h3>Chalkle Basic</h3>
+      <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4 text-center plan">
+        <h3>Basic Plan</h3>
         <div class="circle">
           $2
-          <sub>+GST +4%</sub>
+          <sub>+ 4%</sub>
         </div>
         <small>
-          <p>payment processing per paid booking</p>
+          <p>for each booking made through Chalkle.</p>
         </small>
       </div>
 
-      <div class="col-xs-6 col-xs-offset-3 col-md-3 col-md-offset-1 text-center plan">
+      <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4 text-center">
+        <h3>Chalkle Services</h3>
+        Need help developing your courses? <%= mail_to "help@chalkle.com", "Get in touch", subject: 'Chalkle Services', class: 'btn btn-primary' %>
+      </div>
+
+      <!-- <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-1 text-center plan">
         <h3>Chalkle Services</h3>
         <div class="circle outline">
           ?
@@ -136,7 +141,7 @@
         <small>
           <p>Need help developing up classes?</p>
         </small>
-      </div>
+      </div> -->
 
 
 

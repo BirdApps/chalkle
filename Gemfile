@@ -44,6 +44,7 @@ gem 'xeroizer'
 gem "geocoder"
 gem 'newrelic_rpm'
 gem 'mandrill-rails'
+gem 'passbook'
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'

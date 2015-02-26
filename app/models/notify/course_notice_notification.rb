@@ -12,7 +12,7 @@ class Notify::CourseNoticeNotification < Notify::Notifier
 
     chalklers_to_notify.each do |chalkler|
       chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice
-
+    
       permission = if role == :teacher  
         :course_notice_new_from_teacher_to_chalkler 
       else 

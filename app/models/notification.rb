@@ -31,6 +31,9 @@ class Notification < ActiveRecord::Base
   MESSAGE = "message"
   TYPES = [CHALKLE, DISCUSSION, REMINDER, FOLLOWING, FEEDBACK, MESSAGE ]
   
+  after_create :send_desktop_notification 
+
+
   def seen?
     viewed_at.present?
   end
@@ -59,6 +62,11 @@ class Notification < ActiveRecord::Base
         '/assets/social-logo.jpg'
       end
     end
+  end
+
+  def send_desktop_notification
+    desktop_notification = Roost.new(chalkler, message, href)
+    desktop_notification.deliver
   end
 
   private
