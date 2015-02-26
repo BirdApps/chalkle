@@ -25,6 +25,10 @@ class ProviderPolicy < ApplicationPolicy
     read?
   end
 
+  def bookings?
+    read?
+  end
+
   def metrics?
     admin?
   end

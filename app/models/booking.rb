@@ -76,6 +76,8 @@ class Booking < ActiveRecord::Base
 
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
 
+  scope :from_provider, -> (provider) { joins(:provider).where("provider_id = ?", provider.id) }
+
   scope :by_date, order(:created_at)
   scope :by_date_desc, order('created_at DESC')
   scope :date_between, ->(from,to) { where(:created_at => from.beginning_of_day..to.end_of_day) }

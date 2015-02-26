@@ -1,18 +1,16 @@
-<div class="col-sm-3 hidden-xs"></div>
-<div class="col-sm-6 new_form_wrapper">
-  <div class="col-xs-12">
-  <p class="center light">Send a message to the administrator of <%= @provider.name %></p>
-  <br />
-  </div>
-  <%= bootstrap_form_for(@contact, wrapper: :simple_bootstrap3, method: :post, class: 'form-horizontal', role: 'form', url: provider_contact_path(@contact.provider.url_name)) do |f| %>
-    <% if !current_user.email.present? %>
-      <%= f.input :from, label: "Email", input_html: { :'data-error-message' => 'You must write a email' }, wrapper: :horizontal %>
+<div class="row">
+  <div class="col-sm-offset-3 col-sm-6 new_form_wrapper">
+    
+    <p class="center light">Send an email to <%= @provider.name %></p>
+
+    <%= bootstrap_form_for(@contact, wrapper: :simple_bootstrap3, method: :post, class: 'form-horizontal', role: 'form', url: provider_contact_path(@contact.provider.url_name)) do |f| %>
+      <% if !current_user.email.present? %>
+        <%= f.input :from, label: "Email", input_html: { :'data-error-message' => 'You must write a email' } %>
+      <% end %>
+      <%= f.input :subject, label: "Subject", collection: ['General Enquiry','Bookings','Courses','Teaching'], include_blank: false %>
+      <%= f.input :message, label: "Message", as: :text %>
+      <input type="submit" name="submit" value="send" class="btn-primary btn col-xs-12" />
     <% end %>
-    <%= f.input :subject, label: "Subject", collection: ['General Enquiry','Bookings','Courses','Teaching'], include_blank: false, wrapper: :horizontal %>
-    <%= f.input :message, label: "Message", as: :text, wrapper: :horizontal %>
-    <div class="col-sm-offset-5 col-sm-7">
-      <input type="submit" name="submit" value="send" class="btn-primary btn" />
-    </div>
-  <% end %>
+
+  </div>
 </div>
-<div class="col-sm-3 hidden-xs"></div>

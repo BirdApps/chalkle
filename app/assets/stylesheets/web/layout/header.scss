@@ -88,7 +88,7 @@ body {
     background-position: center;
     overflow-y: visible;
     .header_bg {
-      background-color: rgba(255,255,255,0.5);
+      background-color: rgba(255,255,255,0.65);
       color: rgba(63,63,63,0.74);
       padding: 0;
       position:relative;
@@ -100,6 +100,11 @@ body {
       }
       a{
         color: rgba(63,63,63,0.74);; 
+      }
+      .container {
+        @media screen and (max-width: 768px){
+          padding: 0;
+        }
       }
       .page_title_logo {
         float: left;
@@ -148,7 +153,6 @@ body {
         }
       }
       .title-wrapper,.context_nav_wrapper {
-        float:left;
         overflow:hidden;
         @media screen and (max-width: 992px) {
           width:100% !important;
@@ -156,55 +160,5 @@ body {
         }
       }
     }
-    .context_nav_wrapper {
-      width:40%;
-      nav {
-        width:100%;
-        ul {
-          padding:0;
-          margin:0;
-          li {
-            font-family: "proxima-nova",sans-serif;
-            font-weight: 300;
-            float: left;
-            list-style: none;
-            text-align: center;
-            margin:0;
-            padding:0;
-            position: relative;
-            .link_title {
-              white-space: nowrap;
-              font-size: 0.9em;
-              display: inline-block;
-              @media screen and (max-width: 768px) {
-                display:none;
-              }
-            }
-            a {
-              display: inline-block;
-              color: #333;
-              padding: 10px 5px;
-              width: 100%;
-              transition: background-color 200ms ease-out;
-              @media screen and (max-width: 992px) {
-                padding: 10px 5px;
-              }
-              .img-wrapper {
-                display: inline-block;;
-                img {
-                  height: 30px;
-                }
-                img.alt {
-                  display:none;
-                }
-              }
-            }
-          }
-          a:hover,a:active,a:focus, li.active a {
-            background-color: rgba(0,0,0,0.2);
-          }
-          li.active:hover a { background-color: rgba(0,0,0,0.4); }
-        }
-      }
-    }
+   
   }

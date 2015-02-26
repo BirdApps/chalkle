@@ -1,6 +1,93 @@
 @import "../_vars";
+.provider_header{
+  .container {
+    position: relative;
+    bottom: -43px;
+  }
+  .provider_header_skirting{
+    background: #fff;
+    height: 40px;
+  }
+  margin-top: 10px;
+  .avatar {
+    padding: 2px;
+    padding-bottom: 0;
+    background: #fff;
+    .img {
+      background: #eee;
+    }
+  }
+  .provider_header_content { 
+    @media screen and (min-width: 769px) {
+      height: 77px;
+    }
+    @media screen and (max-width: 768px) {
+      padding: 0 10px;
+    }
+ 
+    h1 {
+      display: inline;
+      font-size: 28px;
+      max-height: 120px;
+      overflow: hidden;
+      a {
+        @media screen and (min-width: 769px) {
+          display: inline-block;
+          padding-top: 20px;
+        }
+      }
+    }
 
-h1.text-to-fit {
-  display: inline-block;
-  font-size: 35px;
+    .provider_header_social {
+      padding: 10px 0;
+      float: right;
+    }
+  }
+  .provider_header_links {
+    overflow:hidden;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+    nav {
+      ul {
+        li {
+          background-color: #fff;
+          &.active {
+            @media screen and (max-width: 768px){
+              box-shadow: inset 0 -3px 0 $primary-color-opaque;
+            }
+            @media screen and (min-width: 769px){
+              box-shadow: inset 0 3px 0 $primary-color-opaque;
+            }
+          }
+          &:hover, &:active, &:focus {
+            background-color: rgba(0,0,0,0.03);
+            a {
+              border-color: transparent;
+            }
+          }
+          float: left;
+          list-style: none;
+          min-width: 105px;
+          text-align: center;
+          font-size: 0.9em;
+          transition: background-color 200ms ease-out;
+          @media screen and (min-width: 768px) {
+            max-width: 140px;
+          }
+          a {
+            border-right: 1px solid rgba(0,0,0,0.03);
+            display: inline-block;
+            color: #333;
+            margin: 6px 0;
+            padding: 4px 5px;
+            width: 100%;
+            white-space: nowrap;
+          }
+        }
+      }
+    
+    }
+
+  }
 }

@@ -8,11 +8,11 @@
       $<%= booking.cost_formatted %>
     </span> 
   </div>
-  <% if @course.class? %>
-    <%= quick_date_time @course.start_at %>
+  <% if booking.course.class? %>
+    <%= quick_date_time booking.course.start_at %>
   <% else %>
   <% count = 0 %>
-    <% @course.classes.each do |lesson| %>
+    <% booking.course.classes.each do |lesson| %>
       <span class="strong">
         Class <%= count+=1 %> -
       </span>

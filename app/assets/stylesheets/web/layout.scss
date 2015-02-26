@@ -87,7 +87,6 @@ html {
     }
 
 
-
     >.body-content{
       background-image: asset-url('icons/body-content-loader.gif', images);
       background-position: center 150px;
@@ -107,6 +106,9 @@ html {
           position: relative;
           min-height: 200px;
         } // div[role=main] 
+        > .container {
+          padding-top: 20px;
+        }
       } // #wrapper
     } // >.body-content
   } // body

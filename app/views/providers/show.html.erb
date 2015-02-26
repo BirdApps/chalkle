@@ -1,22 +1,25 @@
-<div class="row">
-  <div class="col-xs-10">
-    <p class="center">
-      <%= to_html @provider.description %>
-    </p>
-  </div>
-  <% if current_user.authenticated? %>
-    <div class="col-xs-2 text-right">
-      <% subscription = current_user.subscriptions.where(provider_id: @provider.id) %>
-      <% unless subscription.present? %>
-        <%= bootstrap_form_for(Subscription.new, url: provider_subscriptions_path(@provider.id), html: { method: :post }) do |f| %>
-          <input value="Follow" type="submit" class="btn btn-success" /> 
-        <% end %>
-      <% else %>
-        <%= bootstrap_form_for(subscription[0], url: provider_subscription_path(@provider.id, subscription[0].id), html: { method: :delete }) do |f| %>
-          <input value="Unfollow" type="submit" class="btn btn-warning" /> 
-        <% end %>
-      <% end %>
+<% if policy(@provider).admin? %>
+  <div class="alert alert-success">
+    <h4 class="flush">Admin Panel</h4>
+    <hr class="flush" />
+    <div class="row">
+      <div class="col-xs-4">
+         <%= link_to "New Class", new_course_path, class: 'block' %>
+         <%= link_to "Bookings", provider_bookings_path(@provider.url_name), class: 'block' %>
+      </div>
+      <div class="col-xs-4">
+        <%= link_to "New Teacher", new_provider_teacher_path(@provider.url_name), class: 'block' %>
+        <%= link_to "Current Teachers", provider_teachers_path(@provider.url_name), class: 'block' %>
+      </div>
+      <div class="col-xs-4">
+        <%= link_to "New Admin", new_provider_admin_path(@provider.url_name), class: 'block' %>
+        <%= link_to "Current Admins", provider_admins_path(@provider.url_name), class: 'block' %>
+      </div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
+<p class="center">
+  <%= to_html @provider.description %>
+</p>
+
 <%= render 'paginate_courses' %>

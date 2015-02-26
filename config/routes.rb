@@ -167,7 +167,6 @@ Chalkle::Application.routes.draw do
 
   #TODO: find an easier way of doing these provider routes!
   get ':provider_url_name/admins', to: 'providers#admins', as: :providers_admins
-  get 'providers/:provider_id/admins', to: 'providers#admins', as: :provider_provider_admins
   get ':provider_url_name/admins/new', to: 'provider_admins#new', as: :new_provider_admin
   get ':provider_url_name/admin/:id/edit', to: 'provider_admins#edit', as: :edit_provider_admin
   
@@ -179,8 +178,10 @@ Chalkle::Application.routes.draw do
   get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_teacher
   get ':provider_url_name/settings', to: 'providers#edit', as: :provider_settings
   put ':provider_url_name/settings', to: 'providers#update', as: :provider_settings
+  get ':provider_url_name/bookings', to: 'providers#bookings', as: :provider_bookings
   get ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
   post ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
+  get ':provider_url_name/follower/:chalkler_id', to: 'providers#follower', as: :provider_follower
   get ':provider_url_name/followers', to: 'providers#followers', as: :provider_followers
   get ':provider_url_name/:course_url_name', to: 'providers#series', as: :provider_course_series
   get '*provider_url_name/*course_url_name/:id', to: 'courses#show', as: :provider_course

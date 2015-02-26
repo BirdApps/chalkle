@@ -1,7 +1,7 @@
 class ProvidersController < ApplicationController
   after_filter  :check_presence_of_courses, only: [:show, :series]
-  before_filter :load_provider, only: [:show, :series, :edit, :update, :contact, :followers, :teachers, :admins]
-  before_filter :header_provider, only: [:show, :series, :edit, :update, :contact, :followers, :teachers, :admins]
+  before_filter :load_provider, only: [:show, :bookings, :series, :edit, :update, :contact, :followers, :teachers, :admins]
+  before_filter :header_provider, only: [:show, :bookings, :series, :edit, :update, :contact, :followers, :teachers, :admins]
   before_filter :authenticate_chalkler!, only: [:new, :create]
 
   def index
@@ -100,6 +100,17 @@ class ProvidersController < ApplicationController
     @chalklers = @provider.chalklers
   end
 
+  def follower
+    @chalkler = Chalkler.find params[:chalkler_id]
+    return not_found if !@chalkler
+    #TODO: see interactions with follower
+  end
+
+  def bookings
+    authorize @provider
+    @bookings = @provider.bookings.order(:course_id).reverse
+  end
+
   def teachers
     @teachers = ProviderTeacher.where provider_id:  @provider.id
     respond_to do |format|
@@ -146,35 +157,6 @@ class ProvidersController < ApplicationController
       @provider = Provider.find_by_url_name(provider_name) 
     end
     not_found and return if @provider.blank?
-  end
-
-  def header_provider
-    @page_title_logo = @provider.logo
-    @page_title = @provider.name
-    @nav_links = [{
-      img_name: "bolt",
-      link: provider_path(@provider.url_name),
-      active: request.path.include?("show"),
-      title: "Classes"
-    },{
-      img_name: "people",
-      link: providers_teachers_path(@provider.url_name),
-      active: request.path.include?("teachers") || request.path.include?("provider_teachers") ,
-      title: "People"
-    },{
-      img_name: "contact",
-      link: provider_contact_path(@provider.url_name),
-      active: request.path.include?("contact"),
-      title: "contact"
-    }]
-    if policy(@provider).edit?
-      @nav_links <<  {
-        img_name: "settings",
-        link: provider_settings_path(@provider.url_name),
-        active: request.path.include?("resources"),
-        title: "Settings"
-      }
-    end
   end
 
   def courses_for_time
