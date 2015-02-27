@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150223044946) do
+ActiveRecord::Schema.define(:version => 20150226231217) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -53,7 +53,6 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
     t.text     "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
-    t.boolean  "chalkler_deleted",              :default => false
     t.text     "custom_fields"
     t.integer  "payment_id"
     t.string   "pseudo_chalkler_email"
@@ -105,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
     t.string   "address"
     t.string   "avatar"
     t.string   "role"
+    t.string   "location"
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -112,7 +112,6 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.string   "location"
   end
 
   add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true
@@ -176,6 +175,7 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
     t.integer  "provider_payment_id"
     t.text     "custom_fields"
     t.text     "searchable"
+    t.string   "region"
   end
 
   add_index "courses", ["start_at"], :name => "index_courses_on_start_at"
@@ -231,14 +231,8 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
 
   create_table "notification_preferences", :force => true do |t|
     t.integer  "chalkler_id"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
-    t.boolean  "chalkler_discussion_from_chalkler", :default => true
-    t.boolean  "chalkler_discussion_from_teacher",  :default => true
-    t.boolean  "teacher_bookings",                  :default => true
-    t.boolean  "teacher_discussion",                :default => true
-    t.boolean  "provider_bookings",                 :default => true
-    t.boolean  "provider_discussion",               :default => true
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.text     "preferences"
   end
 
@@ -358,6 +352,7 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
   create_table "provider_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_provider_admins"
+    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -365,7 +360,6 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "max_teachers"
   end
 
   create_table "provider_teachers", :force => true do |t|
@@ -408,9 +402,9 @@ ActiveRecord::Schema.define(:version => 20150223044946) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
-    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
+    t.integer  "plan_max_teachers"
     t.decimal  "balance"
   end
 

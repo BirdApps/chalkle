@@ -4,7 +4,7 @@ require 'course_upload_image_uploader'
 class Teaching
   include ActiveAttr::Model
 
-  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :providers, :provider, :provider_id, :suggested_audience, :cost, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :country, :postal_code, :override_provider_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_provider_tax_number, :note_to_attendees, :new_provider_bank_number, :cloning_id, :bookings, :custom_fields
+  attr_accessor :course, :current_user, :title, :teacher_id, :bio, :do_during_class, :learning_outcomes, :duration_hours, :duration_minutes, :teacher_cost, :max_attendee, :min_attendee, :prerequisites, :additional_comments, :venue, :providers, :provider, :provider_id, :suggested_audience, :cost, :start_at, :repeating, :repeat_frequency, :repeat_count, :course_class_type, :class_count, :street_number, :street_name, :city, :region, :country, :postal_code, :override_provider_fee, :longitude, :latitude, :venue_address, :course_upload_image, :agreeterms, :editing_id, :teacher_pay_type, :new_provider_tax_number, :note_to_attendees, :new_provider_bank_number, :cloning_id, :bookings, :custom_fields
 
   validates :title, :presence => { :message => "Class name can not be blank" }
   validates :do_during_class, :presence => { :message => "Class activities cannot be blank" }
@@ -51,6 +51,7 @@ class Teaching
     @street_number = args.street_number
     @street_name = args.street_name
     @city = args.city
+    @region = args.region
     @postal_code = args.postal_code
     @longitude = args.longitude
     @latitude = args.latitude
@@ -91,6 +92,7 @@ class Teaching
       street_number: @street_number,
       street_name: @street_name,
       city: @city,
+      region: @region,
       postal_code: @postal_code,
       longitude: @longitude,
       latitude: @latitude,
@@ -293,6 +295,7 @@ class Teaching
       @street_number = params[:street_number]
       @street_name = params[:street_name]
       @city = params[:city]
+      @region = params[:region]
       @country = params[:country]
       @postal_code = params[:postal_code]
       @latitude = params[:latitude]
