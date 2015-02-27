@@ -36,6 +36,7 @@ $(function(){
       messages.click(function(){
         messages.animate({top: height*-1}, 200);
       });
+      window.setTimeout(function(){ messages.click(); }, 5000);
     }
   }
 
