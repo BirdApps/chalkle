@@ -94,7 +94,7 @@
           text-decoration: none;
           &:hover, &.current {
             color: #fff;
-            background-color: $primary-color-opaque;
+            background-color: $color-header-opaque;
             text-shadow: none;
             text-decoration: none;
           }
@@ -129,7 +129,7 @@
 
     .coloring {
       transition: padding 0.5s ease;
-      background-color: $primary-color;
+      background-color: $color-header;
       position: relative;
       overflow: 0;
       border-bottom: 0;
@@ -258,7 +258,7 @@
         }
         
         .dropdown-menu { 
-          background: $primary-color-opaque;
+          background: $color-header-opaque;
           border-radius:  0 0 3px 3px;
           border: 0px;
           li {
@@ -287,7 +287,7 @@
           }
         }
         .dropdown.open{
-          background: $primary-color-opaque;
+          background: $color-header-opaque;
           @media screen and (max-width: 768px) {
             margin-left: 0 !important;
             >a{
