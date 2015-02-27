@@ -279,7 +279,7 @@ $(function(){
       if($('#saved_teacher_id').length){
         selected_val = $('#saved_teacher_id').val();
       }
-      if(!isNaN(provider_id)){
+      if(provider_id != '' && !isNaN(provider_id)){
         $.getJSON('/providers/'+provider_id+'/teachers.json', function(data){
             $('#teaching_teacher_id').empty();
             if(data.length < 2){
