@@ -294,54 +294,102 @@
 }
 
 .btn {
-  &.no-btn{
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.57);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  color: #fff;
+  font-size: 1.18em; 
+  position: relative;
+  transition: all 120ms;
+  letter-spacing: 1.2px;
+  
+  &:hover {
+    top: -1px;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.40);
+  }
+  &.active, &:active, &:focus {
+    top: 0;
+    box-shadow: 0px 0px 2px 0px rgba(255,255,255,0.6);
+  }
+
+  &.btn-default {
+    background-color: $color-default;
+    &:hover {
+      background-color: $color-default-hover;
+    }
+    &.active, &:active, &:focus {
+      background-color:  $color-default-active;
+    }
+  }
+
+  &.btn-primary {
+    background-color: $color-primary;
+    &:hover {
+      background-color: $color-primary-hover;
+    }
+    &:active, &:focus {
+      background-color: $color-primary-active;
+    }
+  }
+
+  &.btn-success {
+    background-color: $color-success;
+    &:hover {
+      background-color: $color-success-hover;
+    }
+    &:active, &:focus {
+      background-color: $color-success-active;
+    }
+  }
+
+  &.btn-warning {
+    background-color: $color-warning;
+    &:hover {
+      background-color: $color-warning-hover;
+    }
+    &:active, &:focus {
+      background-color: $color-warning-active;
+    }
+  }
+
+  &.btn-info {
+    background-color: $color-info;
+    &:hover {
+      background-color: $color-info-hover;
+    }
+    &:active, &:focus {
+      background-color: $color-info-active;
+    }
+  }
+
+  &.btn-danger {
+    background-color: $color-danger;
+    &:hover {
+      background-color: $color-danger-hover;
+    }
+    &:active, &:focus {
+      background-color: $color-danger-active;
+    }
+  }
+
+  &.no-btn {
     background: none;
     border: 0px;
     padding: 0px;
-    &:active {
-      box-shadow: none;
-    }
-  }
-  &.btn-default {
-    background-color: rgba(0,0,0,0.67);
-    border: none;
-    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.20);
-    border-radius: 5px;
-    color: #FFFFFF;
-    letter-spacing: 1.2px;
-    transition: all 120ms;
+    box-shadow: none;
+    color: inherit;
     &:hover {
-      top: -2px;
-      position: relative;
-      background-color: rgba(0,0,0,0.87);
-      box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.40);
+      box-shadow: none;
+      top: 0;
+      background-color: transparent;
     }
     &.active, &:active, &:focus {
-      top: -0px;
-      position: relative;
-      background-color: rgba(0,0,0,1.0);
-      box-shadow: 0px -1px 0px 0px rgba(255,255,255,0.6);
+      box-shadow: none;
+      background-color: transparent;
     }
   }
-  &.btn-primary {
-    transition: all 120ms;
-    background-color: #FFB63B;
-    color: #FFFFFF;
-    letter-spacing: 1.2px;
-    font-size: 1.18em; 
-    border: none;
-    position: relative;
-    &:hover {
-      top: -2px;
-      background-color: #ffb605;
-      box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.40);
-    }
-    &:active, &:focus {
-      top: -0px;
-      box-shadow: 0px -1px 0px 0px rgba(255,255,255,0.6);
-      background-color: #EA9300;
-    }
-  }
+
 }
 
 .img {

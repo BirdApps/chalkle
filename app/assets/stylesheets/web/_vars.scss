@@ -1,10 +1,36 @@
 $grid-float-breakpoint: 0px;
 $font_family_normal: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
-$primary-color: rgba(76,126,147,0.9);
-$primary-color-opaque: rgba(76,126,147,1);
 $navbar-height: 62px;
 $line-height: 1.5em;
 $mob-line-height: 1.75em;
 $letter-spacing: 1.5px;
+
+$color-header: rgba(76,126,147,0.9);
+$color-header-opaque: rgba(76,126,147,1);
+
+$color-primary: rgba(76,126,147,1);
+$color-primary-hover: rgba(76,126,147,0.9);
+$color-primary-active: rgba(76,126,147,0.9);
+
+$color-default: rgba(76,126,147,1);
+$color-default-hover: rgba(76,126,147,0.9);
+$color-default-active: rgba(76,126,147,0.9);
+
+$color-success: rgba(76,126,147,1);
+$color-success-hover: rgba(76,126,147,0.9);
+$color-success-active: rgba(76,126,147,0.9);
+
+$color-info: rgba(76,126,147,1);
+$color-info-hover: rgba(76,126,147,0.9);
+$color-info-active: rgba(76,126,147,0.9);
+
+$color-warning: rgba(76,126,147,1);
+$color-warning-hover: rgba(76,126,147,0.9);
+$color-warning-active: rgba(76,126,147,0.9);
+
+$color-danger: rgba(76,126,147,1);
+$color-danger-hover: rgba(76,126,147,0.9);
+$color-danger-active: rgba(76,126,147,0.9);
+
 
 @import "_placeholder";
