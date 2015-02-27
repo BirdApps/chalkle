@@ -27,6 +27,7 @@
 
   col_width = 100 / nav_links.count
 %>
+
 <div class="provider_header">
   <div class="container">
 
@@ -63,7 +64,7 @@
             <li class="<%= "active" if nav_link[:active] %>" style="width:<%= col_width %>%">
               <%= link_to nav_link[:link], title: nav_link[:title] do %>
                   <%= nav_link[:title] %>
-              <% end # link_to %>
+              <% end %>
             </li>
           <% end %>
         </ul>
@@ -75,4 +76,3 @@
   </div>
 
 </div>
- 

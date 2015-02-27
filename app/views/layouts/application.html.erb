@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style=" background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
@@ -31,8 +31,8 @@
     <%= render 'layouts/messages' %>
     <header>
       <%= render 'layouts/navigation' %>
-      <div class="body-content">
-        <%= render 'layouts/header' if show_header? %>
+      <div class="header-wrapper">
+        <%= render @header_partial if @header_partial.present? %>
       </div>
     </header>
 

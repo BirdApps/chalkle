@@ -1,8 +1,16 @@
 @import "../_vars";
+
 .provider_header{
   .container {
     position: relative;
-    bottom: -43px;
+    @media screen and (min-width: 769px){
+      bottom: -43px;
+    }
+    @media screen and (max-width: 768px){
+      bottom: -39px;
+      padding-right: 0;
+      padding-left: 0;
+    }
   }
   .provider_header_skirting{
     background: #fff;
@@ -31,6 +39,10 @@
       max-height: 120px;
       overflow: hidden;
       a {
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        word-break: break-word;
+        font-weight: 600;
         @media screen and (min-width: 769px) {
           display: inline-block;
           padding-top: 20px;
