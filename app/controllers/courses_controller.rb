@@ -8,7 +8,6 @@ class CoursesController < ApplicationController
   before_filter :header_mine, only: :mine
   
   def index
-   @header_partial = '/layouts/headers/discover'
   end
 
   def fetch
