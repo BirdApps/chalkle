@@ -16,8 +16,10 @@
     <%= javascript_include_tag "application" %>
     <% if chalkler_signed_in? %>
       <script src='//cdn.goroost.com/roostjs/e7a09481b0d145b784c6b9dd5dd97cb0' async></script>
-        <script>
+      <script>
+        $(function(){
           _roost.push(["alias", "<%= current_user.id %>"]);
+        });
       </script>
     <% end %>
 
