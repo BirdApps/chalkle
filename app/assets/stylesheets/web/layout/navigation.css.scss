@@ -4,7 +4,12 @@
   #primary-navigation {
     font-weight: 500;
     font-family: "proxima-nova", sans-serif;
-    padding-right: 100px;
+    @media screen and (max-width: 768px){
+      padding-right: 150px;   
+    }
+    @media screen and (min-width: 769px){
+      padding-right: 220px;   
+    }
 
     #primary-menu {
       position: absolute;
@@ -12,6 +17,10 @@
       top: 0;
       right: 15px;
     }
+  }
+  .header_new_class{
+    font-size: 0.7em;
+    line-height: 23px;
   }
 
   .navbar {
@@ -295,7 +304,7 @@
              margin: 7px 0;
           }
           @media screen and (min-width: 769px) {
-            margin: 13px 0;
+            margin: 14px 0 12px;
             #search_btn {
               border-left: 1px solid #fff;         
               border-radius: 0px;

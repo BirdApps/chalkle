@@ -7,7 +7,7 @@
             <span class="sr-only Toggle navigation"></span>
             <span class="fa fa-bars"></span>
           </button>
-          <%= link_to root_path, class:"navbar-brand", alt: "chalkle°" do%>
+          <%= link_to (current_user.authenticated? ? discover_path : root_path), class:"navbar-brand", alt: "chalkle°" do%>
             <% if false #Rails.env.titleize != "Production" %>
               <div class="light environment alert-<%= environment_color Rails.env.titleize %>">
                   <%= Rails.env.titleize %> <small> #<%= VERSION_NUMBER %></small>
@@ -33,7 +33,9 @@
 
           <ul id="primary-menu" class="nav navbar-nav">
             <% if chalkler_signed_in? %>
-            
+              <li class="non-dropdown hidden-xs">
+                <%= link_to "New Class", new_course_path, class: 'header_new_class' %>
+              </li>
               <li class="dropdown notifications-drop">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                  <span>
