@@ -21,7 +21,7 @@
           <% if current_user.super? %>
             <div class="alert alert-danger">
               <h4>Super Admin only</h4>
-              <p>If this provider is affordanced special fees and limits enter them here</p>
+              <p>If this provider is afforded special fees and limits enter them here</p>
               <hr />
               <%= f.input :provider_plan_id, collection: ProviderPlan.all, label: "Provider Plan", wrapper: :horizontal %>
               <%= f.input :plan_class_attendee_cost, label: "Class fee Override, default: $"+@provider.plan.class_attendee_cost.to_s, wrapper: :horizontal %>
