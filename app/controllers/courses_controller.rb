@@ -123,9 +123,7 @@ class CoursesController < ApplicationController
 
       redirect_to course_path @course.id
     else
-      @course.errors.each do |attribute,error|
-        flash[:notice] = attribute.to_s+" "+error
-      end
+      flash_errors @course.errors
       render 'new'
     end
   end
@@ -159,7 +157,7 @@ class CoursesController < ApplicationController
       end
     end
     course.status = new_status
-    flash[:notice] = "Course not ready to publish. Please edit it to fix any issues" if !course.save
+    flash_errors @course.errors if !course.save
     redirect_to course_path(course)
   end
 
@@ -179,8 +177,8 @@ class CoursesController < ApplicationController
     @teaching.course_to_teaching @course
     @teaching.cloning_id = @teaching.editing_id
     @teaching.editing_id = nil
-    flash[:notice] = "You are now creating a copy of "+@course.name
-    render 'new' 
+    add_flash :info, "You are now editing a draft copy of #{@course.name}"
+    render 'new'
   end
 
   private

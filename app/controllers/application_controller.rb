@@ -75,9 +75,7 @@ protected
         title: "Email Options"
       }]
     end
-
   end
-
 
   def authorize(record)
     super record unless current_user.super?
@@ -94,7 +92,7 @@ protected
   end
 
   def permission_denied
-    flash[:notice] = "You do not have permission to view that page"
+    add_flash :warning, "You do not have permission to view that page"
     unless current_user.authenticated?
       authenticate_chalkler!
     else
@@ -105,7 +103,7 @@ protected
   def check_course_visibility
     unless !@course || policy(@course).read?
       unless Course::PUBLIC_STATUSES.include? @course.status
-        flash[:notice] = "This class is no longer available."
+        add_flash :warning, "This class is no longer available."
         redirect_to :root
         return false
       end
@@ -197,6 +195,16 @@ protected
         return redirect_to me_enter_email_path
       end
     end
+  end
+
+  def flash_errors(errors)
+    errors.map { |k,v| add_flash(:error, "** #{k} ** - #{v}") }
+  end
+
+  def add_flash(message_type, message)
+    #message_type should be one of [:success,:info,:warning,:error]
+    flash[message_type] = [] if flash[message_type].nil?
+    flash[message_type] << message
   end
 
 end

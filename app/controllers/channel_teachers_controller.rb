@@ -29,17 +29,18 @@ class ChannelTeachersController < ApplicationController
       existing_chalkler = Chalkler.exists params[:channel_teacher][:email]
       if existing_chalkler.present?
         if existing_chalkler.channels_teachable.include? @channel_teacher.channel
-          flash[:notice] = "That email belongs to a chalkler already teaching on this channel"
+          add_flash :warning, "That email belongs to a chalkler already teaching on this channel"
           params[:channel_teacher][:email] = @channel_teacher.email
         else
           @channel_teacher.chalkler = existing_chalkler 
-          flash[:notice] = "Great! We found that chalkler and associated this teacher profile with them"
+          add_flash :success, "Great! We found that chalkler and associated this teacher profile with them"
         end
         @channel_teacher.save
       end
     end
     @channel_teacher.update_attributes params[:channel_teacher]
-    redirect_to edit_channel_teacher_path(@channel_teacher.id), notice: 'Teacher has been updated'
+    add_flash :success, 'Teacher has been updated'
+    redirect_to edit_channel_teacher_path(@channel_teacher.id)
   end
 
   def new
@@ -54,13 +55,13 @@ class ChannelTeachersController < ApplicationController
       authorize @channel_teacher
 
       if @channel_teacher.email.blank?
-        flash[:notice] = "You must supply an email"
+        add_flash :error, "You must supply an email"
       else
         exists = @channel_teacher.channel.channel_teachers.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @channel_teacher.email.strip.downcase]).present?
         exists = @channel_teacher.channel.teaching_chalklers.find(:first, conditions: ["lower(email) = ?", @channel_teacher.email.strip.downcase]).present? unless exists
 
         if exists
-          flash[:notice] = "That person is already a teacher on your channel"
+          add_flash :error, "That person is already a teacher on your channel"
         else
           @channel_teacher.name = @channel_teacher.name || @channel_teacher.email.split('@')[0]
           result = @channel_teacher.save
@@ -70,9 +71,7 @@ class ChannelTeachersController < ApplicationController
       if result
         redirect_to channel_channel_teacher_path(@channel_teacher.channel.url_name, @channel_teacher)
       else
-        @channel_teacher.errors.each do |attribute,error|
-          flash[:notice] = attribute.to_s+" "+error
-        end
+        flash_errors @channel_teacher.errors
         @page_title = "Teacher"
         render 'new'
       end

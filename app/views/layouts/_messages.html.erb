@@ -5,7 +5,7 @@
         <% flash.each do |name, msgs| %>
           <% if !msgs.blank? %>
             <% [msgs].flatten.each do |msg| %>
-              <%= content_tag :div, msg, id: "flash_#{name}", class: (name == :notice ? 'success inline' : 'danger inline') %><br />
+              <%= content_tag :div, msg.to_html, id: "flash_#{name}", class: (name == :notice ? 'success inline' : 'danger inline') %><br />
             <% end %>
           <% end %>
         <% end %>

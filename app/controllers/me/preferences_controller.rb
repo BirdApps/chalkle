@@ -28,9 +28,7 @@ class Me::PreferencesController < Me::BaseController
           redirect_to :root, notice: 'Welcome to chalkle! Sign in successful.'
         end
       else
-        @chalkler.errors.each do |attribute,error|
-          flash[:notice] = attribute.to_s+" "+error
-        end
+        flash_errors @chalkler.errors
       end
     end
   end

@@ -13,13 +13,13 @@ class ProviderAdminsController < ApplicationController
     authorize @provider_admin
 
     if @provider_admin.email.blank?
-      flash[:notice] = "You must supply an email"
+      add_flash :error, "You must supply an email"
     else
       exists = @provider_admin.provider.provider_admins.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @provider_admin.email.strip.downcase]).present?
       exists = @provider_admin.provider.admin_chalklers.find(:first, conditions: ["lower(email) = ?", @provider_admin.email.strip.downcase]).present?
 
      if exists
-        flash[:notice] = "That person is already an admin on your provider"
+        add_flash :error, "That person is already an admin on your provider"
       else
         result = @provider_admin.save
       end

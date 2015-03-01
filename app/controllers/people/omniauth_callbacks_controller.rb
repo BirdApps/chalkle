@@ -11,7 +11,7 @@ class People::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       set_flash_message(:notice, :success, :kind => identity.provider) if is_navigational_format?
       sign_in_and_redirect(user)
     else
-      flash[:error] = "Failed to log in with #{identity.provider}"
+      add_flash :error, "Failed to log in with #{identity.provider}"
       redirect_to new_chalkler_registration_path
     end
   end

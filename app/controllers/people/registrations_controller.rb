@@ -10,7 +10,7 @@ class People::RegistrationsController < Devise::RegistrationsController
   def create
     build_resource
     unless params[:chalkler][:password] == params[:chalkler][:password_confirmation]
-      flash[:notice] = "Password confirmation must match password!"
+      add_flash :error, "Password confirmation must match password!"
       render 'new' and return
     end
     if resource.save

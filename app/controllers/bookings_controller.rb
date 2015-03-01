@@ -60,7 +60,7 @@ class BookingsController < ApplicationController
       end
     else
       @booking_set.bookings.unshift Booking.new(name: current_user.name)
-      flash[:notice] = 'Booking has errors - please check fields carefully'
+      add_flash :error, @booking_set.the_errors
       render 'new'
     end
   end
@@ -97,11 +97,11 @@ class BookingsController < ApplicationController
           booking.save
         end
       end
-      flash[:notice] = "Payment successful. Thank you very much!"
+      add_flash :success, "Payment successful. Thank you very much!"
       redirect_to course_path(params[:course_id])
     else
       @course = Course.find params[:course_id]
-      flash[:alert] = "Sorry, it seems that payment was declined. Would you like to try again?"
+      add_flash :error, "Sorry, it seems that payment was declined. Would you like to try again?"
       render 'new'
     end
   end
@@ -199,7 +199,7 @@ class BookingsController < ApplicationController
     def redirect_on_paid
       booking = Booking.find(params[:id])
       if booking.paid?
-        flash[:alert] = 'You cannot edit a paid booking'
+        add_flash :warning, 'You cannot edit a paid booking'
         redirect_to booking_path booking
       end
     end

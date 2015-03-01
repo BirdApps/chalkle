@@ -74,7 +74,7 @@ class ProvidersController < ApplicationController
     if success
       redirect_to provider_settings_path @provider.url_name, notice: 'Settings saved'
     else
-      flash[:notice] = 'Settings could not be saved'
+      flash_errors @provider.errors
       render 'edit'
     end
   end
