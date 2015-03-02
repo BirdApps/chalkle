@@ -316,27 +316,39 @@ class Course < ActiveRecord::Base
   end
 
   def teacher_income_with_tax
-    @teacher_income_with_tax ||= calc_teacher_income(true)
+    if flat_fee?
+      teacher_cost
+    else
+      @teacher_income_with_tax ||= (teacher_income_no_tax + teacher_income_tax)
+    end
   end
 
   def teacher_income_no_tax
-    @teacher_income_no_tax ||= calc_teacher_income(false)
-  end
-
-  def channel_income_with_tax
-    @channel_income_with_tax ||= calc_channel_income(true)
-  end
-
-  def channel_income_no_tax
-    @channel_income_no_tax ||= calc_channel_income(false)
-  end
-
-  def channel_income_tax
-    channel.tax_registered? ? channel_income_no_tax*3/23 : 0
+    if flat_fee?
+      teacher_cost - teacher_cost*3/23
+    else
+      @teacher_income_no_tax ||= bookings.confirmed.paid.sum(&:teacher_fee)
+    end
   end
 
   def teacher_income_tax
-    teacher.tax_registered? ? teacher_income_no_tax*3/23 : 0
+    if flat_fee?
+      teacher_cost*3/23
+    else
+      @teacher_income_tax ||= bookings.confirmed.paid.sum(&:teacher_gst)
+    end
+  end
+
+  def channel_income_with_tax
+    @channel_income_with_tax ||= (channel_income_no_tax + channel_income_tax)
+  end
+
+  def channel_income_no_tax
+    @channel_income_no_tax ||= (bookings.confirmed.paid.sum(&:provider_fee) - teacher_pay_flat)
+  end
+
+  def channel_income_tax
+    @channel_income_tax ||= bookings.confirmed.paid.sum(&:provider_gst)
   end
 
   def channel_plan
@@ -584,28 +596,12 @@ class Course < ActiveRecord::Base
       incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
     end
 
-    def calc_channel_income(incl_tax)
-      income = bookings.confirmed.paid.sum(&:provider_fee) - teacher_pay_flat
-      income - (incl_tax ? 0 : (channel.tax_registered? ? income*3/23 : 0))
-    end
-
     def calc_channel_plan
       (channel && channel.plan) ? channel.plan : ChannelPlan.default
     end
 
     def calc_channel_fee
       (cost||0) - (variable_costs||0) - (processing_fee||0) - (chalkle_fee_with_tax||0)
-    end
-
-    def calc_teacher_income(incl_tax)
-      if fee_per_attendee?
-        income = bookings.confirmed.paid.sum(&:teacher_fee)
-      elsif flat_fee?
-        income = teacher_cost || 0
-      else
-        income = 0
-      end
-      income - (incl_tax ? 0 : (teacher.tax_registered? ? income*3/23 : 0))
     end
 
     def save_first_lesson
