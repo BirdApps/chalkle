@@ -1,5 +1,4 @@
 class ProvidersController < ApplicationController
-  after_filter  :check_presence_of_courses, only: [:show, :series]
   before_filter :load_provider, only: [:show, :bookings, :series, :edit, :update, :contact, :followers, :teachers, :admins]
   before_filter :header_provider, only: [:show, :bookings, :series, :edit, :update, :contact, :followers, :teachers, :admins]
   before_filter :authenticate_chalkler!, only: [:new, :create]
@@ -141,12 +140,6 @@ class ProvidersController < ApplicationController
 
   private 
   
-
-  def check_presence_of_courses
-    unless @courses.present?
-      add_response_notice(notice)
-    end
-  end
 
   def load_provider
     redirect_to_subdomain
