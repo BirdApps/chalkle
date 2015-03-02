@@ -9,7 +9,9 @@
 .sidebar {
   display: none;
   background-color: #343434;
-  height: 100%;
+  min-height: 100% !important;
+  overflow-x: hidden;
+  overflow-y: scroll;
   color: #fff;
   position: fixed !important;
   top: $mobile-nav-height;
@@ -23,32 +25,65 @@
     top: $desktop-nav-height;
   }
   
+  .btn {
+    width: 100%;
+    background-color: #5F5F5F;
+    border: 0px;
+    margin-bottom: 15px;
+    &.primary{
+      margin-bottom: 20px;
+    }
+  }
+
   a{
     color: #E0E0E0;
+    &:hover, &:active, &:focus {
+      color: #fff;
+    }
   }
   
-  h3 {
-    font-weight: 700;
+  h4 {
+    margin: 15px 0;
   }
-  &.admin-sidebar{
-    .admin-links{
+  h5 {
+    text-align: center;
+  }
+
+  .admin-sidebar{
+    .admin-section {
+      margin-bottom: 20px;
       text-align: center;
       background-color: #1F1F1F;
-      a {
-        display: block;
-        color: #fff;
-        padding: 10px 5px;
-        width: 50%;
-        float: left;
-        &:hover {
-          background: rgba(255,255,255,0.3);
+
+      &.admin-links {
+        a {
+          display: block;
+          color: #fff;
+          padding: 10px 5px;
+          width: 50%;
+          float: left;
+          &:hover {
+            background: rgba(255,255,255,0.3);
+          }
+        }
+        .border-bottom {
+          border-bottom: 1px solid #333;
+        }
+        .border-left {
+          border-left: 1px solid #333;
         }
       }
-      .border-bottom {
-        border-bottom: 1px solid #333;
-      }
-      .border-left {
-        border-left: 1px solid #333;
+      .person-links {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        .person-link {
+          text-align: left;
+          padding: 3px 15px 3px 0;
+          .delete {
+            float: right;
+            
+          }
+        }
       }
     }
   }

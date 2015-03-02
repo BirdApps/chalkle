@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <%=  render @sidebar if @sidebar.present? %>
+    <%=  render 'layouts/sidebars/sidebar' if @sidebar.present? %>
 
     <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script>

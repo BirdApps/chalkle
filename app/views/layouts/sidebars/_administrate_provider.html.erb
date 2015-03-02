@@ -1,18 +1,48 @@
-<div class="sidebar admin-sidebar col-xs-12">
+<div class="admin-sidebar col-xs-12">
   <h4 class="text-center">Administration</h4>
   
-  <div class="admin-links row">
+  <%= link_to "New Class", new_course_path, class: 'btn primary'  %>
+
+  <div class="admin-links admin-section row">
     <%= link_to "Bookings", provider_bookings_path(@provider.url_name), class: 'border-bottom' %>
     <%= link_to "Followers", provider_followers_path(@provider.url_name), class: 'border-bottom border-left' %>
     <%= link_to "Metrics", provider_metrics_path(@provider.url_name) %>
     <%= link_to "Settings", provider_settings_path(@provider.url_name), class: 'border-left' %>
   </div>
+  
+  <h5>
+    <%= link_to "Teachers", providers_teachers_path(@provider.url_name) %>  
+  </h5>
 
-  <%= link_to "New Class", new_course_path, class: 'block' %>
+  <div class="admin-section row">
+    <div class="col-xs-12 person-links">
+      <% @provider.provider_teachers.each do |teacher| %>
+        <div class="person-link">
+          <%= link_to teacher.name, provider_teacher_path(@provider.url_name, teacher.id) %>
+          <%=  %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-xs-12">
+      <%= link_to "+ New Teacher", new_provider_teacher_path(@provider.url_name), class: 'btn btn-stub' %>
+    </div>
+  </div>
 
-  <%= link_to "New Teacher", new_provider_teacher_path(@provider.url_name), class: 'block' %>
-  <%= link_to "Current Teachers", provider_teachers_path(@provider.url_name), class: 'block' %>
+  <h5>
+    <%= link_to "Provider Admins", providers_admins_path(@provider.url_name) %>
+  </h5>
 
-  <%= link_to "New Admin", new_provider_admin_path(@provider.url_name), class: 'block' %>
-  <%= link_to "Current Admins", provider_admins_path(@provider.url_name), class: 'block' %>
+  <div class="admin-section row">
+    <div class="col-xs-12 person-links">
+      <% @provider.provider_admins.each do |admin| %>
+        <div class="person-link">
+          <%= link_to admin.name, edit_provider_admin_path(@provider.url_name, admin.id) %>
+          <%# link_to %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-xs-12">
+      <%= link_to "+ New Admin", new_provider_admin_path(@provider.url_name), class: 'btn btn-stub' %>
+    </div>
+  </div>
 </div>

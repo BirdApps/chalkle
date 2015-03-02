@@ -85,14 +85,9 @@ $(function(){
 
     function to_show_bg(){
       if(html.width() > 768){
-        provider_header.click(function(e){
-          if(provider_header.css("padding-top") == "0px"){
-            show_bg();
-          }else{
-            hide_bg();
-          }
-        });
-
+        provider_header.mousedown(show_bg);
+        provider_header.mouseout(hide_bg);
+        provider_header.mouseup(hide_bg);
         $('.provider_header a').click(function(e){
           e.stopPropagation();
         });
