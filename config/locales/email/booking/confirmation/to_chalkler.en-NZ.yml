@@ -19,6 +19,8 @@ en-NZ:
               %{address}
               %{venue}
 
+              %{note_to_attendees}
+
               If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
 
               %{paid}
@@ -37,6 +39,8 @@ en-NZ:
               %{time_range}
               %{address}
               %{venue}
+
+              %{note_to_attendees}
 
               If you have any questions please contact the provider, %{provider_name} directly.
 
@@ -69,6 +73,8 @@ en-NZ:
               %{address}
               %{venue}
 
+              %{note_to_attendees}
+
               If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
 
               %{paid}
@@ -88,6 +94,8 @@ en-NZ:
               %{time_range}
               %{address}
               %{venue}
+
+              %{note_to_attendees}
 
               If you have any questions please contact the provider, %{provider_name} directly.
 
