@@ -59,10 +59,15 @@ class CoursesController < ApplicationController
   end
 
   def show
-    authorize @course 
+    authorize @course
     respond_to do |format|
-      format.json { render json: { name: @course.name, url: @course.path, time: @course.time_formatted, cost: @course.cost_formatted(true) } }
-      format.html { redirect_to @course.path unless request.path == @course.path and return }
+      format.json { render json: { 
+        name: @course.name, url: @course.path, time: @course.time_formatted, cost: @course.cost_formatted(true) } 
+      }
+      format.html {
+        redirect_to @course.path unless request.path == @course.path and return
+        render 'show' and return
+      }
     end
   end
 
