@@ -78,7 +78,7 @@ $(function(){
       if(sidebar.length > 0){
         sidebar.css('left', 0);
         sidebar.css('top', coloring.height());
-        sidebar_padding.css('margin-left', 320);
+        sidebar_padding.removeAttr('style');
       }
     }
 
