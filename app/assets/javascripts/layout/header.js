@@ -59,8 +59,9 @@ $(function(){
       var ratio = $(window).width() / bg_img().width;
       var padding = bg_img().height * ratio;
       padding = padding - $('.provider_header').offset().top - $('.provider_header').height();
-      if( isNaN(padding) ){
-        padding = $(window).height() - $('.provider_header').offset().top - $('.provider_header').height();
+      bu_padding = $(window).height() - $('.provider_header').offset().top - $('.provider_header').height();
+      if( isNaN(padding) || padding > bu_padding ){
+        padding = bu_padding;
       }
       provider_header.css("padding-top", padding+'px');
       coloring.css('top', coloring.height()*-1);
