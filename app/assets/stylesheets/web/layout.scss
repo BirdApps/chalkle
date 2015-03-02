@@ -42,7 +42,9 @@ html {
       }
     }
 
-
+    .container {
+      max-width: 100%;
+    }
 
     .site-messages {
       overflow:hidden;
