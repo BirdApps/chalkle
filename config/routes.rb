@@ -163,13 +163,15 @@ Chalkle::Application.routes.draw do
   post '/partners/say_hello' =>'partners#said_hello', as: 'said_hello', controller: 'partners'
 
   get 'resources', to: 'resources#index', as: :resources
-  get 'metrics', to: 'metrics#index', as: :metrics
-
+  
+  
   #TODO: find an easier way of doing these provider routes!
   get ':provider_url_name/admins', to: 'providers#admins', as: :providers_admins
   get ':provider_url_name/admins/new', to: 'provider_admins#new', as: :new_provider_admin
   get ':provider_url_name/admin/:id/edit', to: 'provider_admins#edit', as: :edit_provider_admin
   
+  get 'provider_url_name/metrics', to: 'providers#metrics', as: :provider_metrics
+
   get 'providers/:provider_id/url_available/:url_name', to: 'providers#url_available', as: :provider_url_available
   get ':provider_url_name/teachers', to: 'providers#teachers', as: :providers_teachers
   get 'providers/:provider_id/teachers', to: 'providers#teachers', as: :provider_provider_teachers
