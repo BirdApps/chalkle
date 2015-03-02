@@ -23,22 +23,69 @@ $(function(){
   }
 
   function header_init(){
-    var header_wrap = $('.header-wrapper')
+    var header_wrap = $('.header-wrapper');
+    var provider_header = $('.provider_header');
     var coloring = $('.coloring');
-    var html = $('html')
+    var html = $('html');
 
     var max_scroll_height = function(){
       var bg_scale = $(document).width() / bg_img().width;
       return bg_img().height * bg_scale - $('.fixed_hero').height();
     }
 
+    var bg_image;
+    var bg_img = function(){
+      if(bg_image == undefined){
+        bg_image = new Image;
+        bg_image.src = $('html').css('background-image').replace(/url\(|\)$/ig, "");
+
+        var scale = ($(document).width()/bg_image.width)
+        var max_scroll_height
+      }
+      return bg_image;
+    }
+
+
     var scrolltop = function(){ return $('body').scrollTop(); };
 
-    
+    to_show_bg();
     background_size_for_header_images();
     window.addEventListener("resize", background_size_for_header_images);
     window.addEventListener("scroll", background_size_for_header_images);
+   
+    function show_bg(){
+      var ratio = $(window).width() / bg_img().width;
+      var padding = bg_img().height * ratio;
+      padding = padding - $('.provider_header').offset().top - $('.provider_header').height();
+      if( isNaN(padding) ){
+        padding = $(window).height() - $('.provider_header').offset().top - $('.provider_header').height();
+      }
+      console.log(padding);
+      provider_header.css("padding-top", padding+'px');
+      coloring.css('top', coloring.height()*-1);
+    }
 
+    function hide_bg(){
+      provider_header.css("padding-top", 0);
+      coloring.css('top', 0);
+    }
+
+
+    function to_show_bg(){
+      if(html.width() > 768){
+        provider_header.click(function(e){
+          if(provider_header.css("padding-top") == "0px"){
+            show_bg();
+          }else{
+            hide_bg();
+          }
+        });
+
+        $('.provider_header a').click(function(e){
+          e.stopPropagation();
+        });
+      }
+    }
     
     function overscroll_header(scroll) {
       if($(window).width() > 998){

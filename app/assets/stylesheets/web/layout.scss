@@ -8,19 +8,17 @@ html {
   @media screen and (min-width: 999px){
     background-size: 100% auto;
   }
-
   background-position: center top;
   background-repeat: no-repeat !important;
   background-attachment: fixed;
   background-color: $color-header;
-}
 
-html {
   height: 100%;
   min-height: 100%;
   overflow-x: hidden;
   position: relative;
   -webkit-font-smoothing: antialiased;
+
   body.v2 {
     height: 100%;
     min-height: 100%;
@@ -34,9 +32,18 @@ html {
     h1,h2,h3,h4,h5,h6 {
       font-weight: 300;
     }
-
-    a:focus, a:hover, a:active { text-decoration: none !important; }
     
+    a{
+      &:hover {
+        cursor: pointer;
+      }
+      &:focus, &:hover, &:active {
+        text-decoration: none !important;
+      }
+    }
+
+
+
     .site-messages {
       overflow:hidden;
       top: 0;

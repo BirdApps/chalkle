@@ -22,7 +22,7 @@ $(function(){
           corners: 0.6, // Corner roundness (0..1)
           rotate: 30, // The rotation offset
           direction: 1, // 1: clockwise, -1: counterclockwise
-          color: '#fff', // #rgb or #rrggbb or array of colors
+          color: '#333', // #rgb or #rrggbb or array of colors
           speed: 1.4, // Rounds per second
           trail: 77, // Afterglow percentage
           shadow: false, // Whether to render a shadow
@@ -36,7 +36,7 @@ $(function(){
 
       if($('#toggle_map_view').is(":visible")){
         if(finding_location){
-          $("#location_autocomplete").val('Finding location...');
+          $("#location_autocomplete").val('(Finding location...)');
         }
         $('#toggle_map_view').hide();
         spinner_location = new Spinner(spinner_location_opts).spin();
@@ -51,6 +51,7 @@ $(function(){
         }
         $('#toggle_map_view').show();
       }
+      update_preview();
     }
 
     function check_valid_location(){
@@ -71,17 +72,20 @@ $(function(){
           top = ne.lat() + 0.5;
           right = ne.lng() + 0.5;
           left = sw.lng() - 0.5;
+          $('.location-reference').text("near");
         }else{
           bottom = sw.lat();
           top = ne.lat();
           right = ne.lng();
           left = sw.lng();
+          $('.location-reference').text("in");
         }
       }else{
         top = parseFloat(lat) + 1.5;
         right = parseFloat(lng) + 1.5;
         bottom = parseFloat(lat) - 1.5;
         left = parseFloat(lng) - 1.5;
+
       }
     }
 
@@ -186,6 +190,13 @@ $(function(){
       if($('#courses_wrapper').length > 0 ){
         search();
       }
+      update_preview();
+    }
+
+    function update_preview(){
+      $('.show-location').text($("#location_autocomplete").val());
+      $('.location-form').fadeOut();
+      $('.change-location').fadeIn();
     }
 
     function search(relocate){
@@ -264,7 +275,18 @@ $(function(){
       }
     }
 
+    function click_change_location(){
+      $('#location_autocomplete').val('');
+      $('.location-form').fadeIn();
+      $('.change-location').fadeOut();
+      $("#location_autocomplete").focus();
+    }
+
     function init(){
+      $('.change-location').click(click_change_location);
+
+      $('.show-location').click(click_change_location);
+
 
       $('[data-toggle="tooltip"]').tooltip()
       

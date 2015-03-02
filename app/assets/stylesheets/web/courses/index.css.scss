@@ -28,10 +28,22 @@
     margin: 0;
     padding:0;
   }
+  .location-wrapper{
+    border-bottom: 1px dotted #ccc;
+    margin-bottom: 10px;
+    .location-preview{
+      padding: 10px 0;
+      .change-location{
+        @media screen and (min-width: 769px){
+          float: right;
+        }
+      }
+    }
+  }
   .location-form{
     margin: 5px 0;
-    
     width: 100%;
+    display: none;
     #location_autocomplete {
       position: relative;
       font-size: 16px;
@@ -47,7 +59,6 @@
     }
 
     .input-group-addon, .form-control{
-      background: transparent;
       color: #333;
       border: 0px;
       opacity: 0.8;
@@ -77,21 +88,21 @@
       border-bottom-right-radius: 4px !important;
     }
     input::-webkit-input-placeholder {
-      color: #fff;
+      color: #333;
       font-style: italic;
     }
     input::-moz-placeholder {
-      color: #fff;
+      color: #333;
       opacity: 1;
       font-style: italic;
     }
     input:-moz-placeholder {   /* Older versions of Firefox */
-      color: #fff;
+      color: #333;
       opacity: 1;
       font-style: italic;
     }
     input:-ms-input-placeholder { 
-      color: #fff;
+      color: #333;
       opacity: 1;
       font-style: italic;
     }

@@ -1,11 +1,15 @@
-<div class="container location_form">
-  <div class="col-xs-12">
+<div class="location_form">
+  <div class="location-wrapper">
+    <div class="location-preview">
+      <em>Find classes <span class="location-reference">near</span> <strong class="show-location">...</strong></em>
+      <a class="change-location">Change location</a>
+    </div>
     <div class="location-form" id="location-form">
       <div class="input-group">
         <span class="input-group-addon btn" id="globe_holder" role="button" title="Auto-locate" data-toggle="tooltip" data-placement="bottom">
           <img src="/assets/location_arrow.png" alt="Auto Locate" id="toggle_map_view" />
         </span>
-        <input type="text" name="location" id="location_autocomplete" value="<%= get_coords[:location] %>" class="form-control" placeholder="Location">
+        <input type="text" name="location" id="location_autocomplete" value="<%= get_coords[:location] %>" class="form-control" placeholder="Type your location here">
         <div class="input-group-addon" id="location_unknown" style="display:none">
           <span class="fa-exclamation-triangle fa" data-toggle="tooltip" data-placement="bottom" title="Unrecognized address"></span>
         </div>
