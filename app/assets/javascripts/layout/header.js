@@ -62,7 +62,6 @@ $(function(){
       if( isNaN(padding) ){
         padding = $(window).height() - $('.provider_header').offset().top - $('.provider_header').height();
       }
-      console.log(padding);
       provider_header.css("padding-top", padding+'px');
       coloring.css('top', coloring.height()*-1);
       if(sidebar.length > 0) {
@@ -77,7 +76,6 @@ $(function(){
       coloring.css('top', 0);
       if(sidebar.length > 0){
         sidebar.css('left', 0);
-
         sidebar.css('top', coloring.height());
         sidebar_padding.css('margin-left', 320);
       }
@@ -184,7 +182,7 @@ $(function(){
       });
 
       // update the title element
-      if(count>0) {
+      if(count > 0) {
         $('title').html( "(" + count + ") " + ORIGINAL_TITLE); 
       } else { 
         $('title').html(ORIGINAL_TITLE); 
