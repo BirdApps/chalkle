@@ -17,8 +17,11 @@
     <% if chalkler_signed_in? %>
       <script src='//cdn.goroost.com/roostjs/e7a09481b0d145b784c6b9dd5dd97cb0' async></script>
       <script>
+        var _roost;
         $(function(){
-          _roost.push(["alias", "<%= current_user.id %>"]);
+          if(_roost != undefined){
+            _roost.push(["alias", "<%= current_user.id %>"]);
+          }
         });
       </script>
     <% end %>
