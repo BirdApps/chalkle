@@ -183,6 +183,10 @@ protected
     @header_partial = '/layouts/headers/provider'
   end
 
+  def sidebar_administrate_provider
+     @sidebar = '/layouts/sidebars/administrate_provider'
+  end
+
   def extract_locale_from_tld
     parsed_locale = request.host.split('.').last
     I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil

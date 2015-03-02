@@ -1,0 +1,55 @@
+@import "../_vars";
+
+.sidebar-padding {
+  @media screen and (min-width: 768px) {
+    margin-left: 320px;
+    transition: margin-left 200ms ease-in-out;
+  }
+}
+.sidebar {
+  display: none;
+  background-color: #343434;
+  height: 100%;
+  color: #fff;
+  position: fixed !important;
+  top: $mobile-nav-height;
+  left: 0;
+  width: 100%;
+  transition: all 200ms ease-in-out;
+
+  @media screen and (min-width: 768px) {
+    display: block;
+    max-width: 320px;
+    top: $desktop-nav-height;
+  }
+  
+  a{
+    color: #E0E0E0;
+  }
+  
+  h3 {
+    font-weight: 700;
+  }
+  &.admin-sidebar{
+    .admin-links{
+      text-align: center;
+      background-color: #1F1F1F;
+      a {
+        display: block;
+        color: #fff;
+        padding: 10px 5px;
+        width: 50%;
+        float: left;
+        &:hover {
+          background: rgba(255,255,255,0.3);
+        }
+      }
+      .border-bottom {
+        border-bottom: 1px solid #333;
+      }
+      .border-left {
+        border-left: 1px solid #333;
+      }
+    }
+  }
+}

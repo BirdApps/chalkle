@@ -27,6 +27,8 @@ $(function(){
     var provider_header = $('.provider_header');
     var coloring = $('.coloring');
     var html = $('html');
+    var sidebar = $('.sidebar');
+    var sidebar_padding = $('.sidebar-padding');
 
     var max_scroll_height = function(){
       var bg_scale = $(document).width() / bg_img().width;
@@ -63,11 +65,22 @@ $(function(){
       console.log(padding);
       provider_header.css("padding-top", padding+'px');
       coloring.css('top', coloring.height()*-1);
+      if(sidebar.length > 0) {
+        sidebar.css('left', -320);
+        sidebar.css('top', 0);
+        sidebar_padding.css('margin-left', 0);
+      }
     }
 
     function hide_bg(){
       provider_header.css("padding-top", 0);
       coloring.css('top', 0);
+      if(sidebar.length > 0){
+        sidebar.css('left', 0);
+
+        sidebar.css('top', coloring.height());
+        sidebar_padding.css('margin-left', 320);
+      }
     }
 
 

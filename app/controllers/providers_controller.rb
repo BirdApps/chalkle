@@ -9,6 +9,7 @@ class ProvidersController < ApplicationController
   end
 
   def show
+    sidebar_administrate_provider if policy(@provider).admin?
     if current_user.super?
       @courses =  @provider.courses.in_future.start_at_between(current_date, current_date+1.year).by_date
     else

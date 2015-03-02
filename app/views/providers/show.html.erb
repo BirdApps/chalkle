@@ -1,37 +1,5 @@
-<% if policy(@provider).admin? %>
-  <div class="row">
-    <div class="col-sm-4 col-md-3 sidebar">
-      <div class="admin-sidebar col-xs-12">
-        <h4 class="text-center">Administration</h4>
-        
-        <div class="admin-links row">
-          <%= link_to "Bookings", provider_bookings_path(@provider.url_name), class: 'border-bottom' %>
-          <%= link_to "Followers", provider_followers_path(@provider.url_name), class: 'border-bottom border-left' %>
-          <%= link_to "Metrics", provider_metrics_path(@provider.url_name) %>
-          <%= link_to "Settings", provider_settings_path(@provider.url_name), class: 'border-left' %>
-        </div>
+<p class="center">
+  <%= to_html @provider.description %>
+</p>
 
-         <%= link_to "New Class", new_course_path, class: 'block' %>
-
-        <%= link_to "New Teacher", new_provider_teacher_path(@provider.url_name), class: 'block' %>
-        <%= link_to "Current Teachers", provider_teachers_path(@provider.url_name), class: 'block' %>
-
-        <%= link_to "New Admin", new_provider_admin_path(@provider.url_name), class: 'block' %>
-        <%= link_to "Current Admins", provider_admins_path(@provider.url_name), class: 'block' %>
-      </div>
-    </div>
-    
-    <div class="col-xs-12 col-sm-8 col-md-9 main">
-
-<% end %>
-
-      <p class="center">
-        <%= to_html @provider.description %>
-      </p>
-
-      <%= render 'paginate_courses' %>
-
-<% if policy(@provider).admin? %>
-    </div>
-  </div>
-<% end %>
+<%= render 'paginate_courses' %>
