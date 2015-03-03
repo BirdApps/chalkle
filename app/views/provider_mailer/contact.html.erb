@@ -4,14 +4,14 @@
     From: <%= link_to @provider_contact.chalkler.name, chalkler_url(@provider_contact.chalkler) %>
   </p>
   <p>
-    Email: <% @provider_contact.from %>
+    Email: <%= @provider_contact.chalkler.email %>
   </p>
 <% else %>
   <p>
     From: User was not signed in when form was sent
   </p>
   <p>
-    Email: <% @provider_contact.from %>
+    Email: <%= @provider_contact.from %>
   </p>
 <% end %>
 <p>
