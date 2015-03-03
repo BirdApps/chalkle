@@ -91,6 +91,9 @@ $(function(){
         $('.provider_header a').mousedown(function(e){
           e.stopPropagation();
         });
+        $('.provider_header input').mousedown(function(e){
+          e.stopPropagation();
+        });
       }
     }
     
