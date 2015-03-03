@@ -88,7 +88,7 @@ $(function(){
         provider_header.mousedown(show_bg);
         provider_header.mouseout(hide_bg);
         provider_header.mouseup(hide_bg);
-        $('.provider_header a').click(function(e){
+        $('.provider_header a').mousedown(function(e){
           e.stopPropagation();
         });
       }
