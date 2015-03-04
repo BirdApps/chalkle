@@ -433,6 +433,17 @@ html {
     }
 
     .new_form_wrapper {
+      .breadcrumb{
+        li.active {
+          a {
+            &:before, &:after {
+              content: '•';
+              color: #ccc;
+              padding: 0 3px;
+            }
+          }
+        }
+      }
       .hero.image-preview {
         height: 175px;
         width:100%;

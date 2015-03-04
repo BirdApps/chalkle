@@ -50,6 +50,14 @@
   }
 
   .admin-sidebar{
+    .admin-subtitle {
+      margin-bottom: 20px;
+      text-align: center;
+      background-color: #e0e0e0;
+      h3 {
+        margin: 15px 0;
+      }
+    }
     .admin-section {
       margin-bottom: 20px;
       text-align: center;

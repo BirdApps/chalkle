@@ -4,10 +4,10 @@
   transition: padding-top 200ms ease-in-out;    
   .container {
     position: relative;
-    @media screen and (min-width: 769px){
+    @media screen and (min-width: 993px){
       bottom: -43px;
     }
-    @media screen and (max-width: 768px){
+    @media screen and (max-width: 992px){
       bottom: -39px;
       padding-right: 0;
       padding-left: 0;
@@ -27,10 +27,10 @@
     }
   }
   .provider_header_content { 
-    @media screen and (min-width: 769px) {
+    @media screen and (min-width: 993px) {
       height: 77px;
     }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 992px) {
       padding: 0 10px;
     }
  
@@ -44,7 +44,7 @@
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
         word-break: break-word;
         font-weight: 600;
-        @media screen and (min-width: 769px) {
+        @media screen and (min-width: 993px) {
           display: inline-block;
           padding-top: 20px;
         }
@@ -58,7 +58,7 @@
   }
   .provider_header_links {
     overflow:hidden;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 992px) {
       width: 100%;
     }
     nav {
@@ -66,10 +66,10 @@
         li {
           background-color: #fff;
           &.active {
-            @media screen and (max-width: 768px){
+            @media screen and (max-width: 992px){
               box-shadow: inset 0 -3px 0 $color-header-opaque;
             }
-            @media screen and (min-width: 769px){
+            @media screen and (min-width: 993px){
               box-shadow: inset 0 3px 0 $color-header-opaque;
             }
           }

@@ -110,7 +110,6 @@ protected
     end
   end
   
-
   def provider_name
     @provider_name ||= params[:provider_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:provider_url_name].present?
   rescue ArgumentError 
@@ -120,7 +119,6 @@ protected
   def load_provider
     redirect_to_subdomain
     if !@provider
-     
       if params[:provider_id].present?
         @provider = Provider.find(params[:provider_id])
       elsif provider_name
@@ -128,6 +126,13 @@ protected
       end
         
     end
+  end
+
+  def load_course
+    @course = Course.find_by_id(params[:course_id] || params[:id])
+    not_found and return unless @course
+    authorize @course
+    @provider = @course.provider
   end
 
   def redirect_to_subdomain
@@ -179,14 +184,6 @@ protected
     I18n.locale = locale
   end
 
-  def header_provider
-    @header_partial = '/layouts/headers/provider'
-  end
-
-  def sidebar_administrate_provider
-     @sidebar = '/layouts/sidebars/administrate_provider'
-  end
-
   def extract_locale_from_tld
     parsed_locale = request.host.split('.').last
     I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
@@ -209,6 +206,18 @@ protected
     #message_type should be one of [:success,:info,:warning,:error]
     flash[message_type] = [] if flash[message_type].nil?
     flash[message_type] << message
+  end
+
+  def header_provider
+    @header_partial = '/layouts/headers/provider'
+  end
+
+  def sidebar_administrate_provider
+    @sidebar = '/layouts/sidebars/administrate_provider' if policy(@provider).admin?
+  end
+
+  def sidebar_administrate_course
+    @sidebar = '/layouts/sidebars/administrate_course' if policy(@course).admin?  
   end
 
 end
