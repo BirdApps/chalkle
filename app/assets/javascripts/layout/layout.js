@@ -168,7 +168,7 @@ $(function(){
     });
 
     function check_notification_height(){
-      $('.notifications-drop ul').css('max-height', window.innerHeight - 140 );
+      $('.dropdown-menu ul').css('max-height', window.innerHeight - 140 );
     }
 
     function update_notification_badge(count) {
