@@ -98,7 +98,7 @@ class BookingsController < ApplicationController
         end
       end
       add_flash :success, "Payment successful. Thank you very much!"
-      redirect_to course_path(params[:course_id])
+      redirect_to provider_course_path(params[:course_id])
     else
       @course = Course.find params[:course_id]
       add_flash :error, "Sorry, it seems that payment was declined. Would you like to try again?"
@@ -164,7 +164,7 @@ class BookingsController < ApplicationController
       unless policy(@course).write?(true)
         
         redirect_url = if @course.has_public_status?
-          course_path(@course)
+          provider_course_path(@course)
         else
           root_path
         end

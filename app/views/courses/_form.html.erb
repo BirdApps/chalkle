@@ -1,8 +1,8 @@
 <%
   if @teaching.editing?
-    submit_url = course_path @teaching.editing_id
+    submit_url = edit_provider_course_path @teaching.course.path_params
   else
-    submit_url = courses_path
+    submit_url = new_course_provider_path @teaching.provider
   end
 
   if !@teaching.editing?
@@ -16,11 +16,8 @@
   end
  %>
 <div class="new_form_wrapper new_course_form_wrapper" style="display:none;">
-  <div class="col-md-2">
-    <%= link_to "< Upcoming Classes", courses_path, {:class => "small grey"} %>
-  </div>
-  <div class="col-md-9">
-    <ol class="breadcrumb">
+  <div class="col-xs-12">
+    <ol class="breadcrumb text-center">
       <li class="active"><a class="part_link" href="#type" id="type-link">Class Type</a></li>
       <li><a href="#details" class="part_link" id="details-link">Details</a></li>
       <li><a href="#learning" class="part_link" id="learning-link">Learning</a></li>
@@ -32,7 +29,7 @@
       
       <div id="type" class="parts center">
         <div class="fancy-header">
-          <h3>Class Type</h3>
+          <h3><%= @teaching.editing? ? 'Edit' : 'New' %> Class</h3>
           <hr />
         </div>
         <input type="hidden" id="teaching_course_class_type" value="<%= f.object.course_class_type %>" />
@@ -572,7 +569,5 @@
 
       </div>
     <% end %>
-  </div>
-  <div class="col-md-1">
   </div>
 </div>

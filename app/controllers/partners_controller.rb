@@ -43,7 +43,7 @@ class PartnersController < ApplicationController
     def header_partners
       @nav_links = [{
         img_name: "bolt",
-        link: partners_path,
+        link: chalkle_about_path,
         active: request.path.include?("index"),
         title: "About Chalkle"
       },{

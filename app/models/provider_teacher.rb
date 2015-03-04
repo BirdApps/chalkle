@@ -59,6 +59,13 @@ class ProviderTeacher < ActiveRecord::Base
     read_attribute :bio || "#{name} is a teacher for #{provider.name}" 
   end
 
+   def path_params
+    {
+      provider_url_name: provider,
+      id: self
+    }
+  end
+
   private 
     def method_missing(method, *args, &block)  
       chalkler.send(method, *args, &block)

@@ -2,14 +2,14 @@
   <ul>
     <% if policy(@provider).read? %>
       <li>
-        <%= link_to 'Admins', providers_admins_path(@provider.url_name) %>
+        <%= link_to 'Admins', provider_admins_path(@provider) %>
       </li>
     <% end %>
     <li>
-      <%= link_to 'Teachers', providers_teachers_path(@provider.url_name) %>
+      <%= link_to 'Teachers', provider_teachers_path(@provider) %>
     </li>
     <li>
-      <%= link_to 'Followers', provider_followers_path(@provider.url_name) %>
+      <%= link_to 'Followers', provider_followers_path(@provider) %>
     </li>
   </ul>
 </nav>

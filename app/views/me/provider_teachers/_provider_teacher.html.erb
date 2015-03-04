@@ -2,7 +2,7 @@
   <img class="avatar avatar32" src="<%= provider_teacher.avatar %>">
   <div class="pull-left"> 
     <div class="name">
-      <%= link_to provider_teacher.name, provider_provider_teacher_path(provider_teacher.provider.url_name, provider_teacher) %>,
+      <%= link_to provider_teacher.name, provider_teacher_path(provider_teacher.provider.url_name, provider_teacher) %>,
       <%= link_to provider_teacher.provider.name, provider_path(provider_teacher.provider.url_name) %>
       
     </div>

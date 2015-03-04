@@ -9,12 +9,12 @@ class RouteRecognizer
 
   def initialize
     routes = Rails.application.routes.routes
-    @paths = routes.collect {|r| r.path.spec.to_s }
+    @paths = routes.map {|r| r.path.spec.to_s }
   end
 
   def initial_path_segments
     @initial_path_segments ||= begin
-      paths.collect {|path| match_initial_path_segment(path)}.compact.uniq
+      paths.map {|path| match_initial_path_segment(path)}.compact.uniq
     end
   end
 

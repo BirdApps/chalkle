@@ -233,11 +233,11 @@ class Course < ActiveRecord::Base
   end
 
   def address
-    venue_address.gsub(', New Zealand', '')
+    venue_address.gsub(', New Zealand', '') if venue_address
   end
 
   def address_formatted
-    venue_address.gsub(',',',<br />').html_safe if venue_address.present?
+    venue_address.gsub(',',',<br />').html_safe if venue_address
   end
 
   def course?
@@ -564,7 +564,7 @@ class Course < ActiveRecord::Base
     if limited_spaces? && !spaces_left?
       'Fully booked'
     else
-      'Book in'
+      'Book now'
     end
   end
 
@@ -586,8 +586,17 @@ class Course < ActiveRecord::Base
     build_searchable
     save
   end
-    
+  
+  def path_params
+    {
+      provider_url_name: provider.url_name,
+      course_url_name: url_name,
+      course_id: self.id
+    }
+  end
+
   private
+
     def clear_ivars
       @provider_income_with_tax = nil
       @provider_income_no_tax = nil
@@ -646,7 +655,6 @@ class Course < ActiveRecord::Base
     def check_start_at
       self.start_at = first_lesson.start_at if first_lesson.present?
     end
-
 
     def set_url_name
       self.url_name = name.parameterize

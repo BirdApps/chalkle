@@ -10,7 +10,7 @@
     <div class="row">
       <div class="new_form_wrapper">
         <small class="col-xs-12">Ask questions or leave comments about the class</small>
-        <%= bootstrap_form_for(CourseNotice.new, wrapper: :simple_bootstrap3, url: course_course_notices_path(@course.id), html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+        <%= bootstrap_form_for(CourseNotice.new, url: provider_course_notices_path(@course.provider), wrapper: :simple_bootstrap3, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
 
           <div class="col-xs-12">
             <%= f.text_area :body, class: 'discussion-box' %>

@@ -34,6 +34,15 @@ class CourseNotice < ActiveRecord::Base
     course.course_upload_image
   end
 
+  def path_params
+    {
+      provider_url_name: provider,
+      course_url_name: course.url_name,
+      course_id: course,
+      id: self.id
+    }
+  end
+
   private 
     def check_body_or_photo
       if photo.present? && body.blank?

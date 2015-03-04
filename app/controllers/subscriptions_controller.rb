@@ -8,14 +8,14 @@ class SubscriptionsController < ApplicationController
 
   def create
     Subscription.create provider_id: @provider.id, chalkler_id: current_chalkler.id
-    flash[:notice] = "You are now following "+@provider.name
-    redirect_to provider_path @provider.url_name
+    add_flash :success, "You are now following "+@provider.name
+    redirect_to session[:previous_url] || provider_path(@provider.url_name)
   end
 
   def destroy
     Subscription.where(provider_id: @provider.id, chalkler_id: current_chalkler.id).destroy_all
-    flash[:notice] = "You are no longer following "+@provider.name
-    redirect_to params[:return_to] || provider_path(@provider.url_name) 
+    add_flash :warning, "You are no longer following "+@provider.name
+    redirect_to session[:previous_url] || provider_path(@provider.url_name) 
   end
 
 private

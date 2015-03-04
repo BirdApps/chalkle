@@ -28,7 +28,7 @@
         <%= quick_date_time course.start_at %>
         </span> |
         <% if course.teacher  %>
-          <%= link_to 'Taught by '+course.teacher.name, provider_provider_teacher_path(course.provider.url_name,course.teacher) %>
+          <%= link_to 'Taught by '+course.teacher.name, provider_teacher_path(course.provider.url_name,course.teacher) %>
         <% else %>
           No teacher assigned
         <% end %>
@@ -41,13 +41,13 @@
     </div>
   </div>
   <div class="col-sm-2 col-xs-6">
-    <a href="<%= course_bookings_path course.id %>" class="clear-both no-margin block center alert alert-default small">
+    <a href="<%= provider_course_bookings_path course.id %>" class="clear-both no-margin block center alert alert-default small">
       <%= course.bookings.confirmed.count %>
       <br /> <%= 'Attendee'.pluralize(course.bookings.confirmed.count) %>
     </a>
   </div>
   <div class="col-sm-2 col-xs-6">
-    <a href="<%= course_bookings_path course.id %>" style="padding:25px 0" class="clear-both no-margin block center alert alert-<%= course.status_color %> small">
+    <a href="<%= provider_course_bookings_path course.id %>" style="padding:25px 0" class="clear-both no-margin block center alert alert-<%= course.status_color %> small">
       <%= course.status %>
     </a>
   </div>

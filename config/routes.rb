@@ -10,67 +10,43 @@ Chalkle::Application.routes.draw do
     match '/' => 'providers#show'
   end
 
+  %w(blog).each do |name|
+    #  %w(welcome about blog learn).each do |name|
+    match "/#{name}" => redirect("http://blog.chalkle.com/#{name}"), :as => name.to_sym
+  end
+
   root to: 'application#home'
-  
-  get '/about' => 'partners#index', as: :about
 
   get '/terms' => 'terms#chalkler', as: :terms
-
   get '/privacy' => 'terms#privacy', as: :privacy
-
   get '/terms/provider' => 'terms#provider', as: :provider_terms
-
   get '/terms/teacher' => 'terms#teacher', as: :teacher_terms
-
-
-  resources :provider_teachers, path: 'teachers', except: [:new, :show, :index]
-
-  resources :provider_admins, path: 'admins', except: [:new, :show, :index] 
-
-  resources :provider_plans, path: 'plans'
 
   match '/teach' => 'courses#teach'
   match '/learn' => redirect("/discover")
   match '/discover' => 'courses#index'
 
-  resources :courses, path: 'classes' do
+  get '/c/:id' => 'courses#show', as: :tiny_course
+  post '/bookings/lpn', as: :lpn
 
-    member do
-      get 'cancel', to: 'courses#cancel', as: :cancel
-      get 'clone'
-      put 'cancel', to: 'courses#confirm_cancel', as: :cancel
-      put 'change_status', to: 'courses#change_status', as: :change_status
-    end
+  get '/styleguide' => 'application#styleguide', as: 'styleguide'
+  get 'chalklers' => redirect("/")
 
-    resource :course_notices, path: 'discussion' do 
-      get 'show/:id', to: 'course_notices#show', as: :show
-      put 'update/:id', to: 'course_notices#update', as: :update
-      post 'create', to: 'course_notices#create', as: :create
-      get 'delete/:id', to: 'course_notices#destroy', as: :delete
-    end
-    
-    resources :bookings, only: [:index, :show, :new, :create] do
-      get :payment_callback
-      collection { get 'csv' }
-      member do
-        get 'take_rights'
-        get 'cancel'
-        put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
-      end
-    end
+  get 'classes/fetch', to: 'courses#fetch'
+  get 'url_available/:url_name', to: 'providers#url_available'
 
+  resources :provider_plans, path: 'plans'
+
+  resources :chalklers, path: 'people', only: [:index, :show] do
+    resources :notifications, only: [:index, :show]
     collection do
-      get 'calculate_cost'
-      get 'mine'
-      post 'fetch'
+      post 'exists'
+      post 'set_location'
+      get 'get_location' 
     end
-    
   end
 
-  get '/c/:id' => 'courses#show', as: :course_tiny
-  post '/bookings/lpn', as: :lpn
   namespace :me do
-    
     root to: 'dashboard#index'
 
     get '/notifications' => 'notifications#index', as: :notifications
@@ -130,64 +106,102 @@ Chalkle::Application.routes.draw do
         get 'refund'
       end
     end
-
   end
 
-  resources :chalklers, path: 'people', only: [:index, :show] do
-    resources :notifications, only: [:index, :show]
-    collection do
-      post 'exists'
-      post 'set_location'
-      get 'get_location' 
+  namespace :chalkle do
+    root to: 'partners#index'
+    get 'about', to: 'partners#index'
+    get 'team', to: 'partners#team'
+    get 'say_hello', to: 'partners#say_hello'
+    get 'say_hello', to: 'partners#said_hello', as: 'said_hello'
+  end
+
+  get 'classes/new', to: 'courses#choose_provider', as: :new_course  
+  match 'classes/calculate_cost', to: 'courses#calculate_cost'
+  get 'classes/:id', to: 'courses#show', as: :old_course_path #backwards compatibility2
+
+  resources :providers, only: [:index, :create, :new]
+
+  resource :provider, except: [:new, :create], path: ':provider_url_name' do
+    get '/', to: 'providers#show'
+    
+    get '/metrics', to: 'providers#metrics'
+    get '/contact', to: 'providers#contact'
+    post '/contact', to: 'providers#contact'
+
+    get '/fetch', to: 'courses#fetch'
+    get '/history', to: 'courses#history'
+
+    get '/new', to: 'courses#new', as: :new_course
+    post '/new', to: 'courses#create', as: :new_course
+    
+
+    resources :subscriptions, only: [:index, :create, :destroy], path: 'followers'
+    resources :bookings, only: [:index, :show]
+    resources :provider_teachers, path: 'teachers', as: 'teachers'
+    resources :provider_admins, path: 'admins', as: 'admins'
+
+    get ':course_url_name', to: 'courses#series', as: :course_series
+
+    resource :course, except: [:show, :new, :create], path: ':course_url_name/:course_id' do
+      get '/',              to: 'courses#show'
+      get 'cancel',         to: 'courses#cancel'
+      put 'cancel',         to: 'courses#confirm_cancel'
+      get 'clone',          to: 'courses#clone'
+      put 'change_status',  to: 'courses#change_status', as: :change_status
+
+      resources :course_notices, as: :notices, path: 'discussion'
+
+      resources :bookings, only: [:index, :show, :new, :create] do
+        get :payment_callback
+        collection { get 'csv' }
+        member do
+          get 'take_rights'
+          get 'cancel'
+          put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
+        end
+      end
+
     end
+
+
   end
 
-  resources :providers, path: 'providers', only: [:index, :teachers, :new, :create] do
-    resources :subscriptions, only: [:create, :destroy], path: 'follow'
-  end
-
-  get '/styleguide' => 'application#styleguide', as: 'styleguide'
-  #match '/image' => 'image#generate'
-  get 'chalklers' => redirect("/")
-
-  %w(blog).each do |name|
-#  %w(welcome about blog learn).each do |name|
-    match "/#{name}" => redirect("http://blog.chalkle.com/#{name}"), :as => name.to_sym
-  end
-
-
-  get '/partners' => 'partners#index'
-  #get '/partners/pricing' => 'partners#pricing'
-  get '/partners/team' => 'partners#team'
-  get '/partners/say_hello' => 'partners#say_hello'
-  post '/partners/say_hello' =>'partners#said_hello', as: 'said_hello', controller: 'partners'
-
-  get 'resources', to: 'resources#index', as: :resources
-  
-  
-  #TODO: find an easier way of doing these provider routes!
-  get ':provider_url_name/admins', to: 'providers#admins', as: :providers_admins
-  get ':provider_url_name/admins/new', to: 'provider_admins#new', as: :new_provider_admin
-  get ':provider_url_name/admin/:id/edit', to: 'provider_admins#edit', as: :edit_provider_admin
-  
-  get 'provider_url_name/metrics', to: 'providers#metrics', as: :provider_metrics
-
-  get 'providers/:provider_id/url_available/:url_name', to: 'providers#url_available', as: :provider_url_available
-  get ':provider_url_name/teachers', to: 'providers#teachers', as: :providers_teachers
-  get 'providers/:provider_id/teachers', to: 'providers#teachers', as: :provider_provider_teachers
-  get ':provider_url_name/teachers/new', to: 'provider_teachers#new', as: :new_provider_teacher
-  get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_provider_teacher
-  get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_teacher
-  get ':provider_url_name/settings', to: 'providers#edit', as: :provider_settings
-  put ':provider_url_name/settings', to: 'providers#update', as: :provider_settings
-  get ':provider_url_name/bookings', to: 'providers#bookings', as: :provider_bookings
-  get ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
-  post ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
-  get ':provider_url_name/follower/:chalkler_id', to: 'providers#follower', as: :provider_follower
-  get ':provider_url_name/followers', to: 'providers#followers', as: :provider_followers
-  get ':provider_url_name/:course_url_name', to: 'providers#series', as: :provider_course_series
-  get '*provider_url_name/*course_url_name/:id', to: 'courses#show', as: :provider_course
-  get ':provider_url_name', to: 'providers#show', as: :provider
-
+ 
   match '*a', :to => 'application#not_found'
+
+  # get '/partners' => 'partners#index'
+  # #get '/partners/pricing' => 'partners#pricing'
+  # get '/partners/team' => 'partners#team'
+  # get '/partners/say_hello' => 'partners#say_hello'
+  # post '/partners/say_hello' =>'partners#said_hello', as: 'said_hello', controller: 'partners'
+
+  #TODO: find an easier way of doing these provider routes!
+  #get ':provider_url_name/admins', to: 'providers#admins', as: :providers_admins
+  #get ':provider_url_name/admins/new', to: 'provider_admins#new', as: :new_provider_admin
+  #get ':provider_url_name/admin/:id/edit', to: 'provider_admins#edit', as: :edit_provider_admin
+  
+  #get 'provider_url_name/metrics', to: 'providers#metrics', as: :provider_metrics
+
+  #get 'providers/:provider_id/url_available/:url_name', to: 'providers#url_available', as: :provider_url_available
+  #get ':provider_url_name/teachers', to: 'providers#teachers', as: :providers_teachers
+  #get 'providers/:provider_id/teachers', to: 'providers#teachers', as: :provider_provider_teachers
+  #get ':provider_url_name/teachers/new', to: 'provider_teachers#new', as: :new_provider_teacher
+  #get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_provider_teacher
+  #get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_teacher
+  #get ':provider_url_name/settings', to: 'providers#edit', as: :provider_settings
+  #put ':provider_url_name/settings', to: 'providers#update', as: :provider_settings
+  #get ':provider_url_name/bookings', to: 'providers#bookings', as: :provider_bookings
+  #get ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
+  #post ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
+  #get ':provider_url_name/follower/:chalkler_id', to: 'providers#follower', as: :provider_follower
+  #get ':provider_url_name/followers', to: 'providers#followers', as: :provider_followers
+  #get ':provider_url_name/:course_url_name', to: 'providers#series', as: :provider_course_series
+  #get '*provider_url_name/*course_url_name/:id', to: 'courses#show', as: :provider_course
+  #get ':provider_url_name', to: 'providers#show', as: :provider
+
+    # resources :providers, path: 'providers', only: [:index, :teachers, :new, :create] do
+  #   resources :subscriptions, only: [:create, :destroy], path: 'follow'
+
+  # end
 end

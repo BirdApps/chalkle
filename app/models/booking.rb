@@ -371,6 +371,14 @@ class Booking < ActiveRecord::Base
     course.course_upload_image
   end
 
+  def path_params
+    {
+      provider_url_name: provider,
+      course_url_name: course,
+      id: self
+    }
+  end
+
   def self.csv_for(bookings)
     headings = %w{ id name paid note_to_teacher }
     basic_attr = headings.map &:to_s

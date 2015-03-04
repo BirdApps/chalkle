@@ -187,4 +187,8 @@ class Provider < ActiveRecord::Base
     )
   end
 
+  def to_param
+    url_name
+  end
+
 end

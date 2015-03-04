@@ -30,7 +30,7 @@ class CourseNoticesController < ApplicationController
     @course_notice.photo = params[:course_notice_photo] if params[:course_notice_photo]
 
     if params[:course_notice_photo].blank? && @course_notice.photo.blank? && @course_notice.body.blank?
-      return redirect_to delete_course_course_notices_path(@course_notice.course.id, @course_notice.id)
+      destroy and return
     else
       @course_notice.save
     end
@@ -41,16 +41,10 @@ class CourseNoticesController < ApplicationController
   def destroy
     @course_notice.visible = !@course_notice.visible
     @course_notice.save
-    redirect_to provider_course_path(@course_notice.provider.url_name, @course_notice.course.url_name, @course_notice.course.id, anchor: 'discuss-'+@course_notice.id.to_s)
+    redirect_to provider_course_path(@course_notice.provider.url_name, @course_notice.course.url_name, @course_notice.course.id, anchor: 'discuss-'+@course_notice.id.to_s) and return
   end
 
   private 
-
-    def load_course
-      @course = Course.find_by_id(params[:course_id])
-      return not_found unless @course
-      check_course_visibility
-    end
 
     def load_course_notice
        @course_notice = CourseNotice.find_by_id(params[:id])

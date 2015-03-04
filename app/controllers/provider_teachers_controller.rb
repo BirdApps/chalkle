@@ -1,12 +1,12 @@
 class ProviderTeachersController < ApplicationController
+  before_filter :load_provider, :header_provider, :sidebar_administrate_provider
   before_filter :load_teacher, only: [:show,:update,:edit]
-  before_filter :header_teacher, only: [:show,:update,:edit]
 
   def index
-    @teachers = ProviderTeacher.all
+    @teachers = @provider.provider_teachers
     respond_to do |format|
       format.json { render json: @teachers.to_json(only: [:id, :name]) }
-      format.html { render @teachers }
+      format.html { }
     end
   end
 
@@ -24,11 +24,11 @@ class ProviderTeachersController < ApplicationController
       existing_chalkler = Chalkler.exists params[:provider_teacher][:email]
       if existing_chalkler.present?
         if existing_chalkler.providers_teachable.include? @provider_teacher.provider
-          flash[:notice] = "That email belongs to a chalkler already teaching on this provider"
+          add_flash :error, "That email belongs to a chalkler already teaching on this provider"
           params[:provider_teacher][:email] = @provider_teacher.email
         else
           @provider_teacher.chalkler = existing_chalkler 
-          flash[:notice] = "Great! We found that chalkler and associated this teacher profile with them"
+          add_flash :success, "Great! We found that chalkler and associated this teacher profile with them"
         end
         @provider_teacher.save
       end
@@ -49,13 +49,13 @@ class ProviderTeachersController < ApplicationController
       authorize @provider_teacher
 
       if @provider_teacher.email.blank?
-        flash[:notice] = "You must supply an email"
+        add_flash :error, "You must supply an email"
       else
         exists = @provider_teacher.provider.provider_teachers.find(:first, conditions: ["lower(pseudo_chalkler_email) = ?", @provider_teacher.email.strip.downcase]).present?
         exists = @provider_teacher.provider.teaching_chalklers.find(:first, conditions: ["lower(email) = ?", @provider_teacher.email.strip.downcase]).present? unless exists
 
         if exists
-          flash[:notice] = "That person is already a teacher on your provider"
+          add_flash :error,"That person is already a teacher on your provider"
         else
           @provider_teacher.name = @provider_teacher.name || @provider_teacher.email.split('@')[0]
           result = @provider_teacher.save
@@ -63,11 +63,9 @@ class ProviderTeachersController < ApplicationController
       end
 
       if result
-        redirect_to provider_provider_teacher_path(@provider_teacher.provider.url_name, @provider_teacher)
+        redirect_to provider_teacher_path(@provider_teacher.provider.url_name, @provider_teacher)
       else
-        @provider_teacher.errors.each do |attribute,error|
-          flash[:notice] = attribute.to_s+" "+error
-        end
+        flash_errors @provider_teacher.errors
         @page_title = "Teacher"
         render 'new'
       end
@@ -79,34 +77,4 @@ class ProviderTeachersController < ApplicationController
       return not_found if !@provider_teacher
     end
 
-    def header_teacher
-      @page_title_logo = @provider_teacher.provider.logo
-      @page_title = @provider_teacher.name
-      @nav_links = [
-        {
-          img_name: "bolt",
-          link: provider_provider_teacher_path(@provider_teacher.provider.url_name,@provider_teacher.id),
-          active: request.path.include?("show"),
-          title: "Classes"
-        }
-      ]
-
-      if policy(@provider_teacher).edit?
-        @nav_links <<  {
-          img_name: "settings",
-          link: edit_provider_teacher_path(@provider_teacher),
-          active: request.path.include?("edit"),
-          title: "Edit"
-        }
-      end
-
-      if current_user.super? && @provider_teacher.chalkler_id.present?
-        @nav_links <<  {
-          img_name: "people",
-          link: become_sudo_chalkler_path(@provider_teacher.chalkler_id),
-          active: false,
-          title: "Become"
-        }
-      end
-    end
 end

@@ -2,6 +2,6 @@
   <%= 
     paid_text = @course.paid? ? t("email.booking.confirmation.to_chalkler.paid") : ""
 
-     t("email.booking.confirmation.to_chalkler.body.html", booking_name: @booking.name, course_name: @course.name, course_url: course_url(@course), provider_name: @booking.provider.name, provider_url: provider_url(@booking.provider.url_name), venue: @course.venue, address: @course.address, start_at: day_ordinal_month(@course.start_at, false, true, true), time_range: pretty_time_range(@course.start_at, @course.end_at), paid: paid_text).to_html
+     t("email.booking.confirmation.to_chalkler.body.html", booking_name: @booking.name, course_name: @course.name, course_url: tiny_course_url(@course), provider_name: @booking.provider.name, provider_url: provider_url(@booking.provider.url_name), venue: @course.venue, address: @course.address, start_at: day_ordinal_month(@course.start_at, false, true, true), time_range: pretty_time_range(@course.start_at, @course.end_at), paid: paid_text).to_html
   %>
 </markdown>

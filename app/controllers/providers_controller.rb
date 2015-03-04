@@ -1,35 +1,14 @@
 class ProvidersController < ApplicationController
-  before_filter :load_provider, only: [:show, :bookings, :series, :edit, :update, :contact, :followers, :teachers, :admins]
-  before_filter :header_provider, only: [:show, :bookings, :series, :edit, :update, :contact, :followers, :teachers, :admins]
-  before_filter :authenticate_chalkler!, only: [:new, :create]
+  before_filter :authenticate_chalkler!, only: [:new, :create, :url_available]
+  before_filter :load_provider, except: [:index, :new, :create]
+  before_filter :header_provider, except: [:index, :new, :create]
+  before_filter :sidebar_administrate_provider, except: [:index, :new, :create]
 
   def index
     @providers = Provider.visible
   end
 
-  def show
-    sidebar_administrate_provider if policy(@provider).admin?
-    if current_user.super?
-      @courses =  @provider.courses.in_future.start_at_between(current_date, current_date+1.year).by_date
-    else
-      @courses =  @provider.courses.in_future.displayable.start_at_between(current_date, current_date+1.year).by_date
-      if current_user.authenticated?
-        @courses += @provider.courses.taught_by_chalkler(current_chalkler).in_future.by_date+
-                      @provider.courses.adminable_by(current_chalkler).in_future.by_date
-        @courses = @courses.sort_by(&:start_at).uniq
-      end
-    end
-  end
-
-  def series 
-    @courses = @provider.courses.displayable.in_future.by_date.where url_name: params[:course_url_name]
-    return not_found if @courses.empty?
-    @courses
-  end
-
   def new
-    @page_title = "Provider"
-    @new_provider = Provider.new
   end
 
   def create
@@ -48,6 +27,30 @@ class ProvidersController < ApplicationController
         end
         render 'new'
       end
+  end
+
+  def url_available
+    providers_with_url = Provider.where url_name:  params[:url_name]
+    if (providers_with_url.empty? || providers_with_url.include?(@provider)) &&  !RouteRecognizer.new.initial_path_segments.include?(params[:url_name])
+      render json: params[:url_name].parameterize 
+    else
+      render json: -1
+    end
+  end
+
+
+
+  def show
+    if current_user.super?
+      @courses =  @provider.courses.in_future.start_at_between(current_date, current_date+1.year).by_date
+    else
+      @courses =  @provider.courses.in_future.displayable.start_at_between(current_date, current_date+1.year).by_date
+      if current_user.authenticated?
+        @courses += @provider.courses.taught_by_chalkler(current_chalkler).in_future.by_date+
+                      @provider.courses.adminable_by(current_chalkler).in_future.by_date
+        @courses = @courses.sort_by(&:start_at).uniq
+      end
+    end
   end
 
   def edit
@@ -79,8 +82,6 @@ class ProvidersController < ApplicationController
     end
   end
 
-
-
   def destroy
   end
 
@@ -90,6 +91,7 @@ class ProvidersController < ApplicationController
       @contact = ProviderContact.create from: params[:provider_contact][:from], subject: params[:provider_contact][:subject], message: params[:provider_contact][:message], provider: @provider, chalkler: current_chalkler
       if @contact.errors.blank?
         flash[:notice] = "Email has been sent"
+        @contact = ProviderContact.new provider: @provider
       else
         flash[:notice] = "Email could not send, please check you've filled out all fields"
       end
@@ -119,7 +121,6 @@ class ProvidersController < ApplicationController
     end
   end
 
-
   def admins
     authorize @provider
     @admins = ProviderAdmin.where provider_id:  @provider.id
@@ -129,31 +130,18 @@ class ProvidersController < ApplicationController
     end
   end
 
-  def url_available
-    providers_with_url = Provider.where url_name:  params[:url_name]
-    if (providers_with_url.empty? || providers_with_url.include?(@provider)) &&  !RouteRecognizer.new.initial_path_segments.include?(params[:url_name])
-      render json: params[:url_name].parameterize 
-    else
-      render json: -1
-    end
-  end
-
-  private 
+  private
   
-
-  def load_provider
-    redirect_to_subdomain
-    if params[:id].present?
-      @provider = Provider.find(params[:id])
-    elsif params[:provider_id].present?
-      @provider = Provider.find(params[:provider_id])
-    elsif provider_name 
-      @provider = Provider.find_by_url_name(provider_name) 
+    def load_provider
+      redirect_to_subdomain
+      if params[:id].present?
+        @provider = Provider.find(params[:id])
+      elsif params[:provider_id].present?
+        @provider = Provider.find(params[:provider_id])
+      elsif provider_name 
+        @provider = Provider.find_by_url_name(provider_name) 
+      end
+      not_found and return if @provider.blank?
     end
-    not_found and return if @provider.blank?
-  end
 
-  def courses_for_time
-    @courses_for_time ||= Querying::CoursesForTime.new(@provider.courses)
-  end
 end

@@ -1,6 +1,6 @@
 <div class="new_form_wrapper container">  
-  <%= link_to "Manage Teachers", providers_teachers_path(@provider.url_name), { class: 'btn btn-warning'} %>
-   <%= link_to "Manage Admins", providers_admins_path(@provider.url_name), { class: 'btn btn-warning'} %>
+  <%= link_to "Manage Teachers", provider_teachers_path(@provider), { class: 'btn btn-warning'} %>
+   <%= link_to "Manage Admins", provider_admins_path(@provider), { class: 'btn btn-warning'} %>
 
   <%= bootstrap_form_for(@provider, wrapper: :simple_bootstrap3, url: provider_settings_path, html: { method: :post, class: 'provider-form form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
     <input type="hidden" value="put" name="_method" />

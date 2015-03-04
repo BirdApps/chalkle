@@ -28,9 +28,7 @@ class ProviderAdminsController < ApplicationController
     if result
       redirect_to edit_provider_admin_path(@provider_admin.provider.url_name, @provider_admin.id), notice: 'Admin created successfully'
     else
-      @provider_admin.errors.each do |attribute,error|
-        flash[:notice] = attribute.to_s+" "+error
-      end
+      flash_errors @provider_admin.errors
       @page_title = "Teacher"
       render 'new'
     end
@@ -45,9 +43,9 @@ class ProviderAdminsController < ApplicationController
     if @provider_admin.chalkler.blank?
       new_email = params[:provider_admin][:email]
       if new_email.blank?
-        flash[:notice] = "You must supply an email"
+        add_flash :error, "You must supply an email"
       elsif @provider_admin.provider.admin_chalklers.find_by_email(new_email).present? || @provider_admin.provider.provider_admins.find_by_pseudo_chalkler_email(new_email).present?
-        flash[:notice] = "That person is already an admin on your provider"
+        add_flash :error, "That person is already an admin on your provider"
       else
         @provider_admin.email = new_email
         result = @provider_admin.save
@@ -56,9 +54,7 @@ class ProviderAdminsController < ApplicationController
       if result
         redirect_to edit_provider_admin_path(@provider_admin.provider.url_name, @provider_admin.id), notice: 'Email updated successfully'
       else
-        @provider_admin.errors.each do |attribute,error|
-        flash[:notice] = attribute.to_s+" "+error
-        end
+        flash_errors @provider_admin.errors
         render 'edit'
       end
     end

@@ -212,7 +212,7 @@ $(function(){
         fetching_courses = true;
         spinner_location_start();
         update_bounds();
-        $.post(
+        $.get(
           '/classes/fetch.json',
           { 'top': top, 'bottom': bottom, 'left': left, 'right': right, 'search': $("#search_input").val() },
           write_courses_to_page, 

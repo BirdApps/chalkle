@@ -1,5 +1,5 @@
 <markdown>
   <%= 
-     t("email.booking.confirmation.to_teacher.body.html", booking_name: @booking.name, course_name: @course.name, course_url: course_url(@course), course_bookings_url: course_bookings_url(@course), venue: @course.venue, address: @course.address, start_at: day_ordinal_month(@course.start_at, false, true, true), time_range: pretty_time_range(@course.start_at, @course.end_at)).to_html
+     t("email.booking.confirmation.to_teacher.body.html", booking_name: @booking.name, course_name: @course.name, course_url: tiny_course_url(@course), course_bookings_url: course_bookings_url(@course), venue: @course.venue, address: @course.address, start_at: day_ordinal_month(@course.start_at, false, true, true), time_range: pretty_time_range(@course.start_at, @course.end_at)).to_html
   %>
 </markdown>

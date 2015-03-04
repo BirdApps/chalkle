@@ -21,31 +21,31 @@
       <header class="clearfix">
         <div class="title-wrapper">
         <div class="availability-wrapper">
-          <a href="<%= new_course_booking_path course.id %>" class="availability nowrap btn-3d bg-colour<%= course.best_colour_num %>">
+          <a href="<%= new_provider_course_booking_path course.path_params %>" class="availability nowrap btn-3d bg-colour<%= course.best_colour_num %>">
             <%= course.call_to_action %>
           </a>
         </div>
           <h3 class="title">
-            <%= link_to course.name, provider_course_path(course.provider.url_name,course.url_name,course.id), { :class => "colour"+course.best_colour_num.to_s } %>
+            <%= link_to course.name, provider_course_path(course.path_params), { :class => "colour"+course.best_colour_num.to_s } %>
           </h3>
         </div>
         
       </header>
       <div class="details clearfix">
         <% if course.provider.logo.present? %>
-          <%= link_to provider_path(course.provider.url_name) do %>
+          <%= link_to provider_path(course.provider) do %>
             <%= image_tag course.provider.logo.url, class: "provider-img pull-left", title: course.provider.name %>
           <% end %>
         <% end %>
         <div class="pull-left">
           <div class="grey upper smaller">Provided By</div>
-          <%= link_to course.provider.name, provider_path(course.provider.url_name) %>
+          <%= link_to course.provider.name, provider_path(course.provider) %>
         </div>
         <div class="vertical-seperator pull-left hidden-xs"></div>
         <div class="pull-left">
           <div class="grey upper smaller">Your Teacher</div>
           <% if course.teacher  %>
-            <%= link_to course.teacher.name, provider_provider_teacher_path(course.provider.url_name,course.teacher) %>
+            <%= link_to course.teacher.name, provider_teacher_path(course.teacher.path_params) %>
           <% else %>
             No teacher assigned
           <% end %>

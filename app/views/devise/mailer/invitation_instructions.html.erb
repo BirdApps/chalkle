@@ -9,7 +9,7 @@
     You have <%= bookings.count %> bookings waiting for you for the following classes:
     <ul>
       <% bookings.each do |booking| %> 
-        <li><%= link_to booking.course.name, course_url(booking.course) %> Invited by: <%= booking.booker.name %></li>
+        <li><%= link_to booking.course.name, tiny_course_url(booking.course) %> Invited by: <%= booking.booker.name %></li>
       <% end %>
     </ul>    
   </p>

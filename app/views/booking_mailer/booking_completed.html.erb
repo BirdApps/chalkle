@@ -1,5 +1,5 @@
 <markdown>
   <%= 
-     t("email.booking.completed.body.html", course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.provider.name, provider_url: provider_url(@booking.provider.url_name)).to_html
+     t("email.booking.completed.body.html", course_name: @booking.course.name, course_url: tiny_course_url(@booking.course), provider_name: @booking.provider.name, provider_url: provider_url(@booking.provider.url_name)).to_html
   %>
 </markdown>

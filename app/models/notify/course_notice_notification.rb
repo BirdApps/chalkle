@@ -11,7 +11,7 @@ class Notify::CourseNoticeNotification < Notify::Notifier
     chalklers_to_notify = course_notice.course.followers_except(current_user)
 
     chalklers_to_notify.each do |chalkler|
-      chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice
+      chalkler.send_notification Notification::REMINDER, provider_course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice
     
       permission = if role == :teacher  
         :course_notice_new_from_teacher_to_chalkler 
@@ -26,7 +26,7 @@ class Notify::CourseNoticeNotification < Notify::Notifier
     unless (role == :teacher) || chalklers_to_notify.include?(course_notice.teacher.chalkler)
 
       if course_notice.teacher.chalkler.present?
-        course_notice.teacher.chalkler.send_notification Notification::REMINDER, course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice 
+        course_notice.teacher.chalkler.send_notification Notification::REMINDER, provider_course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice 
       end
 
       if course_notice.teacher.chalkler.blank? || course_notice.teacher.chalkler.email_about?(:course_notice_new_from_chalkler_to_teacher)

@@ -1,10 +1,8 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
-  before_filter :header_provider, only: [:show, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
+  before_filter :load_course, :sidebar_administrate_course, :header_provider, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :take_me_to, only: [:index]
-  before_filter :header_teach, only: :teach
   before_filter :header_mine, only: :mine
   
   def index
@@ -28,29 +26,29 @@ class CoursesController < ApplicationController
     if params[:only_location].present?
       courses  = courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude} }
     else
-      courses = courses.limit(20).map do |c|
+      courses = courses.limit(20).map do |course|
         {
-          id: c.id, 
-          name: c.name,
-          action_call: c.call_to_action,
-          url: provider_course_path(c.provider.url_name,c.url_name,c.id), 
-          booking_url: new_course_booking_path(c.id),  
-          name: c.name, 
-          image: c.course_upload_image.url(:large), 
-          cost: c.cost_formatted(true),
-          color: c.provider.header_color, 
-          provider: c.provider.name, 
-          provider_image: c.provider.logo.url,
-          provider_url: provider_path(c.provider.url_name), 
-          teacher: (c.teacher ? c.teacher.name : 'No teacher assigned' ), 
-          teacher_url: (c.teacher ? provider_provider_teacher_path(c.provider.url_name,c.teacher) : '#'), 
-          status: c.status, 
-          status_color: 'alert-'+c.status_color,
-          type: c.course_type, 
-          address: c.address,
-          lat: c.latitude, 
-          lng: c.longitude, 
-          time: c.time_formatted
+          id: course.id, 
+          name: course.name,
+          action_call: course.call_to_action,
+          url: provider_course_path(course.provider, course, course.id), 
+          booking_url: new_provider_course_booking_path(course.path_params),  
+          name: course.name, 
+          image: course.course_upload_image.url(:large), 
+          cost: course.cost_formatted(true),
+          color: course.provider.header_color, 
+          provider: course.provider.name, 
+          provider_image: course.provider.logo.url,
+          provider_url: provider_path(course.provider), 
+          teacher: (course.teacher ? course.teacher.name : 'No teacher assigned' ), 
+          teacher_url: (course.teacher ? provider_teacher_path(course.provider,course.teacher) : '#'), 
+          status: course.status, 
+          status_color: 'alert-'+course.status_color,
+          type: course.course_type, 
+          address: course.address,
+          lat: course.latitude, 
+          lng: course.longitude, 
+          time: course.time_formatted
         }
       end
     end
@@ -58,14 +56,21 @@ class CoursesController < ApplicationController
     render json: courses
   end
 
+  def series 
+    @provider = Provider.where(url_name: params[:provider_url_name]).first
+    not_found and return unless @provider
+    @courses = @provider.courses.displayable.in_future.by_date.where( url_name: params[:course_url_name] )
+    not_found and return unless @courses.present?
+    @courses
+  end
+
   def show
-    authorize @course
     respond_to do |format|
       format.json { render json: { 
-        name: @course.name, url: @course.path, time: @course.time_formatted, cost: @course.cost_formatted(true) } 
+        name: @course.name, url: @course.path, time: @course.time_formatted, cost: @course.cost_formatted(true) } and return
       }
       format.html {
-        redirect_to @course.path unless request.path == @course.path and return
+        redirect_to @course.path and return unless request.path == @course.path
         render 'show' and return
       }
     end
@@ -91,8 +96,21 @@ class CoursesController < ApplicationController
     render 'learn'
   end
 
+  def choose_provider
+    unless current_user.authenticated? && current_user.providers_adminable.present?
+      redirect_to teach_path and return
+    end
+
+    if current_user.providers_adminable.count == 1
+      redirect_to new_course_provider_path(current_user.providers_adminable.first) and return
+    end
+  end
+
   def new
-    @teaching = Teaching.new current_user
+    @course = Course.new({name: "", provider: @provider})
+    @teaching = Teaching.new current_user, @course
+    header_provider
+    sidebar_administrate_provider
   end
 
   def create
@@ -101,7 +119,7 @@ class CoursesController < ApplicationController
       new_course_ids =  @teaching.submit params[:teaching]
     end
     if new_course_ids && new_course_ids[0] != nil
-      redirect_to course_path new_course_ids[0]
+      redirect_to provider_course_path new_course_ids[0]
     else
       render 'new'
     end
@@ -126,7 +144,7 @@ class CoursesController < ApplicationController
         booking.apply_fees!
       end
 
-      redirect_to course_path @course.id
+      redirect_to provider_course_path @course.id
     else
       flash_errors @course.errors
       render 'new'
@@ -163,7 +181,7 @@ class CoursesController < ApplicationController
     end
     course.status = new_status
     flash_errors @course.errors if !course.save
-    redirect_to course_path(course)
+    redirect_to provider_course_path(course)
   end
 
   def bookings
@@ -188,13 +206,6 @@ class CoursesController < ApplicationController
 
   private
 
-    def load_course
-      @course = Course.find_by_id(params[:id])
-      return not_found unless @course
-      authorize @course
-      @provider = @course.provider
-    end
-
     def header_course
       @header_partial = '/layouts/headers/provider'
       @page_title_logo = @course.provider.logo
@@ -203,7 +214,7 @@ class CoursesController < ApplicationController
       if @course.spaces_left?
           @nav_links << {
             img_name: "bolt",
-            link: new_course_booking_path(@course.id),
+            link: new_provider_course_booking_path(@course.id),
             active: request.path.include?("new"),
             title: "Join"
           }
@@ -211,7 +222,7 @@ class CoursesController < ApplicationController
       if policy(@course).read?
         @nav_links << {
             img_name: "bolt",
-            link: course_bookings_path(@course),
+            link: provider_course_bookings_path(@course),
             active: request.path.include?("bookings"),
             title: "Bookings"
           }
@@ -219,7 +230,7 @@ class CoursesController < ApplicationController
       if policy(@course).edit?
         @nav_links << {
           img_name: "settings",
-          link: edit_course_path(@course),
+          link: edit_provider_course_path(@course),
           active: request.path.include?("edit"),
           title: "Edit"
         }
@@ -227,7 +238,7 @@ class CoursesController < ApplicationController
       if policy(@course).write?(true)
         @nav_links << {
           img_name: "people",
-          link: clone_course_path(@course),
+          link: clone_provider_course_path(@course),
           active: false,
           title: "Copy"
         }
@@ -266,39 +277,6 @@ class CoursesController < ApplicationController
       end
 
       courses
-    end
-
-    def header_mine
-      if current_user.providers_adminable.count == 1
-        provider = current_user.providers_adminable.first
-      end
-
-      @page_title = "All Classes"
-    end
-
-    def header_teach
-      @page_title = "Teach"
-      @meta_title = "Teach with "
-      @nav_links = [{
-          img_name: "people",
-          link: new_provider_path,
-          active: false,
-          title: "New Provider"
-        },{
-          img_name: "bolt",
-          link: new_course_path,
-          active: false,
-          title: "New Class"
-        }]
-
-      if current_user.all_teaching.count > 0
-        @nav_links << {
-          img_name: "book",
-          link: mine_courses_path,
-          active: false,
-          title: "My Classes"
-        }
-      end
     end
 
 end

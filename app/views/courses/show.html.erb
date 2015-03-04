@@ -1,7 +1,5 @@
 <div class="course-show">
   
-  <%= render 'show_admin_bar' %>
-  
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
       <h2 class="visible-xs">
@@ -13,7 +11,7 @@
         <%= render 'show_my_booking' %>
 
         <% if @course.bookable? || policy(@course).write?(true) %>    
-          <a href="<%= new_course_booking_path @course.id %>" class="join-link bg-colour<%= @course.best_colour_num %> btn btn-default">
+          <a href="<%= new_provider_course_booking_path @course.id %>" class="join-link bg-colour<%= @course.best_colour_num %> btn btn-default">
             JOIN NOW
           </a>
         <% else %>
@@ -56,7 +54,7 @@
                   <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
                 </div>
             <% elsif Course.similar_to(@course).count > 1 %>
-              <%= link_to "Find similar #{ @course.type.pluralize }", provider_course_series_path(@course.provider.url_name, @course.url_name) %>
+              <%= link_to "Find similar #{ @course.type.pluralize }", course_series_provider_path(@course.provider.url_name, @course.url_name) %>
             <% end %>
           </div>
 

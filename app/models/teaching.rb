@@ -20,8 +20,10 @@ class Teaching
     CUSTOM_FIELD_TYPES.select{|s| s[:key] == type}.first[:value] if CUSTOM_FIELD_TYPES.select{|s| s[:key] == type}.present?
   end
 
-  def initialize(current_user)
+  def initialize(current_user, course = nil)
+    @course = course
   	@current_user = current_user
+    @provider = course.provider
     @providers = current_user.providers
     @start_at = [ Time.new.advance(weeks: 1) ]
     @duration_hours = [1]
