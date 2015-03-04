@@ -114,6 +114,9 @@ html {
     }
 
     .header-wrapper {
+      >*{
+        transition: all 200ms ease;
+      }
       color: rgba(63,63,63,0.74);
       @media screen and (max-width: 768px){
         padding-top: 50px;

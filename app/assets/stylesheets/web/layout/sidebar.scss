@@ -14,7 +14,8 @@
   overflow-y: scroll;
   color: #fff;
   position: fixed !important;
-  top: $mobile-nav-height;
+  top: 0;
+  padding-top: $mobile-nav-height;
   left: 0;
   width: 100%;
   transition: all 200ms ease-in-out;
@@ -22,7 +23,7 @@
   @media screen and (min-width: 768px) {
     display: block;
     max-width: 320px;
-    top: $desktop-nav-height;
+    padding-top: $desktop-nav-height;
   }
   
   .btn {
