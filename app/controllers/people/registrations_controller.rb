@@ -34,8 +34,6 @@ class People::RegistrationsController < Devise::RegistrationsController
   private 
 
   def after_sign_up_path_for(resource)
-    redirect_path = super
-    redirect_path = root_path if redirect_path == new_chalkler_registration_path
-    return redirect_path
+    session[:previous_url] || discover_path
   end
 end
