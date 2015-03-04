@@ -12,7 +12,7 @@
 
         <% if @course.bookable? || policy(@course).write?(true) %>    
           <a href="<%= new_provider_course_booking_path @course.id %>" class="join-link bg-colour<%= @course.best_colour_num %> btn btn-default">
-            JOIN NOW
+            BOOK NOW
           </a>
         <% else %>
           <a href="#" class="btn btn-default join-link">
