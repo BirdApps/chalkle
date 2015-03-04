@@ -104,7 +104,6 @@ ActiveRecord::Schema.define(:version => 20150226231217) do
     t.string   "address"
     t.string   "avatar"
     t.string   "role"
-    t.string   "location"
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -112,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20150226231217) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.string   "location"
   end
 
   add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true
