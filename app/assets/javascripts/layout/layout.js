@@ -47,15 +47,13 @@ $(function(){
     }
 
     function show_bg_img(){
-      var bg_image, bg_img;
+      var bg_image, bg_img,img_width,img_height;
 
       if($(".header-wrapper *").length > 0){
         show_bg_img_init();
       }
 
       function show_bg_img_init(){
-        var img_width = bg_img().width;
-        var img_height = bg_img().height;
         bg_img = function(){
           if(bg_image == undefined){
             bg_image = new Image;
@@ -63,9 +61,23 @@ $(function(){
           }
           return bg_image;
         }
+
+        img_width = bg_img().width;
+        img_height = bg_img().height;
         click_to_show_bg();
         scroll_to_show_bg();
         window.addEventListener("scroll", scroll_to_show_bg);
+      }
+
+      function get_padding(){
+        var ratio = parseInt(html.css('background-size')) / img_width;
+        var padding = img_height * ratio;
+        padding = padding - header.offset().top - header.height();
+        bu_padding = $(window).height() - header.offset().top - header.height();
+        if( isNaN(padding) || padding > bu_padding ){
+          padding = bu_padding;
+        }
+        return padding;
       }
 
       function click_to_show_bg() {
@@ -80,15 +92,9 @@ $(function(){
             e.stopPropagation();
           });
         }
+
         function show_bg() {
-          var ratio = parseInt(html.css('background-size')) / bg_img().width;
-          var padding = bg_img().height * ratio;
-          padding = padding - header.offset().top - header.height();
-          bu_padding = $(window).height() - header.offset().top - header.height();
-          if( isNaN(padding) || padding > bu_padding ){
-            padding = bu_padding;
-          }
-          header.css("padding-top", padding+'px');
+          header.css("padding-top", get_padding()+'px');
           header.css('opacity', 0.3 );
         }
 
@@ -100,14 +106,29 @@ $(function(){
 
       function scroll_to_show_bg() {
         scroll = $('body').scrollTop();
+        
         if($(window).width() > 998){
           new_padding = coloring.height()+(scroll*($(window).height()/100-3)*-1);
         }else{
           new_padding = coloring.height()+(($(window).height()/100-3)*-1); 
         }
+
+        var max_padding = get_padding();
+        if(new_padding > max_padding){
+          //don't scroll past limit of image
+          new_padding = max_padding;
+        }
+
+        if(scroll < 0){
+          //add negative scroll if page is negative scrolled
+          new_padding = new_padding + scroll;
+        }
+
         if(new_padding < coloring.height()+6){
+          // ensure resting state is accurate
           new_padding = coloring.height();
         }
+
         header.css('padding-top', new_padding+'px' );
 
         var opacity = scroll == 0 ? 1 : 0.3;
