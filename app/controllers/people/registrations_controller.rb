@@ -26,8 +26,6 @@ class People::RegistrationsController < Devise::RegistrationsController
   private 
 
   def after_sign_up_path_for(resource)
-    redirect_path = super
-    redirect_path = root_path if redirect_path == learn_path
-    return redirect_path
+   session[:previous_url] || root_path
   end
 end
