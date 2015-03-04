@@ -123,18 +123,20 @@ Chalkle::Application.routes.draw do
   resources :providers, only: [:index, :create, :new]
 
   resource :provider, except: [:new, :create], path: ':provider_url_name' do
-    get '/', to: 'providers#show'
+    get '', to: 'providers#show'
     
-    get '/metrics', to: 'providers#metrics'
-    get '/contact', to: 'providers#contact'
-    post '/contact', to: 'providers#contact'
+    get 'metrics', to: 'providers#metrics'
+    get 'contact', to: 'providers#contact'
+    post 'contact', to: 'providers#contact'
 
-    get '/fetch', to: 'courses#fetch'
-    get '/history', to: 'courses#history'
+    get 'fetch', to: 'courses#fetch'
+    get 'history', to: 'courses#history'
 
-    get '/new', to: 'courses#new', as: :new_course
-    post '/new', to: 'courses#create', as: :new_course
+    get 'new', to: 'courses#new', as: :new_course
+    post 'new', to: 'courses#create', as: :new_course
     
+    get 'edit'
+    put 'edit', to: 'providers#update'
 
     resources :subscriptions, only: [:index, :create, :destroy], path: 'followers'
     resources :bookings, only: [:index, :show]

@@ -20,7 +20,7 @@ class ProvidersController < ApplicationController
 
     if @new_provider.save
         provider_admin = ProviderAdmin.create provider: @new_provider, chalkler: current_chalkler
-        redirect_to provider_settings_path(@new_provider.url_name), notice: "Provider #{@new_provider.name} has been created"
+        redirect_to edit_provider_path(@new_provider.url_name), notice: "Provider #{@new_provider.name} has been created"
       else
         @new_provider.errors.each do |attribute,error|
           flash[:notice] = attribute.to_s+" "+error
@@ -38,7 +38,9 @@ class ProvidersController < ApplicationController
     end
   end
 
+  def metrics
 
+  end
 
   def show
     if current_user.super?
@@ -75,7 +77,7 @@ class ProvidersController < ApplicationController
     end
     
     if success
-      redirect_to provider_settings_path @provider.url_name, notice: 'Settings saved'
+      redirect_to edit_provider_path @provider.url_name, notice: 'Settings saved'
     else
       flash_errors @provider.errors
       render 'edit'

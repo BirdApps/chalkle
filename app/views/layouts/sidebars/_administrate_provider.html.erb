@@ -10,24 +10,7 @@
     <%= link_to "Settings", edit_provider_path(@provider), class: 'border-left' %>
   </div>
   
-  <h5>
-    <%= link_to "Teachers", provider_teachers_path(@provider) %>  
-  </h5>
-
-  <div class="admin-section row">
-    <div class="col-xs-12 person-links">
-      <% @provider.provider_teachers.each do |teacher| %>
-        <div class="person-link">
-          <%= link_to teacher.name, provider_teacher_path(@provider, teacher.id) %>
-          <%=  %>
-        </div>
-      <% end %>
-    </div>
-    <div class="col-xs-12">
-      <%= link_to "+ New Teacher", new_provider_teacher_path(@provider), class: 'btn btn-stub' %>
-    </div>
-  </div>
-
+  
   <h5>
     <%= link_to "Provider Admins", provider_admins_path(@provider) %>
   </h5>
@@ -43,6 +26,25 @@
     </div>
     <div class="col-xs-12">
       <%= link_to "+ New Admin", new_provider_admin_path(@provider), class: 'btn btn-stub' %>
+    </div>
+  </div>
+
+
+  <h5>
+    <%= link_to "Teachers", provider_teachers_path(@provider) %>  
+  </h5>
+
+  <div class="admin-section row">
+    <div class="col-xs-12 person-links">
+      <% @provider.provider_teachers.each do |teacher| %>
+        <div class="person-link">
+          <%= link_to teacher.name, provider_teacher_path(@provider, teacher.id) %>
+          <%=  %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-xs-12">
+      <%= link_to "+ New Teacher", new_provider_teacher_path(@provider), class: 'btn btn-stub' %>
     </div>
   </div>
 </div>

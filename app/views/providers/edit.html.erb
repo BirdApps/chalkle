@@ -2,7 +2,7 @@
   <%= link_to "Manage Teachers", provider_teachers_path(@provider), { class: 'btn btn-warning'} %>
    <%= link_to "Manage Admins", provider_admins_path(@provider), { class: 'btn btn-warning'} %>
 
-  <%= bootstrap_form_for(@provider, wrapper: :simple_bootstrap3, url: provider_settings_path, html: { method: :post, class: 'provider-form form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+  <%= bootstrap_form_for(@provider, wrapper: :simple_bootstrap3, url: edit_provider_path, html: { method: :post, class: 'provider-form form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
     <input type="hidden" value="put" name="_method" />
 
     <div class="fancy-header">
@@ -15,9 +15,7 @@
         <div class="center">
           <%= @provider.name %> is a <strong><%= @provider.plan.name %> provider</strong>
           <br /><br />
-          <strong>
-            <%# @provider.remaining_free_class_attendees.to_s+'free class attendees left this month' %>
-          </strong> 
+           
           <% if current_user.super? %>
             <div class="alert alert-danger">
               <h4>Super Admin only</h4>
