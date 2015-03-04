@@ -33,6 +33,9 @@ $(function(){
     function update_selected_booking_name(){
       var selected_i = $('.attendee').index( $('.attendee:visible') );
       var new_val = $('.attendee:visible .booking_names').val();
+      if(new_val == ""){
+        new_val = "New Attendee";
+      }
       $('.attendee_id_'+selected_i+' .attendee_name').html(new_val);
       return false;
     }
