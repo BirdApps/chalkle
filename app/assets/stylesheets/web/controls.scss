@@ -8,9 +8,8 @@ html {
 
     input.form-control {
       background-color: rgba(0,0,0,0.10);
-      border-radius: 0px;
+      border-radius: 3px;
       font-size: 19px;
-      border-bottom: 1px solid rgba(255,255,255,0.80);
     }
 
     .number-picker {
@@ -299,7 +298,7 @@ html {
 
     .btn {
       border-radius: 3px;
-      border: 1px solid rgba(255, 255, 255, 0.57);
+      // border: 1px solid rgba(255, 255, 255, 0.57);
       box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
       border-radius: 3px;
       color: #fff;
@@ -310,7 +309,7 @@ html {
       
       &:hover {
         top: -1px;
-        box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.40);
+        box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.20);
       }
       &.active, &:active, &:focus {
         top: 0;

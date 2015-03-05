@@ -43,12 +43,13 @@
   text-align: center;
   padding-bottom: 15px;
   .btn-social-media {
-    margin-top: 10px;
-    border-radius: 0;
+    margin-top: 0;
+    border-radius: 3px;
     color: #fff !important;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.16);
+
     &.btn-facebook {
       background-color: #3B5998;
+padding: 4px 12px;
       //border-color: #0f2956 #0f2956 hsl(218, 70%, 17.5%);
     }
   }
