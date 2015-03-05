@@ -210,15 +210,16 @@ protected
   end
 
   def header_provider
-    @siderbar_title = 'Provider Admin'
     @header_partial = '/layouts/headers/provider'
   end
 
   def sidebar_administrate_provider
+    @siderbar_title = 'Provider Admin'
     @sidebar = '/layouts/sidebars/administrate_provider' if policy(@provider).admin?
   end
 
   def sidebar_administrate_course
+    @siderbar_title = 'Class Admin'
     @sidebar = '/layouts/sidebars/administrate_course' if policy(@course).admin?  
   end
 
