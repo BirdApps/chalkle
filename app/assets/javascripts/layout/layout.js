@@ -65,8 +65,6 @@ $(function(){
         img_width = bg_img().width;
         img_height = bg_img().height;
         click_to_show_bg();
-        scroll_to_show_bg();
-        window.addEventListener("scroll", scroll_to_show_bg);
       }
 
       function get_padding(){
@@ -80,11 +78,18 @@ $(function(){
         return padding;
       }
 
+      var bg_show = false;
       function click_to_show_bg() {
+
         if(html.width() >= 998) {
-          header.mousedown(show_bg);
+          header.click(function(){
+            if(!bg_show){
+              show_bg();
+            }else{
+              hide_bg();
+            }
+          });
           header.mouseout(hide_bg);
-          header.mouseup(hide_bg);
           header.find('a').mousedown(function(e){
             e.stopPropagation();
           });
@@ -95,45 +100,17 @@ $(function(){
 
         function show_bg() {
           header.css("padding-top", get_padding()+'px');
-          header.css('opacity', 0.3 );
+          bg_show = true;
         }
 
         function hide_bg() {
-          header.css("padding-top", 0);
-          header.css('opacity', 1 );
+          if(bg_show){
+            header.css("padding-top", 0);
+            bg_show = false;
+          }
         }
       } //- click_to_show_bg
 
-      function scroll_to_show_bg() {
-        scroll = $('body').scrollTop();
-        
-        if($(window).width() > 998){
-          new_padding = coloring.height()+(scroll*($(window).height()/100-3)*-1);
-        }else{
-          new_padding = coloring.height()+(($(window).height()/100-3)*-1); 
-        }
-
-        var max_padding = get_padding();
-        if(new_padding > max_padding){
-          //don't scroll past limit of image
-          new_padding = max_padding;
-        }
-
-        if(scroll < 0){
-          //add negative scroll if page is negative scrolled
-          new_padding = new_padding + scroll;
-        }
-
-        if(new_padding < coloring.height()+6){
-          // ensure resting state is accurate
-          new_padding = coloring.height();
-        }
-
-        header.css('padding-top', new_padding+'px' );
-
-        var opacity = scroll == 0 ? 1 : 0.3;
-        header.css('opacity', opacity );
-      }//- scroll_to_show_bg
     } //- show_bg_img
   }//- header_init
 
@@ -232,5 +209,4 @@ $(function(){
       update_notification_badge(notification_badge_count);
     };
   }
-
 });
