@@ -3,12 +3,17 @@ $(window).load(function(){
 });
 
 $(function(){
+  var header = $('.header-wrapper > *');
+  var header_wrap = $('.header-wrapper');
+  var coloring = $('.coloring');
+  var html = $('html');
 
   init();
 
   function init(){
     facebook_init();
     header_init();
+    sidebar_init();
     site_messages();
     notifications_init();
   }
@@ -22,49 +27,43 @@ $(function(){
     });
   }
 
-  function header_init(){
-    var header = $('.header-wrapper > *');
-    var header_wrap = $('.header-wrapper');
-    var coloring = $('.coloring');
-    var html = $('html');
-
-    show_bg_img();
-
-    background_size_for_header_images();
-    window.addEventListener("resize", background_size_for_header_images);
-
-    function background_size_for_header_images(){
-      var width = $(window).width();
-      coloring.parent().css("width", width);
-      
-      if( $('.sidebar').length > 0 ){
-        width = width - $('.sidebar').width();
-        html.css('background-position', $('.sidebar').width()+"px top");
+  function sidebar_init(){
+    var sidebar = $('.sidebar');
+    var sidebar_padded = $('.sidebar-padding')
+    $('.sidebar-tab').click(function(){
+      if(sidebar.hasClass('open')){
+        sidebar.removeClass('open')
+        sidebar_padded.removeClass('open')
+      }else{
+        sidebar.addClass('open')
+        sidebar_padded.addClass('open')
       }
+    });
+  }
 
+  function header_init(){
+    show_bg_img();
+    match_screen_width();
+    window.addEventListener("resize", match_screen_width);
+
+    function match_screen_width(){
+      width = $(window).width();
+      coloring.parent().css("width", width+"px");
       html.css('background-size', width+"px");
-
     }
 
     function show_bg_img(){
-      var bg_image, bg_img,img_width,img_height;
-
       if($(".header-wrapper *").length > 0){
         show_bg_img_init();
       }
 
+      var img_width,img_height;
       function show_bg_img_init(){
-        bg_img = function(){
-          if(bg_image == undefined){
-            bg_image = new Image;
-            bg_image.src = html.css('background-image').replace(/url\(|\)$/ig, "");
-          }
-          return bg_image;
-        }
-
-        img_width = bg_img().width;
-        img_height = bg_img().height;
-        click_to_show_bg();
+        bg_image = new Image;
+        bg_image.src = html.css('background-image').replace(/url\(|\)$/ig, "");
+        img_width = bg_image.width;
+        img_height = bg_image.height;
+        show_hide_bg();
       }
 
       function get_padding(){
@@ -79,37 +78,27 @@ $(function(){
       }
 
       var bg_show = false;
-      function click_to_show_bg() {
-
-        if(html.width() >= 998) {
-          header.click(function(){
-            if(!bg_show){
-              show_bg();
-            }else{
-              hide_bg();
-            }
-          });
-          header.mouseout(hide_bg);
-          header.find('a').mousedown(function(e){
-            e.stopPropagation();
-          });
-          header.find('input').mousedown(function(e){
-            e.stopPropagation();
-          });
-        }
-
-        function show_bg() {
-          header.css("padding-top", get_padding()+'px');
-          bg_show = true;
-        }
-
-        function hide_bg() {
-          if(bg_show){
+      function show_hide_bg() {
+        header.click(function(){
+          if(!bg_show){
+            new_padding = get_padding();
+            console.log(header);
+            console.log(new_padding);
+            header.css("padding-top", new_padding+'px');
+            bg_show = true;
+          }else{
             header.css("padding-top", 0);
             bg_show = false;
           }
-        }
-      } //- click_to_show_bg
+        });
+
+        header.find('a').mousedown(function(e){
+          e.stopPropagation();
+        });
+        header.find('input').mousedown(function(e){
+          e.stopPropagation();
+        });
+      } //- show_hide_bg
 
     } //- show_bg_img
   }//- header_init

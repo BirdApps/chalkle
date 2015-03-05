@@ -1,5 +1,8 @@
 class ProviderAdminsController < ApplicationController
   before_filter :load_admin, only: [:edit, :update]
+  before_filter :header_provider
+  before_filter :sidebar_administrate_provider
+
 
   def new
       @provider_admin = ProviderAdmin.new provider: @provider
@@ -52,7 +55,7 @@ class ProviderAdminsController < ApplicationController
       end
 
       if result
-        redirect_to edit_provider_admin_path(@provider_admin.provider.url_name, @provider_admin.id), notice: 'Email updated successfully'
+        redirect_to edit_provider_admin_path(@provider_admin.provider, @provider_admin), notice: 'Email updated successfully'
       else
         flash_errors @provider_admin.errors
         render 'edit'
@@ -66,7 +69,7 @@ class ProviderAdminsController < ApplicationController
       @provider_admin = ProviderAdmin.find params[:id]
       return not_found if !@provider_admin
       @provider = @provider_admin.provider
-      @page_title = "<a href='#{providers_admins_path(@provider_admin.provider.url_name)}'>Admins</a>".html_safe
+      @page_title = "<a href='#{provider_admins_path(@provider_admin.provider)}'>Admins</a>".html_safe
     end
  
 end

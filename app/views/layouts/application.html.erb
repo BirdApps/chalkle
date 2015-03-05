@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style=" background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
+<html lang="en" style="background-repeat: no-repeat; background-size: 100% auto; background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
@@ -36,12 +36,12 @@
    
     <header>
       <%= render 'layouts/navigation' %>
-      <div class="header-wrapper <%= 'sidebar-padding' if @sidebar.present? %>">
+      <div class="header-wrapper <%= 'sidebar-padding open' if @sidebar.present? %>">
         <%= render @header_partial if @header_partial.present? %>
       </div>
     </header>
 
-    <div class="body-content <%= 'sidebar-padding' if @sidebar.present? %>">
+    <div class="body-content <%= 'sidebar-padding open' if @sidebar.present? %>">
       <div id="wrapper">
         <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
           <%= yield %>

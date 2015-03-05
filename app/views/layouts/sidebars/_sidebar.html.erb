@@ -1,3 +1,10 @@
-<div class="sidebar">
-  <%= render @sidebar %>
+<div class="sidebar open">
+  <div class="sidebar-tab">
+    <span class="fa fa-chevron-up fa-2x open"></span>
+    <span class="fa fa-chevron-down fa-2x shut"></span>
+    <h4><%= @siderbar_title %></h4>
+  </div>
+  <div class="sidebar-content">
+    <%= render @sidebar %>
+  </div>
 </div>

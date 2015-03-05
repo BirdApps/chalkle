@@ -1,31 +1,90 @@
 @import "../_vars";
 
 .sidebar-padding {
+  transition: margin-left 200ms ease-in-out;
   @media screen and (min-width: 768px) {
-    margin-left: 320px;
-    transition: margin-left 200ms ease-in-out;
+    &.open {
+      margin-left: 320px;
+    }
   }
 }
+
 .sidebar {
-  display: none;
   background-color: #343434;
-  max-height: 100% !important;
-  height: 100% !important;
-  min-height: 100% !important;
-  overflow-x: hidden;
-  overflow-y: scroll;
   color: #fff;
   position: fixed !important;
-  top: 0;
-  padding-top: $mobile-nav-height;
+  bottom: 0;
   left: 0;
-  width: 100%;
   transition: all 200ms ease-in-out;
+  padding-top: $mobile-nav-height;
+  height: 100%;
+  width: 100%;
+    
+  .sidebar-content{
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .sidebar-tab {
+    width: 100%;
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+    z-index: 1;
+    background: inherit;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    background-color: #1F1F1F;
+    height: 50px;
+    h4 {
+      margin: 6px 0 0;
+    }
+    span {
+      float: right;
+    }
+    &:hover, &:active, &:focus{
+      color: #fff;
+      background-color: #5F5F5F;
+    }
+    .open { display: none; }
+    .shut { display: block; }
+  }
+
+  &.open {
+    height: 50px;
+    padding-top: 0;
+    .sidebar-content {
+      overflow-y: hidden;
+    }
+    .sidebar-tab {
+      .open { display: block; }
+      .shut { display: none; }
+    }
+  }
 
   @media screen and (min-width: 768px) {
-    display: block;
     max-width: 320px;
-    padding-top: $desktop-nav-height;
+    height: 40px;
+    padding-top: 0;
+    .sidebar-content {
+      overflow-y: hidden;
+    }
+    .sidebar-tab {
+      padding: 5px 10px;
+      height: 40px;
+      .open { display: block; }
+      .shut { display: none; }
+    }
+    &.open {
+      height: 100%;
+      padding-top: $desktop-nav-height;
+      .sidebar-tab {
+        top: $desktop-nav-height;
+        .open { display: none; }
+        .shut { display: block; }
+      }
+    }
   }
   
   .btn {
@@ -34,7 +93,7 @@
     border: 0px;
     margin-bottom: 15px;
     &.primary{
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
   }
 
@@ -44,10 +103,7 @@
       color: #fff;
     }
   }
-  
-  h4 {
-    margin: 15px 0;
-  }
+
   h5 {
     text-align: center;
   }

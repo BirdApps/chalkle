@@ -210,6 +210,7 @@ protected
   end
 
   def header_provider
+    @siderbar_title = 'Provider Admin'
     @header_partial = '/layouts/headers/provider'
   end
 
