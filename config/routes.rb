@@ -55,6 +55,8 @@ Chalkle::Application.routes.draw do
     get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
     get '/notification/:id' => 'notifications#show', as: :show_notification
     
+
+    post '/preferences/sidebar_open' => 'preferences#sidebar_open', as: :sidebar_open
     get '/preferences' => 'preferences#show', as: :preferences
     put '/preferences' => 'preferences#update', as: :preferences
     

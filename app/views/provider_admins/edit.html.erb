@@ -3,13 +3,13 @@
 <div class="new_form_wrapper col-xs-12 col-sm-8">
   <%= bootstrap_form_for(@provider_admin, wrapper: :simple_bootstrap3, html: { method:  :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
     <div class="fancy-header">
-      <h3>Details </h3>
+      <h3>Provider Admin Details </h3>
       <hr />
     </div>
  
    <% if @provider_admin.chalkler.present? %>
       <p class="center light">
-        Details are read only as it is set on the teacher's <%= link_to 'Chalkle account', chalkler_path(@provider_admin.chalkler.id) %>
+        Details are read only as it is set on the admin's <%= link_to 'Chalkle account', chalkler_path(@provider_admin.chalkler.id) %>
       </p>
       <%= f.input :name, label: "Name", input_html: { readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
       <%= f.input :email, label: "Admin's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>

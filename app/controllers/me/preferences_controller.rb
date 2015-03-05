@@ -2,6 +2,18 @@ class Me::PreferencesController < Me::BaseController
 
   before_filter :check_user_data, only: :destroy
 
+  def sidebar_open
+    if params[:sidebar_open].present?
+      if params[:sidebar_open] == "false"
+        current_chalkler.sidebar_open = false;
+      else
+        current_chalkler.sidebar_open = true;
+      end
+      current_chalkler.save
+    end
+    render json: current_chalkler.sidebar_open
+  end
+
   def update
    	@chalkler_email_preferences = ChalklerPreferences.new(current_chalkler)
 

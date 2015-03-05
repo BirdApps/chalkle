@@ -36,12 +36,12 @@
    
     <header>
       <%= render 'layouts/navigation' %>
-      <div class="header-wrapper <%= 'sidebar-padding open' if @sidebar.present? %>">
+      <div class="header-wrapper <%= 'sidebar-padding' if @sidebar.present? %> <%= 'open' if current_user.sidebar_open %>">
         <%= render @header_partial if @header_partial.present? %>
       </div>
     </header>
 
-    <div class="body-content <%= 'sidebar-padding open' if @sidebar.present? %>">
+    <div class="body-content <%= 'sidebar-padding' if @sidebar.present? %>  <%= 'open' if current_user.sidebar_open %>">
       <div id="wrapper">
         <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
           <%= yield %>

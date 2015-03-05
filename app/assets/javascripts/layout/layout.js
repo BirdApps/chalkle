@@ -13,7 +13,6 @@ $(function(){
   function init(){
     facebook_init();
     header_init();
-    sidebar_init();
     site_messages();
     notifications_init();
   }
@@ -27,19 +26,7 @@ $(function(){
     });
   }
 
-  function sidebar_init(){
-    var sidebar = $('.sidebar');
-    var sidebar_padded = $('.sidebar-padding')
-    $('.sidebar-tab').click(function(){
-      if(sidebar.hasClass('open')){
-        sidebar.removeClass('open')
-        sidebar_padded.removeClass('open')
-      }else{
-        sidebar.addClass('open')
-        sidebar_padded.addClass('open')
-      }
-    });
-  }
+
 
   function header_init(){
     show_bg_img();
