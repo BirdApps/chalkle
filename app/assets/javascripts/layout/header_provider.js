@@ -10,10 +10,7 @@ $(function(){
     window.addEventListener("resize", ensure_heading_fits);
     window.setInterval(ensure_heading_fits, 1000);
     function does_heading_fit(){
-      // width = 50 < $('.provider_name').offset().left - $('.provider_header .avatar').offset().left
-      // height = 45 > $('.provider_name').height();
-      // return width && height;
-      return $('.provider_name').offset().top + $('.provider_name').height() < $('.provider_header .avatar').offset().top + $('.provider_header .avatar').height();
+      return $('.provider_name').offset().top + $('.provider_name').height() < $('.provider_header_links').offset().top;
     }
 
     function ensure_heading_fits() {
