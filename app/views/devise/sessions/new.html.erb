@@ -3,16 +3,17 @@
 <div class="row" id='sign-in'>
   
 
+  <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3 sign-in-wrapper">
+    <h1 class="col-xs-12 col-md-10 col-md-offset-1">Welcome Back</h1>
+    
+    <h3 class="col-xs-12 col-md-12">Sign in</h3>
 
-  <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-    <h1 class="">Log In</h1>
-    <div class="content text-right clearfix">
+
+    <div class="content text-right clearfix col-xs-12 col-md-5 col-md-offset-1 col-xl-3 col-xl-offset-3">
       <%= render partial: '/devise/sessions/omniauth_buttons' %>
     </div>
 
-    <h3>– Or –</h3>
-
-    <div class="sign-in-form">
+    <div class="sign-in-form  col-xs-12 col-md-5 new_form_wrapper col-xl-3">
       <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
             <%= f.error_notification %>
             <%= f.input :email, :autofocus => true, placeholder: 'Email' %>
@@ -27,15 +28,13 @@
         </div>
         <div class="sign-in-buttons">
           <input class="btn btn-primary" value="Sign in" type="submit" name="commit" />
-          <%= render "devise/shared/links" %>
+          <div><%= render "devise/shared/links" %></div>
         </div>
       <% end %>
     </div>
-  </div>
-
 
   <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-        <h3>What are you waiting for?</h3>
+        <h3>Not a member yet?</h3>
     <%= link_to new_chalkler_registration_path do %>
       <div class="under-button-alternatives">
         <h3>Join Chalkle Now</h3>
@@ -43,6 +42,11 @@
     <% end %>
 
   </div>
+
+
+
+  </div>
+
 
 
 
