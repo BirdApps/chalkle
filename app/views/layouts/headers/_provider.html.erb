@@ -30,9 +30,22 @@
 
 <div class="provider_header">
   <div class="container">
-
     <a class="avatar block" href="<%= provider_path(@provider.url_name) %>">
       <div class="img" style="background-image: url(<%= @provider.logo %>)">
+      </div>
+      <div class="provider_header_social">
+      <% if current_user.authenticated? %>
+        <% subscription = current_user.subscriptions.where(provider_id: @provider.id).first %>
+        <div class="favourite <%= 'on' if subscription %>">
+          <span class="fa fa-2x fa-heart-o off"></span>
+          <span class="fa fa-2x fa-heart on"></span>
+          <% unless subscription %>
+            <%= button_to "Favourite", provider_subscriptions_path(@provider), method: :post %>
+          <% else %>
+            <%= button_to "Unfavourite", provider_subscription_path(subscription.path_params), method: :delete %>
+          <% end %>
+        </div>
+      <% end %>
       </div>
     </a>
 
@@ -40,16 +53,6 @@
       <h1 class="provider_name">
         <%= link_to @provider.name, provider_path(@provider) %>
       </h1>
-      <div class="provider_header_social">
-        <% if current_user.authenticated? %>
-          <% subscription = current_user.subscriptions.where(provider_id: @provider.id).first %>
-          <% unless subscription %>
-            <%= button_to "Favourite", provider_subscriptions_path(@provider), class: 'btn btn-success', method: :post %>
-          <% else %>
-            <%= button_to "Unfavourite", provider_subscription_path(subscription.path_params), class: 'btn btn-warning', method: :delete %>
-          <% end %>
-        <% end %>
-      </div>
     </div>
 
     <div class="provider_header_links">

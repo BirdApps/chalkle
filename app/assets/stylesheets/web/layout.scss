@@ -2,11 +2,11 @@
 
 html {
   @media screen and (max-width: 998px){
-    background-size: 150% auto; 
+    background-size: 150% auto !important; 
   }
 
   @media screen and (min-width: 999px){
-    background-size: 100% auto;
+    background-size: 100% auto !important;
   }
   background-position: center top;
   background-repeat: no-repeat !important;

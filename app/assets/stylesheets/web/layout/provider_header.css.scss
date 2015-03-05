@@ -21,8 +21,36 @@
     padding: 2px;
     padding-bottom: 0;
     background: #fff;
+    position: relative;
     .img {
       background: #eee;
+    }
+
+    .provider_header_social {
+      .favourite {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        text-shadow: 0 0 1px #000;
+        .on { display: none; }
+        .off { display: block; }
+        &:hover, &:active, &:focus {
+          .on { display: block; }
+          .off { display: none; }
+        }
+        &.on {
+          .on { display: block; }
+          .off { display: none; }
+          &:hover, &:active, &:focus {
+            .on { display: none; }
+            .off { display: block; }
+          }
+        }
+        .fa { color: red; }
+        form {
+          display: none;
+        }
+      }
     }
   }
   .provider_header_content { 
@@ -35,7 +63,7 @@
  
     h1 {
       display: inline;
-      font-size: 28px;
+      font-size: 35px;
       max-height: 120px;
       overflow: hidden;
       a {
@@ -50,10 +78,6 @@
       }
     }
 
-    .provider_header_social {
-      padding: 10px 0;
-      float: right;
-    }
   }
   .provider_header_links {
     overflow:hidden;
