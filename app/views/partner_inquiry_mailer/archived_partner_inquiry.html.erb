@@ -1,0 +1,19 @@
+<markdown>
+
+<h2>Partner Inquirt from  <%= @partner_inquiry.name %>  has been archived by <%= current_user.name %></h2>
+
+<p>Link to inquiry on chalkle.com <%= link_to sudo_partner_inquiry_url(@partner_inquiry), sudo_partner_inquiry_url(@partner_inquiry) %></p>
+
+
+<p>From:</p>
+<p>Contact: <%= @partner_inquiry.contact_details %> </p>
+<p>Org: <%= @partner_inquiry.organisation %> </p>
+<p>Location: <%= @partner_inquiry.location %> </p>
+<p>Message: </p>
+<p></p>
+<blockquote>
+<%= @partner_inquiry.comment.to_html %> 
+</blockquote>
+
+
+</markdown>

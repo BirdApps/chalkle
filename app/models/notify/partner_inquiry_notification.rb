@@ -18,6 +18,18 @@ class Notify::PartnerInquiryNotification < Notify::Notifier
 
   end
 
+  def archived
+    message = "Partner inquiry from #{@partner_inquiry.name} archived"
+
+    chalklers_to_notify = Chalkler.super
+
+    chalklers_to_notify.each do |chalkler|
+      chalkler.send_notification Notification::MESSAGE, sudo_partner_inquiry_path(@partner_inquiry), message, @partner_inquiry
+
+      PartnerInquiryMailer.archived_partner_inquiry(@partner_inquiry, chalkler).deliver! if chalkler.email_about? :archive_partner_inquiry
+    end
+
+  end
 
 
 end

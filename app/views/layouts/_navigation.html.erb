@@ -69,10 +69,14 @@
                  
                   <% unless current_user.avatar? %>
                     <div role="presentation" class="personal-links">
-                      <%= link_to "Upload Profile Image", me_preferences_path %>
+                      <%= link_to "Add a profile Image in Preferences", me_preferences_path %>
+                    </div>
+                  <% else %>
+                    <div role="presentation" class="personal-links">
+                      <%= link_to "Preferences", me_preferences_path %>
                     </div>
                   <% end %>
-                    
+
                   <div class="row personal-links" role="presentation">
                     <div class="role">
                       <div class="col-xs-8">
