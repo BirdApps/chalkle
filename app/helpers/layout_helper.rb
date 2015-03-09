@@ -37,7 +37,7 @@ module LayoutHelper
   end
 
   def page_hero
-    @header_bg ? @header_bg : find_hero
+    @hero || "/assets/partners/index-hero.jpg"
   end
 
   def filter_params(type, value, include_type = nil)
@@ -65,33 +65,4 @@ module LayoutHelper
     @page_title_logo ||= ""
   end
 
-  def find_hero
-    if @provider_teacher.present? && @provider_teacher.id.present? && @provider_teacher.provider.hero.present?
-        {
-          default: @provider_teacher.provider.hero,
-          blurred: @provider_teacher.provider.hero.blurred
-        }
-
-    elsif  @provider.present? && @provider.hero.present?
-        {
-          default: @provider.hero,
-          blurred: @provider.hero.blurred
-        }
-    elsif @booking && !@booking.new_record? && @booking.course.provider.hero.present?
-        {
-          default: @booking.course.provider.hero,
-          blurred: @booking.course.provider.hero.blurred
-        }
-    elsif @bookings && @bookings.any? && @bookings.first.course.provider.hero.present?
-        {
-          default: @bookings.first.course.provider.hero,
-          blurred: @bookings.first.course.provider.hero.blurred
-        }
-      else
-        {
-          default: '/assets/partners/index-hero.jpg',
-          blurred: '/assets/partners/index-hero-invert.jpg'
-        }
-      end
-  end
 end

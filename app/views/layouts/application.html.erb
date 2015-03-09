@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="background-repeat: no-repeat; background-size: 100% auto; background-image: url( <%= page_hero[:default] if page_hero.present? %> );">
+<html lang="en" style="background-repeat: no-repeat; background-size: 100% auto; background-image: url( <%= page_hero if page_hero.present? %> );">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
@@ -7,7 +7,7 @@
     <meta name="version" content="<%= VERSION_NUMBER %>" />
     <title> 
       <%# content_for?(:title) ? yield(:title) : 'chalkle°' %>
-      <%= strip_tags "#{meta_title} chalkle" %>
+      <%= strip_tags "#{meta_title} chalkle°" %>
     </title>
     <%= favicons %>
     <%= open_graph_tags %>
@@ -25,6 +25,7 @@
         });
       </script>
     <% end %>
+
 
     <%= yield :header if content_for? :header %>
   </head>
@@ -52,6 +53,7 @@
 
     <%=  render 'layouts/sidebars/sidebar' if @sidebar.present? %>
 
+          <%= render 'sign_in_first' unless @current_user.authenticated? %>
     <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script>
       window.fbAsyncInit = function() {

@@ -1,6 +1,14 @@
 @import "../_vars";
 
 .new_chalkler {
+
+  label {
+    display: none !important;
+  }
+
+}
+
+.new_chalkler {
   .checkbox{
     width: 100%;
     min-height: 26px;
@@ -20,16 +28,18 @@
 
 .sign-in-buttons {
   a {
-    padding-left: 10px;
     font-size: 13px;
     color: #777;
   }
+  .forgot {
+    margin-top: 15px;
+  }
 }
 
+.alternative {
+  margin: 15px !important;
+}
 .under-button-alternatives {
-  @media screen and (min-width: 769px){
-    margin: 1em 0;
-  }
   @media screen and (max-width: 768px){
     margin: 0 0 10px;
   }
@@ -42,6 +52,9 @@
 .social-media-buttons {
   text-align: center;
   padding-bottom: 15px;
+  @media screen and (max-width: 768px){
+    margin-bottom: 20px;
+  }
   .btn-social-media {
     margin-top: 0;
     border-radius: 3px;
@@ -49,7 +62,8 @@
 
     &.btn-facebook {
       background-color: #3B5998;
-padding: 4px 12px;
+      padding: 4px 12px;
+      clear: both;
       //border-color: #0f2956 #0f2956 hsl(218, 70%, 17.5%);
     }
   }

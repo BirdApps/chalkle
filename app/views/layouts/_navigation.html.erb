@@ -115,7 +115,7 @@
                 <% if current_page? new_chalkler_session_path %>
                   <%= link_to 'Sign up', new_chalkler_registration_path %>
                 <% else %>
-                  <%= link_to 'Login', new_chalkler_session_path  %>
+                  <%= link_to 'Login', new_chalkler_session_path, class: 'sign-in-first'  %>
                 <% end %>
               </li>
             

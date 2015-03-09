@@ -31,14 +31,15 @@
         border-radius: 0;
       }
 
-    } 
+    }
+
 
     @media screen and (min-width: 769px){
-      padding-top: 220px; 
+      padding-top: 70px; 
 
     }
     @media screen and (max-width: 768px){
-      padding-top: 70px; 
+      padding-top: 0; 
     }
     margin-bottom: -75px;
     padding-bottom: 300px;
@@ -54,6 +55,7 @@
         margin-right: 15px;
       }
       padding-top: 15px;
+      padding-bottom: 15px;
       background-color: rgba(0,0,0,0.3);
 
       h3 {
@@ -135,7 +137,7 @@
         }
       }
       label {display: none; }
-      @include placeholder(#ddd);
+      @include placeholder(#aaa);
 
       // input {
       //   background: rgba(255,255,255,0.10);

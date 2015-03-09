@@ -1,0 +1,134 @@
+<div class="sessions-new">
+  <div class="row" id='sign-in'>
+    <div class="modal fade" id="signInFirstModal" tabindex="-1" role="dialog" aria-labelledby="signInFirstModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+
+            <div class="row text-center">
+              <h1>Login</h1>
+
+              <div class="sign-in-form col-xs-12 new_form_wrapper">
+
+                <%= render partial: '/devise/sessions/omniauth_buttons' %>
+  
+                <h4>– Or –</h4>
+                <br />
+                <%= bootstrap_form_for(:chalkler, :url => chalkler_session_path, :html => { class: 'form' }) do |f| %>
+                  <%= f.error_notification %>
+                  <%= f.input :email, :autofocus => true, placeholder: 'Email' %>
+                  <%= f.input :password, :required => true, placeholder: 'Password' %>
+
+                  <div class="control-group">
+                    <div class="controls">
+                      <label class="checkbox">
+                        <%= f.check_box :remember_me, :as => (:boolean if devise_mapping.rememberable?) %>
+                        Remember me?
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="sign-in-buttons">
+                    <div class="clearfix">
+                      <input class="btn btn-primary col-xs-12" value="Sign in" type="submit" name="commit" />
+                    </div>
+                    <div class="forgot">
+                      <%= render "devise/shared/links" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+              
+              <div class="col-xs-12">
+                <div class="col-xs-12 col-sm-6">
+                  <h3 class="alternative">Not a member yet?</h3>
+                </div>
+
+                <div class="col-xs-12 col-sm-6">
+                  <div class="under-button-alternatives btn col-xs-12" id="sign_up_first">
+                    <h3>Join Chalkle Now</h3>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="signUpFirstModal" tabindex="-1" role="dialog" aria-labelledby="signUpFirstModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body row">
+        
+            <div class="col-xs-12 text-center">
+              
+              <h1>Sign up</h1>
+
+              <%= render partial: '/devise/sessions/omniauth_buttons' %>
+            
+              <h4>– Or –</h4>
+              <br />
+              <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
+                <%= f.error_notification %>
+                <div class="form-inputs text-left">
+                  <%= f.input :name, :required => true, placeholder: 'Name' %>
+                  <%= f.input :email, :required => true, placeholder: 'Email' %>
+                  <%= f.input :password, :required => true, placeholder: 'Password' %>
+                  <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
+                </div>
+                <div class="form-actions text-right">
+                  <input type="submit" name="commit" class="btn btn-primary col-xs-12" value="Join Now" />
+                </div>
+              <% end %>
+              <div class="col-xs-12">
+                <br />
+                <%= link_to "Find out more about how Chalkle works", chalkle_about_path, class: 'small strong'  %>
+                 <br /> <br />
+              </div>
+            
+              <div class="col-xs-12">
+                <div class="col-xs-12 col-sm-6">
+                  <h3 class="alternative">Already signed up?</h3>
+                </div>
+    
+                <div class="col-xs-12 col-sm-6">
+                  <div class="under-button-alternatives btn col-xs-12" id="sign_in_first">
+                    <h3>Login now</h3>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(function(){
+  $("#sign_up_first").click(function(){
+    $('#signInFirstModal').modal('hide').after(function(){
+      $('#signUpFirstModal').modal('show');
+    });
+  });
+
+  $("#sign_in_first").click(function(){
+    $('#signInFirstModal').modal('show').after(function(){
+      $('#signUpFirstModal').modal('hide');
+    });
+  });
+
+  $('.sign-in-first').click(function(e){
+    target = $(this).attr('href');
+    e.preventDefault();
+    $.post('/set_redirect', { redirect_to: target, _method: 'put' });
+    $('#signInFirstModal').modal('show');
+  })
+});
+</script>

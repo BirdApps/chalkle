@@ -3,6 +3,7 @@ html {
   body {
 
     .dropdown-toggle { cursor: pointer; }
+    .modal { overflow: scroll; }
     .modal form { margin: 0px; }
     .modal-open { margin-right: 0px; }
 

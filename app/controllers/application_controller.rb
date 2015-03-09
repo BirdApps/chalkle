@@ -10,8 +10,31 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :load_provider
   before_filter :check_user_data
-  after_filter :store_location
+  after_filter :store_location, except: :set_redirect
 
+  def styleguide
+    render "/styleguide"
+  end
+
+  def home
+  end
+
+  def not_found
+    render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
+  end
+
+  def set_redirect
+    path = params[:redirect_to]
+    unless (path == new_chalkler_session_path        ||
+            path == new_chalkler_registration_path   ||
+            path == chalkler_omniauth_authorize_path(:facebook) )
+      session[:previous_url] = path
+    end
+    render json: { previous_url:  session[:previous_url] }
+  end
+
+protected
+  
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
     return unless request.get?
@@ -28,22 +51,9 @@ class ApplicationController < ActionController::Base
     session[:previous_url] || discover_path
   end
 
-  def styleguide
-    render "/styleguide"
-  end
-
   def after_register_path_for(resource)
-    stored_location_for(resource) || params[:redirect_to]  || root_path
+     session[:previous_url] || discover_path
   end
-
-  def home
-  end
-
-  def not_found
-    render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
-  end
-
-protected
 
   def header_chalkler
     @nav_links = []
@@ -210,6 +220,7 @@ protected
   end
 
   def header_provider
+    @hero = @provider.hero
     @header_partial = '/layouts/headers/provider'
   end
 

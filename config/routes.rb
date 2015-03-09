@@ -17,14 +17,16 @@ Chalkle::Application.routes.draw do
 
   root to: 'application#home'
 
-  get '/terms' => 'terms#chalkler', as: :terms
-  get '/privacy' => 'terms#privacy', as: :privacy
-  get '/terms/provider' => 'terms#provider', as: :provider_terms
-  get '/terms/teacher' => 'terms#teacher', as: :teacher_terms
+  put 'set_redirect', to: 'application#set_redirect'
 
-  match '/teach' => 'courses#teach'
-  match '/learn' => redirect("/discover")
-  match '/discover' => 'courses#index'
+  get 'terms' => 'terms#chalkler', as: :terms
+  get 'privacy' => 'terms#privacy', as: :privacy
+  get 'terms/provider' => 'terms#provider', as: :provider_terms
+  get 'terms/teacher' => 'terms#teacher', as: :teacher_terms
+
+  match 'teach' => 'courses#teach'
+  match 'learn' => redirect("/discover")
+  match 'discover' => 'courses#index'
 
   get '/c/:id' => 'courses#show', as: :tiny_course
   post '/bookings/lpn', as: :lpn
@@ -125,7 +127,7 @@ Chalkle::Application.routes.draw do
   resources :providers, only: [:index, :create, :new]
 
   resource :provider, except: [:new, :create], path: ':provider_url_name' do
-    get '', to: 'providers#show'
+    match '', to: 'providers#show'
     
     get 'metrics', to: 'providers#metrics'
     get 'contact', to: 'providers#contact'

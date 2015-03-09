@@ -8,8 +8,7 @@
     
     <h3 class="col-xs-12 col-md-12">Sign in</h3>
 
-
-    <div class="content text-right clearfix col-xs-12 col-md-5 col-md-offset-1 col-xl-3 col-xl-offset-3">
+    <div class="col-xs-12 col-sm-6">
       <%= render partial: '/devise/sessions/omniauth_buttons' %>
     </div>
 
@@ -28,7 +27,9 @@
         </div>
         <div class="sign-in-buttons">
           <input class="btn btn-primary" value="Sign in" type="submit" name="commit" />
-          <div><%= render "devise/shared/links" %></div>
+          <div class="forgot">
+            <%= render "devise/shared/links" %>
+          </div>
         </div>
       <% end %>
     </div>
