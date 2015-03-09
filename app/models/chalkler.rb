@@ -217,7 +217,7 @@ class Chalkler < ActiveRecord::Base
     if channel_admin?
       _available_notifications[:channel_admin] = NotificationPreference::PROVIDER_OPTIONS
     end
-    if channel_admin?
+    if super?
       _available_notifications[:super_admin] = NotificationPreference::SUPER_OPTIONS
     end
 
