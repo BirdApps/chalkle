@@ -20,7 +20,8 @@ class ApplicationController < ActionController::Base
     # store last url - this is needed for post-login redirect to whatever the user last visited.
     return unless request.get?
     return if request.xhr?
-    unless (request.path == new_chalkler_session_path        ||
+    unless (request.path == learn_path                       ||
+            request.path == new_chalkler_session_path        ||
             request.path == new_chalkler_registration_path   ||
             request.path == chalkler_omniauth_authorize_path(:facebook) )
       session[:previous_url] = request.fullpath 

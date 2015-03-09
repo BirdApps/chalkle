@@ -147,7 +147,7 @@ Your Chalkle Administrator")
         if course.spaces_left < 5
           pluralize(course.spaces_left, 'spot') + ' left'
         else
-          'Join'
+          'Book now'
         end
       else
         'Fully booked'
@@ -160,7 +160,7 @@ Your Chalkle Administrator")
   def course_call_to_action(course)
     availability = course_availability course
     if availability == 'No booking limit'
-      availability = 'Join'
+      availability = 'Book now'
     end
     availability
   end

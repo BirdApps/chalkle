@@ -1,9 +1,9 @@
 <%= @channel_contact.subject %>
 <% if @channel_contact.chalkler.present? %>
     From: <%= link_to @channel_contact.chalkler.name, chalkler_url(@channel_contact.chalkler) %>
-    Email: <% @channel_contact.from %>
+    Email: <%= @channel_contact.from %>
 <% else %>
     From: User was not signed in when form was sent
-    Email: <% @channel_contact.from %>  
+    Email: <%= @channel_contact.from %>  
 <% end %>
 <%= @channel_contact.message %>
