@@ -35,7 +35,7 @@ class CourseNoticesController < ApplicationController
       @course_notice.save
     end
 
-    redirect_to provider_course_path(@course_notice.provider.url_name, @course_notice.course.url_name, @course_notice.course.id, anchor: 'discuss-'+@course_notice.id.to_s)
+    redirect_to provider_course_path(@course_notice.course.path_params({ anchor: 'discuss-'+@course_notice.id.to_s }))
   end
 
   def destroy

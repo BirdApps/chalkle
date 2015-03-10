@@ -141,6 +141,22 @@ class Course < ActiveRecord::Base
     cost > 0
   end
 
+  def editable?
+    status == STATUS_1 || status == STATUS_3
+  end
+
+  def publishable?
+    status == STATUS_3 && start_at > DateTime.current
+  end
+
+  def unpublishable?
+    published? && bookings.empty? && start_at < DateTime.current
+  end
+
+  def cancellable?
+    published? && bookings.present?
+  end
+
   def cancel!(reason = nil)
     self.status = STATUS_2
     self.cancelled_reason = reason if reason
@@ -587,12 +603,14 @@ class Course < ActiveRecord::Base
     save
   end
   
-  def path_params
-    {
+  def path_params(additional_params = {})
+    params = {
       provider_url_name: provider.url_name,
       course_url_name: url_name,
       course_id: self.id
     }
+    params = params.merge additional_params
+    params
   end
 
   private
