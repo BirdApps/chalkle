@@ -59,11 +59,12 @@
                     </div>
                   <% end %>
                 </a>
+
                 <div class="dropdown-menu pull-right" role="menu" >
                  
                   <% unless current_user.avatar? %>
                     <div role="presentation" class="personal-links">
-                      <%= link_to "Add a profile Image in Preferences", me_preferences_path %>
+                      <%= link_to "Upload Profile Picture", me_preferences_path %>
                     </div>
                   <% else %>
                     <div role="presentation" class="personal-links">
