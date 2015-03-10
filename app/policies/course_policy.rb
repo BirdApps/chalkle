@@ -18,16 +18,16 @@ class CoursePolicy < ApplicationPolicy
     read?
   end
 
-  def edit?
-    write?
-  end
-
   def show?
     Course::PUBLIC_STATUSES.include?(@course.status) or read?
   end
 
   def update?
-    write?
+    edit?
+  end
+
+  def edit?
+    @course.editable? && write?
   end
 
   def clone?
@@ -39,7 +39,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def confirm_cancel?
-    write?
+    @course.cancellable? && write?
   end
 
   def cancel?
