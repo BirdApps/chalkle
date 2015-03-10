@@ -1,10 +1,14 @@
+<%= render 'courses/heading' %>
+
 <div class="bookings">
+  
   <% if policy(@course).bookings_csv? %> 
     <%= link_to "Download booking summary CSV", csv_provider_course_bookings_path(@course.path_params) %>
     <% if @course.custom_fields.present? %>
       <small class="small grey">(Includes custom fields)</small>
     <% end %>
   <% end %>
+
   <br />
   <br />
 

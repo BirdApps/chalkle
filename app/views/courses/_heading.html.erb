@@ -1,0 +1,11 @@
+<div class="_heading">
+  
+  <a class="avatar64" href="<%= provider_course_path(@course.path_params) %>">
+    <div class="img" style="background-image: url(<%= @course.image %>)">
+  </div>
+
+  <h2>
+    <%= link_to @course.name, provider_course_path(@course.path_params) %>
+  </h2>
+
+</div>
