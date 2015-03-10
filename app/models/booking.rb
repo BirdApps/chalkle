@@ -375,6 +375,7 @@ class Booking < ActiveRecord::Base
     {
       provider_url_name: provider,
       course_url_name: course,
+      course_id: course,
       id: self
     }
   end

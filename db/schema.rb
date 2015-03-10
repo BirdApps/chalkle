@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150305045037) do
+ActiveRecord::Schema.define(:version => 20150310230908) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20150305045037) do
     t.string   "pseudo_chalkler_email"
     t.integer  "booker_id"
     t.boolean  "invite_chalkler"
+    t.string   "swipe_identifier"
   end
 
   add_index "bookings", ["chalkler_id"], :name => "index_bookings_on_chalkler_id"
@@ -104,6 +105,7 @@ ActiveRecord::Schema.define(:version => 20150305045037) do
     t.string   "address"
     t.string   "avatar"
     t.string   "role"
+    t.string   "location"
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -111,7 +113,6 @@ ActiveRecord::Schema.define(:version => 20150305045037) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.string   "location"
     t.boolean  "sidebar_open",           :default => true,     :null => false
   end
 

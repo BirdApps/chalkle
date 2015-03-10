@@ -1,0 +1,7 @@
+<div class="col-xs-12 col-sm-8 col-sm-offset-2">
+  <p class="text-center">Sorry but the previous payment was declined. Would you like to try again?</p>
+  <%= link_to 'Purchase', SwipeWrapper.payment_gateway(@booking_set.swipe_identifier), class: 'btn btn-primary pull-right' %>
+  <h4>
+    <%= @booking_set.bookings.count %> x Bookings for <%= @booking_set.course.name %>
+  </h4>
+</div>

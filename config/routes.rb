@@ -28,8 +28,9 @@ Chalkle::Application.routes.draw do
   match 'learn' => redirect("/discover")
   match 'discover' => 'courses#index'
 
-  get '/c/:id' => 'courses#show', as: :tiny_course
-  post '/bookings/lpn', as: :lpn
+  get 'c/:id' => 'courses#show', as: :tiny_course
+  post 'bookings/lpn', as: :lpn, to: 'bookings#lpn'
+  get 'bookings/payment_callback/:booking_ids', as: :payment_callback, to: 'bookings#payment_callback'
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
   get 'chalklers' => redirect("/")
@@ -159,8 +160,10 @@ Chalkle::Application.routes.draw do
       resources :course_notices, as: :notices, path: 'discussion'
 
       resources :bookings, only: [:index, :show, :new, :create] do
-        get :payment_callback
-        collection { get 'csv' }
+        collection do
+          get :csv
+          get :declined
+        end
         member do
           get 'take_rights'
           get 'cancel'

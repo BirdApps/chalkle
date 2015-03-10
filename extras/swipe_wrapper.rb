@@ -45,6 +45,10 @@ class SwipeWrapper
       wrapper = SwipeWrapper.new
       verify = wrapper.verify tx_id
     end
+
+    def payment_gateway(identifier)
+      "https://payment.swipehq.com/?identifier_id=#{identifier}"
+    end
   end
 
   private
