@@ -112,20 +112,29 @@ $(function(){
 
     function auto_locate() {
       if(Modernizr.geolocation){
+        var options = {
+          enableHighAccuracy: true,
+          timeout: 2000,
+          maximumAge: 0
+        };
         return navigator.geolocation.getCurrentPosition(
-          function(location){
-            lng = location.coords.longitude;
-            lat = location.coords.latitude;
-            tried_auto = false; //auto worked, so retry is allowed
-            after_locate(true, true);
-            return has_location();
-          },
-          manual_locate
+          did_auto_location,
+          manual_locate,
+          options
         );
       }else{
         manual_locate();
       }
     }
+
+    function did_auto_location(location){
+      lng = location.coords.longitude;
+      lat = location.coords.latitude;
+      tried_auto = false; //auto worked, so retry is allowed
+      after_locate(true, true);
+      return has_location();
+    }
+
 
     function manual_locate() {
       var place = autocomplete.getPlace();
@@ -207,71 +216,98 @@ $(function(){
       }
     }
 
-    function fetch_courses(){
+    function fetch_courses(page){
       if(!fetching_courses) {
+        if(page == undefined){
+          page = getParam('page');
+          if(page == undefined){
+            page = 0;
+          }
+        }
         fetching_courses = true;
         spinner_location_start();
         update_bounds();
-        $.get(
-          '/classes/fetch.json',
-          { 'top': top, 'bottom': bottom, 'left': left, 'right': right, 'search': $("#search_input").val() },
-          write_courses_to_page, 
-          "json").always(function(){
-            fetching_courses = false;
-            spinner_location_stop();
-            spinner_courses_stop();
-          });
+
+        take = $('.paginate-take').data('take');
+        if(take == undefined){        
+          take = getParam('take');
+          if(take == undefined){
+            take = 30;
+          }
+        }
+
+        fetch_params = { 
+          'top': top,
+          'bottom': bottom, 
+          'left': left, 
+          'right': right,
+          'search': $("#search_input").val(),
+          'take': take,
+          'page': page
+        }
+        $.get('/classes/fetch',fetch_params,write_courses_to_page,'html').fail(function(){
+          fetching_courses = false;
+          spinner_location_stop();
+          spinner_courses_stop();
+        });
+        update_url(fetch_params);
       } else {
         spinner_courses_stop();
         spinner_location_stop();
       }
     }
 
+    function update_url(fetch_params){
+      params = {};
+      if(fetch_params.search != ''){
+        params['search'] = fetch_params.search;
+      }
+      if(fetch_params.take != undefined && fetch_params.take != '30'){
+        params['take'] = fetch_params.take;
+      }
+      if(fetch_params.page != '0'){
+        params['page'] = fetch_params.page;
+      }
+
+      if(Object.keys(params).length > 0){
+        url = window.location.protocol+'//'+window.location.host+window.location.pathname+"?";
+        for (key in params){
+          url += (key +'='+params[key]+"&")
+        }
+        if(url[url.length-1] == '&'){
+          url = url.substring(0,url.length-1);
+        }
+        window.history.pushState(params, $('title').text().trim(),url);
+      }
+    }
+
+    function paginate_init(){
+      $('.fetch_courses').click(function(){
+        take = $(this).data('take');
+        if(take != undefined){
+          $('.paginate-take').data('take', take);
+        }
+        page = $(this).data('page');
+        if(page != undefined){
+          fetch_courses(page);
+        }else{
+          fetch_courses();
+        }
+      });
+    }
+
     function write_courses_to_page(classes){
       $('#courses_wrapper').empty();
-      if( $('#courses_wrapper').length > 0 ){
-        if(classes.length > 0){
-          $('#courses_missing').hide();
-          for(var i = 0; i < classes.length; i++){
-            clas = classes[i];
-            $('#courses_wrapper').append(course_template);
-            var ele = $('#courses_wrapper').children().last();
-            $(ele).find('.set_url').attr('href', clas.url);
-            $(ele).find('.set_title').attr('title', clas.name);
-            $(ele).find('.set_name').text(clas.name);
-            $(ele).find('.set_bgcolor').css('background-color', clas.color);
-            $(ele).find('.set_color').css('color',clas.color);
-            $(ele).find('.set_action_call').text(clas.action_call);
-            $(ele).find('.set_provider').text(clas.provider);
-            $(ele).find('.set_provider_url').attr('href', clas.provider_url);
-            $(ele).find('.set_booking').text(clas.booking);
-            $(ele).find('.set_booking_url').attr('href', clas.booking_url);
-            $(ele).find('.set_teacher').text(clas.teacher);
-            $(ele).find('.set_teacher_url').attr('href', clas.teacher_url);
-            $(ele).find('.set_cost').text(clas.cost);
-            $(ele).find('.set_address').text(clas.address);
-            $(ele).find('.set_time').text(clas.time);
-            if(clas.status != 'Published'){
-              $(ele).find('.set_status').show();
-              $(ele).find('.set_status h4').text(clas.status);
-              $(ele).find('.set_status_color').addClass(clas.status_color)
-            }
-            if(window.location.hostname != "localhost"){
-              if(clas.image != null){
-                $(ele).find('.set_image').css('background', 'url('+clas.image+')');
-              }
-              if(clas.provider_image != null){
-                $(ele).find('.set_provider_image').attr('src', clas.provider_image );
-              }
-            }
-          }
-        }
-        $("#courses_loading").fadeOut(function(){
-          $("#courses_wrapper").fadeIn();
-          if(classes.length == 0){
-            $('#courses_missing').fadeIn();
-          }
-        });
+      if(classes.length > 0){
+        $('#courses_missing').hide();
+        $('#courses_wrapper').html(classes);
+        $("#courses_wrapper").fadeIn();
+        paginate_init();
+        fetching_courses = false;
+        spinner_location_stop();
+        spinner_courses_stop();
+      }else{
+        $('#courses_missing').fadeIn();
       }
     }
 
@@ -282,11 +318,21 @@ $(function(){
       $("#location_autocomplete").focus();
     }
 
+    function getParam(val) {
+      var result = undefined,
+          tmp = [];
+      window.location.search.substr(1).split("&").forEach(function (item) {
+        tmp = item.split("=");
+        if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
+      });
+      return result;
+    }
+
     function init(){
+
       $('.change-location').click(click_change_location);
 
       $('.show-location').click(click_change_location);
-
 
       $('[data-toggle="tooltip"]').tooltip()
       
@@ -318,10 +364,10 @@ $(function(){
       lng = $('#coord_lng').val();
       location = $("#location_autocomplete").val();
 
-      $('#toggle_map_view').click(function(){ get_location(false) });
-      
+      $('#toggle_map_view').click(get_location);
+
       if( !has_location() ){
-        get_location(false);
+        get_location();
       } else {
         after_locate(true, false);
       }

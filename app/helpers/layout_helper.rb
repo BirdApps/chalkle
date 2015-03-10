@@ -37,20 +37,7 @@ module LayoutHelper
   end
 
   def page_hero
-    @hero || "/assets/partners/index-hero.jpg"
-  end
-
-  def filter_params(type, value, include_type = nil)
-    types = %w( provider search take start end )
-    types << include_type if include_type
-    params_copy = Hash.new
-    types.each do |type_i|
-      params_copy[type_i.to_sym] = params[type_i.to_sym]
-    end
-    if(types.include? type)
-        params_copy[type.to_sym] = value
-    end
-    params_copy
+    @hero || "/assets/partners/index-hero.jpg" if @header_partial.present?
   end
 
   def nav_links

@@ -12,7 +12,7 @@ html {
   background-repeat: no-repeat !important;
   background-attachment: fixed;
   background-color: $color-header;
-
+  
   height: 100%;
   min-height: 100%;
   max-width: 100%;
@@ -23,7 +23,7 @@ html {
 
   body.v2 {
     -webkit-overflow-scrolling: touch;
-    overflow: hidden;
+    overflow-x: hidden;
     height: 100%;
     min-height: 100%;
     color: #727272;

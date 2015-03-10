@@ -6,54 +6,29 @@ class CoursesController < ApplicationController
   before_filter :header_mine, only: :mine
   
   def index
+
   end
 
   def fetch
     if current_user.super?
-      courses = Course.in_future.start_at_between(current_date, current_date+1.year).by_date
+      @courses = Course.in_future.start_at_between(current_date, current_date+1.year).by_date
     else
-      courses = Course.in_future.published.start_at_between(current_date, current_date+1.year).by_date
+      @courses = Course.in_future.published.start_at_between(current_date, current_date+1.year).by_date
     end
 
     if params[:search].present?
-      courses = courses.search params[:search].encode("UTF-8", "ISO-8859-1")
+      @courses = @courses.search params[:search].encode("UTF-8", "ISO-8859-1")
     end
     
     if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
-      courses = courses.where("latitude < ? AND latitude > ? AND longitude < ? AND longitude > ?", params[:top].to_f, params[:bottom].to_f, params[:right].to_f, params[:left].to_f);
+      @courses = @courses.where("latitude < ? AND latitude > ? AND longitude < ? AND longitude > ?", params[:top].to_f, params[:bottom].to_f, params[:right].to_f, params[:left].to_f);
     end
 
     if params[:only_location].present?
-      courses  = courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude} }
-    else
-      courses = courses.limit(20).map do |course|
-        {
-          id: course.id, 
-          name: course.name,
-          action_call: course.call_to_action,
-          url: provider_course_path(course.provider, course, course.id), 
-          booking_url: new_provider_course_booking_path(course.path_params),  
-          name: course.name, 
-          image: course.course_upload_image.url(:large), 
-          cost: course.cost_formatted(true),
-          color: course.provider.header_color, 
-          provider: course.provider.name, 
-          provider_image: course.provider.logo.url,
-          provider_url: provider_path(course.provider), 
-          teacher: (course.teacher ? course.teacher.name : 'No teacher assigned' ), 
-          teacher_url: (course.teacher ? provider_teacher_path(course.provider,course.teacher) : '#'), 
-          status: course.status, 
-          status_color: 'alert-'+course.status_color,
-          type: course.course_type, 
-          address: course.address,
-          lat: course.latitude, 
-          lng: course.longitude, 
-          time: course.time_formatted
-        }
-      end
+      @courses  = @courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude} }
+      render json: @courses and return
     end
-
-    render json: courses
+    render '_paginate_courses', layout: false
   end
 
   def series 
@@ -65,13 +40,11 @@ class CoursesController < ApplicationController
   end
 
   def show
+    redirect_to @course.path and return unless request.path == @course.path
     respond_to do |format|
+      format.html
       format.json { render json: { 
         name: @course.name, url: @course.path, time: @course.time_formatted, cost: @course.cost_formatted(true) } and return
-      }
-      format.html {
-        redirect_to @course.path and return unless request.path == @course.path
-        render 'show' and return
       }
     end
   end
@@ -83,7 +56,7 @@ class CoursesController < ApplicationController
   def teach
     @page_title =  "Teach"
     @meta_title = "Teach with "
-
+    @fluid_layout = true
     @show_header = false unless chalkler_signed_in?
     render 'teach'
   end

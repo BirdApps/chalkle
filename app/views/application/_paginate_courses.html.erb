@@ -12,20 +12,21 @@
 <% if params['action'] == 'mine' %>
   <%= render partial: 'me/courses/course', collection: paginate_these(@courses) %>
 <% elsif @provider %>
-  
   <%= render partial: 'providers/course', collection: paginate_these(@courses) %>
 <% else %>
   <%= render paginate_these(@courses) %>
 <% end %>
 
-<div class="row  pagination-wrapper">
-  <ul class="pagination">
+
+
+<div class="pagination-wrapper">
+  <ul class="pagination inline">
     <li class="<%=  'disabled' if paginate_position == 0  %>">
-      <a href="<%= url_for(filter_params('page', paginate_position, 'page')) %>">&laquo;</a>
+      <a class="fetch_courses" data-page="<%= paginate_position %>">&laquo;</a>
     </li>
     <% paginate_count.times do |i| %>
       <li class="<%= 'active' if paginate_position == i %>">
-        <a href="<%= url_for(filter_params('page', i+1, 'page')) %>">
+        <a class="fetch_courses" data-page="<%= i+1 %>">
           <%= i+1 %> 
           <% if paginate_position == i %>
             <span class="sr-only">(current)</span>
@@ -33,6 +34,22 @@
         </a>
       </li>
     <% end %>
-    <li class="<%= 'disabled' if paginate_position >= paginate_count-1 %>"><a href="<%= url_for(filter_params('page', paginate_position+2, 'page')) %>">&raquo;</a></li>
+    <li class="<%= 'disabled' if paginate_position >= paginate_count-1 %>"><a class="fetch_courses" data-page="<%= paginate_count %>">&raquo;</a></li>
   </ul>
+  
+  <div class="paginate-take" data-take="<%= paginate_take %>">
+    <div class="dropup btn btn-primary">
+      <a id="paginateTakeLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+        Show <%= paginate_take %> Results
+        <span class="caret"></span>
+      </a>
+
+      <ul class="dropdown-menu dropup" role="menu" aria-labelledby="paginateTakeLabel">
+        <li><a class="fetch_courses" data-page="0" data-take="10">Show 10</a></li>
+        <li><a class="fetch_courses" data-page="0" data-take="30">Show 30</a></li>
+        <li><a class="fetch_courses" data-page="0" data-take="50">Show 50</a></li>
+        <li><a class="fetch_courses" data-page="0" data-take="100">Show 100</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
