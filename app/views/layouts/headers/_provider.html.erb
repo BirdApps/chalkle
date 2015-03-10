@@ -8,6 +8,10 @@
     active: request.path == provider_teachers_path(@provider),
     title: "Teachers"
   },{
+    link: provider_subscriptions_path(@provider),
+    active: request.path == provider_subscriptions_path(@provider),
+    title: "Followers"
+  },{
     link: contact_provider_path(@provider),
     active: request.path == contact_provider_path(@provider),
     title: "Contact"
@@ -50,7 +54,7 @@
     </a>
 
     <div class="provider_header_content">
-      <h1 class="provider_name">
+      <h1 class="provider_header_name">
         <%= link_to @provider.name, provider_path(@provider) %>
       </h1>
     </div>
