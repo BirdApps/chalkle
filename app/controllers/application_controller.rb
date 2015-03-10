@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def not_found
+    @not_found = true
     render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
   end
 
@@ -37,9 +38,9 @@ protected
   
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
+    return if @not_found
     return unless request.get?
     return if request.xhr?
-    return if request.request_method == 'GET'
     unless (request.path == new_chalkler_session_path        ||
             request.path == new_chalkler_registration_path   ||
             request.path == chalkler_omniauth_authorize_path(:facebook) )
@@ -87,11 +88,6 @@ protected
       }]
     end
   end
-
-  def authorize(record)
-    super record unless current_user.super?
-  end
-
 
   def authenticate_chalkler!
     session[:user_return_to] = request.fullpath
