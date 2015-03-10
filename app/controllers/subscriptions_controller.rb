@@ -6,6 +6,13 @@ class SubscriptionsController < ApplicationController
   before_filter [:load_provider]
   before_filter :authenticate_chalkler!
 
+  before_filter :header_provider
+  before_filter :sidebar_administrate_provider
+
+  def index
+    @chalklers = @provider.chalklers
+  end
+
   def create
     Subscription.create provider_id: @provider.id, chalkler_id: current_chalkler.id
     add_flash :success, "You are now following "+@provider.name

@@ -91,6 +91,7 @@
     width: 100%;
     background-color: #5F5F5F;
     border: 0px;
+    margin-top: 10px;
     margin-bottom: 15px;
     &.primary{
       margin: 20px 0;
@@ -112,7 +113,7 @@
     .admin-subtitle {
       margin-bottom: 20px;
       text-align: center;
-      background-color: #e0e0e0;
+      text-shadow: 0 1px 1px #000;
       h3 {
         margin: 15px 0;
       }
@@ -140,15 +141,14 @@
           border-left: 1px solid #333;
         }
       }
-      .person-links {
+      .admin-list {
         padding-top: 10px;
         padding-bottom: 10px;
-        .person-link {
+        .admin-list-item {
           text-align: left;
           padding: 3px 15px 3px 0;
           .delete {
             float: right;
-            
           }
         }
       }

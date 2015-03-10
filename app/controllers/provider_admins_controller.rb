@@ -3,6 +3,14 @@ class ProviderAdminsController < ApplicationController
   before_filter :header_provider
   before_filter :sidebar_administrate_provider
 
+  def index
+    authorize @provider, :admins_index?
+    @admins = ProviderAdmin.where provider_id:  @provider.id
+    respond_to do |format|
+      format.html
+      format.json { render json: @admins.to_json(only: [:id, :name]) }
+    end
+  end
 
   def new
       @provider_admin = ProviderAdmin.new provider: @provider

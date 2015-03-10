@@ -17,7 +17,7 @@ class ProviderPolicy < ApplicationPolicy
     create?
   end
 
-  def admins?
+  def admins_index?
     read?
   end
 

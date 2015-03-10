@@ -1,20 +1,22 @@
 <div class="admin-sidebar col-xs-12">
-  <%= link_to "Edit Class", edit_provider_course_path(@course.path_params), class: 'btn primary' unless @course.new_record?  %>
-  
-
-  <div class="admin-links admin-section row">
-    <%= link_to "Duplicate", clone_provider_course_path(@course) %>
-    <%= link_to "Cancel", cancel_provider_course_path(@course), class: 'border-left' if policy(@course).cancel? %>
-  </div>
-  
-  
   <div class="admin-subtitle row">
     <h3 class="text-<%= @course.status_color %>"><%= @course.status %></h3>
   </div>
   
+  <div class="admin-links admin-section row">
 
+    <%= link_to "Edit", edit_provider_course_path(@course.path_params), class: 'border-bottom' if @course.editable? %>
+    <%= link_to "Duplicate", clone_provider_course_path(@course.path_params), class: 'border-bottom border-left' %>
+    <%= link_to "Publish", cancel_provider_course_path(@course.path_params) if @course.publishable? %>
+    <%= link_to "Unpublish", cancel_provider_course_path(@course.path_params) if @course.unpublishable? %>
+    <%= link_to "Cancel", cancel_provider_course_path(@course.path_params), class: 'border-left' if @course.cancellable? %>
+  </div>
+  
   <h5>
-    <%= link_to "Bookings", provider_bookings_path(@provider) %>
+    Bookings
+    <% if @course.bookings.present? %>
+      <%= link_to "See more", provider_course_bookings_path(@course.path_params), class: 'light' %>
+    <% end %>
   </h5>
 
   <div class="admin-section row">
@@ -26,7 +28,7 @@
       <% end %>
     </div>
     <div class="col-xs-12">
-      <%= link_to "+ New Booking", new_provider_admin_path(@provider), class: 'btn btn-stub' %>
+      <%= link_to "+ New Booking", new_provider_course_booking_path(@course.path_params), class: 'btn btn-stub' %>
     </div>
   </div>
 </div>

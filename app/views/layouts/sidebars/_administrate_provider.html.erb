@@ -2,48 +2,30 @@
   <%= link_to "New Class", new_course_provider_path(@provider), class: 'btn primary'  %>
 
   <div class="admin-links admin-section row">
-    <%= link_to "Bookings", provider_bookings_path(@provider), class: '' %>
-    <%= link_to "Settings", edit_provider_path(@provider), class: 'border-left' %>
+    <%= link_to "Bookings", provider_bookings_path(@provider), class: 'border-bottom' %>
+    <%= link_to "Settings", edit_provider_path(@provider), class: 'border-bottom border-left' %>
+    <%= link_to "Teachers", provider_teachers_path(@provider), class: '' %>
+    <%= link_to "Admins", provider_admins_path(@provider), class: 'border-left' %>
 
     <%# link_to "Followers", provider_subscriptions_path(@provider), class: 'border-bottom border-left' %>
     <%# link_to "Metrics", metrics_provider_path(@provider) %>
   </div>
   
-  
-  <h5>
-    <%= link_to "Provider Admins", provider_admins_path(@provider) %>
-  </h5>
+  <% classes_teaching = current_user.courses_teaching.in_future.where(provider_id: @provider.id) %>
+  <% if classes_teaching.present? %>
+    <h5>
+      <%= link_to "You're Teaching", provider_admins_path(@provider) %>
+    </h5>
 
-  <div class="admin-section row">
-    <div class="col-xs-12 person-links">
-      <% @provider.provider_admins.each do |admin| %>
-        <div class="person-link">
-          <%= link_to admin.name, edit_provider_admin_path(@provider, admin.id) %>
-          <%# link_to %>
-        </div>
-      <% end %>
+    <div class="admin-section row">
+      <div class="col-xs-12 admin-list">
+        <% classes_teaching.each do |course| %>
+          <div class="admin-list-item">
+            <%= link_to course.name, provider_course_path(course.path_params) %>
+          </div>
+        <% end %>
+      </div>
     </div>
-    <div class="col-xs-12">
-      <%= link_to "+ New Admin", new_provider_admin_path(@provider), class: 'btn btn-stub' %>
-    </div>
-  </div>
+  <% end %>
 
-
-  <h5>
-    <%= link_to "Teachers", provider_teachers_path(@provider) %>  
-  </h5>
-
-  <div class="admin-section row">
-    <div class="col-xs-12 person-links">
-      <% @provider.provider_teachers.each do |teacher| %>
-        <div class="person-link">
-          <%= link_to teacher.name, provider_teacher_path(@provider, teacher.id) %>
-          <%=  %>
-        </div>
-      <% end %>
-    </div>
-    <div class="col-xs-12">
-      <%= link_to "+ New Teacher", new_provider_teacher_path(@provider), class: 'btn btn-stub' %>
-    </div>
-  </div>
 </div>

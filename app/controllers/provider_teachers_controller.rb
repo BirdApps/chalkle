@@ -5,8 +5,8 @@ class ProviderTeachersController < ApplicationController
   def index
     @teachers = @provider.provider_teachers
     respond_to do |format|
+      format.html
       format.json { render json: @teachers.to_json(only: [:id, :name]) }
-      format.html { }
     end
   end
 

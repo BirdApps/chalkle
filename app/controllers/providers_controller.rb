@@ -115,23 +115,6 @@ class ProvidersController < ApplicationController
     @bookings = @provider.bookings.order(:course_id).reverse
   end
 
-  def teachers
-    @teachers = ProviderTeacher.where provider_id:  @provider.id
-    respond_to do |format|
-      format.json { render json: @teachers.to_json(only: [:id, :name]) }
-      format.html
-    end
-  end
-
-  def admins
-    authorize @provider
-    @admins = ProviderAdmin.where provider_id:  @provider.id
-    respond_to do |format|
-      format.json { render json: @admins.to_json(only: [:id, :name]) }
-      format.html
-    end
-  end
-
   private
   
     def load_provider
