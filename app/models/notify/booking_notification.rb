@@ -6,16 +6,27 @@ class Notify::BookingNotification < Notify::Notifier
   end
 
   def confirmation
-    #to chalkler
+    #to booker
     if booking.payment.present?
       PaymentMailer.receipt_to_chalkler(booking.payment).deliver!
     end
 
-    message = I18n.t('notify.booking.confirmation.to_chalkler', course_name: booking.course.name)
-    booking.chalkler.send_notification Notification::REMINDER, provider_course_path(booking.course.path_params), message, booking
+    #to chalkler
+    if booking.pseudo_chalkler_email
 
-    if booking.chalkler.email_about? :booking_confirmation_to_chalkler
-      BookingMailer.booking_confirmation_to_chalkler(booking).deliver!  
+      message = I18n.t('notify.booking.booked_in', course_name: booking.course.name, booker: booking.booker.name)
+      BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver!
+      Chalkler.invite!({email: booking.pseudo_chalkler_email, name: booking.name}, booking.booker) if booking.invite_chalkler
+    
+    else
+
+      message = I18n.t('notify.booking.confirmation.to_chalkler', course_name: booking.course.name)
+      booking.chalkler.send_notification Notification::REMINDER, provider_course_path(booking.course.path_params), message, booking
+
+      if booking.chalkler.email_about? :booking_confirmation_to_chalkler
+        BookingMailer.booking_confirmation_to_chalkler(booking).deliver!  
+      end
+      
     end
 
     #to teacher
@@ -41,7 +52,8 @@ class Notify::BookingNotification < Notify::Notifier
   #booked_in and booked_in_with_invite notificaiton for non chalklers
   def booked_in
     message = I18n.t('notify.booking.booked_in', course_name: booking.course.name, booker: booking.booker.name)
-    BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver! 
+    BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver!
+    Chalkler.invite!({email: booking.pseudo_chalkler_email, name: booking.name}, booking.booker) if booking.invite_chalkler
   end
 
   def completed
