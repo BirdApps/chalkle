@@ -89,7 +89,7 @@ class BookingsController < ApplicationController
     if payment_successful
       @booking_set.bookings.each do |booking|
         unless booking.payment.present?
-          booking.status = 'pending'
+          booking.status = Booking::STATUS_6
           booking.visible = true
           booking.save
         end
@@ -97,16 +97,22 @@ class BookingsController < ApplicationController
       add_flash :success, "Payment successful. Thank you very much!"
       redirect_to provider_course_path(@course.path_params)
     else
+      Notify.for(@booking_set).declined
+      add_flash :error, "Sorry, it seems the payment was declined. Would you like to try again?"
       redirect_to declined_provider_course_bookings_path( @course.path_params({ booking_ids: @booking_set.id }) ) and return
     end
   end
 
   def declined
-    if @booking_set.paid?
-      add_flash :success, "Payment confirmed. Thank you very much!"
-      redirect_to provider_course_path(@course.path_params) and return
-    else
-      add_flash :error, "Sorry, it seems the payment was declined. Would you like to try again?"
+    if @booking_set.status != Booking::STATUS_5
+      if @booking_set.status == Booking::STATUS_6
+        add_flash :success, "Payment successful. Thank you very much!"
+      elsif @booking_set.status == Booking::STATUS_1
+        add_flash :success, "Payment confirmed. Thank you very much!"
+      elsif @booking_set.status == Booking::STATUS_2
+        add_flash :success, "Booking was cancelled"
+      end
+      redirect_to provider_course_path(@booking_set.course.path_params) and return
     end
   end
 
@@ -200,6 +206,7 @@ class BookingsController < ApplicationController
       elsif params[:booking_ids].present?
         @booking_set.ids = params[:booking_ids] 
       end
+      #TODO: check swipe_identifier to find/ensure related bookings
       not_found and return unless @booking_set.bookings.present?
     end
 

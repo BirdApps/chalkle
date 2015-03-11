@@ -19,51 +19,53 @@
 
           <div class="col-xs-12 big center light">
             <% bookings.each do |booking|%>
-              <div class="strong"> 
-                <%= booking.name %> 
-              </div>
-              <% unless booking.course.free? %>
-                <div class="col-xs-12 center light">
-                  <span class="grey inline vmid">
-                    Booking cost:
-                  </span>
-                  <span class="big inline vmid">
-                    $<%= booking.cost_formatted %>
-                  </span> 
+              <% if booking.status != Booking::STATUS_5 %>
+                <div class="strong"> 
+                  <%= booking.name %> 
                 </div>
-              <% end %>
-
-              <% if booking.status == 'yes' %>
-                <% if @course.class? %>
-                  <%= quick_date_time @course.start_at %>
-                <% else %>
-                  <% count = 0 %>
-                  <% booking.course.classes.each do |lesson| %>
-                    <span class="strong">
-                      Class <%= count+=1 %> -
+                <% unless booking.course.free? %>
+                  <div class="col-xs-12 center light">
+                    <span class="grey inline vmid">
+                      Booking cost:
                     </span>
-                    <%= quick_date_time lesson.start_at %><br />
+                    <span class="big inline vmid">
+                      $<%= booking.cost_formatted %>
+                    </span> 
+                  </div>
+                <% end %>
+                
+                <span class="small light text-warning"><%= booking.status_formatted %></span>
+
+                <% if booking.status == 'yes' %>
+                  <% if @course.class? %>
+                    <%= quick_date_time @course.start_at %>
+                  <% else %>
+                    <% count = 0 %>
+                    <% booking.course.classes.each do |lesson| %>
+                      <span class="strong">
+                        Class <%= count+=1 %> -
+                      </span>
+                      <%= quick_date_time lesson.start_at %><br />
+                    <% end %>
+                  <% end %>
+                  <br />
+                  <% if current_chalkler == booking.chalkler %>
+                    <%= link_to "Cancel booking", cancel_provider_course_booking_path(booking.path_params), class: 'text-danger small light' %>
+                  <% else %>
+                    <p class="small light">
+                      This booking has been transferred to <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler)  %>
+                    </p>
+                    <%= link_to "Take back ownership", take_rights_provider_course_booking_path(booking.course,booking), class: 'text-danger small light' %>
                   <% end %>
                 <% end %>
-                <br />
-                <% if current_chalkler == booking.chalkler %>
-                  <%= link_to "Cancel booking", cancel_provider_course_booking_path(booking.path_params), class: 'text-danger small light' %>
-                <% else %>
-                  <p class="small light">
-                    This booking has been transferred to <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler)  %>
-                  </p>
-                  <%= link_to "Take back ownership", take_rights_provider_course_booking_path(booking.course,booking), class: 'text-danger small light' %>
-                <% end %>
-              <% else %>
-                <span class="small light text-warning"><%= booking.status_formatted %></span>
-              <% end %>
+               
 
-              <br />
-              
-              <div class="clearfix">
-                <hr class="dark" />
-              </div>
-            
+                <br />
+                
+                <div class="clearfix">
+                  <hr class="dark" />
+                </div>
+              <% end %>
             <% end %>
             
             <% if (bookings.any? || current_user.super?) && @course.note_to_attendees.present? %>

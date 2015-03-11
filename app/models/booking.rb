@@ -11,12 +11,13 @@ class Booking < ActiveRecord::Base
   attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:provider_payment,:provider_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   #booking statuses
+  STATUS_6 = "unverified" #payment awaiting LPN
   STATUS_5 = "pending" #payment pending
   STATUS_4 = "refund_complete"
   STATUS_3 = "refund_pending"
   STATUS_2 = "no"
   STATUS_1 = "yes"
-  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
+  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5, STATUS_6]
   BOOKING_STATUSES = VALID_STATUSES
 
   belongs_to  :payment
@@ -296,6 +297,8 @@ class Booking < ActiveRecord::Base
     when STATUS_4
       'Cancelled & Refunded'
     when STATUS_5
+      'Incomplete Booking'
+    when STATUS_6
       'Payment is being confirmed'
     else
        'Unknown status'

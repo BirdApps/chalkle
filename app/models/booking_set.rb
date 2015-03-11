@@ -48,6 +48,10 @@ class BookingSet
     @bookings.count
   end
 
+  def booker
+    bookings.first.booker if bookings.first
+  end
+
   def save(options)
     bookings_valid = true
     bookings.each do |booking|
@@ -94,6 +98,10 @@ class BookingSet
     names.join(',')
   end
 
+  def status
+    bookings.first.status if bookings.first
+  end
+
   def build_payment
     payment = bookings.first.build_payment if bookings.present?
     payment.chalkler = bookings.first.booker
@@ -109,7 +117,7 @@ class BookingSet
   end
 
   def paid?
-    [true] == bookings.map{ |b| b.paid? }
+    [true] == bookings.map{ |b| b.paid? }.uniq
   end
 
   def apply_payment(payment)
