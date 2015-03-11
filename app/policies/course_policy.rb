@@ -19,7 +19,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def show?
-    Course::PUBLIC_STATUSES.include?(@course.status) or read?
+    read? or Course::PUBLIC_STATUSES.include?(@course.status)
   end
 
   def update?

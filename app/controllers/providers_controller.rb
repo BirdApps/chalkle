@@ -1,8 +1,7 @@
 class ProvidersController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new, :create, :url_available]
   before_filter :load_provider, except: [:index, :new, :create]
-  before_filter :header_provider, except: [:index, :new, :create]
-  before_filter :sidebar_administrate_provider, except: [:index, :new, :create]
+  before_filter :header_provider, :sidebar_administrate_provider, except: [:index, :new, :create]
 
   def index
     @providers = Provider.visible

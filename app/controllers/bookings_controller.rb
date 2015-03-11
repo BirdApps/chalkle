@@ -5,7 +5,7 @@ class BookingsController < ApplicationController
   before_filter :class_available, :only => [:edit, :update, :new]
   before_filter :load_booking, :only => [:show, :cancel, :confirm_cancel, :take_rights]
   before_filter :load_booking_set, only: [:payment_callback, :lpn, :declined]
-  before_filter :header_provider, except:  [:payment_callback, :lpn]
+  before_filter :header_provider, :sidebar_administrate_course, except:  [:payment_callback, :lpn]
 
   def index
     @course = Course.find_by_id params[:course_id]

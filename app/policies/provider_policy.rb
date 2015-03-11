@@ -5,6 +5,10 @@ class ProviderPolicy < ApplicationPolicy
     @provider = provider
   end
 
+  def show?
+    true
+  end
+
   def teachers?
     true
   end

@@ -116,31 +116,6 @@ protected
       end
     end
   end
-  
-  def provider_name
-    @provider_name ||= params[:provider_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:provider_url_name].present?
-  rescue ArgumentError 
-    nil
-  end
-
-  def load_provider
-    redirect_to_subdomain
-    if !@provider
-      if params[:provider_id].present?
-        @provider = Provider.find(params[:provider_id])
-      elsif provider_name
-        @provider = Provider.find_by_url_name(provider_name)
-      end
-        
-    end
-  end
-
-  def load_course
-    @course = Course.find_by_id(params[:course_id] || params[:id])
-    not_found and return unless @course
-    authorize @course
-    @provider = @course.provider
-  end
 
   def redirect_to_subdomain
     if request.subdomain.present?
@@ -215,17 +190,43 @@ protected
     flash[message_type] << message
   end
 
+  def provider_name
+    @provider_name ||= params[:provider_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:provider_url_name].present?
+    rescue ArgumentError 
+      nil
+  end
+
+  def load_provider
+    redirect_to_subdomain
+    if !@provider
+      if params[:provider_id].present?
+        @provider = Provider.find(params[:provider_id])
+      elsif provider_name
+        @provider = Provider.find_by_url_name(provider_name)
+      end
+    end
+  end
+
+  def load_course
+    @course = Course.find_by_id(params[:course_id] || params[:id])
+    not_found and return unless @course
+    authorize @course, :show?
+    @provider = @course.provider
+  end
+
   def header_provider
     @hero = @provider.hero
     @header_partial = '/layouts/headers/provider'
   end
 
   def sidebar_administrate_provider
+    load_provider unless @provider
     @sidebar_title = 'Provider Admin'
     @sidebar = '/layouts/sidebars/administrate_provider' if policy(@provider).admin?
   end
 
   def sidebar_administrate_course
+    load_course unless @course
     @sidebar_title = 'Class Admin'
     @sidebar = '/layouts/sidebars/administrate_course' if policy(@course).admin?  
   end
