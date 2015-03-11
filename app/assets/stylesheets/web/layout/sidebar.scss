@@ -54,9 +54,6 @@
   &.open {
     height: 50px;
     padding-top: 0;
-    .sidebar-content {
-      overflow-y: hidden;
-    }
     .sidebar-tab {
       .open { display: block; }
       .shut { display: none; }
@@ -67,9 +64,6 @@
     max-width: 320px;
     height: 40px;
     padding-top: 0;
-    .sidebar-content {
-      overflow-y: hidden;
-    }
     .sidebar-tab {
       padding: 5px 10px;
       height: 40px;
