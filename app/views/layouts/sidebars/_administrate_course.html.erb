@@ -20,9 +20,9 @@
   </h5>
 
   <div class="admin-section row">
-    <div class="col-xs-12 person-links">
+    <div class="col-xs-12 admin-list">
       <% @course.bookings.each do |booking| %>
-        <div class="person-link">
+        <div class="admin-list-item">
           <%= link_to booking.name %>
         </div>
       <% end %>
