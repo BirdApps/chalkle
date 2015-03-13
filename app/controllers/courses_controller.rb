@@ -10,10 +10,24 @@ class CoursesController < ApplicationController
   end
 
   def fetch
-    if current_user.super?
-      @courses = Course.in_future.start_at_between(current_date, current_date+1.year).by_date
+    if @provider
+      if policy(@provider).read?
+        @courses = @provider.courses
+      else
+        @courses = @provider.courses.published
+      end
     else
-      @courses = Course.in_future.published.start_at_between(current_date, current_date+1.year).by_date
+      if current_user.super?
+        @courses = Course.scoped
+      else
+        @courses = Course.published
+      end
+    end
+
+    if params[:past].present?
+      @courses = @courses.in_past.by_date.reverse
+    else
+      @courses = @courses.in_future.by_date
     end
 
     if params[:search].present?
@@ -28,6 +42,7 @@ class CoursesController < ApplicationController
       @courses  = @courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude} }
       render json: @courses and return
     end
+    
     render '_paginate_courses', layout: false
   end
 
