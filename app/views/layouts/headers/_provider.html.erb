@@ -64,7 +64,7 @@
         <ul class="flush">
         <% 
           nav_links.each do |nav_link| %>
-            <li class="<%= "active" if nav_link[:active] %>" style="width:<%= col_width %>%">
+            <li class="<%= "active" if nav_link[:active] %> col-xs-4 col-sm-3 col-md-2">
               <%= link_to nav_link[:link], title: nav_link[:title] do %>
                   <%= nav_link[:title] %>
               <% end %>
