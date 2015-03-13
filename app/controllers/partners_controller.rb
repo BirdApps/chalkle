@@ -41,21 +41,6 @@ class PartnersController < ApplicationController
   private
 
     def header_partners
-      @nav_links = [{
-        img_name: "bolt",
-        link: chalkle_about_path,
-        active: request.path.include?("index"),
-        title: "About Chalkle"
-      },{
-        img_name: "people",
-        link: partners_team_path,
-        active: request.path.include?("team"),
-        title: "The Team"
-      },{
-        img_name: "contact",
-        link: partners_say_hello_path,
-        active: request.path.include?("say_hello") || request.path.include?("said_hello"),
-        title: "Contact"
-      }]
+       @header_partial = '/layouts/headers/chalkle'
     end
 end
