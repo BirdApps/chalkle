@@ -81,6 +81,22 @@ module ApplicationHelper
     yield < 1 ? "" : " (#{yield})"
   end
 
+  def page_min
+    if paginate_position + 3 > paginate_count
+      min = paginate_count - 4
+    else
+      min = paginate_position - 2  
+    end
+    min = 0 if min < 0
+    min
+  end
+
+  def page_max
+    max = page_min + 4
+    max = paginate_count if (max > (paginate_count))
+    max
+  end
+
   def paginate_position
     return @paginate_position if @paginate_position
     page_num = params[:page].to_i > 0 ? params[:page].to_i-1 : 0 
@@ -92,7 +108,7 @@ module ApplicationHelper
   end
 
   def paginate_count
-    @paginate_count ||= (@pagination_list.count / paginate_take) + 1
+    @paginate_count ||= (@pagination_list.count / paginate_take) - 1
   end
 
   def paginate_take

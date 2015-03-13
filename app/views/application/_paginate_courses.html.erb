@@ -17,16 +17,16 @@
   <%= render paginate_these(@courses) %>
 <% end %>
 
-
-
 <div class="pagination-wrapper">
   <ul class="pagination inline">
-    <li class="<%=  'disabled' if paginate_position == 0  %>">
-      <a class="fetch_courses" data-page="<%= paginate_position %>">&laquo;</a>
-    </li>
-    <% paginate_count.times do |i| %>
+    <% if page_min > 0 %>
+      <li>
+        <a class="fetch_courses" data-page="<%= 1 %>" title="Page 1" data-toggle="tooltip" data-placement="top" onmouseover="$(this).tooltip('show')">&laquo;</a>
+      </li>
+    <% end %>
+    <% (page_min..page_max).each do |i| %>
       <li class="<%= 'active' if paginate_position == i %>">
-        <a class="fetch_courses" data-page="<%= i+1 %>">
+        <a class="fetch_courses" data-page="<%= i+1 %>" >
           <%= i+1 %> 
           <% if paginate_position == i %>
             <span class="sr-only">(current)</span>
@@ -34,7 +34,9 @@
         </a>
       </li>
     <% end %>
-    <li class="<%= 'disabled' if paginate_position >= paginate_count-1 %>"><a class="fetch_courses" data-page="<%= paginate_count %>">&raquo;</a></li>
+    <% if paginate_count > page_max %>
+      <li><a class="fetch_courses" data-page="<%= paginate_count+1 %>" title="Page <%= paginate_count+1 %>" data-toggle="tooltip" onmouseover="$(this).tooltip('show')" data-placement="top" >&raquo;</a></li>
+    <% end %>
   </ul>
   
   <div class="paginate-take" data-take="<%= paginate_take %>">
