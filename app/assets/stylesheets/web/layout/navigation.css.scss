@@ -301,16 +301,18 @@
         }
         .search-wrapper{
           @media screen and (max-width: 768px) {
-             margin: 7px 0;
+             padding: 7px 0;
           }
           @media screen and (min-width: 769px) {
-            margin: 14px 0 12px;
+            padding: 14px 0 12px;
             #search_btn {
-              border-left: 1px solid #fff;         
+              padding-left: 30px;        
               border-radius: 0px;
             }
           }
-          
+          #search_input {
+            padding: 6px 12px 6px 3px;
+          }
           .search-form{
             padding-left: 0px;
           }
