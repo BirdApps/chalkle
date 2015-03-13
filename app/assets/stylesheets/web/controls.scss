@@ -48,10 +48,11 @@ html {
     } 
 
     .dropdown, .dropup {
-      
+      >a{ width: 100%; display: inline-block; }
       .dropdown-menu {
         background-color: inherit;
         padding-top: 0;
+        min-width: 100%;
         @media screen and (max-width: 768px) {
           top: 69px !important;
           left: 0 !important;
@@ -68,10 +69,12 @@ html {
         }
 
         li{
+          width: 100%;
           a{
             padding: 8px 20px;
           }
         }
+
 
         .divider {
           background-color: rgba(255, 255, 255, 0.37); 
@@ -98,7 +101,7 @@ html {
             position: fixed !important;
             left: 0;
             width: 100%;
-            top: 64px;
+            top: $mobile-nav-height !important;
             z-index: 100;
             background: #fff;
             height: 100% !important;

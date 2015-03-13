@@ -41,7 +41,6 @@ $(function(){
           'take': take,
           'page': page
         }
-        console.log(fetch_params);
         url_name = $("#provider_url_name").val();
         fetch_url = '/'+url_name+'/fetch';
         $.get(fetch_url,fetch_params,write_courses_to_page,'html').fail(function(){
@@ -65,8 +64,10 @@ $(function(){
         params['page'] = fetch_params.page;
       }
 
-      if(Object.keys(params).length > 0){
-        url = window.location.protocol+'//'+window.location.host+window.location.pathname+"?";
+   
+        url = window.location.protocol+'//'+window.location.host+window.location.pathname;
+        if(Object.keys(params).length > 0) url += "?";
+
         for (key in params){
           url += (key +'='+params[key]+"&")
         }
@@ -74,16 +75,13 @@ $(function(){
           url = url.substring(0,url.length-1);
         }
         window.history.pushState(params, $('title').text().trim(),url);
-      }
     }
 
     function paginate_init(){
       $('.fetch_courses').click(function(){
         take = $(this).data('take');
-        if(take != undefined){
-          $('.paginate-take').data('take', take);
-        }
         page = $(this).data('page');
+        past = $(this).data('past');
         if(page != undefined){
           fetch_courses(page);
         }else{
@@ -98,9 +96,10 @@ $(function(){
         $('#courses_missing').hide();
         $('#provider_courses_wrapper').html(classes);
         $("#provider_courses_wrapper").fadeIn();
-        paginate_init();
         fetching_courses = false;
         spinner_courses_stop();
+        if($("#signInFirstModal").length > 0) init_sign_in_first();
+        paginate_init();
       }else{
         $('#courses_missing').fadeIn();
       }

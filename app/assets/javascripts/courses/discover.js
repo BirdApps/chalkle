@@ -302,10 +302,11 @@ $(function(){
         $('#courses_missing').hide();
         $('#courses_wrapper').html(classes);
         $("#courses_wrapper").fadeIn();
-        paginate_init();
         fetching_courses = false;
         spinner_location_stop();
         spinner_courses_stop();
+        if($("#signInFirstModal").length > 0) init_sign_in_first();
+        paginate_init();
       }else{
         $('#courses_missing').fadeIn();
       }
