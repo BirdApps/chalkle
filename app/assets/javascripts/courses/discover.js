@@ -1,9 +1,9 @@
 // =require '//www.google.com/jsapi';
 $(function(){
-  if( $('.location_form').length > 0){
+  if( $('#courses_wrapper').length > 0){
     var autocomplete, place, geocoder, location, lng, lat, spinner_location, spinner_location_opts, spinner_courses, spinner_courses_opts, course_template, tried_auto = false, fetching_courses = false, bottom, top, right, left;
 
-    function spinner_courses_spin(){   
+    function spinner_courses_spin() {
       $('#wrapper').css('opacity',0);
     }
 
@@ -336,10 +336,6 @@ $(function(){
 
       $('[data-toggle="tooltip"]').tooltip()
       
-      if($('#course_template').length > 0){
-        course_template = document.getElementById("course_template").innerHTML;
-      }
-
       autocomplete = new google.maps.places.Autocomplete(
       /** @type {HTMLInputElement} */(document.getElementById('location_autocomplete')) ,
        { componentRestrictions: {country: "nz"} }
