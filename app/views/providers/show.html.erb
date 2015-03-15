@@ -8,14 +8,19 @@
     
     <div class="dropdown btn btn-primary col-xs-12">
       <a id="pastClassLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
-        <%= 'Previous Classes' if params[:past] %>
-        <%= 'Upcoming Classes' unless params[:past] %>
+        <span class="past_present_classes">
+          <% if params[:past].present? %>
+            Previous Classes
+          <% else %>
+            Upcoming Classes
+          <% end %>
+        </span>
         <span class="caret"></span>
       </a>
 
       <ul class="dropdown-menu dropup" role="menu" aria-labelledby="pastClassLabel">
         <li><a class="fetch_courses" data-past="false">Upcoming Classes</a></li>
-        <li><a class="fetch_courses" data-past="true">Past Classes</a></li>
+        <li><a class="fetch_courses" data-past="true">Previous Classes</a></li>
       </ul>
     </div>
 

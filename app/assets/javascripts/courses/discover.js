@@ -221,7 +221,7 @@ $(function(){
         if(page == undefined){
           page = getParam('page');
           if(page == undefined){
-            page = 0;
+            page = 1;
           }
         }
         fetching_courses = true;
@@ -265,7 +265,7 @@ $(function(){
       if(fetch_params.take != undefined && fetch_params.take != '30'){
         params['take'] = fetch_params.take;
       }
-      if(fetch_params.page != '0'){
+      if(fetch_params.page != '1'){
         params['page'] = fetch_params.page;
       }
 
