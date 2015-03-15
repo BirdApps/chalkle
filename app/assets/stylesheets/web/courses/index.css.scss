@@ -26,7 +26,7 @@
     border-bottom: 1px dotted #ccc;
     margin-bottom: 10px;
     .location-preview{
-      padding: 10px 0;
+      padding: 18px 0 12px;
       .change-location{
         @media screen and (min-width: 769px){
           float: right;
@@ -42,7 +42,16 @@
       position: relative;
       font-size: 16px;
     }
-    
+    @media screen and (min-width: 769px){
+      >.input-group {
+        margin-right: 100px;
+      }
+      .cancel-location{
+        float: right;
+        width: 80px;
+        padding: 10px 0;
+      }
+    }
     img{
       width: 24px;
       height: 24px;

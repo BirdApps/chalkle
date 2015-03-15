@@ -204,8 +204,13 @@ $(function(){
 
     function update_preview(){
       $('.show-location').text($("#location_autocomplete").val());
-      $('.location-form').fadeOut();
-      $('.change-location').fadeIn();
+      cancel_location();
+    }
+
+    function cancel_location(){
+      $('.location-form').fadeOut(function(){
+        $('.location-preview').fadeIn();
+      });
     }
 
     function search(relocate){
@@ -314,8 +319,9 @@ $(function(){
 
     function click_change_location(){
       $('#location_autocomplete').val('');
-      $('.location-form').fadeIn();
-      $('.change-location').fadeOut();
+      $('.location-preview').fadeOut(function(){
+        $('.location-form').fadeIn();
+      });
       $("#location_autocomplete").focus();
     }
 
@@ -332,7 +338,7 @@ $(function(){
     function init(){
 
       $('.change-location').click(click_change_location);
-
+      $('.cancel-location').click(cancel_location);
       $('.show-location').click(click_change_location);
 
       $('[data-toggle="tooltip"]').tooltip()
