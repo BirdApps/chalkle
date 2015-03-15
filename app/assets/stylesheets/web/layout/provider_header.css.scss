@@ -1,7 +1,7 @@
 @import "../_vars";
 
 .provider_header{
-  .container {
+  .container-fluid {
     position: relative;
     @media screen and (min-width: 993px){
       bottom: -43px;

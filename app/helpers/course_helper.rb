@@ -107,14 +107,6 @@ Your Chalkle Administrator")
     @show_header.nil? ? super : @show_header
   end
 
-  def fluid_layout? 
-    if request[:action]=~/learn|teach/ && !chalkler_signed_in?
-      true
-    else
-      super
-    end 
-  end
-
   def devise_mapping
     Devise.mappings[:chalkler]
   end

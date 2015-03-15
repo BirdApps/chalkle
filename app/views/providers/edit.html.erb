@@ -1,4 +1,4 @@
-<div class="new_form_wrapper container">  
+<div class="new_form_wrapper">  
   <%= bootstrap_form_for(@provider, wrapper: :simple_bootstrap3, url: edit_provider_path, html: { method: :post, class: 'provider-form form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
     <input type="hidden" value="put" name="_method" />
 

@@ -71,7 +71,6 @@ class CoursesController < ApplicationController
   def teach
     @page_title =  "Teach"
     @meta_title = "Teach with "
-    @fluid_layout = true
     @show_header = false unless chalkler_signed_in?
     render 'teach'
   end
