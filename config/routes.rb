@@ -126,7 +126,6 @@ Chalkle::Application.routes.draw do
   get 'classes/:id', to: 'courses#show', as: :old_course_path #backwards compatibility2
 
   resources :providers, only: [:index, :create, :new]
-
   resource :provider, except: [:new, :create], path: ':provider_url_name' do
     match '', to: 'providers#show'
     
@@ -135,10 +134,6 @@ Chalkle::Application.routes.draw do
     post 'contact', to: 'providers#contact'
 
     get 'fetch', to: 'courses#fetch'
-    get 'history', to: 'courses#history'
-
-    get 'new', to: 'courses#new', as: :new_course
-    post 'new', to: 'courses#create', as: :new_course
     
     get 'edit'
     put 'edit', to: 'providers#update'
@@ -150,6 +145,7 @@ Chalkle::Application.routes.draw do
 
     get ':course_url_name', to: 'courses#series', as: :course_series
 
+    resources :classes, only: [:new, :create], controller: :courses
     resource :course, except: [:show, :new, :create], path: ':course_url_name/:course_id' do
       get '/',              to: 'courses#show'
       get 'cancel',         to: 'courses#cancel'

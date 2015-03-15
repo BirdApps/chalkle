@@ -89,7 +89,7 @@ class CoursesController < ApplicationController
     end
 
     if current_user.providers_adminable.count == 1
-      redirect_to new_course_provider_path(current_user.providers_adminable.first) and return
+      redirect_to new_provider_class_path(current_user.providers_adminable.first) and return
     end
   end
 
