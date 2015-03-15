@@ -3,7 +3,7 @@ class Roost
   attr_accessor :parameters
 
   def initialize(initial_chalkler, message, url)
-    @parameters = { alert: message, url: url, alias: initial_chalkler.id }
+    @parameters = { alert: message, url: url, aliases: ["#{Rails.env}_#{initial_chalkler.id}"] }
   end
 
   def deliver
