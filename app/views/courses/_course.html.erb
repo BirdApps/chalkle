@@ -1,93 +1,95 @@
 <%# cache "_course_#{course.id}", skip_digest: true do %>
-  <article class="course col-xs-12">
-    <div class="col-sm-2 flush-xs">
-      <div class="porthole">
-        <a href="<%= course.path %>" title="<%= course.name %>">
-          <% if course.course_upload_image.present? %>
-            <div class="img" style="background-image: url(<%= course.course_upload_image.url(:large).html_safe %>);">
-            </div>
-          <% else %>
-            <%= image_tag(
-              "categories/grey.png",
-              alt: course.name,
-              title: course.name,
-              class: 'course_image'
-            ) %>
-          <% end %>
-        </a>
-      </div>
-    </div>
-    <div class="col-sm-10">
-      <header class="clearfix">
-        <div class="title-wrapper">
-        <div class="availability-wrapper">
-          <a href="<%= new_provider_course_booking_path course.path_params %>" class="sign-in-first availability nowrap btn-3d bg-colour<%= course.best_colour_num %>">
-            <%= course.call_to_action %>
+  <article class="course col-lg-6 flush-xs">
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="porthole">
+          <a href="<%= course.path %>" title="<%= course.name %>">
+            <% if course.course_upload_image.present? %>
+              <div class="img" style="background-image: url(<%= course.course_upload_image.url(:large).html_safe %>);">
+              </div>
+            <% else %>
+              <%= image_tag(
+                "categories/grey.png",
+                alt: course.name,
+                title: course.name,
+                class: 'course_image'
+              ) %>
+            <% end %>
           </a>
         </div>
-          <h3 class="title">
-            <%= link_to course.name, provider_course_path(course.path_params), { :class => "colour"+course.best_colour_num.to_s } %>
-          </h3>
-        </div>
-        
-      </header>
-      <div class="details clearfix">
-        <% if course.provider.logo.present? %>
-          <%= link_to provider_path(course.provider) do %>
-            <%= image_tag course.provider.logo.url, class: "provider-img pull-left", title: course.provider.name %>
-          <% end %>
-        <% end %>
-        <div class="pull-left">
-          <div class="grey upper smaller">Provided By</div>
-          <%= link_to course.provider.name, provider_path(course.provider) %>
-        </div>
-        <div class="vertical-seperator pull-left hidden-xs"></div>
-        <div class="pull-left">
-          <div class="grey upper smaller">Your Teacher</div>
-          <% if course.teacher  %>
-            <%= link_to course.teacher.name, provider_teacher_path(course.teacher.path_params) %>
-          <% else %>
-            No teacher assigned
-          <% end %>
-        </div>
-        <% unless course.published?  %>
-          <div class="vertical-seperator pull-left hidden-xs"></div>
-          <div class="margin-top-5 pull-left">
-            <div class="alert alert-<%= course.status_color %> flush">
-              <h4 class="warn-unpublished light small"><%= course.status %></h4>
-            </div>
-          </div>
-        <% end %>
-        <% if course.reviews? %> 
-          <div class="reviews small grey">
-            <span class="fa fa-heart"></span>
-            <span class="pull-right text-right">
-              <%= course.review_percent || '?' %>%
-            </span>
-            <div class="small">
-              <%= course.reviews.count %> reviews
-            </div>
-          </div>
-        <% end  %>
       </div>
-      <footer>
-        <span class="small grey">
-          <span class="fa fa-clock-o"></span>
-          <% if course.class? %>
-            <%= day_ordinal_month course.start_at, true, false, true %>
+      <div class="col-sm-10">
+        <header class="clearfix">
+          <div class="title-wrapper">
+          <div class="availability-wrapper">
+            <a href="<%= new_provider_course_booking_path course.path_params %>" class="sign-in-first availability nowrap btn-3d bg-colour<%= course.best_colour_num %>">
+              <%= course.call_to_action %>
+            </a>
+          </div>
+            <h3 class="title">
+              <%= link_to course.name, provider_course_path(course.path_params), { :class => "colour"+course.best_colour_num.to_s } %>
+            </h3>
+          </div>
+          
+        </header>
+        <div class="details clearfix">
+          <% if course.provider.logo.present? %>
+            <%= link_to provider_path(course.provider) do %>
+              <%= image_tag course.provider.logo.url, class: "provider-img pull-left", title: course.provider.name %>
+            <% end %>
           <% end %>
-          <%= pretty_time_range course.start_at, course.end_at %>
-          <span class="fa fa-map-marker"></span>
-          <%= course.venue_address %>
-        </span>
-        <div class="cost pull-right">
-          <% if course.cost? %>
-            $<%= course.cost_formatted %>
-          <% else %>
-            FREE
+          <div class="pull-left">
+            <div class="grey upper smaller">Provided By</div>
+            <%= link_to course.provider.name, provider_path(course.provider) %>
+          </div>
+          <div class="vertical-seperator pull-left hidden-xs"></div>
+          <div class="pull-left">
+            <div class="grey upper smaller">Your Teacher</div>
+            <% if course.teacher  %>
+              <%= link_to course.teacher.name, provider_teacher_path(course.teacher.path_params) %>
+            <% else %>
+              No teacher assigned
+            <% end %>
+          </div>
+          <% unless course.published?  %>
+            <div class="vertical-seperator pull-left hidden-xs"></div>
+            <div class="margin-top-5 pull-left">
+              <div class="alert alert-<%= course.status_color %> flush">
+                <h4 class="warn-unpublished light small"><%= course.status %></h4>
+              </div>
+            </div>
           <% end %>
+          <% if course.reviews? %> 
+            <div class="reviews small grey">
+              <span class="fa fa-heart"></span>
+              <span class="pull-right text-right">
+                <%= course.review_percent || '?' %>%
+              </span>
+              <div class="small">
+                <%= course.reviews.count %> reviews
+              </div>
+            </div>
+          <% end  %>
         </div>
-      </footer>
+        <footer>
+          <span class="small grey">
+            <span class="fa fa-clock-o"></span>
+            <% if course.class? %>
+              <%= day_ordinal_month course.start_at, true, false, true %>
+            <% end %>
+            <%= pretty_time_range course.start_at, course.end_at %>
+            <span class="fa fa-map-marker"></span>
+            <%= course.venue_address %>
+          </span>
+          <div class="cost pull-right">
+            <% if course.cost? %>
+              $<%= course.cost_formatted %>
+            <% else %>
+              FREE
+            <% end %>
+          </div>
+        </footer>
+      </div>
     </div>
   </article>
 <%# end %>
