@@ -13,14 +13,13 @@
         </div>
 
         <div id="primary-navigation">
-
           <div class="search-wrapper">
             <form class="search-form" id="primary-search-form" method="get" action="<%= discover_path %>" onsubmit="<%= "return false" if current_page? discover_path %>" role="search">
               <div class="input-group">
                 <span class="input-group-addon" id="search_btn">
                   <button class="btn no-btn"><img src="/assets/icons/search.png" alt="search" /></button>
                 </span>
-                <input id="search_input" type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search Chalkle" autocomplete="off">
+                <input id="search_input" type="text" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Find Classes" autocomplete="off">
               </div>
             </form>
           </div>

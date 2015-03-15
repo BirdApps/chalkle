@@ -24,7 +24,7 @@ class CoursesController < ApplicationController
       end
     end
 
-    if params[:past].present?
+    if params[:past] == 'true'
       @courses = @courses.in_past.by_date.reverse
     else
       @courses = @courses.in_future.by_date
