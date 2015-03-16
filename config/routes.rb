@@ -146,13 +146,13 @@ Chalkle::Application.routes.draw do
     get ':course_url_name', to: 'courses#series', as: :course_series
 
     resources :classes, only: [:new, :create], controller: :courses
-    resource :course, except: [:show, :new, :create], path: ':course_url_name/:course_id' do
-      get '/',              to: 'courses#show'
-      get 'cancel',         to: 'courses#cancel'
-      put 'cancel',         to: 'courses#confirm_cancel'
-      get 'clone',          to: 'courses#clone'
-      put 'change_status',  to: 'courses#change_status', as: :change_status
-
+    resource :course, except: [:new, :create], path: ':course_url_name/:course_id' do
+      member do 
+        get 'cancel',         to: 'courses#cancel'
+        put 'cancel',         to: 'courses#confirm_cancel'
+        post 'clone',          to: 'courses#clone'
+        post 'change_status',  to: 'courses#change_status'
+      end
       resources :course_notices, as: :notices, path: 'discussion'
 
       resources :bookings, only: [:index, :show, :new, :create] do
