@@ -69,6 +69,8 @@ class Booking < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
 
+  scope :displayable, where("status != ?", STATUS_5)
+
   scope :refund_pending, where(status: STATUS_3)  
   scope :refund_complete, where(status: STATUS_4) 
 
