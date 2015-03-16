@@ -6,7 +6,10 @@
     clear: both;
   }
   ._heading_title {
-    display: inline;
+    padding-top: 20px;
+    h2 {
+      display: inline;
+    }
   }
   .avatar {
     float: right;
