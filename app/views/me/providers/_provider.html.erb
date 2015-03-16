@@ -1,7 +1,9 @@
 <div class="_provider">
   <%= link_to(provider_path(provider.url_name)) do %>
     <% if provider.logo.file %>
-      <img src="<%= provider.logo.url %>" class='provider-img inline' > 
+      <div  class="avatar32 pull-right" href="<%= provider_path provider %>" title="<%= provider.name %>">
+        <div class="img visible-xs" style="background-image: url(<%= provider.logo %>)"></div>
+      </div>
     <% end %>
     <h5 class="inline">
       <%= provider.name %>

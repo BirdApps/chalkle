@@ -1,7 +1,8 @@
+<%= render 'heading' %>
 <div class="hidden-xs col-sm-2">
 </div>
 <div class="new_form_wrapper col-xs-12 col-sm-8">
-  <%= bootstrap_form_for(@provider_teacher, wrapper: :simple_bootstrap3, url: '/teachers/'+@provider_teacher.id.to_s, html: { method:  :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+  <%= bootstrap_form_for(@provider_teacher, wrapper: :simple_bootstrap3, url: provider_teacher_path(@provider_teacher.path_params), html: { method:  :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
     <div class="fancy-header">
       <h3>Photo</h3>
       <hr />
@@ -12,7 +13,7 @@
           <div class="img avatar_preview" style="background-image: url(<%= f.object.avatar %>);"></div>
         </div>
       </div>
-      <div class="col-sm-8 col-md-7">
+      <div class="col-sm-7">
         <%= f.input :avatar, as: :styled_file, input_html: { value: "", :'data-preview' => 'avatar_preview', class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
       </div>
     </div>
@@ -26,9 +27,6 @@
       
       <span data-toggle="tooltip" data-placement="right" title="Email is read only as it is set on the teacher's Chalkle account">
         <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
-        <script>
-        $(function(){ $('[data-toggle="tooltip"]').tooltip() });
-        </script>
       </span>
 
       <% if policy(@provider_teacher.provider).admin? && !@provider_teacher.provider.provider_chalklers.include?(@provider_teacher.chalkler) %>

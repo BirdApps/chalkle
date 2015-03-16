@@ -11,7 +11,7 @@
           </span>
             
           <div class="col-xs-12 pull-right col-lg-6 center flush">
-            <%= link_to 'View Bookings ('+@course.bookings.confirmed.count.to_s+")", provider_course_bookings_path(@course.id), class: 'btn btn-success'  %>
+            <%= link_to "View Bookings (#{ @course.bookings.confirmed.count.to_s })", provider_course_bookings_path(@course.id), class: 'btn btn-success'  %>
           
             <% if policy(@course).write? %>
             

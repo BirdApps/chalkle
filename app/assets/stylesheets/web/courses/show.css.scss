@@ -39,6 +39,7 @@
     }
   }
   .right-col {
+    z-index: 5;
     @media screen and (min-width: 998px){
       padding-left:20px;
       position: absolute;
@@ -61,11 +62,14 @@
     }
     .join-link {
       width: 100%;
-      padding: 20px 0;
-      padding:26px;
+      padding:16px;
       border-radius: 6px;
       color: #fff;
       border: 0px;
+      font-weight: 600;
+      font-size: 150%;
+      word-wrap: normal;
+      white-space: normal;
     }
     .meta {
       text-align: right;

@@ -5,7 +5,7 @@
     font-weight: 500;
     font-family: "proxima-nova", sans-serif;
     @media screen and (max-width: 768px){
-      padding-right: 160px;   
+      padding-right: 80px;   
     }
     @media screen and (min-width: 769px){
       padding-right: 280px;   
@@ -15,7 +15,10 @@
       position: absolute;
       height: 100%;
       top: 0;
-      right: 15px;
+      right: 0;
+      @media screen and (min-width: 769px){
+        right: 15px;   
+      }
     }
   }
   .header_new_class{
@@ -74,12 +77,16 @@
         }
 
         &.non-img-link{
-          a{
+          a {
+            padding-top: 15px !important;
+            padding-bottom: 15px !important;
+            font-size: 14px;
             @media screen and (min-width: 769px){
-              padding: 20px 15px !important;
+              padding: 22px 15px 18px !important;
+              text-align: center;
             }
-            @media screen and (max-width: 769px){
-              padding: 15px !important;
+            &:focus, &:active {
+              background-color: rgba(0,0,0,0.3);
             }
           }
         }
@@ -87,6 +94,10 @@
         a {
           color: #fafafa;
           padding: 0 15px;
+          @media screen and (max-width: 768px){
+            padding-right: 10px;
+            padding-left: 10px;
+          }
           display: inline-block;
           height: 100%;
           width: 100%;
@@ -103,7 +114,7 @@
         .dropdown-menu a {
           color: #fff;
           @media screen and (max-width: 768px) {    
-            padding: 20px;
+            padding: 15px;
             font-weight: 400;
           }
           border: none;
@@ -209,6 +220,7 @@
                 position: relative;
                 .content {
                   margin-top: 20px;
+                  text-align: left;
                 }
                 a {
                   padding: 5px !important;
@@ -232,7 +244,7 @@
                   }
                   .markdown {
                     p {
-                      @media screen and (min-width: 769px){ text-align: right; }
+                      @media screen and (min-width: 769px){ text-align: left; }
                     }
                   }
                   .avatar64{
@@ -286,13 +298,9 @@
             top: 50px !important;
           }
         }
-        .dropdown.open{
-
+        .dropdown.open {
           @media screen and (max-width: 768px) {
             margin-left: 0 !important;
-            >a{
-              color: #333;
-            }
           }
         }
         .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
@@ -304,14 +312,16 @@
              padding: 7px 0;
           }
           @media screen and (min-width: 769px) {
-            padding: 14px 0 12px;
+            padding: 13px 0;
             #search_btn {
               padding-left: 30px;        
               border-radius: 0px;
+              padding-top: 6px;
+              padding-bottom: 3px
             }
           }
           #search_input {
-            padding: 6px 12px 6px 3px;
+            padding: 5px 12px 4px 3px;
             transition: background-color 100ms ease-out; 
             z-index: 2500;
             padding-left: 48px;

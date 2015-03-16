@@ -15,6 +15,19 @@ $(function(){
     header_init();
     site_messages();
     notifications_init();
+    searchBar_init();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
+  }
+
+  function searchBar_init(){
+    $('#search_chalkle_btn').click(function(){
+      if($(window).width() < 769){
+        $('#primary-search-form').submit();
+      }else{
+        $('#search_input').focus();
+      }
+    })
   }
 
   function facebook_init(){
@@ -121,7 +134,7 @@ $(function(){
     });
 
     function check_notification_height(){
-      $('.dropdown-menu ul').css('max-height', window.innerHeight - 140 );
+      $('.dropdown-menu ul').css('max-height', window.innerHeight - 100 );
     }
 
     function update_notification_badge(count) {

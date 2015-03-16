@@ -41,8 +41,8 @@
   </div>
   <div class="col-sm-2 hidden-xs">
     <a href="<%= booking.course.path %>" class="no-margin clear-both block center alert alert-success small">
-      <%= @bookings_count %>
-      <br /> <%= 'Booking'.pluralize(@bookings_count) %>
+      <%= bookings_count = booking.course.bookings.confirmed.where(chalkler_id: @chalkler.id).concat(booking.course.bookings.confirmed.where(booker_id: @chalkler.id)).uniq.count %>
+      <br /> <%= 'Booking'.pluralize(bookings_count) %>
     </a>
   </div>
 </article>

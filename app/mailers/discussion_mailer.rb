@@ -13,6 +13,7 @@ class DiscussionMailer < BaseChalkleMailer
     
     if should_send
       @notice = course_notice
+      @mail_header_color = @notice.course.provider.header_color(:hex)
       mail(to: to_email,  subject: I18n.t("email.discussion.new_from_teacher.subject", from_name: @notice.chalkler.first_name,  course_name: @notice.course.name)) do |format| 
         format.text { render layout: 'standard_mailer' }
         format.html { render layout: 'standard_mailer' }
@@ -37,6 +38,7 @@ class DiscussionMailer < BaseChalkleMailer
 
     if should_send
       @notice = course_notice
+      @mail_header_color = @notice.course.provider.header_color(:hex)
       mail(to: to_email,  subject: I18n.t("email.discussion.new_from_chalkler.subject", from_name: @notice.chalkler.first_name,  course_name: @notice.course.name)) do |format| 
         format.text { render layout: 'standard_mailer' }
         format.html { render layout: 'standard_mailer' }

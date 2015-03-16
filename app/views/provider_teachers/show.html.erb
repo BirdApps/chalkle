@@ -1,14 +1,5 @@
+<%= render 'heading' %>
 
-<br /> <br />
-<% if @provider_teacher.bio.present? %>
-  <p class="center light">
-     <%= to_html @provider_teacher.bio %>
-  </p>
-<% else %>
-  <p class="center light">
-    <%= @provider_teacher.name %> is a teacher for <%= @provider_teacher.provider.name %>
-  </p>
-<% end %>
 
 <div class="fancy-header">
   <h3>Upcoming Courses</h3>

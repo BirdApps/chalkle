@@ -1,6 +1,6 @@
 class ChalklersController < ApplicationController
-  before_filter :load_chalkler, only: [:show]
-  before_filter :header_chalkler, only: [:show]
+  before_filter :load_chalkler, only: [:show,:bookings,:preferences,:teaching]
+  before_filter :header_chalkler,:sidebar_administrate_chalkler, only: [:show,:preferences,:bookings,:teaching]
   before_filter :page_titles, only: [:show]
   
   def index
@@ -8,8 +8,16 @@ class ChalklersController < ApplicationController
   end
 
   def show
-    authorize @chalkler
+    authorize @chalkler, :admin?
     @upcoming_courses = current_user.courses if @chalkler == current_user || current_user.super?
+  end
+
+  def bookings
+    authorize @chalkler, :admin?
+  end
+
+  def teaching
+    authorize @chalkler, :admin?
   end
 
   def exists
@@ -20,8 +28,13 @@ class ChalklersController < ApplicationController
     end
   end
 
-  def set_location
+  def preferences
+    authorize @chalkler
+    @chalkler_email_preferences = ChalklerPreferences.new(@chalkler)
+    render template: 'me/preferences/settings'
+  end
 
+  def set_location
     session[:longitude] = params[:longitude]
     session[:latitude] = params[:latitude]
     session[:location] = params[:location]

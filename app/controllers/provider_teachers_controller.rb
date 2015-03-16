@@ -34,7 +34,7 @@ class ProviderTeachersController < ApplicationController
       end
     end
     @provider_teacher.update_attributes params[:provider_teacher]
-    redirect_to edit_provider_teacher_path(@provider_teacher.id), notice: 'Teacher has been updated'
+    redirect_to provider_teacher_path(@provider_teacher.path_params), notice: 'Teacher has been updated'
   end
 
   def new
@@ -63,7 +63,7 @@ class ProviderTeachersController < ApplicationController
       end
 
       if result
-        redirect_to provider_teacher_path(@provider_teacher.provider.url_name, @provider_teacher)
+        redirect_to provider_teacher_path(@provider_teacher.path_params)
       else
         flash_errors @provider_teacher.errors
         @page_title = "Teacher"

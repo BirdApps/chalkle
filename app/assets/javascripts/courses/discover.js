@@ -315,6 +315,7 @@ $(function(){
       }else{
         $('#courses_missing').fadeIn();
       }
+      $('[data-toggle="tooltip"]').tooltip();
     }
 
     function click_change_location(){
@@ -340,8 +341,6 @@ $(function(){
       $('.change-location').click(click_change_location);
       $('.cancel-location').click(cancel_location);
       $('.show-location').click(click_change_location);
-
-      $('[data-toggle="tooltip"]').tooltip()
       
       autocomplete = new google.maps.places.Autocomplete(
       /** @type {HTMLInputElement} */(document.getElementById('location_autocomplete')) ,
