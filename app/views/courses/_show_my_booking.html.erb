@@ -55,7 +55,7 @@
                     <p class="small light">
                       This booking has been transferred to <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler)  %>
                     </p>
-                    <%= link_to "Take back ownership", take_rights_provider_course_booking_path(booking.course,booking), class: 'text-danger small light' %>
+                    <%= link_to "Take back ownership", take_rights_provider_course_booking_path(booking.path_params), class: 'text-danger small light' %>
                   <% end %>
                 <% end %>
                
