@@ -56,39 +56,6 @@ protected
      session[:previous_url] || discover_path
   end
 
-  def header_chalkler
-    @nav_links = []
-    @chalkler = current_chalkler if @chalkler.nil?
-    
-    if current_user.super? && @chalkler != current_chalkler
-     @nav_links << {
-        img_name: "people",
-        link: sudo_chalklers_path({anchor: "chalkler-#{@chalkler.id}"}),
-        active: false,
-        title: "Become"
-      }
-    end
-
-    if @chalkler == current_chalkler || current_user.super?
-       @nav_links.concat [{
-          img_name: "bolt",
-          link: chalkler_path(@chalkler.id),
-          active: request.path.include?("show"),
-          title: "Profile"
-        },{
-        img_name: "settings",
-          link: me_preferences_path,
-          active: request.path.include?("show"),
-          title: "Settings"
-      },{
-        img_name: "plane", 
-        link: me_notification_preference_path,
-        active: request.path.include?("notifications"),
-        title: "Email Options"
-      }]
-    end
-  end
-
   def authenticate_chalkler!
     session[:user_return_to] = request.fullpath
     super
@@ -215,20 +182,39 @@ protected
   end
 
   def header_provider
-    @hero = @provider.hero
-    @header_partial = '/layouts/headers/provider'
+    if @provider
+      @hero = @provider.hero 
+      @header_partial = '/layouts/headers/provider'
+    end
+  end
+
+  def header_chalkler
+    if @chalkler
+      @header_partial = '/layouts/headers/chalkler'
+    end
+  end
+
+  def sidebar_administrate_chalkler
+    if @chalkler && policy(@chalkler).admin?
+      @sidebar_title = @chalkler.name
+      @sidebar = '/layouts/sidebars/chalkler'
+    end
   end
 
   def sidebar_administrate_provider
     load_provider unless @provider
-    @sidebar_title = @provider.name
-    @sidebar = '/layouts/sidebars/administrate_provider' if policy(@provider).admin?
+    if @provider && policy(@provider).admin?
+      @sidebar = '/layouts/sidebars/provider'
+      @sidebar_title = @provider.name
+    end
   end
 
   def sidebar_administrate_course
     load_course unless @course
-    @sidebar_title = @course.name
-    @sidebar = '/layouts/sidebars/administrate_course' if policy(@course).admin?  
+    if @course && policy(@course).admin? 
+      @sidebar_title = @course.name
+      @sidebar = '/layouts/sidebars/course'
+    end
   end
 
 end

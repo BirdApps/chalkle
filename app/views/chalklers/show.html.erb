@@ -1,21 +1,4 @@
-<div class="chalkler row">
-  <div class='col-xs-12'>
-    <% if @upcoming_courses.present? %>
-      <div class="fancy-header">
-        <h3>Upcoming Bookings</h3>
-        <hr />
-      </div>
-      <div class="row">
-        <% @upcoming_courses.each do |course| %>
-          <% bookings = course.bookings.confirmed.where(chalkler_id: current_user.id) %>
-            <% if bookings.present? %>
-                <% @bookings_count = bookings.count %>
-                <%= render partial: 'me/bookings/booking', locals: {booking: bookings.first } %>
-            <% end %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+<div class="chalkler">
 
   <div class="col-xs-12">
  
@@ -64,11 +47,11 @@
         <div class="col-xs-2 text-right">
           <% subscription = current_user.subscriptions.where(provider_id: provider.id) %>
           <% unless subscription.present? %>
-            <%= bootstrap_form_for(Subscription.new, url: provider_subscriptions_path(provider.id), html: { method: :post }) do |f| %>
+            <%= bootstrap_form_for(Subscription.new, url: provider_subscriptions_path(provider), html: { method: :post }) do |f| %>
               <input value="Follow" type="submit" class="btn btn-success" /> 
             <% end %>
           <% else %>
-            <%= bootstrap_form_for(subscription[0], url: provider_subscription_path(provider.id, subscription[0].id), html: { method: :delete }) do |f| %>
+            <%= bootstrap_form_for(subscription[0], url: provider_subscription_path(provider, subscription[0].id), html: { method: :delete }) do |f| %>
               <input type="hidden" name="return_to" value="<%= chalkler_path(@chalkler) %>" />
               <input value="Unfollow" type="submit" class="btn btn-warning" /> 
             <% end %>

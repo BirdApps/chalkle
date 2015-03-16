@@ -1,0 +1,23 @@
+<div class="admin-sidebar col-xs-12">
+  <%= link_to "Preferences", preferences_chalkler_path(@chalkler), class: 'btn primary'  %>
+
+  <div class="admin-links admin-section row">
+    <%= link_to "Teaching", teaching_chalkler_path(@chalkler), class: '' %>
+    <%# link_to "Admins", provider_admins_path(@provider), class: 'border-left' %>
+  </div>
+ 
+  <h5>
+    <%= link_to "Upcoming Bookings", bookings_chalkler_path(@chalkler) %>
+  </h5>
+
+  <div class="admin-section row">
+    <div class="col-xs-12 admin-list">
+      <% @chalkler.courses.in_future.uniq.each do |course| %>
+        <div class="admin-list-item">
+          <%= link_to course.name, provider_course_path(course.path_params) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>

@@ -41,6 +41,12 @@ Chalkle::Application.routes.draw do
   resources :provider_plans, path: 'plans'
 
   resources :chalklers, path: 'people', only: [:index, :show] do
+    member do
+      get 'preferences'
+      get 'bookings'
+      get 'teaching'
+    end
+
     resources :notifications, only: [:index, :show]
     collection do
       post 'exists'

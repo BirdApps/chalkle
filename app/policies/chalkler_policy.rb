@@ -10,4 +10,8 @@ class ChalklerPolicy < ApplicationPolicy
     #@user.super? or @chalkler.visible or @user.provider_teachers.collect{ |provider_teacher| provider_teacher.students }.flatten.include?(@chalkler) 
   end
 
+  def admin?
+    @user == @chalkler || @user.super?
+  end
+
 end
