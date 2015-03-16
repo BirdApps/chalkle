@@ -7,6 +7,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
+    @mail_header_color = @booking.provider.header_color(:hex)
     mail(to: @chalkler.email,  subject: I18n.t("email.booking.confirmation.to_chalkler.subject", name: @chalkler.first_name, course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
@@ -18,6 +19,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @booker = booking.booker
     @course = booking.course
+    @mail_header_color = @booking.provider.header_color(:hex)
     mail(to: @booking.pseudo_chalkler_email,  subject: I18n.t("email.booking.confirmation.to_non_chalkler.subject", name: @booking.name, course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
@@ -30,6 +32,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @teacher = booking.teacher
     @course = booking.course
+    @mail_header_color = @booking.provider.header_color(:hex)
     mail(to: @teacher.email,  subject: I18n.t("email.booking.confirmation.to_teacher.subject", course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
@@ -40,6 +43,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
+    @mail_header_color = @booking.provider.header_color(:hex)
     mail(to: @chalkler.email, subject: I18n.t("email.booking.cancelled.to_chalkler.subject", name: @chalkler.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
@@ -50,6 +54,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @teacher = booking.teacher
     @course = booking.course
+    @mail_header_color = @booking.provider.header_color(:hex)
     mail(to: @teacher.email, subject: I18n.t("email.booking.cancelled.to_teacher.subject", course_name: @course.name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
@@ -61,7 +66,7 @@ class BookingMailer < BaseChalkleMailer
     @teacher = booking.teacher
     @course = booking.course
     @provider_admin = provider_admin
-
+    @mail_header_color = @booking.provider.header_color(:hex)
     mail(to: @provider_admin.email, subject: I18n.t("email.booking.cancelled.to_provider_admin.subject", course_name: @course.name)) do |format| 
       format.html { render layout: 'standard_mailer' }
     end
@@ -72,6 +77,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
+    @mail_header_color = @booking.provider.header_color(:hex)
     mail(to: @chalkler.email, subject: I18n.t("email.booking.reminder.subject", name: @chalkler.first_name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
@@ -82,6 +88,7 @@ class BookingMailer < BaseChalkleMailer
     @booking = booking
     @chalkler = booking.chalkler
     @course = booking.course
+    @mail_header_color = @booking.provider.header_color(:hex)
     mail(to: @chalkler.email, subject: I18n.t("email.booking.completed.subject", name: @chalkler.first_name)) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }

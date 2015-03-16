@@ -6,9 +6,9 @@
   <div class="admin-links admin-section row">
 
     <%= link_to "Edit", edit_provider_course_path(@course.path_params), class: 'border-bottom' if @course.editable? %>
-    <%= link_to "Duplicate", clone_provider_course_path(@course.path_params), class: 'border-bottom border-left' %>
-    <%= link_to "Publish", cancel_provider_course_path(@course.path_params) if @course.publishable? %>
-    <%= link_to "Unpublish", cancel_provider_course_path(@course.path_params) if @course.unpublishable? %>
+    <%= link_to "Duplicate", clone_provider_course_path(@course.path_params), method: :post, class: 'border-bottom border-left' %>
+    <%= link_to "Publish", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post if @course.publishable? %>
+    <%= link_to "Unpublish", change_status_provider_course_path(@course.path_params.merge(status: 'Draft')), method: :post if @course.unpublishable? %>
     <%= link_to "Cancel", cancel_provider_course_path(@course.path_params), class: 'border-left' if @course.cancellable? %>
   </div>
   

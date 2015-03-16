@@ -209,6 +209,7 @@
                 position: relative;
                 .content {
                   margin-top: 20px;
+                  text-align: left;
                 }
                 a {
                   padding: 5px !important;
@@ -232,7 +233,7 @@
                   }
                   .markdown {
                     p {
-                      @media screen and (min-width: 769px){ text-align: right; }
+                      @media screen and (min-width: 769px){ text-align: left; }
                     }
                   }
                   .avatar64{

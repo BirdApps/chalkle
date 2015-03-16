@@ -172,15 +172,21 @@ class Provider < ActiveRecord::Base
     self.url_name = new_url_name
   end
 
-  def header_color
+  def header_color(format=:rgba)
     return nil unless average_hero_color
     @header_color ||= (
       begin
         hsl = Color::RGB.from_html(read_attribute(:average_hero_color)).to_hsl
         hsl.s = hsl.s * 2
         hsl.l = 0.65 unless hsl.l < 0.65
+      case format
+      when :rgba
         rgb = hsl.to_rgb
         "rgba(#{rgb.red.to_i}, #{rgb.green.to_i}, #{rgb.blue.to_i}, 0.91)"
+      when :hex
+        average_hero_color
+      end
+
       rescue ArgumentError => error
         nil
       end

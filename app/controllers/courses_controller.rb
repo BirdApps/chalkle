@@ -157,17 +157,21 @@ class CoursesController < ApplicationController
   end
   
   def change_status
-    course = Course.find_by_id params[:id]
+    course = Course.find_by_id params[:course_id]
     return not_found if !course
     authorize course
-    new_status = params[:course][:status]
-    if new_status == 'publish_series'
-      new_status = 'Published'
-      course.repeat_course.courses.each do |series_course|
-        series_course.publish! if series_course.status == 'Draft'
+    case params[:status]
+    when 'Published'
+      course.status = params[:status]
+      repeat_courses = course.repeat_course.try(:courses)
+      if repeat_courses
+        repeat_courses.each do |series_course|
+          series_course.publish! if series_course.status == 'Draft'
+        end
       end
+    when 'Draft'
+      course.status = params[:status]
     end
-    course.status = new_status
     flash_errors @course.errors if !course.save
     redirect_to provider_course_path(course)
   end
