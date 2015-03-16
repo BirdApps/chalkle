@@ -15,6 +15,17 @@ $(function(){
     header_init();
     site_messages();
     notifications_init();
+    searchBar_init();
+  }
+
+  function searchBar_init(){
+    $('#search_chalkle_btn').click(function(){
+      if($(window).width() < 769){
+        $('#primary-search-form').submit();
+      }else{
+        $('#search_input').focus();
+      }
+    })
   }
 
   function facebook_init(){
