@@ -30,9 +30,6 @@
 
   .sidebar-tab {
     width: 100%;
-    margin-right: 30px;
-    white-space: nowrap;
-    overflow: hidden;
     transition: all 200ms ease-in-out;
     cursor: pointer;
     z-index: 1;
@@ -42,7 +39,9 @@
     background-color: #1F1F1F;
     height: 50px;
     h4 {
-      margin: 6px 0 0;
+      margin: 6px 40px 0 0;
+         white-space: nowrap;
+      overflow: hidden;
     }
     span {
       float: right;
