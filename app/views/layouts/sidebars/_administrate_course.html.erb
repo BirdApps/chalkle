@@ -12,14 +12,14 @@
     <%= link_to "Cancel", cancel_provider_course_path(@course.path_params), class: 'border-left' if @course.cancellable? %>
   </div>
   
-  <h5>
-    Bookings
-    <% if @course.bookings.present? %>
-      <%= link_to "See more", provider_course_bookings_path(@course.path_params), class: 'light' %>
-    <% end %>
-  </h5>
+  <h5>Bookings</h5>
 
   <div class="admin-section row">
+    <% if @course.bookings.present? %>
+      <div class="col-xs-12">
+        <%= link_to "Booking Details", provider_course_bookings_path(@course.path_params), class: 'btn btn-stub' %>
+      </div>
+    <% end %>
     <div class="col-xs-12 admin-list">
       <% @course.bookings.each do |booking| %>
         <div class="admin-list-item">
