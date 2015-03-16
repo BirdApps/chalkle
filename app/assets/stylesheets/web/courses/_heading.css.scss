@@ -5,6 +5,14 @@
   &::after {
     clear: both;
   }
+  .edit_btn{
+    float: right;
+    margin-top: 10px;
+    @media screen and (min-width: 769px){
+      float: right;
+      margin-top: 0px;
+    }
+  }
   ._heading_title {
     padding-top: 20px;
     h2 {

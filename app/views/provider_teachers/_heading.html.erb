@@ -1,0 +1,30 @@
+<div class="_heading">
+  <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+  
+    <% if @provider_teacher.avatar.present? %>
+      <div  class="avatar64 pull-left" href="<%= provider_teacher_path @provider_teacher.path_params %>" title="<%= @provider_teacher.name %>">
+        <div class="img contain hidden-xs" style="background-image: url(<%= @provider_teacher.avatar %>)">
+        </div>
+         <div class="img visible-xs" style="background-image: url(<%= @provider_teacher.avatar %>)">
+        </div>
+      </div>
+    <% end %>
+
+    <div class="_heading_title flush">
+      <%= link_to 'Edit', edit_provider_teacher_path(@provider_teacher.path_params), class: 'btn btn-default edit_btn col-xs-12 col-sm-2' if policy(@provider_teacher).edit? && !current_page?(edit_provider_teacher_path(@provider_teacher.path_params)) %>
+      <h2>
+        <%= link_to @provider_teacher.name, provider_teacher_path(@provider_teacher.path_params) %>
+      </h2>
+    </div>
+
+    <p>
+      <% if @provider_teacher.bio.present? %>
+        <%= to_html @provider_teacher.bio %>
+      <% else %>
+        <%= @provider_teacher.name %> is a teacher for <%= @provider_teacher.provider.name %>
+      <% end %>
+    </p>
+
+
+  </div>
+</div>
