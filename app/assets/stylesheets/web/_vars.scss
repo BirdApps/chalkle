@@ -8,16 +8,18 @@ $letter-spacing: 1.5px;
 $desktop-nav-height: 62px;
 $mobile-nav-height: 50px;
 
-$color-header: rgba(76,126,147,0.9);
-$color-header-opaque: rgba(76,126,147,1);
+$color-header: rgba(74,144,226,0.9);
+$color-header-opaque: rgba(74,144,226,1);
 
-$color-primary: rgba(76,126,147,1);
-$color-primary-hover: rgba(76,126,147,0.9);
+$color-primary: rgba(74,144,226,1);
+$color-primary-hover: rgba(32,96,170,0.9);
 $color-primary-active: rgba(76,126,147,0.9);
 
-$color-default: rgba(76,126,147,1);
-$color-default-hover: rgba(76,126,147,0.9);
-$color-default-active: rgba(76,126,147,0.9);
+$color-default: rgba(74,144,226,1);
+$color-default-hover: rgba(7,102,202,0.9);
+$color-default-active: rgba(7,102,202,0.9);
+
+$color-minor-layout-elements: rgba(255, 255, 255, 0.37);
 
 $color-success: rgba(76,126,147,1);
 $color-success-hover: rgba(76,126,147,0.9);
