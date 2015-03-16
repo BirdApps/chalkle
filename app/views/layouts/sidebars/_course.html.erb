@@ -4,12 +4,27 @@
   </div>
   
   <div class="admin-links admin-section row">
+    <%= link_to "View", provider_course_path(@course.path_params), class: 'border-bottom' %>
+    
+    <% if @course.publishable? %>
+      <%= link_to "Publish", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post, class: 'border-left border-bottom' %>
+    <% elsif @course.unpublishable?   %>
+      <%= link_to "Unpublish", change_status_provider_course_path(@course.path_params.merge(status: 'Draft')), method: :post, class: 'border-left border-bottom' %>
+    <% elsif @course.cancellable? %>
+      <%= link_to "Cancel", cancel_provider_course_path(@course.path_params), class: 'border-left border-bottom' %>
+    <% end %>
 
-    <%= link_to "Edit", edit_provider_course_path(@course.path_params), class: 'border-bottom' if @course.editable? %>
-    <%= link_to "Duplicate", clone_provider_course_path(@course.path_params), method: :post, class: 'border-bottom border-left' %>
-    <%= link_to "Publish", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post if @course.publishable? %>
-    <%= link_to "Unpublish", change_status_provider_course_path(@course.path_params.merge(status: 'Draft')), method: :post if @course.unpublishable? %>
-    <%= link_to "Cancel", cancel_provider_course_path(@course.path_params), class: 'border-left' if @course.cancellable? %>
+    <% if @course.editable? %>
+      <%= link_to "Edit", edit_provider_course_path(@course.path_params) %>
+    <% else %>
+      <a href="#" class="disabled" data-toggle="popover" data-placement="bottom" title="<%= @course.status %>" data-content="You cannot no longer edit this class. To run the class again, use 'Duplicate'.">
+        Edit
+      </a>
+    <% end %>
+
+    <%= link_to "Duplicate", clone_provider_course_path(@course.path_params), method: :post, class: 'border-left' %>
+    
+   
   </div>
   
   <h5>Bookings</h5>
