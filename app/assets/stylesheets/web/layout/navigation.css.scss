@@ -312,12 +312,13 @@
           }
           #search_input {
             padding: 6px 12px 6px 3px;
-            &:focus, &:active {
+            transition: background-color 100ms ease-out; 
+            z-index: 2500;
+            padding-left: 48px;
+            left: -45px;
+            border-radius: 3px;
+            &:focus, &:active, &:hover {
               background-color: rgba(7,102,202,0.9);
-              padding-left: 48px; 
-              margin-left: -45px;
-              border-radius: 3px;
-              z-index: 2500;
             }
           }
           .search-form{
