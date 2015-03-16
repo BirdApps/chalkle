@@ -4,7 +4,6 @@ class People::RegistrationsController < Devise::RegistrationsController
     @page_title =  "Learn"
     @meta_title = "Learn with "
     @show_header = false
-    @fluid_layout = true
   end
 
   def create

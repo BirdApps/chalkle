@@ -15,11 +15,10 @@ $(function(){
     function fetch_courses(page){
       if(!fetching_courses) {
         spinner_courses_spin();
-
         if(page == undefined){
           page = getParam('page');
           if(page == undefined){
-            page = 0;
+            page = 1;
           }
         }
 
@@ -60,7 +59,7 @@ $(function(){
       if(fetch_params.take != undefined && fetch_params.take != '30'){
         params['take'] = fetch_params.take;
       }
-      if(fetch_params.page != '0'){
+      if(fetch_params.page != '1'){
         params['page'] = fetch_params.page;
       }
 
@@ -82,6 +81,9 @@ $(function(){
         take = $(this).data('take');
         page = $(this).data('page');
         past = $(this).data('past');
+        if(past != undefined) {
+          $('.past_present_classes').text($(this).text());
+        }
         if(page != undefined){
           fetch_courses(page);
         }else{
@@ -123,7 +125,7 @@ $(function(){
     }
 
     function init(){
-      fetch_courses(0);
+      fetch_courses(1);
     }
 
     init();

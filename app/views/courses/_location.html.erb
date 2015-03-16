@@ -4,7 +4,9 @@
       <em>Find classes <span class="location-reference">near</span> <strong class="show-location">...</strong></em>
       <a class="change-location">Change location</a>
     </div>
+
     <div class="location-form" id="location-form">
+      <a class="cancel-location hidden-xs">Cancel</a>
       <div class="input-group">
         <span class="input-group-addon btn" id="globe_holder" role="button" title="Auto-locate" data-toggle="tooltip" data-placement="bottom">
           <img src="/assets/location_arrow.png" alt="Auto Locate" id="toggle_map_view" />
@@ -17,5 +19,6 @@
         <input type="hidden" name="coord_lng" id="coord_lng" value="<%= get_coords[:lng]  %>" />
       </div>
     </div>
+
   </div>
 </div>

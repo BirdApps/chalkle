@@ -40,7 +40,7 @@
 
     <div class="body-content <%= 'sidebar-padding' if @sidebar.present? %>  <%= 'open' if current_user.sidebar_open %>">
       <div id="wrapper">
-        <div class="<%= fluid_layout? ? "container-fluid" : "container" %>" role="main">
+        <div class="container-fluid" role="main">
           <%= yield %>
         </div>
        <%#  <div id="map_overlay" style="display: none"><div id="map_holder"></div></div> %>

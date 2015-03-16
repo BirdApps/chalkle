@@ -71,7 +71,6 @@ class CoursesController < ApplicationController
   def teach
     @page_title =  "Teach"
     @meta_title = "Teach with "
-    @fluid_layout = true
     @show_header = false unless chalkler_signed_in?
     render 'teach'
   end
@@ -90,7 +89,7 @@ class CoursesController < ApplicationController
     end
 
     if current_user.providers_adminable.count == 1
-      redirect_to new_course_provider_path(current_user.providers_adminable.first) and return
+      redirect_to new_provider_class_path(current_user.providers_adminable.first) and return
     end
   end
 

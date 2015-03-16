@@ -2,7 +2,7 @@
   if @teaching.editing?
     submit_url = edit_provider_course_path @teaching.course.path_params
   else
-    submit_url = new_course_provider_path @teaching.provider
+    submit_url = new_provider_class_path @teaching.provider
   end
 
   if !@teaching.editing?
@@ -15,7 +15,7 @@
     b.use :label_input
   end
  %>
-<div class="new_form_wrapper new_course_form_wrapper" style="display:none;">
+<div class="new_form_wrapper new_course_form_wrapper container" style="display:none;">
   <div class="col-xs-12">
     <ol class="breadcrumb text-center">
       <li class="active"><a class="part_link" href="#type" id="type-link">Class Type</a></li>

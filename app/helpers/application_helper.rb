@@ -55,11 +55,6 @@ module ApplicationHelper
     true
   end
 
-  def fluid_layout? 
-    return true if request[:controller] =~ /sessions/ || @fluid_layout == true
-    false
-  end
-
   def truncate(string, length=16)
     return unless string
     truncated = string.split[0..string[0..length].split(" ").count-1].join(" ")
@@ -108,7 +103,7 @@ module ApplicationHelper
   end
 
   def paginate_count
-    @paginate_count ||= (@pagination_list.count / paginate_take) - 1
+    @paginate_count ||= [(@pagination_list.count / paginate_take) - 1, 0].max
   end
 
   def paginate_take
