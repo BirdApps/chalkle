@@ -2,7 +2,7 @@
   if @teaching.editing?
     submit_url = edit_provider_course_path @teaching.course.path_params
   else
-    submit_url = new_provider_class_path @teaching.provider
+    submit_url = provider_classes_path @teaching.provider
   end
 
   if !@teaching.editing?
@@ -15,559 +15,514 @@
     b.use :label_input
   end
  %>
-<div class="new_form_wrapper new_course_form_wrapper container" style="display:none;">
-  <div class="col-xs-12">
-    <ol class="breadcrumb text-center">
-      <li class="active"><a class="part_link" href="#type" id="type-link">Class Type</a></li>
-      <li><a href="#details" class="part_link" id="details-link">Details</a></li>
-      <li><a href="#learning" class="part_link" id="learning-link">Learning</a></li>
-      <li><a href="#teaching" class="part_link" id="teaching-link">Teacher & Venue</a></li>
-      <li><a href="#summary" class="part_link" id="summary-link">Summary</a></li>
-    </ol>
+<div class="new_form_wrapper new_course_form_wrapper" style="display:none;">
+  <ol class="breadcrumb text-center">
+    <li class="active"><a class="part_link" href="#type" id="type-link">Class Type</a></li>
+    <li><a href="#details" class="part_link" id="details-link">Details</a></li>
+    <li><a href="#learning" class="part_link" id="learning-link">Learning</a></li>
+    <li><a href="#teaching" class="part_link" id="teaching-link">Teacher & Venue</a></li>
+    <li><a href="#summary" class="part_link" id="summary-link">Summary</a></li>
+  </ol>
 
-    <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: submit_url, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+  <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: submit_url, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+    
+    <div id="type" class="parts center">
+      <div class="fancy-header">
+        <h3><%= @teaching.editing? ? 'Edit' : 'New' %> Class</h3>
+        <hr />
+      </div>
+      <input type="hidden" id="teaching_course_class_type" value="<%= f.object.course_class_type %>" />
+      <% if f.object.editing? %>
+        <input type="hidden" name="_method" value="put" />
+        <p class="col-sm-12 center"><small class="">You cannot change between single or multiple classes. </small></p>
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-default" id="type_unchangable"><%= f.radio_button :course_class_type, f.object.course_class_type , class: :'course-class-radio' %>Edit <%= f.object.course_class_type.capitalize %></label>
+        </div>
+      <% elsif f.object.cloning? %>
+        <input type="hidden" name="teaching[cloning_id]" value="<%= f.object.cloning_id %>" />
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-default" id="type_unchangable"><%= f.radio_button :course_class_type, f.object.course_class_type , class: :'course-class-radio' %>Copy <%= f.object.course_class_type.capitalize %></label>
+        </div>
+        <p class="col-sm-12 center"><small class="">You cannot change between single or multiple classes while copying a <%= f.object.course_class_type %>. </small></p>
+      <% else %>
+        <p>Will learners attend one class, or multiple classes?</p>
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class', class: :'course-class-radio' %>Single</label>
+          <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course', class: :'course-class-radio' %>Multiple</label>
+        </div>
+      <% end %>
+    </div>
+
+    <div id="details" class="parts">
+      <div class="fancy-header">
+        <h3><span class="class_only">Class</span><span class="course_only">Course</span> Info</h3>
+        <hr />
+      </div>
+
+      <%= f.input :title, label: "Give your <span class='class_only'>class</span><span class='course_only'>course</span> a <strong>name</strong>", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
+
+      <div class="col-sm-4"></div>
+      <div class="col-sm-7">
+        <p class="small grey">ie. Gardening for beginners. The <span class="class_only">class</span><span class="course_only">course</span>  name should be short, descriptive and clear</p>
+      </div>
       
-      <div id="type" class="parts center">
-        <div class="fancy-header">
-          <h3><%= @teaching.editing? ? 'Edit' : 'New' %> Class</h3>
-          <hr />
-        </div>
-        <input type="hidden" id="teaching_course_class_type" value="<%= f.object.course_class_type %>" />
-        <% if f.object.editing? %>
-          <input type="hidden" name="_method" value="put" />
-          <p class="col-sm-12 center"><small class="">You cannot change between single or multiple classes. </small></p>
-          <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-default" id="type_unchangable"><%= f.radio_button :course_class_type, f.object.course_class_type , class: :'course-class-radio' %>Edit <%= f.object.course_class_type.capitalize %></label>
-          </div>
-        <% elsif f.object.cloning? %>
-          <input type="hidden" name="teaching[cloning_id]" value="<%= f.object.cloning_id %>" />
-          <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-default" id="type_unchangable"><%= f.radio_button :course_class_type, f.object.course_class_type , class: :'course-class-radio' %>Copy <%= f.object.course_class_type.capitalize %></label>
-          </div>
-          <p class="col-sm-12 center"><small class="">You cannot change between single or multiple classes while copying a <%= f.object.course_class_type %>. </small></p>
-        <% else %>
-          <p>Will learners attend one class, or multiple classes?</p>
-          <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-default"><%= f.radio_button :course_class_type, 'class', class: :'course-class-radio' %>Single</label>
-            <label class="btn btn-default"><%= f.radio_button :course_class_type, 'course', class: :'course-class-radio' %>Multiple</label>
-          </div>
-        <% end %>
-      </div>
-
-      <div id="details" class="parts">
-        <div class="fancy-header">
-          <h3><span class="class_only">Class</span><span class="course_only">Course</span> Info</h3>
-          <hr />
-        </div>
-
-        <%= f.input :title, label: "Give your <span class='class_only'>class</span><span class='course_only'>course</span> a <strong>name</strong>", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
-
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">ie. Gardening for beginners. The <span class="class_only">class</span><span class="course_only">course</span>  name should be short, descriptive and clear</p>
-        </div>
-        
-        <% if !f.object.editing? && !f.object.cloning? %>
-          <div class="class_only">
-            <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizontal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
-            
-            <div class="repeating-options" style="display:none;">
-              <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the class take place", input_html: { :class => 'form-control update_class_time', :'data-error-message' => 'Please choose an option', :'data-validate-complex' => :true }, wrapper: :horizontal %>
-
-              <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the class be held?", wrapper_html: { class: :'update_repeat_count' }, input_html: { :'data-min' => '2', value: f.object.repeat_count || 2, class: :'update_class_time' }, wrapper: :horizontal %>
-           
-              <div class="col-xs-12 info">
-                Attendees can sign up for any repeating class, and pay for each one individually. 
-              </div>
-            </div>
-          </div>
-        <% end %>
-        <div class="course_only" >
-          <%= f.input :class_count, as: :number_picker, label: "<strong>How many classes</strong> will be in the course?", input_html: { value: f.object.class_count || '2', :'data-min' => '2', :'data-max' => '20', :'data-max-error' => 'Maximum 20 classes to a course, if you need more contact Chalkle.', :'data-min-error' =>  'Courses need at least 2 classes. Did you mean to make a class?'}, wrapper_html: { class: :'update_class_count' }, wrapper: :horizontal %>
-        </div>
-        <% f.object.start_at.count.times do |i| %>
-          <%
-            start_at = f.object.start_at[i]
-            date_temp = start_at.to_datetime
-            time_temp = date_temp.strftime('%l:%M %p')
-            hours_temp = f.object.duration_hours[i]
-            minutes_temp = f.object.duration_minutes[i]
-           %>
-          <div class="class-count">
-            <div class="class-count-title fancy-header">
-              <h3>Class <span class="class_only">Time</span><span class="course_only class-count-num"><%= i+1 %></span></h3>
-              <hr />
-            </div>
-              
-            <div class="col-sm-12">
-              <div class="info teaching_times_summary">
-              </div>
-            </div>
-            
-
-            <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the class be on?", input_html: { :'data-init-date' => date_temp , value: date_temp ,name: 'teaching[start_at][]' }, wrapper: :horizontal %>
-            
-            <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the class start?", wrapper: :horizontal, input_html: { value: time_temp  ,  id: 'saved_timepick', name: '' } %>
-            
-            <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizontal, input_html: { name: 'teaching[duration_hours][]', value: hours_temp, :'data-min' => '0', class: 'update_class_time'  }  %>
-            
-            <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizontal, input_html: {name: 'teaching[duration_minutes][]', value: minutes_temp, :'data-min' => '0', class: :'update_class_time'   } %>
-          </div>
-        <% end %>
-        <div class="class-count-bumper"></div>
-
-        <div class="row prevnext">
-          <div class="col-xs-5 prev">
-            <a href="#type" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
-          </div>
-          <div class="col-xs-7 next">
-            <a href="#learning" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
-          </div>
-        </div>
-
-      </div>
-
-      <div id="learning" class="parts">
-        <div class="fancy-header">
-          <h3><span class="class_only">Class</span><span class="course_only">Course</span>  Details</h3>
-          <hr />
-        </div>
-
-        <%= f.input :learning_outcomes, as: :text, label: "Learning <strong>Outcomes</strong>", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify learning outcomes' } %>
-
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">What should learners come away with at the end of the <span class="class_only">class</span><span class="course_only">course</span>?</p>
-        </div>
-
-        <%= f.input :do_during_class, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Activities</strong>", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
-
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">What activities can learners expect from this <span class="class_only">class</span><span class="course_only">course</span>?</p>
-        </div>
-
-        <%= f.input :suggested_audience, as: :text, label: "<strong>Who</strong> is the <span class='class_only'>class</span><span class='course_only'>course</span> for?", wrapper: :horizontal %>
-
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">Describe the ideal attendee your <span class="class_only">class</span><span class="course_only">course</span> is designed for. If it would work for everyone, leave it blank.</p>
-        </div>
-
-        <%= f.input :prerequisites, as: :text, label: "What should learners <strong>bring</strong> along?", wrapper: :horizontal %>
-
-        <%= f.input :additional_comments, as: :text, label: "Any other comments?", wrapper: :horizontal %>
-
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">Is there anything else that learners should know before coming?</p>
-        </div>
-        
-        <div class="row prevnext">
-          <div class="col-xs-5 prev">
-            <a href="#details" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
-          </div>
-          <div class="col-xs-7 next">
-            <a href="#teaching" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
-          </div>
-        </div>
-      </div>
-
-      <div id="teaching" class="parts">
-
-        <div class="fancy-header">
-          <h3>Venue Information</h3>
-          <hr />
-        </div>
-
-        <%= f.input :venue_address, label: '<abbr title="required">*</abbr>Venue <strong>Address</strong>', wrapper: :horizontal, input_html: { :'data-error-message' => "Sorry, we couldn't understand that address" } %>
-        <%= f.input :street_number, as: :hidden %>
-        <%= f.input :street_name, as: :hidden %>
-        <%= f.input :city, as: :hidden %>
-        <%= f.input :region, as: :hidden %>
-        <%= f.input :country, as: :hidden %>
-        <%= f.input :postal_code, as: :hidden %>
-        <%= f.input :longitude, as: :hidden %>
-        <%= f.input :latitude, as: :hidden%>
-       
-        <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizontal %>
-
-        <% unless current_user.providers.count == 1 && current_user.providers.first.provider_teachers.count < 2 %>
-
-          <%# if not multiple provider will be inferred %>
-          <% if current_user.providers.count > 1 %>
-            <div class="fancy-header">
-              <h3>Presented by</h3>
-              <hr />
-            </div>
-            <%= f.input :provider_id, :label => "Associated <strong>Provider</strong>", :collection => current_user.providers, wrapper: :horizontal, input_html: {:'data-error-message'=>'Please select a provider'} %>
-          <% elsif current_user.providers.count == 1%>
-            <%= f.text_field :provider_id, type: :hidden, value: current_user.providers.first.id  %>
-          <% end %>
-
-          <%# if no provider or single provider having 1 or 0 teachers, teacher is inferred %>
-          <% if current_user.providers.count > 0  %>
-            <% if f.object.editing? %>
-              <input type="hidden" value="<%= f.object.teacher_id %>" id="saved_teacher_id" />
-              <div class="teacher-select">
-                <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => f.object.provider.provider_teachers, wrapper: :horizontal %>
-              </div>
-            <% else %>
-              <div class="teacher-select">
-                <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => {id: '-1', name: 'Select a provider first'}, wrapper: :horizontal %>
-              </div>
-            <% end %>
-          <% end %>
-
-        <% end %>
-
-        <div class="fancy-header">
-          <h3>Pricing</h3>
-          <hr />
-        </div>
+      <% if !f.object.editing? && !f.object.cloning? %>
+        <div class="class_only">
+          <%= f.input :repeating, collection: [['Once-off', 'once-off'], ['Repeating','repeating']], :label => "Is this a <strong>repeating</strong> class, or a <strong>once off</strong>?", wrapper: :horizontal, :input_html => { :multiple => false, class: 'update_class_time form-control' } %>
           
+          <div class="repeating-options" style="display:none;">
+            <%= f.input :repeat_frequency, as: :select, collection: ['weekly', 'monthly'] ,label: "How <strong>often</strong> will the class take place", input_html: { :class => 'form-control update_class_time', :'data-error-message' => 'Please choose an option', :'data-validate-complex' => :true }, wrapper: :horizontal %>
+
+            <%= f.input :repeat_count, as: :number_picker, label: "<strong>How many</strong> times will the class be held?", wrapper_html: { class: :'update_repeat_count' }, input_html: { :'data-min' => '2', value: f.object.repeat_count || 2, class: :'update_class_time' }, wrapper: :horizontal %>
+         
+            <div class="col-xs-12 info">
+              Attendees can sign up for any repeating class, and pay for each one individually. 
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="course_only" >
+        <%= f.input :class_count, as: :number_picker, label: "<strong>How many classes</strong> will be in the course?", input_html: { value: f.object.class_count || '2', :'data-min' => '2', :'data-max' => '20', :'data-max-error' => 'Maximum 20 classes to a course, if you need more contact Chalkle.', :'data-min-error' =>  'Courses need at least 2 classes. Did you mean to make a class?'}, wrapper_html: { class: :'update_class_count' }, wrapper: :horizontal %>
+      </div>
+      <% f.object.start_at.count.times do |i| %>
+        <%
+          start_at = f.object.start_at[i]
+          date_temp = start_at.to_datetime
+          time_temp = date_temp.strftime('%l:%M %p')
+          hours_temp = f.object.duration_hours[i]
+          minutes_temp = f.object.duration_minutes[i]
+         %>
+        <div class="class-count">
+          <div class="class-count-title fancy-header">
+            <h3>Class <span class="class_only">Time</span><span class="course_only class-count-num"><%= i+1 %></span></h3>
+            <hr />
+          </div>
+            
+          <div class="col-sm-12">
+            <div class="info teaching_times_summary">
+            </div>
+          </div>
+          
+
+          <%= f.input :start_at, as: :calendar, label: "What <strong>date</strong> will the class be on?", input_html: { :'data-init-date' => date_temp , value: date_temp ,name: 'teaching[start_at][]' }, wrapper: :horizontal %>
+          
+          <%= f.input :start_at, as: :clock, label: "What <strong>time of day</strong> will the class start?", wrapper: :horizontal, input_html: { value: time_temp  ,  id: 'saved_timepick', name: '' } %>
+          
+          <%= f.input :duration_hours, as: :number_picker, label: "How many <strong>hours</strong> will the <span class='class_only'>class</span><span class='course_only'>course</span> go for?", wrapper: :horizontal, input_html: { name: 'teaching[duration_hours][]', value: hours_temp, :'data-min' => '0', class: 'update_class_time'  }  %>
+          
+          <%= f.input :duration_minutes, as: :number_picker, label: "and how many <strong>minutes</strong>?", wrapper: :horizontal, input_html: {name: 'teaching[duration_minutes][]', value: minutes_temp, :'data-min' => '0', class: :'update_class_time'   } %>
+        </div>
+      <% end %>
+      <div class="class-count-bumper"></div>
+
+      <div class="row prevnext">
+        <div class="col-xs-5 prev">
+          <a href="#type" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+        </div>
+        <div class="col-xs-7 next">
+          <a href="#learning" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="learning" class="parts">
+      <div class="fancy-header">
+        <h3><span class="class_only">Class</span><span class="course_only">Course</span>  Details</h3>
+        <hr />
+      </div>
+
+      <%= f.input :learning_outcomes, as: :text, label: "Learning <strong>Outcomes</strong> <p class='small grey'>What should learners come away with at the end of the <span class='class_only'>class</span><span class='course_only'>course</span>?</p>", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify learning outcomes' } %>
+
+      <%= f.input :do_during_class, as: :text, label: "<span class='class_only'>Class</span><span class='course_only'>Course</span> <strong>Activities</strong> <p class='small grey'>What activities can learners expect from this <span class='class_only'>class</span><span class='course_only'>course</span>?</p>", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify class activities.' } %>
+
+      <%= f.input :suggested_audience, as: :text, label: "<strong>Who</strong> is the <span class='class_only'>class</span><span class='course_only'>course</span> for? <p class='small grey'>Describe the ideal attendee your <span class='class_only'>class</span><span class='course_only'>course</span> is designed for. If it would work for everyone, leave it blank.</p>", wrapper: :horizontal %>
+
+      <%= f.input :prerequisites, as: :text, label: "What should learners <strong>bring</strong> along?", wrapper: :horizontal %>
+
+      <%= f.input :additional_comments, as: :text, label: "Any other comments? <p class='small grey'>Is there anything else that learners should know before coming?</p>", wrapper: :horizontal %>
+      
+      <div class="row prevnext">
+        <div class="col-xs-5 prev">
+          <a href="#details" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+        </div>
+        <div class="col-xs-7 next">
+          <a href="#teaching" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
+        </div>
+      </div>
+    </div>
+
+    <div id="teaching" class="parts">
+
+      <div class="fancy-header">
+        <h3>Venue Information</h3>
+        <hr />
+      </div>
+
+      <%= f.input :venue_address, label: '<abbr title="required">*</abbr>Venue <strong>Address</strong>', wrapper: :horizontal, input_html: { :'data-error-message' => "Sorry, we couldn't understand that address" } %>
+      <%= f.input :street_number, as: :hidden %>
+      <%= f.input :street_name, as: :hidden %>
+      <%= f.input :city, as: :hidden %>
+      <%= f.input :region, as: :hidden %>
+      <%= f.input :country, as: :hidden %>
+      <%= f.input :postal_code, as: :hidden %>
+      <%= f.input :longitude, as: :hidden %>
+      <%= f.input :latitude, as: :hidden%>
+     
+      <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizontal %>
+
+      <% if f.object.provider.provider_teachers.count > 1 %>
+        <div class="teacher-select">
+          <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => f.object.provider.provider_teachers, wrapper: :horizontal %>
+        </div>
+      <% end %>
+
+      <div class="fancy-header">
+        <h3>Pricing</h3>
+        <hr />
+      </div>
         
-        <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
+      
+      <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
 
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <p class="small grey">
-            How much will attendees pay to attend the class? This will include any material costs, etc.
-          </p>
-        </div>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-7">
+        <p class="small grey">
+          How much will attendees pay to attend the class? This will include any material costs, etc.
+        </p>
+      </div>
 
-        <%= f.input :min_attendee, as: :number_picker, label: "<strong>Minimum</strong> Attendees", wrapper: :horizontal %> 
-        <%= f.input :max_attendee, as: :number_picker, label: "<strong>Maximum</strong> Attendees", wrapper: :horizontal %>
-        <div class="col-sm-5"></div>
-        <div class="col-sm-7">
-          <div class="min-max-error" data-error-message="Minimum must be smaller than Maximum"></div>
-          <p class="small grey">If the number of attendees is above the maximum, or below the minimum, the <span class="class_only">class</span><span class="course_only">course</span> will not run. </p>
-        </div>
+      <%= f.input :min_attendee, as: :number_picker, label: "<strong>Minimum</strong> Attendees", wrapper: :horizontal %> 
+      <%= f.input :max_attendee, as: :number_picker, label: "<strong>Maximum</strong> Attendees", wrapper: :horizontal %>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-7">
+        <div class="min-max-error" data-error-message="Minimum must be smaller than Maximum"></div>
+        <p class="small grey">If the number of attendees is above the maximum, or below the minimum, the <span class="class_only">class</span><span class="course_only">course</span> will not run. </p>
+      </div>
 
-        <% if current_user.providers.count > 0  %>
-          <div class="teacher_pay_type_wrapper">
-            <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee calculated</strong>?", input_html: { :'data-error-message' => "Please specify how the teacher fee is calculated", :'data-validate-complex' => :true }, wrapper: :horizontal %>
-            <div class="col-sm-5"></div>
+      <% if current_user.providers.count > 0  %>
+        <div class="teacher_pay_type_wrapper">
+          <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee calculated</strong>?", input_html: { :'data-error-message' => "Please specify how the teacher fee is calculated", :'data-validate-complex' => :true }, wrapper: :horizontal %>
+          <div class="col-sm-4"></div>
+          <div class="col-sm-7">
+            <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
+          </div>
+
+          <div class="teaching_fee_wrapper">
+            <%= f.input :teacher_cost, as: :currency, :label => "<strong class='teacher_fee_label'>Teacher Fee</strong>", wrapper: :horizontal, input_html: {:'data-error-message'=>'Specify the teacher fee', value: money_formatted(f.object.teacher_cost) || '0.00'} %>
+            <div class="col-sm-4"></div>
             <div class="col-sm-7">
-              <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
-            </div>
-
-            <div class="teaching_fee_wrapper">
-              <%= f.input :teacher_cost, as: :currency, :label => "<strong class='teacher_fee_label'>Teacher Fee</strong>", wrapper: :horizontal, input_html: {:'data-error-message'=>'Specify the teacher fee', value: money_formatted(f.object.teacher_cost) || '0.00'} %>
-              <div class="col-sm-5"></div>
-              <div class="col-sm-7">
-                <p class="small grey">How much should we pay the teacher?</p>
-              </div>
+              <p class="small grey">How much should we pay the teacher?</p>
             </div>
           </div>
-        <% else  %>
-          <%= f.input :new_provider_bank_number, label: "Bank account", wrapper: :horizontal %>
-          <div class="col-sm-5"></div>
-          <div class="col-sm-7">
-            <p class="small grey">The bank account you would like Chalkle to pay money to</p>
-          </div>
+        </div>
+      <% else  %>
+        <%= f.input :new_provider_bank_number, label: "Bank account", wrapper: :horizontal %>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-7">
+          <p class="small grey">The bank account you would like Chalkle to pay money to</p>
+        </div>
 
-          <%= f.input :new_provider_tax_number, label: "GST Number, if applicable", wrapper: :horizontal %>
-          <div class="col-sm-5"></div>
-          <div class="col-sm-7">
-            <p class="small grey">Only include a GST number if it GST applies at the standard rate. This will show on your attendee's receipt.</p>
-          </div>
+        <%= f.input :new_provider_tax_number, label: "GST Number, if applicable", wrapper: :horizontal %>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-7">
+          <p class="small grey">Only include a GST number if it GST applies at the standard rate. This will show on your attendee's receipt.</p>
+        </div>
 
-        <% end  %>
-          
-        <div class="row prevnext">
-          <div class="col-xs-5 prev">
-            <a href="#learning" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
-          </div>
-          <div class="col-xs-7 next">
-            <a href="#summary" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
-          </div>
+      <% end  %>
+        
+      <div class="row prevnext">
+        <div class="col-xs-5 prev">
+          <a href="#learning" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
+        </div>
+        <div class="col-xs-7 next">
+          <a href="#summary" class="part_link btn btn-primary">Continue <span class="fa fa-angle-double-right"></span></a>
         </div>
       </div>
+    </div>
 
-      <div id="summary" class="parts">
-        <div class="fancy-header">
-          <h3>Summary</h3>
-          <hr />
+    <div id="summary" class="parts">
+      <div class="fancy-header">
+        <h3>Summary</h3>
+        <hr />
+      </div>
+      <div class="center row summary-part">
+        <h2 id="summary_title"></h2>
+        <p class="light">The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> will run</p>
+        <p id="summary_times_summary"></p>
+      </div>
+      <div class="row summary-part fee-summary" id="fee_summary" data-error-message="Minimum provider income must be a positive amount.">
+        <div class="col-xs-6 text-right light teaching_cost">
+          The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> is priced at:
         </div>
-        <div class="center row summary-part">
-          <h2 id="summary_title"></h2>
-          <p class="light">The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> will run</p>
-          <p id="summary_times_summary"></p>
+        <div class="col-xs-6">
+          <input id="summary_cost" class="currency" disabled="disabled">
         </div>
-        <div class="row summary-part fee-summary" id="fee_summary" data-error-message="Minimum provider income must be a positive amount.">
-          <div class="col-xs-6 text-right light teaching_cost">
-            The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> is priced at:
-          </div>
-          <div class="col-xs-6">
-            <input id="summary_cost" class="currency" disabled="disabled">
-          </div>
 
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+          <hr style="margin-top: 0" />
+        </div>
+        <div class="col-md-3">
+        </div>
+        
+        <div class="col-xs-6 text-right light small grey">
+          <span id="summary_provider_id">Provider</span> portion
+        </div>
+        <div class="col-xs-6">
+          <input id="teaching_provider_fee" disabled="disabled" />
+        </div>
+
+
+        <div class="col-xs-6 text-right light small grey teaching_fee_summary">
+         Teacher portion 
+        </div>
+        <div class="col-xs-6 teaching_fee_summary">
+          <input id="teaching_teacher_pay_variable" disabled="disabled" />
+        </div>
+
+        <div class="col-xs-6 text-right light small grey">
+         Processing fee
+        </div>
+        <div class="col-xs-6">
+          <input id="teaching_processing_fee" disabled="disabled">
+        </div>
+
+        <div class="col-xs-6 text-right light small grey">
+         Chalkle fee
+        </div>
+        <div class="col-xs-6">
+          <input id="teaching_chalkle_fee" disabled="disabled">
+        </div>
+
+        
+
+        <div class="min-max-attendee-summary">
           <div class="col-md-3">
           </div>
           <div class="col-md-6">
-            <hr style="margin-top: 0" />
+            <hr />
           </div>
           <div class="col-md-3">
           </div>
-          
-          <div class="col-xs-6 text-right light small grey">
-            <span id="summary_provider_id">Provider</span> portion
-          </div>
-          <div class="col-xs-6">
-            <input id="teaching_provider_fee" disabled="disabled" />
-          </div>
+        </div>
+      </div>
+      
+      <div class="min-max-attendee-summary">
+        <br /><br/><br />
+        <table class="table">
+          <thead>
+            <tr>
+              <td width="30"></td>
+              <td width="30" class="left">
+                <span>Minimum attendees: </span>
+                <span id="summary_min_attendee" disabled="disabled"></span>
+              </td>
+              <td width="30" class="left">
+                <span>Maximum attendees: </span>
+                <span id="summary_max_attendee" disabled="disabled"></span>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="odd">
+              <td class="teaching_flat_fee_summary teaching_fee_summary">Teacher will earn</td>
+              <td class="left teaching_flat_fee_summary" style="text-align:right !important">
+                <input id="teaching_teacher_pay_flat" style="text-align:right !important" class="text-right" disabled="disabled" />
+              </td>
+              <td class="teaching_flat_fee_summary"></td>
+
+              <td class="left text-right teaching_fee_summary">
+                <input id="teaching_teacher_min_income" disabled="disabled" />
+              </td>
+              <td class="left teaching_fee_summary">
+                <input id="teaching_teacher_max_income" disabled="disabled" />
+              </td>
+
+            </tr>
+            <tr>
+              <td>Provider will earn</td>
+              <td class="left">
+                <input id="teaching_provider_min_income" disabled="disabled" />
+              </td>
+              <td class="left">
+                <input id="teaching_provider_max_income" disabled="disabled" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br /><br/><br />
+      </div>
 
 
-          <div class="col-xs-6 text-right light small grey teaching_fee_summary">
-           Teacher portion 
-          </div>
-          <div class="col-xs-6 teaching_fee_summary">
-            <input id="teaching_teacher_pay_variable" disabled="disabled" />
-          </div>
-
-          <div class="col-xs-6 text-right light small grey">
-           Processing fee
-          </div>
-          <div class="col-xs-6">
-            <input id="teaching_processing_fee" disabled="disabled">
-          </div>
-
-          <div class="col-xs-6 text-right light small grey">
-           Chalkle fee
-          </div>
-          <div class="col-xs-6">
-            <input id="teaching_chalkle_fee" disabled="disabled">
-          </div>
-
-          
-
-          <div class="min-max-attendee-summary">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-6">
-              <hr />
-            </div>
-            <div class="col-md-3">
-            </div>
+      <div class="row summary-part">
+        <div class="col-sm-6">
+          <div id="map-canvas"></div>
+          <div class="text-right">
           </div>
         </div>
-        
-        <div class="min-max-attendee-summary">
-          <br /><br/><br />
-          <table class="table">
-            <thead>
-              <tr>
-                <td width="30"></td>
-                <td width="30" class="left">
-                  <span>Minimum attendees: </span>
-                  <span id="summary_min_attendee" disabled="disabled"></span>
-                </td>
-                <td width="30" class="left">
-                  <span>Maximum attendees: </span>
-                  <span id="summary_max_attendee" disabled="disabled"></span>
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="odd">
-                <td class="teaching_flat_fee_summary teaching_fee_summary">Teacher will earn</td>
-                <td class="left teaching_flat_fee_summary" style="text-align:right !important">
-                  <input id="teaching_teacher_pay_flat" style="text-align:right !important" class="text-right" disabled="disabled" />
-                </td>
-                <td class="teaching_flat_fee_summary"></td>
-
-                <td class="left text-right teaching_fee_summary">
-                  <input id="teaching_teacher_min_income" disabled="disabled" />
-                </td>
-                <td class="left teaching_fee_summary">
-                  <input id="teaching_teacher_max_income" disabled="disabled" />
-                </td>
-
-              </tr>
-              <tr>
-                <td>Provider will earn</td>
-                <td class="left">
-                  <input id="teaching_provider_min_income" disabled="disabled" />
-                </td>
-                <td class="left">
-                  <input id="teaching_provider_max_income" disabled="disabled" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <br /><br/><br />
-        </div>
-
-
-        <div class="row summary-part">
-          <div class="col-sm-6">
-            <div id="map-canvas"></div>
-            <div class="text-right">
-            </div>
+        <div class="col-sm-6">
+          <div class="col-sm-4 text-right">
+            <span class="light">Taught by</span>
           </div>
-          <div class="col-sm-6">
-            <div class="col-sm-5 text-right">
-              <span class="light">Taught by</span>
-            </div>
-            <div class="col-sm-7">
-              <span id="summary_teacher_id" class="center">You</span>
-            </div>
-            <div class="col-sm-5 text-right">
-              <span class="light">at</span>
-            </div>
-            <div class="col-sm-7">
-              <p id="summary_venue_address" class="light grey"></p>
-            </div>
-            <div class="col-sm-5 text-right">
-              <span class="light">Details</span>
-            </div>
-            <div class="col-sm-7">
-              <p id="summary_venue" class="light grey"></p>
-            </div>
+          <div class="col-sm-7">
+            <span id="summary_teacher_id" class="center">You</span>
+          </div>
+          <div class="col-sm-4 text-right">
+            <span class="light">at</span>
+          </div>
+          <div class="col-sm-7">
+            <p id="summary_venue_address" class="light grey"></p>
+          </div>
+          <div class="col-sm-4 text-right">
+            <span class="light">Details</span>
+          </div>
+          <div class="col-sm-7">
+            <p id="summary_venue" class="light grey"></p>
           </div>
         </div>
+      </div>
 
-        <div class="fancy-header">
-          <h3>Photo</h3>
-          <hr />
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-          <% image_url = f.object.course_upload_image.nil? ? "/images/no-course-img.png" : f.object.course_upload_image  %>
-            <div class="course center">
-              <p class="small grey">Your image will look like this</p>
-              <div class="porthole round image-preview">
-                <div class="img" style="background-image: url(<%= image_url %>);"></div>
-              </div>
-               <p class="small grey">and like this</p>
-              <div class="porthole square image-preview">
-                <div class="img" style="background-image: url(<%= image_url %>);"></div>
-              </div>
-               <p class="small grey">We recommend an image at least 300px by 300px, and preferable containly no text (it gets chopped off and looks really messy!)</p>
+      <div class="fancy-header">
+        <h3>Photo</h3>
+        <hr />
+      </div>
+      <div class="col-xs-12">
+        <div class="col-sm-6">
+        <% image_url = f.object.course_upload_image.nil? ? "/images/no-course-img.png" : f.object.course_upload_image  %>
+          <div class="course center">
+            <p class="small grey">Your image will look like this</p>
+            <div class="porthole round image-preview">
+              <div class="img" style="background-image: url(<%= image_url %>);"></div>
             </div>
-          </div>
-          <div class="col-sm-6">
-            <%= f.input :course_upload_image, as: :styled_file, input_html: { value: "", class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
+             <p class="small grey">and like this</p>
+            <div class="porthole square image-preview">
+              <div class="img" style="background-image: url(<%= image_url %>);"></div>
+            </div>
+             <p class="small grey">We recommend an image at least 300px by 300px, and preferable containly no text (it gets chopped off and looks really messy!)</p>
           </div>
         </div>
-        <div class="fancy-header">
-          <h3>Extras</h3>
-          <hr />
+        <div class="col-sm-6">
+          <%= f.input :course_upload_image, as: :styled_file, input_html: { value: "", class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
         </div>
-        <div class="row">
-            <%= f.input :note_to_attendees, as: :text, label: 'Special note only to attendees <div class="small light grey">Only visible once their booking is complete</div>', wrapper: :horizontal %>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            <div class="control-label col-sm-5">
-              <label class="radio_button_group optional" for="teaching_use_custom_fields">
-                Custom fields for booking form?<div class="small light grey">Collect specifics about attendees</div>
-              </label>
-            </div>
-            <div id="custom_field_ui" class="col-sm-7">
-              <div id="custom_field_tags">
-                <% if f.object.custom_fields %>
-                  <% f.object.custom_fields.each do |f| %>
-                      <span class="label label-default" data-type="<%= f[:type] %>" data-prompt="<%= f[:prompt] %>" data-options="<%= f[:options].join(',') if f[:options] %>">
-                        <span class="edit_label"> 
-                          <%= Teaching.custom_field_name f[:type] %> : "<%= f[:prompt] %>" <%= "<br />".html_safe if f[:options] %> <%= f[:options].map{|o| "[#{o}]"}.join(' ') if f[:options] %> 
-                        </span>
-                        <span class="remove">&times;</span>
+      </div>
+      <div class="fancy-header">
+        <h3>Extras</h3>
+        <hr />
+      </div>
+      <div class="row">
+          <%= f.input :note_to_attendees, as: :text, label: 'Special note only to attendees <div class="small light grey">Only visible once their booking is complete</div>', wrapper: :horizontal %>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <div class="control-label col-sm-4">
+            <label class="radio_button_group optional" for="teaching_use_custom_fields">
+              Custom fields for booking form?<div class="small light grey">Collect specifics about attendees</div>
+            </label>
+          </div>
+          <div id="custom_field_ui" class="col-sm-7">
+            <div id="custom_field_tags">
+              <% if f.object.custom_fields %>
+                <% f.object.custom_fields.each do |f| %>
+                    <span class="label label-default" data-type="<%= f[:type] %>" data-prompt="<%= f[:prompt] %>" data-options="<%= f[:options].join(',') if f[:options] %>">
+                      <span class="edit_label"> 
+                        <%= Teaching.custom_field_name f[:type] %> : "<%= f[:prompt] %>" <%= "<br />".html_safe if f[:options] %> <%= f[:options].map{|o| "[#{o}]"}.join(' ') if f[:options] %> 
                       </span>
-                  <% end %>
+                      <span class="remove">&times;</span>
+                    </span>
                 <% end %>
-               </div>
-              <div class="btn btn-default">
-                Add Custom Field
-              </div>
-            </div>
-          </div>
-
-          <%= f.input :custom_fields, as: :hidden %>
-
-          <div class="modal fade" id="customFieldModal" tabindex="-1" role="dialog" aria-labelledby="customFieldModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title text-center" id="customFieldModalLabel">Custom Booking Field</h4>
-                </div>
-                <div class="modal-body">
-                  <div class="form-group row">
-                    <label class="col-xs-3">Prompt</label>
-                    <div class="col-xs-9">
-                      <input type="text" class="form-control col-xs-8 custom_prompt" placeholder="e.g. Do you have any food allergies?" />
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-xs-3">Format</label>
-                     <div class="col-xs-9">
-                      <select class="form-control custom_type">
-                        <% Teaching::CUSTOM_FIELD_TYPES.each do |kv| %>
-                          <option value="<%= kv[:key] %>">
-                            <%= kv[:value] %>
-                          </option>
-                        <% end %>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group row check_box_options">
-                    <label class="col-xs-3">Options</label>
-                    <div class="col-xs-9">
-                      <input type="text" data-role="tagsinput" class="form-control col-xs-8 custom_options" placeholder="" />
-                      <div class="small light grey">Press comma after each option</div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xs-9 col-xs-offset-3">
-                      <div class="btn btn-primary" id="create_custom_field_btn">Save</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- /.modal -->
-
-        </div>
-
-
-        <br class="clear" /><br />
-        <br /><br />
-        <div class="prevnext">
-          
-          <div class="row">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-6 next">
-              <div class="checkbox center">
-                <label id="teaching_agreeterms" data-validate-complex='true'  data-error-message="You must agree in order to continue">
-                  <input type="checkbox" data-validate-complex='true'  name="teaching_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/teacher">Terms & Conditions for Teaching</a></span>
-                </label>
-              </div>
-
-              <% if current_user.providers.count == 0 %>
-              <div class="checkbox center">
-                <label id="providing_agreeterms" data-validate-complex='true'  data-error-message="You must agree in order to continue">
-                  <input type="checkbox" data-validate-complex='true'  name="providing_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/provider">Terms & Conditions for Providing Classes</a></span>
-                </label>
-              </div>
               <% end %>
-
-              <a href="#submit" id="submit_btn" class="submit_btn col-xs-12 part_link btn btn-primary">
-                Submit <span class="class_only">Class</span><span class="course_only">Course</span>
-              </a>
-              
+             </div>
+            <div class="btn btn-default">
+              Add Custom Field
             </div>
-            <div class="col-md-3">
-            </div>
-          </div>
-          <div class="row prev">
-            <a href="#teaching" class="part_link block center"><span class="fa fa-angle-double-left"></span>Previous</a>
           </div>
         </div>
+
+        <%= f.input :custom_fields, as: :hidden %>
+
+        <div class="modal fade" id="customFieldModal" tabindex="-1" role="dialog" aria-labelledby="customFieldModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="customFieldModalLabel">Custom Booking Field</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group row">
+                  <label class="col-xs-3">Prompt</label>
+                  <div class="col-xs-9">
+                    <input type="text" class="form-control col-xs-8 custom_prompt" placeholder="e.g. Do you have any food allergies?" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-xs-3">Format</label>
+                   <div class="col-xs-9">
+                    <select class="form-control custom_type">
+                      <% Teaching::CUSTOM_FIELD_TYPES.each do |kv| %>
+                        <option value="<%= kv[:key] %>">
+                          <%= kv[:value] %>
+                        </option>
+                      <% end %>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row check_box_options">
+                  <label class="col-xs-3">Options</label>
+                  <div class="col-xs-9">
+                    <input type="text" data-role="tagsinput" class="form-control col-xs-8 custom_options" placeholder="" />
+                    <div class="small light grey">Press comma after each option</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-9 col-xs-offset-3">
+                    <div class="btn btn-primary" id="create_custom_field_btn">Save</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.modal -->
 
       </div>
-    <% end %>
-  </div>
+
+
+      <br class="clear" /><br />
+      <br /><br />
+      <div class="prevnext">
+        
+        <div class="row">
+          <div class="col-md-3">
+          </div>
+          <div class="col-md-6 next">
+            <div class="checkbox center">
+              <label id="teaching_agreeterms" data-validate-complex='true'  data-error-message="You must agree in order to continue">
+                <input type="checkbox" data-validate-complex='true'  name="teaching_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/teacher">Terms & Conditions for Teaching</a></span>
+              </label>
+            </div>
+
+            <% if current_user.providers.count == 0 %>
+            <div class="checkbox center">
+              <label id="providing_agreeterms" data-validate-complex='true'  data-error-message="You must agree in order to continue">
+                <input type="checkbox" data-validate-complex='true'  name="providing_agreeterms"><span style="position:relative; bottom:10px;"> I agree to the <a target="_blank" href="/terms/provider">Terms & Conditions for Providing Classes</a></span>
+              </label>
+            </div>
+            <% end %>
+
+            <a href="#submit" id="submit_btn" class="submit_btn col-xs-12 part_link btn btn-primary">
+              Submit <span class="class_only">Class</span><span class="course_only">Course</span>
+            </a>
+            
+          </div>
+          <div class="col-md-3">
+          </div>
+        </div>
+        <div class="row prev">
+          <a href="#teaching" class="part_link block center"><span class="fa fa-angle-double-left"></span>Previous</a>
+        </div>
+      </div>
+
+    </div>
+  <% end %>
 </div>
