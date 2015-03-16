@@ -150,7 +150,7 @@ class Course < ActiveRecord::Base
   end
 
   def unpublishable?
-    published? && bookings.empty? && start_at < DateTime.current
+    published? && bookings.empty?
   end
 
   def cancellable?
