@@ -18,40 +18,49 @@
 <% end %>
 
 <div class="pagination-wrapper">
-  <ul class="pagination inline">
-    <% if page_min > 0 %>
-      <li>
-        <a class="fetch_courses" data-page="<%= 1 %>" title="Page 1" data-toggle="tooltip" data-placement="top" onmouseover="$(this).tooltip('show')">&laquo;</a>
-      </li>
-    <% end %>
-    <% (page_min..page_max).each do |i| %>
-      <li class="<%= 'active' if paginate_position == i %>">
-        <a class="fetch_courses" data-page="<%= i+1 %>" >
-          <%= i+1 %> 
-          <% if paginate_position == i %>
-            <span class="sr-only">(current)</span>
-          <% end %>
-        </a>
-      </li>
-    <% end %>
-    <% if paginate_count > page_max %>
-      <li><a class="fetch_courses" data-page="<%= paginate_count+1 %>" title="Page <%= paginate_count+1 %>" data-toggle="tooltip" onmouseover="$(this).tooltip('show')" data-placement="top" >&raquo;</a></li>
-    <% end %>
-  </ul>
-  
-  <div class="paginate-take" data-take="<%= paginate_take %>">
-    <div class="dropup btn btn-primary">
-      <a id="paginateTakeLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
-        Show <%= paginate_take %> Results
-        <span class="caret"></span>
-      </a>
+  <% if page_max > 0 %>
+    <ul class="pagination inline">
+      <% if page_min > 0 %>
+        <li>
+          <a class="fetch_courses" data-page="1" title="Page 1" data-toggle="tooltip" data-placement="top" onmouseover="$(this).tooltip('show')">&laquo;</a>
+        </li>
+      <% end %>
+      <% (page_min..page_max).each do |i| %>
+        <li class="<%= 'active' if paginate_position == i %>">
+          <a class="fetch_courses" data-page="<%= i+1 %>" >
+            <%= i+1 %> 
+            <% if paginate_position == i %>
+              <span class="sr-only">(current)</span>
+            <% end %>
+          </a>
+        </li>
+      <% end %>
+      <% if paginate_count > page_max %>
+        <li><a class="fetch_courses" data-page="<%= paginate_count+1 %>" title="Page <%= paginate_count+1 %>" data-toggle="tooltip" onmouseover="$(this).tooltip('show')" data-placement="top" >&raquo;</a></li>
+      <% end %>
+    </ul>
+  <% end %>
 
-      <ul class="dropdown-menu dropup" role="menu" aria-labelledby="paginateTakeLabel">
-        <li><a class="fetch_courses" data-page="0" data-take="10">Show 10</a></li>
-        <li><a class="fetch_courses" data-page="0" data-take="30">Show 30</a></li>
-        <li><a class="fetch_courses" data-page="0" data-take="50">Show 50</a></li>
-        <li><a class="fetch_courses" data-page="0" data-take="100">Show 100</a></li>
-      </ul>
+  <% if @courses.count > 10 %>
+    <div class="paginate-take" data-take="<%= paginate_take %>">
+      <div class="dropup btn btn-primary">
+        <a id="paginateTakeLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+          Show <%= paginate_take %> Results
+          <span class="caret"></span>
+        </a>
+
+        <ul class="dropdown-menu dropup" role="menu" aria-labelledby="paginateTakeLabel">
+          <li><a class="fetch_courses" data-page="1" data-take="10">Show 10</a></li>
+          <li><a class="fetch_courses" data-page="1" data-take="30">Show 30</a></li>
+          <% if @courses.count > 30 %>
+            <li><a class="fetch_courses" data-page="1" data-take="50">Show 50</a></li>
+          <% end %>
+          <% if @courses.count > 50 %>
+            <li><a class="fetch_courses" data-page="1" data-take="100">Show 100</a></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  </div>
+  <% end %>
+
 </div>

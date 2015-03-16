@@ -103,7 +103,7 @@ module ApplicationHelper
   end
 
   def paginate_count
-    @paginate_count ||= [(@pagination_list.count / paginate_take) - 1, 0].max
+    @paginate_count ||= [(@pagination_list.count / paginate_take), 0].max
   end
 
   def paginate_take
