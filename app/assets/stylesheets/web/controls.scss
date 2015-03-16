@@ -338,6 +338,7 @@ html {
         padding: 0px 10px;
       }
       &.btn-default {
+        border-color: $color-default;
         background-color: $color-default;
         &:hover {
           background-color: $color-default-hover;
@@ -348,6 +349,7 @@ html {
       }
 
       &.btn-primary {
+        border-color: $color-primary;
         background-color: $color-primary;
         &:hover {
           background-color: $color-primary-hover;
@@ -358,6 +360,7 @@ html {
       }
 
       &.btn-success {
+        border-color: $color-success;
         background-color: $color-success;
         &:hover {
           background-color: $color-success-hover;
@@ -368,6 +371,7 @@ html {
       }
 
       &.btn-warning {
+        border-color: $color-warning;
         background-color: $color-warning;
         &:hover {
           background-color: $color-warning-hover;
@@ -378,6 +382,7 @@ html {
       }
 
       &.btn-info {
+        border-color: $color-info;
         background-color: $color-info;
         &:hover {
           background-color: $color-info-hover;
@@ -388,6 +393,7 @@ html {
       }
 
       &.btn-danger {
+        border-color: $color-danger;
         background-color: $color-danger;
         &:hover {
           background-color: $color-danger-hover;
@@ -425,13 +431,15 @@ html {
       overflow: hidden;
       width: 100%;
       height: 100%;
+      &.contain{
+        background-size: contain !important;
+      }
     }
 
     .avatar {
       height:120px;
       width:128px;
-      background: rgba(100, 100, 100, 0.2);
-      float:left;
+      float: left;
       margin-right:10px;
     }
     .avatar64 {
@@ -439,15 +447,12 @@ html {
       width: 64px;
       float:left;
       margin-right:10px;
-      
-      background: rgba(100, 100, 100, 0.2);
     }
     .avatar32 {
       height: 32px;
       width: 32px;
       float:left;
       margin-right:10px;
-      background: rgba(100, 100, 100, 0.2);
     }
 
     .new_form_wrapper {

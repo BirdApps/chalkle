@@ -1,4 +1,4 @@
-<% if (current_chalkler && (bookings = @course.bookings_for(current_chalkler)).present? && bookings.any?) || current_user.super? %>
+<% if (current_chalkler && (bookings = @course.bookings_for(current_chalkler)).present? && bookings.any?) %>
 
   <!-- Button trigger modal -->
   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookingsModal">

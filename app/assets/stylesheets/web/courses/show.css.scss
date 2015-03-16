@@ -13,24 +13,23 @@
   .admin-bar{
     
   }
-  .social-links {
-    background: #F3F3F3;
-    border-radius:  8px;
-    display: inline-block;
-    overflow: hidden;
-    a {
-      text-align: center;
-      width:43px;
-      padding: 10px;
-      display: inline-block;
-      img {
-        height: 16px;
-      }
-      &:hover {
-        background: #e3e3e3; 
-      }
+ 
+  #twitter-widget-0{
+    position: relative;
+    top: 5px;
+  }
+
+  a.social-link {
+    text-align: center;
+    width:43px;
+    padding-right: 9px;
+    position: relative;
+    bottom: 5px;
+    img {
+      height: 29px;
     }
   }
+
   .map-wrap {
     position:relative;
     .map-overlay {
@@ -50,13 +49,31 @@
       height: 250px;
     }
   }
+  .left-col {
+    @media screen and (min-width: 998px){
+      margin-right: 200px;
+    }
+  }
   .right-col {
-    padding-left:20px;
-    float: right;
-    width: 180px;
+    @media screen and (min-width: 998px){
+      padding-left:20px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 180px;
+    }
+    >* {
+      margin-bottom: 5px;
+    }
     > button {
       width: 100%;
       margin: 10px 0;
+    }
+    .cost {
+      width: 100%;
+      line-height: 15px;
+      padding: 8px 10px;
+      text-align: center;
     }
     .join-link {
       width: 100%;
@@ -71,16 +88,6 @@
       .reviews {
         display: inline-block;
         vertical-align: middle;
-      }
-      .cost {
-        display:inline-block;
-        vertical-align: middle;
-        line-height: 15px;
-        color: #fff;
-        padding: 8px 10px;
-        margin-left: 10px;
-        border-radius: 2px;
-        background: #C7C7C7;
       }
     }
   }

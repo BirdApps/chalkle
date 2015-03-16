@@ -1,0 +1,23 @@
+._heading {
+  @media screen and(max-width: 768px){
+    margin-bottom: 20px;
+  }
+  &::after {
+    clear: both;
+  }
+  ._heading_title {
+    display: inline;
+  }
+  .avatar {
+    float: right;
+    width: 160px;
+    margin-right: 0;
+    margin-bottom: 20px;
+    @media screen and(max-width: 768px){
+      float: none;
+      width: 100%;
+      height: 228px;
+      margin-bottom: 10px;
+    }
+  }
+}
