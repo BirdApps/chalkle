@@ -13,7 +13,6 @@ $(function(){
 
     /* initilizes on page load */
     function init(){
-      $('#teaching_provider_id').change(get_teacher_list);
       $("#type .btn-group label").click(course_class_select);
       $('.update_class_count .number-picker-up').click(show_class_opts);
       $('.update_class_count .number-picker-down').click(show_class_opts);
@@ -31,16 +30,22 @@ $(function(){
       set_attendee_summary();
       $('#teaching_repeating').change(set_repeating);
       $('form#new_teaching').courseCostCalculator({resource_name: 'teaching'});
-      if($('#type_unchangable').length > 0){
-        part_change( '#details' );
+      
+      check_hash_change();
+      
+      if(location.hash!=""){
+        part_change(location.hash);
       }else{
-        part_change("#type");
+        if($('#type_unchangable').length > 0){
+          update_url( '#details' );
+        }else{
+          update_url("#type");
+        }
       }
       $('#teaching_cost').change(display_pay_type);
       display_pay_type();
       hijack_navigation();
       apply_inline_validation();
-      get_teacher_list();
       bind_agree_terms();
       init_custom_fields();
       init_start_at();
@@ -48,6 +53,16 @@ $(function(){
 
       // stop changing selection away from address field when no address is set
       $('#teaching_venue_address').blur(function(){ if($('#teaching_longitude').val().length==0){ $(this).focus() } } );
+    }
+
+    function check_hash_change(){
+      var last_hash;
+      window.setInterval(function(){
+        if(last_hash != location.hash){
+          part_change(location.hash, false, true);
+          last_hash = location.hash;
+        }
+      },300)
     }
 
     function custom_field_has_options(field){
@@ -173,9 +188,14 @@ $(function(){
       if ( $('#teaching_cost').val() > 0 ){
         $("#teaching_teacher_pay_type").removeAttr("disabled");
         $(".teacher_pay_type_wrapper").show();
+        $('.fee-summary').show();
+        $('.min-max-attendee-summary').show();
       }else{
         $("#teaching_teacher_pay_type").attr("disabled","disabled");
         $(".teacher_pay_type_wrapper").hide();
+        $('.fee-summary').hide();
+        $('.min-max-attendee-summary').hide();
+        
       }
     }
 
@@ -270,32 +290,6 @@ $(function(){
         }
       });
       
-    }
-
-    /* Retrieves list of teachers for a given provider and populates select element */
-    function get_teacher_list(){
-      var provider_id = $('#teaching_provider_id').val();
-      var selected_val = -1;
-      if($('#saved_teacher_id').length){
-        selected_val = $('#saved_teacher_id').val();
-      }
-      if(provider_id != '' && !isNaN(provider_id)){
-        $.getJSON('/providers/'+provider_id+'/teachers.json', function(data){
-            $('#teaching_teacher_id').empty();
-            if(data.length < 2){
-              $('.teacher-select').hide();
-            }else{
-                $('.teacher-select').show();  
-            }
-            $.each(data, function(index,item) {
-              if(item.id == selected_val){
-               $('#teaching_teacher_id').append('<option selected="selected" value=' + item.id + '>' + item.name + '</option>');
-              }else{
-               $('#teaching_teacher_id').append('<option value=' + item.id + '>' + item.name + '</option>');
-              }
-            });
-        });
-      }
     }
 
     /* returns count of that weekday in the month preceeding a date, including that date */
@@ -550,7 +544,7 @@ $(function(){
     function navigate_to_invalid(location){
       var prev_location = parts[parts.indexOf(location)-1]; 
       if(!$(prev_location).is(':visible')){
-        part_change(prev_location, true);
+        update_url(prev_location, true);
       }else{
         $('.form-error').remove();
         validate_part(location);
@@ -739,12 +733,17 @@ $(function(){
       return valid;
     }
 
+    function update_url(location){
+      url = window.location.protocol+'//'+window.location.host+window.location.pathname+location
+      window.history.pushState(location, $('title').text().trim(),url);
+    }
+
     /* shows the part of the form that matches the location anchor */
     function part_change( location, keep_errors, scroll ){
       if(scroll == undefined){
         scroll = false;
       }
-      location = (typeof location == 'undefined') ? window.location.hash : location;
+      location = (location == undefined) ? window.location.hash : location;
       var valid = validate_part(location);
       if(valid || validate_off){
         if(!keep_errors){
@@ -775,17 +774,13 @@ $(function(){
 
     /* makes the target href for the form anchors trigger form part changes */
     function link_part_change(e){
-      if($(this).hasClass('btn')){
-        part_change($(this).attr('href'),false,true);
-      }else{
-        part_change($(this).attr('href'),false,false);
-      }
+      update_url($(this).attr('href'));
       e.preventDefault();
     }
 
     /* handles changing between course or class on the first form part */
     function course_class_select(){
-      part_change( '#details' );
+      update_url( '#details' );
       var key_word = $($(this).children('input')[0]).val();
       $('#teaching_course_class_type').val(key_word);
       if(key_word == "class"){

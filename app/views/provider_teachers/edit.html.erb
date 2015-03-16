@@ -7,12 +7,12 @@
       <hr />
     </div>
     <div class="row">
-      <div class="col-sm-5">
+      <div class="col-sm-4">
         <div class="avatar image-preview">
           <div class="img avatar_preview" style="background-image: url(<%= f.object.avatar %>);"></div>
         </div>
       </div>
-      <div class="col-sm-7">
+      <div class="col-sm-8 col-md-7">
         <%= f.input :avatar, as: :styled_file, input_html: { value: "", :'data-preview' => 'avatar_preview', class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
       </div>
     </div>
@@ -60,7 +60,7 @@
        <%= f.input :account, label: "Bank account number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
 
        <%= f.input :tax_number, label: "GST number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
-       <div class="col-sm-7 col-sm-offset-5">
+       <div class="col-sm-8 col-md-7 col-sm-offset-5">
          <p class="small grey center">
           Only include a GST Number if you are GST registered
          </p>

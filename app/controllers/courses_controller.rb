@@ -84,11 +84,12 @@ class CoursesController < ApplicationController
   end
 
   def choose_provider
-    unless current_user.authenticated? && current_user.providers_adminable.present?
+    unless current_user.authenticated? && current_user.providers.empty?
       redirect_to teach_path and return
+      #TODO: choose provider
     end
 
-    if current_user.providers_adminable.count == 1
+    if current_user.providers.count == 1
       redirect_to new_provider_class_path(current_user.providers_adminable.first) and return
     end
   end
@@ -101,12 +102,13 @@ class CoursesController < ApplicationController
   end
 
   def create
+    params[:teaching][:provider_id] = @provider.id
     @teaching = Teaching.new current_user
     if params[:teaching_agreeterms] == 'on'
-      new_course_ids =  @teaching.submit params[:teaching]
+      new_course_ids = @teaching.submit params[:teaching]
     end
     if new_course_ids && new_course_ids[0] != nil
-      redirect_to provider_course_path new_course_ids[0]
+      redirect_to provider_course_path Course.find(new_course_ids[0]).path_params
     else
       render 'new'
     end

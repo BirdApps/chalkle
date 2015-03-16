@@ -42,7 +42,7 @@
       <h3>Following</h3>
       <hr />
     </div>
-    <% @chalkler.providers.each do |provider| %>
+    <% @chalkler.providers_following.each do |provider| %>
       <div role="presentation" class="_favourite row">
         <div class="col-xs-10">
           <%= link_to provider_path(provider.url_name) do %>

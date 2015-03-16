@@ -30,6 +30,9 @@
 
   .sidebar-tab {
     width: 100%;
+    margin-right: 30px;
+    white-space: nowrap;
+    overflow: hidden;
     transition: all 200ms ease-in-out;
     cursor: pointer;
     z-index: 1;

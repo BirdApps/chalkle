@@ -23,7 +23,7 @@ class Teaching
   def initialize(current_user, course = nil)
     @course = course
   	@current_user = current_user
-    @provider = course.provider
+    @provider = course.provider unless course.nil?
     @providers = current_user.providers
     @start_at = [ Time.new.advance(weeks: 1) ]
     @duration_hours = [1]

@@ -12,7 +12,6 @@ html {
       border-radius: 3px;
       font-size: 19px;
     }
-
     .number-picker {
       .fa {
         display: block;
@@ -452,7 +451,8 @@ html {
     }
 
     .new_form_wrapper {
-      .breadcrumb{
+      .breadcrumb {
+        margin-top: 20px;
         li.active {
           a {
             &:before, &:after {
