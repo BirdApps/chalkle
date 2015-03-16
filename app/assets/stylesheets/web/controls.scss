@@ -347,7 +347,9 @@ html {
           background-color:  $color-default-active;
         }
       }
-
+      &.btn-huge {
+        font-size: 180%;
+      }
       &.btn-primary {
         border-color: $color-primary;
         background-color: $color-primary;

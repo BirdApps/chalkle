@@ -319,8 +319,8 @@ $(function(){
 
     function click_change_location(){
       $('#location_autocomplete').val('');
-      $('.location-preview').fadeOut(function(){
-        $('.location-form').fadeIn();
+      $('.location-preview').fadeOut('fast', function(){
+        $('.location-form').fadeIn('fast');
       });
       $("#location_autocomplete").focus();
     }
@@ -374,9 +374,10 @@ $(function(){
       } else {
         after_locate(true, false);
       }
-
+      
     }
 
     init();
+
   }
 });

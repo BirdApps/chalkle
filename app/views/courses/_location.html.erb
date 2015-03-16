@@ -1,9 +1,21 @@
 <div class="location_form">
   <div class="location-wrapper">
-    <div class="location-preview">
-      <em>Find classes <span class="location-reference">near</span> <strong class="show-location">...</strong></em>
-      <a class="change-location">Change location</a>
-    </div>
+    
+    <% unless hide_prompt %>
+      <div class="location-preview">
+        <em>
+          <% if prompt_text %>
+            <%= prompt_text %>
+          <% else %>
+            Find classes<span class="location-reference">near</span>
+          <% end %>
+          <strong class="show-location">...</strong>
+        </em>
+
+        <a class="change-location">Change location</a>
+      </div>
+    <% end %>
+
 
     <div class="location-form" id="location-form">
       <a class="cancel-location hidden-xs">Cancel</a>
