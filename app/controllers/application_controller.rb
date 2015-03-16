@@ -221,13 +221,13 @@ protected
 
   def sidebar_administrate_provider
     load_provider unless @provider
-    @sidebar_title = 'Provider Admin'
+    @sidebar_title = @provider.name
     @sidebar = '/layouts/sidebars/administrate_provider' if policy(@provider).admin?
   end
 
   def sidebar_administrate_course
     load_course unless @course
-    @sidebar_title = 'Class Admin'
+    @sidebar_title = @course.name
     @sidebar = '/layouts/sidebars/administrate_course' if policy(@course).admin?  
   end
 
