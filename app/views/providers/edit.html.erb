@@ -33,12 +33,12 @@
         <%= f.input :name, label: "Name", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
         
         <div class="form-group url required provider_url_name">
-          <div class="control-label col-sm-5">
+          <div class="control-label col-sm-4">
             <label class="url required" for="provider_url_name">
               <abbr title="required">*</abbr> Web Address
             </label>
           </div>
-          <div class="col-sm-7">
+          <div class="col-sm-8 col-md-7">
             <div class="input-group">  
               <%= f.text_field :url_name, class: 'form-control', :'data-error-message' => 'That subdomain is not available', autocomplete: :off  %>
               <div class="input-group-addon">.chalkle.com</div>
@@ -71,7 +71,7 @@
       </div>
       <div class="hidden-xs col-sm-1">
       </div>
-      <div class="col-sm-5 small grey">
+      <div class="col-sm-4 small grey">
         <p>
           <strong class="text-danger">Do not include a logo</strong><br />
           The logo is uploaded seperately to make sure it is always visible
@@ -97,7 +97,7 @@
           We will take care of resizing it as needed throughout the site
         </p>
       </div>
-      <div class="col-sm-7">
+      <div class="col-sm-8 col-md-7">
         <div class="hero image-preview">
           <div class="img hero_preview" style="background-image: url(<%= f.object.hero %>);"></div>
         </div>
@@ -121,7 +121,7 @@
       </div>
       <div class="hidden-xs col-sm-1">
       </div>
-      <div class="col-sm-5 small grey">
+      <div class="col-sm-4 small grey">
         <p>
           <strong class="text-danger">Do not use text in your logo</strong><br />
           Unless it is a core part of your logo. The image will be displayed in many sizes through the site, so text in a logo will not always be legible.
@@ -139,7 +139,7 @@
           We will take care of resizing it as needed throughout the site
         </p>
       </div>
-      <div class="col-sm-7">
+      <div class="col-sm-8 col-md-7">
         <div class="provider-logo image-preview">
           <div class="img logo_preview" style="background-image: url(<%= f.object.logo %>);"></div>
         </div>
@@ -157,7 +157,7 @@
        <%= f.input :account, label: "Bank account number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
 
        <%= f.input :tax_number, label: "GST number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
-    <div class="col-sm-7 col-sm-offset-5">
+    <div class="col-sm-8 col-md-7 col-sm-offset-5">
       <p class="small grey center">
         Only include a GST Number if you are GST registered
       </p>
