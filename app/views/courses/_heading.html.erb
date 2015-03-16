@@ -1,17 +1,17 @@
 <div class="_heading">
-  <div class="col-xs-12 flush-xs">
-    <% if @course.course_upload_image.present? %>
-   
-      <div  class="avatar pull-right" href="<%= @course.path %>" title="<%= @course.name %>">
-        <div class="img contain" style="background-image: url(<%= @course.course_upload_image %>)">
-        </div>
+  <% if @course.course_upload_image.present? %>
+ 
+    <div  class="avatar pull-right" href="<%= @course.path %>" title="<%= @course.name %>">
+      <div class="img contain hidden-xs" style="background-image: url(<%= @course.course_upload_image %>)">
       </div>
+       <div class="img visible-xs" style="background-image: url(<%= @course.course_upload_image %>)">
+      </div>
+    </div>
 
-    <% end %>
+  <% end %>
 
-    <h2 class="_heading_title">
-      <%= link_to @course.name, provider_course_path(@course.path_params) %>
-    </h2>
-    <%= render 'social_links' %>
-  </div>
+  <h2 class="_heading_title">
+    <%= link_to @course.name, provider_course_path(@course.path_params) %>
+  </h2>
+  <%= render 'social_links' %>
 </div>
