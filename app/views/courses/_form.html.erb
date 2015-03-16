@@ -1,6 +1,6 @@
 <%
   if @teaching.editing?
-    submit_url = edit_provider_course_path @teaching.course.path_params
+    submit_url = provider_course_path @course.path_params
   else
     submit_url = provider_classes_path @teaching.provider
   end
@@ -170,7 +170,7 @@
       <%= f.input :latitude, as: :hidden%>
      
       <%= f.input :venue, :label => "Venue <strong>Details</strong>", as: :text, wrapper: :horizontal %>
-
+      <%= f.input :provider_id, type: :hidden, value: @provider.id %>
       <% if f.object.provider.provider_teachers.count > 1 %>
         <div class="teacher-select">
           <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => f.object.provider.provider_teachers, wrapper: :horizontal %>

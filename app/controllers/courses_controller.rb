@@ -102,7 +102,6 @@ class CoursesController < ApplicationController
   end
 
   def create
-    params[:teaching][:provider_id] = @provider.id
     @teaching = Teaching.new current_user
     if params[:teaching_agreeterms] == 'on'
       new_course_ids = @teaching.submit params[:teaching]
