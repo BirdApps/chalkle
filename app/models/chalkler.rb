@@ -16,7 +16,7 @@ class Chalkler < ActiveRecord::Base
   validates :email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX }
   validates_uniqueness_of :email, { case_sensitive: false }
   validates_presence_of :email, :if => :email_required?
-  validates_associated :subscriptions, :providers
+  validates_associated :subscriptions, :providers_following
   validates_presence_of :notification_preference, :if => :persisted?
 
   has_many :subscriptions
@@ -160,7 +160,7 @@ class Chalkler < ActiveRecord::Base
   end
 
   def is_following?(provider)
-    providers.exists?(provider)
+    providers_following.exists?(provider)
   end
 
   def email_required?
@@ -232,7 +232,7 @@ class Chalkler < ActiveRecord::Base
   def recommended_providers
     common_followers = providers.map{ |p| p.followers }.flatten.uniq
     common_providers = common_followers.map{ |p| p.providers }.flatten.uniq
-    common_providers - self.providers
+    common_providers - self.providers_following
   end
 
 
@@ -257,7 +257,7 @@ class Chalkler < ActiveRecord::Base
       return unless join_providers.is_a?(Array)
       join_providers.reject(&:empty?).each do |provider_id|
         if Subscription.where(chalkler_id: id, provider_id: provider_id).count == 0
-          providers << Provider.find(provider_id)
+          Subscription.create(chalkler: self, provider: provider.find(provider_id) )
         end
       end
       save!
