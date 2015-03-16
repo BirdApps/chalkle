@@ -27,9 +27,6 @@
       
       <span data-toggle="tooltip" data-placement="right" title="Email is read only as it is set on the teacher's Chalkle account">
         <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
-        <script>
-        $(function(){ $('[data-toggle="tooltip"]').tooltip() });
-        </script>
       </span>
 
       <% if policy(@provider_teacher.provider).admin? && !@provider_teacher.provider.provider_chalklers.include?(@provider_teacher.chalkler) %>
