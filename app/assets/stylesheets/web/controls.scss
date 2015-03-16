@@ -346,7 +346,9 @@ html {
           background-color:  $color-default-active;
         }
       }
-
+      &.btn-huge {
+        font-size: 180%;
+      }
       &.btn-primary {
         background-color: $color-primary;
         &:hover {

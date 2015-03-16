@@ -1,3 +1,72 @@
+<div id="home">
+  <div class="row">
+    
+    <div class="col-xs-12 header">
+      <div class="col-xs-5 ">
+        <h1 class="text-right">
+          Find  classes near you
+        </h1>
+        <p class="text-right">
+          <%= link_to "Sign up for free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge' %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="providers-around-you">
+    <div class="col-xs-12 text-center">
+      <h2>Amazing classes near you from</h2>
+    </div>
+
+
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2 location_form">
+      <%= render partial: 'courses/location', locals: { hide_prompt: true } %>
+    </div>
+
+    <div class="col-xs-12">
+      <div class="provider-preview-loading text-center">
+        <p>
+          loading providers
+        </p>
+        <div class="location-spinner-wrapper"></div>
+    </div>
+    
+    <div class="provider-preview">
+      <!-- TODO: Div gets filled after location has been reported back to server via ajax -->
+    </div>
+
+    <div class="col-xs-12 text-center">
+      <h2>What are you waiting for?</h2>
+      <%= link_to "Sign Up for Free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge' %> 
+    </div>
+
+    <div class="col-xs-12 col-sm-10 text-right">
+      <!-- TODO: Give me a link to /discover providers & courses in my region -->
+      <%= link_to discover_path do %>
+        Keep browsing <span class="provider_count"></span> providers with <span class="class_count"></span> courses 
+      <% end %>
+    </div>
+
+
+  </div>
+
+
+
+  <div class="providers-around-you">
+    
+
+  </div>
+
+
+
+
+
+</div>
+
+
+<!-- 
+
 <div>
   Teach with us
   <%= link_to "Run your business with Chalkle", teach_path, class: "btn btn-primary" %>
@@ -11,4 +80,4 @@
 <div>
   Checkout this great provider
   /*A really cool provider with testimonial and photo etc.*/
-</div>
+</div> -->
