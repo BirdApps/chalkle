@@ -33,7 +33,7 @@ class Chalkler < ActiveRecord::Base
   has_many :courses_teaching, through: :provider_teachers, source: :courses
   has_many :courses, through: :bookings
   has_many :providers_attended, through: :bookings, source: :provider, uniq: true
-  has_many :providers, through: :subscriptions, source: :provider
+  has_many :providers_following, through: :subscriptions, source: :provider
   has_many :provider_contacts
   has_many :identities, class_name: 'OmniauthIdentity', dependent: :destroy, inverse_of: :user, foreign_key: :user_id  do
     def for_provider(provider)
