@@ -17,6 +17,8 @@ Chalkle::Application.routes.draw do
 
   root to: 'application#home'
 
+  get 'color_scheme', to: 'application#color_scheme'
+
   put 'set_redirect', to: 'application#set_redirect'
 
   get 'terms' => 'terms#chalkler', as: :terms

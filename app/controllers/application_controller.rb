@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
   def home
   end
 
+  def color_scheme
+    not_found unless current_user.super?
+  end
+
   def not_found
     @not_found = true
     render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
