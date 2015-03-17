@@ -3,14 +3,27 @@
 
   <div class="admin-links admin-section row">
     <%= link_to "Teaching", teaching_chalkler_path(@chalkler), class: '' %>
-    <%# link_to "Admins", provider_admins_path(@provider), class: 'border-left' %>
+    <%= link_to "Bookings", bookings_chalkler_path(@chalkler), class: 'border-left' %>
   </div>
  
   <h5>
-    <%= link_to "Upcoming Bookings", bookings_chalkler_path(@chalkler) %>
+    Upcoming Bookings
   </h5>
-
+  
   <div class="admin-section row">
+    <% if @chalkler.courses.in_future.empty? %>
+      <div class="col-xs-12 text-center">
+        <p>
+          <br />
+          <strong>Oh no!</strong>
+          <small>
+            <br /> You don't have any bookings coming up
+          </small>
+        </p>
+        <%= link_to "Find Classes", discover_path, class: 'btn btn-stub' %>
+      </div>
+    <% end %>
+
     <div class="col-xs-12 admin-list">
       <% @chalkler.courses.in_future.uniq.each do |course| %>
         <div class="admin-list-item">

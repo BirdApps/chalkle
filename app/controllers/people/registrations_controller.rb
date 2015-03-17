@@ -1,17 +1,14 @@
 class People::RegistrationsController < Devise::RegistrationsController
   
+  before_filter :set_up_header
+
   def new
-    @page_title =  "Learn"
-    @meta_title = "Learn with "
-    @show_header = false
+    @new_chalkler = Chalkler.new unless @new_chalkler
   end
 
   def create
     build_resource
-    unless params[:chalkler][:password] == params[:chalkler][:password_confirmation]
-      add_flash :error, "Password confirmation must match password!"
-      render 'new' and return
-    end
+
     if resource.save
       resource.join_psuedo_identities!
       if resource.active_for_authentication?
@@ -24,6 +21,7 @@ class People::RegistrationsController < Devise::RegistrationsController
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
     else
+      flash_errors resource.errors
       clean_up_passwords resource
       respond_with resource
     end
@@ -31,6 +29,12 @@ class People::RegistrationsController < Devise::RegistrationsController
 
 
   private 
+
+  def set_up_header
+    @page_title =  "Learn"
+    @meta_title = "Learn with "
+    @show_header = false
+  end
 
   def after_sign_up_path_for(resource)
     session[:previous_url] || discover_path
