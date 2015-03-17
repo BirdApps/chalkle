@@ -1,6 +1,8 @@
 class Me::PreferencesController < Me::BaseController
 
-  before_filter :check_user_data, only: :destroy
+  before_filter :load_chalkler, only: [:show,:update,:enter_email,:notifications,:update_notifications]
+  before_filter :sidebar_administrate_chalkler, only: [:show,:update,:notifications,:update_notifications]
+  before_filter :header_chalkler, only: [:show,:update,:enter_email,:notifications,:update_notifications]
 
   def sidebar_open
     if params[:sidebar_open].present?
@@ -57,18 +59,15 @@ class Me::PreferencesController < Me::BaseController
     redirect_to me_notification_preference_path, notice: "Your settings have been updated"
   end
 
-  def destroy
-    @chalkler = Chalkler.find params[:id]
+  # def destroy
+  #   @chalkler = current_chalkler
+  #   @chalkler.destroy 
+  #   redirect_to :root, notice: "Your account has been deleted."
+  # end
 
-    if current_chalkler != @chalkler
-      return redirect_to :root 
+  private
+    def load_chalkler
+      @chalkler = current_chalkler
     end
-
-    if @chalkler.destroy 
-      redirect_to :root, notice: "Your account has been deleted."
-    else
-
-    end
-  end
 
 end

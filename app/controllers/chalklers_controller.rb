@@ -8,7 +8,7 @@ class ChalklersController < ApplicationController
   end
 
   def show
-    authorize @chalkler, :admin?
+    authorize @chalkler
     @upcoming_courses = current_user.courses if @chalkler == current_user || current_user.super?
   end
 
@@ -29,7 +29,7 @@ class ChalklersController < ApplicationController
   end
 
   def preferences
-    authorize @chalkler
+    authorize @chalkler, :edit?
     @chalkler_email_preferences = ChalklerPreferences.new(@chalkler)
     render template: 'me/preferences/settings'
   end
