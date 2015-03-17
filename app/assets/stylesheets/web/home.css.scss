@@ -13,9 +13,8 @@
     min-height: 700px;
 
     @media screen and (max-width: 820px) {
-      background-position:  -300px center;
       min-height: 400px;
-
+      * { text-align: center !important; }
     }
     h1 {
       margin-bottom: 1em;
@@ -76,6 +75,13 @@
   }
 
   .business {
+
+    & .media:last-child {
+      @media(screen and max-width: 990px) {
+        margin-top: 32px;
+      }
+    }
+
     background-color: #2E2E2E;
     padding-top: 130px;
     padding-bottom: 230px;
@@ -157,13 +163,23 @@
       margin-bottom: 260px;
       padding-left: 130px;
       padding-right: 34px;
+      @media(screen and max-width: 990px) {
+        margin-bottom: 64px;
+        padding-left: 34px;
+      }
     }
     
     .offset {
       margin-top: 260px;
+      @media(screen and max-width: 990px) {
+        margin-top: 0;
+      }
       .praise-bubble {
         padding-right: 130px;
         padding-left: 34px;
+        @media(screen and max-width: 990px) {
+          padding-right: 34px;
+        }
         &:last-child {
           margin-bottom: 84px;   
         }
