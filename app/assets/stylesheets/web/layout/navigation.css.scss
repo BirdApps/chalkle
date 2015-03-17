@@ -106,9 +106,9 @@
           width: 100%;
           color: rgba(255,255,255,0.8);
           text-decoration: none;
-          &:hover, &.current {
+          &:hover, &:active, &:focus, &.current {
             color: #fff;
-            background-color: darken($color-header-opaque, 6%);
+            background-color: rgba(0,0,0,0.24);
             text-shadow: none;
             text-decoration: none;
           }
@@ -307,7 +307,7 @@
           }
         }
         .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-          background: darken($color-header-opaque, 10%);
+          background-color: rgba(0,0,0,0.34);
           border: 0px;
         }
         .search-wrapper{
@@ -331,7 +331,7 @@
             left: -45px;
             border-radius: 3px;
             &:focus, &:active, &:hover {
-              background-color: rgba(7,102,202,0.9);
+              background-color: rgba(0,0,0,0.24);
             }
           }
           .search-form{

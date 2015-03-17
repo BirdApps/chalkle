@@ -187,7 +187,8 @@ protected
 
   def header_provider
     if @provider
-      @hero = @provider.hero 
+      @hero = @provider.hero
+      @header_color = @provider.average_hero_color if @provider.average_hero_color
       @header_partial = '/layouts/headers/provider'
     end
   end

@@ -1,6 +1,7 @@
 <div class="navbar-wrapper">
   <nav class="navbar navbar-fixed-top" role="navigation" >
-    <%= content_tag :div, class: "coloring"  do %>
+    <% bg_color_style = "background-color: #{@header_color}" if @header_color %>
+    <%= content_tag :div, style: bg_color_style, class: "coloring"  do %>
       <div class="container-fluid">
         <div class="navbar-header">
           <button class="navbar-toggle" data-target="#primary-navigation" data-toggle="collapse" type="button">
@@ -36,7 +37,7 @@
                   <span class="caret"></span>
                  </span>
                 </a>
-                <ul class="dropdown-menu pull-right" role="menu" >
+                <ul style="<%= bg_color_style %>" class="dropdown-menu pull-right" role="menu" >
                   <li class="visible-xs">
                     <%= link_to "Browse Classes", discover_path %>
                   </li>
@@ -59,11 +60,11 @@
                  </span>
                 </a>
                 <div class="dropdown-menu pull-right" role="menu" >
-                  <ul class="flush" id="notifications_container">
+                  <ul style="<%= bg_color_style %>" class="flush" id="notifications_container">
                   </ul>
                   <div class="divider flush"></div>
                   <div class="small center">
-                      <%= link_to "All Notifications", me_notifications_path, class: 'all-notifications'  %>
+                      <%= link_to "All Notifications", me_notifications_path, class: 'all-notifications', style: bg_color_style  %>
                   </div>
                 </div>
               </li>
@@ -81,7 +82,7 @@
                   <% end %>
                 </a>
 
-                <div class="dropdown-menu pull-right" role="menu" >
+                <div style="<%= bg_color_style %>" class="dropdown-menu pull-right" role="menu" >
                  
                   <% unless current_user.avatar? %>
                     <div role="presentation" class="personal-links">
@@ -102,7 +103,7 @@
                 
                   <div class="divider flush"></div>
                               
-                  <ul class="flush">
+                  <ul style="<%= bg_color_style %>" class="flush">
                     <% current_chalkler.providers_following.each do |provider| %>
                       <li role="presentation" class="_favourite">
                         <%= link_to provider_path(provider.url_name) do %>
