@@ -19,6 +19,8 @@ class Chalkler < ActiveRecord::Base
   validates_associated :subscriptions, :providers_following
   validates_presence_of :notification_preference, :if => :persisted?
 
+  validate :passwords_match, on: :create
+
   has_many :subscriptions
   has_many :provider_teachers
   has_many :bookings
@@ -241,6 +243,10 @@ class Chalkler < ActiveRecord::Base
   end
 
   private
+
+    def passwords_match
+      errors.add('Passwords', 'They must match') unless password == password_confirmation
+    end
 
     def ensure_notification_preference
       self.notification_preference = NotificationPreference.create unless notification_preference.present?

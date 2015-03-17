@@ -1,11 +1,11 @@
 <div id="sign-in" class="row">
 
-  <div class="hidden-xs col-sm-6 col-md-8">
+  <div class="hidden-xs col-sm-6 col-md-7">
     <h1>Discover a World<br /> of Learning</h1>
   </div>
 
-  <div class="col-xs-12 col-sm-5 col-md-3 well">
-    
+  <div class="col-xs-12 col-sm-5 col-md-4 well">
+    <h1 class="visible-xs center">Sign Up</h1>
     <div class="segmented-rule hidden-xs">
       <div class="left-segment"></div>
       <h2>Sign Up</h2>
@@ -17,8 +17,7 @@
     
       <h3>– Or –</h3>
 
-      <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
-      <%= f.error_notification %>
+      <%= bootstrap_form_for(resource, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
       <div class="form-inputs">
         <%= f.input :name, :required => true, placeholder: 'Name' %>
         <%= f.input :email, :required => true, placeholder: 'Email' %>
