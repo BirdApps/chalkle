@@ -14,7 +14,7 @@
         Next class: <span><%= quick_date_time provider_teacher.next_class.start_at %></span>
       </div>
       <div>
-        <%= link_to provider_teacher.next_class.name, provider_course_path(provider_teacher.next_class.path_params), class: "colour#{ provider_teacher.next_class.best_colour_num.to_s}" %>
+        <%= link_to provider_teacher.next_class.name, provider_course_path(provider_teacher.next_class.path_params), style: "colour: #{ provider_teacher.next_class.color }" %>
       </div>
     <% else %>
       <div>No scheduled classes</div>

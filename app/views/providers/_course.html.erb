@@ -21,12 +21,12 @@
     <header class="clearfix">
       <div class="title-wrapper">
       <div class="availability-wrapper">
-        <a href="<%= new_provider_course_booking_path course.path_params %>" class="sign-in-first availability nowrap btn-3d bg-colour<%= course.best_colour_num %>" >
+        <a href="<%= new_provider_course_booking_path course.path_params %>" class="sign-in-first availability nowrap btn-3d" style="background-color: <%= course.color %>">
           <%= course.call_to_action %>
         </a>
       </div>
         <h3 class="title">
-          <%= link_to course.name, provider_course_path(course.path_params), { :class => "colour"+course.best_colour_num.to_s } %>
+          <%= link_to course.name, provider_course_path(course.path_params), { style: "color: #{course.color}" } %>
         </h3>
       </div>
       
