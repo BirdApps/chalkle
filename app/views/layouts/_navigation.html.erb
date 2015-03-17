@@ -104,6 +104,19 @@
                   <div class="divider flush"></div>
                               
                   <ul style="<%= bg_color_style %>" class="flush">
+                     <% if current_chalkler.providers_following.empty? %>
+                      <div class="text-center">
+                        <%= link_to root_path do %>
+                          <small>
+                            <br />
+                            This is where we show your favourites.
+                            <br />
+                            You don't have any yet. 
+                          </small><br />
+                          <br />
+                        <% end %>
+                      </div>
+                    <% end %>
                     <% current_chalkler.providers_following.each do |provider| %>
                       <li role="presentation" class="_favourite">
                         <%= link_to provider_path(provider.url_name) do %>

@@ -25,6 +25,22 @@
       <h3>Following</h3>
       <hr />
     </div>
+
+    <% if @chalkler.providers_following.empty? %>
+      <div class="text-center">
+        <% if @chalkler == current_chalkler %>
+          <p>Opps, you aren't following any providers yet.</p>
+          <p>
+            <small>Why don't you live a little?</small>
+          </p>
+
+          <%= link_to "Browse Providers", root_path, class: 'btn btn-default' %>
+        <% else %>
+          <p><%= @chalkler.name %> isn't following any providers yet.</p>
+        <% end %>
+      </div>
+    <% end %>
+
     <% @chalkler.providers_following.each do |provider| %>
       <div role="presentation" class="_favourite row">
         <div class="col-xs-10">
