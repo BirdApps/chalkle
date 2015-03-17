@@ -37,7 +37,7 @@ module LayoutHelper
   end
 
   def page_hero
-    @hero || "/assets/partners/index-hero.jpg" if @header_partial.present?
+    @hero || ActionController::Base.helpers.image_path("partners/index-hero.jpg") if @header_partial.present?
   end
 
   def nav_links

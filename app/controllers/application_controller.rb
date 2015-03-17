@@ -17,6 +17,8 @@ class ApplicationController < ActionController::Base
   end
 
   def home
+    @hero = ActionController::Base.helpers.image_path('teach/reward.jpg')
+    @header_partial = '/layouts/headers/home'
     @providers = Provider.promotable_within_coordinates({lat: -36.0, long: 170.0}, {lat: -34.0, long: 180.0})                                                  
   end
 
