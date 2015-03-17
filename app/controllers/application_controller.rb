@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def home
+    @providers = Provider.promotable_within_coordinates({lat: -36.0, long: 170.0}, {lat: -34.0, long: 180.0})                                                  
   end
 
   def color_scheme

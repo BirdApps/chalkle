@@ -96,6 +96,14 @@ class Course < ActiveRecord::Base
   scope :not_repeat_course, where(repeat_course_id: nil)
   scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
   scope :adminable_by, -> (chalkler){ joins(:provider => :provider_admins).where('provider_admins.chalkler_id = ?', chalkler.id)}
+  scope :located_within_coordinates, -> (coordinate1, coordinate2) { 
+    where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", 
+      [ coordinate1[:lat],  coordinate2[:lat] ].min, 
+      [ coordinate1[:lat],  coordinate2[:lat] ].max,
+      [coordinate1[:long],  coordinate2[:long]].min, 
+      [coordinate1[:long],  coordinate2[:long]].max )
+  }
+
 
   scope :displayable, visible.published
 

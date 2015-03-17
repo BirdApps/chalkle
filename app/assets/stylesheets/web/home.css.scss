@@ -46,15 +46,31 @@
       font-size: 20px;
     }
 
-    .provider-preview-loading{
-
+    .provider-preview-loading {
       margin-top: 62px;
-
       .location-spinner-wrapper {
-
         width: 3px;
         position: relative;
         display: inline-block;
+      }
+    }
+    .provider-preview {
+      .provider-logo {
+        margin: 15px;
+        h3 {
+          font-weight: 700;
+          font-size: 14px;
+          color: #333;
+        }
+        p {
+          font-weight: 300;
+          font-size: 14px;
+          color: #666;
+        }
+        img {
+          width: 100%;
+          border-radius: 18px;
+        }
       }
     }
   }

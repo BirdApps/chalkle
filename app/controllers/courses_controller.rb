@@ -35,7 +35,10 @@ class CoursesController < ApplicationController
     end
     
     if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
-      @courses = @courses.where("latitude < ? AND latitude > ? AND longitude < ? AND longitude > ?", params[:top].to_f, params[:bottom].to_f, params[:right].to_f, params[:left].to_f);
+      @courses = @courses.located_within_coordinates(
+        { lat: params[:top].to_f,    long: params[:left].to_f   }, 
+        { lat: params[:bottom].to_f, long: params[:right].to_f  }
+      )
     end
 
     if params[:only_location].present?

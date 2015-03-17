@@ -31,7 +31,7 @@ class Provider < ActiveRecord::Base
   has_many :outgoing_payments
   has_many :provider_teachers
   has_many :teaching_chalklers, through: :provider_teachers, source: :chalkler
-  has_many  :admin_chalklers, through: :provider_admins, source: :chalkler
+  has_many :admin_chalklers, through: :provider_admins, source: :chalkler
 
   belongs_to :provider_plan
 
@@ -40,13 +40,18 @@ class Provider < ActiveRecord::Base
   scope :has_logo, where("logo IS NOT NULL")
   scope :has_hero, where("hero IS NOT NULL")
   scope :chalkler_can_teach, lambda { |chalkler| joins(:provider_teachers).where("chalkler_id = ?", chalkler.id) }
-
+  scope :has_active_course_within_coordinates, -> (coordinate1, coordinate2) {
+    joins(:courses).merge( Course.located_within_coordinates(coordinate1, coordinate2) )
+  }
+  scope :promotable_within_coordinates, -> (coordinate1, coordinate2) {
+    visible.has_logo.has_active_course_within_coordinates(coordinate1, coordinate2)
+  }
 
   before_validation :check_url_name
   after_create :set_url_name!
 
   def self.select_options(provider)
-    provider.map { |c| [c.name, c.id] }
+    provider.map {|c| [c.name, c.id] }
   end
   
   def followers

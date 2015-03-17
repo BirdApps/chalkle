@@ -133,7 +133,10 @@ Chalkle::Application.routes.draw do
   match 'classes/calculate_cost', to: 'courses#calculate_cost'
   get 'classes/:id', to: 'courses#show', as: :old_course_path #backwards compatibility2
 
-  resources :providers, only: [:index, :create, :new]
+  resources :providers, only: [:index, :create, :new] do 
+    collection { get 'featured_providers' } 
+  end
+
   resource :provider, except: [:new, :create], path: ':provider_url_name' do
     match '', to: 'providers#show'
     
@@ -141,8 +144,7 @@ Chalkle::Application.routes.draw do
     get 'contact', to: 'providers#contact'
     post 'contact', to: 'providers#contact'
 
-    get 'fetch', to: 'courses#fetch'
-    
+    get 'fetch', to: 'courses#fetch'    
     get 'edit'
     put 'edit', to: 'providers#update'
 

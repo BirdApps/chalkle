@@ -114,6 +114,14 @@ class ProvidersController < ApplicationController
     @bookings = @provider.bookings.order(:course_id).reverse
   end
 
+
+  def featured_providers
+    @providers = Provider.promotable_within_coordinates(
+      params[:coordinate1], 
+      params[:coordinate2]).limit(5)
+    render partial: 'featured_providers', layout: false
+  end
+
   private
   
     def load_provider
