@@ -33,24 +33,28 @@
 
 <div class="provider_header">
   <div class="container-fluid">
-    <a class="avatar block" href="<%= provider_path(@provider.url_name) %>">
+    <div class="avatar">
       <div class="img" style="background-image: url(<%= @provider.logo %>)">
       </div>
-      <div class="provider_header_social">
       <% if current_user.authenticated? %>
-        <% subscription = current_user.subscriptions.where(provider_id: @provider.id).first %>
-        <div class="favourite <%= 'on' if subscription %>">
-          <span class="fa fa-2x fa-heart-o off"></span>
-          <span class="fa fa-2x fa-heart on"></span>
-          <% unless subscription %>
-            <%= button_to "Favourite", provider_subscriptions_path(@provider), method: :post %>
-          <% else %>
-            <%= button_to "Unfavourite", provider_subscription_path(subscription.path_params), method: :delete %>
-          <% end %>
-        </div>
+        <% 
+          subscription = current_user.subscriptions.where(provider_id: @provider.id).first
+          unless subscription 
+            sub_path = provider_subscriptions_path(@provider)
+            sub_method = :post
+          else 
+            sub_path = provider_subscription_path(subscription.path_params)
+            sub_method = :delete
+          end 
+        %>
+        <%= link_to sub_path, method: sub_method, class: 'provider_header_social nowrap' do %>
+          <div class="favourite">
+            <span class="fa fa-heart <%= subscription ? 'on' : 'off' %>"></span>
+          </div>
+          <span class="fav"><%= subscription ? 'Unfavourite' : 'Favourite' %></span>
+        <% end %>
       <% end %>
-      </div>
-    </a>
+    </div>
 
     <div class="provider_header_content">
       <h1 class="provider_header_name">

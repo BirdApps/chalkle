@@ -188,7 +188,8 @@ protected
 
   def header_provider
     if @provider
-      @hero = @provider.hero 
+      @hero = @provider.hero
+      @header_color = @provider.header_color if @provider.header_color
       @header_partial = '/layouts/headers/provider'
     end
   end

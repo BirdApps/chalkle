@@ -41,8 +41,8 @@ class Course < ActiveRecord::Base
 
   [:teacher, :provider].each {|resource| delegate :name, :to => resource, :prefix => true, :allow_nil => true}
 
-  def best_colour_num
-    4 #TODO: must refactor to reference provider color
+  def color
+    provider.header_color if provider.header_color
   end
   
   #Time span for classes requiring attention

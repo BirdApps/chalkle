@@ -124,6 +124,10 @@ $(function(){
 
     window.addEventListener("resize", check_notification_height);
 
+    $('.dropdown').on('shown.bs.dropdown', function () {
+      check_notification_height();
+    })
+
     if($(".notifications-drop").length > 0){ 
       update_notification_list(true);
       window.setInterval(update_notification_list, 7000);
@@ -134,7 +138,19 @@ $(function(){
     });
 
     function check_notification_height(){
-      $('.dropdown-menu ul').css('max-height', window.innerHeight - 100 );
+      buffer = 0;
+      if( $(window).width() > 768 ){
+        buffer = 20;
+      }
+      $('.dropdown-menu ul').each(function(){
+        offset = $(this).offset().top;
+        if(this.id == "notifications_container"){
+          $(this).css('max-height', window.innerHeight - offset - buffer - $('.all-notifications').parent().height() );
+        }else{
+          $(this).css('max-height', window.innerHeight - offset - buffer );
+        }
+      });
+      
     }
 
     function update_notification_badge(count) {

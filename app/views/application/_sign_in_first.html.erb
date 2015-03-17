@@ -129,6 +129,13 @@
       e.preventDefault();
       $.post('/set_redirect', { redirect_to: target, _method: 'put' });
       $('#signInFirstModal').modal('show');
+    });
+
+    $('.sign-up-first').click(function(e){
+      target = $(this).attr('href');
+      e.preventDefault();
+      $.post('/set_redirect', { redirect_to: target, _method: 'put' });
+      $('#signUpFirstModal').modal('show');
     })
   }
   $(function(){

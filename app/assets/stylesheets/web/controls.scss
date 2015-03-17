@@ -71,10 +71,12 @@ html {
           border-radius: 0;
         }
 
-        li{
+        li {
           width: 100%;
-          a{
+          min-width: 188px;
+          a {
             padding: 8px 20px;
+            text-align: left;
           }
         }
 
