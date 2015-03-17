@@ -134,7 +134,11 @@ $(function(){
     });
 
     function check_notification_height(){
-      $('.dropdown-menu ul').css('max-height', window.innerHeight - 100 );
+      if( $(window).width() > 768 ){
+        $('.dropdown-menu ul').css('max-height', window.innerHeight - 140 );
+      }else{
+        $('.dropdown-menu ul').css('max-height', window.innerHeight - 100 );
+      } 
     }
 
     function update_notification_badge(count) {
