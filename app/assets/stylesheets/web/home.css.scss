@@ -60,10 +60,10 @@
         h3 {
           font-weight: 700;
           font-size: 14px;
-          color: #333;
+          color: #444;
         }
         p {
-          font-weight: 300;
+          font-weight: 500;
           font-size: 14px;
           color: #666;
         }
@@ -73,6 +73,121 @@
         }
       }
     }
+  }
+
+  .business {
+    background-color: #2E2E2E;
+    padding-top: 130px;
+    padding-bottom: 230px;
+    h2 { 
+      margin-bottom: 96px;
+      font-weight: 300;
+      font-size: 36px;
+      color: #FFFFFF;
+      letter-spacing: 1px;
+    }
+    .iconify {
+      width: 65px;
+      margin-right: 10px;
+    }
+    h3 {
+      font-weight: 600;
+      font-size: 20px;
+      color: #FFFFFF;
+      letter-spacing: 1px;
+    }
+    h4, a h4 {
+      font-weight: 300;
+      font-size: 24px;
+      color: #FFFFFF;
+      letter-spacing: 0.66px;
+    }
+    small {
+      font-weight: 400;
+      font-size: 16px;
+      color: #FFFFFF;
+      letter-spacing: 1px;
+      line-height: 24px;
+    }
+    .teach-link {
+      padding-top: 16px; 
+      padding-bottom: 16px; 
+      margin-top: 130px;
+      border-radius: 6px;
+      border: solid #666 1px;
+      transition: all 150ms ease-out;
+      &:hover {
+        background: rgba(74, 144, 226, 0.9);
+        border: #333 solid 1px;
+        transform: translate(0,-4px); 
+        box-shadow: 0 3px 5px #000;
+      }
+      em {
+        font-weight: 700;
+        font-size: 24px;
+        color: #FFFFFF;
+        letter-spacing: 0.66px;
+      }
+    }
+  }
+
+  .praise {
+    .iconify {
+      max-height: 53px;
+      max-width: 190px;
+      margin-bottom: 19px;
+    }
+
+    h2 { 
+      margin-top: 130px;
+      margin-bottom: 96px;
+      font-weight: 300;
+      font-size: 36px;
+      color: #333;
+      letter-spacing: 1px;
+    }
+
+    .praise-bubble {
+      font-weight: 200;
+      font-size: 18px;
+      color: #262626;
+      line-height: 24px;
+
+      margin-top: 62px;
+      margin-bottom: 260px;
+      padding-left: 130px;
+      padding-right: 34px;
+    }
+    
+    .offset {
+      margin-top: 260px;
+      .praise-bubble {
+        padding-right: 130px;
+        padding-left: 34px;
+        &:last-child {
+          margin-bottom: 84px;   
+        }
+      }
+    }
+
+    .attributation {
+      margin-top: 19px;
+      strong, sub {
+        font-weight: 600;
+        font-size: 14px;
+        color: #535353;
+        line-height: 14px;
+        display: block;
+
+      }
+      sub {
+        font-weight: 400;
+        font-size: 12px;
+      }
+    }
+  }
+  .cta-button {
+    margin-bottom: 19px;
   }
 
 }
