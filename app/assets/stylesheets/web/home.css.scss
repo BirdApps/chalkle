@@ -9,7 +9,8 @@
     background-image: image_url('teach/reward.jpg');
     background-size: cover;
     background-position: right center;
-    background position: fixed;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     padding-top: 170px; 
     min-height: 700px;
 
@@ -123,7 +124,7 @@
       border-radius: 6px;
       border: solid #666 1px;
       transition: all 150ms ease-out;
-      &:hover {
+      &:hover, &:active, &:focus {
         background: rgba(74, 144, 226, 0.9);
         border: #333 solid 1px;
         transform: translate(0,-4px); 
