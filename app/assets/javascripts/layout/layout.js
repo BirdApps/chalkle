@@ -10,7 +10,6 @@ $(function(){
     facebook_init();
     fix_too_wide_bug();
     site_messages();
-    notifications_init();
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
   }
