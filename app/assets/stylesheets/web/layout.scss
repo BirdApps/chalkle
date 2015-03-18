@@ -25,18 +25,36 @@ html {
     -webkit-overflow-scrolling: touch;
     height: 100%;
     min-height: 100%;
-    color: #727272;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
     font-family: $font_family_normal;
     padding-top: 0; 
     background-color: transparent;
     margin-bottom: 0;
     letter-spacing: $letter-spacing;
+    line-height: 1.4em;
 
     h1,h2,h3,h4,h5,h6 {
       font-weight: 600;
     }
     
-    a{
+    .provider-logo {
+      .avatar {
+        background: transparent;
+        img, .img {
+          border: 3px solid #fff;
+        }
+      }
+      img, .img {
+        width: 100%;
+        border-radius: 22%;
+      }
+
+    }
+
+
+    a {
       &:hover {
         cursor: pointer;
       }

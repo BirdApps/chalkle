@@ -128,19 +128,19 @@
           <div class="teacher">
             <div class="avatar64" style='background-image: url(<%= @course.teacher.avatar %>)'>
             </div>
-            <div class="light grey upper small">Your Teacher</div>
+            <div class="light grey upper ">Your Teacher</div>
             <%= @course.teacher.name %>
           </div>
         <% end %>
       <% end %>
     </div>
-    <div class="col-sm-4 hidden-xs small grey light pad-top">
+    <div class="col-sm-4 hidden-xs  grey light pad-top">
       <a href="#map-canvas">
         <span class="fa fa-map-marker"></span>
         <%= @course.address || to_html(@course.venue) %>
       </a>
     </div>
-    <div class="col-sm-3 col-xs-6 small grey light pad-top">
+    <div class="col-sm-3 col-xs-6  grey light pad-top">
       <span class="fa fa-calendar"></span>
       <%= day_ordinal_month @course.start_at, true, false, true %>
       <br />
