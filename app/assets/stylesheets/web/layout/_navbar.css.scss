@@ -58,7 +58,7 @@
     }
     > li {
       a {
-        color: #fafafa;
+        color: #fafafa !important;
         min-width: $mobile-nav-height;
         display: inline-block;
         height: 100%;
@@ -70,7 +70,7 @@
           padding-bottom: 15px;
         }
         &:hover, &:active, &:focus, &.current {
-          color: #fff;
+          color: #fff !important;
           background-color: rgba(0,0,0,0.24);
           text-shadow: none;
           text-decoration: none;
