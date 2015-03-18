@@ -33,6 +33,7 @@ $(function(){
         if($(this).width() > document.body.clientWidth ) return this;
       }).css('width', document.body.clientWidth);
     }
+  }
 
 
   function site_messages(){
