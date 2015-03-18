@@ -71,8 +71,8 @@ html {
           border-radius: 0;
         }
 
-        li {
-          width: 100%;
+        .li,li {
+          text-align: left;
           min-width: 188px;
           a {
             padding: 8px 20px;
