@@ -46,9 +46,9 @@ $(function(){
     window.addEventListener("resize", match_screen_width);
 
     function match_screen_width(){
-      width = $(window).width();
-      coloring.parent().css("width", width+"px");
-      html.css('background-size', width+"px");
+      $('*').map(function(){
+        if($(this).width() > document.body.clientWidth ) return this;
+      }).css('width', document.body.clientWidth);
     }
 
     
@@ -122,11 +122,13 @@ $(function(){
     var NOTIFICATIONS_LOADED = false;
     check_notification_height();
 
-    window.addEventListener("resize", check_notification_height);
+    window.addEventListener("resize", function(){
+      window.setTimeout(check_notification_height, 300);
+    });
 
     $('.dropdown').on('shown.bs.dropdown', function () {
       check_notification_height();
-    })
+    });
 
     if($(".notifications-drop").length > 0){ 
       update_notification_list(true);
@@ -138,19 +140,14 @@ $(function(){
     });
 
     function check_notification_height(){
-      buffer = 0;
+      buffer = 47;
       if( $(window).width() > 768 ){
-        buffer = 20;
+        buffer += 30;
       }
-      $('.dropdown-menu ul').each(function(){
-        offset = $(this).offset().top;
-        if(this.id == "notifications_container"){
-          $(this).css('max-height', window.innerHeight - offset - buffer - $('.all-notifications').parent().height() );
-        }else{
-          $(this).css('max-height', window.innerHeight - offset - buffer );
-        }
+      $('.dropdown.open .dropdown-menu ul').each(function(){
+        offset = $(this).offset().top - $(window).scrollTop();
+        $(this).css('max-height', window.innerHeight - offset - buffer);
       });
-      
     }
 
     function update_notification_badge(count) {

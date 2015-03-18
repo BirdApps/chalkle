@@ -6,7 +6,8 @@ html {
     .modal { overflow: scroll; }
     .modal form { margin: 0px; }
     .modal-open { margin-right: 0px; }
-
+    .modal-dialog { margin: 70px auto };
+    
     input.form-control {
       background-color: rgba(0,0,0,0.10);
       border-radius: 3px;
@@ -71,8 +72,8 @@ html {
           border-radius: 0;
         }
 
-        li {
-          width: 100%;
+        .li,li {
+          text-align: left;
           min-width: 188px;
           a {
             padding: 8px 20px;
@@ -329,6 +330,7 @@ html {
       position: relative;
       transition: all 120ms;
       letter-spacing: 1.2px;
+      border-width: 0px;
       a {
         color: inherit;
       }

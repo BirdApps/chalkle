@@ -214,7 +214,7 @@ $(function(){
     }
 
     function search(relocate){
-      if(relocate && window.location.pathname != "/discover"){
+      if(relocate && window.location.pathname != "/classes"){
         $("#primary-search-form").submit();
       }else{
         fetch_courses();

@@ -1,20 +1,33 @@
 <div class="navbar-wrapper">
-  <nav class="navbar navbar-fixed-top" role="navigation" >
-    <% bg_color_style = "background-color: #{@header_color}" if @header_color %>
-    <%= content_tag :div, style: bg_color_style, class: "coloring"  do %>
+  <% if @header_color %>
+    <style>
+      @media screen and (min-width: 769px){
+        .provider_color,.dropdown-menu, .dropdown-menu ul, .coloring  {
+          background-color: <%=  @header_color %> !important;
+        }
+      }
+      @media screen and (max-width: 768px){
+        .provider_color,.dropdown-menu, .dropdown-menu ul, .coloring  {
+          background-color: <%=  @header_color_opaque %> !important;
+        }
+      }
+    </style>
+  <% end %>
+  <div class="navbar navbar-fixed-top" role="navigation" >
+    <%= content_tag :div, class: "coloring"  do %>
       <div class="container-fluid">
         <div class="navbar-header">
           <button class="navbar-toggle" data-target="#primary-navigation" data-toggle="collapse" type="button">
             <span class="sr-only Toggle navigation"></span>
             <span class="fa fa-bars"></span>
           </button>
-          <%= link_to root_path, class: 'navbar-brand', alt: "chalkle°" do%>
+          <%= link_to root_path, class: 'navbar-brand', alt: "chalkle°" do %>
             <%= image_tag asset_path('logo.png'), alt: 'Chalkle', class: "logo hidden-xs" %>
           <% end %>
         </div>
         <div id="primary-navigation">
           <div class="search-wrapper">
-            <form class="search-form" id="primary-search-form" method="get" action="<%= discover_path %>" onsubmit="<%= "return false" if current_page? discover_path %>" role="search">
+            <form class="search-form" id="primary-search-form" method="get" action="<%= classes_path %>" onsubmit="<%= "return false" if current_page? classes_path %>" role="search">
               <div class="input-group">
                 <span class="input-group-addon" id="search_btn">
                   <img id="search_chalkle_btn" src="/assets/icons/search.png" alt="search" />
@@ -27,27 +40,30 @@
 
           <ul id="primary-menu" class="nav navbar-nav">
             <li class="dropdown non-img-link hidden-xs">
-              <%= link_to "Browse Classes", discover_path %>
+              <%= link_to "Browse Classes", classes_path %>
             </li>
             <% if chalkler_signed_in? %>
               <li class="dropdown non-img-link notifications-drop">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                  <span>
-                  <span class="sr-only">Toggle Create Dropdown</span>
+                  <span class="sr-only">Toggle Links</span>
                   <span class="caret"></span>
                  </span>
                 </a>
-                <ul style="<%= bg_color_style %>" class="dropdown-menu pull-right" role="menu" >
-                  <li class="visible-xs">
-                    <%= link_to "Browse Classes", discover_path %>
-                  </li>
-                  <li>
-                    <%= link_to "Create Class", new_course_path %>
-                  </li>
-                  <li>
-                    <%= link_to "Create Provider", new_provider_path %>
-                  </li>
-                </ul>
+                <div class="dropdown-menu quick-links pull-right" role="menu" >
+                  <div class="visible-xs col-xs-12 flush">
+                    <%= link_to "Browse Classes", classes_path, class: 'li' %>
+                  </div>
+                  <div class="col-xs-12 flush">
+                    <%= link_to "Create Class", new_course_path, class: 'li'  %>
+                  </div>
+                  <div class="col-sm-6 col-xs-12 flush">
+                    <%= link_to "Browse Providers", providers_path, class: 'li'  %>
+                  </div>
+                  <div class="col-sm-6 col-xs-12 flush">
+                    <%= link_to "Create Provider", new_provider_path, class: 'li'  %>
+                  </div>
+                </div>
               </li>
 
 
@@ -60,11 +76,11 @@
                  </span>
                 </a>
                 <div class="dropdown-menu pull-right" role="menu" >
-                  <ul style="<%= bg_color_style %>" class="flush" id="notifications_container">
+                  <ul class="flush" id="notifications_container">
                   </ul>
                   <div class="divider flush"></div>
                   <div class="small center">
-                      <%= link_to "All Notifications", me_notifications_path, class: 'all-notifications', style: bg_color_style  %>
+                      <%= link_to "All Notifications", me_notifications_path, class: 'all-notifications' %>
                   </div>
                 </div>
               </li>
@@ -82,11 +98,13 @@
                   <% end %>
                 </a>
 
-                <div style="<%= bg_color_style %>" class="dropdown-menu pull-right" role="menu" >
+                <div class="dropdown-menu pull-right" role="menu" >
                  
                   <% unless current_user.avatar? %>
-                    <div role="presentation" class="personal-links">
-                      <%= link_to "Upload Profile Picture", me_preferences_path %>
+                    <div class="row">
+                      <div role="presentation" class="col-xs-12 personal-links">
+                        <%= link_to "Upload Profile Picture", me_preferences_path %>
+                      </div>
                     </div>
                   <% end %>
                   
@@ -96,14 +114,14 @@
                         <%= link_to current_user.name, chalkler_path(current_chalkler) %>
                       </div>
                       <div class="col-xs-4 text-center flush">
-                        <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
+                        <%= link_to "<span class='fa fa-cog'></span> Settings".html_safe, me_preferences_path %>
                       </div>
                     </div>
                   </div>
                 
                   <div class="divider flush"></div>
                               
-                  <ul style="<%= bg_color_style %>" class="flush">
+                  <ul class="flush">
                      <% if current_chalkler.providers_following.empty? %>
                       <div class="text-center">
                         <%= link_to root_path do %>
@@ -137,6 +155,10 @@
                       </li>
                     <% end %>
                   </ul>
+                  <div class="divider flush"></div>
+                  <div class="small center">
+                       <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete', class: 'all-notifications' %>
+                  </div>
                 </div>
               </li>
   
@@ -157,5 +179,5 @@
         </div>
       </div>
     <% end %>
-  </nav>
+  </div>
 </div>
