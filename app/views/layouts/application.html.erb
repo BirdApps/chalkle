@@ -14,6 +14,7 @@
     <%= open_graph_tags %>
     <%= csrf_meta_tag %>
     <%= stylesheet_link_tag "application", media: "all" %>
+    <%= render 'layouts/provider_color_style' %>
     <%= javascript_include_tag "application" %>
     <% if chalkler_signed_in? %>
       <script src='//cdn.goroost.com/roostjs/e7a09481b0d145b784c6b9dd5dd97cb0' async></script>
@@ -31,7 +32,9 @@
     <%= render 'layouts/messages' %>
    
     <header>
-      <%= render 'layouts/navigation' %>
+      <%= render 'layouts/navbar' %>
+      <%# render 'layouts/navigation' %>
+      
       <div class="header-wrapper <%= 'sidebar-padding' if @sidebar.present? %> <%= 'open' if current_user.sidebar_open %>">
         <%= render @header_partial if @header_partial.present? %>
       </div>

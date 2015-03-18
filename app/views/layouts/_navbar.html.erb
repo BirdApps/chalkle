@@ -1,0 +1,174 @@
+<nav class="navbar navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header hidden-xs">
+      <%= link_to root_path, class: 'navbar-brand', alt: "chalkle°" do %>
+        <%= image_tag asset_path('logo.png'), alt: 'Chalkle', class: "logo hidden-xs" %>
+      <% end %>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="search-wrapper-wrapper">
+          <div class="search-wrapper">
+            <form class="search-form" id="primary-search-form" method="get" action="<%= classes_path %>" onsubmit="<%= "return false" if current_page? classes_path %>" role="search">
+              <div class="input-group">
+                <span class="input-group-addon" id="search_btn">
+                  <img id="search_chalkle_btn" src="/assets/icons/search.png" alt="search" />
+                </span>
+                <input id="search_input" type="search" name="search" value="<%= params[:search] %>" class="form-control" placeholder="Search Chalkle" autocomplete="off" />
+                <div class="search-close">&times;</div>
+              </div>
+            </form>
+          </div>
+        </li>
+        <li class="xs-browse-classes">
+          <%= link_to "Browse Classes", classes_path %>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="hidden-xs">
+          <%= link_to "Browse Classes", classes_path %>
+        </li>
+        <% if chalkler_signed_in? %>
+          <li class="dropdown non-img-link notifications-drop">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+             <span>
+              <span class="sr-only">Toggle Links</span>
+              <span class="caret"></span>
+             </span>
+            </a>
+            <div class="dropdown-menu quick-links pull-right" role="menu" >
+              <div class="visible-xs col-xs-12 flush">
+                <%= link_to "Browse Classes", classes_path, class: 'li' %>
+              </div>
+              <div class="col-xs-12 flush">
+                <%= link_to "Create Class", new_course_path, class: 'li'  %>
+              </div>
+              <div class="col-sm-6 col-xs-12 flush">
+                <%= link_to "Browse Providers", providers_path, class: 'li'  %>
+              </div>
+              <div class="col-sm-6 col-xs-12 flush">
+                <%= link_to "Create Provider", new_provider_path, class: 'li'  %>
+              </div>
+            </div>
+          </li>
+
+
+          <li class="dropdown notifications-drop">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+             <span>
+              <span class="sr-only">Toggle Notifications Dropdown</span>
+               <img class="nav_img" src="/assets/icons/bell.png" />
+               <span class="notification-count"></span>
+             </span>
+            </a>
+            <div class="dropdown-menu pull-right" role="menu" >
+              <ul class="flush" id="notifications_container">
+              </ul>
+              <div class="divider flush"></div>
+              <div class="small center">
+                  <%= link_to "All Notifications", me_notifications_path, class: 'dropdown-footer' %>
+              </div>
+            </div>
+          </li>
+
+          <li class="dropdown favourites-drop">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+             <% if current_user.avatar? %>
+                <span>
+                  <img class="nav_img" src="<%= current_user.avatar %>" />
+                </span>
+              <% else %>
+                <div class="nav_img">
+                  <%= current_user.initials %>
+                </div>
+              <% end %>
+            </a>
+
+            <div class="dropdown-menu pull-right" role="menu" >
+             
+              <% unless current_user.avatar? %>
+                <div class="row">
+                  <div role="presentation" class="col-xs-12 personal-links">
+                    <%= link_to "Upload Profile Picture", me_preferences_path %>
+                  </div>
+                </div>
+              <% end %>
+              
+              <div class="row">
+                <div class="col-xs-12 personal-links" role="presentation">
+                  <div class="col-xs-8 flush">
+                    <%= link_to current_user.name, chalkler_path(current_chalkler) %>
+                  </div>
+                  <div class="col-xs-4 text-center flush">
+                    <%= link_to "<span class='fa fa-cog'></span> Settings".html_safe, me_preferences_path %>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="divider flush"></div>
+                          
+              <ul class="flush">
+                 <% if current_chalkler.providers_following.empty? %>
+                  <div class="text-center">
+                    <%= link_to root_path do %>
+                      <small>
+                        <br />
+                        This is where we show your favourites.
+                        <br />
+                        You don't have any yet. 
+                      </small><br />
+                      <br />
+                    <% end %>
+                  </div>
+                <% end %>
+                <% current_chalkler.providers_following.each do |provider| %>
+                  <li role="presentation" class="_favourite">
+                    <%= link_to provider_path(provider.url_name) do %>
+                      <div class="avatar64">
+                        <div class="img" style="background-image: url(<%= provider.logo %>)">
+                        </div>
+                      </div>
+                      <div class="content">
+                        <h4 class="flush">
+                         <%= provider.name %>
+                        </h4>
+                        <p>
+                          <% course_count = provider.courses.in_future.displayable.count %>
+                          <%= course_count %> upcoming <%= "class".pluralize(course_count) %>
+                        </p>
+                      </div>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+              <div class="divider flush"></div>
+              <div class="small center">
+                   <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete', class: 'dropdown-footer' %>
+              </div>
+            </div>
+          </li>
+
+        <% else %>
+          <li class="non-img-link">
+            <%= link_to 'Sign up', new_chalkler_registration_path, class: 'sign-up-first' %>
+          </li>
+          <li class="dropdown non-img-link notifications-drop">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+             <span>
+              <span class="sr-only">Toggle Links</span>
+              <span class="caret"></span>
+             </span>
+            </a>
+            <ul class="dropdown-menu pull-right" role="menu" >
+              <li>
+                <%= link_to 'Login', new_chalkler_session_path, class: 'sign-in-first'  %>
+              </li>
+            </ul>
+          </li>
+
+        <% end %>
+
+      </ul>
+    </div>
+  </div>
+</nav>
