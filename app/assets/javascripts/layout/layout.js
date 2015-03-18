@@ -49,8 +49,6 @@ $(function(){
       $('*').map(function(){
         if($(this).width() > document.body.clientWidth ) return this;
       }).css('width', document.body.clientWidth);
-
-      html.css('background-size', document.body.clientWidth+"px");
     }
 
     
