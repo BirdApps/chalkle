@@ -42,6 +42,7 @@ html {
       }
       &:focus, &:hover, &:active {
         text-decoration: none !important;
+        outline: none;
       }
     }
 
