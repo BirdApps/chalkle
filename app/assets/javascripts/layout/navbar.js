@@ -9,7 +9,11 @@ $(function(){
 
   function searchBar_init(){  
     $('#search_btn').click(function(){
-      $('#search_input').focus();
+      if( $('.search-wrapper').hasClass('open') ){
+        $('.search-form').submit();
+      }else{
+        $('#search_input').focus();
+      }
     });
 
     $('#search_input').focus(function(){
@@ -24,9 +28,11 @@ $(function(){
     });
     $('.navbar').after('<div class="shade"></div>');
     $('.search-close, .header-wrapper, .body-content, .shade').click(close_search_wrapper);
+    $('.search-form').submit(close_search_wrapper);
 
     function close_search_wrapper(){
       if( $('.search-wrapper').hasClass('open') ){
+        $('.search_input').focusout();
         $('.shade').fadeOut('fast');
         $('.search-wrapper-wrapper').css('left', 'auto');
         $('.navbar-header').css('left', '0');
