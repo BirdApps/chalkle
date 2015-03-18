@@ -21,6 +21,15 @@ html {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   
+  .shade {
+    height: 100%; 
+    width: 100%;
+    position: fixed;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 5;
+    display: none;
+  }
+
   body.v2 {
     -webkit-overflow-scrolling: touch;
     height: 100%;
