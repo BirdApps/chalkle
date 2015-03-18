@@ -56,7 +56,7 @@
             @media screen and (min-width: 769px){
               margin: 19px 0;
             }
-            @media screen and (max-width: 769px){
+            @media screen and (max-width: 768px){
               margin: 14px 0;
             }
           }
@@ -71,11 +71,10 @@
           @media screen and (min-width: 769px){
             margin: 15px 0;
           }
-          @media screen and (max-width: 769px){
+          @media screen and (max-width: 768px){
             margin: 10px 0;
           }
         }
-
         &.non-img-link{
           a {
             padding-top: 15px !important;
@@ -193,6 +192,11 @@
         
         .notifications-drop, .favourites-drop{
           .dropdown-menu {
+             &.quick-links {
+              @media screen and (min-width: 769px){
+                min-width: 376px;
+              } 
+            }
             .personal-links{
               a {
                 font-weight: 500;
@@ -209,7 +213,7 @@
             ul {
               z-index: 100;
               max-width: 100%;
-              @media screen and (min-width: 768px){
+              @media screen and (min-width: 769px){
                 min-width: 460px;
                 max-height: 400px;
               }
