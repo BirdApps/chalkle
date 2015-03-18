@@ -475,6 +475,8 @@ html {
         margin-top: 20px;
         li.active {
           a {
+            font-weight: 700;
+            color: #333;
             &:before, &:after {
               content: '•';
               color: #ccc;

@@ -25,7 +25,7 @@
     <hr />
   </div>
   <%= f.input :name, label: 'Name', wrapper: :horizontal %>
-  <%= f.input :email, label: 'Email Address', wrapper: :horizontal %>
+  <%= f.input :email, as: :email, label: 'Email Address', wrapper: :horizontal %>
   <%= f.input :phone_number, label: 'Phone', wrapper: :horizontal %>
   <%= f.input :bio, label: 'Bio', as: :text, wrapper: :horizontal %>
 

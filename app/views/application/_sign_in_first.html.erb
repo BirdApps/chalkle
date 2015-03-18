@@ -16,7 +16,7 @@
                 <br />
                 <%= bootstrap_form_for(:chalkler, :url => chalkler_session_path, :html => { class: 'form' }) do |f| %>
                   <%= f.error_notification %>
-                  <%= f.input :email, :autofocus => true, placeholder: 'Email' %>
+                  <%= f.input :email, as: :email, :autofocus => true, placeholder: 'Email' %>
                   <%= f.input :password, :required => true, placeholder: 'Password' %>
 
                   <div class="control-group">
@@ -74,7 +74,7 @@
                 
                 <div class="form-inputs text-left">
                   <%= f.input :name, :required => true, placeholder: 'Name' %>
-                  <%= f.input :email, :required => true, placeholder: 'Email' %>
+                  <%= f.input :email, as: :email, :required => true, placeholder: 'Email' %>
                   <%= f.input :password, :required => true, placeholder: 'Password' %>
                   <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
                 </div>

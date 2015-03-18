@@ -18,7 +18,7 @@
         </label>
       </div>
       <div class="col-sm-7">
-        <%= f.text_field :email, :'data-error-message' => 'You must enter an email', class: 'form-control' %>
+        <%= f.input :email, type: :email, :'data-error-message' => 'You must enter an email', class: 'form-control' %>
       </div>
     </div>
     <label class="exists-success" style="display:none">

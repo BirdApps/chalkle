@@ -35,7 +35,9 @@
         <div class="details clearfix">
           <% if course.provider.logo.present? %>
             <%= link_to provider_path(course.provider) do %>
-              <%= image_tag course.provider.logo.url, class: "provider-img pull-left", title: course.provider.name %>
+              <div class="provider-logo">
+                <%= image_tag course.provider.logo.url, class: "provider-img pull-left", title: course.provider.name %>
+              </div>
             <% end %>
           <% end %>
           <div class="pull-left">
@@ -72,7 +74,7 @@
           <% end  %>
         </div>
         <footer>
-          <span class="small grey">
+          <span class=" grey">
             <span class="fa fa-clock-o"></span>
             <% if course.class? %>
               <%= day_ordinal_month course.start_at, true, false, true %>
