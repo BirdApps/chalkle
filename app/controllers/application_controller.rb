@@ -197,7 +197,10 @@ protected
   def header_provider
     if @provider
       @hero = @provider.hero
-      @header_color = @provider.header_color if @provider.header_color
+      if @provider.header_color
+        @header_color = @provider.header_color(:rgba)
+        @header_color_opaque = @provider.header_color(:hex)
+      end
       @header_partial = '/layouts/headers/provider'
     end
   end
