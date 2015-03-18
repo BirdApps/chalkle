@@ -12,7 +12,7 @@
             <form class="search-form" id="primary-search-form" method="get" action="<%= classes_path %>" onsubmit="<%= "return false" if current_page? classes_path %>" role="search">
               <div class="input-group">
                 <span class="input-group-addon" id="search_btn">
-                  <img id="search_chalkle_btn" src="/assets/icons/search.png" alt="search" />
+                  <img id="search_chalkle_btn" src="<%= asset_path 'icons/search.png' %>" alt="search" />
                 </span>
                 <input id="search_input" type="search" name="search" value="<%= params[:search] %>" class="form-control" placeholder=" Search" autocomplete="off" />
                 <div class="search-close">&times;</div>
