@@ -33,7 +33,6 @@
    
     <header>
       <%= render 'layouts/navbar' %>
-      <%# render 'layouts/navigation' %>
       
       <div class="header-wrapper <%= 'sidebar-padding' if @sidebar.present? %> <%= 'open' if current_user.sidebar_open %>">
         <%= render @header_partial if @header_partial.present? %>
