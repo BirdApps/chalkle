@@ -140,17 +140,13 @@ $(function(){
     });
 
     function check_notification_height(){
-      buffer = 0;
+      buffer = 47;
       if( $(window).width() > 768 ){
-        buffer = 20;
+        buffer += 30;
       }
-      $('.dropdown-menu ul').each(function(){
+      $('.dropdown.open .dropdown-menu ul').each(function(){
         offset = $(this).offset().top - $(window).scrollTop();
-        if(this.id == "notifications_container"){
-          $(this).css('max-height', window.innerHeight - offset - buffer - $('.all-notifications').parent().height() );
-        }else{
-          $(this).css('max-height', window.innerHeight - offset - buffer );
-        }
+        $(this).css('max-height', window.innerHeight - offset - buffer);
       });
     }
 

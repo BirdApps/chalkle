@@ -114,7 +114,7 @@
                         <%= link_to current_user.name, chalkler_path(current_chalkler) %>
                       </div>
                       <div class="col-xs-4 text-center flush">
-                        <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete' %>
+                        <%= link_to "<span class='fa fa-cog'></span> Settings".html_safe, me_preferences_path %>
                       </div>
                     </div>
                   </div>
@@ -155,6 +155,10 @@
                       </li>
                     <% end %>
                   </ul>
+                  <div class="divider flush"></div>
+                  <div class="small center">
+                       <%= link_to 'Logout', destroy_chalkler_session_path, method: 'delete', class: 'all-notifications' %>
+                  </div>
                 </div>
               </li>
   
