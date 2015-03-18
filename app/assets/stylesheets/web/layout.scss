@@ -52,15 +52,19 @@ html {
       }
 
     }
-
+    
+    * {
+      &:focus, &:hover, &:active {
+        outline: none !important;
+      }
+    }
 
     a {
       &:hover {
         cursor: pointer;
       }
       &:focus, &:hover, &:active {
-        text-decoration: none !important;
-        outline: none;
+        text-decoration: none;
       }
     }
 

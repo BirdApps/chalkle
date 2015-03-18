@@ -21,7 +21,7 @@
           </div>
         </li>
         <li class="xs-browse-classes">
-          <%= link_to "Browse Classes", classes_path %>
+          <%= link_to "Browse", classes_path %>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -31,10 +31,10 @@
         <% if chalkler_signed_in? %>
           <li class="dropdown non-img-link notifications-drop">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-             <span>
+             <div class="text-center">
               <span class="sr-only">Toggle Links</span>
-              <span class="caret"></span>
-             </span>
+              <span>▾</span>
+             </div>
             </a>
             <div class="dropdown-menu quick-links pull-right" role="menu" >
               <div class="visible-xs col-xs-12 flush">
@@ -54,12 +54,12 @@
 
 
           <li class="dropdown notifications-drop">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-             <span>
+            <a href="#" class="dropdown-toggle nav-img-link" data-toggle="dropdown" role="button" aria-expanded="false">
+             <div class="nav-img-wrap">
               <span class="sr-only">Toggle Notifications Dropdown</span>
-               <img class="nav_img" src="/assets/icons/bell.png" />
+               <img class="nav_img bell" src="/assets/icons/bell.png" />
                <span class="notification-count"></span>
-             </span>
+             </div>
             </a>
             <div class="dropdown-menu pull-right" role="menu" >
               <ul class="flush" id="notifications_container">
@@ -72,17 +72,17 @@
           </li>
 
           <li class="dropdown favourites-drop">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-             <% if current_user.avatar? %>
-                <span>
-                  <img class="nav_img" src="<%= current_user.avatar %>" />
-                </span>
-              <% else %>
-                <div class="nav_img">
-                  <%= current_user.initials %>
+            <% if current_user.avatar? %>
+              <a href="#" class="dropdown-toggle nav-img-link" data-toggle="dropdown" role="button" aria-expanded="false">
+                <div class="nav-img-wrap">
+                  <img class="nav_img nav-avatar" src="<%= current_user.avatar %>" />
                 </div>
-              <% end %>
-            </a>
+              </a>
+            <% else %>
+              <a href="#" class="dropdown-toggle initials" data-toggle="dropdown" role="button" aria-expanded="false">
+                <%= current_user.initials %> 
+              </a>
+            <% end %>
 
             <div class="dropdown-menu pull-right" role="menu" >
              
@@ -154,10 +154,10 @@
           </li>
           <li class="dropdown non-img-link notifications-drop">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-             <span>
+             <div class="text-center">
               <span class="sr-only">Toggle Links</span>
-              <span class="caret"></span>
-             </span>
+              <span>▾</span>
+             </div>
             </a>
             <ul class="dropdown-menu pull-right" role="menu" >
               <li>
