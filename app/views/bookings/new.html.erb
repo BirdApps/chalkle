@@ -40,7 +40,7 @@
 
                     <%= bf.input :name, as: :string, label: '<span class="small light grey">Attendee Name</small>', input_html: { class: 'form-control booking_names' } %>
                     
-                    <%= bf.input :email, as: :string, label: '<span class="small light grey">Email (optional)</small>', input_html: { class: 'form-control email_input' } %>
+                    <%= bf.input :email, as: 'email', label: '<span class="small light grey">Email (optional)</small>', input_html: { class: 'form-control string email_input' } %>
 
                     <div class="form-group booking-email-info" style="display:none;">
                       <small class=''>We found a user with this account. This booking will be transferred to them automatically.</small>

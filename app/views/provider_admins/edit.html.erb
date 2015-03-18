@@ -12,10 +12,10 @@
         Details are read only as it is set on the admin's <%= link_to 'Chalkle account', chalkler_path(@provider_admin.chalkler.id) %>
       </p>
       <%= f.input :name, label: "Name", input_html: { readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
-      <%= f.input :email, label: "Admin's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
+      <%= f.input :email, as: :email, label: "Admin's Email", input_html: { :'data-error-message' => 'You must write a name', readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
 
     <% else %>
-      <%= f.input :email, label: "Admin's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
+      <%= f.input :email, as: :email, label: "Admin's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
    
       <label class="exists-success" style="display:none">
         <hr />

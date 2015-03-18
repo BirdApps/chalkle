@@ -34,7 +34,7 @@
       <% end %>
 
     <% else %>
-      <%= f.input :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
+      <%= f.input :email, as: :email, label: "Teacher's Email", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
     <% end %>
     <%= f.input :bio, as: :text, label: "About", wrapper: :horizontal %>
 

@@ -20,7 +20,7 @@
       <%= bootstrap_form_for(resource, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
       <div class="form-inputs">
         <%= f.input :name, :required => true, placeholder: 'Name' %>
-        <%= f.input :email, :required => true, placeholder: 'Email' %>
+        <%= f.input :email, as: :email, :required => true, placeholder: 'Email' %>
         <%= f.input :password, :required => true, placeholder: 'Password' %>
         <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
       </div>
