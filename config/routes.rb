@@ -27,8 +27,7 @@ Chalkle::Application.routes.draw do
   get 'terms/teacher' => 'terms#teacher', as: :teacher_terms
 
   match 'teach' => 'courses#teach'
-  match 'learn' => redirect("/discover")
-  match 'discover' => 'courses#index'
+  match 'learn' => redirect("/classes")
 
   get 'c/:id' => 'courses#show', as: :tiny_course
   post 'bookings/lpn', as: :lpn, to: 'bookings#lpn'
@@ -37,7 +36,12 @@ Chalkle::Application.routes.draw do
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
   get 'chalklers' => redirect("/")
 
+
+  match 'classes', to: 'courses#index'
+  match 'classes/calculate_cost', to: 'courses#calculate_cost'
+  get 'classes/new', to: 'courses#choose_provider', as: :new_course  
   get 'classes/fetch', to: 'courses#fetch'
+  get 'classes/:id', to: 'courses#show', as: :old_course_path #backwards compatibility2
   get 'url_available/:url_name', to: 'providers#url_available'
 
   resources :provider_plans, path: 'plans'
@@ -128,10 +132,6 @@ Chalkle::Application.routes.draw do
     get 'say_hello', to: 'partners#say_hello'
     get 'say_hello', to: 'partners#said_hello', as: 'said_hello'
   end
-
-  get 'classes/new', to: 'courses#choose_provider', as: :new_course  
-  match 'classes/calculate_cost', to: 'courses#calculate_cost'
-  get 'classes/:id', to: 'courses#show', as: :old_course_path #backwards compatibility2
 
   resources :providers, only: [:index, :create, :new] do 
     collection { get 'featured_providers' } 

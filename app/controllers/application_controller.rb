@@ -62,11 +62,11 @@ protected
   end
 
   def after_sign_in_path_for(resource)
-    session[:previous_url] || discover_path
+    session[:previous_url] || classes_path
   end
 
   def after_register_path_for(resource)
-     session[:previous_url] || discover_path
+     session[:previous_url] || classes_path
   end
 
   def authenticate_chalkler!

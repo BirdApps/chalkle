@@ -14,7 +14,7 @@
         </div>
         <div id="primary-navigation">
           <div class="search-wrapper">
-            <form class="search-form" id="primary-search-form" method="get" action="<%= discover_path %>" onsubmit="<%= "return false" if current_page? discover_path %>" role="search">
+            <form class="search-form" id="primary-search-form" method="get" action="<%= classes_path %>" onsubmit="<%= "return false" if current_page? classes_path %>" role="search">
               <div class="input-group">
                 <span class="input-group-addon" id="search_btn">
                   <img id="search_chalkle_btn" src="/assets/icons/search.png" alt="search" />
@@ -27,27 +27,30 @@
 
           <ul id="primary-menu" class="nav navbar-nav">
             <li class="dropdown non-img-link hidden-xs">
-              <%= link_to "Browse Classes", discover_path %>
+              <%= link_to "Browse Classes", classes_path %>
             </li>
             <% if chalkler_signed_in? %>
               <li class="dropdown non-img-link notifications-drop">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                  <span>
-                  <span class="sr-only">Toggle Create Dropdown</span>
+                  <span class="sr-only">Toggle Links</span>
                   <span class="caret"></span>
                  </span>
                 </a>
-                <ul style="<%= bg_color_style %>" class="dropdown-menu pull-right" role="menu" >
-                  <li class="visible-xs">
-                    <%= link_to "Browse Classes", discover_path %>
-                  </li>
-                  <li>
-                    <%= link_to "Create Class", new_course_path %>
-                  </li>
-                  <li>
-                    <%= link_to "Create Provider", new_provider_path %>
-                  </li>
-                </ul>
+                <div style="<%= bg_color_style %>" class="dropdown-menu quick-links pull-right" role="menu" >
+                  <div class="visible-xs col-xs-6 flush">
+                    <%= link_to "Browse Classes", classes_path, class: 'li' %>
+                  </div>
+                  <div class="col-xs-12 flush">
+                    <%= link_to "Create Class", new_course_path, class: 'li'  %>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 flush">
+                    <%= link_to "Browse Providers", providers_path, class: 'li'  %>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 flush">
+                    <%= link_to "Create Provider", new_provider_path, class: 'li'  %>
+                  </div>
+                </div>
               </li>
 
 
