@@ -17,6 +17,8 @@ class ApplicationController < ActionController::Base
   end
 
   def home
+    @hero = ActionController::Base.helpers.image_path('teach/reward.jpg')
+    @header_partial = '/layouts/headers/home'
     @providers = Provider.promotable_within_coordinates({lat: -36.0, long: 170.0}, {lat: -34.0, long: 180.0})                                                  
   end
 
@@ -60,11 +62,11 @@ protected
   end
 
   def after_sign_in_path_for(resource)
-    session[:previous_url] || discover_path
+    session[:previous_url] || classes_path
   end
 
   def after_register_path_for(resource)
-     session[:previous_url] || discover_path
+     session[:previous_url] || classes_path
   end
 
   def authenticate_chalkler!
@@ -195,7 +197,10 @@ protected
   def header_provider
     if @provider
       @hero = @provider.hero
-      @header_color = @provider.header_color if @provider.header_color
+      if @provider.header_color
+        @header_color = @provider.header_color(:rgba)
+        @header_color_opaque = @provider.header_color(:hex)
+      end
       @header_partial = '/layouts/headers/provider'
     end
   end

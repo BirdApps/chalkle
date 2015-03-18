@@ -14,9 +14,12 @@ class RewriteNotificationHrefs < ActiveRecord::Migration
               chalkler_path target
             when "CourseNotice"
               provider_course_path target.course.path_params
+            when "PartnerInquiry"
+              sudo_partner_inquiry_path target.id
             else
               notification.href
             end
+
             if notification.href != target
               notification.href = target
               notification.save

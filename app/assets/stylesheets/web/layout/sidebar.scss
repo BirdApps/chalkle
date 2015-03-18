@@ -2,7 +2,7 @@
 
 .sidebar-padding {
   transition: margin-left 200ms ease-in-out;
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 769px) {
     &.open {
       margin-left: 320px;
     }
@@ -71,7 +71,7 @@
     }
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 769px) {
     max-width: 320px;
     height: 40px;
     padding-top: 0;

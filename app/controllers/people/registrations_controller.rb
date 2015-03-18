@@ -37,6 +37,6 @@ class People::RegistrationsController < Devise::RegistrationsController
   end
 
   def after_sign_up_path_for(resource)
-    session[:previous_url] || discover_path
+    session[:previous_url] || classes_path
   end
 end

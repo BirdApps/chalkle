@@ -184,18 +184,16 @@ class Provider < ActiveRecord::Base
         hsl = Color::RGB.from_html(read_attribute(:average_hero_color)).to_hsl
         hsl.s = hsl.s * 2
         hsl.l = 0.65 unless hsl.l < 0.65
-      case format
-      when :rgba
-        rgb = hsl.to_rgb
-        "rgba(#{rgb.red.to_i}, #{rgb.green.to_i}, #{rgb.blue.to_i}, 0.91)"
-      when :hex
-        average_hero_color
-      end
-
+      colors = { 
+        rgba: "rgba(#{hsl.to_rgb.red.to_i}, #{hsl.to_rgb.green.to_i}, #{hsl.to_rgb.blue.to_i}, 0.91)",
+         hex: average_hero_color
+      } 
+      colors
       rescue ArgumentError => error
         nil
       end
     )
+    @header_color[format]
   end
 
   def to_param
