@@ -1,7 +1,7 @@
 <% if (current_chalkler && (bookings = current_chalkler.bookings.displayable.where(course_id: @course.id)).present? && bookings.any?) %>
 
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-default rounder" data-toggle="modal" data-target="#bookingsModal">
+  <button type="button"  style="background-color: <%= @course.color %>" class="btn btn-default rounder" data-toggle="modal" data-target="#bookingsModal">
     My Bookings (<%= bookings.count  %>)
   </button>
 
