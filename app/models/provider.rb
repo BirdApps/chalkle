@@ -79,6 +79,10 @@ class Provider < ActiveRecord::Base
     chalklers
   end
 
+  def next_class
+    courses.in_future.by_date.first
+  end
+
   def fee
     provider_rate_override || Provider.DEFAULT_FEE
   end

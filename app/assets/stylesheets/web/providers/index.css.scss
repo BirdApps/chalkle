@@ -1,0 +1,14 @@
+
+@import "../_vars";
+.providers-index {
+  ._provider {
+    background-color: $color-default-hover;
+    margin-top: 20px;
+    .provider_name {
+      color: #fff;
+    }
+    .avatar {
+      background-color: #ccc;
+    }
+  }
+}
