@@ -1,35 +1,52 @@
 <div id="sign-in" class="row">
 
   <div class="hidden-xs col-sm-6 col-md-7">
-    <h1>Discover a World<br /> of Learning</h1>
+    <h1 class="light">Discover a World<br /> of Learning</h1>
   </div>
 
-  <div class="col-xs-12 col-sm-5 col-md-4 well">
-    <h1 class="visible-xs center">Sign Up</h1>
-    <div class="segmented-rule hidden-xs">
-      <div class="left-segment"></div>
-      <h2>Sign Up</h2>
-      <em class="text-center">it's free!</em>
-      <div class="right-segment"></div>
-    </div>
+  <div class="col-xs-12 col-sm-5 col-md-4 sign-in-wrapper">
+    <div class="col-xs-12 flush-xs">
+      <div class="text-center">
+        <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
+          <div class="segmented-rule hidden-xs">
+            <div class="left-segment"></div>
+            <h2>Sign Up</h2>
+            <em class="text-center">it's free!</em>
+            <div class="right-segment"></div>
+          </div>
+          <h2 class="visible-xs">Sign Up</h2>
 
-      <%= render partial: '/devise/sessions/omniauth_buttons' %>
-    
-      <h3>– Or –</h3>
+          <br />
+          <%= render partial: '/devise/sessions/omniauth_buttons' %>
+        
+          <h4>– Or –</h4>
+          <br />
+          
+          <div class="form-inputs text-left">
+            <%= f.input :name, :required => true, placeholder: 'Name' %>
+            <%= f.input :email, as: :email, :required => true, placeholder: 'Email' %>
+            <%= f.input :password, :required => true, placeholder: 'Password' %>
+            <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
+          </div>
+        
+          <div class="col-xs-12 flush">
 
-      <%= bootstrap_form_for(resource, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
-      <div class="form-inputs">
-        <%= f.input :name, :required => true, placeholder: 'Name' %>
-        <%= f.input :email, as: :email, :required => true, placeholder: 'Email' %>
-        <%= f.input :password, :required => true, placeholder: 'Password' %>
-        <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
+            <div class="col-xs-12 flush">
+              <br class="visible-xs" />
+              <button class="btn btn-lg btn-primary col-xs-12">
+                Join Now
+              </button>
+            </div>
+
+            <div class="col-xs-12">
+              <br />
+              <h5 class="alternative no-margin pad-top">Already signed up?</h5>
+              <a href="<%= new_chalkler_session_path %>" class="link-line">Login now</a>
+            </div>
+          </div>
+
+        <% end %>
       </div>
-      <div class="form-actions">
-        <input type="submit" name="commit" class="btn btn-primary" value="Join Now" />
-      </div>
-    <% end %>
-    <div class="login-option text-center">
-      <%= link_to "Already have a chalkle login?", new_session_path(Chalkler.new), class: 'col-xs-12 btn-primary btn' %>
     </div>
   </div> 
 

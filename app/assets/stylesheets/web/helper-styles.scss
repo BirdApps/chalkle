@@ -11,7 +11,7 @@
 .margin-top-5 { margin-top: 5px }
 .no-label { label { display: none } }
 .no-list{ li { list-style: none } }
-.light { font-weight: 300 }
+.light { font-weight: 300 !important }
 .inline { display: inline-block }
 .strong { font-weight: 500 }
 .em { font-style: italic }

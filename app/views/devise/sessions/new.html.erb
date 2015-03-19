@@ -4,47 +4,61 @@
   
 
   <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3 sign-in-wrapper">
-    <h1 class="col-xs-12 col-md-10 col-md-offset-1">Login</h1>
+    <div class="row text-center">
+      <div class="col-xs-12 flush-xs">
+        <h1>Login</h1>
 
-    <div class="col-xs-12">
-      <%= render partial: '/devise/sessions/omniauth_buttons' %>
-    </div>
+        <div class="sign-in-form col-xs-12 new_form_wrapper">
+          
+          <%= render partial: '/devise/sessions/omniauth_buttons' %>
 
-    <div class="sign-in-form  col-xs-12 new_form_wrapper">
-      <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
-            <%= f.error_notification %>
-            <%= f.input :email, as: :email, :autofocus => true, placeholder: 'Email' %>
-            <%= f.input :password, :required => true, placeholder: 'Password' %>
-        <div class="control-group">
-          <div class="controls">
-            <label class="checkbox">
-              <%= f.check_box :remember_me, :as => (:boolean if devise_mapping.rememberable?) %>
-              Remember me?
-            </label>
-          </div>
+          <h4>– Or –</h4>
+          <br />
+          <%= bootstrap_form_for(:chalkler, :url => chalkler_session_path, :html => { class: 'form' }) do |f| %>
+          
+            <%= f.input :email, as: :email, :autofocus => true, required: true, placeholder: 'Email' %>
+            <%= f.input :password, required: true, placeholder: 'Password' %>
+
+            <div class="control-group">
+              <div class="controls">
+                <label class="checkbox">
+                  <%= f.check_box :remember_me, :as => (:boolean if devise_mapping.rememberable?) %>
+                  Remember me?
+                </label>
+              </div>
+            </div>
+            
+            <div class="col-sm-6 hidden-xs">
+              <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
+              <a href="<%= new_chalkler_registration_path %>" class="link-line">Sign up now</a>
+              <br /><br />
+            </div>
+
+            <div class="col-xs-12 col-sm-6 flush-xs">
+              <br class="visible-xs" />
+              <input type="submit" value="Login Now" class="btn btn-lg btn-primary col-xs-12" />
+            </div>
+
+            <div class="col-xs-12 visible-xs">
+              <br />
+              <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
+              <a href="<%= new_chalkler_registration_path %>" class="link-line">Sign up now</a>
+            </div>
+            
+
+          <% end %>
         </div>
-        <div class="sign-in-buttons text-center">
-          <input class="btn btn-primary col-xs-12" value="Sign in" type="submit" name="commit" />
-          <br /><br />
-          <div class="forgot">
+        
+ 
+        
+        <div class="col-xs-12">
+          <br />
             <%= render "devise/shared/links" %>
-          </div>
+          <br />
         </div>
-      <% end %>
-    </div>
 
-  <div class="row">
-    <div class="col-sm-6 col-xs-12">
-      <h3 class="pad-top">Not a member yet?</h3>
+      </div>
     </div>
-    <div class="col-sm-6 col-xs-12">
-      <%= link_to new_chalkler_registration_path do %>
-        <div class="under-button-alternatives">
-          <h3>Join Chalkle Now</h3>
-        </div>
-      <% end %>
-    </div>
-  </div>
 
 
 

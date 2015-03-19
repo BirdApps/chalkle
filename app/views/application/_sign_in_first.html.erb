@@ -4,7 +4,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
-
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <div class="row text-center">
               <div class="col-xs-12 flush-xs">
                 <h1>Login</h1>
@@ -16,9 +16,9 @@
                   <h4>– Or –</h4>
                   <br />
                   <%= bootstrap_form_for(:chalkler, :url => chalkler_session_path, :html => { class: 'form' }) do |f| %>
-                    <%= f.error_notification %>
-                    <%= f.input :email, as: :email, :autofocus => true, placeholder: 'Email' %>
-                    <%= f.input :password, :required => true, placeholder: 'Password' %>
+                  
+                    <%= f.input :email, as: :email, :autofocus => true, required: true, placeholder: 'Email' %>
+                    <%= f.input :password, required: true, placeholder: 'Password' %>
 
                     <div class="control-group">
                       <div class="controls">
@@ -28,30 +28,29 @@
                         </label>
                       </div>
                     </div>
+                    
+                    <div class="col-sm-6 hidden-xs">
+                      <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
+                      <a href="#" class="link-line sign_up_first">Sign up now</a>
+                      <br /><br />
+                    </div>
+        
+                    <div class="col-xs-12 col-sm-6 flush-xs">
+                      <br class="visible-xs" />
+                      <input type="submit" value="Login Now" class="btn btn-lg btn-primary col-xs-12" />
+                    </div>
+
+                    <div class="col-xs-12 visible-xs">
+                      <br />
+                      <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
+                      <a href="#" class="link-line sign_up_first">Sign up now</a>
+                    </div>
+                    
 
                   <% end %>
                 </div>
                 
-                <div class="col-xs-12 flush-xs">
-                  <div class="col-sm-6 hidden-xs">
-                    <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
-                    <a href="#" class="link-line sign_up_first">Sign up now</a>
-                    <br /><br />
-                  </div>
-      
-                  <div class="col-xs-12 col-sm-6 flush-xs">
-                    <br class="visible-xs" />
-                    <button class="btn btn-lg btn-primary col-xs-12">
-                      Login Now
-                    </button>
-                  </div>
-
-                  <div class="col-xs-12 visible-xs">
-                    <br />
-                    <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
-                    <a href="#" class="link-line sign_in_first">Sign up now</a>
-                  </div>
-                </div>
+         
                 
                 <div class="col-xs-12">
                   <br />
@@ -70,6 +69,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body row">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <div class="col-xs-12 flush-xs">
               <div class="col-xs-12 text-center">
                 <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
