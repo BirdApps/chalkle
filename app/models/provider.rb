@@ -41,17 +41,38 @@ class Provider < ActiveRecord::Base
   scope :has_hero, where("hero IS NOT NULL")
   scope :chalkler_can_teach, lambda { |chalkler| joins(:provider_teachers).where("chalkler_id = ?", chalkler.id) }
   scope :has_active_course_within_coordinates, -> (coordinate1, coordinate2) {
-    joins(:courses).merge( Course.located_within_coordinates(coordinate1, coordinate2) )
+    has_courses_within_coordinates(coordinate1, coordinate2).joins(:courses).merge( Course.displayable.in_future )
+  }
+  scope :has_courses_within_coordinates, -> (coordinate1, coordinate2) {
+    joins(:courses).merge( Course.located_within_coordinates(coordinate1, coordinate2).by_date )
   }
   scope :promotable_within_coordinates, -> (coordinate1, coordinate2) {
     visible.has_logo.has_active_course_within_coordinates(coordinate1, coordinate2)
   }
+  scope :in_future, joins(:courses).merge( Course.in_future )
+  scope :in_past, joins(:courses).merge( Course.in_past )
 
   before_validation :check_url_name
   after_create :set_url_name!
 
   def self.select_options(provider)
     provider.map {|c| [c.name, c.id] }
+  end
+
+  def self.search(query, provider_set = nil)
+    if query.present?
+      query_parts = query.split(/\W+/).map {|part| "%#{part}%" }
+      
+      providers = Provider.arel_table
+      courses = Course.arel_table
+
+      results = Provider.where(providers[:name].matches_any(query_parts))
+      results.concat Provider.where(providers[:description].matches_any(query_parts))
+      results = Course.where(courses[:searchable].matches_any(query_parts)).map(&:provider)
+      results = results.uniq
+
+      provider_set & results if provider_set
+    end
   end
   
   def followers
@@ -193,7 +214,7 @@ class Provider < ActiveRecord::Base
         nil
       end
     )
-    @header_color[format]
+    @header_color[format] if @header_color
   end
 
   def to_param

@@ -1,7 +1,6 @@
 <% 
-  if @courses.empty?  
-    problem = "No classes match "
-    problem += '"'+params["provider"]+'" ' if params[:provider].present?
+  if @providers.empty?  
+    problem = "No providers match "
     problem += '"'+params["search"]+'" ' if params[:search].present?
   %>
   <div class="alert alert-warning center">
@@ -9,13 +8,9 @@
   </div>
 <% end %>
 
-<% if params['action'] == 'mine' %>
-  <%= render partial: 'me/courses/course', collection: paginate_these(@courses) %>
-<% elsif @provider %>
-  <%= render partial: 'providers/course', collection: paginate_these(@courses) %>
-<% else %>
-  <%= render paginate_these(@courses) %>
-<% end %>
+
+<%= render partial: 'providers/provider', collection: paginate_these(@providers) %>
+
 
 <div class="pagination-wrapper">
   <% if page_max > 0 %>
@@ -41,7 +36,7 @@
     </ul>
   <% end %>
 
-  <% if @courses.count > 10 %>
+  <% if @providers.count > 10 %>
     <div class="paginate-take" data-take="<%= paginate_take %>">
       <div class="dropup btn btn-primary">
         <a id="paginateTakeLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
@@ -52,10 +47,10 @@
         <ul class="dropdown-menu dropup" role="menu" aria-labelledby="paginateTakeLabel">
           <li><a class="fetch_this" data-page="1" data-take="10">Show 10</a></li>
           <li><a class="fetch_this" data-page="1" data-take="30">Show 30</a></li>
-          <% if @courses.count > 30 %>
+          <% if @providers.count > 30 %>
             <li><a class="fetch_this" data-page="1" data-take="50">Show 50</a></li>
           <% end %>
-          <% if @courses.count > 50 %>
+          <% if @providers.count > 50 %>
             <li><a class="fetch_this" data-page="1" data-take="100">Show 100</a></li>
           <% end %>
         </ul>

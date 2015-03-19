@@ -119,8 +119,4 @@ module ApplicationHelper
     list.drop(paginate_skip).take(paginate_take)
   end
 
-  def filter_providers
-    (courses.map &:provider).compact.uniq.sort_by{|c| c.name.downcase }
-  end
-
 end

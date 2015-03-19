@@ -1,6 +1,6 @@
 // =require '//www.google.com/jsapi';
 $(function(){
-  if( $('#provider_courses_wrapper').length > 0){
+  if( $('#provider_fetch_wrapper').length > 0){
     var fetching_courses, take, past;
     
     function spinner_courses_spin() {
@@ -12,7 +12,7 @@ $(function(){
       fetching_courses = false;
     }
 
-    function fetch_courses(page){
+    function fetch(page){
       if(!fetching_courses) {
         spinner_courses_spin();
         if(page == undefined){
@@ -77,7 +77,7 @@ $(function(){
     }
 
     function paginate_init(){
-      $('.fetch_courses').click(function(){
+      $('.fetch_this').click(function(){
         take = $(this).data('take');
         page = $(this).data('page');
         past = $(this).data('past');
@@ -85,19 +85,19 @@ $(function(){
           $('.past_present_classes').text($(this).text());
         }
         if(page != undefined){
-          fetch_courses(page);
+          fetch(page);
         }else{
-          fetch_courses();
+          fetch();
         }
       });
     }
 
     function write_courses_to_page(classes){
-      $('#provider_courses_wrapper').empty();
+      $('#provider_fetch_wrapper').empty();
       if(classes.length > 0){
         $('#courses_missing').hide();
-        $('#provider_courses_wrapper').html(classes);
-        $("#provider_courses_wrapper").fadeIn();
+        $('#provider_fetch_wrapper').html(classes);
+        $("#provider_fetch_wrapper").fadeIn();
         fetching_courses = false;
         spinner_courses_stop();
         if($("#signInFirstModal").length > 0) init_sign_in_first();
@@ -125,7 +125,7 @@ $(function(){
     }
 
     function init(){
-      fetch_courses(1);
+      fetch(1);
     }
 
     init();

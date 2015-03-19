@@ -44,6 +44,9 @@ Chalkle::Application.routes.draw do
   get 'classes/:id', to: 'courses#show', as: :old_course_path #backwards compatibility2
   get 'url_available/:url_name', to: 'providers#url_available'
 
+  get 'providers/fetch', to: 'providers#fetch'
+  get 'providers/featured', to: 'providers#featured'
+
   resources :provider_plans, path: 'plans'
 
   resources :chalklers, path: 'people', only: [:index, :show] do
@@ -133,9 +136,7 @@ Chalkle::Application.routes.draw do
     get 'say_hello', to: 'partners#said_hello', as: 'said_hello'
   end
 
-  resources :providers, only: [:index, :create, :new] do 
-    collection { get 'featured_providers' } 
-  end
+  resources :providers, only: [:index, :create, :new]
 
   resource :provider, except: [:new, :create], path: ':provider_url_name' do
     match '', to: 'providers#show'
@@ -143,7 +144,6 @@ Chalkle::Application.routes.draw do
     get 'metrics', to: 'providers#metrics'
     get 'contact', to: 'providers#contact'
     post 'contact', to: 'providers#contact'
-
     get 'fetch', to: 'courses#fetch'    
     get 'edit'
     put 'edit', to: 'providers#update'

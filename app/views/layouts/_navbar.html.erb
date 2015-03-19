@@ -9,7 +9,7 @@
       <ul class="nav navbar-nav">
         <li class="search-wrapper-wrapper">
           <div class="search-wrapper">
-            <form class="search-form" id="primary-search-form" method="get" action="<%= classes_path %>" onsubmit="<%= "return false" if current_page? classes_path %>" role="search">
+            <form class="search-form" id="primary-search-form" method="get" action="<%= classes_path %>" onsubmit="<%= "return false" if current_page?(classes_path) || current_page?(providers_path) %>" role="search">
               <div class="input-group">
                 <span class="input-group-addon" id="search_btn">
                   <img id="search_chalkle_btn" src="<%= asset_path 'icons/search.png' %>" alt="search" />

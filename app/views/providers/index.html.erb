@@ -1,13 +1,6 @@
-<div class="row">
-  <div class="col-xs-12 col-sm-9">
-    <h2>
-      Chalkle Providers
-      <%= render "layouts/grid_or_list"  %>
-    </h2>
-  </div>
+<%= render partial: 'layouts/location', locals: { hide_prompt: false } %>
 
-</div>
+<h3 class="text-center" id="fetch_missing">No Providers Found</h3>
 
-<div class="row">
-  <%= render @providers  %>
+<div id="fetch_wrapper">
 </div>

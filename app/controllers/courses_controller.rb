@@ -6,7 +6,6 @@ class CoursesController < ApplicationController
   before_filter :header_mine, only: :mine
   
   def index
-
   end
 
   def fetch

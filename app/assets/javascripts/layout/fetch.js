@@ -1,13 +1,13 @@
 // =require '//www.google.com/jsapi';
 $(function(){
-  if( $('#courses_wrapper').length > 0){
-    var autocomplete, place, geocoder, location, lng, lat, spinner_location, spinner_location_opts, spinner_courses, spinner_courses_opts, course_template, tried_auto = false, fetching_courses = false, bottom, top, right, left;
+  if( $('#fetch_wrapper').length > 0){
+    var autocomplete, place, geocoder, location, lng, lat, spinner_location, spinner_location_opts, tried_auto = false, fetching_now = false, bottom, top, right, left;
 
-    function spinner_courses_spin() {
+    function spinner_fetching_spin() {
       $('#wrapper').css('opacity',0);
     }
 
-    function spinner_courses_stop(){
+    function spinner_fetching_stop(){
       $('#wrapper').css('opacity',1);
     }
 
@@ -196,7 +196,7 @@ $(function(){
         }
         spinner_location_stop();
       }
-      if($('#courses_wrapper').length > 0 ){
+      if($('#fetch_wrapper').length > 0 ){
         search();
       }
       update_preview();
@@ -214,22 +214,22 @@ $(function(){
     }
 
     function search(relocate){
-      if(relocate && window.location.pathname != "/classes"){
+      if(relocate && $('#fetch_wrapper').length == 0 ){
         $("#primary-search-form").submit();
       }else{
-        fetch_courses();
+        fetch();
       }
     }
 
-    function fetch_courses(page){
-      if(!fetching_courses) {
+    function fetch(page){
+      if(!fetching_now) {
         if(page == undefined){
           page = getParam('page');
           if(page == undefined){
             page = 1;
           }
         }
-        fetching_courses = true;
+        fetching_now = true;
         spinner_location_start();
         update_bounds();
 
@@ -250,14 +250,14 @@ $(function(){
           'take': take,
           'page': page
         }
-        $.get('/classes/fetch',fetch_params,write_courses_to_page,'html').fail(function(){
-          fetching_courses = false;
+        $.get(window.location.pathname+'/fetch',fetch_params,write_to_page,'html').fail(function(){
+          fetching_now = false;
           spinner_location_stop();
-          spinner_courses_stop();
+          spinner_fetching_stop();
         });
         update_url(fetch_params);
       } else {
-        spinner_courses_stop();
+        spinner_fetching_stop();
         spinner_location_stop();
       }
     }
@@ -287,33 +287,33 @@ $(function(){
     }
 
     function paginate_init(){
-      $('.fetch_courses').click(function(){
+      $('.fetch_this').click(function(){
         take = $(this).data('take');
         if(take != undefined){
           $('.paginate-take').data('take', take);
         }
         page = $(this).data('page');
         if(page != undefined){
-          fetch_courses(page);
+          fetch(page);
         }else{
-          fetch_courses();
+          fetch();
         }
       });
     }
 
-    function write_courses_to_page(classes){
-      $('#courses_wrapper').empty();
-      if(classes.length > 0){
-        $('#courses_missing').hide();
-        $('#courses_wrapper').html(classes);
-        $("#courses_wrapper").fadeIn();
-        fetching_courses = false;
+    function write_to_page(results){
+      $('#fetch_wrapper').empty();
+      if(results.length > 0){
+        $('#fetch_missing').hide();
+        $('#fetch_wrapper').html(results);
+        $("#fetch_wrapper").fadeIn();
+        fetching_now = false;
         spinner_location_stop();
-        spinner_courses_stop();
+        spinner_fetching_stop();
         if($("#signInFirstModal").length > 0) init_sign_in_first();
         paginate_init();
       }else{
-        $('#courses_missing').fadeIn();
+        $('#fetch_missing').fadeIn();
       }
       $('[data-toggle="tooltip"]').tooltip();
     }
@@ -322,6 +322,7 @@ $(function(){
       $('#location_autocomplete').val('');
       $('.location-preview').fadeOut('fast', function(){
         $('.location-form').fadeIn('fast');
+        $('#location_autocomplete').focus();
       });
       $("#location_autocomplete").focus();
     }

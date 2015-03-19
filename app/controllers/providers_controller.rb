@@ -1,10 +1,31 @@
 class ProvidersController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new, :create, :url_available]
-  before_filter :load_provider, except: [:index, :new, :create]
-  before_filter :header_provider, :sidebar_administrate_provider, except: [:index, :new, :create]
-
+  before_filter :load_provider,:header_provider, :sidebar_administrate_provider, only: [:metrics, :show, :edit, :update, :destroy, :contact, :followers, :follower, :bookings]
   def index
-    @providers = Provider.visible
+  end
+
+  def fetch
+  
+    if current_user.super?
+      @providers = Provider.scoped
+    else
+      @providers = Provider.visible
+    end
+    
+    if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
+      @providers = @providers.has_courses_within_coordinates(
+        { lat: params[:top].to_f,    long: params[:left].to_f   }, 
+        { lat: params[:bottom].to_f, long: params[:right].to_f  }
+      )
+    end
+
+    if params[:search].present?
+      @providers = Provider.search params[:search].encode("UTF-8", "ISO-8859-1"), @providers
+    end
+
+    @providers = @providers.to_a.uniq
+
+    render '_paginate_providers', layout: false
   end
 
   def new
@@ -115,11 +136,11 @@ class ProvidersController < ApplicationController
   end
 
 
-  def featured_providers
+  def featured
     @providers = Provider.promotable_within_coordinates(
       params[:coordinate1], 
       params[:coordinate2]).limit(5)
-    render partial: 'featured_providers', layout: false
+    render partial: 'featured', layout: false
   end
 
   private
