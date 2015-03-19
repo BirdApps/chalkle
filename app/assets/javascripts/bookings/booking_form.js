@@ -4,6 +4,16 @@ $(function(){
     var template = $('#attendee_template').html();
     $('#attendee_template').remove();
 
+    hijack_navigation();
+    var ready_to_submit = false;
+    function hijack_navigation(){
+      window.onbeforeunload = function () {
+        if(!ready_to_submit){
+          return "The class has not been saved.";
+        }        
+      }
+    }
+
     function show_attendee(attendee_i){
       var attendees = $('.attendee');
       if(attendees.length-1 < attendee_i) {
@@ -136,6 +146,7 @@ $(function(){
       $('.back').click(show_form);
   
       $('#new_booking_set').submit(function(event){
+        ready_to_submit = true;
         if(validate()){
           if($('#booking_terms_and_conditions:checked').length == 0){
             alert($('#teaching_agreeterms').data('error-message'));

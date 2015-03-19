@@ -92,7 +92,7 @@
             <strong class="total-cost"></strong> <span class="booking-count"></span> x <%= @course.name %>      
           </div>
           <br /><br />
-          <div class="form-group col-xs-12 text optional booking_set_bookings_note_to_teacher">
+          <div class="form-group col-xs-12 flush text optional booking_set_bookings_note_to_teacher">
             <label class="text optional" for="booking_set_bookings__note_to_teacher">
               <span class="small light grey">Note for <%= @course.provider.name %></span>
             </label>
@@ -100,9 +100,9 @@
             <br />
           </div>
 
-          <div class="center row">
+          <div class="center col-xs-12">
             <% if policy(@course).admin? && @course.paid? %>
-              <div class="alert-danger alert col-sm-offset-2 col-sm-8 col-xs-12">
+              <div class="alert-danger alert row">
                 <div class="col-xs-6">
                   <strong>Admin options</strong>
                 </div>
@@ -125,13 +125,15 @@
               </label>
             </div>
             <br />
-
-            <%= f.submit (@course.free? ? "Complete Booking" : "Purchase"), class: 'btn btn-primary col-xs-12 col-sm-8 col-sm-offset-2' %>
+            <br />
+            <div class="row">
+              <%= f.submit (@course.free? ? "Complete Booking" : "Purchase"), class: 'btn btn-primary col-xs-12' %>
+              <br />
+              <br />
+              <div class="btn no-btn back col-xs-12 margin-top-20"><span class="fa fa-angle-double-left"></span> Previous</div>
+            </div>
+           
             
-            <br /><br />
-            
-            <div class="btn btn-default back col-xs-12 col-sm-8 col-sm-offset-2">Back</div>
-
           </div>
         </div>
       </div>
