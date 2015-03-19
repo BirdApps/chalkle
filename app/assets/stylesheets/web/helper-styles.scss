@@ -29,3 +29,11 @@
 .smaller { font-size: 72% }
 .large { font-size: 122% }
 .larger { font-size: 146% }
+.white {
+  color: #fff;
+  &:hover, &:focus, &:active {
+    color: #fafafa;
+  }
+}
+a.link-line { text-decoration: underline  !important; }
+a.hover-link-line { &:hover, &:focus, &:active { text-decoration: underline !important; } }
