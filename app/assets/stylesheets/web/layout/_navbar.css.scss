@@ -201,7 +201,12 @@
     }
 
     &.navbar-right {
-
+      .notification-count {
+        position: absolute;
+        top: 50%;
+        margin-top: -9px;
+        right: 45px;
+      }
       .notifications-drop, .favourites-drop{
         .dropdown-menu {
           padding: 0;
