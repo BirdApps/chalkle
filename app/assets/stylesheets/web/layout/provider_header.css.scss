@@ -98,13 +98,13 @@
   }
   .provider_header_links {
     overflow:hidden;
+    background: #fff;
     @media screen and (max-width: 992px) {
       width: 100%;
     }
     nav {
       ul {
         li {
-          background-color: #fff;
           &.active {
             @media screen and (max-width: 992px){
               box-shadow: inset 0 -3px 0 $color-header-opaque;
