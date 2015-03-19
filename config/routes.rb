@@ -163,7 +163,7 @@ Chalkle::Application.routes.draw do
         post 'clone',          to: 'courses#clone'
         post 'change_status',  to: 'courses#change_status'
       end
-      resources :course_notices, as: :notices, path: 'discussion'
+      resources :course_notices, as: :notices, path: 'discussions'
 
       resources :bookings, only: [:index, :show, :new, :create] do
         collection do

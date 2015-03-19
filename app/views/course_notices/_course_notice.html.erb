@@ -25,9 +25,9 @@
   </div>
   <div class="notice-body">
     <% if policy(course_notice).destroy? || policy(course_notice).update?  %>
-      <div class="pull-right control">
+      <div class="pull-right control text-right">
         <%= link_to 'Edit', "#edit-notice-#{course_notice.id}", :'data-target' => "discuss-#{course_notice.id}", class: 'edit-btn' if policy(course_notice).update? %>
-        <%= button_to 'Remove', edit_provider_course_notice_path(course_notice.path_params), method: :delete, class: 'btn no-btn' if policy(course_notice).destroy?   %>
+        <%= button_to 'Remove', provider_course_notice_path(course_notice.path_params), method: :delete, class: 'btn no-btn edit-btn' if policy(course_notice).destroy?   %>
       </div>
     <% end %>
     <div class="clearfix">
@@ -66,7 +66,9 @@
         </span>
       </span>
       <span class="time white">
-        <%= button_to 'Undo', edit_provider_course_notice_path(course_notice.provider, course_notice.course.url_name, course_notice.course.id, course_notice.id), method: :delete if policy(course_notice).destroy?   %>
+        <%= button_to 'Undo', 
+              provider_course_notice_path(course_notice.path_params), 
+              method: :delete if policy(course_notice).destroy?   %>
         <%= quick_date_time course_notice.updated_at %>
       </span>
     </header>
