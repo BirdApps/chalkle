@@ -52,4 +52,11 @@ module LayoutHelper
     @page_title_logo ||= ""
   end
 
+  def limit_text(text, limit)
+    if text
+      return text if text.size - 3 <= limit
+      text[0..limit] + '...'
+    end
+  end
+
 end

@@ -306,6 +306,14 @@ html {
       }
     }
 
+    .flush-sm {
+      @media screen and (max-width: 998px) {
+        padding: 0 !important;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+      }
+    }
+
     .btn-3d {
       box-shadow: 1px 1px 0px 0px #FFFFFF, 2px 2px 0px 0px rgba(0,0,0,0.08);
       transition: all 200ms ease-out;
