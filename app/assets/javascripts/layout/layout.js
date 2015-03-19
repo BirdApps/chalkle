@@ -6,10 +6,18 @@ $(function(){
 
   init();
 
+  function single_tap_links(){
+
+    $('*').on('touchstart mouseenter focus', function(e) {
+      //WEIRD FIX: stops requiring double clicks on touchscreens 
+    });
+  }
+
   function init(){
     facebook_init();
     fix_too_wide_bug();
     site_messages();
+    single_tap_links();
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
   }
@@ -29,8 +37,8 @@ $(function(){
 
     function match_screen_width(){
       $('*').map(function(){
-        if($(this).width() > document.body.clientWidth ) return this;
-      }).css('width', document.body.clientWidth);
+        if($(this).width() > window.innerWidth ) return this;
+      }).css('width', window.innerWidth);
     }
   }
 
