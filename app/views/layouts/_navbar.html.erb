@@ -20,11 +20,17 @@
             </form>
           </div>
         </li>
+         <% unless chalkler_signed_in? %>
+          <li class="xs-browse-classes">
+            <%= link_to "Browse", classes_path %>
+          </li>
+        <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="hidden-xs">
           <%= link_to "Browse Classes", classes_path %>
         </li>
+        
         <% if chalkler_signed_in? %>
           <li class="dropdown non-img-link notifications-drop">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
