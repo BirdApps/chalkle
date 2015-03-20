@@ -10,6 +10,7 @@ class CoursesController < ApplicationController
 
   def fetch
     if @provider
+      @show_past_classes = true
       if policy(@provider).read?
         @courses = @provider.courses
       else
