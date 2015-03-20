@@ -4,27 +4,6 @@
       <%= to_html @provider.description %>
     </p>
   </div>
-  <div class="col-xs-12 col-md-4 col-lg-3 text-right">
-    
-    <div class="dropdown btn btn-primary col-xs-12">
-      <a id="pastClassLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
-        <span class="past_present_classes">
-          <% if params[:past].present? %>
-            Previous Classes
-          <% else %>
-            Upcoming Classes
-          <% end %>
-        </span>
-        <span class="caret"></span>
-      </a>
-
-      <ul class="dropdown-menu dropup" role="menu" aria-labelledby="pastClassLabel">
-        <li><a class="fetch_this" data-past="false">Upcoming Classes</a></li>
-        <li><a class="fetch_this" data-past="true">Previous Classes</a></li>
-      </ul>
-    </div>
-
-  </div>
 </div>
 
 <input id="provider_url_name" type="hidden" value="<%= @provider.url_name %>" />
