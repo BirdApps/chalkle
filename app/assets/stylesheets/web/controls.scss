@@ -349,6 +349,11 @@ html {
       transition: all 120ms;
       letter-spacing: 1.2px;
       border-width: 0px;
+      &.btn-inactive {
+        border-width: 2px !important;
+        background-color: transparent !important;
+        padding: 4px 12px;
+      }
       a {
         color: inherit;
       }
@@ -377,6 +382,9 @@ html {
         &.active, &:active, &:focus {
           background-color:  $color-default-active;
         }
+        &.btn-inactive {
+          color: $color-default;
+        }
       }
       &.btn-huge {
         font-size: 180%;
@@ -390,6 +398,9 @@ html {
         &:active, &:focus {
           background-color: $color-primary-active;
         }
+        &.btn-inactive {
+          color: $color-primary;
+        }
       }
 
       &.btn-success {
@@ -400,6 +411,9 @@ html {
         }
         &:active, &:focus {
           background-color: $color-success-active;
+        }
+        &.btn-inactive {
+          color: $color-success;
         }
       }
 
@@ -412,6 +426,9 @@ html {
         &:active, &:focus {
           background-color: $color-warning-active;
         }
+        &.btn-inactive {
+          color: $color-warning;
+        }
       }
 
       &.btn-info {
@@ -423,6 +440,9 @@ html {
         &:active, &:focus {
           background-color: $color-info-active;
         }
+        &.btn-inactive {
+          color: $color-info;
+        }
       }
 
       &.btn-danger {
@@ -433,6 +453,9 @@ html {
         }
         &:active, &:focus {
           background-color: $color-danger-active;
+        }
+        &.btn-inactive {
+          color: $color-danger;
         }
       }
 
