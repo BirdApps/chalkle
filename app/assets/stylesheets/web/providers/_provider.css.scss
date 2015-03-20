@@ -10,14 +10,41 @@
   }
 }
 ._featured_provider {
+  @media screen and (min-width: 768px){
+      padding: 40px;
+    }
+
   >*{
     background: #fafafa;
     box-shadow: 3px 3px 3px #ddd; 
     border-radius: 3px;
     overflow: hidden;
+    padding-bottom: 15px;
+  }
+ .next-class {
+    position: relative;
+    top: -15px;
+    color: #aaa;
+    font-weight: 700;
+    .smaller {
+      margin-bottom: 4px;
+    }
   }
   ._course {
     padding-top: 0;
+    padding: 0;
+    .avatar64 {
+      height: 52px;
+      width: 52px;
+      margin-right: 7px;
+      border-radius: 7px;
+    }
+    .details {
+      padding: 0;
+    }
+    .add_info {
+      display: none;
+    }
   }
   width: 100%;
   padding: 10px;

@@ -2,14 +2,13 @@
 
 ._course {
   float: left;
+  max-width: 400px;
   padding-top: 15px;
   padding-bottom: 15px;
   position: relative;
   width: 100%;
   @media screen and (min-width: 759px) {
-    padding-left: 15px;
-    padding-right: 15px;
-
+    padding: 50px;
   }
   .avatar64 {
     border-radius: 14px;

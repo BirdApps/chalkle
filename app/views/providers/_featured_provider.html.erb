@@ -8,14 +8,18 @@
       <%= link_to limit_text(provider.name, 25), provider_path(provider), class: 'provider_name', title: provider.name %>
       <br />
       
-      <% if provider.next_class  %>
-        <div class="next-class">
-          <div class="col-xs-12 smaller">
+      <div class="next-class col-xs-12">
+        <% if provider.next_class  %>
+          <div class="smaller">
             Upcoming <%= day_ordinal_month provider.next_class.start_at, true, false, true, true %>
           </div>
           <%= render partial: 'providers/course', locals: { course: provider.next_class } %>
-        </div>
-      <% end %>
+        <% else %>
+          <div class="smaller text-center">
+            No upcoming classes
+          </div>
+        <% end %>
+      </div>
        
       <%# link_to limit_text(provider.next_class.name, 25), provider_course_path(provider.next_class.path_params), class: 'course_name', title: provider.next_class.name %>
     </div>
