@@ -1,5 +1,5 @@
 <div class="row _featured_providers">
-  <%= render partial: 'providers/featured_provider', collection: @providers.limit(3) %>
+  <%= render partial: 'providers/featured_provider', collection: @providers.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) }.take(3) %>
   <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
   <%= link_to "Browse all providers", providers_path, class: 'btn btn-huge btn-default col-xs-12' %>
   </div>
