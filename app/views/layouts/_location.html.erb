@@ -4,7 +4,7 @@
     <% unless hide_prompt %>
       <div class="location-preview">
         <em>
-          Find <%= params['controller'] == 'providers' ? 'providers' : 'classes' %> <span class="location-reference">near</span>
+          Find <%= current_page?(providers_path) ? 'providers' : 'classes' %> <span class="location-reference">near</span>
           <strong class="show-location">...</strong>
         </em>
 

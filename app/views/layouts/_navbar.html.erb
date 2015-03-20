@@ -14,7 +14,7 @@
                 <span class="input-group-addon" id="search_btn">
                   <img id="search_chalkle_btn" src="<%= asset_path 'icons/search.png' %>" alt="search" />
                 </span>
-                <input id="search_input" type="search" name="search" value="<%= params[:search] %>" class="form-control" placeholder=" Search <%= params['controller'] == 'providers' ? 'providers' : 'classes' %>" autocomplete="off" />
+                <input id="search_input" type="search" name="search" value="<%= params[:search] %>" class="form-control" placeholder=" Search <%= current_page?(providers_path) ? 'providers' : 'classes' %>" autocomplete="off" />
                 <div class="search-close">&times;</div>
               </div>
             </form>
