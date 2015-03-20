@@ -42,7 +42,7 @@ class ProviderTeacher < ActiveRecord::Base
   end
 
   def next_class
-    courses.in_future.published.order(:start_at).first
+    courses.displayable.in_future.published.order(:start_at).first
   end
 
   def tax_registered?
