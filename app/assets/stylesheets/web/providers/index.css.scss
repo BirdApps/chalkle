@@ -1,46 +1,33 @@
 
 @import "../_vars";
 .providers-index {
-  ._provider {
-    background-color: $color-default-hover;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    @media screen and (min-width: 769px){
-
-    }
-    h3{
-      margin: 5px 0 3px; 
-      .provider_name {
-        color: #fff;
+  #fetch_wrapper {
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+  ._featured_provider {
+    padding: 40px;
+    .next-class {
+      position: relative;
+      top: -10px;
+      color: #aaa;
+      font-weight: 700;
+      .smaller {
+        margin-bottom: 4px;
       }
     }
-  
-    .avatar {
-      @media screen and (max-width: 768px){
-        margin: 10px;
+    ._course {
+      .avatar64 {
+        height: 52px;
+        width: 52px;
+        margin-right: 7px;
+        border-radius: 7px;
       }
-      background-color: #ccc;
-    }
-    .provider_detail {
-      max-height: 140px;
-      @media screen and (min-width: 769px){
-        max-height: 120px;
+      .details {
+        padding: 0;
       }
-      overflow-x: hidden;
-      overflow-y: scroll;
-      .description {
-        color: #fff;
-        font-size: 12px;
-        line-height: 15px;
-      }
-    }
-    .next_class {
-      @media screen and (max-width: 768px){
-        width: 100%;
-        padding: 0 10px;
-      }
-      a,.add_info {
-        color: #fff !important;
+      .add_info {
+        display: none;
       }
     }
   }
