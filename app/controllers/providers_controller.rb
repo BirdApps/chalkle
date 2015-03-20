@@ -40,6 +40,7 @@ class ProvidersController < ApplicationController
 
     if @new_provider.save
         provider_admin = ProviderAdmin.create provider: @new_provider, chalkler: current_chalkler
+        Subscription.create provider_id: @new_provider.id, chalkler_id: current_chalkler.id
         redirect_to edit_provider_path(@new_provider.url_name), notice: "Provider #{@new_provider.name} has been created"
       else
         @new_provider.errors.each do |attribute,error|
