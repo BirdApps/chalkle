@@ -20,21 +20,8 @@
     </div>
     
     <div class="provider-preview">
-      <!-- TODO: Div gets filled after location has been reported back to server via ajax -->
-      <%= render partial: 'providers/featured' %> 
     </div>
 
-    <div class="col-xs-12 text-center">
-      <h2>What are you waiting for?</h2>
-      <%= link_to "Sign Up for Free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first' %> 
-    </div>
-
-    <div class="col-xs-12 col-sm-10 text-right">
-      <!-- TODO: Give me a link to /providers providers & courses in my region -->
-      <%= link_to classes_path do %>
-        Keep browsing <span class="provider_count"></span> providers with <span class="class_count"></span> courses 
-      <% end %>
-    </div>
   </div>
 
   <div class="row business">
@@ -140,8 +127,9 @@
   </div>
 
 
-  <div class="text-center col-xs-12 cta-button">
-    <%= link_to "Get Started", new_chalkler_registration_path, class: "btn btn-primary btn-huge" %>
+  <div class="col-xs-12 text-center">
+    <h2>What are you waiting for?</h2>
+    <%= link_to "Sign Up for Free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first' %> 
   </div>
   <div class="text-right col-xs-6">
       <%= link_to "learn more about putting your couses on chalkle", teach_path %>

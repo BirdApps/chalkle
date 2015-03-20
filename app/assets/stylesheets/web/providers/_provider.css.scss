@@ -1,0 +1,43 @@
+._featured_providers {
+  margin-bottom: 50px;
+  margin-top: 30px;
+  @media screen and (min-width: 789px){
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .btn-huge {
+    margin-top: 20px;
+  }
+  ._featured_provider {
+    >*{
+      background: #fafafa;
+      box-shadow: 3px 3px 1px #ccc; 
+    }
+    ._course {
+      padding-top: 0;
+    }
+    width: 100%;
+    padding: 10px;
+    float: left;
+    .provider_name {
+      font-weight: 600;
+      padding: 0 10px;
+      position: relative;
+      bottom: 25px;
+      padding-bottom: 5px;
+      width: 100%;
+      display: inline-block;
+      background: rgba(255,255,255,0.7)
+    }
+    @media screen and (min-width: 789px){
+      width: 33.3%;
+    }
+    .avatar {
+      width: 100%;
+      background: #eee;
+      @media screen and (max-width: 789px){
+        
+      }
+    }
+  }
+}

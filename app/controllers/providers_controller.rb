@@ -144,7 +144,7 @@ class ProvidersController < ApplicationController
     @providers = Provider.promotable_within_coordinates(
         { lat: params[:top].to_f,    long: params[:left].to_f   }, 
         { lat: params[:bottom].to_f, long: params[:right].to_f  }
-      ).limit(5)
+      )
     render partial: 'featured', layout: false
   end
 

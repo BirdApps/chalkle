@@ -1,0 +1,18 @@
+<% if current_user.authenticated? %>
+  <% 
+    subscription = current_user.subscriptions.where(provider_id: provider.id).first
+    unless subscription 
+      sub_path = provider_subscriptions_path(provider)
+      sub_method = :post
+    else 
+      sub_path = provider_subscription_path(subscription.path_params)
+      sub_method = :delete
+    end 
+  %>
+  <%= link_to sub_path, method: sub_method, class: 'provider_header_social nowrap' do %>
+    <div class="favourite">
+      <span class="fa fa-heart <%= subscription ? 'on' : 'off' %>"></span>
+    </div>
+    <span class="fav"><%= subscription ? 'Unfavourite' : 'Favourite' %></span>
+  <% end %>
+<% end %>
