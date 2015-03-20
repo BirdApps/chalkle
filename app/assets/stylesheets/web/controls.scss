@@ -488,6 +488,25 @@ html {
       float:left;
       margin-right:10px;
     }
+    .hover-photo {
+      &:after {
+        color: #fff;
+        font-family: FontAwesome;
+        content: '\f030';
+        position: absolute;
+        right: 2px;
+        bottom: 2px;
+        width: 20px;
+        height: 20px;
+      }
+      &:hover, &:active, &:focus {
+        &:after {
+          text-shadow: 0 0 2px #333;
+          color: #eee;
+        }
+      }
+    }
+    
 
     .new_form_wrapper {
       .breadcrumb {
