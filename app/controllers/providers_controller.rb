@@ -1,6 +1,6 @@
 class ProvidersController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new, :create, :url_available]
-  before_filter :load_provider,:header_provider, :sidebar_administrate_provider, only: [:metrics, :show, :edit, :update, :destroy, :contact, :followers, :follower, :bookings]
+  before_filter :load_provider,:header_provider, :sidebar_administrate_provider, only: [:metrics, :show, :edit, :update, :destroy, :contact, :followers, :follower, :bookings, :about]
   def index
   end
 
@@ -29,6 +29,9 @@ class ProvidersController < ApplicationController
   end
 
   def new
+  end
+
+  def about
   end
 
   def create

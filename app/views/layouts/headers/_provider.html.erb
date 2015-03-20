@@ -4,13 +4,9 @@
     active: request.path == provider_path(@provider) && !params[:past].present?,
     title: "Classes"
   },{
-    link: provider_teachers_path(@provider),
-    active: request.path == provider_teachers_path(@provider),
-    title: "Teachers"
-  },{
-    link: provider_subscriptions_path(@provider),
-    active: request.path == provider_subscriptions_path(@provider),
-    title: "Followers"
+    link: about_provider_path(@provider),
+    active: request.path == about_provider_path(@provider),
+    title: "About"
   },{
     link: contact_provider_path(@provider),
     active: request.path == contact_provider_path(@provider),

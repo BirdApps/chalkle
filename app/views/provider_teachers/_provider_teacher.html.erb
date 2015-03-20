@@ -1,24 +1,22 @@
-<div class="_teacher col-xs-12 col-sm-6">
+<div class="_teacher pull-left">
   
-  <div class="avatar64 pull-left">
-    <img class="img" src="<%= provider_teacher.avatar %>">
+  <div class="avatar64">
+    <div class="img" style="background-image: url(<%= provider_teacher.avatar %>)">
+    </div>
   </div> 
+  <div class="details">
+    <div class="name">
+      <%= link_to limit_text(provider_teacher.name,20), provider_teacher_path(provider_teacher.path_params), title: provider_teacher.name %>
+    </div>
 
-  <div class="name">
-    <%= link_to provider_teacher.name, provider_teacher_path(provider_teacher.path_params) %>
+    <div class="light">
+      <% if provider_teacher.next_class.present? %>
+        <div class="small">
+          <%= link_to provider_course_path(provider_teacher.next_class.path_params) do %>
+            Teaching on <span><%= quick_date provider_teacher.next_class.start_at %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
-
-  <div class="light">
-    <% if provider_teacher.next_class.present? %>
-      <div>
-        Next class: <span><%= quick_date_time provider_teacher.next_class.start_at %></span>
-      </div>
-      <div>
-        <%= link_to provider_teacher.next_class.name, provider_course_path(provider_teacher.next_class.path_params), style: "colour: #{ provider_teacher.next_class.color }" %>
-      </div>
-    <% else %>
-      <div>No scheduled classes</div>
-    <% end %>
-  </div>
-
 </div>

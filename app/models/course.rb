@@ -90,6 +90,7 @@ class Course < ActiveRecord::Base
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
   scope :paid, where("cost > 0")
+  scope :taught_by, -> (teacher){ joins(:teacher).where('provider_teachers.id = ?', teacher.id) }
   scope :taught_by_chalkler, -> (chalkler){ joins(:teacher).where('provider_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
   scope :free, where("cost IS NULL or cost = 0")
   scope :in_provider, -> (provider){ where(provider_id: provider.id) }

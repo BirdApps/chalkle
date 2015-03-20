@@ -1,13 +1,11 @@
 <%= render 'heading' %>
 
-<div class="fancy-header">
-  <h3>Upcoming Classes</h3>
-  <hr />
+<input id="provider_url_name" type="hidden" value="<%= @provider.url_name %>" />
+
+<div class="text-center" id="fetch_missing" style="display: none;">
+  <h4>Sorry, there was a problem.</h4>
+  <button class="btn btn-success" onclick="window.location.reload()">Try Again</button>
 </div>
 
-<%= render @courses %>
-<% unless @courses.present? %>
-  <p class="center light">
-    There are no upcoming classes for <%= @provider_teacher.name %>
-  </p>
-<% end %>
+<div id="provider_fetch_wrapper">
+</div>

@@ -3,13 +3,15 @@ class ProviderTeachersController < ApplicationController
   before_filter :load_teacher, only: [:show,:update,:edit]
 
   def index
-    @teachers = @provider.provider_teachers
+    
+    @teachers = @provider.provider_teachers.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) }
+
     respond_to do |format|
       format.html
       format.json { render json: @teachers.to_json(only: [:id, :name]) }
     end
   end
-
+  
   def show
     @courses = Course.where(teacher_id: @provider_teacher.id).in_future.displayable.by_date
   end

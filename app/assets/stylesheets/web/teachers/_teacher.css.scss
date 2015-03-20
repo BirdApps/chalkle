@@ -2,9 +2,30 @@
   width: 100%;
   margin: 10px 0;
   min-height: 64px;
-  .light {
-    &:after {
-      clear: both;
+  max-width: 300px;
+  .avatar64 {
+    border-radius: 100px;
+    overflow: hidden;
+    background: #eee;
+    float: left;
+  }
+  .details {
+    float: left;
+    margin-top: 10px;
+    .light {
+      &:after {
+        clear: both;
+      }
     }
+  }
+}
+
+._teacher_heading {
+  margin-bottom: 20px;
+  .avatar {
+    border-radius: 100px;
+    overflow: hidden;
+    background: #eee;
+    float: left;
   }
 }

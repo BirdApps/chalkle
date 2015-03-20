@@ -5,7 +5,7 @@
     </div>
 
     <div class="col-xs-6">
-      <a class="fetch_this btn btn-default col-xs-12 <%= 'btn-inactive' if params[:past] == 'false' %>" data-past="true">Past <span class="hidden-xs hidden-sm hidden-md">Classes</span></a>
+      <a class="fetch_this btn btn-default col-xs-12 <%= 'btn-inactive' if params[:past] != 'true' %>" data-past="true">Past <span class="hidden-xs hidden-sm hidden-md">Classes</span></a>
     </div>
   </div>
 </div>
