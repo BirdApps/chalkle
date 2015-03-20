@@ -1,34 +1,7 @@
-
 @import "../_vars";
-.providers-index {
-  #fetch_wrapper {
+#fetch_wrapper, #home_fetch_wrapper {
+  @media screen and (min-width: 768px){
     margin-right: -20px;
     margin-left: -20px;
-  }
-  ._featured_provider {
-    padding: 40px;
-    .next-class {
-      position: relative;
-      top: -10px;
-      color: #aaa;
-      font-weight: 700;
-      .smaller {
-        margin-bottom: 4px;
-      }
-    }
-    ._course {
-      .avatar64 {
-        height: 52px;
-        width: 52px;
-        margin-right: 7px;
-        border-radius: 7px;
-      }
-      .details {
-        padding: 0;
-      }
-      .add_info {
-        display: none;
-      }
-    }
   }
 }
