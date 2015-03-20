@@ -1,14 +1,13 @@
 <%= render 'heading' %>
 
-
 <div class="fancy-header">
-  <h3>Upcoming Courses</h3>
+  <h3>Upcoming Classes</h3>
   <hr />
 </div>
 
 <%= render @courses %>
 <% unless @courses.present? %>
   <p class="center light">
-    There are no upcoming courses for <%= @provider_teacher.name %>
+    There are no upcoming classes for <%= @provider_teacher.name %>
   </p>
 <% end %>
