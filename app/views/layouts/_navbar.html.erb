@@ -154,19 +154,22 @@
           </li>
 
         <% else %>
-          <li class="non-img-link">
-            <%= link_to 'Sign up', new_chalkler_registration_path, class: 'sign-up-first' %>
+          <li class="hidden-xs">
+            <%= link_to "Browse", classes_path %>
           </li>
           <li class="dropdown non-img-link notifications-drop">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
              <div class="text-center">
               <span class="sr-only">Toggle Links</span>
-              <span>▾</span>
+              <span>Login ▾</span>
              </div>
             </a>
             <ul class="dropdown-menu pull-right" role="menu" >
               <li>
                 <%= link_to 'Login', new_chalkler_session_path, class: 'sign-in-first'  %>
+              </li>
+              <li>
+                <%= link_to 'Sign up', new_chalkler_registration_path, class: 'sign-up-first' %>
               </li>
             </ul>
           </li>
