@@ -86,6 +86,7 @@ $(function(){
       }
       $('.dropdown.open .dropdown-menu ul').each(function(){
         offset = $(this).offset().top - $(window).scrollTop();
+        $(this).css('height', window.innerHeight - offset - buffer);
         $(this).css('max-height', window.innerHeight - offset - buffer);
       });
     }
