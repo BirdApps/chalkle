@@ -2,9 +2,6 @@
 
 .application-home {
 
-  top: -$navbar-height;
-  position: relative;
-
   .home_header {
     margin-top: 130px;
     margin-bottom: 20px;
@@ -54,10 +51,8 @@
         display: inline-block;
       }
     }
-    .provider-preview {
-      .provider-logo {
-        
-      }
+    ._provider {
+      padding: 10px;
     }
   }
 
