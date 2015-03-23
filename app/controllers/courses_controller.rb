@@ -16,8 +16,9 @@ class CoursesController < ApplicationController
       else
         @courses = @provider.courses.published
       end
-      if params['id']
-        @courses = @courses.taught_by(ProviderTeacher.where(id: params['id'].to_i).first)
+      if params['id'] 
+        @provider_teacher = ProviderTeacher.where(id: params['id'].to_i).first
+        @courses = @courses.taught_by(@provider_teacher)
       end
     else
       if current_user.super?

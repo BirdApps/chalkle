@@ -1,6 +1,6 @@
 ._teacher {
   width: 100%;
-  margin: 10px auto;
+  margin: 10px auto 0;
   min-height: 64px;
   max-width: 300px;
   position: relative;
@@ -12,13 +12,30 @@
     float: left;
   }
   .details {
-    float: left;
     margin-top: 10px;
     left: 75px;
     position: absolute;
     .light {
       &:after {
         clear: both;
+      }
+    }
+  }
+  &._teacher_small {
+    min-height: 32px;
+    float: none;
+    margin: 5px 0 0;
+    .avatar32 {
+      border-radius: 100px;
+    }
+    .details {
+      left: 37px;
+      font-size: 12px;
+      margin-top: 4px;
+      line-height: 13px;
+      .name {
+        font-weight: 700;
+        color: #777;
       }
     }
   }

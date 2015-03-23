@@ -4,15 +4,20 @@
     unless subscription 
       sub_path = provider_subscriptions_path(provider)
       sub_method = :post
+      fav = ''
     else 
       sub_path = provider_subscription_path(subscription.path_params)
       sub_method = :delete
+      fav = "fav"
     end 
   %>
-  <%= link_to sub_path, method: sub_method, class: 'provider_header_social nowrap' do %>
-    <div class="favourite">
-      <span class="fa fa-heart <%= subscription ? 'on' : 'off' %>"></span>
+  <%= link_to sub_path, method: sub_method, class: "provider_header_social nowrap" do %>
+    <div class="fav <%= 'grad_btn' if subscription %>">
+      <% if subscription %>
+        <span class="fa fa-star"></span> Following
+      <% else %>
+        <span class="fa fa-star-o"></span> Follow
+      <% end %>
     </div>
-    <span class="fav"><%= subscription ? 'Unfavourite' : 'Favourite' %></span>
   <% end %>
 <% end %>

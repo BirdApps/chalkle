@@ -8,7 +8,7 @@
     </div>
 
     <div class="_heading_title flush">
-      <%= link_to 'Edit', edit_provider_teacher_path(@provider_teacher.path_params), class: 'btn btn-default edit_btn col-xs-12 col-sm-2' if policy(@provider_teacher).edit? && !current_page?(edit_provider_teacher_path(@provider_teacher.path_params)) %>
+      <%= link_to 'Edit', edit_provider_teacher_path(@provider_teacher.path_params), class: 'btn btn-default edit_btn col-xs-12 col-sm-2 pull-right margin-top' if policy(@provider_teacher).edit? && !current_page?(edit_provider_teacher_path(@provider_teacher.path_params)) %>
       <h2>
         <%= link_to @provider_teacher.name, provider_teacher_path(@provider_teacher.path_params) %>
       </h2>
