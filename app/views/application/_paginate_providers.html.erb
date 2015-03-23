@@ -9,8 +9,10 @@
 <% end %>
 
 
-<%= render partial: 'providers/provider', collection: paginate_these(@providers) %>
 
+<div class="row">
+  <%= render partial: 'providers/provider', collection: paginate_these(@providers) %>
+</div>
 
 <div class="pagination-wrapper">
   <% if page_max > 0 %>

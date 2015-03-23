@@ -89,6 +89,10 @@ class Chalkler < ActiveRecord::Base
     Booking.where(pseudo_chalkler_email: email, invite_chalkler: true).update_all(chalkler_id: id)
   end
 
+  def attending?(course)
+    bookings.confirmed.where(course_id: course.id).present?
+  end
+
   def upcoming_teaching
     (courses_adminable.in_future+courses_teaching.in_future).uniq.sort_by{ |c| c.start_at.present? ? c.start_at : DateTime.current.advance(years: 1)}
   end

@@ -5,7 +5,7 @@ describe CoursesController do
 
   describe "#show" do
     context "when the course is unpublished" do
-      let(:course) { FactoryGirl.create(:course, status: 'Draft', provider: provider) }
+      let(:course) { FactoryGirl.create(:course, status: 'Preview', provider: provider) }
       before { get :show, provider_id: provider.id, id: course.id }
 
       it "redirects to the chalkler dashboard" do

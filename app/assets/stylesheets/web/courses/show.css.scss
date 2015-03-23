@@ -44,13 +44,10 @@
     }
   }
   .right-col {
-    z-index: 5;
-    background: #fff;
+    z-index: 4;
     @media screen and (min-width: 998px){
-      padding-left:20px;
-      position: absolute;
-      top: 0;
-      right: 0;
+      float:right;
+      padding-left: 20px;
       width: 180px;
     }
     >* {

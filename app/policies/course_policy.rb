@@ -51,7 +51,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def write?(anytime=false)
-    anytime = true if @course.status == "Draft"
+    anytime = true if @course.status == "Preview"
     @user.super? or
      ((@user.provider_teachers.where(id: @course.teacher_id, can_make_classes: true).present? or 
       @user.provider_admins.where(provider_id: @course.provider_id).present?) and 

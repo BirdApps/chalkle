@@ -9,7 +9,7 @@
     <% if @course.publishable? %>
       <%= link_to "Publish", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post, class: 'border-left border-bottom' %>
     <% elsif @course.unpublishable?   %>
-      <%= link_to "Unpublish", change_status_provider_course_path(@course.path_params.merge(status: 'Draft')), method: :post, class: 'border-left border-bottom' %>
+      <%= link_to "Unpublish", change_status_provider_course_path(@course.path_params.merge(status: 'Preview')), method: :post, class: 'border-left border-bottom' %>
     <% elsif @course.cancellable? %>
       <%= link_to "Cancel", cancel_provider_course_path(@course.path_params), class: 'border-left border-bottom' %>
     <% end %>

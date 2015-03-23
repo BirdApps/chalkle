@@ -26,7 +26,7 @@ describe BookingsController do
       end
 
       context "when the course is unpublished" do
-        let(:course) { FactoryGirl.create(:course, status: 'Draft', provider: provider) }
+        let(:course) { FactoryGirl.create(:course, status: 'Preview', provider: provider) }
         before do 
           get :new, provider_id: provider.id, course_id: course.id
         end

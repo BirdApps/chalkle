@@ -1,15 +1,18 @@
 .upper { text-transform: uppercase }
-.text-right { text-align: right }
-.text-left { text-align: left }
+.text-right { text-align: right !important; }
+.text-left { text-align: left !important; }
 .center { text-align: center }
 .clear-both{ clear: both }
 .nowrap { white-space: nowrap }
 .pad-top-20 { padding-top: 20px }
 .pad-top { padding-top: 10px }
+.margin-bottom-20 { margin-bottom: 20px }
 .margin-top-20 { margin-top: 20px }
 .margin-top { margin-top: 10px }
 .pad-top-5 { padding-top: 5px }
 .pad-10 { padding: 10px; }
+.pad-15 { padding: 15px; }
+.pad-20 { padding: 20px; }
 .margin-top-5 { margin-top: 5px }
 .no-label { label { display: none } }
 .no-list{ li { list-style: none } }
@@ -24,6 +27,7 @@
 .text-success { color: #8DBF55 }
 .text-danger { color: #D3253A }
 .block { display: block }
+.no-padding { padding: 0 !important }
 .no-margin { margin: 0 !important }
 .flush { padding: 0 !important; margin: 0 !important }
 .grey { color: #333 }
