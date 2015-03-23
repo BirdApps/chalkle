@@ -1,0 +1,73 @@
+._featured_providers {
+  margin-bottom: 50px;
+  margin-top: 30px;
+  @media screen and (min-width: 789px){
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .btn-huge {
+    margin-top: 40px;
+  }
+}
+._featured_provider {
+  @media screen and (min-width: 768px){
+      padding: 40px;
+    }
+
+  >*{
+    background: #fafafa;
+    box-shadow: 3px 3px 3px #ddd; 
+    border-radius: 3px;
+    overflow: hidden;
+    padding-bottom: 15px;
+  }
+ .next-class {
+    position: relative;
+    top: -15px;
+    color: #aaa;
+    font-weight: 700;
+    .smaller {
+      margin-bottom: 4px;
+    }
+  }
+  ._course {
+    padding-top: 0;
+    padding: 0;
+    .avatar64 {
+      height: 52px;
+      width: 52px;
+      margin-right: 7px;
+      border-radius: 7px;
+    }
+    .details {
+      padding: 0;
+    }
+    .add_info {
+      display: none;
+    }
+  }
+  width: 100%;
+  padding: 10px;
+  float: left;
+  .provider_name {
+    white-space: nowrap;
+    font-weight: 600;
+    padding: 0 10px;
+    position: relative;
+    bottom: 22px;
+    padding-bottom: 5px;
+    width: 100%;
+    display: inline-block;
+    background: rgba(255,255,255,0.7)
+  }
+  @media screen and (min-width: 789px){
+    width: 33.3%;
+  }
+  .avatar {
+    width: 100%;
+    background: #eee;
+    @media screen and (max-width: 789px){
+      
+    }
+  }
+}

@@ -269,23 +269,36 @@ html {
 
     .fancy-header {
       font-family: "proxima-nova", sans-serif;
-      text-align: center;
+      h3, h4{
+        display: inline;
+        border: 0;
+        position: relative;
+        margin: 60px auto 0;
+        padding: 0 20px;
+        width: 300px;
+        background-color: #fff;
+        letter-spacing: 0.1em;
+        font-weight: 200 !important; 
+      }
+      h4 {
+        text-align: left;
+        top: 32px;
+        margin-left: 7px;
+        padding: 0 7px;
+      }
       h3 {
-          display: inline;
-          border: 0;
-          position: relative;
-          top: 35px;
-          margin: 60px auto 0;
-          padding: 0 20px;
-          width: 300px;
-          background-color: #fff;
-          letter-spacing: 0.1em;
-          font-weight: 200 !important; 
+        top: 35px;
+        margin: 60px auto 0;
+        padding: 0 20px;
+        text-align: center;
+      }
+      hr {
+        margin-bottom: 40px;
+        &.small {
+          margin-bottom: 25px;
         }
-        hr {
-          margin-bottom: 40px;
-          border-color: #BDBDBD;
-        }
+        border-color: #BDBDBD;
+      }
     }
 
     .center {

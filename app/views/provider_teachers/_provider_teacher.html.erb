@@ -1,4 +1,4 @@
-<div class="_teacher pull-left">
+<div class="_teacher">
   
   <div class="avatar64">
     <div class="img" style="background-image: url(<%= provider_teacher.avatar %>)">
@@ -10,7 +10,11 @@
     </div>
 
     <div class="light">
-      <% if provider_teacher.next_class.present? %>
+      <% if defined? hide_next_date %>
+        <div class="smaller strong grey">
+          Your Teacher
+        </div>
+      <% elsif provider_teacher.next_class.present? %>
         <div class="small">
           <%= link_to provider_course_path(provider_teacher.next_class.path_params) do %>
             Teaching on <span><%= quick_date provider_teacher.next_class.start_at %></span>

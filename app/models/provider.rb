@@ -80,7 +80,7 @@ class Provider < ActiveRecord::Base
   end
 
   def next_class
-    courses.in_future.by_date.first
+    courses.displayable.in_future.by_date.first
   end
 
   def fee

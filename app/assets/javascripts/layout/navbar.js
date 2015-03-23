@@ -4,7 +4,9 @@ $(function(){
 
   function init(){
     searchBar_init();
-    notifications_init();
+    if($('#current_user_id').length > 0){
+      notifications_init();
+    }
   }
 
   function searchBar_init(){  

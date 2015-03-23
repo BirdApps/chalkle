@@ -1,6 +1,7 @@
 class ProvidersController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new, :create, :url_available]
   before_filter :load_provider,:header_provider, :sidebar_administrate_provider, only: [:metrics, :show, :edit, :update, :destroy, :contact, :followers, :follower, :bookings, :about]
+  
   def index
   end
 
@@ -23,7 +24,7 @@ class ProvidersController < ApplicationController
       @providers = Provider.search params[:search].encode("UTF-8", "ISO-8859-1"), @providers
     end
 
-    @providers = @providers.to_a.uniq
+    @providers = @providers.to_a.uniq.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) }
 
     render '_paginate_providers', layout: false
   end
@@ -144,7 +145,7 @@ class ProvidersController < ApplicationController
     @providers = Provider.promotable_within_coordinates(
         { lat: params[:top].to_f,    long: params[:left].to_f   }, 
         { lat: params[:bottom].to_f, long: params[:right].to_f  }
-      ).limit(5)
+      )
     render partial: 'featured', layout: false
   end
 

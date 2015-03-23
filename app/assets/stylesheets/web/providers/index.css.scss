@@ -1,47 +1,7 @@
-
 @import "../_vars";
-.providers-index {
-  ._provider {
-    background-color: $color-default-hover;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    @media screen and (min-width: 769px){
-
-    }
-    h3{
-      margin: 5px 0 3px; 
-      .provider_name {
-        color: #fff;
-      }
-    }
-  
-    .avatar {
-      @media screen and (max-width: 768px){
-        margin: 10px;
-      }
-      background-color: #ccc;
-    }
-    .provider_detail {
-      max-height: 140px;
-      @media screen and (min-width: 769px){
-        max-height: 120px;
-      }
-      overflow-x: hidden;
-      overflow-y: scroll;
-      .description {
-        color: #fff;
-        font-size: 12px;
-        line-height: 15px;
-      }
-    }
-    .next_class {
-      @media screen and (max-width: 768px){
-        width: 100%;
-        padding: 0 10px;
-      }
-      a,.add_info {
-        color: #fff !important;
-      }
-    }
+#fetch_wrapper, #home_fetch_wrapper {
+  @media screen and (min-width: 768px){
+    margin-right: -20px;
+    margin-left: -20px;
   }
 }
