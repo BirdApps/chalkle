@@ -42,16 +42,24 @@
                   <%= link_to "Browse Classes", classes_path, class: 'text-left' %>
                 </div>
                 <div class="col-xs-5 flush">
-                  <%= link_to "New", new_course_path  %>
+                  <%= link_to "New", new_course_path, class: 'text-right'   %>
                 </div>
               </li>
-              <li class="divider flush"></li>
               <li>
                 <div class="col-xs-7 flush">
                   <%= link_to "Browse Providers", providers_path, class: 'text-left'  %>
                 </div>
                 <div class="col-xs-5 flush">
-                  <%= link_to "New", new_provider_path %>
+                  <%= link_to "New", new_provider_path, class: 'text-right'  %>
+                </div>
+              </li>
+              <li class="divider flush"></li>
+              <li>
+                <div class="col-xs-12 flush">
+                  <%= link_to "About Chalkle°", chalkle_root_path  %>
+                </div>
+                <div class="col-xs-12 flush">
+                  <%= link_to "Contact Chalkle°", chalkle_say_hello_path %>
                 </div>
               </li>
             </ul>
