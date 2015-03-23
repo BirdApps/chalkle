@@ -9,11 +9,12 @@
         <%= render 'courses/heading' %>
         <div class="col-xs-12 flush">
           <div class="right-col">
+            
             <%= render 'show_my_booking' %>
 
             <% if @course.bookable? || policy(@course).write?(true) %>    
-              <a href="<%= new_provider_course_booking_path @course.path_params %>" class="join-link sign-in-first btn btn-default" style="background-color: <%= @course.color %> ">
-                BOOK NOW
+              <a href="<%= new_provider_course_booking_path @course.path_params %>" class="join-link sign-in-first btn btn-default" title="New Booking" style="background-color: <%= @course.color %> ">
+                <%= current_chalkler.attending?(@course) ? 'BRING A FRIEND' : 'BOOK NOW' %>
                 <div class="small light">
                   <% if @course.cost? %>
                     $<%= @course.cost_formatted %>
