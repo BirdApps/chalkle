@@ -57,7 +57,7 @@
         text-shadow: rgba(0, 0, 0, 0.8) 0px 1px 1px;
       }
       &:hover, &:active, &:focus {
-        .favourite {
+        .follow {
           .on {
             color: rgba(0,0,0,0.2);
             text-shadow: none;
@@ -68,7 +68,7 @@
           }
         }
       }
-      .favourite { 
+      .follow { 
         float: right;
         padding-right: 2px;
         .on {

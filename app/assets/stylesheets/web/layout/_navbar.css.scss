@@ -208,7 +208,7 @@
         margin-top: -9px;
         right: 45px;
       }
-      .notifications-drop, .favourites-drop{
+      .notifications-drop, .follows-drop{
         .dropdown-menu {
           padding: 0;
           background: $color-header-opaque;
@@ -264,7 +264,7 @@
             transition: height 0.2s linear;
             overflow-y: scroll;
             padding: 0;
-            li._notification, li._favourite {
+            li._notification, li._follow {
               font-size: 1.2em;
               height: auto !important;
               min-height: 85px !important;
