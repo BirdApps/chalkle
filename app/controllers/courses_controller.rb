@@ -173,10 +173,10 @@ class CoursesController < ApplicationController
       repeat_courses = course.repeat_course.try(:courses)
       if repeat_courses
         repeat_courses.each do |series_course|
-          series_course.publish! if series_course.status == 'Draft'
+          series_course.publish! if series_course.status == 'Preview'
         end
       end
-    when 'Draft'
+    when 'Preview'
       course.status = params[:status]
     end
     flash_errors @course.errors if !course.save
@@ -199,7 +199,7 @@ class CoursesController < ApplicationController
     @teaching.course_to_teaching @course
     @teaching.cloning_id = @teaching.editing_id
     @teaching.editing_id = nil
-    add_flash :info, "You are now editing a draft copy of #{@course.name}"
+    add_flash :info, "You are now editing a preview copy of #{@course.name}"
     render 'new'
   end
 

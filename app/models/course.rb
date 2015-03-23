@@ -15,7 +15,7 @@ class Course < ActiveRecord::Base
   #Course statuses
   STATUS_5 = "Processing"
   STATUS_4 = "Completed"
-  STATUS_3 = "Draft"
+  STATUS_3 = "Preview"
   STATUS_2 = "Cancelled"
   STATUS_1 = "Published"
   VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
@@ -83,7 +83,7 @@ class Course < ActiveRecord::Base
   scope :by_date, order(:start_at)
   scope :by_date_desc, order('start_at DESC')
 
-  scope :draft, visible.where(status: STATUS_3)
+  scope :preview, visible.where(status: STATUS_3)
   scope :on_hold, visible.where(status: STATUS_2)
   scope :completed, visible.where(status: STATUS_4)
   scope :processing, where(status: STATUS_5)
@@ -224,7 +224,7 @@ class Course < ActiveRecord::Base
         'warning'
       when "Completed"
         'info'
-      when "Draft"
+      when "Preview"
         'danger'
       when "Cancelled"
         'default'
@@ -492,6 +492,14 @@ class Course < ActiveRecord::Base
     true if max_attendee && max_attendee > 0
   end
 
+  def cancelled?
+    status == STATUS_2
+  end
+
+  def completed?
+    status == STATUS_4
+  end
+
   def published?
     status == STATUS_1
   end
@@ -595,7 +603,7 @@ class Course < ActiveRecord::Base
 
   def name=(name) 
     write_attribute :name, name 
-    if status == STATUS_3 #draft
+    if status == STATUS_3 #preview
       set_url_name
     end
   end
