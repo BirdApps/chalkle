@@ -1,3 +1,21 @@
-<% current_user.providers_adminable.each do |provider| %>
-  <%= link_to provider.name, provider_new_course_path(provider) %>
+<br /><br />
+<% unless current_user.providers_adminable.present? %>
+  <div class="alert alert-default text-center">
+    <p>
+      Before you get starting making classes, you need to make a <em>provider</em> to host them.
+      <%= link_to "Create Provider", new_provider_path, class: 'btn btn-primary' %>
+    </p>
+  </div>
+  <div class="text-center">
+    <%= link_to 'Learn more about teaching on Chalkle', teach_path %>
+  </div>
+<% else %>
+
+  <div class="fancy-header">
+    <h3>Which provider is this course for?</h3>
+    <hr />
+  </div> 
+  <% current_user.providers_adminable.each do |provider| %>
+    <%= link_to provider.name, provider_new_course_path(provider) %>
+  <% end %>
 <% end %>

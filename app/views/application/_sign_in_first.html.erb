@@ -4,55 +4,62 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
-
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <div class="row text-center">
-              <h1>Login</h1>
+              <div class="col-xs-12 flush-xs">
+                <h1>Login</h1>
 
-              <div class="sign-in-form col-xs-12 new_form_wrapper">
+                <div class="sign-in-form col-xs-12 new_form_wrapper">
+                  
+                  <%= render partial: '/devise/sessions/omniauth_buttons' %>
+    
+                  <h4>– Or –</h4>
+                  <br />
+                  <%= bootstrap_form_for(:chalkler, :url => chalkler_session_path, :html => { class: 'form' }) do |f| %>
+                  
+                    <%= f.input :email, as: :email, :autofocus => true, required: true, placeholder: 'Email' %>
+                    <%= f.input :password, required: true, placeholder: 'Password' %>
 
-                <%= render partial: '/devise/sessions/omniauth_buttons' %>
-  
-                <h4>– Or –</h4>
-                <br />
-                <%= bootstrap_form_for(:chalkler, :url => chalkler_session_path, :html => { class: 'form' }) do |f| %>
-                  <%= f.error_notification %>
-                  <%= f.input :email, as: :email, :autofocus => true, placeholder: 'Email' %>
-                  <%= f.input :password, :required => true, placeholder: 'Password' %>
-
-                  <div class="control-group">
-                    <div class="controls">
-                      <label class="checkbox">
-                        <%= f.check_box :remember_me, :as => (:boolean if devise_mapping.rememberable?) %>
-                        Remember me?
-                      </label>
+                    <div class="control-group">
+                      <div class="controls">
+                        <label class="checkbox">
+                          <%= f.check_box :remember_me, :as => (:boolean if devise_mapping.rememberable?) %>
+                          Remember me?
+                        </label>
+                      </div>
                     </div>
-                  </div>
+                    
+                    <div class="col-sm-6 hidden-xs">
+                      <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
+                      <a href="#" class="link-line sign_up_first">Sign up now</a>
+                      <br /><br />
+                    </div>
+        
+                    <div class="col-xs-12 col-sm-6 flush-xs">
+                      <br class="visible-xs" />
+                      <input type="submit" value="Login Now" class="btn btn-lg btn-primary col-xs-12" />
+                    </div>
 
-                  <div class="sign-in-buttons">
-                    <div class="clearfix">
-                      <input class="btn btn-primary col-xs-12" value="Sign in" type="submit" name="commit" />
+                    <div class="col-xs-12 visible-xs">
+                      <br />
+                      <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
+                      <a href="#" class="link-line sign_up_first">Sign up now</a>
                     </div>
-                    <div class="forgot">
-                      <%= render "devise/shared/links" %>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-              
-              <div class="col-xs-12">
-                <div class="col-xs-12 col-sm-6">
-                  <h3 class="alternative">Not a member yet?</h3>
+                    
+
+                  <% end %>
+                </div>
+                
+         
+                
+                <div class="col-xs-12">
+                  <br />
+                    <%= render "devise/shared/links" %>
+                  <br />
                 </div>
 
-                <div class="col-xs-12 col-sm-6">
-                  <div class="under-button-alternatives btn col-xs-12" id="sign_up_first">
-                    <h3>Join Chalkle Now</h3>
-                  </div>
-                </div>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
@@ -62,44 +69,53 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body row">
-        
-            <div class="col-xs-12 text-center">
-              <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
-                <h1>Sign up</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="col-xs-12 flush-xs">
+              <div class="col-xs-12 text-center">
+                <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
+                  <h1>Sign up</h1>
 
-                <%= render partial: '/devise/sessions/omniauth_buttons' %>
-              
-                <h4>– Or –</h4>
-                <br />
+                  <%= render partial: '/devise/sessions/omniauth_buttons' %>
                 
-                <div class="form-inputs text-left">
-                  <%= f.input :name, :required => true, placeholder: 'Name' %>
-                  <%= f.input :email, as: :email, :required => true, placeholder: 'Email' %>
-                  <%= f.input :password, :required => true, placeholder: 'Password' %>
-                  <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
-                </div>
+                  <h4>– Or –</h4>
+                  <br />
+                  
+                  <div class="form-inputs text-left">
+                    <%= f.input :name, :required => true, placeholder: 'Name' %>
+                    <%= f.input :email, as: :email, :required => true, placeholder: 'Email' %>
+                    <%= f.input :password, :required => true, placeholder: 'Password' %>
+                    <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
+                  </div>
                 
+                  <div class="col-xs-12 flush-xs">
+                    <div class="col-sm-6 hidden-xs">
+                      <h5 class="alternative no-margin pad-top">Already signed up?</h5>
+                      <a href="#" class="link-line sign_in_first">Login now</a>
+                      <br /><br />
+                    </div>
+        
+                    <div class="col-xs-12 col-sm-6 flush-xs">
+                      <br class="visible-xs" />
+                      <button class="btn btn-lg btn-primary col-xs-12">
+                        Join Now
+                      </button>
+                    </div>
+
+                    <div class="col-xs-12 visible-xs">
+                      <br />
+                      <h5 class="alternative no-margin pad-top">Already signed up?</h5>
+                      <a href="#" class="link-line sign_in_first">Login now</a>
+                    </div>
+                  </div>
+
+                <% end %>
                 <div class="col-xs-12">
                   <br />
                   <%= link_to "Find out more about how Chalkle works", chalkle_about_path, class: 'small strong'  %>
-                   <br /> <br />
+                  <br /><br />
                 </div>
-              
-                <div class="col-xs-12">
-                  <div class="col-xs-12 col-sm-6">
-                    <h3 class="alternative flush">Already signed up?</h3>
-                    <a href="#" id="sign-in-first">Login in now</a>
-                  </div>
-      
-                  <div class="col-xs-12 col-sm-6">
-                    <button class="under-button-alternatives btn col-xs-12">
-                      <h3>Join Now</h3>
-                    </button>
-                  </div>
-                </div>
-              <% end %>
+              </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -109,13 +125,13 @@
 
 <script>
   function init_sign_in_first(){
-    $("#sign_up_first").click(function(){
+    $(".sign_up_first").click(function(){
       $('#signInFirstModal').modal('hide').after(function(){
         $('#signUpFirstModal').modal('show');
       });
     });
 
-    $("#sign_in_first").click(function(){
+    $(".sign_in_first").click(function(){
       $('#signInFirstModal').modal('show').after(function(){
         $('#signUpFirstModal').modal('hide');
       });

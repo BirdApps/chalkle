@@ -60,10 +60,16 @@ Your Chalkle Administrator")
     end
   end
 
-  def day_ordinal_month(date, use_relative_day = true, include_year = false, include_wday = false)
+  def day_ordinal_month(date, use_relative_day = true, include_year = false, include_wday = false, include_time = false)
     return unless date
     relative = relative_day_name date.to_date
-    return relative if relative && use_relative_day
+    if relative && use_relative_day
+      if include_time
+        return relative + ", "+ pretty_time(date) 
+      else
+        return relative
+      end
+    end
     ordinalDay = date.day.ordinalize
     wday = include_wday ? date.strftime("%A, ") : ""
     if include_year || date.year != DateTime.current.year

@@ -1,14 +1,7 @@
-
 @import "../_vars";
-.providers-index {
-  ._provider {
-    background-color: $color-default-hover;
-    margin-top: 20px;
-    .provider_name {
-      color: #fff;
-    }
-    .avatar {
-      background-color: #ccc;
-    }
+#fetch_wrapper, #home_fetch_wrapper {
+  @media screen and (min-width: 768px){
+    margin-right: -20px;
+    margin-left: -20px;
   }
 }

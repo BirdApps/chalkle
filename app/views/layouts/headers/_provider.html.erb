@@ -4,13 +4,9 @@
     active: request.path == provider_path(@provider) && !params[:past].present?,
     title: "Classes"
   },{
-    link: provider_teachers_path(@provider),
-    active: request.path == provider_teachers_path(@provider),
-    title: "Teachers"
-  },{
-    link: provider_subscriptions_path(@provider),
-    active: request.path == provider_subscriptions_path(@provider),
-    title: "Followers"
+    link: about_provider_path(@provider),
+    active: request.path == about_provider_path(@provider),
+    title: "About"
   },{
     link: contact_provider_path(@provider),
     active: request.path == contact_provider_path(@provider),
@@ -33,28 +29,17 @@
 
 <div class="provider_header provider-logo">
   <div class="container-fluid">
-    <div class="avatar">
-      <div class="img" style="background-image: url(<%= @provider.logo %>)">
-      </div>
-      <% if current_user.authenticated? %>
-        <% 
-          subscription = current_user.subscriptions.where(provider_id: @provider.id).first
-          unless subscription 
-            sub_path = provider_subscriptions_path(@provider)
-            sub_method = :post
-          else 
-            sub_path = provider_subscription_path(subscription.path_params)
-            sub_method = :delete
-          end 
-        %>
-        <%= link_to sub_path, method: sub_method, class: 'provider_header_social nowrap' do %>
-          <div class="favourite">
-            <span class="fa fa-heart <%= subscription ? 'on' : 'off' %>"></span>
-          </div>
-          <span class="fav"><%= subscription ? 'Unfavourite' : 'Favourite' %></span>
-        <% end %>
-      <% end %>
-    </div>
+    <% if current_user.providers_adminable.include?(@provider) && current_page?(provider_path(@provider)) %> 
+      <a class="avatar hover-photo" href="<%= edit_provider_path(@provider) %>">
+        <div class="img" style="background-image: url(<%= @provider.logo %>)">
+        </div>
+      </a>
+    <% else %>
+      <a class="avatar" href="<%= provider_path(@provider) %>">
+        <div class="img" style="background-image: url(<%= @provider.logo %>)">
+        </div>
+      </a>
+    <% end %>
 
     <div class="provider_header_content">
       <h1 class="provider_header_name">

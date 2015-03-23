@@ -40,9 +40,7 @@ $(function(){
           'take': take,
           'page': page
         }
-        url_name = $("#provider_url_name").val();
-        fetch_url = '/'+url_name+'/fetch';
-        $.get(fetch_url,fetch_params,write_courses_to_page,'html').fail(function(){
+        $.get(window.location.pathname+'/fetch',fetch_params,write_courses_to_page,'html').fail(function(){
             spinner_courses_stop();
           });
         update_url(fetch_params);

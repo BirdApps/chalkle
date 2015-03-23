@@ -2,7 +2,7 @@
   <div class="home_header">
     <div class="col-sm-5">
       <h1 class="text-right">
-        Find  classes near you
+        <%= link_to 'Find classes near you', classes_path, class: 'hover-link-line white' %>
       </h1>
       <p class="text-right">
         <%= link_to "Sign up for free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first' %>

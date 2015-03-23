@@ -1,131 +1,50 @@
 @import "../_vars";
 
-.course {
-  position: relative;
-  margin: 25px auto;
-  >div {
-    position: static;
+._course {
+  margin-bottom: 40px;
+  @media screen and (min-width: 768px){
+    padding: 20px 40px !important;
   }
-  
-  .warn-unpublished{
-    margin: 10px;
-  }
-  .title-wrapper {
-    position:relative;
-    .title {
-      font-family: "proxima-nova",sans-serif;
-      font-weight: 500;
-      font-size: 28px;
-      line-height: 29px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-decoration: none;
-      border: 0;
-      margin: 0;
-      overflow: hidden;
-      @media screen and (max-width: 768px) {
-        width: 100%;
-      }
-    }
-  }
-  .cost {
-    float: right;
-    line-height: 15px;
-    color: #fff;
-    padding: 8px 5px 4px 5px;
-    margin: 4px;
-    border-radius: 2px;
-    background: #C7C7C7;
-  }
-  .porthole {
-    background: rgba(0, 0, 0, 0.05);
-    border: solid 1px rgba(0, 0, 0, 0.05);
-    margin: auto;
+  ._inner_course{
+    background: #fafafa;
+    box-shadow: 1px 1px 4px #999;
+    border-radius: 3px;
     overflow: hidden;
-    max-width: 100%;
-    max-height: 100%;
-    width:145px;
-    height:145px;
-    @media screen and (max-width: 768px) {
+    width: 100%;
+    .avatar {
       width: 100%;
-      height:200px;
-    }
-    .course_image {
-      width: 100%;
-    }
-  }
-  .porthole.square {
-    width: 284px;
-    height:124px;
-  }
-  .porthole.round {
-    @media screen and (max-width: 768px) {
-      width:145px;
-      height:145px;
-    }
-  }
-  .description {
-    color: #555;
-    font-size: 14px;
-    line-height: 20px;
-  }
-  .availability-wrapper {
-    float:right;
-    @media screen and (max-width: 768px) {
-      right: 8px;
-      top: -52px;
-      position: absolute;
-      background-color: transparent;
-    }
-  }
-  .availability {
-    border-radius: 6px;
-    font-size: 18px;
-    color: #FFFFFF;
-    padding: 10px;
-    letter-spacing: 0.1em;
-    background: $color-primary;
-    min-width: 80px;
-    display: inline-block;
-    text-align: center;
-    &:hover {
-      background: $color-primary-hover;;
-    }
-    &:active {
-      background: $color-primary-active;;
-    }
-  }
-  .reviews {
-    float: right;
-    margin-top: 7px;
-    .fa-heart {
-      color: #D1616F;
-    }
-  }
-  .details {
-    margin: 14px 0;
-    .provider-img {
-      height: 45px;
-      width: 45px;
-      background: #ccc;
-    }
-    .vertical-seperator {
-      border-left: 1px solid #D8D8D8;
-      height: 45px;
-    }
-    .pull-left {
-      margin-right: 10px;
-      .smaller {
-        margin-top: 5px;
+      height: 220px;
+      background: #eee;
+      position: relative;
+      cursor: pointer;
+
+      .course_title {
+        cursor: default;
+        font-weight: 600;
+        padding: 5px 10px 0;
+        position: absolute;
+        bottom: 0;
+        padding-bottom: 5px;
+        width: 100%;
+        display: inline-block;
+        background: rgba(255,255,255,0.7);
+        >* {
+          margin-bottom: 4px;
+        }
+        .class_date {
+          color: #777;
+          font-size: 0.7em;
+          font-weight: 700;
+          float: left;
+        }
+        .cost {
+          float: right;
+        }
       }
     }
-  }
-  .details > * {
-    padding: 0;
-  }
-  footer {
-     .fa-map-marker {
-      margin-left:20px;
+    >.details {
+      padding: 10px;
+    
     }
   }
 }

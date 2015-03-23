@@ -1,10 +1,52 @@
 ._teacher {
   width: 100%;
-  margin: 10px 0;
+  margin: 10px auto 0;
   min-height: 64px;
-  .light {
-    &:after {
-      clear: both;
+  max-width: 300px;
+  position: relative;
+  float: left;
+  .avatar64 {
+    border-radius: 100px;
+    overflow: hidden;
+    background: #eee;
+    float: left;
+  }
+  .details {
+    margin-top: 10px;
+    left: 75px;
+    position: absolute;
+    .light {
+      &:after {
+        clear: both;
+      }
     }
+  }
+  &._teacher_small {
+    min-height: 32px;
+    float: none;
+    margin: 5px 0 0;
+    .avatar32 {
+      border-radius: 100px;
+    }
+    .details {
+      left: 37px;
+      font-size: 12px;
+      margin-top: 4px;
+      line-height: 13px;
+      .name {
+        font-weight: 700;
+        color: #777;
+      }
+    }
+  }
+}
+
+._teacher_heading {
+  margin-bottom: 20px;
+  .avatar {
+    border-radius: 100px;
+    overflow: hidden;
+    background: #eee;
+    float: left;
   }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="background-repeat: no-repeat; background-size: 100% auto; background-image: url( <%= page_hero if page_hero.present? %> );">
+<html lang="en" class="provider_color" style="background-repeat: no-repeat; background-size: 100% auto; background-image: url( <%= page_hero if page_hero.present? %> );">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
@@ -41,12 +41,15 @@
 
     <div class="body-content <%= 'sidebar-padding' if @sidebar.present? %>  <%= 'open' if current_user.sidebar_open %>">
       <div id="wrapper">
-        <div class="container-fluid <%= 'pad-top-20' if @header_partial %>" role="main">
+        <div class="container-fluid <%= 'pad-top' if @header_partial %>" role="main">
           <%= yield %>
         </div>
        <%#  <div id="map_overlay" style="display: none"><div id="map_holder"></div></div> %>
       </div>
     </div>
+    <% if current_user.authenticated? %>
+      <input id="current_user_id" type="hidden" value="<%= current_user.id %>" />
+    <% end %>
     <%= render 'layouts/sidebars/sidebar' if @sidebar.present? %>
     <%= render 'sign_in_first' unless @current_user.authenticated? %>
     <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>

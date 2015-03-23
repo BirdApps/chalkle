@@ -26,7 +26,7 @@ class Notify::CourseNoticeNotification < Notify::Notifier
     unless (role == :teacher) || chalklers_to_notify.include?(course_notice.teacher.chalkler)
 
       if course_notice.teacher.chalkler.present?
-        course_notice.teacher.chalkler.send_notification Notification::REMINDER, provider_course_path(course_notice.course, anchor: "discuss-#{course_notice.id}" ), message, course_notice 
+        course_notice.teacher.chalkler.send_notification Notification::REMINDER, provider_course_path(course_notice.course.path_params(anchor: "discuss-#{course_notice.id}") ), message, course_notice 
       end
 
       if course_notice.teacher.chalkler.blank? || course_notice.teacher.chalkler.email_about?(:course_notice_new_from_chalkler_to_teacher)

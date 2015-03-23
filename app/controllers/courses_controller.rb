@@ -10,10 +10,15 @@ class CoursesController < ApplicationController
 
   def fetch
     if @provider
+      @show_past_classes = true
       if policy(@provider).read?
         @courses = @provider.courses
       else
         @courses = @provider.courses.published
+      end
+      if params['id'] 
+        @provider_teacher = ProviderTeacher.where(id: params['id'].to_i).first
+        @courses = @courses.taught_by(@provider_teacher)
       end
     else
       if current_user.super?
@@ -86,11 +91,6 @@ class CoursesController < ApplicationController
   end
 
   def choose_provider
-    unless current_user.authenticated? && current_user.providers.empty?
-      redirect_to teach_path and return
-      #TODO: choose provider
-    end
-
     if current_user.providers.count == 1
       redirect_to new_provider_class_path(current_user.providers_adminable.first) and return
     end
@@ -168,10 +168,10 @@ class CoursesController < ApplicationController
       repeat_courses = course.repeat_course.try(:courses)
       if repeat_courses
         repeat_courses.each do |series_course|
-          series_course.publish! if series_course.status == 'Draft'
+          series_course.publish! if series_course.status == 'Preview'
         end
       end
-    when 'Draft'
+    when 'Preview'
       course.status = params[:status]
     end
     flash_errors @course.errors if !course.save
@@ -194,7 +194,7 @@ class CoursesController < ApplicationController
     @teaching.course_to_teaching @course
     @teaching.cloning_id = @teaching.editing_id
     @teaching.editing_id = nil
-    add_flash :info, "You are now editing a draft copy of #{@course.name}"
+    add_flash :info, "You are now editing a preview copy of #{@course.name}"
     render 'new'
   end
 

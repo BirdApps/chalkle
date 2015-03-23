@@ -1,0 +1,96 @@
+@import "../_vars";
+
+._provider {
+  float: left;
+  max-width: 400px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  position: relative;
+  width: 100%;
+  @media screen and (min-width: 759px) {
+    padding: 50px;
+  }
+  &._provider_small {
+    float: none;
+    padding: 0;
+    margin: 5px auto 0;
+    .avatar32 {
+      border-radius: 7px;
+      margin-right: 0;
+    }
+    .details {
+      font-size: 0.8em;
+      line-height: 13px;
+      padding: 5px;
+    }
+    .provider_name {
+      font-weight: 700;
+      color: #777;
+    }
+  }
+  .avatar64 {
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #eee;
+    @media screen and (min-width: 759px) {
+      width: 90px;
+      height: 90px;
+    }
+  }
+  .details {
+    padding: 2px;
+    font-weight: 500;
+    @media screen and (min-width: 759px) {
+      padding: 8px 5px;
+    }
+    overflow: hidden;
+    a {
+      display: block;
+      white-space: nowrap;
+      line-height: 18px;
+      @media screen and (min-width: 759px) {
+        line-height: 1.5em;
+      }
+      &.course_name {
+        display: block;
+        font-size: 16px;
+        white-space: nowrap;
+      }
+      &.provider_name{
+        color: #777;
+        font-weight: 700;
+      }
+    }
+    .add_info {
+      color: #999;
+      font-size: 0.9em;
+    }
+    .fav {
+      margin-top: 4px;
+      font-weight: 700;
+      font-size: 13px;
+      border: solid 1px $color-default-hover;
+      border-radius: 4px;
+      padding: 1px 4px;
+      line-height: 1em;
+      float: left;
+      @media screen and (min-width: 759px) {
+        margin-top: 5px;
+      }
+
+      &.grad_btn {
+        border: solid 1px #aaa;
+      }
+      
+      &:hover, &:active, &:focus {
+        background: #b1b1b1 !important;
+        color: #fff;
+        text-shadow: #999 0 1px 0;
+        border: solid 1px #aaa;
+        &:focus, &:active, &:hover {
+          text-shadow: #777 0 1px 0;
+        }
+      }
+    }
+  }
+}

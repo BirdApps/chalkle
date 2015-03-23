@@ -77,6 +77,9 @@
         }
         &.nav-img-link {
           padding: 0;
+          &.bg-danger{
+            background-color: $color-danger;
+          }
           .nav-img-wrap{
             @media screen and (min-width: 769px){
               width: $desktop-nav-height;
@@ -115,6 +118,7 @@
         display: none !important;
       }
     }
+
     li {
       z-index: 10;
     }
@@ -201,8 +205,13 @@
     }
 
     &.navbar-right {
-
-      .notifications-drop, .favourites-drop{
+      .notification-count {
+        position: absolute;
+        top: 50%;
+        margin-top: -9px;
+        right: 45px;
+      }
+      .notifications-drop, .follows-drop{
         .dropdown-menu {
           padding: 0;
           background: $color-header-opaque;
@@ -258,7 +267,7 @@
             transition: height 0.2s linear;
             overflow-y: scroll;
             padding: 0;
-            li._notification, li._favourite {
+            li._notification, li._follow {
               font-size: 1.2em;
               height: auto !important;
               min-height: 85px !important;

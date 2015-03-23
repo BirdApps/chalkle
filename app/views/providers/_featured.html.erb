@@ -1,22 +1,6 @@
-<div class="col-xs-1"></div>
-<% @providers.each do |provider| %>
-
-  <div class="col-xs-2">
-
-    <div class="provider-logo">
-      <%= image_tag(provider.logo.url) %> 
-
-      <h3><%= provider.name %></h3>
-      <% provider.courses.upcoming.limit(3).each do |course| %> 
-        <p><%= course.name %></p>
-      <% end %>
-      <em>
-        <%= "#{provider.courses.upcoming.count-3} more..." if provider.courses.upcoming.count > 3 %>
-      </em> 
-    </div>
-
+<div class="row _featured_providers">
+  <%= render partial: 'providers/featured_provider', collection: @providers.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) }.take(3) %>
+  <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+  <%= link_to "Browse all providers", providers_path, class: 'btn btn-huge btn-default col-xs-12' %>
   </div>
-
-<% end %>
-
-<div class="col-xs-1"></div>
+</div>

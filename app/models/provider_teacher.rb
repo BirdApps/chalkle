@@ -19,6 +19,10 @@ class ProviderTeacher < ActiveRecord::Base
 
   before_save :check_name
 
+  scope :invisible, where(visible: false)
+  scope :visible, where(visible: true)
+  scope :with_upcoming_class, joins(:courses).merge( Course.in_future.displayable )
+
   def email
     unless chalkler.nil?
       chalkler.email
@@ -38,7 +42,7 @@ class ProviderTeacher < ActiveRecord::Base
   end
 
   def next_class
-    courses.in_future.published.order(:start_at).first
+    courses.displayable.in_future.published.order(:start_at).first
   end
 
   def tax_registered?

@@ -1,7 +1,7 @@
 $(function(){
   if( $('.provider_header').length > 0 ){
 
-    $('.favourite').click(function(e){
+    $('.follow').click(function(e){
       e.preventDefault();
       $(this).parent().find('form').submit();
     });

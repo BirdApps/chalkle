@@ -1,3 +1,24 @@
+<% if @show_past_classes  %>
+  <div class="row upcoming-previous-btns">
+    <div class="col-xs-11 col-md-5 pull-right">
+
+      <div class="dropdown pull-right" style="font-size: 0.87em;">
+        <button id="dLabel" class="btn no-btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= params[:past]=='true' ? "Past Classes" : "Upcoming Classes" %> 
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="box-shadow: none;
+border: none;">
+          <a class="fetch_this pull-right pad-10" data-past="<%= params[:past]=='true' ? "false" : "true"  -%>">
+            <%= params[:past]=='true' ? "Upcoming" : "Past" %> Classes
+          </a>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+<% end %>
+
 <% 
   if @courses.empty?  
     problem = "No classes match "
@@ -8,15 +29,13 @@
      <%= problem %>    
   </div>
 <% end %>
-
-<% if params['action'] == 'mine' %>
-  <%= render partial: 'me/courses/course', collection: paginate_these(@courses) %>
-<% elsif @provider %>
-  <%= render partial: 'providers/course', collection: paginate_these(@courses) %>
-<% else %>
-  <%= render paginate_these(@courses) %>
-<% end %>
-
+<div class="row">
+  <% if params['action'] == 'mine' %>
+    <%= render partial: 'me/courses/course', collection: paginate_these(@courses) %>
+  <% else %>
+    <%= render paginate_these(@courses) %>
+  <% end %>
+</div>
 <div class="pagination-wrapper">
   <% if page_max > 0 %>
     <ul class="pagination inline">

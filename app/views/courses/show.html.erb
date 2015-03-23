@@ -2,155 +2,170 @@
   
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-xl-6 col-xl-offset-3">
-      
-      <%= render 'courses/heading' %>
-      <div class="col-xs-12 flush-xs">
-        <div class="right-col">
-          <%= render 'show_my_booking' %>
-
-          <% if @course.bookable? || policy(@course).write?(true) %>    
-            <a href="<%= new_provider_course_booking_path @course.path_params %>" class="join-link sign-in-first btn btn-default" style="background-color: <%= @course.color %> ">
-              BOOK NOW
-              <div class="small light">
-                <% if @course.cost? %>
-                  $<%= @course.cost_formatted %>
-                <% else %>
-                  FREE
+      <div class="row flush-xs">
+        <% if !@course.published? %>
+          <% if @course.has_public_status? || policy(@course).change_status?  %>
+            <div class="alert alert-default no-padding margin-bottom-20">
+              <div class="pull-right pad-15">
+                <% if @course.publishable? %>
+                  <%= link_to "Publish", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post, class: 'btn btn-default' %>
+                <% elsif @course.unpublishable?   %>
+                  <%= link_to "Unpublish", change_status_provider_course_path(@course.path_params.merge(status: 'Preview')), method: :post, class: 'btn btn-default' %>
+                <% elsif @course.cancellable? %>
+                  <%= link_to "Cancel", cancel_provider_course_path(@course.path_params), class: 'btn btn-default' %>
                 <% end %>
               </div>
-            </a>
-          <% else %>
-            <a href="#" class="btn btn-default join-link">
-              Not Bookable
-            </a>
+              <h3 class="pad-20 no-margin"><%= @course.status %></h3>
+              <% if @course.cancelled? %>
+                <p><%= @course.cancelled_reason %></p>
+              <% elsif @course.completed? %>
+                <p><%= link_to "See more courses from #{@course.provider}", provider_path(@course.provider) %></p>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+        <div class="text-right">
+          <%= render 'courses/social_links' %>
+        </div>
+        <%= render 'courses/heading' %>
+        <div class="col-xs-12 flush">
+          <div class="right-col">
+            
+            <%= render 'show_my_booking' %>
+
+            <% if @course.bookable? || policy(@course).write?(true) %>    
+              <a href="<%= new_provider_course_booking_path @course.path_params %>" class="join-link sign-in-first btn btn-default" title="New Booking" style="background-color: <%= @course.color %> ">
+                <%= current_chalkler.attending?(@course) ? 'BRING A FRIEND' : 'BOOK NOW' %>
+                <div class="small light">
+                  <% if @course.cost? %>
+                    $<%= @course.cost_formatted %>
+                  <% else %>
+                    FREE
+                  <% end %>
+                </div>
+              </a>
+            <% else %>
+              <a href="#" class="btn btn-default join-link">
+                Not Bookable
+              </a>
+            <% end %>
+
+            <div class="cost">
+              <% if @course.limited_spaces?  %>
+                <%= @course.spaces_left? ? @course.spaces_left.to_s + " spots left" : "Booked out" %> 
+              <% end %>
+            </div>
+
+            <div class="meta row">
+              <% if @course.reviews? %> 
+                <div class="reviews small grey">
+                  <span class="fa fa-heart"></span>
+                  <span class="text-right">
+                    <%= @course.review_percent || '?' %>%
+                  </span>
+                  <div class="small">
+                    <%= @course.reviews.count %> reviews
+                  </div>
+                </div>
+              <% end  %>
+              
+              <% if @course.next_class.present? && (@course.next_class.status == 'Published' || policy(@course).read?) %>
+                <div class="col-xs-12 center small grey class-repeats">
+                  <div class="upper">CLASS REPEATS</div>
+                  <div>- next class -</div>
+                  <div>
+                    <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
+                  </div>
+                </div>
+              <% elsif Course.similar_to(@course).count > 1 %>
+                <div class="col-xs-12 center small grey class-repeats">
+                  <%= link_to "Find similar #{ @course.type.pluralize }", course_series_provider_path(@course.provider.url_name, @course.url_name) %>
+                </div>
+              <% end %>
+              
+              
+              <% if @course.teacher.present? %>
+                <div class="col-xs-12 text-left">
+                  <%= render partial: 'provider_teachers/provider_teacher' , locals: { hide_next_date: true, provider_teacher: @course.teacher }  %>
+                </div>
+              <% end %>
+
+            </div>
+
+          </div>
+
+          <div class="left-col">
+            <div class="row flush">
+              <div class="fancy-header">
+                <h4>Details</h4>
+                <hr class="small" />
+              </div>
+
+              <div class="col-xs-12">
+                <%= to_html @course.learning_outcomes %>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="row flush-xs">
+        <div class="col-xs-12">
+          <div class="fancy-header row">
+            <h4>What we'll be doing</h4>
+            <hr class="small" />
+          </div>
+            
+          <%= to_html @course.do_during_class %>
+        </div>
+
+        <% if @course.suggested_audience.present?  %>
+          <div class="col-xs-12">
+            <div class="fancy-header row">
+              <h4>Who this is suitable for</h4>
+              <hr class="small" />
+            </div>
+            <%= to_html @course.suggested_audience %>
+          </div>
+        <% end %>
+
+      </div>
+
+      <div class="row flush-xs">
+        <div class="row">
+          <% if @course.prerequisites.present?  %>
+            <div class="col-md-6 col-xs-12">
+              <div class="fancy-header">
+                <h4>Be sure to bring</h4>
+                <hr class="small" />
+              </div>
+              <div class="col-xs-12">
+                <%= to_html @course.prerequisites %>
+              </div>
+            </div>
           <% end %>
 
-          <div class="cost">
-            <% if @course.limited_spaces?  %>
-              <%= @course.spaces_left? ? @course.spaces_left.to_s + " spots left" : "Booked out" %> 
-            <% end %>
-          </div>
-
-          <div class="meta row">
-            <% if @course.reviews? %> 
-              <div class="reviews small grey">
-                <span class="fa fa-heart"></span>
-                <span class="text-right">
-                  <%= @course.review_percent || '?' %>%
-                </span>
-                <div class="small">
-                  <%= @course.reviews.count %> reviews
-                </div>
+          <% if @course.additional_comments.present?  %>
+            <div class="col-md-6 col-xs-12">
+              <div class="fancy-header">
+                <h4>Additional information</h4>
+                <hr class="small" />
               </div>
-            <% end  %>
-            
-            <% if @course.next_class.present? && (@course.next_class.status == 'Published' || policy(@course).read?) %>
-              <div class="col-xs-12 center small grey class-repeats">
-                <div class="upper">CLASS REPEATS</div>
-                <div>- next class -</div>
-                <div>
-                  <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
-                </div>
+              <div class="col-xs-12">
+                <%= to_html @course.additional_comments %>
               </div>
-            <% elsif Course.similar_to(@course).count > 1 %>
-              <div class="col-xs-12 center small grey class-repeats">
-                <%= link_to "Find similar #{ @course.type.pluralize }", course_series_provider_path(@course.provider.url_name, @course.url_name) %>
-              </div>
-            <% end %>
-
-
-            <% if @course.course? %>
-              <div class="col-xs-12 center small grey class-repeats">
-                <div class="upper">MULTIPLE CLASSES</div>
-                <div>- dates -</div>
-                <% @course.classes.each do |lesson| %>
-                   <div>
-                    <%= quick_date_time lesson.start_at %>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="left-col">
-          <div class="large">
-            <%= to_html @course.learning_outcomes %>
-          </div>
+            </div>
+          <% end %>
         </div>
       </div>
-
-      <div class="col-xs-12">
-        <br />
-        <h5 class="upper">What we'll be doing</h5>
-        <p>
-          <%= to_html @course.do_during_class %>
-        </p>
-      </div>
-
-      <% if @course.suggested_audience.present?  %>
-        <div class="col-xs-12">
-          <br />
-          <h5 class="upper">Who this is suitable for</h5>
-          <p>
-            <%= to_html @course.suggested_audience %>
-          </p>
-        </div>
-      <% end %>
-
-      <% if @course.prerequisites.present?  %>
-        <div class="col-md-6 col-xs-12">
-          <h5 class="upper">Be sure to bring</h5>
-          <p>
-            <%= to_html @course.prerequisites %>
-          </p>
-        </div>
-      <% end %>
-
-      <% if @course.additional_comments.present?  %>
-        <br />
-        <div class="col-md-6 col-xs-12">
-          <h5 class="upper">Additional information</h5>
-          <p>
-            <%= to_html @course.additional_comments %>
-          </p>
-        </div>
-      <% end %>
 
     </div>
+  
   </div>
 
   <br /> <hr /> <br />
-  <div class="row">
-    <div class="col-sm-3 col-sm-offset-1 col-xs-6 clearfix">
-      <% if @course.teacher.present? %>
-        <%= link_to provider_teacher_path(@course.provider, @course.teacher) do %>
-          <div class="teacher">
-            <div class="avatar64" style='background-image: url(<%= @course.teacher.avatar %>)'>
-            </div>
-            <div class="light grey upper ">Your Teacher</div>
-            <%= @course.teacher.name %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="col-sm-4 hidden-xs  grey light pad-top">
-      <a href="#map-canvas">
-        <span class="fa fa-map-marker"></span>
-        <%= @course.address || to_html(@course.venue) %>
-      </a>
-    </div>
-    <div class="col-sm-3 col-xs-6  grey light pad-top">
-      <span class="fa fa-calendar"></span>
-      <%= day_ordinal_month @course.start_at, true, false, true %>
-      <br />
-      <span class="fa fa-clock-o"></span>
-      <%= pretty_duration(@course) %> - 
-      <%= pretty_time_range @course.start_at, @course.end_at %>
-    </div>
-  </div>
-  <br />
-  <hr />
   <div class="row">
     <%= render partial: 'notice_board' %>
   </div>

@@ -1,7 +1,7 @@
 <div id="home">
   <div class="providers-around-you row">
     <div class="col-xs-12 text-center">
-      <h2>Amazing classes near you from</h2>
+      <h2>Amazing providers near you</h2>
     </div>
 
 
@@ -20,26 +20,13 @@
     </div>
     
     <div class="provider-preview">
-      <!-- TODO: Div gets filled after location has been reported back to server via ajax -->
-      <%= render partial: 'providers/featured' %> 
     </div>
 
-    <div class="col-xs-12 text-center">
-      <h2>What are you waiting for?</h2>
-      <%= link_to "Sign Up for Free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first' %> 
-    </div>
-
-    <div class="col-xs-12 col-sm-10 text-right">
-      <!-- TODO: Give me a link to /providers providers & courses in my region -->
-      <%= link_to classes_path do %>
-        Keep browsing <span class="provider_count"></span> providers with <span class="class_count"></span> courses 
-      <% end %>
-    </div>
   </div>
 
   <div class="row business">
 
-    <h2 class="col-xs-12 text-center">Build your Business on Chalkle</h2>
+    <h2 class="col-xs-12 text-center">Become a better Learning provider on Chalkle</h2>
 
     <div class="col-xs-10 col-xs-offset-1 col-md-5 col-md-offset-1">
       <div class="media">
@@ -76,77 +63,69 @@
 
   <div class="row praise">
     <h2 class="col-xs-12 text-center">People are really getting into Chalkle</h2>
-
-    <div class="col-xs-12 col-md-6">
       
-      <div class="text-center praise-bubble col-xs-12">
-        <div class="text-center">
-          <%= image_tag 'home/optimal.png', class: 'iconify' %> 
-        </div>
-        More amazing the support from @ChalkleNZ today.
-        We use them for our public workshops 
-        <%= link_to 'http://chalkle.com/?topic=computers-technology' %> 
-        Such a great group to work with.
-        <div class="text-right attributation">
-          <strong>– Jack Prichard</strong>
-          <sub>@MagnumBI_</sub>
-        </div>
+    <div class="text-center praise-bubble col-xs-12 col-md-8 col-lg-6">
+      <div class="text-center">
+        <%= image_tag 'home/optimal.png', class: 'iconify' %> 
       </div>
-
-      <div class="text-center praise-bubble col-xs-12">
-        <div class="text-center">
-          <%= image_tag 'home/doc.png', class: 'iconify' %> 
-        </div>
-        Working with the clever people from Chalkle comes highly recommended.
-        <div class="text-right attributation">
-          <strong>– Angeline Barnes</strong>
-          <sub>outreach and Education Co-ordinator, Department of Conservation</sub>
-        </div>
+      More amazing the support from @ChalkleNZ today.
+      We use them for our public workshops 
+      <%= link_to 'http://chalkle.com/?topic=computers-technology' %> 
+      Such a great group to work with.
+      <div class="text-right attributation">
+        <strong>– Jack Prichard</strong>
+        <sub>@MagnumBI_</sub>
       </div>
+    </div>
 
+    <div class="text-center praise-bubble col-xs-12 col-md-8 col-md-offset-4 col-lg-6 col-lg-offset-6">
+      <div class="text-center">
+        <%= image_tag 'home/doc.png', class: 'iconify' %> 
+      </div>
+      Working with the clever people from Chalkle comes highly recommended.
+      <div class="text-right attributation">
+        <strong>– Angeline Barnes</strong>
+        <sub>outreach and Education Co-ordinator, Department of Conservation</sub>
+      </div>
+    </div>
+
+    <div class="text-center praise-bubble col-xs-12 col-md-8 col-lg-6">
+      <div class="text-center">
+        <%= image_tag 'home/idealog.png', class: 'iconify' %> 
+      </div>
+      ...it allow local experts to make a buck on the side 
+      by capitalising on their knowledge of first aid, 
+      fruit trees, astronomy, cheese-making, importing, 
+      sign language, Wordpress and more
+      <div class="text-right attributation">
+        <strong>– Rebekah White</strong>
+        <sub>Idealog 03 Nov 2014</sub>
+      </div>
     </div>
 
 
-    <div class="col-xs-12 col-md-6 offset">
-
-      <div class="text-center praise-bubble col-xs-12">
-        <div class="text-center">
-          <%= image_tag 'home/idealog.png', class: 'iconify' %> 
-        </div>
-        ...it allow local experts to make a buck on the side 
-        by capitalising on their knowledge of first aid, 
-        fruit trees, astronomy, cheese-making, importing, 
-        sign language, Wordpress and more
-        <div class="text-right attributation">
-          <strong>– Rebekah White</strong>
-          <sub>Idealog 03 Nov 2014</sub>
-        </div>
+    <div class="text-center praise-bubble col-xs-12 col-md-8 col-md-offset-4 col-lg-6 col-lg-offset-6">
+      <div class="text-center">
+        <%= image_tag 'home/tetakere.png', class: 'iconify' %> 
       </div>
-
-
-      <div class="text-center praise-bubble col-xs-12">
-        <div class="text-center">
-          <%= image_tag 'home/tetakere.png', class: 'iconify' %> 
-        </div>
-        “[Chalkle helps] builds confidence in people, learning, belonging and making friends within the community for both students and teachers. It has aided in building community growth for all ages, has opened an air of things to do in the Horowhenua, and over the last couple of months Chalkle attendance numbers have increased. People are asking what is next.” 
-        <div class="text-right attributation">
-          <strong>– Kerry Fairless</strong>
-          <sub>Community Education Coordinator, Te Takere Library, Horowhenua</sub>
-        </div>
+      “[Chalkle helps] builds confidence in people, learning, belonging and making friends within the community for both students and teachers. It has aided in building community growth for all ages, has opened an air of things to do in the Horowhenua, and over the last couple of months Chalkle attendance numbers have increased. People are asking what is next.” 
+      <div class="text-right attributation">
+        <strong>– Kerry Fairless</strong>
+        <sub>Community Education Coordinator, Te Takere Library, Horowhenua</sub>
       </div>
-    
     </div>
-
   </div>
 
 
-  <div class="text-center col-xs-12 cta-button">
-    <%= link_to "Get Started", new_chalkler_registration_path, class: "btn btn-primary btn-huge" %>
+  <div class="col-xs-12 text-center">
+    <h2>What are you waiting for?</h2>
+    <br />
+    <%= link_to "Sign Up for Free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first' %> 
   </div>
   <div class="text-right col-xs-6">
-      <%= link_to "learn more about putting your couses on chalkle", teach_path %>
+      <%# link_to "learn more about putting your couses on chalkle", teach_path %>
   </div>
   <div class=" col-xs-6">
-      <%= link_to "See all the courses in your area", classes_path %>
+      <%# link_to "See all the courses in your area", classes_path %>
   </div>
 </div>

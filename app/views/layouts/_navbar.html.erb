@@ -14,47 +14,52 @@
                 <span class="input-group-addon" id="search_btn">
                   <img id="search_chalkle_btn" src="<%= asset_path 'icons/search.png' %>" alt="search" />
                 </span>
-                <input id="search_input" type="search" name="search" value="<%= params[:search] %>" class="form-control" placeholder=" Search <%= params['controller'] == 'providers' ? 'providers' : 'classes' %>" autocomplete="off" />
+                <input id="search_input" type="search" name="search" value="<%= params[:search] %>" class="form-control" placeholder=" Search <%= current_page?(providers_path) ? 'providers' : 'classes' %>" autocomplete="off" />
                 <div class="search-close">&times;</div>
               </div>
             </form>
           </div>
         </li>
-        <li class="xs-browse-classes">
-          <%= link_to "Browse", classes_path %>
-        </li>
+         <% unless chalkler_signed_in? %>
+          <li class="xs-browse-classes">
+            <%= link_to "Browse", classes_path %>
+          </li>
+        <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="hidden-xs">
-          <%= link_to "Browse Classes", classes_path %>
-        </li>
         <% if chalkler_signed_in? %>
+          
           <li class="dropdown non-img-link notifications-drop">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
              <div class="text-center">
               <span class="sr-only">Toggle Links</span>
-              <span>▾</span>
+              <span>Menu ▾</span>
              </div>
             </a>
-            <div class="dropdown-menu quick-links pull-right" role="menu" >
-              <div class="visible-xs col-xs-12 flush">
-                <%= link_to "Browse Classes", classes_path, class: 'li' %>
-              </div>
-              <div class="col-xs-12 flush">
-                <%= link_to "Create Class", new_course_path, class: 'li'  %>
-              </div>
-              <div class="col-sm-6 col-xs-12 flush">
-                <%= link_to "Browse Providers", providers_path, class: 'li'  %>
-              </div>
-              <div class="col-sm-6 col-xs-12 flush">
-                <%= link_to "Create Provider", new_provider_path, class: 'li'  %>
-              </div>
-            </div>
+            <ul class="dropdown-menu quick-links pull-right" role="menu" >
+              <li>
+                <div class="col-xs-7 flush">
+                  <%= link_to "Browse Classes", classes_path, class: 'text-left' %>
+                </div>
+                <div class="col-xs-5 flush">
+                  <%= link_to "New", new_course_path  %>
+                </div>
+              </li>
+              <li class="divider flush"></li>
+              <li>
+                <div class="col-xs-7 flush">
+                  <%= link_to "Browse Providers", providers_path, class: 'text-left'  %>
+                </div>
+                <div class="col-xs-5 flush">
+                  <%= link_to "New", new_provider_path %>
+                </div>
+              </li>
+            </ul>
           </li>
 
 
           <li class="dropdown notifications-drop">
-            <a href="#" class="dropdown-toggle nav-img-link" data-toggle="dropdown" role="button" aria-expanded="false">
+            <a href="#" class="dropdown-toggle nav-img-link notification-dropdown" data-toggle="dropdown" role="button" aria-expanded="false">
              <div class="nav-img-wrap">
               <span class="sr-only">Toggle Notifications Dropdown</span>
                <img class="nav_img bell" src="/assets/icons/bell.png" />
@@ -71,7 +76,7 @@
             </div>
           </li>
 
-          <li class="dropdown favourites-drop">
+          <li class="dropdown follows-drop">
             <% if current_user.avatar? %>
               <a href="#" class="dropdown-toggle nav-img-link" data-toggle="dropdown" role="button" aria-expanded="false">
                 <div class="nav-img-wrap">
@@ -113,16 +118,16 @@
                     <%= link_to root_path do %>
                       <small>
                         <br />
-                        This is where we show your favourites.
+                        Usually, the providers you follow show here.
                         <br />
-                        You don't have any yet. 
+                        But You don't have any yet.
                       </small><br />
                       <br />
                     <% end %>
                   </div>
                 <% end %>
                 <% current_chalkler.providers_following.each do |provider| %>
-                  <li role="presentation" class="_favourite">
+                  <li role="presentation" class="_follow">
                     <%= link_to provider_path(provider.url_name) do %>
                       <div class="avatar64">
                         <div class="img" style="background-image: url(<%= provider.logo %>)">

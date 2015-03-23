@@ -1,0 +1,14 @@
+<div class="_teacher _teacher_small">
+  <%= link_to provider_teacher_path(provider_teacher.path_params), title: provider_teacher.name do %>
+    <div class="avatar32" style="background-color: <%= provider_teacher.provider.header_color %>">
+      <div class="img" style="background-image: url(<%= provider_teacher.avatar %>)">
+      </div>
+    </div> 
+    <div class="details">
+      <div class="small">Taught by</div>
+      <div class="name">
+        <%= limit_text(provider_teacher.name,20) %>
+      </div>
+    </div>
+  <% end %>
+</div>

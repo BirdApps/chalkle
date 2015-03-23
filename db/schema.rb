@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150317001735) do
+ActiveRecord::Schema.define(:version => 20150323025804) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -377,6 +377,7 @@ ActiveRecord::Schema.define(:version => 20150317001735) do
     t.decimal  "balance"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "visible",               :default => true,  :null => false
   end
 
   add_index "provider_teachers", ["provider_id", "chalkler_id"], :name => "index_channel_teachers_on_channel_id_and_chalkler_id"

@@ -4,7 +4,9 @@ $(function(){
 
   function init(){
     searchBar_init();
-    notifications_init();
+    if($('#current_user_id').length > 0){
+      notifications_init();
+    }
   }
 
   function searchBar_init(){  
@@ -97,7 +99,8 @@ $(function(){
         } else { 
           new_badge = count;
         };
-        if(count<1) { new_badge = '' };
+        if(count<1) { $('.notification-dropdown').removeClass('bg-danger'); new_badge = ''; };
+        if(count>0) { $('.notification-dropdown').addClass('bg-danger'); };
         $(this).html(new_badge);
       });
 
