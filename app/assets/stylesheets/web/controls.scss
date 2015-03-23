@@ -23,6 +23,24 @@ html {
       border-radius: 3px;
       font-size: 19px;
     }
+
+    .grad_btn {
+      position: relative;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      border: #aaa solid 1px;
+      padding: 1px 4px;
+      line-height: 1em;
+      text-shadow: #999 0 1px 0;
+      &:focus, &:active, &:hover {
+        text-shadow: #777 0 1px 0;
+        @include gradient_v(#afafaf, #b7b7b7);
+      }
+      @include gradient_v(#b1b1b1, #bababa);
+    }
+
     .number-picker {
       .fa {
         display: block;
@@ -511,18 +529,21 @@ html {
       width:128px;
       float: left;
       margin-right:10px;
+      overflow: hidden;
     }
     .avatar64 {
       height: 64px;
       width: 64px;
       float:left;
       margin-right:10px;
+      overflow: hidden;
     }
     .avatar32 {
       height: 32px;
       width: 32px;
       float:left;
       margin-right:10px;
+      overflow: hidden;
     }
     .hover-photo {
       &:after {

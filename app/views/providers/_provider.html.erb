@@ -1,24 +1,20 @@
-<div class="row">
-  <div class="_provider col-xs-12 flush-sm" style="background-color: <%= provider.header_color %>">
-    <div class="col-xs-5 col-sm-2 flush">
-      <%=  link_to provider_path(provider.url_name), class: 'avatar' do %>
-        <div class="img" style="background-image: url(<%= provider.logo %>)"></div>
-      <% end %>
-    </div>
-    <div class="col-xs-7 col-sm-5 col-lg-6 provider_detail">
-      <h3>
-        <%= link_to limit_text(provider.name,20), provider_path(provider.url_name), class: 'provider_name' %>
-      </h3>
-      <p class="description">
-        <%= limit_text(provider.description, 200) %>
-      </p>
-    </div>
-    <div class="col-xs-12 col-sm-5 col-lg-4 flush">
-      <% if provider.next_class %>
-        <div class="next_class">
-          <%= render partial: 'providers/course', locals: { course: provider.next_class } %>
-        </div>
-      <% end %>
-    </div>
+<div class="_provider">
+  
+  <%=  link_to provider_path(provider), class: 'avatar64', style: "background-color: #{provider.header_color}" do %>
+
+    <div class="img" style="background-image: url(<%= provider.logo %>)"></div>
+  <% end %>
+
+  <div class="details">
+
+    <%= link_to limit_text(provider.name, 20), provider_path(provider), class: 'provider_name', title: provider.name %>
+
+    <%= link_to provider_path(provider), class: 'add_info' do %>
+      <% course_count = provider.courses.in_future.displayable.count %>
+      <%= course_count %> upcoming <%= "class".pluralize(course_count) %>
+    <% end %>
+      
+    <%= render partial: 'providers/follow', locals: { provider: provider } %>
+
   </div>
 </div>

@@ -20,7 +20,7 @@
 
   </div>
 
-  <div class="favourites col-xs-12">
+  <div class="follows col-xs-12">
     <div class="fancy-header">
       <h3>Following</h3>
       <hr />
@@ -42,7 +42,7 @@
     <% end %>
 
     <% @chalkler.providers_following.each do |provider| %>
-      <div role="presentation" class="_favourite row">
+      <div role="presentation" class="_follow row">
         <div class="col-xs-10">
           <%= link_to provider_path(provider.url_name) do %>
             <div class="avatar64">

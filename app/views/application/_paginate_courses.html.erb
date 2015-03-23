@@ -32,8 +32,6 @@ border: none;">
 
 <% if params['action'] == 'mine' %>
   <%= render partial: 'me/courses/course', collection: paginate_these(@courses) %>
-<% elsif @provider %>
-  <%= render partial: 'providers/course', collection: paginate_these(@courses) %>
 <% else %>
   <%= render paginate_these(@courses) %>
 <% end %>

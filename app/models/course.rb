@@ -212,7 +212,7 @@ class Course < ActiveRecord::Base
 
   def cost_formatted(stringed =  false)
     if stringed
-      cost? ? '$'+cost_formatted : 'FREE'
+      cost? ? '$'+cost_formatted : 'Free'
     else
       sprintf('%.2f', cost || 0)
     end

@@ -75,7 +75,7 @@
             </div>
           </li>
 
-          <li class="dropdown favourites-drop">
+          <li class="dropdown follows-drop">
             <% if current_user.avatar? %>
               <a href="#" class="dropdown-toggle nav-img-link" data-toggle="dropdown" role="button" aria-expanded="false">
                 <div class="nav-img-wrap">
@@ -117,16 +117,16 @@
                     <%= link_to root_path do %>
                       <small>
                         <br />
-                        This is where we show your favourites.
+                        Usually, the providers you follow show here.
                         <br />
-                        You don't have any yet. 
+                        But You don't have any yet.
                       </small><br />
                       <br />
                     <% end %>
                   </div>
                 <% end %>
                 <% current_chalkler.providers_following.each do |provider| %>
-                  <li role="presentation" class="_favourite">
+                  <li role="presentation" class="_follow">
                     <%= link_to provider_path(provider.url_name) do %>
                       <div class="avatar64">
                         <div class="img" style="background-image: url(<%= provider.logo %>)">
