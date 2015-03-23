@@ -91,11 +91,6 @@ class CoursesController < ApplicationController
   end
 
   def choose_provider
-    unless current_user.authenticated? && current_user.providers.empty?
-      redirect_to teach_path and return
-      #TODO: choose provider
-    end
-
     if current_user.providers.count == 1
       redirect_to new_provider_class_path(current_user.providers_adminable.first) and return
     end
