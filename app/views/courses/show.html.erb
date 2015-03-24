@@ -6,22 +6,29 @@
         
         <% if !@course.published? %>
           <% if @course.has_public_status? || policy(@course).change_status?  %>
-            <div class="alert alert-default text-right margin-bottom-20">
-              <h3 class="pull-left no-margin"><%= @course.status %></h3>
+            <div class="alert alert-default  margin-bottom-20">
               
-              <% if @course.publishable? %>
-                <%= link_to "Publish", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post, class: 'btn btn-default' %>
-              <% elsif @course.unpublishable?   %>
-                <%= link_to "Unpublish", change_status_provider_course_path(@course.path_params.merge(status: 'Preview')), method: :post, class: 'btn btn-default' %>
-              <% elsif @course.cancellable? %>
-                <%= link_to "Cancel", cancel_provider_course_path(@course.path_params), class: 'btn btn-default' %>
-              <% end %>
+                <h3 class="no-margin"><%= @course.status %></h3>
+                <p> 
+                  <% if @course.publishable? %>
+                    Only people in <%= @provider.name %> can see this page. When you are ready to accept bookings, <%= link_to "publish the class", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post %>.
+                  <% end %>
 
-              <% if @course.cancelled? %>
-                <p class="pad-20 pull-right"><%= @course.cancelled_reason %></p>
-              <% elsif @course.completed? %>
-                <p><%= link_to "See more courses from #{@course.provider.name}", provider_path(@course.provider) %></p>
-              <% end %>
+                  <% if @course.cancelled? %>
+                    <%= @course.cancelled_reason %>
+                  <% end %>
+
+                  <% if @course.completed? %>
+                    <%= link_to "See more courses from #{@course.provider.name}", provider_path(@course.provider) %>
+                  <% end %>
+                </p>
+
+                <% if @course.publishable? %>
+                  <div class="text-right">
+                    <%= link_to "Publish", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post, class: 'btn btn-default' %>
+                  </div>
+                <% end %>
+
             </div>
           <% end %>
         <% end %>
@@ -37,7 +44,7 @@
 
             <% if @course.bookable? || policy(@course).write?(true) %>    
               <a href="<%= new_provider_course_booking_path @course.path_params %>" class="join-link sign-in-first btn btn-default" title="New Booking" style="background-color: <%= @course.color %> ">
-                <%= current_chalkler.attending?(@course) ? 'BRING A FRIEND' : 'BOOK NOW' %>
+                <%= current_user.attending?(@course) ? 'BRING A FRIEND' : 'BOOK NOW' %>
                 <div class="small light">
                   <% if @course.cost? %>
                     $<%= @course.cost_formatted %>
