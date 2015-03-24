@@ -30,11 +30,11 @@
     <div class="row">
       <div class="light grey center">
         <strong>
-          <%= link_to "Create an account", new_chalkler_registration_path %>
+          <%= link_to "Create an account", new_chalkler_registration_path, class: 'sign-up-first' %>
         </strong>
         or 
         <strong>
-          <%= link_to "login", new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: (current_page?(controller: 'chalkler') ? "current": "") %>
+          <%= link_to "login", new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: "sign-in-first"+(current_page?(controller: 'chalkler') ? "current": "") %>
         </strong>
         to leave a comment
         <br /><br />
