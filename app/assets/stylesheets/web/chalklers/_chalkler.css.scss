@@ -1,32 +1,14 @@
 @import "../_vars";
 
-.people {
-  .headings {
-    font-family: "proxima-nova",sans-serif;
-    font-weight: 100;
-    margin-top:20px;
+._chalkler {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  .avatar32 {
+    border-radius: 100px;
+    background: #777;
   }
-  .teacher {
-    >* {
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-    .avatar {
-      height:70px;
-      width:70px;
-      background: rgba(100, 100, 100, 0.2);
-      float:left;
-      margin-right:10px;
-    }
-    .name {
-      margin-bottom: 2px;
-      font-size: 1.3em;
-    }
-    .context-img {
-      height:40px;
-      float:left;
-      opacity: 0.6;
-    }
-    border-top: solid rgba(100, 100, 100, 0.2) 1px;
+  .chalkler_name {
+    margin-top: 6px;
   }
 }
