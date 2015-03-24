@@ -16,6 +16,6 @@
     <hr />
   </div> 
   <% current_user.providers_adminable.each do |provider| %>
-    <%= link_to provider.name, provider_new_course_path(provider) %>
+    <%= link_to provider.name, new_provider_class_path(provider) %>
   <% end %>
 <% end %>
