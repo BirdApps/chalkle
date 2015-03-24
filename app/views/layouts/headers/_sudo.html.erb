@@ -1,45 +1,52 @@
 <% 
-  nav_links = [{
-      img_name: "bolt",
-      link: chalkle_about_path,
-      active: request.path == chalkle_about_path,
-      title: "About"
-    },{
-      img_name: "people",
-      link: chalkle_team_path,
-      active: request.path == chalkle_team_path,
-      title: "The Team"
-    },{
-      img_name: "contact",
-      link: chalkle_say_hello_path,
-      active: request.path == chalkle_say_hello_path || request.path == chalkle_said_hello_path,
-      title: "Contact"
-    }]
+  controller_parts = request.path_parameters[:controller].split("/")
+  action_parts = request.path_parameters[:action].split("/")
 
-  if false #current_user.authenticated?
-    users_bookings = current_chalkler.bookings.from_provider(@provider)
-    link_path = provider_follower_path(@provider, current_chalkler)
-    if users_bookings.present?
-      nav_links << {
-        link: link_path,
-        active: request.path == link_path,
-        title: "My Bookings (#{users_bookings.count})"
-      }
-    end
-  end
+  nav_links = [
+    {
+      img_name: "metrics",
+      link: sudo_metrics_path,
+      active: controller_parts.include?("metrics"),
+      title: "Metrics"
+    },
+    {
+      img_name: "bolt",
+      link: sudo_bookings_path,
+      active: controller_parts.include?("bookings") && !action_parts.include?("pending_refunds") ,
+      title: "Bookings"
+    },
+    {
+      img_name: "book",
+      link: sudo_outgoing_payments_path,
+      active: controller_parts.include?("outgoings"),
+      title: "Outgoings"
+    },
+    {
+      img_name: "people",
+      link: sudo_chalklers_path,
+      active: controller_parts.include?("chalklers"),
+      title: "Chalklers"
+    },
+    {
+      img_name: "hello",
+      link: sudo_partner_inquiries_path,
+      active: controller_parts.include?("partner_inquiries"),
+      title: "Hello"
+    }
+  ]
 
 %>
 
 <div class="provider_header">
   <div class="container-fluid">
     <a class="avatar block" href="<%= chalkle_about_path %>">
-      <div class="img" style="background-image: url(<%= asset_path('social-logo.jpg') %>)">
+      <div class="img" style="background-image: url('http://i.imgur.com/Y4kT12T.jpg')">
       </div>
     </a>
 
     <div class="provider_header_content">
       <h1 class="provider_header_name">
-        <%= link_to "chalkle°", chalkle_about_path %>
+        <%= link_to (@page_title.present? ? @page_title : "Sudo"), sudo_root_path %>
       </h1>
     </div>
 
