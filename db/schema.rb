@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20150323025804) do
     t.text     "cancelled_reason"
     t.boolean  "reminder_mailer_sent",          :default => false
     t.boolean  "booking_completed_mailer_sent", :default => false
+    t.boolean  "chalkler_deleted",              :default => false
     t.text     "custom_fields"
     t.integer  "payment_id"
     t.string   "pseudo_chalkler_email"
@@ -233,8 +234,14 @@ ActiveRecord::Schema.define(:version => 20150323025804) do
 
   create_table "notification_preferences", :force => true do |t|
     t.integer  "chalkler_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.boolean  "chalkler_discussion_from_chalkler", :default => true
+    t.boolean  "chalkler_discussion_from_teacher",  :default => true
+    t.boolean  "teacher_bookings",                  :default => true
+    t.boolean  "teacher_discussion",                :default => true
+    t.boolean  "provider_bookings",                 :default => true
+    t.boolean  "provider_discussion",               :default => true
     t.text     "preferences"
   end
 
@@ -354,7 +361,6 @@ ActiveRecord::Schema.define(:version => 20150323025804) do
   create_table "provider_plans", :force => true do |t|
     t.string   "name"
     t.integer  "max_provider_admins"
-    t.integer  "max_teachers"
     t.integer  "max_free_class_attendees"
     t.decimal  "class_attendee_cost"
     t.decimal  "course_attendee_cost"
@@ -362,6 +368,7 @@ ActiveRecord::Schema.define(:version => 20150323025804) do
     t.decimal  "processing_fee_percent"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.integer  "max_teachers"
   end
 
   create_table "provider_teachers", :force => true do |t|
@@ -405,9 +412,9 @@ ActiveRecord::Schema.define(:version => 20150323025804) do
     t.decimal  "plan_course_attendee_cost"
     t.decimal  "plan_annual_cost"
     t.decimal  "plan_processing_fee_percent"
+    t.integer  "plan_max_teachers"
     t.string   "tax_number"
     t.string   "average_hero_color"
-    t.integer  "plan_max_teachers"
     t.decimal  "balance"
   end
 
