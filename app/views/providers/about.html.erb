@@ -4,7 +4,7 @@
   </div>
 </div>
  
-<% teachers = @provider.provider_teachers.with_upcoming_class.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) } %>
+<% teachers = @provider.provider_teachers.with_upcoming_class.uniq.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) } %>
 
 <div class="row teachers">
   <div class="col-xs-12">
