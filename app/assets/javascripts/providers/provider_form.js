@@ -2,7 +2,7 @@ $(function(){
 
   if($('.provider-form').length > 0){
     var url_unavailable = false;
-
+    var original_value =  $('#provider_url_name').val();
     function validate(event){
       var invalid = false;
       if(url_unavailable){
@@ -21,15 +21,16 @@ $(function(){
 
     function check_url_available(new_value){
       if(new_value){
-        var provider_id = $("#provider_id").val();
-        var url = '/providers/'+provider_id+'/url_available/'+new_value+'.json';
+        var url = '/url_available/'+new_value+'.json';
 
         var jx = $.ajax({
           url: url,
           complete: function(data) {
-            if(data.status == 200 && data.responseText != "-1"){
+            name = data.responseText;
+            if(name == "-1") name = original_value
+            if((data.status == 200 && data.responseText != "-1") || new_value == original_value ){
               url_unavailable = false;
-              $("#check_url_available").text( data.responseText + " is available!" );
+              $("#check_url_available").text( name + " is available!" );
               $("#check_url_available").removeClass("label-danger");
               $("#check_url_available").addClass("label-success");
             }else{
