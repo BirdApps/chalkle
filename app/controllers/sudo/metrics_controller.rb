@@ -31,7 +31,7 @@ class Sudo::MetricsController < Sudo::BaseController
     }
 
     @provider_stats = {
-      total: Provider.where(created_at: 100.years.ago..month.last_day).count
+      total: Provider.where(created_at: 100.years.ago..month.last_day).count,
       created: Provider.where(created_at: month.first_day..month.last_day).count
     }
 

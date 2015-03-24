@@ -90,7 +90,7 @@ Chalkle::Application.routes.draw do
     
     resources :metrics, only: :index do
       collection do
-        post 'overview'
+        match 'overview'
       end
     end
 

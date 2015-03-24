@@ -6,11 +6,7 @@ class SudoPolicy < ApplicationPolicy
     @booking = sudo
   end
 
-  def index?
-    @user.super?
-  end
-
-  def become?
+  def super?
     @user.super?
   end
 
