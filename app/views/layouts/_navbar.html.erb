@@ -79,7 +79,12 @@
               </ul>
               <div class="divider flush"></div>
               <div class="small center">
-                  <%= link_to "All Notifications", me_notifications_path, class: 'dropdown-footer' %>
+                  <div class="col-xs-10 flush">
+                    <%= link_to "All Notifications", me_notifications_path, class: 'dropdown-footer' %>
+                  </div>
+                  <div class="col-xs-2 flush">
+                    <%= link_to "⚙", me_notification_preference_path, class: 'dropdown-footer' %>
+                  </div>
               </div>
             </div>
           </li>
@@ -123,7 +128,7 @@
               <ul class="flush">
                  <% if current_chalkler.providers_following.empty? %>
                   <div class="text-center">
-                    <%= link_to root_path do %>
+                    <%= link_to providers_path do %>
                       <small>
                         <br />
                         Usually, the providers you follow show here.

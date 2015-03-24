@@ -10,12 +10,12 @@
     <hr />
   </div>
   <div class="row">
-    <div class="col-sm-5">
+    <div class="col-xs-12 col-sm-5">
       <div class="avatar image-preview">
         <div class="img avatar_preview" style="background-image: url(<%= f.object.avatar %>);"></div>
       </div>
     </div>
-    <div class="col-sm-7">
+    <div class="col-xs-12 col-sm-7">
       <%= f.input :avatar, as: :styled_file, input_html: { value: "", :'data-preview' => 'avatar_preview', class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
     </div>
   </div>

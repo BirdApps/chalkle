@@ -1,15 +1,32 @@
-<div class="fancy-header">
-  <h3>Upcoming</h3>
-  <hr />
-</div>
+<% unless @chalkler.courses_teaching.present? %>
+  <div class="col-xs-12 text-center">
+    <p>
+      <br />
+      <strong>You don't seem to be teaching any classes</strong>
+      <small>
+        <br /> Would you like learn about providing classes?
+      </small>
+    </p>
+    <%= link_to "Teaching on Chalkle", teach_path, class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<% if @chalkler.courses_teaching.in_future.present? %>
+  <div class="fancy-header">
+    <h3>Upcoming</h3>
+    <hr />
+  </div>
+
+  <%= render partial: 'me/courses/course' ,collection: @chalkler.courses_teaching.in_future.uniq %>
+<% end %>
 
 
-<%= render partial: 'me/courses/course' ,collection: @chalkler.courses.in_future.uniq %>
 
+<% if @chalkler.courses_teaching.in_past.present? %>
+  <div class="fancy-header">
+    <h3>Previous</h3>
+    <hr />
+  </div>
 
-<div class="fancy-header">
-  <h3>Previous</h3>
-  <hr />
-</div>
-
-<%= render partial: 'me/courses/course' ,collection: @chalkler.courses.in_past.uniq %>
+  <%= render partial: 'me/courses/course' ,collection: @chalkler.courses_teaching.in_past.uniq %>
+<% end %>

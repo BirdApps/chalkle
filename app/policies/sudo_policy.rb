@@ -10,4 +10,8 @@ class SudoPolicy < ApplicationPolicy
     @user.super?
   end
 
+  def become?
+    @user.super?
+  end
+
 end

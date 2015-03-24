@@ -1,15 +1,37 @@
-<div class="fancy-header">
-  <h3>Upcoming</h3>
-  <hr />
-</div>
+<% unless @chalkler.courses.present? %>
+  <div class="col-xs-12 text-center">
+    <p>
+      <br />
+      <strong>Oh no!</strong>
+      <small>
+        <br /> You don't have any bookings coming up
+      </small>
+    </p>
+    <%= link_to "Find Classes", classes_path, class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<% if @chalkler.courses.in_future.present? %>
+
+  <div class="fancy-header">
+    <h3>Upcoming</h3>
+    <hr />
+  </div>
 
 
-<%= render partial: 'me/bookings/booking', collection: @chalkler.courses.in_future.uniq.map{ |c| c.bookings_for(@chalkler).first } %>
+  <%= render partial: 'me/bookings/booking', collection: @chalkler.courses.in_future.uniq.map{ |c| c.bookings_for(@chalkler).first } %>
+
+<% end %>
 
 
-<div class="fancy-header">
-  <h3>Previous</h3>
-  <hr />
-</div>
+<% if @chalkler.courses.in_past.present? %>
 
-<%= render partial: 'me/bookings/booking', collection: @chalkler.courses.in_past.uniq.map{ |c| c.bookings_for(@chalkler).first } %>
+
+  <div class="fancy-header">
+    <h3>Previous</h3>
+    <hr />
+  </div>
+
+  <%= render partial: 'me/bookings/booking', collection: @chalkler.courses.in_past.uniq.map{ |c| c.bookings_for(@chalkler).first } %>
+
+<% end %>
