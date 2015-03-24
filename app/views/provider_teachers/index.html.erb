@@ -1,16 +1,18 @@
-<div class="people">
-  <div class="row">
-    <div class="col-xs-8">
-      <h2 class="flush">
-        Teachers
-      </h2>
-    </div>
-    <div class="col-xs-4 text-right">
-       <% if policy(@provider).admin? %>
-          <%= link_to "Add Teacher", new_provider_teacher_path(@provider.url_name), { class: 'btn btn-warning'} %>
-        <% end %>
-    </div>
+<% if policy(@provider).admin? %>
+  <div class="alert alert-warning">
+    <h5>Note to <%= @provider.name %> admins</h5>
+    <p>Apologies, at this point in time it is not possible to remove teachers from the system. We are working on this and it will be available soon.</p>
   </div>
+<% end %>
+
+<div class="people">
+
+  <div class="fancy-header">
+    <h3><%= @provider.name %> Teachers</h3> 
+    <hr />
+  </div> 
+
+
   <br />
   <%= render @teachers %>
 </div>

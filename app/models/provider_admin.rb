@@ -11,6 +11,8 @@ class ProviderAdmin < ActiveRecord::Base
   validates_presence_of :email, message: 'Email cannot be blank'
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
 
+  scope :visible, scoped
+
   def name
     chalkler ? chalkler.name : email
   end
@@ -31,6 +33,13 @@ class ProviderAdmin < ActiveRecord::Base
     self.chalkler = Chalkler.exists email
     self.pseudo_chalkler_email = email unless chalkler.present?
     #TODO: email chalkler or non-chalkler to tell them they are an admin
+  end
+
+  def path_params
+    {
+      provider_url_name: provider.url_name,
+      id: id
+    }
   end
 
   def self.csv_for(provider_admins)

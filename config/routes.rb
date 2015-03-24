@@ -148,8 +148,10 @@ Chalkle::Application.routes.draw do
     get 'edit'
     put 'edit', to: 'providers#update'
 
+    get 'bookings'
+
     resources :subscriptions, only: [:index, :create, :destroy], path: 'followers'
-    resources :bookings, only: [:index, :show]
+#    resources :bookings, only: [:index, :show]
     resources :provider_admins, path: 'admins', as: 'admins'
 
     resources :provider_teachers, path: 'teachers', as: 'teachers' do

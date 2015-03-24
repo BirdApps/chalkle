@@ -1,13 +1,13 @@
-<%= render 'courses/heading' %>
+<%= render 'courses/heading' if @course %>
 
 <div class="bookings">
   
-  <% if policy(@course).bookings_csv? %> 
-    <%= link_to "View Spreadsheet/CSV", csv_provider_course_bookings_path(@course.path_params), class: 'btn btn-info pull-right' %>
-  <% end %>
+
+  <%= link_to "View Spreadsheet/CSV", csv_provider_course_bookings_path(@course.path_params), class: 'btn btn-info pull-right' if @course %>
+
 
   <br />
   <br />
 
-  <%= render 'bookings_list' %>
+  <%= render 'bookings/bookings_list' %>
 </div>

@@ -137,7 +137,8 @@ class ProvidersController < ApplicationController
 
   def bookings
     authorize @provider
-    @bookings = @provider.bookings.order(:course_id).reverse
+    @bookings = @provider.bookings.visible.order(:course_id).reverse
+    render 'bookings/index'
   end
 
 
