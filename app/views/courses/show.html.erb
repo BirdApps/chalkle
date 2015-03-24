@@ -19,7 +19,7 @@
                   <% end %>
 
                   <% if @course.completed? %>
-                    <%= link_to "See more courses from #{@course.provider.name}", provider_path(@course.provider) %>
+                    <%= link_to "See more classes from #{@course.provider.name}", provider_path(@course.provider) %>
                   <% end %>
                 </p>
 
