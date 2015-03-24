@@ -418,7 +418,10 @@ html {
         }
       }
       &.btn-huge {
-        font-size: 180%;
+        font-size: 130%;
+        @media screen and (min-width: 769px){
+          font-size: 180%;
+        }
       }
       &.btn-primary {
         border-color: $color-primary;

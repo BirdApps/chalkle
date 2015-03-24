@@ -28,7 +28,7 @@ $(function(){
 
   function init(){
     facebook_init();
-    fix_too_wide_bug();
+    //fix_too_wide_bug();
     site_messages();
     single_tap_links();
     highlight_required_missing();
