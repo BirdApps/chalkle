@@ -26,7 +26,7 @@ Chalkle::Application.routes.draw do
   get 'terms/provider' => 'terms#provider', as: :provider_terms
   get 'terms/teacher' => 'terms#teacher', as: :teacher_terms
 
-  match 'teach' => 'courses#teach'
+  match 'teach' => 'application#teach'
   match 'learn' => redirect("/classes")
 
   get 'c/:id' => 'courses#show', as: :tiny_course
@@ -35,6 +35,8 @@ Chalkle::Application.routes.draw do
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
   get 'chalklers' => redirect("/")
+  get 'contact' => redirect("/chalkle/say_hello")
+  get 'about' => redirect("/chalkle/about")
 
 
   match 'classes', to: 'courses#index'
@@ -192,38 +194,4 @@ Chalkle::Application.routes.draw do
  
   match '*a', :to => 'application#not_found'
 
-  # get '/partners' => 'partners#index'
-  # #get '/partners/pricing' => 'partners#pricing'
-  # get '/partners/team' => 'partners#team'
-  # get '/partners/say_hello' => 'partners#say_hello'
-  # post '/partners/say_hello' =>'partners#said_hello', as: 'said_hello', controller: 'partners'
-
-  #TODO: find an easier way of doing these provider routes!
-  #get ':provider_url_name/admins', to: 'providers#admins', as: :providers_admins
-  #get ':provider_url_name/admins/new', to: 'provider_admins#new', as: :new_provider_admin
-  #get ':provider_url_name/admin/:id/edit', to: 'provider_admins#edit', as: :edit_provider_admin
-  
-  #get 'provider_url_name/metrics', to: 'providers#metrics', as: :provider_metrics
-
-  #get 'providers/:provider_id/url_available/:url_name', to: 'providers#url_available', as: :provider_url_available
-  #get ':provider_url_name/teachers', to: 'providers#teachers', as: :providers_teachers
-  #get 'providers/:provider_id/teachers', to: 'providers#teachers', as: :provider_provider_teachers
-  #get ':provider_url_name/teachers/new', to: 'provider_teachers#new', as: :new_provider_teacher
-  #get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_provider_teacher
-  #get ':provider_url_name/teacher/:id', to: 'provider_teachers#show', as: :provider_teacher
-  #get ':provider_url_name/settings', to: 'providers#edit', as: :provider_settings
-  #put ':provider_url_name/settings', to: 'providers#update', as: :provider_settings
-  #get ':provider_url_name/bookings', to: 'providers#bookings', as: :provider_bookings
-  #get ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
-  #post ':provider_url_name/contact', to: 'providers#contact', as: :provider_contact
-  #get ':provider_url_name/follower/:chalkler_id', to: 'providers#follower', as: :provider_follower
-  #get ':provider_url_name/followers', to: 'providers#followers', as: :provider_followers
-  #get ':provider_url_name/:course_url_name', to: 'providers#series', as: :provider_course_series
-  #get '*provider_url_name/*course_url_name/:id', to: 'courses#show', as: :provider_course
-  #get ':provider_url_name', to: 'providers#show', as: :provider
-
-    # resources :providers, path: 'providers', only: [:index, :teachers, :new, :create] do
-  #   resources :subscriptions, only: [:create, :destroy], path: 'follow'
-
-  # end
 end

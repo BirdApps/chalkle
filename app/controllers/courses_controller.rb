@@ -80,21 +80,6 @@ class CoursesController < ApplicationController
     @courses = current_user.super? ? mine_filter(Course.order(:start_at)).uniq : (mine_filter(current_user.courses_adminable)+mine_filter(current_user.courses_teaching)).sort_by(&:start_at).uniq
   end
 
-  def teach
-    @page_title =  "Teach"
-    @meta_title = "Teach with "
-    @show_header = false unless chalkler_signed_in?
-    render 'teach'
-  end
-
-  def learn
-    @page_title =  "Learn"
-    @meta_title = "Learn with "
-    @show_header = false unless chalkler_signed_in?
-    @upcoming_courses = current_user.courses
-    render 'learn'
-  end
-
   def choose_provider
     if current_user.providers.count == 1
       redirect_to new_provider_class_path(current_user.providers_adminable.first) and return

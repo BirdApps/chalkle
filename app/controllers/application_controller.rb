@@ -22,6 +22,13 @@ class ApplicationController < ActionController::Base
     @providers = Provider.promotable_within_coordinates({lat: -36.0, long: 170.0}, {lat: -34.0, long: 180.0})                                                  
   end
 
+  def teach
+    @hero = ActionController::Base.helpers.image_path('learn/bottle.jpg')
+    @header_partial = '/layouts/headers/teach'
+    @page_title =  "Teach"
+    @meta_title = "Teach with "
+  end
+
   def color_scheme
     not_found unless current_user.super?
   end
