@@ -1,3 +1,11 @@
+<div class="col-xs-12">
+  <% if @bad_location.present? %>
+    <div class="alert text-center alert-success">
+      <strong> <%= @bad_location  %></strong>
+    </div>
+  <% end %>
+</div>
+
 <% 
   if @providers.empty?  
     problem = "No providers match "

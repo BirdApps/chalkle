@@ -14,10 +14,15 @@ class ProvidersController < ApplicationController
     end
     
     if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
-      @providers = @providers.has_courses_within_coordinates(
+      in_coords = @providers.has_courses_within_coordinates(
         { lat: params[:top].to_f,    long: params[:left].to_f   }, 
         { lat: params[:bottom].to_f, long: params[:right].to_f  }
       )
+      if in_coords.present?
+        @providers = in_coords
+      else
+        @bad_location =  "We couldn't find any providers in your immediate area, here are some more from around New Zealand"
+      end
     end
 
     if params[:search].present?
@@ -143,10 +148,12 @@ class ProvidersController < ApplicationController
 
 
   def featured
-    @providers = Provider.promotable_within_coordinates(
+    @providers = Provider.visible
+    in_coords = Provider.promotable_within_coordinates(
         { lat: params[:top].to_f,    long: params[:left].to_f   }, 
         { lat: params[:bottom].to_f, long: params[:right].to_f  }
       )
+    @providers = in_coords if in_coords.present?
     render partial: 'featured', layout: false
   end
 

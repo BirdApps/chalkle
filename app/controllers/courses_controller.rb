@@ -39,10 +39,15 @@ class CoursesController < ApplicationController
     end
     
     if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
-      @courses = @courses.located_within_coordinates(
+      in_coords = @courses.located_within_coordinates(
         { lat: params[:top].to_f,    long: params[:left].to_f   }, 
         { lat: params[:bottom].to_f, long: params[:right].to_f  }
       )
+      if in_coords.present?
+        @courses = in_coords
+      else
+        @bad_location = "We couldn't find any classes in your immediate area, here are some more from around New Zealand"
+      end
     end
 
     if params[:only_location].present?
