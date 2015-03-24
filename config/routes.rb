@@ -133,7 +133,7 @@ Chalkle::Application.routes.draw do
     get 'about', to: 'partners#index'
     get 'team', to: 'partners#team'
     get 'say_hello', to: 'partners#say_hello'
-    get 'say_hello', to: 'partners#said_hello', as: 'said_hello'
+    post 'say_hello', to: 'partners#said_hello', as: 'said_hello'
   end
 
   resources :providers, only: [:index, :create, :new]

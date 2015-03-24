@@ -35,7 +35,7 @@
   <div class="col-sm-8 col-sm-offset-2 new_form_wrapper">
 
 
-    <%= bootstrap_form_for @partner_inquiry, wrapper: :simple_bootstrap3, url: 'said_hello', html: { method: :post, class: 'form-horizontal', role: 'form'} do |f| %> 
+    <%= bootstrap_form_for @partner_inquiry, wrapper: :simple_bootstrap3, url: chalkle_said_hello_path, html: { method: :post, class: 'form-horizontal', role: 'form'} do |f| %> 
       
       <% if @partner_inquiry.errors.any? %>
 

@@ -1,4 +1,4 @@
-class PartnersController < ApplicationController
+class Chalkle::PartnersController < ApplicationController
   before_filter :header_partners
 
   # GET /partners
