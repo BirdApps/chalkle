@@ -9,6 +9,8 @@ gem 'entity_events'
 
 gem 'engtagger'
 
+gem 'intercom-rails'
+
 # Authentication
 gem 'devise',           '~> 2.2.4'
 gem 'devise_invitable'
