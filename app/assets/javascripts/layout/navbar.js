@@ -26,6 +26,10 @@ $(function(){
     $('.search-close, .header-wrapper, .body-content, .shade').click(close_search_wrapper);
     $('.search-form').submit(close_search_wrapper);
 
+    $(document).keyup(function(e) {
+      if (e.keyCode == 27) { close_search_wrapper(); }
+    });
+
     function is_search_open() {
       return $('.search-wrapper').hasClass('open');
     }
