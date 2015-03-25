@@ -38,7 +38,7 @@
     <div class="col-xs-12 admin-list">
       <% @course.bookings.each do |booking| %>
         <div class="admin-list-item">
-          <%= link_to booking.name %>
+          <%= link_to booking.name, chalkler_path(booking.chalkler) %>
         </div>
       <% end %>
     </div>
