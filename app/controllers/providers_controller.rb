@@ -154,6 +154,7 @@ class ProvidersController < ApplicationController
         { lat: params[:bottom].to_f, long: params[:right].to_f  }
       )
     @providers = in_coords if in_coords.present?
+    @providers = @providers.to_a.uniq.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) }
     render partial: 'featured', layout: false
   end
 

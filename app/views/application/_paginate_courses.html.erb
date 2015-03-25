@@ -38,7 +38,7 @@ border: none;">
      <%= problem %>    
   </div>
 <% end %>
-<div class="row">
+<div class="row flush">
   <% if params['action'] == 'mine' %>
     <%= render partial: 'me/courses/course', collection: paginate_these(@courses) %>
   <% else %>
