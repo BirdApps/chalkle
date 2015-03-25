@@ -24,6 +24,11 @@ module ApplicationHelper
       content_tag :span, name, options
     end
   end
+
+  def datetime_to_nearest_5_minutes(t)
+    rounded = Time.at((t.to_time.to_i / 300.0).round * 300)
+    t.is_a?(DateTime) ? rounded.to_datetime : rounded
+  end
   
   def typekit_includes
     render 'layouts/typekit_includes'
