@@ -5,4 +5,9 @@ class ProviderLogoUploader < ChalkleBaseImageUploader
 
   process :resize_to_fill => [400, 400]
 
+  def store_dir
+    "system/uploads/#{Rails.env}/channel/#{mounted_as}/#{model.id}"
+  end
+
+
 end

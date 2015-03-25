@@ -17,4 +17,9 @@ class ProviderHeroUploader < ChalkleBaseImageUploader
     %w(jpg jpeg png)
   end
 
+  def store_dir
+    "system/uploads/#{Rails.env}/channel/#{mounted_as}/#{model.id}"
+  end
+
+
 end
