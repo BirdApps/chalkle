@@ -61,7 +61,7 @@ module Chalkle
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    config.assets.precompile += ['chalklers/teachings.js', 'pricing.js', 'mail.css', 'partners.js', 'chalklers.js', 'sudo.js']
+    config.assets.precompile += ['chalklers/teachings.js', 'pricing.js', 'mail.css', 'partners.js', 'chalklers.js']
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'

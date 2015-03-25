@@ -108,6 +108,7 @@ protected
   def redirect_to_subdomain
     if request.subdomain.present?
       redirect_to request.protocol + request.domain + (request.port.nil? ? '' : ":#{request.port}") +'/'+request.subdomain
+      true
     end
   end
 

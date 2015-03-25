@@ -160,7 +160,7 @@ class ProvidersController < ApplicationController
   private
   
     def load_provider
-      redirect_to_subdomain
+      return if redirect_to_subdomain
       if params[:id].present?
         @provider = Provider.find(params[:id])
       elsif params[:provider_id].present?
