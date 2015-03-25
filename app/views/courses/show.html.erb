@@ -11,7 +11,7 @@
                 <h3 class="no-margin"><%= @course.status %></h3>
                 <p> 
                   <% if @course.publishable? %>
-                    Only people in <%= @provider.name %> can see this page. When you are ready to accept bookings, <%= link_to "publish the class", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post %>.
+                    Only admins and teachers of <%= @provider.name %> can see this page. When you are ready to accept bookings, <%= link_to "publish the class", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post %>.
                   <% end %>
 
                   <% if @course.cancelled? %>
