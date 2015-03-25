@@ -1,20 +1,18 @@
-<div class="messages">
-  <% flash.each do |name, msg| %>
-    <% if msg.is_a?(String) && !msg.blank? %>
-      <div class="alert alert-<%= name == :notice ? 'success' : 'danger' %>">
-        <a class="close" data-dismiss="alert">×</a>
-        <%= content_tag :div, msg, id: "flash_#{name}" %>
+<% if flash.present? %>
+  <div class="site-messages">
+    <div class="container">
+      <div class="flash">
+        <% flash.each do |name, msgs| %>
+          <% if !msgs.blank? %>
+            <% [msgs].flatten.each do |msg| %>
+              <%= content_tag :div, msg.to_html, id: "flash_#{name}", class: (name == :notice ? 'success inline' : 'danger inline') %><br />
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
-    <% end %>
-  <% end %>
-  <% if response[:notices].present? %>
-    <% response[:notices].each do |notice| %>
-      <% if notice.is_a?(String) && !notice.blank? %>
-        <div class="alert alert-info">
-          <a class="close" data-dismiss="alert">×</a>
-          <%= content_tag :div, notice %>
-        </div>
-      <% end %>
-    <% end %>
-  <% end %>
-</div>
+      <div class="dismiss">
+        <span class="fa fa-chevron-up"></span>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,42 @@
+<div class="admin-sidebar col-xs-12">
+  <%= link_to "New Class", new_provider_class_path(@provider), class: 'btn primary'  %>
+
+  <div class="admin-links admin-section row">
+    <%= link_to "Bookings <span class='badge'>#{@provider.bookings.confirmed.in_future.count}</span>".html_safe, bookings_provider_path(@provider) %>
+    <%= link_to "Followers <span class='badge'>#{@provider.subscriptions.count}</span>".html_safe, provider_subscriptions_path(@provider), class: 'border-left' %>
+
+    <%# link_to "Followers", provider_subscriptions_path(@provider), class: 'border-bottom border-left' %>
+    <%# link_to "Metrics", metrics_provider_path(@provider) %>
+  </div>
+  
+  <div class="admin-links admin-section row">
+    <%= link_to "Teachers <span class='badge'>#{@provider.provider_teachers.visible.count}</span>".html_safe, provider_teachers_path(@provider) %>
+    <%= link_to "New Teacher", new_provider_teacher_path(@provider), class: 'border-left' %>
+  </div>
+
+  <div class="admin-links admin-section row">  
+    <%= link_to "Admins <span class='badge'>#{@provider.provider_admins.visible.count}</span>".html_safe, provider_admins_path(@provider) %>
+    <%= link_to "New Admin", new_provider_admin_path(@provider), class: 'border-left' %>
+  </div>
+
+  <% classes_teaching = current_user.courses_teaching.in_future.where(provider_id: @provider.id) %>
+  <% if classes_teaching.present? %>
+    <h5>
+      <%= link_to "You're Teaching", provider_admins_path(@provider) %>
+    </h5>
+
+    <div class="admin-section row">
+      <div class="col-xs-12 admin-list">
+        <% classes_teaching.each do |course| %>
+          <div class="admin-list-item">
+            <%= link_to course.name, provider_course_path(course.path_params) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= link_to "Settings", edit_provider_path(@provider), class: 'btn primary'  %>
+
+
+</div>

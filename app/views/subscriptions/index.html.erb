@@ -1,0 +1,5 @@
+<div class="fancy-header">
+  <h3><%= @chalklers.count %> <%= 'follower'.pluralize(@chalklers.count) %> </h3> 
+  <hr />
+</div> 
+<%= render @chalklers.order(:name) %>

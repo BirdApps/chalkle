@@ -1,9 +1,11 @@
-<div class="social-links">
-  <%= link_to image_tag("/assets/icons/facebook.png"), "#", class: 'facebook-share' %>
-  <a href="//twitter.com/share?url=<%=u course_tiny_url(@course.id)%>&text=<%=u  @course.name+'@chalklenz #alwaysbelearning' %>" target="_blank">
-   <%= image_tag("/assets/icons/twitter.png") %>
-  </a>
-  <a href="mailto:hello@chalkle.com?subject=<%=u "I think you'll like this course on Chalkle" %>&body=<%=u 'Check out "'+@course.name+'" at '+course_tiny_url(@course.id) %>" target="_blank">
+<span class="inline social_links">
+  <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= tiny_course_url(@course.id)%>" data-text="<%= @course.name %> #alwaysbelearning" data-via="chalklenz" data-count="none" data-size="large">Tweet</a> 
+
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  <%= link_to image_tag("/assets/icons/fb-share.png"), "#", class: 'facebook-share social-link' %>
+
+  <a style="padding-left: 9px;" href="mailto:?subject=<%=u "I think you'll like this course on Chalkle" %>&body=<%=u 'Check out "'+@course.name+'" at '+tiny_course_url(@course.id) %>" class="social-link" target="_blank">
    <%= image_tag("/assets/icons/email.png") %>
   </a>
-</div>
+</span>

@@ -1,0 +1,16 @@
+<div class="row flush">
+  <div class="teach_header clearfix">
+    <div class="col-xs-12 col-sm-5">
+      <h1 class="text-right pad-bottom-20 no-margin">
+        Grow your learning business
+      </h1>
+      <p class="text-right">
+        <% if current_user.authenticated?  %>
+          <%= link_to "Get Started Now", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first'%>
+        <% else %>
+          <%= link_to "Sign up for free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first'%>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</div>

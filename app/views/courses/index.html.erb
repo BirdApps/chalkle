@@ -1,1 +1,9 @@
-<%= render 'paginate_courses' %>
+<%= render partial: 'layouts/location', locals: { hide_prompt: false } %>
+
+<div class="text-center" id="fetch_missing" style="display: none;">
+  <h4>Sorry, there was a problem.</h4>
+  <button class="btn btn-success" onclick="window.location.reload()">Try Again</button>
+</div>
+
+<div id="fetch_wrapper" class="row flush-xs">
+</div>

@@ -41,27 +41,27 @@ class TheUser
   end
 
   def following
-    chalkler.channels
+    chalkler.providers
   end
 
-  def channels_adminable
-    chalkler.id.present? ? chalkler.channels_adminable : Channel.none
+  def providers_adminable
+    chalkler.id.present? ? chalkler.providers_adminable : Provider.none
   end
 
-  def channels_teachable
-    chalkler.id.present? ? chalkler.channels_teachable : Channel.none
+  def providers_teachable
+    chalkler.id.present? ? chalkler.providers_teachable : Provider.none
   end
 
   def subscriptions
     chalkler.present? ? chalkler.subscriptions : Subscription.none
   end
 
-  def channel_admins
-    chalkler.id.present? ? chalkler.channel_admins : ChannelAdmin.none
+  def provider_admins
+    chalkler.id.present? ? chalkler.provider_admins : ProviderAdmin.none
   end
 
-  def channel_teachers
-    chalkler.id.present? ? chalkler.channel_teachers : ChannelTeacher.none
+  def provider_teachers
+    chalkler.id.present? ? chalkler.provider_teachers : ProviderTeacher.none
   end
 
   def courses_teaching
@@ -76,12 +76,12 @@ class TheUser
     chalkler.id.present? ? chalkler.confirmed_courses : Course.none
   end
 
-  def channels
-    return Channel.all if super?
-    channels = []
-    channels = channels.concat chalkler.channels_teachable if chalkler?
-    channels = channels.concat chalkler.channels_adminable if chalkler?
-    channels.uniq
+  def providers
+    return Provider.all if super?
+    providers = []
+    providers = providers.concat chalkler.providers_teachable if chalkler?
+    providers = providers.concat chalkler.providers_adminable if chalkler?
+    providers.uniq
   end
 
   def courses_adminable

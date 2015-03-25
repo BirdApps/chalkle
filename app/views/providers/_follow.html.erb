@@ -1,0 +1,23 @@
+<% if current_user.authenticated? %>
+  <% 
+    subscription = current_user.subscriptions.where(provider_id: provider.id).first
+    unless subscription 
+      sub_path = provider_subscriptions_path(provider)
+      sub_method = :post
+      fav = ''
+    else 
+      sub_path = provider_subscription_path(subscription.path_params)
+      sub_method = :delete
+      fav = "fav"
+    end 
+  %>
+  <%= link_to sub_path, method: sub_method, class: "provider_header_social nowrap" do %>
+    <div class="fav <%= 'grad_btn' if subscription %>">
+      <% if subscription %>
+        <span class="fa fa-star"></span> Following
+      <% else %>
+        <span class="fa fa-star-o"></span> Follow
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

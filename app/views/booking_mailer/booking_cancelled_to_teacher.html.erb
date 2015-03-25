@@ -12,6 +12,6 @@
       end
     end
     
-     t("email.booking.cancelled.to_teacher.body.html", reason: reason_text, refund: refund_text, booking_name: @booking.name, course_name: @booking.course.name, course_url: course_url(@booking.course), course_bookings_url: course_bookings_url(@booking.course) ).to_html
+     t("email.booking.cancelled.to_teacher.body.html", reason: reason_text, refund: refund_text, booking_name: @booking.name, course_name: @booking.course.name, course_url: tiny_course_url(@booking.course), course_bookings_url: provider_course_bookings_url(@booking.course.path_params) ).to_html
   %>
 </markdown>

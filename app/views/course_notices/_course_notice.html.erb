@@ -25,13 +25,9 @@
   </div>
   <div class="notice-body">
     <% if policy(course_notice).destroy? || policy(course_notice).update?  %>
-      <div class="pull-right control">
-        <% if policy(course_notice).update?  %>
-          <%= link_to 'Edit', "#edit-notice-#{course_notice.id}", :'data-target' => "discuss-#{course_notice.id}", class: 'edit-btn' %>
-        <% end %>
-        <% if policy(course_notice).destroy? %>
-          <%= link_to 'Remove', delete_course_course_notices_path(course_notice.course.id, course_notice.id)  %>
-        <% end %>
+      <div class="pull-right control text-right">
+        <%= link_to 'Edit', "#edit-notice-#{course_notice.id}", :'data-target' => "discuss-#{course_notice.id}", class: 'edit-btn' if policy(course_notice).update? %>
+        <%= button_to 'Remove', provider_course_notice_path(course_notice.path_params), method: :delete, class: 'btn no-btn edit-btn' if policy(course_notice).destroy?   %>
       </div>
     <% end %>
     <div class="clearfix">
@@ -48,7 +44,7 @@
   <% if policy(course_notice).update? %>
     <div class="edit-notice clearfix" style="display:none">
       <div class="new_form_wrapper">
-        <%= bootstrap_form_for(course_notice, wrapper: :simple_bootstrap3, url: update_course_course_notices_path(course_notice.course.id, course_notice.id ), html: { method: :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+        <%= bootstrap_form_for(course_notice, wrapper: :simple_bootstrap3, url: edit_provider_course_notice_path(course_notice.path_params), html: { method: :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
           <%= f.text_area :body, class: 'discussion-box' %>
           <div class="margin-top">
             <%= image_tag(course_notice.photo, class: 'tiny-photo pull-left') if course_notice.photo.present? %>
@@ -64,13 +60,15 @@
 <% else %>
   <div class="course_notice" id="discuss-<%= course_notice.id %>">
     <header class="removed">
-      <span class="white pull-left">
+      <span class="pull-left">
         <span class="name">
           <em>Comment Removed</em>
         </span>
       </span>
-      <span class="time white">     
-        <%= link_to 'Undo', delete_course_course_notices_path(course_notice.course.id, course_notice.id) if policy(course_notice).destroy?   %>
+      <span class="time">
+        <%= button_to 'Undo', 
+              provider_course_notice_path(course_notice.path_params), 
+              method: :delete, class: 'btn no-btn' if policy(course_notice).destroy?   %>
         <%= quick_date_time course_notice.updated_at %>
       </span>
     </header>

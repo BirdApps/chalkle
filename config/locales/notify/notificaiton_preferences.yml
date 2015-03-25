@@ -15,8 +15,8 @@ en-NZ:
         booking_confirmation_to_teacher: New booking made on a class
         course_cancelled_to_teacher: A Class is cancelled by the teacher
         course_notice_new_from_chalkler_to_teacher: New comment on a class
-      channel_admin:
-        label: for classes in your channel
+      provider_admin:
+        label: for classes in your provider
         booking_cancelled_to_provider: A Class is cancelled
         booking_confirmation_to_provider: New booking made on a class
         course_cancelled_to_provider: A Class is cancelled by the teacher

@@ -1,0 +1,39 @@
+<div class="admin-sidebar col-xs-12">
+  <%= link_to "Preferences", preferences_chalkler_path(@chalkler), class: 'btn primary'  %>
+
+  <div class="admin-links admin-section row">
+    <%= link_to "Bookings", bookings_chalkler_path(@chalkler), class: '' %>
+    <%= link_to "Teaching", teaching_chalkler_path(@chalkler), class: 'border-left' %>
+  </div>
+ 
+  <h5>
+    Upcoming Bookings
+  </h5>
+  
+  <div class="admin-section row">
+    <% if @chalkler.courses.in_future.empty? %>
+      <div class="col-xs-12 text-center">
+        <p>
+          <br />
+          <strong>Oh no!</strong>
+          <small>
+            <br /> You don't have any bookings coming up
+          </small>
+        </p>
+        <%= link_to "Find Classes", classes_path, class: 'btn btn-stub' %>
+      </div>
+    <% end %>
+
+    <div class="col-xs-12 admin-list">
+      <% @chalkler.courses.in_future.uniq.each do |course| %>
+        <div class="admin-list-item">
+          <%= link_to course.name, provider_course_path(course.path_params) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%= link_to "Email Options", me_notification_preference_path, class: 'btn primary'  %>
+
+
+</div>

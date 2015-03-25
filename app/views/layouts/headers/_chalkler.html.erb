@@ -1,0 +1,41 @@
+<% 
+  nav_links = [{
+    link: chalkler_path(@chalkler),
+    active: request.path == chalkler_path(@chalkler) && !params[:past].present?,
+    title: "Profile"
+  }]
+%>
+
+<div class="provider_header">
+  <div class="container-fluid">
+    <a class="avatar block" href="<%= @chalkler.avatar.blank? && policy(@chalkler).edit? ? preferences_chalkler_path(@chalkler) : chalkler_path(@chalkler)  %>">
+      <div class="img" style="background-image: url(<%= @chalkler.avatar %>)">
+      </div>
+    </a>
+
+    <div class="provider_header_content">
+      <h1 class="provider_header_name">
+        <%= link_to @chalkler.name, chalkler_path(@chalkler) %>
+      </h1>
+    </div>
+
+    <div class="provider_header_links">
+      <nav>
+        <ul class="flush">
+        <% 
+          nav_links.each do |nav_link| %>
+            <li class="<%= "active" if nav_link[:active] %> col-xs-4 col-sm-3 col-md-2 flush">
+              <%= link_to nav_link[:link], title: nav_link[:title] do %>
+                  <%= nav_link[:title] %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="provider_header_skirting">
+  </div>
+
+</div>

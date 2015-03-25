@@ -9,7 +9,7 @@ class CourseNotice < ActiveRecord::Base
   belongs_to  :course
   before_save :check_body_or_photo
 
-  has_one :channel, through: :course
+  has_one :provider, through: :course
   has_one :teacher, through: :course
 
   scope :visible, where(visible: true)
@@ -32,6 +32,15 @@ class CourseNotice < ActiveRecord::Base
 
   def image
     course.course_upload_image
+  end
+
+  def path_params
+    {
+      provider_url_name: provider,
+      course_url_name: course.url_name,
+      course_id: course,
+      id: self.id
+    }
   end
 
   private 

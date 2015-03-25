@@ -28,8 +28,28 @@ class BookingSet
     @bookings = bookings
   end
 
+  def swipe_identifier
+    bookings.first.swipe_identifier if bookings.first
+  end
+
+   def set_swipe_identifer!(identifier)
+    bookings.each do |booking|
+      booking.swipe_identifier = identifier
+      booking.save
+    end
+    swipe_identifier
+  end
+
+  def clear_ids
+    @bookings.each{ |b| b.id = nil }
+  end
+
   def count
     @bookings.count
+  end
+
+  def booker
+    bookings.first.booker if bookings.first
   end
 
   def save(options)
@@ -46,7 +66,6 @@ class BookingSet
 
     if bookings_valid
       bookings.map &:save
-      course.expire_cache!
       true
     else
       the_errors = bookings.map{|b| b.errors.messages }
@@ -58,12 +77,17 @@ class BookingSet
     bookings.first.course
   end
 
+  def ids=(booking_ids)
+    booking_ids = '' if booking_ids.nil?
+    self.bookings = booking_ids.split('-').map{ |id| Booking.find id }
+  end
+
   def ids
     bookings.map &:id
   end
 
   def id
-    ids.join(',')
+    ids.join('-')
   end
 
   def names
@@ -72,6 +96,10 @@ class BookingSet
 
   def name
     names.join(',')
+  end
+
+  def status
+    bookings.first.status if bookings.first
   end
 
   def build_payment
@@ -86,6 +114,10 @@ class BookingSet
 
   def total_cost
     bookings.sum &:cost
+  end
+
+  def paid?
+    [true] == bookings.map{ |b| b.paid? }.uniq
   end
 
   def apply_payment(payment)

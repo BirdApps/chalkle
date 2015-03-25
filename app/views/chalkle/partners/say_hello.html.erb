@@ -1,0 +1,74 @@
+<section id="hello" class="row"> 
+  
+
+  <div class="col-sm-8 col-sm-offset-2 text-center">
+    <div class="fancy-header">
+      <h4>Questions & Comments</h4>
+      <hr class="small" />
+    </div>
+    <p>
+     For questions and comments please get in touch at  <%= mail_to "hello@chalkle.com", 'hello@chalkle.com' %>.
+    </p>
+
+
+    <div class="fancy-header">
+      <h4>Support</h4>
+      <hr class="small" />
+    </div>
+    <p>
+     For support enquries please email  <%= mail_to "support@chalkle.com", 'support@chalkle.com' %>.
+    </p>
+
+    <div class="fancy-header">
+      <h4>Use Chalkle to organise your classes</h4>
+      <hr class="small" />
+    </div>
+    <p>
+      If you are thinking about using the Chalkle platform or organise your classes and want to learn more, please fill in the form below.
+    </p>
+  </div>
+
+</section>
+<br /><br />
+<section class="row" id="hello-form">
+
+  <div class="col-sm-8 col-sm-offset-2 new_form_wrapper">
+
+
+    <%= bootstrap_form_for @partner_inquiry, wrapper: :simple_bootstrap3, url: chalkle_said_hello_path, html: { method: :post, class: 'form-horizontal', role: 'form'} do |f| %> 
+      
+      <% if @partner_inquiry.errors.any? %>
+
+        <div class="col-sm-12 errors">
+          <h3>There were some problems: </h3>
+          <% @partner_inquiry.errors.full_messages.each do |msg| %>
+            <div class="error"><%= msg %></div>
+          <% end %>
+        </div>
+
+      <% end %>
+
+      <div class="col-sm-12 flush">
+
+        <%= f.input :name, label: "What is your name?", wrapper: :horizontal %>
+      
+        <%= f.input :contact_details, label: "What email or phone number is best used to contact you?", wrapper: :horizontal %>
+
+        <%= f.input :organisation, label: "What is your organisation called?", wrapper: :horizontal %>
+
+        <%= f.input :location, label: "Where city are you in?", wrapper: :horizontal %>
+        
+        <%= f.input :comment, as: :text, label: "What do you want to achieve with Chalkle°?", wrapper: :horizontal %>
+
+      </div>
+
+      <br />
+      
+      <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+        <%= f.submit "Say Hello", class: 'submit_btn col-xs-12 part_link btn btn-primary'%> 
+      </div>
+
+    <% end %>
+  </div>
+
+</section>

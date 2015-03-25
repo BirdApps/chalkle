@@ -1,0 +1,214 @@
+@import "../_vars";
+
+.registrations-new, .registrations-create {
+  color: #fff;
+  
+  #sign-in {
+    background-image: image_url('learn/diver.jpg');
+    background-size: cover;
+    background-position: center center;
+    padding-top: 50px;
+    @media screen and (min-width: 769px){
+      padding-top: 50px; 
+    }
+    @media screen and (max-width: 768px){
+      padding-top: 0; 
+    }
+  }
+
+  h1 {
+    margin-top: 100px;
+    color: #fff;
+    font-weight: 300;
+    font-size: 48px;
+    letter-spacing: 4px;
+    line-height: 58px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .well {
+    color: #fff;
+    border: none; 
+    background-color: transparent;
+    box-shadow: none;
+    margin-bottom: 50px;
+
+    h3 {
+      font-size: 14px;
+      color: rgba(255,255,255,0.69);
+      letter-spacing: 1px;
+      line-height: 17px;
+      text-align: center;
+    }
+
+    .segmented-rule {
+      position: relative;
+      height: 22px;
+      margin: 2.5em 0; 
+      > * { 
+        display:block; 
+        padding: 0; 
+        margin: 0; 
+      }
+
+      &.mini .left-segment, &.mini .right-segment {
+        width: 5% !important;
+      }
+
+      .left-segment, .right-segment {
+        background: #fff;
+        height: 1px;
+        width: 30%;
+        top: 9px;
+        position: absolute; 
+      }
+      .right-segment { right: 0px; }
+      .left-segment { left: 0px; }
+      h2 {
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: 1.28px;
+        width: 100%;
+        text-align: center;
+
+      }
+    }
+    label {display: none; }
+    @include placeholder(#fff);
+    input {
+      background-color: rgba(255,255,255,0.10);
+      border-radius: 0px;
+      font-size: 19px;
+      color: #fff;
+      letter-spacing: 1.5px;
+      /* line-height: 16px; */
+      border:none; 
+      border-bottom: 1px solid rgba(255,255,255,0.80); 
+      position: relative;
+      transition: all 120ms;
+      &:focus {
+        background-color: rgba(0,0,0,0.80);
+        top: -2px;
+      }
+    }
+    input[type=submit] {
+      /* Rectangle 34: */
+      background: rgba(0,0,0,0.67);
+      border: 1px solid rgba(255,255,255,0.57);
+      box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.20);
+      border-radius: 3px;
+      color: #fff;
+      width: 100%;
+      &:hover {
+        background-color: rgba(5, 183, 255, 0.91);
+      }
+    }
+  }
+
+  .login-option {
+    padding-top: 1em;
+    background-color: rgba(0, 0, 0, 0.3);
+    p { color: #ddd; }
+    a.btn { 
+      background: none;
+      border: 1px solid rgba(255,255,255,0.57);
+      box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.20);
+      border-radius: 3px;
+      color: #fff;
+      width: 100%;
+      &:hover {
+        background-color: rgba(5, 183, 255, 0.91);
+      }
+    }
+  }
+
+  #callout {
+    text-align: center;
+    background-color: rgba(255,255,255,0.8);
+    padding: 0.5em 0;
+    font-style: 14px;
+    font-weight: 300;
+    letter-spacing: 1.5px;
+
+
+    h4 {/* Find out more: */
+      font-weight: 500;
+      font-size: 18px;
+      font-style: italic;
+      color: #000000;
+      margin: 0;
+    }
+  }
+
+  .feature-box {
+
+    height: 350px;
+    background-size: cover;
+    background-position: center;
+    padding-top: 200px; 
+    min-height: 550px;
+
+    /* Discover new things : */
+    font-weight: 300;
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 1.5px;
+    line-height: 22px;
+    
+    h2 {
+      font-weight: 500;
+      font-style: italic;
+      font-size: 30px;
+      color: #FFFFFF;
+      letter-spacing: 2.5px;
+      line-height: 36px;
+      margin: 0;
+    }
+
+    &#inspired {
+      background-position: right top;
+      background-image: image_url('learn/bottle.jpg');
+      * {  float: right; clear: both; width: 50%;  }
+    }
+
+    &#join {
+      background-position: right bottom;
+      background-image: image_url('learn/stars.jpg');
+      * {  float: left; clear: both; width: 50%;
+        margin-left: 20px;
+      }
+    }
+
+    &#abl {
+      padding-top: 250px;
+      min-height: 600px;
+      height: auto;
+      background-position: right bottom;
+      background-image: image_url('learn/mic.jpg');
+      .text, h2 {   color: #333;}
+
+    }
+  }
+
+  .sign-up-footer {
+
+    margin-top: 0;
+    margin-bottom: -75px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color: #fff;
+
+    background: rgba(55,55,55,1.0); 
+
+
+    .form-inputs label {
+      font-weight: 300;
+    }
+    h2 {
+      margin: 0;
+      text-align: center;
+      color: #fff;
+    }
+  }
+}

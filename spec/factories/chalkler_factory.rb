@@ -3,7 +3,7 @@ FactoryGirl.define do
   factory :chalkler do
     name "Ben Smith"
     email {generate(:email)}
-    join_channels 'skip'
+    join_providers 'skip'
     bio "All about me!!"
 
     factory :admin_chalkler do 

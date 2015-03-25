@@ -1,0 +1,17 @@
+<markdown>
+  <%= 
+    reason_text = @booking.cancelled_reason.present?  ? t("email.booking.cancelled.to_provider_admin.reason")+"\"#{@booking.cancelled_reason}\"" : ""
+    
+    refund_text =  if @booking.pending_refund? 
+      t("email.booking.cancelled.to_provider_admin.refund") 
+    else
+      unless @booking.free? 
+        t("email.booking.cancelled.to_provider_admin.no_refund")
+      else
+        ""
+      end
+    end
+    
+     t("email.booking.cancelled.to_provider_admin.body.html", reason: reason_text, refund: refund_text, booking_name: @booking.name, course_name: @booking.course.name, course_url: tiny_course_url(@booking.course), course_bookings_url: provider_course_bookings_url(@booking.course.path_params) ).to_html
+  %>
+</markdown>

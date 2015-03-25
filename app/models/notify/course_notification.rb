@@ -21,7 +21,7 @@ class Notify::CourseNotification < Notify::Notifier
 
     message = I18n.t('notify.course.cancelled.to_teacher', course_name: course.name)+ cancelled_by
       
-    course.teacher.send_notification Notification::REMINDER, course_path(course), message, course
+    course.teacher.send_notification Notification::REMINDER, provider_course_path(course.path_params), message, course
 
     course.bookings.confirmed.each do |booking|
       Notify.for(booking).as(:teacher).cancelled

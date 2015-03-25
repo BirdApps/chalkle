@@ -1,18 +1,18 @@
-<div class="col-xs-12 x1-25 center light">
+<div class="col-xs-12 big center light">
  <%= link_to booking.name, chalkler_path(booking.chalkler.id) %>
   <div class="col-xs-12 light">
     <span class="grey inline vmid">
       Booking cost:
     </span>
-    <span class="x1-25 inline vmid">
+    <span class="big inline vmid">
       $<%= booking.cost_formatted %>
     </span> 
   </div>
-  <% if @course.class? %>
-    <%= quick_date_time @course.start_at %>
+  <% if booking.course.class? %>
+    <%= quick_date_time booking.course.start_at %>
   <% else %>
   <% count = 0 %>
-    <% @course.classes.each do |lesson| %>
+    <% booking.course.classes.each do |lesson| %>
       <span class="strong">
         Class <%= count+=1 %> -
       </span>

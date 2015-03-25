@@ -1,0 +1,11 @@
+@import "../_vars";
+
+.notifications{
+  li{
+    min-height: 65px;
+    padding: 5px;
+  }
+  li.unactioned{
+    background: rgba(0,0,0,0.05);
+  }
+}

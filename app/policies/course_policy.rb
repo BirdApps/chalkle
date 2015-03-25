@@ -18,16 +18,16 @@ class CoursePolicy < ApplicationPolicy
     read?
   end
 
-  def edit?
-    write?
-  end
-
   def show?
-    Course::PUBLIC_STATUSES.include?(@course.status) or read?
+    read? or Course::PUBLIC_STATUSES.include?(@course.status)
   end
 
   def update?
-    write?
+    edit?
+  end
+
+  def edit?
+    @course.editable? && write?
   end
 
   def clone?
@@ -39,7 +39,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def confirm_cancel?
-    write?
+    @course.cancellable? && write?
   end
 
   def cancel?
@@ -47,18 +47,18 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def admin?
-    @user.super? or @user.channel_admins.where(channel_id: @course.channel_id).present?
+    @user.super? or @user.provider_admins.where(provider_id: @course.provider_id).present?
   end
 
   def write?(anytime=false)
-    anytime = true if @course.status == "Draft"
+    anytime = true if @course.status == "Preview"
     @user.super? or
-     ((@user.channel_teachers.where(id: @course.teacher_id, can_make_classes: true).present? or 
-      @user.channel_admins.where(channel_id: @course.channel_id).present?) and 
+     ((@user.provider_teachers.where(id: @course.teacher_id, can_make_classes: true).present? or 
+      @user.provider_admins.where(provider_id: @course.provider_id).present?) and 
       (anytime ? true : (@course.end_at || @course.start_at) > DateTime.current))
   end
 
   def read?
-    @user.super? or (@user.channel_teachers.where(id: @course.teacher_id).present? or @user.channel_admins.where(channel_id: @course.channel_id).present?)
+    @user.super? or (@user.provider_teachers.where(id: @course.teacher_id).present? or @user.provider_admins.where(provider_id: @course.provider_id).present?)
   end
 end

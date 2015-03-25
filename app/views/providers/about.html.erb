@@ -1,0 +1,20 @@
+<div class="row flush">
+  <div class="col-xs-12 text-center pad-top-20">
+    <%= to_html @provider.description %>
+  </div>
+</div>
+ 
+<% teachers = @provider.provider_teachers.with_upcoming_class.uniq.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) } %>
+
+<div class="row teachers">
+  <div class="col-xs-12">
+    <div class="fancy-header">
+      <h3>Teachers</h3>
+      <hr />
+    </div> 
+    <%= render teachers %>
+  </div>
+  <div class="col-xs-12 text-center pad-top-20">
+    <%= link_to "Show #{@provider.provider_teachers.count - teachers.count} more teachers", provider_teachers_path(@provider), class: 'btn btn-stub btn-default col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4' if @provider.provider_teachers.count > teachers.count %>
+  </div>
+</div>

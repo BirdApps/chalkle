@@ -1,8 +1,0 @@
-<h2><%= @category.name %></h2>
-<h5>Category</h5>
-
-<% @category.courses.each do |course| %>
-  <div class="course">
-    <%= link_to course.name, course.path if course.valid? %>
-  </div>
-<% end %>

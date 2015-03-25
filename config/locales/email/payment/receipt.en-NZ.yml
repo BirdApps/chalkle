@@ -4,7 +4,8 @@ en-NZ:
       subject: "Thank you for your business"
       body:
         html_1: |
-          ### Receipt from Chalkle on behalf of %{provider_name} ##
+          ### Tax Invoice
+          #### From Chalkle on behalf of %{provider_name} ##
           This receipt is for a payment made via credit or debit card through Swipe HQ
 
           ** Transaction ID: ** %{tx_id}
@@ -14,7 +15,8 @@ en-NZ:
         html_2: |
           ** Total Amount Paid: ** 
         text_1: |
-          Receipt from Chalkle on behalf of %{provider_name}
+          Tax Invoice
+          From Chalkle on behalf of %{provider_name}
           This receipt is for a payment made via credit or debit card through Swipe HQ
 
           Transaction ID: %{tx_id}

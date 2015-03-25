@@ -6,7 +6,7 @@ class ChangeCourseCustomRadioFieldsToCustomSelectFields < ActiveRecord::Migratio
           course.custom_fields.each do |field|
             field[:type] = "select" if field[:type] == "radio_buttons"
           end
-          course.save
+          course.save(:validate => false)
         end
       end
     end
@@ -19,7 +19,7 @@ class ChangeCourseCustomRadioFieldsToCustomSelectFields < ActiveRecord::Migratio
           course.custom_fields.each do |field|
             field[:type] = "radio_buttons" if field[:type] == "select"
           end
-          course.save
+          course.save(:validate => false)
         end
       end
     end

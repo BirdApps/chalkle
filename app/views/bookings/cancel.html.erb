@@ -1,5 +1,5 @@
 <div class="new_form_wrapper">
-  <%= bootstrap_form_for(@booking, wrapper: :simple_bootstrap3, url: cancel_course_booking_path(@booking.course.id, @booking.id), html: { id: ''}) do |f| %>
+  <%= bootstrap_form_for(@booking, wrapper: :simple_bootstrap3, url: cancel_provider_course_booking_path(@booking.course.id, @booking.id), html: { id: ''}) do |f| %>
     <input name="_method" type="hidden" value="put" />
     <input type="submit" value="Confirm Cancel" class="pull-right btn btn-danger" />
     <h2>What is your reason for cancelling this booking?</h2>

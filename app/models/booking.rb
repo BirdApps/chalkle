@@ -8,15 +8,16 @@ class Booking < ActiveRecord::Base
   attr_accessible *BASIC_ATTR = [
     :course_id, :payment_method, :booking, :name, :note_to_teacher, :cancelled_reason, :custom_fields, :payment, :payment_id, :email, :invite_chalkler
   ]
-  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:channel_payment,:channel_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
+  attr_accessible *BASIC_ATTR, :chalkler_id, :chalkler, :course, :status, :cost_override, :visible, :reminder_last_sent_at, :chalkle_fee, :chalkle_gst, :chalkle_gst_number, :teacher_fee, :teacher_gst, :teacher_gst_number, :provider_fee,:teacher_payment,:teacher_payment_id,:provider_payment,:provider_payment_id,:provider_gst, :provider_gst_number, :processing_fee, :processing_gst, :as => :admin
 
   #booking statuses
+  STATUS_6 = "unverified" #payment awaiting LPN
   STATUS_5 = "pending" #payment pending
   STATUS_4 = "refund_complete"
   STATUS_3 = "refund_pending"
   STATUS_2 = "no"
   STATUS_1 = "yes"
-  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5]
+  VALID_STATUSES = [STATUS_1, STATUS_2, STATUS_3, STATUS_4, STATUS_5, STATUS_6]
   BOOKING_STATUSES = VALID_STATUSES
 
   belongs_to  :payment
@@ -25,11 +26,11 @@ class Booking < ActiveRecord::Base
   belongs_to  :booker, class_name: "Chalkler", foreign_key: :booker_id
   belongs_to  :booking
   has_many    :bookings, as: :guests_bookings
-  has_one     :channel, through: :course
+  has_one     :provider, through: :course
   has_one     :teacher, through: :course
   
   has_one :teacher_payment, through: :course
-  has_one :channel_payment, through: :course
+  has_one :provider_payment, through: :course
 
   validates_presence_of :course_id, :status, :name, :chalkler_id
 
@@ -68,6 +69,8 @@ class Booking < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
 
+  scope :displayable, where("status != ?", STATUS_5)
+
   scope :refund_pending, where(status: STATUS_3)  
   scope :refund_complete, where(status: STATUS_4) 
 
@@ -76,11 +79,17 @@ class Booking < ActiveRecord::Base
 
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
 
+  scope :from_provider, -> (provider) { joins(:provider).where("provider_id = ?", provider.id) }
+
   scope :by_date, order(:created_at)
   scope :by_date_desc, order('created_at DESC')
   scope :date_between, ->(from,to) { where(:created_at => from.beginning_of_day..to.end_of_day) }
   
   scope :upcoming, course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at')
+
+  scope :in_future, upcoming
+
+  scope :in_past, course_visible.joins(:course => :lessons).where( 'lessons.start_at < ?', Time.current ).order('courses.start_at')
 
   scope :needs_reminder, course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'")
 
@@ -118,7 +127,7 @@ class Booking < ActiveRecord::Base
     if payment.present? && payment.refundable?
       self.status = STATUS_4
       payment.refund!(self)
-      channel_payment.recalculate! if channel_payment.present?
+      provider_payment.recalculate! if provider_payment.present?
       teacher_payment.recalculate! if teacher_payment.present?
       save
     end
@@ -205,10 +214,10 @@ class Booking < ActiveRecord::Base
     end
 
     #PROVIDER
-    self.provider_fee = course.channel_fee
-    if channel.tax_number.present?
-      self.provider_gst_number = channel.tax_number
-      self.provider_gst = course.channel_fee*3/23
+    self.provider_fee = course.provider_fee
+    if provider.tax_number.present?
+      self.provider_gst_number = provider.tax_number
+      self.provider_gst = course.provider_fee*3/23
       self.provider_fee = self.provider_fee-self.provider_gst
     else
       self.provider_gst_number = nil
@@ -219,7 +228,7 @@ class Booking < ActiveRecord::Base
     difference = cost - calc_cost
     if difference != 0
       #adjust processing_fee
-      self.processing_fee = cost * course.channel_plan.processing_fee_percent
+      self.processing_fee = cost * course.provider_plan.processing_fee_percent
       self.processing_gst = self.processing_fee*3/23
       self.processing_fee = self.processing_fee-self.processing_gst
 
@@ -292,6 +301,8 @@ class Booking < ActiveRecord::Base
     when STATUS_4
       'Cancelled & Refunded'
     when STATUS_5
+      'Incomplete Booking'
+    when STATUS_6
       'Payment is being confirmed'
     else
        'Unknown status'
@@ -367,8 +378,17 @@ class Booking < ActiveRecord::Base
     course.course_upload_image
   end
 
+  def path_params
+    {
+      provider_url_name: provider,
+      course_url_name: course,
+      course_id: course,
+      id: self
+    }
+  end
+
   def self.csv_for(bookings)
-    headings = %w{ id name email paid note_to_teacher }
+    headings = %w{ id name paid note_to_teacher }
     basic_attr = headings.map &:to_s
     
     custom_fields = bookings.map(&:custom_fields_merged).map{|g| g.keys }.flatten.uniq.compact

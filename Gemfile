@@ -7,11 +7,12 @@ gem 'unicorn-worker-killer'
 
 gem 'entity_events'
 
+gem 'engtagger'
+
 # Authentication
 gem 'devise',           '~> 2.2.4'
 gem 'devise_invitable'
 gem 'omniauth',         '~> 1.1.4'
-gem 'omniauth-meetup',  '~> 0.0.7'
 gem 'omniauth-facebook'
 
 # Authorisation
@@ -39,24 +40,20 @@ gem 'lazy_high_charts'
 gem 'rdiscount'
 
 #apis
-gem 'rMeetup', require: 'rmeetup', github: 'kiesia/rmeetup'
 gem 'xeroizer'
 gem "geocoder"
 gem 'newrelic_rpm'
 gem 'mandrill-rails'
+gem 'passbook'
 
 #interface
 gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml', '~> 4.0.5'
 gem 'haml-rails',    '~> 0.4.0'
-#gem 'simple_form'
 gem 'simple_form', github: 'zlx/simple_form_bootstrap3', branch: 'rails_3'
 gem 'maruku',        '~> 0.6.1'
 gem 'draper',        '~> 1.0'
 gem 'google-webfonts-rails'
-gem 'bootstrap-datepicker-rails'
-gem 'twitter-typeahead-rails'
-gem 'autoprefixer-rails'
 
 #attachments
 gem 'carrierwave'
@@ -71,16 +68,19 @@ gem 'omni_avatar', path: 'vendor/gems/omni_avatar'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'bootstrap-sass'
   gem 'sass-rails'
+  gem 'bootstrap-datepicker-rails'
+  gem 'twitter-typeahead-rails'
+  gem 'autoprefixer-rails'
   gem 'coffee-rails',        '~> 3.2.2'
   gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
-  gem 'font-awesome-rails'
+  gem 'font-awesome-sass', '~> 4.3.0'
   gem 'uglifier',            '~> 1.3.0'
   gem 'haml_coffee_assets',  '~> 1.16'
   gem 'haml_assets',         '~> 0.2.2'
   gem 'kalendae_assets',     '~> 0.2.1'
   gem 'execjs',              '~> 1.4.0'
-  gem 'bower-rails'
   gem 'turbo-sprockets-rails3'
 end
 
@@ -117,8 +117,6 @@ group :development do
   # gem 'guard-zeus'
   gem 'guard-cucumber'
   gem 'guard-livereload'
-
-
 end
 
 group :test, :development do

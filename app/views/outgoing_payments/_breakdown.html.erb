@@ -16,7 +16,7 @@
           NAME
         </div>
         
-        <% if outgoing_payment.for_channel? %>
+        <% if outgoing_payment.for_provider? %>
           <div class="col-xs-2">
             Provider Income
           </div>
@@ -30,6 +30,6 @@
 
       </div>
       <br />
-      <%= render partial: 'courses/income_breakdown', collection: outgoing_payment.courses.order(:start_at), locals: {hide_teacher: outgoing_payment.for_channel?, hide_provider: outgoing_payment.for_teacher? } %>
+      <%= render partial: 'courses/income_breakdown', collection: outgoing_payment.courses.order(:start_at), locals: {hide_teacher: outgoing_payment.for_provider?, hide_provider: outgoing_payment.for_teacher? } %>
     </div>
   </div>

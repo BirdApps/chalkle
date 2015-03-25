@@ -1,0 +1,4 @@
+en-NZ:
+  notify:
+    booking_set:
+      declined: "The payment was **declined** for **%{course_name}**. Would you like to try again?"

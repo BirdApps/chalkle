@@ -45,8 +45,8 @@ class Payment < ActiveRecord::Base
     end
   end
 
-  def channel_outgoing
-    c_out = bookings.confirmed.collect(&:channel_payment)
+  def provider_outgoing
+    c_out = bookings.confirmed.collect(&:provider_payment)
     c_out.present? ? c_out.first : nil
   end
 
@@ -56,7 +56,7 @@ class Payment < ActiveRecord::Base
   end
 
   def outgoings
-    [channel_outgoing, teacher_outgoing].uniq.compact
+    [provider_outgoing, teacher_outgoing].uniq.compact
   end
 
   def total
@@ -87,13 +87,13 @@ class Payment < ActiveRecord::Base
   end 
 
   def has_tax?
-    channel.tax_number.present? 
+    provider.tax_number.present? 
   end
 
   def refundable?
-    #Can only refund if the money hasn't already been given to channel and teacher
+    #Can only refund if the money hasn't already been given to provider and teacher
     refundable = true
-    refundable = channel_outgoing.not_approved? if channel_outgoing.present?
+    refundable = provider_outgoing.not_approved? if provider_outgoing.present?
     refundable = teacher_outgoing.not_approved? if teacher_outgoing.present? && refundable
     refundable
   end
@@ -102,8 +102,8 @@ class Payment < ActiveRecord::Base
     courses.first if courses
   end
 
-  def channel
-    course.channel
+  def provider
+    course.provider
   end
 
   def set_metadata

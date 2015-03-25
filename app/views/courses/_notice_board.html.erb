@@ -1,16 +1,16 @@
- <div class="col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light small discussion">
+ <div class="col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 light discussion">
 
-  <div class="fancy-header">
-    <h3>Discussion</h3>
-    <hr />
-  </div> 
+ <div class="fancy-header">
+  <h4>Discussion</h4>
+  <hr class="small" />
+</div>
 
   <% if current_user.authenticated? %>
 
     <div class="row">
       <div class="new_form_wrapper">
         <small class="col-xs-12">Ask questions or leave comments about the class</small>
-        <%= bootstrap_form_for(CourseNotice.new, wrapper: :simple_bootstrap3, url: course_course_notices_path(@course.id), html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+        <%= bootstrap_form_for(CourseNotice.new, url: provider_course_notices_path(@course.provider), wrapper: :simple_bootstrap3, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
 
           <div class="col-xs-12">
             <%= f.text_area :body, class: 'discussion-box' %>
@@ -30,11 +30,11 @@
     <div class="row">
       <div class="light grey center">
         <strong>
-          <%= link_to "Create an account", new_chalkler_registration_path %>
+          <%= link_to "Create an account", new_chalkler_registration_path, class: 'sign-up-first' %>
         </strong>
         or 
         <strong>
-          <%= link_to "login", new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: (current_page?(controller: 'chalkler') ? "current": "") %>
+          <%= link_to "login", new_chalkler_session_path(redirect_to: request.env['PATH_INFO']),  class: "sign-in-first"+(current_page?(controller: 'chalkler') ? "current": "") %>
         </strong>
         to leave a comment
         <br /><br />

@@ -1,0 +1,23 @@
+@import "../_vars";
+
+.sudo_outgoing{
+  padding: 5px 0;
+  margin-bottom:10px;
+  line-height: 3em;
+}
+.sudo_booking {
+  line-height: 3em;
+}
+.sudo_hello{
+  padding: 5px 0;
+  margin-bottom:10px;
+}
+.outgoing_break_down{
+  padding:10px;
+  background: #fafafa;
+  border-radius: 4px;
+  border: solid 1px #eee;
+  .outgoing_course{
+    margin: 10px 0;
+  }
+}

@@ -24,6 +24,11 @@ module ApplicationHelper
       content_tag :span, name, options
     end
   end
+
+  def datetime_to_nearest_5_minutes(t)
+    rounded = Time.at((t.to_time.to_i / 300.0).round * 300)
+    t.is_a?(DateTime) ? rounded.to_datetime : rounded
+  end
   
   def typekit_includes
     render 'layouts/typekit_includes'
@@ -42,9 +47,9 @@ module ApplicationHelper
   end
 
   def header_color
-    if @channel && @channel.header_color || @course && @course.channel.header_color
-      (@channel || @course.channel).header_color || @booking && @booking.course.channel.header_color
-      (@channel || @course.channel || @booking.course.channel).header_color
+    if @provider && @provider.header_color || @course && @course.provider.header_color
+      (@provider || @course.provider).header_color || @booking && @booking.course.provider.header_color
+      (@provider || @course.provider || @booking.course.provider).header_color
     else
       nil
     end
@@ -53,11 +58,6 @@ module ApplicationHelper
   def show_header?
     return false if request[:controller] =~ /sessions/
     true
-  end
-
-  def fluid_layout? 
-    return true if request[:controller] =~ /sessions/
-    false
   end
 
   def truncate(string, length=16)
@@ -81,6 +81,22 @@ module ApplicationHelper
     yield < 1 ? "" : " (#{yield})"
   end
 
+  def page_min
+    if paginate_position + 3 > paginate_count
+      min = paginate_count - 4
+    else
+      min = paginate_position - 2  
+    end
+    min = 0 if min < 0
+    min
+  end
+
+  def page_max
+    max = page_min + 4
+    max = paginate_count if (max > (paginate_count))
+    max
+  end
+
   def paginate_position
     return @paginate_position if @paginate_position
     page_num = params[:page].to_i > 0 ? params[:page].to_i-1 : 0 
@@ -92,7 +108,7 @@ module ApplicationHelper
   end
 
   def paginate_count
-    @paginate_count ||= (@pagination_list.count / paginate_take) + 1
+    @paginate_count ||= [(@pagination_list.count / paginate_take), 0].max
   end
 
   def paginate_take
@@ -106,42 +122,6 @@ module ApplicationHelper
   def paginate_these(list)
     @pagination_list = list
     list.drop(paginate_skip).take(paginate_take)
-  end
-
-  def filter_regions
-    courses = Course.displayable.in_future
-    if @category.id.present? && @channel.id.present?
-      courses = courses.in_category(@category).in_channel(@channel)
-    elsif @category.id.present? && @channel.id.nil?    
-      courses = courses.in_category(@category) 
-    elsif @category.id.nil? && @channel.id.present?
-      courses = courses.in_channel(@channel)
-    end
-    (courses.map &:region).compact.uniq.sort_by{|c| c.name.downcase } 
-  end
-
-  def filter_topics
-    courses = Course.displayable.in_future
-    if @region.id.present? && @channel.id.present?
-      courses = courses.in_region(@region).in_channel(@channel)
-    elsif @region.id.present? && @channel.id.nil?    
-      courses = courses.in_region(@region) 
-    elsif @region.id.nil? && @channel.id.present?
-      courses = courses.in_channel(@channel)
-    end
-    (courses.map &:category).compact.uniq.sort_by{|c| c.name.downcase } 
-  end
-
-  def filter_providers
-    courses = Course.displayable.in_future
-    if @category.id.present? && @region.id.present?
-      courses = courses.in_category(@category).in_region(@region)
-    elsif @category.id.present? && @region.id.nil?    
-      courses = courses.in_category(@category) 
-    elsif @category.id.nil? && @region.id.present?
-      courses = courses.in_region(@region)
-    end
-    (courses.map &:channel).compact.uniq.sort_by{|c| c.name.downcase }
   end
 
 end

@@ -11,5 +11,5 @@
       end
     end
     
-     t("email.booking.cancelled.to_chalkler.body.text", root_name: t("chalkle_url"), root_url: root_url, reason: reason_text, refund: refund_text, course_name: @booking.course.name, course_url: course_url(@booking.course), provider_name: @booking.channel.name, provider_url: channel_url(@booking.channel.url_name)).to_html
+     t("email.booking.cancelled.to_chalkler.body.text", root_name: t("chalkle_url"), root_url: root_url, reason: reason_text, refund: refund_text, course_name: @booking.course.name, course_url: tiny_course_url(@booking.course), provider_name: @booking.provider.name, provider_url: provider_url(@booking.provider.url_name)).to_html
 %>

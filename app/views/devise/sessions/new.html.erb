@@ -1,52 +1,70 @@
 <% @page_title = "Sign in" %>
 
-<div class="clearfix" id='sign-in'>
+<div class="row" id='sign-in'>
   
 
-  <div class="col-xs-12 col-sm-5 col-sm-offset-1">
-    <h1>Log In</h1>
-    <p>
-      Find and offer fun courses and learning opportunities in your community today. 
-    </p>
+  <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3 sign-in-wrapper">
+    <div class="row text-center">
+      <div class="col-xs-12 flush-xs">
+        <h1>Login</h1>
 
-    <%= link_to learn_path do %>
-      <div class="under-button-alternatives">
-        <p>Not a member of chalkle yet?</p>
-        <h3>Click here to join</h3>
+        <div class="sign-in-form col-xs-12 new_form_wrapper">
+          
+          <%= render partial: '/devise/sessions/omniauth_buttons' %>
+
+          <h4>– Or –</h4>
+          <br />
+          <%= bootstrap_form_for(:chalkler, :url => chalkler_session_path, :html => { class: 'form' }) do |f| %>
+          
+            <%= f.input :email, as: :email, :autofocus => true, required: true, placeholder: 'Email' %>
+            <%= f.input :password, required: true, placeholder: 'Password' %>
+
+            <div class="control-group">
+              <div class="controls">
+                <label class="checkbox">
+                  <%= f.check_box :remember_me, :as => (:boolean if devise_mapping.rememberable?) %>
+                  Remember me?
+                </label>
+              </div>
+            </div>
+            
+            <div class="col-sm-6 hidden-xs">
+              <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
+              <a href="<%= new_chalkler_registration_path %>" class="link-line">Sign up now</a>
+              <br /><br />
+            </div>
+
+            <div class="col-xs-12 col-sm-6 flush-xs">
+              <br class="visible-xs" />
+              <input type="submit" value="Login Now" class="btn btn-lg btn-primary col-xs-12" />
+            </div>
+
+            <div class="col-xs-12 visible-xs">
+              <br />
+              <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
+              <a href="<%= new_chalkler_registration_path %>" class="link-line">Sign up now</a>
+            </div>
+            
+
+          <% end %>
+        </div>
+        
+ 
+        
+        <div class="col-xs-12">
+          <br />
+            <%= render "devise/shared/links" %>
+          <br />
+        </div>
+
       </div>
-    <% end %>
+    </div>
+
+
 
   </div>
 
-  <div class="col-xs-12 col-sm-5 col-sm-inset-1">
-    <div class="content text-right">
-      <%= render partial: '/devise/sessions/omniauth_buttons' %>
-    </div>
 
-    <h3>– Or –</h3>
-
-    <div class="well">
-      <%= bootstrap_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'form' }) do |f| %>
-            <%= f.error_notification %>
-            <%= f.input :email, :autofocus => true, placeholder: 'Email' %>
-            <%= f.input :password, :required => true, placeholder: 'Password' %>
-        <div class="control-group">
-          <div class="controls">
-            <label class="checkbox">
-              <%= f.check_box :remember_me, :as => (:boolean if devise_mapping.rememberable?) %>
-              Remember me?
-            </label>
-          </div>
-        </div>
-        <div class="sign-in-buttons">
-          <input class="btn btn-primary" value="Sign in" type="submit" name="commit" />
-          <%= render "devise/shared/links" %>
-        </div>
-      <% end %>
-    </div>
-
-  
-  </div>
 
 
 

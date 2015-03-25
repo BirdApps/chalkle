@@ -4,9 +4,16 @@ class ChalklerPolicy < ApplicationPolicy
     @chalkler = chalkler
   end
 
-
   def show?
-    @user.super? or @chalkler.visible or @user.channel_teachers.collect{ |channel_teacher| channel_teacher.students }.flatten.include?(@chalkler) 
+    true
+  end
+
+  def admin?
+    @user.id == @chalkler.id || @user.super?
+  end
+
+  def edit?
+    admin?
   end
 
 end

@@ -7,7 +7,7 @@
   <div>
     <div class="alert-success alert no-margin clearfix">
       <div class="row">
-        <%= link_to course_path(course.id), target: :blank do %>
+        <%= link_to provider_course_path(course.id), target: :blank do %>
           <div class="col-sm-3">
             <%= quick_date course.start_at %>
             <span class="label label-<%= course.status_color %>">
@@ -24,7 +24,7 @@
           <% unless hide_provider %>
             <div class="col-sm-2">
               <span class="visible-xs">Provider: </span>
-              $<%= money_formatted course.channel_income_with_tax %> 
+              $<%= money_formatted course.provider_income_with_tax %> 
             </div>
           <% end %>
 
@@ -42,7 +42,7 @@
     <div class="clearfix alert alert-danger">
       <% course.bookings.paid.each do |booking | %>
         <div class="row">
-          <%= link_to ( current_user.super? ? sudo_booking_path(booking.id) : course_bookings_path(course.id)), class: 'clearfix', target: :blank do %>
+          <%= link_to ( current_user.super? ? sudo_booking_path(booking.id) : provider_course_bookings_path(course.id)), class: 'clearfix', target: :blank do %>
             
             <div class="col-sm-3">
               <span class="label label-<%= booking.status_color %>">

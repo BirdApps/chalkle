@@ -1,0 +1,20 @@
+<div class="_provider">
+  
+  <%=  link_to provider_path(provider), class: 'avatar64', style: "background-color: #{provider.header_color}" do %>
+
+    <div class="img" style="background-image: url(<%= provider.logo %>)"></div>
+  <% end %>
+
+  <div class="details">
+
+    <%= link_to limit_text(provider.name, 20), provider_path(provider), class: 'provider_name', title: provider.name %>
+
+    <%= link_to provider_path(provider), class: 'add_info' do %>
+      <% course_count = provider.courses.in_future.displayable.count %>
+      <%= course_count %> upcoming <%= "class".pluralize(course_count) %>
+    <% end %>
+      
+    <%= render partial: 'providers/follow', locals: { provider: provider } %>
+
+  </div>
+</div>

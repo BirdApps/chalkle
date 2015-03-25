@@ -23,19 +23,6 @@ describe ApplicationController do
     context "when a Chalkler signs in successfully" do
 
       let(:user) { FactoryGirl.build(:chalkler) }
-      let(:data_collection) { double("data_collection", path: "/data_collection/fix") }
-
-      before { allow(Chalkler::DataCollection).to receive(:new).and_return( data_collection) }
-
-      it "creates a new Chalkler data collector" do
-        expect(Chalkler::DataCollection).to receive(:new)
-        controller.after_sign_in_path_for(user)
-      end
-
-      it "gets a path name from the Chalkler data collector" do
-        expect(data_collection).to receive(:path)
-        controller.after_sign_in_path_for(user)
-      end
 
       it "returns a path based on the resource" do
         expect(controller.after_sign_in_path_for(user)).to eq("/")

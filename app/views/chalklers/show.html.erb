@@ -1,7 +1,48 @@
-<div class="chalkler row">
+<div class="chalkler">
+
   <div class="col-xs-12">
-    <p>
-      <%= to_html @chalkler.bio %>
-    </p>
+ 
+    <% if current_chalkler == @chalkler || current_chalkler.super?  %>
+
+      <% if @chalkler.provider_teachers.any? %>
+        <div class="fancy-header">
+          <h3>Teacher Profiles</h3>
+          <hr />
+        </div>
+        <div class="col-xs-12">
+          <%= render @chalkler.provider_teachers %>  
+        </div>
+      <% end %>
+
+    <% else %>
+      <%= to_html @chalkler.bio %> 
+    <% end %>
+
+  </div>
+
+  <div class="follows col-xs-12">
+    <div class="fancy-header">
+      <h3>Following</h3>
+      <hr />
+    </div>
+
+    <% if @chalkler.providers_following.empty? %>
+      <div class="text-center">
+        <% if @chalkler == current_chalkler %>
+          <p>Opps, you aren't following any providers yet.</p>
+          <p>
+            <small>Why don't you live a little?</small>
+          </p>
+
+          <%= link_to "Browse Providers", providers_path, class: 'btn btn-default' %>
+        <% else %>
+          <p><%= @chalkler.name %> isn't following any providers yet.</p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= render @chalkler.providers_following %>
+      
+
   </div>
 </div>

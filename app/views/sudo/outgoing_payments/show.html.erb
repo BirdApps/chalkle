@@ -1,4 +1,4 @@
-<% set_titles %>
+
 <%= render 'sub_menu' %>
 <br /><br />
 <div class="outgoing">
@@ -6,9 +6,9 @@
     <div class="col-xs-12 col-sm-3">
       <div>
         <% if @outgoing.for_teacher? %>
-          <%= link_to @outgoing.name, channel_teacher_path(@outgoing.teacher.channel.url_name, @outgoing.teacher_id),class: 'btn btn-default'  %>
+          <%= link_to @outgoing.name, provider_teacher_path(@outgoing.teacher.provider.url_name, @outgoing.teacher_id),class: 'btn btn-default'  %>
         <% else %>
-          <%= link_to @outgoing.name, channel_path(@outgoing.channel.url_name), class: 'btn btn-default'  %>
+          <%= link_to @outgoing.name, provider_path(@outgoing.provider.url_name), class: 'btn btn-default'  %>
         <% end %>
       </div>
       <div>

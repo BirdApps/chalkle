@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe CoursesController do
-  let(:channel) { FactoryGirl.create(:channel) }
+  let(:provider) { FactoryGirl.create(:provider) }
 
   describe "#show" do
     context "when the course is unpublished" do
-      let(:course) { FactoryGirl.create(:course, status: 'Draft', channel: channel) }
-      before { get :show, channel_id: channel.id, id: course.id }
+      let(:course) { FactoryGirl.create(:course, status: 'Preview', provider: provider) }
+      before { get :show, provider_id: provider.id, id: course.id }
 
       it "redirects to the chalkler dashboard" do
         expect(response).to redirect_to(new_chalkler_session_path)

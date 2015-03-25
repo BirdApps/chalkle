@@ -11,17 +11,15 @@ class People::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       set_flash_message(:notice, :success, :kind => identity.provider) if is_navigational_format?
       sign_in_and_redirect(user)
     else
-      flash[:error] = "Failed to log in with #{identity.provider}"
+      add_flash :error, "Failed to log in with #{identity.provider}"
       redirect_to new_chalkler_registration_path
     end
   end
 
   alias_method :facebook, :all
-  alias_method :meetup, :all
 
   def after_sign_in_path_for(resource)
-    session[:previous_url] || root_path
+    session[:previous_url] || classes_path
   end
-
 
 end

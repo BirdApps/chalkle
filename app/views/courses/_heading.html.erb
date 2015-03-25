@@ -1,0 +1,78 @@
+<div class="_course_heading row">
+  <div class="col-xs-12">
+  
+    <% if @course.course_upload_image.present? %>
+      <div  class="avatar pull-right" href="<%= @course.path %>" title="<%= @course.name %>">
+        <div class="img hidden-xs" style="background-image: url(<%= @course.course_upload_image %>)">
+        </div>
+         <div class="img visible-xs" style="background-image: url(<%= @course.course_upload_image %>)">
+        </div>
+      </div>
+    <% end %>
+
+    <div class="details">
+      <h2 class="_heading_title flush">
+        <% if current_page? provider_course_path(@course.path_params)  %>
+          <%= link_to @course.name, provider_course_path(@course.path_params) %>
+        <% else %>
+          <%= @course.name %>
+        <% end %>
+      </h2>
+
+      <div class="add_info">
+         <% if @course.class? %>
+          <%= day_ordinal_month @course.start_at, true, true, true, false %> from <%= pretty_time @course.start_at %> to <%= pretty_time @course.end_at if @course.start_at && @course.end_at %>
+        <% end %>
+
+         <% if @course.course? %>
+          <a role="button" href="#" data-toggle="modal" data-target="#multipleClassDatesModal">
+            <span class="fa fa-clock-o"></span>
+            <span class="small" >Dates/Times Details</span>
+          </a>
+          <br />
+          <span class="small strong">
+            Start:
+          </span>
+          <%= day_ordinal_month @course.start_at, true, true, true, true  if @course.start_at %>
+          <br />
+          <span class="small strong">
+            End:
+          </span>
+          <%= day_ordinal_month @course.end_at, true, true, true, true  if @course.end_at %>
+          <br />
+        <% end %>
+      </div>
+
+      <div>
+        <a href="#map-canvas">
+          <span class="fa fa-map-marker"></span>
+          <span class="small"><%= @course.address || to_html(@course.venue) %></span>
+        </a>
+      </div>
+      
+
+    </div>
+
+
+  </div>
+</div>
+
+<% if @course.course? %>
+  <div class="modal fade" id="multipleClassDatesModal" tabindex="-1" role="dialog" aria-labelledby="multipleClassDatesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="multipleClassDatesModalLabel">Dates/Times Details</h4>
+        </div>
+        <div class="modal-body">
+          <% @course.classes.each_with_index do |lesson, lesson_i| %>
+            <div>
+              Day <%= lesson_i+1 %>: <%= day_ordinal_month lesson.start_at, true, true, true, false %> from <%= pretty_time lesson.start_at %> to <%= pretty_time lesson.end_at %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -2,8 +2,8 @@ FactoryGirl.define do
   factory :outgoing_payment do
     status "pending"
     courses { |i| [i.association(:course)]}
-    channel { |i| i.association(:channel) }
-    teacher { |i| i.association(:channel_teacher) }
+    provider { |i| i.association(:provider) }
+    teacher { |i| i.association(:provider_teacher) }
 
     factory :paid_outgoing_payment do
       status        'marked_paid'

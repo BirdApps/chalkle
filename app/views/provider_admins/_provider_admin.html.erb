@@ -1,0 +1,15 @@
+<div class="_chalkler col-xs-12 col-sm-6 col-lg-4">
+
+  <div class="avatar32" style="background-color: <%= provider_admin.provider.header_color %>">
+    <div class="img" style="background-image: url(<%= provider_admin.avatar %>)"></div>
+  </div> 
+
+  <div class="chalkler_name">
+   <% if provider_admin.chalkler %>
+      <%= link_to provider_admin.name, edit_provider_admin_path(provider_admin.path_params) %>
+    <% else %>
+      <%= provider_admin.email %> <span class="small light">(user has not signed up)</span>
+    <% end %>
+  </div>
+
+</div>

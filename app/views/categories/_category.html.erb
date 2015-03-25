@@ -1,9 +1,0 @@
-<% if params[:view] == "grid" %>
-  <div class="category col-sm-6">
-    <%= link_to category.name, root_path(filter_params('topic', category.url_name)) %>
-  </div>
-<% else %>
-  <div class="category col-xs-12">
-    <%= link_to category.name, root_path(filter_params('topic', category.url_name)) %>
-  </div>
-<% end %>
