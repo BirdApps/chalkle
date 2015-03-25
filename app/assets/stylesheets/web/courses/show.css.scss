@@ -94,9 +94,9 @@
     .course_notice{
       
       .removed{
-        color: #ccc;
+        // color: #ccc;
         .name{
-          color: #ccc;
+          // color: #ccc;
         }
       }
       .tiny-photo{
@@ -109,6 +109,7 @@
       header{
         border-bottom: #ccc solid 1px;
         margin-top: 20px;
+        padding-top: 10px;
         .white{
           position:relative;
           background: #fff;

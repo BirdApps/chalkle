@@ -60,15 +60,15 @@
 <% else %>
   <div class="course_notice" id="discuss-<%= course_notice.id %>">
     <header class="removed">
-      <span class="white pull-left">
+      <span class="pull-left">
         <span class="name">
           <em>Comment Removed</em>
         </span>
       </span>
-      <span class="time white">
+      <span class="time">
         <%= button_to 'Undo', 
               provider_course_notice_path(course_notice.path_params), 
-              method: :delete if policy(course_notice).destroy?   %>
+              method: :delete, class: 'btn no-btn' if policy(course_notice).destroy?   %>
         <%= quick_date_time course_notice.updated_at %>
       </span>
     </header>

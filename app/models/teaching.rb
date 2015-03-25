@@ -24,7 +24,7 @@ class Teaching
     @course = course
   	@current_user = current_user
     @provider = course.provider unless course.nil?
-    @providers = current_user.providers
+    @providers = current_user.providers_adminable
     @start_at = [ Time.new.advance(weeks: 1) ]
     @duration_hours = [1]
     @duration_minutes = [0]
