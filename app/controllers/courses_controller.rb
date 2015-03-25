@@ -48,7 +48,7 @@ class CoursesController < ApplicationController
     if params[:only_location].present?
       @courses  = @courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude} }
       render json: @courses and return
-    elsif @courses.empty? && request.path == classes_path
+    elsif @courses.empty? && request.path == classes_fetch_path
       #fall back to showing providers if no courses found
       
       if params[:search].present?
