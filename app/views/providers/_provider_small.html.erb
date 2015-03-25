@@ -2,7 +2,7 @@
   
   <%=  link_to provider_path(provider), title: provider.name do %>
     
-    <div class="avatar32" style="background-color: <%= provider.header_color %>">
+    <div class="avatar32" style="background-color: <%= provider.header_color if provider.logo.blank? %>">
      <div class="img" style="background-image: url(<%= provider.logo %>)"></div>
     </div>
 

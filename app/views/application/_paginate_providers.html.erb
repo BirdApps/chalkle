@@ -1,11 +1,17 @@
-<% 
-  if @providers.empty?  
-    problem = "No providers match "
-    problem += '"'+params["search"]+'" ' if params[:search].present?
+<% if @providers.empty? || @bad_location.present? %>
+  
+  <% 
+    if @providers.empty?
+      problem = "No results "
+      problem += ' for "'+params["search"]+'" ' if params[:search].present?
+    else
+      problem = @bad_location
+    end    
   %>
-  <div class="alert alert-warning center">
-     <%= problem %>    
-  </div>
+
+    <div class="alert alert-warning center">
+       <%= problem %>    
+    </div>
 <% end %>
 
 

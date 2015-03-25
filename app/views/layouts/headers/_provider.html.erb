@@ -31,7 +31,7 @@
   <div class="container-fluid">
     <% if current_user.providers_adminable.include?(@provider) && current_page?(provider_path(@provider)) %> 
       <a class="avatar hover-photo" href="<%= edit_provider_path(@provider) %>">
-        <div class="img" style="background-image: url(<%= @provider.logo %>)">
+        <div class="img" style="background-image: url(<%= @provider.logo %>); background-color: <%= @provider.header_color unless @provider.logo.present? %>">
         </div>
       </a>
     <% else %>
