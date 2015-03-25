@@ -214,7 +214,7 @@ class Provider < ActiveRecord::Base
   end
 
   def header_color(format=:rgba)
-    return nil unless average_hero_color
+    return '#bbb' unless average_hero_color
     @header_color ||= (
       begin
         hsl = Color::RGB.from_html(read_attribute(:average_hero_color)).to_hsl
@@ -229,7 +229,8 @@ class Provider < ActiveRecord::Base
         nil
       end
     )
-    @header_color[format] if @header_color
+  
+    @header_color[format]   if @header_color
   end
 
   def to_param
