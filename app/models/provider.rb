@@ -49,6 +49,7 @@ class Provider < ActiveRecord::Base
   scope :promotable_within_coordinates, -> (coordinate1, coordinate2) {
     visible.has_logo.has_active_course_within_coordinates(coordinate1, coordinate2)
   }
+  scope :has_displayable_classes, joins(:courses).merge( Course.displayable.in_future )
   scope :in_future, joins(:courses).merge( Course.in_future )
   scope :in_past, joins(:courses).merge( Course.in_past )
 
@@ -59,7 +60,7 @@ class Provider < ActiveRecord::Base
     provider.map {|c| [c.name, c.id] }
   end
 
-  def self.search(query, provider_set = nil)
+  def self.search(query, provider_set = nil, with_active_courses = false)
     if query.present?
       query_parts = query.split(/\W+/).map {|part| "%#{part}%" }
       
@@ -68,10 +69,20 @@ class Provider < ActiveRecord::Base
 
       results = Provider.where(providers[:name].matches_any(query_parts))
       results.concat Provider.where(providers[:description].matches_any(query_parts))
-      results = Course.where(courses[:searchable].matches_any(query_parts)).map(&:provider)
-      results = results.uniq
+      
+      if with_active_courses
+        results = Course.displayable.where(courses[:searchable].matches_any(query_parts)).map(&:provider)
+      end
 
-      provider_set & results if provider_set
+      if !with_active_courses || results.empty?
+        results = Course.where(courses[:searchable].matches_any(query_parts)).map(&:provider)
+      end
+      
+      if provider_set
+        (provider_set & results).uniq
+      else
+        results.uniq
+      end
     end
   end
   

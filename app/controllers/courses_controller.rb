@@ -39,20 +39,44 @@ class CoursesController < ApplicationController
     end
     
     if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
-      in_coords = @courses.located_within_coordinates(
+      @courses = @courses.located_within_coordinates(
         { lat: params[:top].to_f,    long: params[:left].to_f   }, 
         { lat: params[:bottom].to_f, long: params[:right].to_f  }
       )
-      if in_coords.present?
-        @courses = in_coords
-      else
-        @bad_location = "We couldn't find any classes in your immediate area, here are some more from around New Zealand"
-      end
     end
 
     if params[:only_location].present?
       @courses  = @courses.map { |c| { id: c.id, lat: c.latitude, lng: c.longitude} }
       render json: @courses and return
+    elsif @courses.empty? && request.path == classes_path
+      #fall back to showing providers if no courses found
+      
+      if params[:search].present?
+        providers_search = Provider.search params[:search].encode("UTF-8", "ISO-8859-1"), nil, true
+      end
+
+      if params[:top].present? && params[:bottom].present? && params[:left].present? && params[:right].present?
+        providers_in_coords = Provider.has_active_course_within_coordinates(
+          { lat: params[:top].to_f,    long: params[:left].to_f   }, 
+          { lat: params[:bottom].to_f, long: params[:right].to_f  }
+        )
+      end
+
+
+      @providers = if providers_in_coords.present? && providers_search.present?
+        @fall_back_text = "Here's some providers who offer similar classes nearby"
+        (providers_in_coords & providers_search).uniq
+      elsif providers_in_coords.present?
+        @fall_back_text = "Here's some providers offering exciting classes nearby"
+        providers_in_coords.to_a.uniq
+      elsif providers_search.present?
+        @fall_back_text = "Here's some providers who offer similar classes"
+        providers_search.to_a.uniq
+      else
+        @fall_back_text = "Check out some of the great class providers on Chalkle"
+        Provider.has_displayable_classes.to_a.uniq
+      end
+
     end
     
     render '_paginate_courses', layout: false
