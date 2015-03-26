@@ -24,7 +24,7 @@
 
     <div class="_provider">
   
-      <%=  link_to new_provider_class_path(provider), class: 'avatar64', style: "background-color: #{provider.header_color}" do %>
+      <%=  link_to new_provider_class_path(provider), class: 'avatar64', style: "background-color: #{provider.header_color if provider.logo.blank? }" do %>
 
         <div class="img" style="background-image: url(<%= provider.logo %>)"></div>
       <% end %>

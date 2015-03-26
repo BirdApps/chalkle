@@ -1,3 +1,19 @@
+<% 
+  if @courses.empty?
+    problem = "No results "
+    problem += ' for "'+params["search"]+'" ' if params[:search].present?
+  %>
+  <div class="col-xs-12">
+    <div class="alert alert-warning center">
+       <%= problem %>    
+    </div>
+  </div>
+  <% if @providers.present? %>
+    <p class="center strong"><%= @fall_back_text %></p>
+    <%= render 'paginate_providers' %>
+  <% end %>
+<% end %>
+
 
 <% if @show_past_classes  %>
   <div class="row upcoming-previous-btns">
@@ -19,23 +35,6 @@ border: none;">
     </div>
   </div>
 <% end %>
-
-<% 
-  if @courses.empty?
-    problem = "No results "
-    problem += ' for "'+params["search"]+'" ' if params[:search].present?
-  %>
-  <div class="col-xs-12">
-    <div class="alert alert-warning center">
-       <%= problem %>    
-    </div>
-  </div>
-  <% if @providers.present? %>
-    <p class="center strong"><%= @fall_back_text %></p>
-    <%= render 'paginate_providers' %>
-  <% end %>
-<% end %>
-
 
 
 <div class="row flush">

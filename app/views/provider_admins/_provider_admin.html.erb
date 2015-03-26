@@ -1,6 +1,6 @@
 <div class="_chalkler col-xs-12 col-sm-6 col-lg-4">
 
-  <div class="avatar32" style="background-color: <%= provider_admin.provider.header_color %>">
+  <div class="avatar32" style="background-color: <%= provider_admin.provider.header_color if provider_admin.avatar.blank? %>">
     <div class="img" style="background-image: url(<%= provider_admin.avatar %>)"></div>
   </div> 
 
