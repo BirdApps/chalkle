@@ -25,6 +25,16 @@ class Roost
     end
   end
 
+
+  def self.site_id
+    site_ids = {
+      staging: "LDaKta8TX9xThJUiim81eNCFmZtGOF8K",
+      production: "e7a09481b0d145b784c6b9dd5dd97cb0"
+    }
+    site_ids[Rails.env.to_sym]
+  end
+
+
   private
 
   # we get the path from notifications, but need to send the full URL to the API
@@ -39,9 +49,19 @@ class Roost
 
   def keys 
     #username and passsword are the config and secret keys from Roost.com
-    {  username: "e7a09481b0d145b784c6b9dd5dd97cb0",
-       password: "bdc1164b79c94ca4afc2c443d91afb50" }
+    roost_keys = {
+      staging: {
+        username: "LDaKta8TX9xThJUiim81eNCFmZtGOF8K",
+        password: "vUOStILpamSvswaMY1lWQJMt9cW13O5G"
+      },
+      production: {
+        username: "e7a09481b0d145b784c6b9dd5dd97cb0",
+        password: "bdc1164b79c94ca4afc2c443d91afb50" 
+      }
+    }
+    keys[Rails.env.to_sym]
   end
+
 
   class ApiError < StandardError
     attr_accessor :params, :return_value

@@ -16,8 +16,8 @@
     <%= stylesheet_link_tag "application", media: "all" %>
     <%= render 'layouts/provider_color_style' %>
     <%= javascript_include_tag "application" %>
-    <% if chalkler_signed_in? %>
-      <script src='//cdn.goroost.com/roostjs/e7a09481b0d145b784c6b9dd5dd97cb0' async></script>
+    <% if chalkler_signed_in? && !!!Rails.env.development? %>
+      <script src='//cdn.goroost.com/roostjs/<%= Roost.site_id -%>' async></script>
       <script>
         var _roost = _roost || [];
         _roost.push(["alias", "<%= "#{Rails.env}_#{current_user.id}" %>"]);
