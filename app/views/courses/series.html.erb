@@ -1,3 +1,22 @@
-<h2> <%= @courses.first.name.capitalize %> </h2>
+<% if @courses_in_future.present? %>
+  <div class="fancy-header">
+    <h3>Upcoming</h3>
+    <hr />
+  </div>
+  <div class="row">
+    <%= render @courses_in_future %>
+  </div>
+<% end %>
 
-<%= render @courses %>
+
+
+<% if @courses_in_past.present? %>
+  <div class="fancy-header">
+    <h3>Previous</h3>
+    <hr />
+  </div>
+  
+  <div class="row">
+    <%= render @courses_in_past %>
+  </div>
+<% end %>

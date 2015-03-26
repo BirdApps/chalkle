@@ -1,27 +1,19 @@
 # encoding: utf-8
 
 module CourseHelper
-	def may_cancel_email(name,min_attendee)
-    URI.escape("
-
-Thank you for signing up to the upcoming chalkle class ") + URI.escape(name.gsub(/&/,"and")) + URI.escape(". We are writing to tell you that a minimum number of ") + (min_attendee.present? ? min_attendee : 2).to_s + URI.escape(" people is required for this class to go ahead.
-
-If it is cancelled, you will receive a notice from Meetup upon cancellation and we will try to schedule the class for another date.
-
-Your Chalkle Administrator")
-  end
 
   def pretty_duration(course)
+    return unless course
     # when above 24 this should cover periods greater than a day in a more elegent way than n hours  - Josh
     duration = ""
     if course.duration.to_i/60 >= 60
      duration += (course.duration.to_i/60/60).to_s+" hrs "
     end
     duration += (course.duration.to_i/60%60).to_s+" mins" unless course.duration.to_i/60%60 == 0
-    
   end
 
   def pretty_time(date)
+    return unless date
     unless date.min == 0
       date.strftime("%l:%M%P")
     else
@@ -80,14 +72,17 @@ Your Chalkle Administrator")
   end
 
   def relative_month_name(month)
+    return unless month
     relative_time_name month, Month.current, 'Month'
   end
 
   def relative_week_name(week)
+     return unless week
     relative_time_name week, Week.current, 'Week'
   end
 
   def relative_time_name(time, current, time_name)
+    return unless time && current && time_name
     return "Last #{time_name}" if time == current.previous
     return "This #{time_name}" if time == current
     return "Next #{time_name}" if time == current.next
@@ -95,6 +90,7 @@ Your Chalkle Administrator")
   end
 
   def relative_day_title(day)
+    return unless day
     relative_name = relative_day_name(day)
 
     parts = [day_title(day)]
