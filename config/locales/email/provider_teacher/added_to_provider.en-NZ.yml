@@ -1,0 +1,17 @@
+en-NZ:
+  email:
+    provider_teacher:
+      added_to_provider:
+        subject: "%{name} you are now a teacher for %{provider_name}"
+        body:
+          html: |
+            You have been added as a teacher on  **%{provider_name}**.
+
+            you can update your  **[bio here](%{url})**
+
+          text: |
+            You have been added as a teacher on  **%{provider_name}**.
+
+            you can update your bio here: %{url}
+
+            ==============================

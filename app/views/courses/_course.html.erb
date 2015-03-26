@@ -2,7 +2,7 @@
   <div class="_inner_course">
     
     <div onclick="window.location = $(this).data('href')"
-    data-href="<%= provider_course_path(course.path_params) %>" class="avatar" style="background-color: <%= course.provider.header_color %>">
+    data-href="<%= provider_course_path(course.path_params) %>" class="avatar" style="background-color: <%= course.provider.header_color if course.course_upload_image.blank? %>">
       <div class="img" style="background-image: url(<%= course.course_upload_image %>)"></div>
       <div class="course_title">
         <div class="col-xs-12 flush">
@@ -27,7 +27,7 @@
         <%= render partial: 'providers/provider_small', locals: { provider: course.provider } %>
       </div>
         <div class="col-xs-6 flush">
-        <%= render partial: 'provider_teachers/provider_teacher_small', locals: { provider_teacher: course.teacher } %>
+        <%= render partial: 'provider_teachers/provider_teacher_small', locals: { provider_teacher: course.teacher } if course.teacher.present? %>
       </div>
     </div>
   </div>

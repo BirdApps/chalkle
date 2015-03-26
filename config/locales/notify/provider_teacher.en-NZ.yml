@@ -1,0 +1,4 @@
+en-NZ:
+  notify:
+    provider_teacher:
+      added_to_provider: "You are now a teacher with **%{provider_name}**. Update your **bio** now."

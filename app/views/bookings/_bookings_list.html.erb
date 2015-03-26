@@ -30,14 +30,14 @@
         <% end %>
       </div>
       <div class="col-xs-4 col-sm-2">
-        <%= link_to booking.booker.name, chalkler_path(booking.chalkler) %>
+        <%= link_to booking.booker.try(:name), chalkler_path(booking.chalkler) %>
       </div>
       <div class="col-xs-4 col-sm-2">
 
         <% if booking.chalkler != booking.booker %>
           <%= link_to booking.chalkler.name, chalkler_path(booking.chalkler) %>
         <% else %>
-          <% if booking.name == booking.booker.name %>
+          <% if booking.name == booking.booker.try(:name) %>
             <%= link_to booking.name, chalkler_path(booking.chalkler) %>
           <% else %>
             <%= booking.name %>
