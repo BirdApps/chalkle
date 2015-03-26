@@ -27,7 +27,8 @@
    
   </div>
   
-  <h5>Bookings</h5>
+  <h5>
+    <span class='badge'><%= @course.bookings.confirmed.in_future.count %></span> Bookings so far</h5>
 
   <div class="admin-section row">
     <% if @course.bookings.present? %>
@@ -36,7 +37,7 @@
       </div>
     <% end %>
     <div class="col-xs-12 admin-list">
-      <% @course.bookings.each do |booking| %>
+      <% @course.bookings.confirmed.each do |booking| %>
         <div class="admin-list-item">
           <%= link_to booking.name, chalkler_path(booking.chalkler) %>
         </div>
