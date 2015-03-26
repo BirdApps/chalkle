@@ -253,7 +253,9 @@ class Chalkler < ActiveRecord::Base
   private
 
     def passwords_match
-      errors.add('Passwords', 'They must match') unless password == password_confirmation || identities[0].provider == 'facebook'
+      unless identities.present? && identities[0].provider == 'facebook'
+        errors.add('Passwords', 'They must match') unless password == password_confirmation
+      end
     end
 
     def ensure_notification_preference
