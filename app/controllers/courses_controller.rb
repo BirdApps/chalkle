@@ -84,6 +84,7 @@ class CoursesController < ApplicationController
   end
 
   def series
+    not_found unless @provider
     @courses_in_future = @provider.courses.where( url_name: course_name ).in_future.by_date.reverse
     @courses_in_past = @provider.courses.where( url_name: course_name ).in_past.by_date
     not_found and return unless @courses_in_future.present? || @courses_in_past.present?
