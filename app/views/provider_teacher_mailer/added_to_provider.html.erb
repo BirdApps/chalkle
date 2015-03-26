@@ -1,0 +1,8 @@
+<markdown>
+  <%=     
+     t("email.provider_teacher.added_to_provider.body.html", 
+      name: @provider_teacher.name, 
+      url: edit_provider_teacher_url(@provider_teacher.path_params), 
+      provider_name: @provider_teacher.provider.name      ).to_html
+  %>
+</markdown>

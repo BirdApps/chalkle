@@ -60,11 +60,12 @@ class ProviderTeachersController < ApplicationController
           add_flash :error,"That person is already a teacher on your provider"
         else
           @provider_teacher.name = @provider_teacher.name || @provider_teacher.email.split('@')[0]
-          result = @provider_teacher.save
+           result = @provider_teacher.save
         end
       end
 
       if result
+        Notify.for(@provider_teacher).added_to_provider(current_user.chalkler)
         redirect_to provider_teacher_path(@provider_teacher.path_params)
       else
         flash_errors @provider_teacher.errors
