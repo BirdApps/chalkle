@@ -27,7 +27,7 @@
         <%= render partial: 'providers/provider_small', locals: { provider: course.provider } %>
       </div>
         <div class="col-xs-6 flush">
-        <%= render partial: 'provider_teachers/provider_teacher_small', locals: { provider_teacher: course.teacher } %>
+        <%= render partial: 'provider_teachers/provider_teacher_small', locals: { provider_teacher: course.teacher } if course.teacher.present? %>
       </div>
     </div>
   </div>
