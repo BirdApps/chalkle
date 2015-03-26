@@ -22,6 +22,7 @@ Your Chalkle Administrator")
   end
 
   def pretty_time(date)
+    return nil unless date
     unless date.min == 0
       date.strftime("%l:%M%P")
     else
