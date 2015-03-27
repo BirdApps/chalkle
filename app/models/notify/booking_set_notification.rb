@@ -6,9 +6,9 @@ class Notify::BookingSetNotification < Notify::Notifier
   end
 
 
-  def send_recipt(booking_set)
+  def send_receipt
     #to booker
-    booking_set.payments.each do |payment|
+    @booking_set.payments.each do |payment|
       PaymentMailer.receipt_to_chalkler(payment).deliver!
     end
   end
