@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :load_course, :sidebar_administrate_course, :header_provider, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone]
+  before_filter :load_provider,:header_provider, :sidebar_administrate_provider, only: [:series]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :take_me_to, only: [:index]
@@ -82,12 +83,11 @@ class CoursesController < ApplicationController
     render '_paginate_courses', layout: false
   end
 
-  def series 
-    @provider = Provider.where(url_name: params[:provider_url_name]).first
-    not_found and return unless @provider
-    @courses = @provider.courses.displayable.in_future.by_date.where( url_name: params[:course_url_name] )
-    not_found and return unless @courses.present?
-    @courses
+  def series
+    not_found unless @provider
+    @courses_in_future = @provider.courses.where( url_name: course_name ).in_future.by_date.reverse
+    @courses_in_past = @provider.courses.where( url_name: course_name ).in_past.by_date
+    not_found and return unless @courses_in_future.present? || @courses_in_past.present?
   end
 
   def show

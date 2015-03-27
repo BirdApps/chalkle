@@ -65,8 +65,8 @@ class Notification < ActiveRecord::Base
   end
 
   def send_desktop_notification
-    desktop_notification = Roost.new(chalkler, message, href)
-    desktop_notification.deliver
+    ##desktop_notification = Roost.new(chalkler, message, href)
+    ##desktop_notification.deliver
   end
 
   private

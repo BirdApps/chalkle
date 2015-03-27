@@ -236,8 +236,8 @@ class Chalkler < ActiveRecord::Base
   end
 
   def recommended_providers
-    common_followers = providers.map{ |p| p.followers }.flatten.uniq
-    common_providers = common_followers.map{ |p| p.providers }.flatten.uniq
+    common_followers = providers_following.map{ |p| p.followers }.flatten.uniq
+    common_providers = common_followers.map{ |p| p.providers_following }.flatten.uniq
     common_providers - self.providers_following
   end
 
@@ -246,10 +246,16 @@ class Chalkler < ActiveRecord::Base
     recommended_providers.map{|p| p.courses.displayable.in_future }.flatten.sort{ |a,b| a.created_at <=> b.created_at }
   end
 
+  def following_courses_in_next_week
+    providers_following.map{|p| p.courses.displayable.start_at_between(DateTime.current, DateTime.current.advance(weeks: 1)) }.flatten.sort{ |a,b| a.created_at <=> b.created_at }
+  end
+
   private
 
     def passwords_match
-      errors.add('Passwords', 'They must match') unless password == password_confirmation
+      unless identities.present? && identities[0].provider == 'facebook'
+        errors.add('Passwords', 'They must match') unless password == password_confirmation
+      end
     end
 
     def ensure_notification_preference
