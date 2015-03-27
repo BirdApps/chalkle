@@ -390,7 +390,7 @@
       </div>
       <div class="col-xs-12">
         <div class="col-sm-6">
-        <% image_url = f.object.course_upload_image.nil? ? "/images/no-course-img.png" : f.object.course_upload_image  %>
+        <% image_url =  f.object.course_upload_image unless f.object.course_upload_image.nil? %>
           <div class="course center">
             <p class="small grey">Your image will look like this</p>
             <div class="porthole round image-preview">
