@@ -24,6 +24,11 @@ class BookingSet
     @bookings ||= []
   end
 
+  def payments 
+    #there is not meant to be many payments for a booking, but we can't guarantee that – so we're safe for once. 
+    @payments ||= bookings.collect(&:payment).uniq
+  end
+
   def bookings=(bookings)
     @bookings = bookings
   end
@@ -131,6 +136,7 @@ class BookingSet
         #TODO: notify chalkle admin that payment didn't amount to booking cost
       end
     end
+    Notify.for(self).send_recipt
     paid
   end
 

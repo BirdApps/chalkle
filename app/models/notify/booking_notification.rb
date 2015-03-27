@@ -6,11 +6,6 @@ class Notify::BookingNotification < Notify::Notifier
   end
 
   def confirmation
-    #to booker
-    if booking.payment.present?
-      PaymentMailer.receipt_to_chalkler(booking.payment).deliver!
-    end
-
     #to chalkler
     if booking.pseudo_chalkler_email
 
