@@ -59,7 +59,7 @@ class Roost
         password: "bdc1164b79c94ca4afc2c443d91afb50" 
       }
     }
-    keys[Rails.env.to_sym]
+    roost_keys.keys[Rails.env.to_sym]
   end
 
 
