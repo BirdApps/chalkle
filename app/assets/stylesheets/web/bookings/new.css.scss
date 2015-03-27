@@ -3,10 +3,6 @@
 .new_booking {
 	#booking_names{
 		* { transition: all 150ms; }
-		.name-list-container {
-			max-height: 400px;
-			overflow-y: scroll;
-		}
 		ol { padding: 0; }
 		li { 
 			border-radius: 3px;
