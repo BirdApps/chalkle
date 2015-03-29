@@ -22,7 +22,7 @@ describe "Teachings" do
     repeat_frequency: '',
     repeat_count: 1
   } }
-  let!(:chalkler_teaching){ Teaching.new(chalkler) }
+  let!(:chalkler_teaching){ Teaching.new(the_user) }
 
   before(:each) do
     chalkler.providers << provider

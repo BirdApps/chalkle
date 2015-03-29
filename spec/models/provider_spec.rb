@@ -73,13 +73,13 @@ describe Provider do
   	let(:provider2) { FactoryGirl.create(:provider, name: "provider2") }
 
     before do
-      chalkler.providers << provider1
-      chalkler.providers << provider2
+      chalkler.providers_following << provider1
+      chalkler.providers_following << provider2
     end
 
   	it "should provide an array of options that can be used in dropdowns" do
   		required_array = [['provider1', provider1.id],['provider2', provider2.id]]
-  		expect(Provider.select_options(chalkler.providers)).to eq(required_array)
+  		expect(Provider.select_options(chalkler.providers_following)).to eq(required_array)
   	end
   end
 

@@ -12,7 +12,7 @@ class Notify::BookingNotification < Notify::Notifier
     end
 
     #to chalkler
-    if booking.pseudo_chalkler_email
+    if booking.pseudo_chalkler_email.present?
 
       message = I18n.t('notify.booking.booked_in', course_name: booking.course.name, booker: booking.booker.name)
       BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver!
