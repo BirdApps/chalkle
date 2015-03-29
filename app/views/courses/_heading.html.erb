@@ -12,7 +12,7 @@
 
     <div class="details">
       <h2 class="_heading_title flush">
-        <% if current_page? provider_course_path(@course.path_params)  %>
+        <% unless current_page? provider_course_path(@course.path_params)  %>
           <%= link_to @course.name, provider_course_path(@course.path_params) %>
         <% else %>
           <%= @course.name %>
@@ -42,13 +42,23 @@
           <br />
         <% end %>
       </div>
-
-      <div>
-        <a href="#map-canvas">
-          <span class="fa fa-map-marker"></span>
-          <span class="small"><%= @course.address || to_html(@course.venue) %></span>
-        </a>
-      </div>
+      
+      <% if current_page? provider_course_path(@course.path_params) %>
+        <div>
+          <a href="#map-canvas">
+            <span class="fa fa-map-marker"></span>
+            <span class="small"><%= @course.address || to_html(@course.venue) %></span>
+          </a>
+        </div>
+      <% else %>
+         <p class="light">
+          <% if @course.cost? && @course.cost > 0 %>
+            <span class="big">$<%= @course.cost_formatted %></span> per attendee
+          <% else %>
+            This <%= @course.type %> is <strong>free to attend</strong>  
+          <% end %>
+        </p>
+      <% end %>
       
 
     </div>
