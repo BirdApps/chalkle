@@ -112,10 +112,6 @@ Chalkle::Application.routes.draw do
     end
     
     resources :outgoing_payments, path: 'outgoings' do
-      collection do 
-        get 'pending'
-        get 'complete'
-      end
       member do
         get 'approve'
         put 'pay'
