@@ -36,6 +36,10 @@ class NotificationPreference < ActiveRecord::Base
     update_attributes :preferences => Hash[ ALL_NOTIFICATIONS.collect{|n| [n, true]} ]
   end
 
+  # We want to make the preference respond to all the possible notifications. 
+  # do this using dynaimic codes and defining a method for each possible notification. 
+  # maybe too much clever for the sake of dry, but it means you can just add a value to the options arrays up there and it all just works. 
+   
   ALL_NOTIFICATIONS.each do |notification|
 
     define_method(notification) do
