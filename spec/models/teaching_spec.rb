@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Teachings" do
   let(:chalkler) { FactoryGirl.create(:chalkler) }
-  let(:the_user) { FactoryGirl.create(:the_user) }
+  let(:the_user) { FactoryGirl.create(:the_user, chalkler: chalkler) }
   let(:provider) { FactoryGirl.create(:provider, provider_rate_override: 0.1, teacher_percentage: 0.5) }
   let(:provider2) { FactoryGirl.create(:provider, provider_rate_override: 0.6, teacher_percentage: 0.1) }
   let(:params) { {
@@ -25,8 +25,8 @@ describe "Teachings" do
   let!(:chalkler_teaching){ Teaching.new(the_user) }
 
   before(:each) do
-    chalkler.providers << provider
-    chalkler.providers << provider2
+    chalkler.providers_following << provider
+    chalkler.providers_following << provider2
   end
 
   describe "initialize" do
