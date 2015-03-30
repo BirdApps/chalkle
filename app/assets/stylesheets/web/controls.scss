@@ -287,6 +287,9 @@ html {
 
     .fancy-header {
       font-family: "proxima-nova", sans-serif;
+      .flush {
+        margin: 0 auto !important;
+      }
       h3, h4{
         border: 0;
         position: relative;

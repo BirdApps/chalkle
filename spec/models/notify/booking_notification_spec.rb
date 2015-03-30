@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Notify::BookingNotification  do
 
   let(:chalkler) {FactoryGirl.create(:chalkler) }
-  let(:booking) { FactoryGirl.create(:booking, chalkler: chalkler) }
+  let(:booking) { FactoryGirl.create(:booking, chalkler: chalkler, booker: chalkler) }
   describe ".confirmation" do
 
     it "notifies chalkler" do

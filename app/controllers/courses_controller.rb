@@ -216,45 +216,6 @@ class CoursesController < ApplicationController
 
   private
 
-    def header_course
-      @header_partial = '/layouts/headers/provider'
-      @page_title_logo = @course.provider.logo
-      @page_title = "[#{@course.provider.name}](#{provider_path(@course.provider.url_name)})"
-      @nav_links = []
-      if @course.spaces_left?
-          @nav_links << {
-            img_name: "bolt",
-            link: new_provider_course_booking_path(@course.id),
-            active: request.path.include?("new"),
-            title: "Join"
-          }
-      end
-      if policy(@course).read?
-        @nav_links << {
-            img_name: "bolt",
-            link: provider_course_bookings_path(@course),
-            active: request.path.include?("bookings"),
-            title: "Bookings"
-          }
-      end
-      if policy(@course).edit?
-        @nav_links << {
-          img_name: "settings",
-          link: edit_provider_course_path(@course),
-          active: request.path.include?("edit"),
-          title: "Edit"
-        }
-      end
-      if policy(@course).write?(true)
-        @nav_links << {
-          img_name: "people",
-          link: clone_provider_course_path(@course),
-          active: false,
-          title: "Copy"
-        }
-      end
-    end
-
     def take_me_to
       if params[:search].present?
         try_id = params[:search] 

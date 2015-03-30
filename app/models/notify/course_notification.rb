@@ -23,7 +23,7 @@ class Notify::CourseNotification < Notify::Notifier
       
     course.teacher.send_notification Notification::REMINDER, provider_course_path(course.path_params), message, course
 
-    course.bookings.confirmed.each do |booking|
+    course.bookings.displayable.each do |booking|
       Notify.for(booking).as(:teacher).cancelled
     end
 

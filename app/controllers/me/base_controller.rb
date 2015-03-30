@@ -9,4 +9,7 @@ class Me::BaseController < ApplicationController
       @page_title_logo = current_user.avatar
     end
 
+    def load_chalkler
+      @chalkler = current_chalkler
+    end
 end

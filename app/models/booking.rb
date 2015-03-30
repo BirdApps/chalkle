@@ -85,11 +85,11 @@ class Booking < ActiveRecord::Base
   scope :by_date_desc, order('created_at DESC')
   scope :date_between, ->(from,to) { where(:created_at => from.beginning_of_day..to.end_of_day) }
   
-  scope :upcoming, -> { course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).order('courses.start_at').uniq }
+  scope :in_future,  -> { course_visible.joins(:course => :lessons).where( 'lessons.start_at > ?', Time.current ).uniq }
 
-  scope :in_future, upcoming
+  scope :upcoming, confirmed.in_future
 
-  scope :in_past, -> { course_visible.joins(:course => :lessons).where( 'lessons.start_at < ?', Time.current ).order('courses.start_at').uniq }
+  scope :in_past, -> { course_visible.joins(:course => :lessons).where( 'lessons.start_at < ?', Time.current ).uniq }
 
   scope :needs_reminder, -> { course_visible.confirmed.where('reminder_mailer_sent != true').joins(:course).where( "courses.start_at BETWEEN ? AND ?", Time.current, (Time.current + 2.days) ).where(" courses.status='Published'").uniq }
 

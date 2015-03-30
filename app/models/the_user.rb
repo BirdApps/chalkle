@@ -1,6 +1,6 @@
 class TheUser
 
-  def initialize current_chalkler
+  def initialize(current_chalkler = nil)
     @chalkler = current_chalkler || Chalkler.new
   end
 
@@ -34,6 +34,10 @@ class TheUser
 
   def chalkler
     @chalkler
+  end
+
+  def chalkler=(set_chalkler)
+    @chalkler = set_chalkler
   end
 
   def avatar
