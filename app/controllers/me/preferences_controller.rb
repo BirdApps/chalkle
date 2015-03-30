@@ -65,9 +65,4 @@ class Me::PreferencesController < Me::BaseController
   #   redirect_to :root, notice: "Your account has been deleted."
   # end
 
-  private
-    def load_chalkler
-      @chalkler = current_chalkler
-    end
-
 end
