@@ -82,7 +82,7 @@ class Notify::BookingNotification < Notify::Notifier
     end
 
 
-    if role == :chalkler or :teacher
+    if role == :chalkler || role == :teacher
       #to provider admin
       message = I18n.t('notify.booking.cancelled.to_provider_admin', course_name: booking.course.name, from_name: booking.name)
 
