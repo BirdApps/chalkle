@@ -138,7 +138,7 @@ Chalkle::Application.routes.draw do
 
   resource :provider, except: [:new, :create], path: ':provider_url_name' do
     match '', to: 'providers#show'
-    
+    get 'outgoings'
     get 'about'
     get 'metrics'
     match 'contact', to: 'providers#contact'
@@ -155,6 +155,7 @@ Chalkle::Application.routes.draw do
     resources :provider_teachers, path: 'teachers', as: 'teachers' do
       member do 
         get 'fetch', to: 'courses#fetch'
+        get 'outgoings'
       end
     end
 

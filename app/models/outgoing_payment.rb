@@ -115,6 +115,10 @@ class OutgoingPayment < ActiveRecord::Base
     end
   end
 
+  def recipient
+    for_provider? ? provider : teacher
+  end
+
   def for_teacher?
     teacher.present?
   end
@@ -124,11 +128,7 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def name
-    if for_provider?
-      provider.name
-    else
-      teacher.name
-    end
+    recipient.name
   end
 
   def account
@@ -245,6 +245,7 @@ class OutgoingPayment < ActiveRecord::Base
     self.reference = reference
     self.paid_date = DateTime.current unless self.paid_date
     self.status = STATUS_4
+    Notify.for(self).paid
     save
   end
 

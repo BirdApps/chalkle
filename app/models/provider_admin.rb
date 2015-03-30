@@ -4,6 +4,7 @@ class ProviderAdmin < ActiveRecord::Base
   EMAIL_VALIDATION_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   has_many   :courses, through: :provider
+  has_many   :outgoing_payments
   belongs_to :provider
   belongs_to :chalkler
 
