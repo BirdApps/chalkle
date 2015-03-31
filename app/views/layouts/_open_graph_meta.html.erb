@@ -13,6 +13,21 @@
 <!-- course -->
     <meta property="og:title" content="<%= @course.name.titleize %>" /> 
     <meta property="og:type" content="product.item" />
+
+      <meta property="og:url"                         content="<%= provider_course_url(@course.path_params) -%>" /> 
+      <meta property="product:price:amount"           content="<%= @course.cost -%>" /> 
+      <meta property="product:price:currency"         content="NZD" /> 
+      <meta property="product:shipping_cost:amount"   content="0" /> 
+      <meta property="product:shipping_cost:currency" content="NZD" /> 
+      <meta property="product:shipping_weight:value"  content="0" /> 
+      <meta property="product:shipping_weight:units"  content="0" /> 
+      <meta property="product:sale_price:amount"      content="<%= @course.cost -%>" /> 
+      <meta property="product:sale_price:currency"    content="NZD" /> 
+      <meta property="product:sale_price_dates:start" content="Sample Sale Price Dates: Start" /> 
+      <meta property="product:sale_price_dates:end"   content="Sample Sale Price Dates: End" /> 
+      <meta property="product:availability"           content="<%= @course.spaces_left -%>" /> 
+      <meta property="product:condition"              content="" /> 
+
     <meta property="product:retailer_item_id" content="<%= @course.id -%>" />
     
     <meta property="og:description" content="<%= truncate @course.do_during_class, 150 %>" />
