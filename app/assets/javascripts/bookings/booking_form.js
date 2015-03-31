@@ -4,7 +4,6 @@ $(function(){
     var template = $('#attendee_template').html();
     $('#attendee_template').remove();
 
-    hijack_navigation();
     var ready_to_submit = false;
     function hijack_navigation(){
       window.onbeforeunload = function () {
@@ -13,6 +12,8 @@ $(function(){
         }        
       }
     }
+
+    hijack_navigation();
 
     function show_attendee(attendee_i){
       var attendees = $('.attendee');

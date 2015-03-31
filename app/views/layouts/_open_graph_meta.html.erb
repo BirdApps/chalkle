@@ -13,6 +13,8 @@
 <!-- course -->
     <meta property="og:title" content="<%= @course.name.titleize %>" /> 
     <meta property="og:type" content="product.item" />
+    <meta property="product:retailer_item_id" content="<%= @course.id -%>" />
+    
     <meta property="og:description" content="<%= truncate @course.do_during_class, 150 %>" />
     <meta property="og:image" content="<%= @course.course_upload_image.present? ? @course.course_upload_image : asset_path('social-logo.jpg') %>" />
 
