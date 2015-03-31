@@ -5,11 +5,12 @@ class OutgoingPaymentsController < ApplicationController
 
 
   def index
+    authorize :index
     @outgoing_payments = (@provider_teacher || @provider).outgoing_payments.order(:paid_date).reverse
   end
 
   def show
-
+    authorize @outgoing_payment
   end
 
   private
