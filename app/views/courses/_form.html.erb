@@ -27,10 +27,9 @@
   <%= bootstrap_form_for(@teaching, wrapper: :simple_bootstrap3, url: submit_url, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
     
     <div id="type" class="parts center">
-      <div class="fancy-header">
-        <h3><%= @teaching.editing? ? 'Edit' : 'New' %> Class</h3>
-        <hr />
-      </div>
+
+      <%= render partial: 'fancy_header', locals: { fancy_title: @teaching.editing? ? 'Edit Class' : 'New Class' } %>
+
       <input type="hidden" id="teaching_course_class_type" value="<%= f.object.course_class_type %>" />
       <% if f.object.editing? %>
         <input type="hidden" name="_method" value="put" />
@@ -54,10 +53,8 @@
     </div>
 
     <div id="details" class="parts">
-      <div class="fancy-header">
-        <h3><span class="class_only">Class</span><span class="course_only">Course</span> Info</h3>
-        <hr />
-      </div>
+
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Class Info" } %>
 
       <%= f.input :title, label: "Give your <span class='class_only'>class</span><span class='course_only'>course</span> a <strong>name</strong>", input_html: { :'data-error-message' => 'You must write a name' }, wrapper: :horizontal %>
 
@@ -97,6 +94,7 @@
             <h3>Class <span class="class_only">Time</span><span class="course_only class-count-num"><%= i+1 %></span></h3>
             <hr />
           </div>
+
             
           <div class="col-sm-12">
             <div class="info teaching_times_summary">
@@ -127,10 +125,8 @@
     </div>
 
     <div id="learning" class="parts">
-      <div class="fancy-header">
-        <h3><span class="class_only">Class</span><span class="course_only">Course</span>  Details</h3>
-        <hr />
-      </div>
+    
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Class Details" } %>
 
       <%= f.input :learning_outcomes, as: :text, label: "Learning <strong>Outcomes</strong> <p class='small grey'>What should learners come away with at the end of the <span class='class_only'>class</span><span class='course_only'>course</span>?</p>", wrapper: :horizontal, input_html: { :'data-error-message' => 'You must specify learning outcomes' } %>
 
@@ -154,10 +150,8 @@
 
     <div id="teaching" class="parts">
 
-      <div class="fancy-header">
-        <h3>Venue Information</h3>
-        <hr />
-      </div>
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Venue Information" } %>
+
 
       <%= f.input :venue_address, label: '<abbr title="required">*</abbr>Venue <strong>Address</strong>', wrapper: :horizontal, input_html: { :'data-error-message' => "Sorry, we couldn't understand that address" } %>
       <%= f.input :street_number, as: :hidden %>
@@ -177,11 +171,7 @@
         </div>
       <% end %>
 
-      <div class="fancy-header">
-        <h3>Pricing</h3>
-        <hr />
-      </div>
-        
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Pricing" } %>
       
       <%= f.input :cost, as: :currency, :label => "<strong>Advertised</strong> price", wrapper: :horizontal, input_html: { value: money_formatted(f.object.cost) || '0.00', :'data-error-message' => "Negative values are not valid" } %>
 
@@ -242,10 +232,9 @@
     </div>
 
     <div id="summary" class="parts">
-      <div class="fancy-header">
-        <h3>Summary</h3>
-        <hr />
-      </div>
+      
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Summary" } %>
+
       <div class="center row summary-part">
         <h2 id="summary_title"></h2>
         <p class="light">The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> will run</p>
@@ -384,10 +373,8 @@
         </div>
       </div>
 
-      <div class="fancy-header">
-        <h3>Photo</h3>
-        <hr />
-      </div>
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Photo" } %>
+
       <div class="col-xs-12">
         <div class="col-sm-6">
         <% image_url =  f.object.course_upload_image unless f.object.course_upload_image.nil? %>
@@ -407,10 +394,9 @@
           <%= f.input :course_upload_image, as: :styled_file, input_html: { value: "", class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
         </div>
       </div>
-      <div class="fancy-header">
-        <h3>Extras</h3>
-        <hr />
-      </div>
+      
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Extras" } %>
+
       <div class="row">
           <%= f.input :note_to_attendees, as: :text, label: 'Special note only to attendees <div class="small light grey">Only visible once their booking is complete</div>', wrapper: :horizontal %>
       </div>

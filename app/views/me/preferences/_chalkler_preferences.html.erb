@@ -5,10 +5,9 @@
 <div class="col-xs-12 col-md-8 new_form_wrapper">
 <%= bootstrap_form_for(@chalkler_email_preferences, url: me_preferences_path, html: { method: :put, enctype: "multipart/form-data", class: 'form-horizontal' }) do |f| %>
   <%= f.error_notification %>
-  <div class="fancy-header">
-    <h3>Photo</h3>
-    <hr />
-  </div>
+
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Photo" } %>
+
   <div class="row">
     <div class="col-xs-12 col-sm-5">
       <div class="avatar image-preview">
@@ -20,19 +19,15 @@
     </div>
   </div>
 
-  <div class="fancy-header">
-    <h3>Details</h3>
-    <hr />
-  </div>
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Details" } %>
+
   <%= f.input :name, label: 'Name', wrapper: :horizontal %>
   <%= f.input :email, as: :email, label: 'Email Address', wrapper: :horizontal %>
   <%= f.input :phone_number, label: 'Phone', wrapper: :horizontal %>
   <%= f.input :bio, label: 'Bio', as: :text, wrapper: :horizontal %>
 
-  <div class="fancy-header">
-    <h3>Providers you are following</h3>
-    <hr />
-  </div>
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Providers you are following" } %>
+
   <div class="row col-xs-12">
     <%= render partial: 'me/providers/provider' ,collection: current_chalkler.providers_following.order('name ASC')  %>  
   </div>

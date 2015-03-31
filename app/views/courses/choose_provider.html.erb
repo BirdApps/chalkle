@@ -14,10 +14,7 @@
 
 <% else %>
 
-  <div class="fancy-header">
-    <h3>Which provider is this course for?</h3>
-    <hr />
-  </div> 
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Which provider is this course for?" } %>
 
   <% current_user.providers_adminable.each do |provider| %>
     

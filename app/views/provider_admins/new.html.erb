@@ -2,10 +2,9 @@
 </div>
 <div class="new_form_wrapper col-xs-12 col-sm-8">
   <%= bootstrap_form_for(@provider_admin, wrapper: :simple_bootstrap3, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
-    <div class="fancy-header">
-      <h3>Create Admin</h3>
-      <hr />
-    </div>
+
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Create Admin" } %>
+
     <%= f.text_field :provider_id, type: :hidden  %>
      <p class="small grey center">
       If the admin is already registered with chalkle,<br /> be sure to use the email they used when signing up.

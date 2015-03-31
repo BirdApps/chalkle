@@ -1,8 +1,7 @@
 <div class="provider_plan">
-  <div class="fancy-header">
-      <h3><%= provider_plan.name %></h3>
-      <hr />
-  </div>
+
+  <%= render partial: 'fancy_header', locals: { fancy_title: provider_plan.name } %>
+
    <div class="row">
     <div class="col-xs-4">
       <strong>Class</strong> attendee fee

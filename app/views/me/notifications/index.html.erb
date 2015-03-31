@@ -1,7 +1,5 @@
-<div class="fancy-header">
-  <h3 class="flush">Notifications</h3>
-  <hr />
-</div> 
+<%= render partial: 'fancy_header', locals: { fancy_title: "Notifications" } %>
+
 
 <ul class="no-list notifications all-notifications">
   <%= render partial: 'notifications/notification', collection: paginate_these(@notifications) %>

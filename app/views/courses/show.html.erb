@@ -105,10 +105,8 @@
 
           <div class="left-col">
             <div class="row flush">
-              <div class="fancy-header">
-                <h4>Details</h4>
-                <hr class="small" />
-              </div>
+
+              <%= render partial: 'fancy_header', locals: { fancy_title: "Details", small: true } %>
 
               <div class="col-xs-12">
                 <%= to_html @course.learning_outcomes %>
@@ -122,20 +120,17 @@
 
       <div class="row flush-xs">
         <div class="col-xs-12">
-          <div class="fancy-header row">
-            <h4>What we'll be doing</h4>
-            <hr class="small" />
-          </div>
+
+        <%= render partial: 'fancy_header', locals: { fancy_title: "What we'll be doing", small: true } %>
             
           <%= to_html @course.do_during_class %>
         </div>
 
         <% if @course.suggested_audience.present?  %>
           <div class="col-xs-12">
-            <div class="fancy-header row">
-              <h4>Who this is suitable for</h4>
-              <hr class="small" />
-            </div>
+          
+            <%= render partial: 'fancy_header', locals: { fancy_title: "Who this is suitable for", small: true } %>
+          
             <%= to_html @course.suggested_audience %>
           </div>
         <% end %>
@@ -146,10 +141,9 @@
         <div class="row">
           <% if @course.prerequisites.present?  %>
             <div class="col-md-6 col-xs-12">
-              <div class="fancy-header">
-                <h4>Be sure to bring</h4>
-                <hr class="small" />
-              </div>
+
+              <%= render partial: 'fancy_header', locals: { fancy_title: "Be sure to bring", small: true } %>
+              
               <div class="col-xs-12">
                 <%= to_html @course.prerequisites %>
               </div>
@@ -158,10 +152,9 @@
 
           <% if @course.additional_comments.present?  %>
             <div class="col-md-6 col-xs-12">
-              <div class="fancy-header">
-                <h4>Additional information</h4>
-                <hr class="small" />
-              </div>
+              
+              <%= render partial: 'fancy_header', locals: { fancy_title: "Additional information", small: true } %>
+              
               <div class="col-xs-12">
                 <%= to_html @course.additional_comments %>
               </div>

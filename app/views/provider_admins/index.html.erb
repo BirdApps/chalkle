@@ -1,8 +1,6 @@
 <div class="people">
-    <div class="fancy-header">
-    <h3><%= @provider.name %> Admins</h3> 
-    <hr />
-  </div> 
+  
+  <%= render partial: 'fancy_header', locals: { fancy_title: "#{@provider.name} Admins" } %>
 
   <br />
   <%= render @admins %>

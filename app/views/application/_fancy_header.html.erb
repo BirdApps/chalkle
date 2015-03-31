@@ -1,0 +1,11 @@
+<% if defined? small %>
+  <div class="fancy-header text-left">
+    <h4><%= fancy_title %></h4>
+    <hr class="small" />
+  </div>
+<% else %>
+  <div class="fancy-header">
+    <h3><%= fancy_title %></h3>
+    <hr />
+  </div>
+<% end %>

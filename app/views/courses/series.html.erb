@@ -1,22 +1,21 @@
 <% if @courses_in_future.present? %>
-  <div class="fancy-header">
-    <h3>Upcoming</h3>
-    <hr />
-  </div>
+
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Upcoming" } %>
+
   <div class="row">
     <%= render @courses_in_future %>
   </div>
+  
 <% end %>
 
 
 
 <% if @courses_in_past.present? %>
-  <div class="fancy-header">
-    <h3>Previous</h3>
-    <hr />
-  </div>
+  
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Previous" } %>
   
   <div class="row">
     <%= render @courses_in_past %>
   </div>
+
 <% end %>

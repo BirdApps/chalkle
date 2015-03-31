@@ -8,10 +8,9 @@
 
 <div class="row teachers">
   <div class="col-xs-12">
-    <div class="fancy-header">
-      <h3>Teachers</h3>
-      <hr />
-    </div> 
+
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Teachers" } %>
+
     <%= render teachers %>
   </div>
   <div class="col-xs-12 text-center pad-top-20">

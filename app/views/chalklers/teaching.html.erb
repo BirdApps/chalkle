@@ -12,10 +12,7 @@
 <% end %>
 
 <% if @chalkler.courses_teaching.in_future.present? %>
-  <div class="fancy-header">
-    <h3>Upcoming</h3>
-    <hr />
-  </div>
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Upcoming" } %>
 
   <%= render partial: 'me/courses/course' ,collection: @chalkler.courses_teaching.in_future.uniq %>
 <% end %>
@@ -23,10 +20,7 @@
 
 
 <% if @chalkler.courses_teaching.in_past.present? %>
-  <div class="fancy-header">
-    <h3>Previous</h3>
-    <hr />
-  </div>
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Previous" } %>
 
   <%= render partial: 'me/courses/course' ,collection: @chalkler.courses_teaching.in_past.uniq %>
 <% end %>
