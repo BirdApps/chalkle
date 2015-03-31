@@ -124,7 +124,7 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def for_provider?
-    provider.present?
+    self.provider.present?
   end
 
   def name
@@ -240,12 +240,34 @@ class OutgoingPayment < ActiveRecord::Base
     self.status = STATUS_3
   end
 
+  def outgoing_provider
+    if for_provider?
+      recipient
+    else
+      recipient.provider
+    end
+  end
 
-  def mark_paid!(reference = nil)
-    self.reference = reference
+  def path_params
+    if for_provider?
+      {
+        provider_url_name: provider,
+        id: self
+      }
+    else
+      {
+        provider_url_name: teacher.provider,
+        teacher_id: teacher,
+        id: self
+      }
+    end
+  end
+
+  def mark_paid!(_reference = nil)
+    self.reference = _reference unless _reference.nil?
     self.paid_date = DateTime.current unless self.paid_date
     self.status = STATUS_4
-    Notify.for(self).paid
+    Notify.for(self).paid unless self.total == 0
     save
   end
 

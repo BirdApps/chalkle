@@ -6,19 +6,30 @@ class Notify::OutgoingPaymentNotification < Notify::Notifier
   end
 
   def paid
-    message = I18n.t('notify.outgoing_payment.paid', course_name: booking.course.name, booker: booking.booker.name)
-    
     if @outgoing_payment.for_provider? 
-      link = outgoings_provider_path(@outgoing_payment.recipient)
+      
+      message = I18n.t('notify.outgoing_payment.paid_provider', payment_total: sprintf('%.2f',@outgoing_payment.total), provider_name: @outgoing_payment.outgoing_provider.name )
+      link = provider_outgoing_path(@outgoing_payment.path_params)
+      
       @outgoing_payment.recipient.provider_admins.each do |admin|
-        admin.chalkler.send_notification(Notification::CHALKLE, link, message, @outgoing_payment) if admin.chalkler.present?
+        if admin.chalkler.present?
+          @chalkler = admin.chalkler
+          admin.chalkler.send_notification(Notification::CHALKLE, link, message, @outgoing_payment)
+        end
       end
+
     else
-      link = outgoings_provider_teacher_path(@outgoing_payment.recipient.path_params)
-      @outgoing_payment.recipient.send_notification(Notification::CHALKLE, link, message, @outgoing_payment) if @outgoing_payment.recipient.chalkler.present?
+     
+      message = I18n.t('notify.outgoing_payment.paid_teacher', payment_total: sprintf('%.2f',@outgoing_payment.total), provider_name: @outgoing_payment.outgoing_provider.name )
+      link = provider_teacher_outgoing_path(@outgoing_payment.path_params)
+      
+      if @outgoing_payment.recipient.chalkler.present?
+        @chalkler = @outgoing_payment.recipient.chalkler
+        @outgoing_payment.recipient.send_notification(Notification::CHALKLE, link, message, @outgoing_payment)
+      end
+
     end
 
     OutgoingPaymentMailer.remittance_advice(@outgoing_payment).deliver!
   end
-
 end

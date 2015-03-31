@@ -1,0 +1,10 @@
+<% @skip_unsubscribe = true %>
+<markdown>
+  <%= 
+    if @outgoing_payment.for_provider?
+      t("email.outgoing_payment.paid.to_provider.body.html", payment_total: number_to_currency(@outgoing_payment.total), provider_name: @provider.name, provider_url: provider_url(@provider), account: @outgoing_payment.bank_account, breakdown_url: provider_outgoing_url(@outgoing_payment.path_params) ).to_html
+    else
+     t("email.outgoing_payment.paid.to_teacher.body.html", payment_total: number_to_currency(@outgoing_payment.total), provider_name: @provider.name, provider_url: provider_url(@provider), account: @outgoing_payment.bank_account, breakdown_url: provider_teacher_outgoing_url(@outgoing_payment.path_params) ).to_html
+    end
+  %>
+</markdown>
