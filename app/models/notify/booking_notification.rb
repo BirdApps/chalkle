@@ -7,7 +7,7 @@ class Notify::BookingNotification < Notify::Notifier
 
   def confirmation
     #to chalkler
-    if booking.pseudo_chalkler_email
+    if booking.pseudo_chalkler_email.present?
 
       message = I18n.t('notify.booking.booked_in', course_name: booking.course.name, booker: booking.booker.name)
       BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver!
@@ -82,7 +82,7 @@ class Notify::BookingNotification < Notify::Notifier
     end
 
 
-    if role == :chalkler or :teacher
+    if role == :chalkler || role == :teacher
       #to provider admin
       message = I18n.t('notify.booking.cancelled.to_provider_admin', course_name: booking.course.name, from_name: booking.name)
 

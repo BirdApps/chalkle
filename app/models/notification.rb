@@ -33,6 +33,26 @@ class Notification < ActiveRecord::Base
   
   after_create :send_desktop_notification 
 
+  def image
+    image_src = nil
+    if target.present?
+      image_src = case target.class.to_s
+      when "Booking"
+        target.image
+      when "Course"
+        target.course_upload_image
+      when "Chalkler"
+        target.avatar
+      when "Provider"
+        target.logo
+      when "ProviderTeacher"
+        target.avatar
+      when "ProviderAdmin"
+        target.chalkler.avatar
+      end
+    end
+    image_src || read_attribute(:image)
+  end
 
   def seen?
     viewed_at.present?

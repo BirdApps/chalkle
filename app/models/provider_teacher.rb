@@ -71,8 +71,12 @@ class ProviderTeacher < ActiveRecord::Base
   end
 
   private 
-    def method_missing(method, *args, &block)  
-      chalkler.send(method, *args, &block)
+    def method_missing(method, *args, &block)
+      if chalkler.present?
+        chalkler.send(method, *args, &block)
+      else
+        super
+      end
     end  
 
 end

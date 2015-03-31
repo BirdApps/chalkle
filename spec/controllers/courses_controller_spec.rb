@@ -12,9 +12,6 @@ describe CoursesController do
         expect(response).to redirect_to(new_chalkler_session_path)
       end
 
-      it "shows a flash message" do
-        expect(flash[:notice]).to eq('You do not have permission to view that page')
-      end
     end
 
   end
