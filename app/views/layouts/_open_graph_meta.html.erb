@@ -9,7 +9,7 @@
     <meta property="og:description" content="<%= @provider_teacher.bio || 'Classes taught by '+@provider_teacher.name %>" />
     <meta property="og:image" content="<%= @provider_teacher.avatar.present? ? @provider_teacher.avatar : asset_path('social-logo.jpg') %>" />
 
-  <% elsif @course && @course.present? %>
+  <% elsif @course && @course.persisted? %>
 <!-- course -->
     <meta property="og:title" content="<%= @course.name.titleize %>" /> 
     <meta property="og:type" content="product.item" />
