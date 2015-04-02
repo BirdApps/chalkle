@@ -17,7 +17,7 @@
  %>
 <div class="new_form_wrapper new_course_form_wrapper" style="display:none;">
   <ol class="breadcrumb text-center">
-    <li class="active"><a class="part_link" href="#type" id="type-link">Class Type</a></li>
+    <li><a class="part_link" href="#type" id="type-link">Class Type</a></li>
     <li><a href="#details" class="part_link" id="details-link">Details</a></li>
     <li><a href="#learning" class="part_link" id="learning-link">Learning</a></li>
     <li><a href="#teaching" class="part_link" id="teaching-link">Teacher & Venue</a></li>
@@ -115,7 +115,7 @@
       <% end %>
       <div class="class-count-bumper"></div>
 
-      <div class="row prevnext">
+      <div class="row flush prevnext">
         <div class="col-xs-5 prev">
           <a href="#type" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
         </div>
@@ -142,7 +142,7 @@
 
       <%= f.input :additional_comments, as: :text, label: "Any other comments? <p class='small grey'>Is there anything else that learners should know before coming?</p>", wrapper: :horizontal %>
       
-      <div class="row prevnext">
+      <div class="row flush prevnext">
         <div class="col-xs-5 prev">
           <a href="#details" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
         </div>
@@ -231,7 +231,7 @@
 
       <% end  %>
         
-      <div class="row prevnext">
+      <div class="row flush prevnext">
         <div class="col-xs-5 prev">
           <a href="#learning" class="part_link block"><span class="fa fa-angle-double-left"></span> Previous</a>
         </div>
@@ -246,12 +246,12 @@
         <h3>Summary</h3>
         <hr />
       </div>
-      <div class="center row summary-part">
+      <div class="center row flush summary-part">
         <h2 id="summary_title"></h2>
         <p class="light">The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> will run</p>
         <p id="summary_times_summary"></p>
       </div>
-      <div class="row summary-part fee-summary" id="fee_summary" data-error-message="Minimum provider income must be a positive amount.">
+      <div class="row flush summary-part fee-summary" id="fee_summary" data-error-message="Minimum provider income must be a positive amount.">
         <div class="col-xs-6 text-right light teaching_cost">
           The <strong><span class='class_only'>Class</span><span class='course_only'>Course</span></strong> is priced at:
         </div>
@@ -268,7 +268,7 @@
         </div>
         
         <div class="col-xs-6 text-right light small grey">
-          <span id="summary_provider_id">Provider</span> portion
+          Provider portion
         </div>
         <div class="col-xs-6">
           <input id="teaching_provider_fee" disabled="disabled" />
@@ -356,7 +356,7 @@
       </div>
 
 
-      <div class="row summary-part">
+      <div class="row flush summary-part">
         <div class="col-sm-6">
           <div id="map-canvas"></div>
           <div class="text-right">
@@ -411,10 +411,10 @@
         <h3>Extras</h3>
         <hr />
       </div>
-      <div class="row">
+      <div class="row flush">
           <%= f.input :note_to_attendees, as: :text, label: 'Special note only to attendees <div class="small light grey">Only visible once their booking is complete</div>', wrapper: :horizontal %>
       </div>
-      <div class="row">
+      <div class="row flush">
         <div class="form-group">
           <div class="control-label col-sm-4">
             <label class="radio_button_group optional" for="teaching_use_custom_fields">
@@ -450,13 +450,13 @@
                 <h4 class="modal-title text-center" id="customFieldModalLabel">Custom Booking Field</h4>
               </div>
               <div class="modal-body">
-                <div class="form-group row">
+                <div class="form-group row flush">
                   <label class="col-xs-3">Prompt</label>
                   <div class="col-xs-9">
                     <input type="text" class="form-control col-xs-8 custom_prompt" placeholder="e.g. Do you have any food allergies?" />
                   </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row flush">
                   <label class="col-xs-3">Format</label>
                    <div class="col-xs-9">
                     <select class="form-control custom_type">
@@ -468,14 +468,14 @@
                     </select>
                   </div>
                 </div>
-                <div class="form-group row check_box_options">
+                <div class="form-group row flush check_box_options">
                   <label class="col-xs-3">Options</label>
                   <div class="col-xs-9">
                     <input type="text" data-role="tagsinput" class="form-control col-xs-8 custom_options" placeholder="" />
                     <div class="small light grey">Press comma after each option</div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row flush">
                   <div class="col-xs-9 col-xs-offset-3">
                     <div class="btn btn-primary" id="create_custom_field_btn">Save</div>
                   </div>
@@ -492,7 +492,7 @@
       <br /><br />
       <div class="prevnext">
         
-        <div class="row">
+        <div class="row flush">
           <div class="col-md-3">
           </div>
           <div class="col-md-6 next">
@@ -518,7 +518,7 @@
           <div class="col-md-3">
           </div>
         </div>
-        <div class="row prev">
+        <div class="row flush prev">
           <a href="#teaching" class="part_link block center"><span class="fa fa-angle-double-left"></span>Previous</a>
         </div>
       </div>

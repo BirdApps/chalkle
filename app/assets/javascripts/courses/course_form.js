@@ -33,13 +33,11 @@ $(function(){
       
       check_hash_change();
       
-      if(location.hash!=""){
-        part_change(location.hash);
-      }else{
+      if(location.hash == ""){
         if($('#type_unchangable').length > 0){
-          update_url( '#details' );
+          location.hash = '#details';
         }else{
-          update_url("#type");
+          location.hash = '#type';
         }
       }
       $('#teaching_cost').change(display_pay_type);
@@ -57,7 +55,7 @@ $(function(){
 
     function check_hash_change(){
       window.setInterval(function(){
-        current_part = $('.breadcrumb li.active a').attr('href');
+        current_part = get_location();
         if(current_part != location.hash){
           part_change(location.hash, false, true);
         }
@@ -542,6 +540,7 @@ $(function(){
     //---START NAVIGATION 
     function navigate_to_invalid(location){
       var prev_location = parts[parts.indexOf(location)-1]; 
+      if(prev_location == undefined) prev_location = '#type';
       if(location.hash != prev_location){
         update_url(prev_location, true);
       }else{
