@@ -6,7 +6,7 @@
     <%= link_to "Followers <span class='badge'>#{@provider.subscriptions.count}</span>".html_safe, provider_subscriptions_path(@provider), class: 'border-left' %>
 
     <%# link_to "Followers", provider_subscriptions_path(@provider), class: 'border-bottom border-left' %>
-    <%# link_to "Metrics", metrics_provider_path(@provider) %>
+    <%= link_to "Remittance", provider_outgoings_path(@provider) %>
   </div>
   
   <div class="admin-links admin-section row">

@@ -8,16 +8,21 @@ class OutgoingPaymentsController < ApplicationController
     if params[:teacher_id].present?
       @provider_teacher = ProviderTeacher.find(params[:teacher_id]) 
       authorize(@provider_teacher, :admin?)
-      @title = "Remittance for #{@provider_teacher.name}"
+      @title = "Remittance Advice for #{@provider_teacher.name}"
     else
       authorize(@provider, :admin?)
-      @title = "Remittance for #{@provider.name}"
+      @title = "Remittance Advice for #{@provider.name}"
     end
     @outgoing_payments = (@provider_teacher || @provider).outgoing_payments.paid.order(:paid_date).reverse
   end
 
   def show
-    authorize @outgoing_payment
+    if params[:teacher_id].present?
+      @provider_teacher = ProviderTeacher.find(params[:teacher_id]) 
+      authorize(@provider_teacher, :admin?)
+    else
+      authorize(@provider, :admin?)
+    end
   end
 
   private

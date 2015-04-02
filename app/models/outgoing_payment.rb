@@ -277,4 +277,38 @@ class OutgoingPayment < ActiveRecord::Base
     save
   end
 
+  #costings
+  def processing_fees_for_course(course)
+    @processing_fees_for_course = Hash.new unless @processing_fees_for_course
+    @processing_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:processing_fee)
+  end
+
+  def booking_fees_for_course(course)
+    @booking_fees_for_course = Hash.new unless @booking_fees_for_course
+    @booking_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:chalkle_fee)
+  end
+
+  def platform_fees_for_course(course)
+    @platform_fees_for_course = Hash.new unless @platform_fees_for_course
+    @platform_fees_for_course[course.id] ||= (booking_fees_for_course(course) + processing_fees_for_course(course))
+  end
+
+  def platform_tax_for_course(course)
+    @platform_tax_for_course = Hash.new unless @platform_tax_for_course
+    @platform_tax_for_course[course.id] ||= ((bookings & course.bookings).sum(&:chalkle_gst) + (bookings & course.bookings).sum(&:processing_gst))
+  end
+
+  def total_sales_for_course(course)
+    (bookings & course.bookings).sum &:paid
+  end
+
+  def tax_for_course(course)
+    course_bookings = bookings & course.bookings
+    if for_provider?
+      course_bookings.sum &:provider_gst
+    else
+      course_bookings.sum &:teacher_gst
+    end
+  end
+
 end
