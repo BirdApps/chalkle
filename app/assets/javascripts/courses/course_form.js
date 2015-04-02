@@ -56,11 +56,10 @@ $(function(){
     }
 
     function check_hash_change(){
-      var last_hash;
       window.setInterval(function(){
-        if(last_hash != location.hash){
+        current_part = $('.breadcrumb li.active a').attr('href');
+        if(current_part != location.hash){
           part_change(location.hash, false, true);
-          last_hash = location.hash;
         }
       },300)
     }
@@ -543,7 +542,7 @@ $(function(){
     //---START NAVIGATION 
     function navigate_to_invalid(location){
       var prev_location = parts[parts.indexOf(location)-1]; 
-      if(!$(prev_location).is(':visible')){
+      if(location.hash != prev_location){
         update_url(prev_location, true);
       }else{
         $('.form-error').remove();
@@ -733,9 +732,9 @@ $(function(){
       return valid;
     }
 
-    function update_url(location){
-      url = window.location.protocol+'//'+window.location.host+window.location.pathname+location
-      window.history.pushState(location, $('title').text().trim(),url);
+    function update_url(new_location){
+      url = window.location.protocol+'//'+window.location.host+window.location.pathname+new_location
+      window.history.pushState(new_location, $('title').text().trim(),url);
     }
 
     /* shows the part of the form that matches the location anchor */
