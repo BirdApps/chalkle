@@ -100,7 +100,8 @@ class Booking < ActiveRecord::Base
 
 
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
-
+  delegate :first_name, :last_name, to: :chalkler
+  
   serialize :custom_fields
 
   def custom_fields_merged
@@ -387,8 +388,14 @@ class Booking < ActiveRecord::Base
     }
   end
 
-  def self.csv_for(bookings)
-    headings = %w{ id name paid note_to_teacher }
+  def self.csv_for(bookings, opts = {})
+    
+    if opts[:as] == :super
+      headings = %w{ id first_name last_name email paid note_to_teacher }
+    else
+      headings = %w{ id name paid note_to_teacher }
+    end
+    
     basic_attr = headings.map &:to_s
     
     custom_fields = bookings.map(&:custom_fields_merged).map{|g| g.keys }.flatten.uniq.compact
