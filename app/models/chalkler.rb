@@ -201,6 +201,8 @@ class Chalkler < ActiveRecord::Base
     image = from.avatar if image.blank? && from.present? && from.respond_to?('avatar')
     # if from a booking
     image = target.image if image.blank? && target.present? && target.respond_to?('image')
+    # if from a collection (of bookings)
+    image = target.first.image if image.blank? && target.present? && target.is_a?(Enumerable) && target.first.respond_to?('image')
     # if from a course
     image = target.course_upload_image if image.blank? && target.present? && target.respond_to?('course_upload_image')
     

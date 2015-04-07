@@ -2,7 +2,7 @@
 
   <!-- Button trigger modal -->
   <button type="button"  class="btn  no-btn" data-toggle="modal" data-target="#bookingsModal">
-    My Bookings <span class="badge" style="background-color: <%= @course.provider.header_color %>"><%= bookings.count  %></span>
+    My Bookings <span class="badge" style="background-color: <%= @course.provider.header_color %>"><%= bookings.confirmed.count  %></span>
   </button>
 
   <!-- Modal -->
