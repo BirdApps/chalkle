@@ -31,11 +31,15 @@
         <% elsif @outgoing.status ==  'approved' %>
         
           <%= form_for(@outgoing, url: pay_sudo_outgoing_payment_path(@outgoing), html_class: 'new_course_wrapper') do |f| %>
-            <label>
+            <div class="row flush">
               <span class="light">Remittance Reference</span>
+
+              <%= f.text_field :bank_account, class: "col-xs-12", placeholder: "Bank account number (required)", required: true unless @outgoing.recipient.account.present? %>
+              
               <%= f.text_field :reference, class: "col-xs-12", placeholder: "xero remittance" %>
+  
               <%= f.submit "Mark Paid", class: "btn btn-primary col-xs-12 margin-top-5" %>
-            </label>
+            </div>
           <% end %>
         
         <% elsif @outgoing.status ==  'marked_paid' %>

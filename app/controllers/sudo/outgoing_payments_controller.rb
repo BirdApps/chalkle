@@ -23,6 +23,14 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
 
   def pay
     reference = params[:outgoing_payment][:reference] if params[:outgoing_payment][:reference].present?
+    
+    account = params[:outgoing_payment][:bank_account]
+    if account.present? && @outgoing.recipient.account.blank?
+      recipient = @outgoing.recipient
+      recipient.account = account
+      recipient.save
+    end
+
     @outgoing.mark_paid!(reference)
     redirect_to sudo_outgoing_payment_path(@outgoing)
   end
