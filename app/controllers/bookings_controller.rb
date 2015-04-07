@@ -26,14 +26,10 @@ class BookingsController < ApplicationController
     @course = Course.find(params[:course_id])
     @booking_set = BookingSet.new params[:booking_set], params[:note_to_teacher]
     waive_fees = policy(@course).admin? && params[:remove_fees] == '1'
-    binding.pry
     if @booking_set.save({ free: waive_fees, booker: current_chalkler })
       payment_pending = false
       @booking_set.bookings.each do |booking|
-
-        if booking.free?
-          Notify.for(@booking_set).confirmation
-        else
+        unless booking.free?
           payment_pending = true
           booking.update_attribute(:status, 'pending')
           booking.update_attribute(:visible, false)
@@ -41,6 +37,7 @@ class BookingsController < ApplicationController
       end
 
       unless payment_pending
+        Notify.for(@booking_set).confirmation
         redirect_to @course.path and return
       else
         wrapper = SwipeWrapper.new

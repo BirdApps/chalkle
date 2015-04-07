@@ -22,23 +22,21 @@ class Notify::BookingSetNotification < Notify::Notifier
 
 
   def confirmation
-
     chalklers = @booking_set.bookings.collect(&:chalkler).uniq
     pseudo_chalklers = @booking_set.bookings.collect(&:pseudo_chalkler_email).uniq
     teachers = @booking_set.bookings.collect(&:course).collect(&:teacher).uniq
 
     # get a collection of all the chalklers
-    chalkler_bookings = Hash.new {|c| @booking_set.bookings.select{|b| b.chalkler == c }  }
+    chalkler_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.chalkler == c }  }
     chalklers.map {|c| chalkler_bookings[c] }
 
     # get a grouped collection of all of the pseudo chalklers (not registered yet)
-    pseudo_chalkler_bookings = Hash.new {|c| @booking_set.bookings.select{|b| b.pseudo_chalkler_email == c }  }
+    pseudo_chalkler_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.pseudo_chalkler_email == c }  }
     pseudo_chalklers.map {|c| pseudo_chalkler_bookings[c] }
 
     # also a grouped collection of all of the teachers
-    teacher_bookings = Hash.new {|c| @booking_set.bookings.select{|b| b.course.teacher == c }  }
+    teacher_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.course.teacher == c }  }
     teachers.map {|c| teacher_bookings[c] }
-
 
     #send confirmation to each chalkler in the booking set. One confirmation to each chalkler...
     chalkler_bookings.each do |chalkler, bookings|
@@ -85,7 +83,9 @@ class Notify::BookingSetNotification < Notify::Notifier
     teacher_bookings.each do |teacher, bookings|
       message = I18n.t('notify.booking.confirmation.to_teacher', course_name: bookings.map(&:course).map(&:name).uniq.join(", "), from_name: bookings.map(&:booker).map(&:name).uniq.join(", "))
 
-      teacher.chalkler.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, bookings) if teacher.chalkler
+      if teacher.chalkler
+        teacher.chalkler.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, bookings) 
+      end
 
       if teacher.chalkler.blank? || teacher.chalkler.email_about?(:booking_confirmation_to_teacher)
         BookingSetMailer.booking_confirmation_to_teacher(bookings).deliver!
