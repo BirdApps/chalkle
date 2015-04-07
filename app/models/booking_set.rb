@@ -135,7 +135,7 @@ class BookingSet
         #TODO: notify chalkle admin that payment didn't amount to booking cost
       end
     end
-    
+
     Notify.for(self).confirmation
     Notify.for(self).send_recipt
 

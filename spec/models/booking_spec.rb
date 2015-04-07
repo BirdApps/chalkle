@@ -57,9 +57,8 @@ describe Booking do
       expect(Booking.upcoming).not_to include(booking_earlier)
     end
 
-    it "excludes bookings for cancelled courses" do
-      course.visible = false
-      course.save
+    it "excludes cancelled bookings" do
+      booking.cancel!
       expect(Booking.upcoming).not_to include(booking)
     end
   end

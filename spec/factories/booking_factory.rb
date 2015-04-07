@@ -7,7 +7,6 @@ FactoryGirl.define do
     name 'Joe Groot'
     status 'yes'
     payment_method 'credit_card'
-    email {generate(:email)}
 
     payment {|i| i.association(:payment) }
     chalkler {|i| i.association(:chalkler)}
@@ -33,6 +32,10 @@ FactoryGirl.define do
 
     factory :pending_refund do
       status 'refund_pending'
+    end
+
+    factory :pseudo_chalkler do
+      email {generate(:email)}
     end
 
     factory :booking_free do

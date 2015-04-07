@@ -33,7 +33,7 @@ describe Chalkler do
   describe "is_following" do
     subject { FactoryGirl.create(:chalkler) }
     it "is true if has subscription to provider" do
-      subject.providers << provider
+      subject.providers_following << provider
 
       expect(subject.is_following?(provider)).to be true
     end

@@ -174,7 +174,7 @@ class BookingsController < ApplicationController
       unless policy(@course).write?(true)
         
         redirect_url = if @course.has_public_status?
-          provider_course_path(@course)
+          provider_course_path(@course.path_params)
         else
           root_path
         end

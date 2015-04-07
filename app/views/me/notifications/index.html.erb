@@ -1,5 +1,10 @@
-<ul class="no-list notifications">
-  <%= render paginate_these(@notifications) %>
+<div class="fancy-header">
+  <h3 class="flush">Notifications</h3>
+  <hr />
+</div> 
+
+<ul class="no-list notifications all-notifications">
+  <%= render partial: 'notifications/notification', collection: paginate_these(@notifications) %>
 </ul>
 
 

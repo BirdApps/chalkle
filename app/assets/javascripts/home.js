@@ -2,7 +2,6 @@ $(function() {
   if($('.application-home').length > 0) {
     var autocomplete, place, geocoder, location, lng, lat, spinner, tried_auto = false, fetching_now = false, bottom, top, right, left;
 
-    init();
 
     function init(){
       autocomplete = new google.maps.places.Autocomplete(
@@ -235,7 +234,7 @@ $(function() {
       }
     }
 
-
+    init();
 
   }
 })

@@ -15,7 +15,7 @@ describe ApplicationController do
       let(:user) { FactoryGirl.build(:admin_chalkler) }
 
       it "returns the admin root url" do
-        expect(controller.after_sign_in_path_for(user)).to eq("/")
+        expect(controller.after_sign_in_path_for(user)).to eq("/classes")
       end
 
     end
@@ -25,7 +25,7 @@ describe ApplicationController do
       let(:user) { FactoryGirl.build(:chalkler) }
 
       it "returns a path based on the resource" do
-        expect(controller.after_sign_in_path_for(user)).to eq("/")
+        expect(controller.after_sign_in_path_for(user)).to eq("/classes")
       end
     end
 
