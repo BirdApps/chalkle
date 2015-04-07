@@ -39,27 +39,6 @@ class Booking < ActiveRecord::Base
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
 
 
-  def email
-    if pseudo_chalkler_email.present?
-      pseudo_chalkler_email
-    else
-      chalkler.email if chalkler.present?
-    end
-  end
-
-  def email=(email_address)
-    if email_address.present? && email_address != email
-      booking_chalkler = Chalkler.exists email_address
-      if booking_chalkler.present?
-        self.chalkler = booking_chalkler
-        self.name = booking_chalkler.name
-      else
-        self.pseudo_chalkler_email = email_address
-      end
-    end
-  end
-
-
   scope :free, where(payment_id: nil)
   scope :not_free, where("payment_id IS NOT NULL")
 
@@ -111,6 +90,28 @@ class Booking < ActiveRecord::Base
       Hash.new
     end
   end
+
+  def email
+    if pseudo_chalkler_email.present?
+      pseudo_chalkler_email
+    else
+      chalkler.email if chalkler.present?
+    end
+  end
+
+  def email=(email_address)
+    if email_address.present? && email_address != email
+      booking_chalkler = Chalkler.exists email_address
+      if booking_chalkler.present?
+        self.chalkler = booking_chalkler
+        self.name = booking_chalkler.name
+      else
+        self.pseudo_chalkler_email = email_address
+      end
+    end
+  end
+
+
 
   def paid
     self.payment.present? ? payment.paid_per_booking : 0
