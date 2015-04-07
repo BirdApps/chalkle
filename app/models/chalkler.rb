@@ -230,6 +230,10 @@ class Chalkler < ActiveRecord::Base
     name ? name.split(' ')[0] : ''
   end
 
+  def last_name
+    (name && name.split.count > 1) ? name.split(' ',2)[1] : ''
+  end
+
   def email_about?(preference_attr)
     unless notification_preference
       self.notification_preference = NotificationPreference.create

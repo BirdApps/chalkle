@@ -135,14 +135,18 @@ class BookingsController < ApplicationController
   end
 
   def csv
+    
     @course = Course.find_by_id params[:course_id]
+    
     if policy(@course).bookings_csv?
       @bookings = @course.bookings.visible.order(:status) if @course.present?
     else
       @bookings = []
     end
+    
+    opts = current_user.super? ? {as: :super} : {}
 
-    send_data Booking.csv_for(@bookings), type: :csv, filename: "bookings-for-#{@course.name.parameterize}.csv"
+    send_data Booking.csv_for(@bookings, opts), type: :csv, filename: "bookings-for-#{@course.name.parameterize}.csv"
   end
 
   def edit
