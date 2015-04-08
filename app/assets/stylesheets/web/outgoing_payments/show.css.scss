@@ -1,0 +1,29 @@
+.outgoing_payments-show {
+  ._outgoing_for_course {
+    background: #f6f6f6;
+    margin-bottom: 40px;
+    border-top: #ddd 3px solid;
+    .fancy-header {
+      h4 {
+        background-color: #f6f6f6;
+      }
+    }
+    .odd {
+      background-color: #ddd;
+    }
+  }
+
+  ._outgoing_total {
+    background-color: #3A3A3A;
+    color: #fff;
+    .fancy-header {
+      h4 {
+        background-color: #3A3A3A;
+        top: 17px;
+      }
+      hr {
+        margin-top: 5px;
+      }
+    }
+  }
+}

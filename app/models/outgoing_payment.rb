@@ -278,6 +278,10 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   #costings
+  def platform_tax
+    @platform_tax ||= bookings.sum(&:chalkle_gst) + bookings.sum(&:processing_gst)
+  end
+
   def processing_fees_for_course(course)
     @processing_fees_for_course = Hash.new unless @processing_fees_for_course
     @processing_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:processing_fee)
@@ -298,17 +302,34 @@ class OutgoingPayment < ActiveRecord::Base
     @platform_tax_for_course[course.id] ||= ((bookings & course.bookings).sum(&:chalkle_gst) + (bookings & course.bookings).sum(&:processing_gst))
   end
 
-  def total_sales_for_course(course)
-    (bookings & course.bookings).sum &:paid
+  def provider_fees_for_course(course)
+    @provider_fees_for_course = Hash.new unless @provider_fees_for_course
+    @provider_fees_for_course[course.id] ||= (bookings & course.bookings).sum &:provider_fee
   end
 
-  def tax_for_course(course)
-    course_bookings = bookings & course.bookings
-    if for_provider?
-      course_bookings.sum &:provider_gst
-    else
-      course_bookings.sum &:teacher_gst
-    end
+  def teacher_fees_for_course(course)
+    @teacher_fees_for_course = Hash.new unless @teacher_fees_for_course
+    @teacher_fees_for_course[course.id] ||= (bookings & course.bookings).sum &:teacher_fee
+  end
+
+  def provider_tax_for_course(course)
+    @provider_tax_for_course = Hash.new unless @provider_tax_for_course
+    @provider_tax_for_course[course.id] ||= (bookings & course.bookings).sum &:provider_gst
+  end
+
+  def teacher_tax_for_course(course)
+    @teacher_tax_for_course = Hash.new unless @teacher_tax_for_course
+    @teacher_tax_for_course[course.id] ||= (bookings & course.bookings).sum &:teacher_gst
+  end
+
+  def total_costs_for_course(course)
+    teacher_fees_for_course(course) +
+    platform_fees_for_course(course)
+  end
+
+  def total_sales_for_course(course)
+    @total_sales_for_course = Hash.new unless @total_sales_for_course
+    @total_sales_for_course[course.id] ||= (bookings & course.bookings).sum &:paid
   end
 
 end

@@ -104,7 +104,7 @@ class Course < ActiveRecord::Base
       [coordinate1[:long],  coordinate2[:long]].min, 
       [coordinate1[:long],  coordinate2[:long]].max )
   }
-
+  scope :with_income, joins(:bookings).merge(Booking.paid.confirmed).uniq
 
   scope :displayable, visible.published
 

@@ -1,0 +1,255 @@
+<%= render partial: 'fancy_header', locals: { fancy_title: "Remittance ##{@outgoing_payment.id}" } %>
+<% outgoing_payment_courses = @outgoing_payment.courses.with_income.by_date %>
+<div class="row">
+  <% outgoing_payment_courses.each do |course| %>
+    
+    <div class="col-xs-12 col-lg-10 col-lg-offset-1 col-xl-8 col-xl-offset-2">
+      
+      <div class="row _outgoing_for_course pad-top-20">
+        
+        <div class="col-xs-12 col-md-9">
+          <%= link_to provider_course_path(course.path_params) do %>
+            <h4 class="flush"><%= "##{course.id} #{limit_text(course.name, 40)}" %></h4>
+          <% end %>
+        </div>
+        <div class="col-xs-12 col-md-3 text-right">
+          <small><%= day_ordinal_month course.start_at, false, true %></small>
+        </div>
+        
+        <div class="col-xs-12">
+          <%= render partial: 'fancy_header', locals: { fancy_title: "SALES", small: true } %>
+        </div>
+
+        <div class="col-xs-12 pad-top-10">
+          <% course.bookings.map(&:paid).uniq.each do |amount| %>
+            <div class="col-xs-9">
+              Bookings @ <%= number_to_currency amount %>
+            </div>
+            <div class="col-xs-3 text-right"> 
+              <%= course.bookings.select{|b| b.paid == amount}.count %> 
+            </div>
+          <% end %>
+        </div>
+        <div class="col-xs-12 pad-top-10">
+          <div class="pad-top-10 pad-bottom-10">
+            
+            <div class="col-xs-6">
+              <div class="upper strong">
+                Total Sales
+              </div>
+            </div>
+
+            <div class="col-xs-6 text-right">
+              <div class="strong">
+                <%= number_to_currency @outgoing_payment.total_sales_for_course(course) %>
+              </div>
+            </div>
+
+            <% if @outgoing_payment.provider_tax_for_course(course) != 0 %>
+              <div class="col-xs-12 text-right">
+                <small>
+                  incl. GST of
+                  <%= number_to_currency @outgoing_payment.provider_tax_for_course(course) %>
+                </small>
+              </div>
+            <% end %>
+
+          </div>
+        </div>
+ 
+        <div class="col-xs-12">
+          <%= render partial: 'fancy_header', locals: { fancy_title: "COSTS", small: true } %>
+        </div>
+       
+        <div class="col-xs-12">
+          <% if @outgoing_payment.teacher_fees_for_course(course) != 0 %>
+            <div class="col-xs-8">
+              Teacher Payment (<%= course.teacher.name %>)
+            </div>
+            <div class="col-xs-4 text-right">
+              <%= number_to_currency @outgoing_payment.teacher_fees_for_course(course) %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="col-xs-12 pad-top-10">
+
+          <div class="col-xs-8">
+            Chalkle Processing fees
+          </div>
+          <div class="col-xs-4 text-right">
+            <%= number_to_currency @outgoing_payment.processing_fees_for_course(course) %>
+          </div>
+
+          <div class="col-xs-8">
+            Chalkle Booking fees
+          </div>
+          <div class="col-xs-4 text-right">
+            <%= number_to_currency @outgoing_payment.booking_fees_for_course(course) %>
+          </div>
+
+          
+        </div>
+
+        <div class="col-xs-12 pad-top-10 pad-bottom-10">
+          <div class="pad-top-10">
+            
+            <div class="col-xs-6">
+              <div class="upper strong">
+                Total Costs
+              </div>
+            </div>
+
+            <div class="col-xs-6 text-right">
+              <div class="strong">
+                <%= number_to_currency @outgoing_payment.total_costs_for_course(course) %>
+              </div>
+            </div>
+
+            <div class="col-xs-8">
+              <small>+ Chalkle GST</small>
+            </div>
+            <div class="col-xs-4 text-right">
+              <small>
+                <%= number_to_currency @outgoing_payment.platform_tax_for_course(course) %>
+              </small>
+            </div>
+        
+            <% if @outgoing_payment.teacher_tax_for_course(course) != 0 %>
+              <div class="col-xs-8">
+                <small>+ Teacher Payment GST </small>
+              </div>
+              <div class="col-xs-4 text-right">
+                <small>
+                  <%= number_to_currency @outgoing_payment.teacher_tax_for_course(course) %>
+                </small>
+              </div>
+            <% end %>
+
+          </div>
+
+        </div>
+        
+        
+        <div class="col-xs-12 pad-top-10">
+          <div class="odd row pad-top-10 pad-bottom-10">
+            
+            <div class="col-xs-6">
+              <div class="upper strong">
+                Remittance for <%= "##{course.id}" %>
+              </div>
+            </div>
+
+            <div class="col-xs-6 text-right">
+              <div class="strong">
+                <%= number_to_currency @outgoing_payment.provider_fees_for_course(course) %>
+              </div>
+            </div>
+
+            <% if @outgoing_payment.provider_tax_for_course(course) != 0 %>
+              <div class="col-xs-12 text-right">
+                <small>
+                  + GST <%= number_to_currency @outgoing_payment.provider_tax_for_course(course) %>
+                </small>
+              </div>
+            <% end %>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+  <div class="col-xs-12 col-lg-10 col-lg-offset-1 col-xl-8 col-xl-offset-2">
+    
+     <div class="row _outgoing_for_course">
+        <div class="col-xs-12">
+          <%= render partial: 'fancy_header', locals: { fancy_title: "GST Paid", small: true } %>
+        </div>
+        <div class="col-xs-12">
+          <div class="col-xs-8">
+            <small>Chalkle GST: <%= Finance::CHALKLE_GST_NUMBER %></small>
+          </div>
+          <div class="col-xs-4 text-right">
+            <small>
+              <%= number_to_currency @outgoing_payment.platform_tax %>
+            </small>
+          </div>
+            
+          <% outgoing_payment_courses.each do |course| %>
+            <% if @outgoing_payment.teacher_tax_for_course(course) != 0 %>
+              <div class="col-xs-8">
+                <small><%= course.teacher.name %> GST: <%= course.teacher_payment.present? ? course.teacher_payment.tax_num : course.teacher.tax_number %> </small>
+              </div>
+              <div class="col-xs-4 text-right">
+                <small>
+                  <%= number_to_currency @outgoing_payment.teacher_tax_for_course(course) %>
+                </small>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="col-xs-12 pad-top-10">
+          <div class="_outgoing_total row pad-bottom-10">
+            <div class="col-xs-12">
+              <%= render partial: 'fancy_header', locals: { fancy_title: "Payment Summary", small: true } %>
+         
+              <% outgoing_payment_courses.each do |course| %>
+                <div class="row flush">
+                  <div class="col-xs-8">
+                    <div>
+                      <%= "##{course.id} #{limit_text(course.name, 20)}" %>
+                    </div>
+                  </div>
+
+                  <div class="col-xs-4 text-right">
+                    <%= number_to_currency @outgoing_payment.provider_fees_for_course(course) %>
+                  </div>
+                </div>
+
+              <% end %>
+
+            
+              <div class="col-xs-12 pad-top-10">
+
+                <div class="row">
+                  <div class="col-xs-8">
+                    <div class="upper strong">
+                      Total Payment
+                    </div>
+                  </div>
+
+                  <div class="col-xs-4 text-right">
+                    <div class="strong">
+                      <%= number_to_currency @outgoing_payment.total %>
+                    </div>
+                  </div>
+                </div>
+                
+                <% if @outgoing_payment.tax != 0 %>
+                  <div class="row">
+                    <div class="col-xs-8">
+                      <small>incl. GST of</small>
+                    </div>
+                    <div class="col-xs-4 text-right">
+                      <small>
+                        <%= number_to_currency @outgoing_payment.tax %>
+                      </small>
+                    </div>
+                  </div>
+                <% end %>
+
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+</div>

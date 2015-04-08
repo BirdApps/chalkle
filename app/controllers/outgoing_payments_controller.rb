@@ -1,7 +1,7 @@
 class OutgoingPaymentsController < ApplicationController
   
   before_filter :load_outgoing_payment, only: [:show]
-  before_filter :load_provider, :sidebar_administrate_provider, :header_provider
+  before_filter :sidebar_administrate_provider, :header_provider
 
 
   def index
@@ -17,11 +17,15 @@ class OutgoingPaymentsController < ApplicationController
   end
 
   def show
-    if params[:teacher_id].present?
+    if @outgoing_payment.for_teacher?
       @provider_teacher = ProviderTeacher.find(params[:teacher_id]) 
       authorize(@provider_teacher, :admin?)
+      authorize(@outgoing_payment)
+      render 'show_for_teacher'
     else
       authorize(@provider, :admin?)
+      authorize(@outgoing_payment)
+      render 'show_for_provider'
     end
   end
 
@@ -29,5 +33,6 @@ class OutgoingPaymentsController < ApplicationController
     def load_outgoing_payment
       @outgoing_payment = OutgoingPayment.find_by_id params[:id]
       not_found and return unless @outgoing_payment
+      @provider = @outgoing_payment.outgoing_provider
     end
 end
