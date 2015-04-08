@@ -14,7 +14,7 @@ class CoursesController < ApplicationController
       if policy(@provider).read?
         @courses = @provider.courses
       else
-        @courses = @provider.courses.published
+        @courses = @provider.courses.advertisable
       end
       if params['id'] 
         @provider_teacher = ProviderTeacher.where(id: params['id'].to_i).first
@@ -24,7 +24,7 @@ class CoursesController < ApplicationController
       if current_user.super?
         @courses = Course.scoped
       else
-        @courses = Course.published
+        @courses = Course.advertisable
       end
     end
 

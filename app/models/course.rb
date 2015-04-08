@@ -89,6 +89,8 @@ class Course < ActiveRecord::Base
   scope :processing, where(status: STATUS_5)
   scope :unpublished, visible.where{ status != STATUS_1 }
   scope :published, visible.where(status: STATUS_1)
+  scope :public, visible.where(status: PUBLIC_STATUSES)
+  scope :advertisable, visible.where(status: [STATUS_4, STATUS_1]) #show completed and published
   scope :paid, where("cost > 0")
   scope :taught_by, -> (teacher){ joins(:teacher).where('provider_teachers.id = ?', teacher.id) }
   scope :taught_by_chalkler, -> (chalkler){ joins(:teacher).where('provider_teachers.chalkler_id = ?', chalkler ? chalkler.id : -1) }
