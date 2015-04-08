@@ -61,7 +61,7 @@ class Booking < ActiveRecord::Base
 
 
   scope :free, where(payment_id: nil)
-  scope :not_free, where("payment_id IS NOT NULL")
+  scope :not_free, joins(:payment).merge( Payment.exists?("bookings.id")  )
 
   scope :paid, not_free
   scope :unpaid, free
