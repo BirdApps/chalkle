@@ -39,27 +39,6 @@ class Booking < ActiveRecord::Base
   validates :pseudo_chalkler_email, allow_blank: true, format: { with: EMAIL_VALIDATION_REGEX, :message => "That doesn't look like a real email"  }
 
 
-  def email
-    if pseudo_chalkler_email.present?
-      pseudo_chalkler_email
-    else
-      chalkler.email if chalkler.present?
-    end
-  end
-
-  def email=(email_address)
-    if email_address.present? && email_address != email
-      booking_chalkler = Chalkler.exists email_address
-      if booking_chalkler.present?
-        self.chalkler = booking_chalkler
-        self.name = booking_chalkler.name
-      else
-        self.pseudo_chalkler_email = email_address
-      end
-    end
-  end
-
-
   scope :free, where(payment_id: nil)
   scope :not_free, where("payment_id IS NOT NULL")
 
@@ -100,7 +79,8 @@ class Booking < ActiveRecord::Base
 
 
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
-
+  delegate :first_name, :last_name, to: :chalkler
+  
   serialize :custom_fields
 
   def custom_fields_merged
@@ -110,6 +90,28 @@ class Booking < ActiveRecord::Base
       Hash.new
     end
   end
+
+  def email
+    if pseudo_chalkler_email.present?
+      pseudo_chalkler_email
+    else
+      chalkler.email if chalkler.present?
+    end
+  end
+
+  def email=(email_address)
+    if email_address.present? && email_address != email
+      booking_chalkler = Chalkler.exists email_address
+      if booking_chalkler.present?
+        self.chalkler = booking_chalkler
+        self.name = booking_chalkler.name
+      else
+        self.pseudo_chalkler_email = email_address
+      end
+    end
+  end
+
+
 
   def paid
     self.payment.present? ? payment.paid_per_booking : 0
@@ -387,8 +389,14 @@ class Booking < ActiveRecord::Base
     }
   end
 
-  def self.csv_for(bookings)
-    headings = %w{ id name paid note_to_teacher }
+  def self.csv_for(bookings, opts = {})
+    
+    if opts[:as] == :super
+      headings = %w{ id first_name last_name email paid note_to_teacher }
+    else
+      headings = %w{ id name paid note_to_teacher }
+    end
+    
     basic_attr = headings.map &:to_s
     
     custom_fields = bookings.map(&:custom_fields_merged).map{|g| g.keys }.flatten.uniq.compact
