@@ -189,11 +189,15 @@ class OutgoingPayment < ActiveRecord::Base
     save
   end
 
-  def recalculate!
-    unless approved?
+  def recalculate!(override = false)
+    if !approved? || override
       self.tax_number = nil
       self.bank_account = nil
-      bookings.map{ |b| b.apply_fees! }
+      if for_teacher? 
+        teacher_bookings.map{ |b| b.apply_fees! }
+      else
+        provider_bookings.map{ |b| b.apply_fees! }
+      end
       #remove any courses which are no longer marked as published or complete
       remove_courses = courses.where("status != '#{Course::STATUS_4}' AND status != '#{Course::STATUS_1}'")
       remove_courses.update_all(provider_payment_id: nil)

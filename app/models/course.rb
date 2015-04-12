@@ -630,6 +630,10 @@ class Course < ActiveRecord::Base
     params
   end
 
+  def recalculate_bookings_fees!
+    bookings.map{|b| b.apply_fees! }
+  end
+
   private
 
     def clear_ivars
