@@ -364,11 +364,11 @@ class Course < ActiveRecord::Base
   end
 
   def provider_income_tax
-    provider.tax_registered? ? provider_income_no_tax*3/23 : 0
+    provider.tax_registered? ? provider_income_no_tax*0.15 : 0
   end
 
   def teacher_income_tax
-    teacher.tax_registered? ? teacher_income_no_tax*3/23 : 0
+    teacher.tax_registered? ? teacher_income_no_tax*0.15 : 0
   end
 
   def provider_plan
