@@ -658,7 +658,7 @@ class Course < ActiveRecord::Base
     end
 
     def calc_provider_income(incl_tax)
-      income = bookings.confirmed.paid.sum(&:provider_fee) - teacher_pay_flat
+      income = bookings.confirmed.paid.sum(&:provider_fee)
       income - (incl_tax ? 0 : (provider.tax_registered? ? income*3/23 : 0))
     end
 
