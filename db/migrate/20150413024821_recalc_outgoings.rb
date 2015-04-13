@@ -1,7 +1,9 @@
 class RecalcOutgoings < ActiveRecord::Migration
   def up
     OutgoingPayment.all.each do |payment| 
-      payment.recalculate! include_paid: true
+      unless payment.status == 'not_valid'
+        payment.recalculate! include_paid: true
+      end
     end
   end
 
