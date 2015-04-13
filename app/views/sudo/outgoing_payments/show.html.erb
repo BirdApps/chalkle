@@ -20,6 +20,10 @@
       <div>
         <%= @outgoing.tax_num.present? ? @outgoing.tax_num : 'no tax number' %>
       </div>
+      <div>
+        <% link =  @outgoing.for_teacher? ? provider_teacher_outgoing_path(@outgoing.path_params) : provider_outgoing_path(@outgoing.path_params) %>
+        <%= link_to "Remittance Advice", link %>
+      </div>
     </div>
 
     <div class="col-xs-12 col-sm-3">
@@ -92,8 +96,9 @@
 
     <div class="col-xs-12 col-sm-3">
       <div class="alert center alert-danger">
-          <p><small class="smaller grey light">Reapplies bank & tax number Recalculates Fees+Tax based on the present states of associated courses and bookings</small></p>
-          <a href="<%= sudo_outgoing_payment_path(@outgoing, {recalculate: true}) %>" class="btn btn-default">Recalculate</a>
+          <strong class="small">If numbers don't add up below then press this button</strong>
+          <a href="<%= sudo_outgoing_payment_path(@outgoing, {recalculate: true}) %>" class="btn btn-danger">Recalculate</a>
+           <p><small class="smaller grey light">Reapplies bank & tax number Recalculates Fees+Tax based on the present states of associated courses and bookings</small></p>
       </div>
     </div>
 

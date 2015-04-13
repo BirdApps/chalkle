@@ -145,13 +145,19 @@
             </div>
 
           </div>
-
-          <div class="col-xs-12 pad-top-10 small text-center">
-            Paid <%= @outgoing_payment.bank_account %> on <strong><%= day_ordinal_month(@outgoing_payment.paid_date, true, true) %></strong>
-            <% if @outgoing_payment.account.present? %>
-              to <strong> <%= @outgoing_payment.account %> </strong>
-            <% end %>
-          </div>
+          
+          <% if @outgoing_payment.paid? %>
+            <div class="col-xs-12 pad-10 small text-center">
+                Paid <strong><%= day_ordinal_month(@outgoing_payment.paid_date, false, true) %></strong>
+                <% if @outgoing_payment.account.present? %>
+                  to <strong> <%= @outgoing_payment.account %> </strong>
+                <% end %>
+            </div>
+          <% else %>
+            <div class="row margin-top-20">
+              <p class="alert alert-warning">Admin Preview only - not yet paid</p>
+            </div>
+          <% end %>
           
         </div>
       </div>
