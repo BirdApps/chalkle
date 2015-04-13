@@ -12,7 +12,7 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
   end
 
   def show
-    @outgoing.recalculate! if params[:recalculate].present?
+    @outgoing.recalculate!(include_paid: true) if params[:recalculate].present?
     @page_title = @outgoing.for_teacher? ? "Teacher Payment" : "Provider Payment"
   end
 
@@ -23,6 +23,14 @@ class Sudo::OutgoingPaymentsController < Sudo::BaseController
 
   def pay
     reference = params[:outgoing_payment][:reference] if params[:outgoing_payment][:reference].present?
+    
+    account = params[:outgoing_payment][:bank_account]
+    if account.present? && @outgoing.recipient.account.blank?
+      recipient = @outgoing.recipient
+      recipient.account = account
+      recipient.save
+    end
+
     @outgoing.mark_paid!(reference)
     redirect_to sudo_outgoing_payment_path(@outgoing)
   end

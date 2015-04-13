@@ -115,20 +115,20 @@ class OutgoingPayment < ActiveRecord::Base
     end
   end
 
+  def recipient
+    for_provider? ? provider : teacher
+  end
+
   def for_teacher?
     teacher.present?
   end
 
   def for_provider?
-    provider.present?
+    self.provider.present?
   end
 
   def name
-    if for_provider?
-      provider.name
-    else
-      teacher.name
-    end
+    recipient.name
   end
 
   def account
@@ -189,11 +189,15 @@ class OutgoingPayment < ActiveRecord::Base
     save
   end
 
-  def recalculate!
-    unless approved?
+  def recalculate!(opts = { include_paid: false })
+    if !approved? || opts[:include_paid]
       self.tax_number = nil
       self.bank_account = nil
-      bookings.map{ |b| b.apply_fees! }
+      if for_teacher? 
+        teacher_bookings.map{ |b| b.apply_fees! }
+      else
+        provider_bookings.map{ |b| b.apply_fees! }
+      end
       #remove any courses which are no longer marked as published or complete
       remove_courses = courses.where("status != '#{Course::STATUS_4}' AND status != '#{Course::STATUS_1}'")
       remove_courses.update_all(provider_payment_id: nil)
@@ -240,11 +244,34 @@ class OutgoingPayment < ActiveRecord::Base
     self.status = STATUS_3
   end
 
+  def outgoing_provider
+    if for_provider?
+      recipient
+    else
+      recipient.provider
+    end
+  end
 
-  def mark_paid!(reference = nil)
-    self.reference = reference
+  def path_params
+    if for_provider?
+      {
+        provider_url_name: provider,
+        id: self
+      }
+    else
+      {
+        provider_url_name: teacher.provider,
+        teacher_id: teacher,
+        id: self
+      }
+    end
+  end
+
+  def mark_paid!(_reference = nil)
+    self.reference = _reference unless _reference.nil?
     self.paid_date = DateTime.current unless self.paid_date
     self.status = STATUS_4
+    Notify.for(self).paid unless self.total == 0
     save
   end
 
@@ -252,6 +279,61 @@ class OutgoingPayment < ActiveRecord::Base
     self.reference = reference || id.to_s+'-'+Date.current.to_s
     self.status = STATUS_5
     save
+  end
+
+  #costings
+  def platform_tax
+    @platform_tax ||= bookings.sum(&:chalkle_gst) + bookings.sum(&:processing_gst)
+  end
+
+  def processing_fees_for_course(course)
+    @processing_fees_for_course = Hash.new unless @processing_fees_for_course
+    @processing_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:processing_fee)
+  end
+
+  def booking_fees_for_course(course)
+    @booking_fees_for_course = Hash.new unless @booking_fees_for_course
+    @booking_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:chalkle_fee)
+  end
+
+  def platform_fees_for_course(course)
+    @platform_fees_for_course = Hash.new unless @platform_fees_for_course
+    @platform_fees_for_course[course.id] ||= (booking_fees_for_course(course) + processing_fees_for_course(course))
+  end
+
+  def platform_tax_for_course(course)
+    @platform_tax_for_course = Hash.new unless @platform_tax_for_course
+    @platform_tax_for_course[course.id] ||= ((bookings & course.bookings).sum(&:chalkle_gst) + (bookings & course.bookings).sum(&:processing_gst))
+  end
+
+  def provider_fees_for_course(course)
+    @provider_fees_for_course = Hash.new unless @provider_fees_for_course
+    @provider_fees_for_course[course.id] ||= (bookings & course.bookings).sum &:provider_fee
+  end
+
+  def teacher_fees_for_course(course)
+    @teacher_fees_for_course = Hash.new unless @teacher_fees_for_course
+    @teacher_fees_for_course[course.id] ||= (bookings & course.bookings).sum &:teacher_fee
+  end
+
+  def provider_tax_for_course(course)
+    @provider_tax_for_course = Hash.new unless @provider_tax_for_course
+    @provider_tax_for_course[course.id] ||= (bookings & course.bookings).sum &:provider_gst
+  end
+
+  def teacher_tax_for_course(course)
+    @teacher_tax_for_course = Hash.new unless @teacher_tax_for_course
+    @teacher_tax_for_course[course.id] ||= (bookings & course.bookings).sum &:teacher_gst
+  end
+
+  def total_costs_for_course(course)
+    teacher_fees_for_course(course) +
+    platform_fees_for_course(course)
+  end
+
+  def total_sales_for_course(course)
+    @total_sales_for_course = Hash.new unless @total_sales_for_course
+    @total_sales_for_course[course.id] ||= (bookings & course.bookings).sum &:paid
   end
 
 end

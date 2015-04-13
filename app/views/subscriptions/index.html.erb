@@ -1,5 +1,4 @@
-<div class="fancy-header">
-  <h3><%= @chalklers.count %> <%= 'follower'.pluralize(@chalklers.count) %> </h3> 
-  <hr />
-</div> 
+
+<%= render partial: 'fancy_header', locals: { fancy_title: "#{@chalklers.count} #{'follower'.pluralize(@chalklers.count)}" } %>
+
 <%= render @chalklers.order(:name) %>

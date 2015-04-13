@@ -4,6 +4,7 @@ class ChalklersController < ApplicationController
   before_filter :page_titles, only: [:show]
   
   def index
+    authorize :chalkler
     @chalklers = Chalkler.visible
   end
 

@@ -3,10 +3,9 @@
 </div>
 <div class="new_form_wrapper col-xs-12 col-sm-8">
   <%= bootstrap_form_for(@provider_teacher, wrapper: :simple_bootstrap3, url: provider_teacher_path(@provider_teacher.path_params), html: { method:  :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
-    <div class="fancy-header">
-      <h3>Photo</h3>
-      <hr />
-    </div>
+
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Photo" } %>
+
     <div class="row">
       <div class="col-sm-4">
         <div class="avatar image-preview">
@@ -17,10 +16,9 @@
         <%= f.input :avatar, as: :styled_file, input_html: { value: "", :'data-preview' => 'avatar_preview', class: 'styled_upload' }, wrapper_html: { class: 'no-label' } %>
       </div>
     </div>
-    <div class="fancy-header">
-      <h3>Details </h3>
-      <hr />
-    </div>
+
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Details" } %>
+
     <%= f.input :name, label: "Name", wrapper: :horizontal %>
 
     <% if @provider_teacher.chalkler.present? %>
@@ -49,10 +47,8 @@
       Even though that person isn't on Chalkle yet, they can still be a teacher - you can make classes for them and they'll receive reminders and notices via email.<br /><br />At any point in time they can sign up to Chalkle to take advantage of the website's features. We'll email them to let them know.
       <hr />
     </label>
-    <div class="fancy-header">
-      <h3>Payments</h3>
-      <hr />
-    </div>
+
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Payments" } %>
 
     <div class="row">
        <%= f.input :account, label: "Bank account number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>

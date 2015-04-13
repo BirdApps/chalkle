@@ -1,0 +1,36 @@
+en-NZ:
+  email:
+    outgoing_payment:
+      paid:
+        to_teacher:
+          subject: Remittance advice from Chalkle on behalf of %{provider_name}
+          body:
+            html: |
+              A payment of ** %{payment_total} ** has been made on behalf of ** [ %{provider_name} ]( %{provider_url} ) ** into bank account:
+
+              ** %{account} **
+
+              [View complete breakdown of payment on Chalkle.com](%{breakdown_url})
+            text: |
+              A payment of %{payment_total} has been made on behalf of %{provider_name} %{provider_url} into bank account:
+
+              %{account}
+
+              View complete breakdown of payment at %{breakdown_url}
+        to_provider:
+          subject: Remittance advice from Chalkle for %{provider_name}
+          body:
+            html: |
+              A payment of ** %{payment_total} ** has been made on behalf of ** [%{provider_name}](%{provider_url}) ** into bank account:
+
+              ** %{account} **
+
+              [View complete breakdown of payment on Chalkle.com](%{breakdown_url})
+            text: |
+              A payment of %{payment_total} has been made on behalf of %{provider_name} %{provider_url} into bank account:
+
+              %{account}
+
+              View complete breakdown of payment at %{breakdown_url}
+
+

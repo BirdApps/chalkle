@@ -1,0 +1,5 @@
+en-NZ:
+  notify:
+    outgoing_payment:
+      paid_provider: "A payment of ** $%{payment_total} ** has been made to the ** %{provider_name} ** account."
+      paid_teacher: "A payment of ** $%{payment_total} ** has been made to your account on behalf of ** %{provider_name} **"

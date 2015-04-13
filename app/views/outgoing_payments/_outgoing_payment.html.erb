@@ -1,0 +1,18 @@
+<div class="col-xs-12 flush-xs col-lg-10 col-lg-offset-1 col-xl-8 col-xl-offset-2">
+  <%= link_to ( outgoing_payment.for_provider? ? provider_outgoing_path(outgoing_payment.path_params) : provider_teacher_outgoing_path(outgoing_payment.path_params) ) do %>
+    <div class="row odd pad-10 margin-10">
+      <div class="col-md-2 col-xs-6">
+        <%= "##{outgoing_payment.id}" %>
+      </div>
+      <div class="col-md-2 col-xs-6 text-right">
+        <%= quick_date(outgoing_payment.paid_date, true, true) %>
+      </div>
+      <div class="col-md-4 col-xs-3 text-right">
+        <%= number_to_currency outgoing_payment.total %>
+      </div>
+      <div class="col-md-4 col-xs-9 text-right">
+        <%= outgoing_payment.bank_account %>
+      </div>
+    </div>
+  <% end %>
+</div>

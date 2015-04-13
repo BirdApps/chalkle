@@ -5,10 +5,9 @@
     <% if current_user.chalkler == @chalkler || current_user.super?  %>
 
       <% if @chalkler.provider_teachers.any? %>
-        <div class="fancy-header">
-          <h3>Teacher Profiles</h3>
-          <hr />
-        </div>
+        
+        <%= render partial: 'fancy_header', locals: { fancy_title: "Teacher Profiles" } %>
+        
         <div class="col-xs-12">
           <%= render @chalkler.provider_teachers %>  
         </div>
@@ -21,10 +20,8 @@
   </div>
 
   <div class="follows col-xs-12">
-    <div class="fancy-header">
-      <h3>Following</h3>
-      <hr />
-    </div>
+    
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Following" } %>
 
     <% if @chalkler.providers_following.empty? %>
       <div class="text-center">

@@ -63,10 +63,17 @@ class ProviderTeacher < ActiveRecord::Base
     read_attribute :bio || "#{name} is a teacher for #{provider.name}" 
   end
 
-   def path_params
+  def path_params
     {
-      provider_url_name: provider,
-      id: self
+      provider_url_name: provider.url_name,
+      id: self.id
+    }
+  end
+
+  def specific_path_params
+    {
+      provider_url_name: provider.url_name,
+      teacher_id: self.id
     }
   end
 

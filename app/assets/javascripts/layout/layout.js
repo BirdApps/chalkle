@@ -6,19 +6,6 @@ $(function(){
 
   init();
 
-  function highlight_required_missing(){
-    $('form').submit(function(){
-      $(this).find('[required]').each(function(){
-        if($(this).val().length == 0){
-          $(this).addClass('required-missing');
-          $(this).focus(function(){
-            $(this).removeClass('required-missing');
-          })
-        }
-      });
-    });
-  }
-
   function single_tap_links(){
 
     $('*').on('touchstart mouseenter focus', function(e) {
@@ -31,7 +18,6 @@ $(function(){
     //fix_too_wide_bug();
     site_messages();
     single_tap_links();
-    highlight_required_missing();
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
   }

@@ -4,10 +4,7 @@
       <%= render 'courses/heading' %>
     </div>
     <div class="new_form_wrapper new_booking">
-      <div class="fancy-header">
-        <h3 class="flush">New Booking</h3>
-        <hr />
-      </div> 
+      <%= render partial: 'fancy_header', locals: { fancy_title: "New Booking" } %>
       <div id="booking_names">
         <div class="col-xs-12 col-sm-4 name-list-container">
           <ol></ol>

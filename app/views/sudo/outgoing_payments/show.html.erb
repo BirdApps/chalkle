@@ -20,6 +20,10 @@
       <div>
         <%= @outgoing.tax_num.present? ? @outgoing.tax_num : 'no tax number' %>
       </div>
+      <div>
+        <% link =  @outgoing.for_teacher? ? provider_teacher_outgoing_path(@outgoing.path_params) : provider_outgoing_path(@outgoing.path_params) %>
+        <%= link_to "Remittance Advice", link %>
+      </div>
     </div>
 
     <div class="col-xs-12 col-sm-3">
@@ -31,11 +35,15 @@
         <% elsif @outgoing.status ==  'approved' %>
         
           <%= form_for(@outgoing, url: pay_sudo_outgoing_payment_path(@outgoing), html_class: 'new_course_wrapper') do |f| %>
-            <label>
+            <div class="row flush">
               <span class="light">Remittance Reference</span>
+
+              <%= f.text_field :bank_account, class: "col-xs-12", placeholder: "Bank account number (required)", required: true unless @outgoing.recipient.account.present? %>
+              
               <%= f.text_field :reference, class: "col-xs-12", placeholder: "xero remittance" %>
+  
               <%= f.submit "Mark Paid", class: "btn btn-primary col-xs-12 margin-top-5" %>
-            </label>
+            </div>
           <% end %>
         
         <% elsif @outgoing.status ==  'marked_paid' %>
@@ -88,8 +96,9 @@
 
     <div class="col-xs-12 col-sm-3">
       <div class="alert center alert-danger">
-          <p><small class="smaller grey light">Reapplies bank & tax number Recalculates Fees+Tax based on the present states of associated courses and bookings</small></p>
-          <a href="<%= sudo_outgoing_payment_path(@outgoing, {recalculate: true}) %>" class="btn btn-default">Recalculate</a>
+          <strong class="small">If numbers don't add up below then press this button</strong>
+          <a href="<%= sudo_outgoing_payment_path(@outgoing, {recalculate: true}) %>" class="btn btn-danger">Recalculate</a>
+           <p><small class="smaller grey light">Reapplies bank & tax number Recalculates Fees+Tax based on the present states of associated courses and bookings</small></p>
       </div>
     </div>
 

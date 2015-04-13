@@ -40,7 +40,7 @@ class Booking < ActiveRecord::Base
 
 
   scope :free, where(payment_id: nil)
-  scope :not_free, where("payment_id IS NOT NULL")
+  scope :not_free, joins(:payment).merge( Payment.exists?("bookings.id")  )
 
   scope :paid, not_free
   scope :unpaid, free
@@ -76,7 +76,7 @@ class Booking < ActiveRecord::Base
   scope :created_month_of, ->(date) { where('created_at BETWEEN ? AND ?', date.beginning_of_month, date.end_of_month) }
 
   before_validation :set_free_course_attributes
-
+  after_create :redistribute_flat_fee_between_bookings
 
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
   delegate :first_name, :last_name, to: :chalkler
@@ -201,7 +201,7 @@ class Booking < ActiveRecord::Base
         self.teacher_fee = course.teacher_cost
       elsif flat_fee?
         #flat fees these are calculated on the outgoing_payment rather than per booking
-        self.teacher_fee = 0
+        self.teacher_fee = course.teacher_cost / course.bookings.confirmed.count
       end
     end
 
@@ -392,7 +392,7 @@ class Booking < ActiveRecord::Base
   def self.csv_for(bookings, opts = {})
     
     if opts[:as] == :super
-      headings = %w{ id first_name last_name email paid note_to_teacher }
+      headings = %w{ id name email paid note_to_teacher }
     else
       headings = %w{ id name paid note_to_teacher }
     end
@@ -424,15 +424,19 @@ class Booking < ActiveRecord::Base
   end
 
   def self.stats_for_date_and_range(date, range)
-        base_scope_for_stats = send("created_#{range}_of", date).confirmed
-        {
-          asp: asp_for( base_scope_for_stats ),
-          asp_only_paid: asp_for( base_scope_for_stats.where('provider_fee > 0') ),
-          revenue: base_scope_for_stats.inject(0){|sum, b| sum += b.cost }
-        }
+    base_scope_for_stats = send("created_#{range}_of", date).confirmed
+    {
+      asp: asp_for( base_scope_for_stats ),
+      asp_only_paid: asp_for( base_scope_for_stats.where('provider_fee > 0') ),
+      revenue: base_scope_for_stats.inject(0){|sum, b| sum += b.cost }
+    }
   end
 
   private
+
+    def redistribute_flat_fee_between_bookings
+      course.recalculate_bookings_fees! if course.flat_fee?
+    end
 
     def self.asp_for(bookings)
       return 0 unless bookings.any?

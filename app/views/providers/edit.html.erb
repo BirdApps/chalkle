@@ -5,30 +5,28 @@
     <div class="row">
       <div class="col-xs-12">
 
-          <% if current_user.super? %>
-            <div class="center">
-              <%= @provider.name %> is a <strong><%= @provider.plan.name %> provider</strong>
-              <br /><br />
-              <div class="alert alert-danger">
-                <h4>Super Admin only</h4>
-                <p>If this provider is afforded special fees and limits enter them here</p>
-                <hr />
-                <%= f.input :provider_plan_id, collection: ProviderPlan.all, label: "Provider Plan", wrapper: :horizontal %>
-                <%= f.input :plan_class_attendee_cost, label: "Class fee Override, default: $"+@provider.plan.class_attendee_cost.to_s, wrapper: :horizontal %>
-                <%= f.input :plan_course_attendee_cost, label: "Course fee Override, default: $"+@provider.plan.course_attendee_cost.to_s, wrapper: :horizontal %>
-                 <%= f.input :plan_processing_fee_percent, label: "Processing fee, default: "+(@provider.plan.processing_fee_percent*100).to_s+'%', wrapper: :horizontal %>
-                <%= f.input :plan_max_teachers, label: "Maximum Teachers, default: "+@provider.plan.max_teachers.to_s, wrapper: :horizontal %>
-                <%= f.input :plan_max_provider_admins, label: "Maximum Provider Admins, default: "+@provider.plan.max_provider_admins.to_s, wrapper: :horizontal %>
-                <%= f.input :plan_max_free_class_attendees, label: "Monthly free class attendees, default: "+@provider.plan.max_free_class_attendees.to_s, wrapper: :horizontal %>
-                <%= f.input :plan_annual_cost, label: "Annual Cost, default: $"+@provider.plan.annual_cost.to_s, wrapper: :horizontal %>
-              </div>
+        <% if current_user.super? %>
+          <div class="center">
+            <%= @provider.name %> is a <strong><%= @provider.plan.name %> provider</strong>
+            <br /><br />
+            <div class="alert alert-danger">
+              <h4>Super Admin only</h4>
+              <p>If this provider is afforded special fees and limits enter them here</p>
+              <hr />
+              <%= f.input :provider_plan_id, collection: ProviderPlan.all, label: "Provider Plan", wrapper: :horizontal %>
+              <%= f.input :plan_class_attendee_cost, label: "Class fee Override, default: $"+@provider.plan.class_attendee_cost.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_course_attendee_cost, label: "Course fee Override, default: $"+@provider.plan.course_attendee_cost.to_s, wrapper: :horizontal %>
+               <%= f.input :plan_processing_fee_percent, label: "Processing fee, default: "+(@provider.plan.processing_fee_percent*100).to_s+'%', wrapper: :horizontal %>
+              <%= f.input :plan_max_teachers, label: "Maximum Teachers, default: "+@provider.plan.max_teachers.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_max_provider_admins, label: "Maximum Provider Admins, default: "+@provider.plan.max_provider_admins.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_max_free_class_attendees, label: "Monthly free class attendees, default: "+@provider.plan.max_free_class_attendees.to_s, wrapper: :horizontal %>
+              <%= f.input :plan_annual_cost, label: "Annual Cost, default: $"+@provider.plan.annual_cost.to_s, wrapper: :horizontal %>
             </div>
-          <% end %>
+          </div>
+        <% end %>
 
-        <div class="fancy-header">
-          <h3>Provider Details</h3>
-          <hr />
-        </div>
+        <%= render partial: 'fancy_header', locals: { fancy_title: "Provider Details" } %>
+
         <input type="hidden" id="provider_id" name="provider_id" value="<%= f.object.id %>" />
         <%= f.input :name, label: "Name", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>
         
@@ -54,10 +52,8 @@
       </div>
     </div>
 
-    <div class="fancy-header">
-      <h3>Header Image</h3>
-      <hr />
-    </div>
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Header Image" } %>
+
     <div class="row">
       <div class="hidden-xs col-sm-1">
       </div>
@@ -106,10 +102,8 @@
       </div>
     </div>
 
-    <div class="fancy-header">
-      <h3>Logo Image</h3>
-      <hr />
-    </div>
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Logo Image" } %>
+
     
     <div class="row">
       <div class="hidden-xs col-sm-1">
@@ -148,10 +142,7 @@
       </div>
     </div>
 
-    <div class="fancy-header">
-      <h3>Payment Details</h3>
-      <hr />
-    </div>
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Payment Details" } %>
 
     <div class="row">
        <%= f.input :account, label: "Bank account number", input_html: { :'data-error-message' => 'You must set a name' }, wrapper: :horizontal %>

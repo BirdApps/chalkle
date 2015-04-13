@@ -37,10 +37,7 @@
 
 <% if @payment.outgoings.present? %>
   <div class="row">
-    <div class="fancy-header">
-      <h3>Outgoings</h3>
-      <hr />
-    </div>
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Outgoings" } %>
   </div>
   <div class="row">
     <% @payment.outgoings.each do |outgoing| %>
@@ -53,10 +50,7 @@
 <% end %>
 
 <div class="row">
-  <div class="fancy-header">
-    <h3>Bookings</h3>
-    <hr />
-  </div>
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Bookings" } %>
 </div>
 <% @payment.bookings.each do |booking| %>
   <div class="row">

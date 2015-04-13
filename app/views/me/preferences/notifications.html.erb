@@ -1,16 +1,10 @@
 <% 
   @page_title= 'Notifications'
 %>
-<div class="fancy-header">
-    <h3>Email Options</h3>
-    <hr />
-  </div>
-<p>
-  
-</p>
-<div class="hidden-xs col-sm-2">
-</div>
-<div class="new_form_wrapper col-xs-12 col-sm-8">
+
+<%= render partial: 'fancy_header', locals: { fancy_title: "Email Options" } %>
+
+<div class="new_form_wrapper col-xs-12 col-sm-8 col-sm-offset-2">
   <%= bootstrap_form_for(@notification_preference, wrapper: :simple_bootstrap3, url: me_notification_preference_path, html: { method:  :put, class: 'form-horizontal', role: 'form' }) do |f| %>
         
       <%# TODO: settings form %>
@@ -50,6 +44,4 @@
     </div>
 
   <% end  %>
-</div>
-<div class="hidden-xs col-sm-2">
 </div>

@@ -2,27 +2,17 @@
   
 
   <div class="col-sm-8 col-sm-offset-2 text-center">
-    <div class="fancy-header">
-      <h4>Questions & Comments</h4>
-      <hr class="small" />
-    </div>
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Questions & Comments", small: true } %>
     <p>
      For questions and comments please get in touch at  <%= mail_to "hello@chalkle.com", 'hello@chalkle.com' %>.
     </p>
 
-
-    <div class="fancy-header">
-      <h4>Support</h4>
-      <hr class="small" />
-    </div>
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Support", small: true } %>
     <p>
      For support enquries please email  <%= mail_to "support@chalkle.com", 'support@chalkle.com' %>.
     </p>
 
-    <div class="fancy-header">
-      <h4>Use Chalkle to organise your classes</h4>
-      <hr class="small" />
-    </div>
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Use Chalkle to organise your classes", small: true } %>
     <p>
       If you are thinking about using the Chalkle platform or organise your classes and want to learn more, please fill in the form below.
     </p>
