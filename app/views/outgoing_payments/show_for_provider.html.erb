@@ -248,6 +248,12 @@
             </div>
           </div>
         </div>
+        <div class="col-xs-12 pad-top-10 small text-center">
+          Paid <%= @outgoing_payment.bank_account %> on <strong><%= day_ordinal_month(@outgoing_payment.paid_date, true, true) %></strong>
+          <% if @outgoing_payment.account.present? %>
+            to <strong> <%= @outgoing_payment.account %> </strong>
+          <% end %>
+        </div>
       </div>
 
   </div>
