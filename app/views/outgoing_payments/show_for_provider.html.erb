@@ -21,12 +21,12 @@
         </div>
 
         <div class="col-xs-12 pad-top-10">
-          <% course.bookings.map(&:paid).uniq.each do |amount| %>
+          <% course.bookings.confirmed.map(&:paid).uniq.each do |amount| %>
             <div class="col-xs-9">
               Bookings @ <%= number_to_currency amount %>
             </div>
             <div class="col-xs-3 text-right"> 
-              <%= course.bookings.select{|b| b.paid == amount}.count %> 
+              <%= course.bookings.confirmed.select{|b| b.paid == amount}.count %> 
             </div>
           <% end %>
         </div>
