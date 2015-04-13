@@ -189,8 +189,8 @@ class OutgoingPayment < ActiveRecord::Base
     save
   end
 
-  def recalculate!(override = false)
-    if !approved? || override
+  def recalculate!(opts = { include_paid: false })
+    if !approved? || opts[:include_paid]
       self.tax_number = nil
       self.bank_account = nil
       if for_teacher? 
