@@ -263,30 +263,31 @@ $(function(){
 
     /* Show correct number of class-divs */
     function show_class_opts(target_class_count){
-      if(isNaN(target_class_count)){
-        target_class_count = $('.update_class_count input').val();
-      }
-      var existing_class_count = $('.class-count').length;
-      var difference = target_class_count - existing_class_count;
-
-      /* add div.class-count that should exist */
-      for(var i = 0; i < difference; i++){
-        $($('.class-count-bumper').prev()).clone().insertBefore('.class-count-bumper');
-        var inserted_element = $('.class-count-bumper').prev();
-        //set the title to the class number
-        $(inserted_element).find('.class-count-num').text(i+existing_class_count+1);
-        $(inserted_element).find('.teaching_times_summary').text("");
-        number_picker(inserted_element);
-        apply_start_at_controls(inserted_element, true);
-      }
-
-      /* remove div.class-count that shouldn't exist */
-      $('.class-count').each(function(index){
-        if(index+1 > target_class_count){
-          $(this).remove();
+      window.setTimeout(function(){
+        if(isNaN(target_class_count)){
+          target_class_count = $('.update_class_count input').val();
         }
-      });
-      
+        var existing_class_count = $('.class-count').length;
+        var difference = target_class_count - existing_class_count;
+
+        /* add div.class-count that should exist */
+        for(var i = 0; i < difference; i++){
+          $($('.class-count-bumper').prev()).clone().insertBefore('.class-count-bumper');
+          var inserted_element = $('.class-count-bumper').prev();
+          //set the title to the class number
+          $(inserted_element).find('.class-count-num').text(i+existing_class_count+1);
+          $(inserted_element).find('.teaching_times_summary').text("");
+          number_picker(inserted_element);
+          apply_start_at_controls(inserted_element, true);
+        }
+
+        /* remove div.class-count that shouldn't exist */
+        $('.class-count').each(function(index){
+          if(index+1 > target_class_count){
+            $(this).remove();
+          }
+        });
+      }, 500)
     }
 
     /* returns count of that weekday in the month preceeding a date, including that date */

@@ -56,6 +56,8 @@ protected
     return if request.xhr?
     unless (request.path == root_path                        ||
             request.path == new_chalkler_session_path        ||
+            request.path == new_chalkler_password_path       ||
+            request.path == edit_chalkler_password_path      ||
             request.path == chalkler_session_path            ||
             request.path == new_chalkler_registration_path   ||
             request.path == chalkler_registration_path       ||

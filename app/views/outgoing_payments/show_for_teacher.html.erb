@@ -28,12 +28,12 @@
           </div>
           
           <% unless course.flat_fee? %>
-            <% course.bookings.map(&:teacher_fee).uniq.each do |amount| %>
+            <% course.bookings.confirmed.map(&:teacher_fee).uniq.each do |amount| %>
               <div class="col-xs-9">
                 Bookings @ <%= number_to_currency amount %>
               </div>
               <div class="col-xs-3 text-right"> 
-                <%= course.bookings.select{|b| b.teacher_fee == amount}.count %> 
+                <%= course.bookings.confirmed.select{|b| b.teacher_fee == amount}.count %> 
               </div>
             <% end %>
           <% end %>
