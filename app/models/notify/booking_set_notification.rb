@@ -8,7 +8,7 @@ class Notify::BookingSetNotification < Notify::Notifier
 
   def send_receipt
     #to booker
-    @booking_set.payments.each do |payment|
+    @booking_set.payments.uniq.compact.each do |payment|
       PaymentMailer.receipt_to_chalkler(payment).deliver!
     end
   end
