@@ -5,35 +5,6 @@ class Notify::BookingNotification < Notify::Notifier
     @role = role
   end
 
-  def confirmation
-    #to chalkler
-    if booking.pseudo_chalkler_email.present?
-
-      message = I18n.t('notify.booking.booked_in', course_name: booking.course.name, booker: booking.booker.name)
-      BookingMailer.booking_confirmation_to_non_chalkler(booking).deliver!
-      Chalkler.invite!({email: booking.pseudo_chalkler_email, name: booking.name}, booking.booker) if booking.invite_chalkler
-    
-    else
-
-      message = I18n.t('notify.booking.confirmation.to_chalkler', course_name: booking.course.name)
-      booking.chalkler.send_notification Notification::REMINDER, provider_course_path(booking.course.path_params), message, booking
-
-      if booking.chalkler.email_about? :booking_confirmation_to_chalkler
-        BookingMailer.booking_confirmation_to_chalkler(booking).deliver!  
-      end
-      
-    end
-
-    #to teacher
-    message = I18n.t('notify.booking.confirmation.to_teacher', course_name: booking.course.name, from_name: booking.name)
-
-    booking.teacher.chalkler.send_notification(Notification::REMINDER, provider_course_path(booking.course.path_params), message, booking) if booking.teacher.chalkler
-
-    if booking.teacher.chalkler.blank? || booking.teacher.chalkler.email_about?(:booking_confirmation_to_teacher)
-      BookingMailer.booking_confirmation_to_teacher(booking).deliver!
-    end
-  
-  end
 
   def reminder
     message = I18n.t('notify.booking.reminder', course_name: booking.course.name)

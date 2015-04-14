@@ -3,16 +3,16 @@ en-NZ:
     booking:
       confirmation:
         to_non_chalkler:
-          subject: "%{name}, you have a new booking for %{course_name} on Chalkle.com"
+          subject: "%{booker_name} has made a booking to %{course_names} for you on Chalkle.com"
           body:
             html: |
-              %{booker_name} has successfully booked you in to [%{course_name}](%{course_url}). 
+              %{booker_names} has successfully booked you in to %{course_urls}. 
 
               The booking details are as follows:
 
-              [%{booking_name}](%{course_url})
+              %{booking_names}
 
-              [%{course_name}](%{course_url})
+              %{course_urls}
 
               %{start_at}
               %{time_range}
@@ -21,19 +21,19 @@ en-NZ:
 
               %{note_to_attendees}
 
-              If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
+              If you have any questions please contact the provider, %{provider_urls}, directly.
 
               %{paid}
 
               Happy learning!
             text: |
-              %{booker_name} has successfully booked you in to [%{course_name}](%{course_url}). 
+              %{booker_name} has successfully booked you in to %{course_urls}. 
 
               The booking details are as follows:
 
-              booked by – %{booking_name}
+              booked by – %{booking_names}
 
-              course name – %{course_name}
+              course name – %{course_names}
 
               %{start_at}
               %{time_range}
@@ -42,7 +42,7 @@ en-NZ:
 
               %{note_to_attendees}
 
-              If you have any questions please contact the provider, %{provider_name} directly.
+              If you have any questions please contact the provider, %{provider_names} directly.
 
               %{paid}
 
@@ -51,22 +51,23 @@ en-NZ:
 
               =======================
 
-              %{course_url}
-              %{provider_url}
+              %{course_urls}
+              %{provider_urls}
 
               =======================
         to_chalkler:
           paid: "You should have also received a payment receipt separately, unless you were invited by another person."
-          subject: "%{name}, you have a new booking for %{course_name}"
+          subject: "%{name}, you have a new booking for %{course_names}"
           body:
             html: |
-              Your booking is confirmed for [%{course_name}](%{course_url}). 
+              Your booking is confirmed for:
+              %{course_urls} 
 
-              The booking details are as follows:
+              The booking details are as follows
 
-              [%{booking_name}](%{course_url})
+              %{booking_names}
 
-              [%{course_name}](%{course_url})
+              %{course_urls}
 
               %{start_at}
               %{time_range}
@@ -75,20 +76,20 @@ en-NZ:
 
               %{note_to_attendees}
 
-              If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
+              If you have any questions please contact the provider, %{provider_urls}, directly.
 
               %{paid}
 
 
               Happy learning!
             text: |
-              Your booking is confirmed for %{course_name}. 
+              Your booking is confirmed for %{course_names}. 
 
-              The booking details are as follows:
+              The booking details are as follows
 
-              %{booking_name}
+              %{booking_names}
 
-              %{course_name}
+              %{course_names}
 
               %{start_at}
               %{time_range}
@@ -97,7 +98,7 @@ en-NZ:
 
               %{note_to_attendees}
 
-              If you have any questions please contact the provider, %{provider_name} directly.
+              If you have any questions please contact the provider, %{provider_names} directly.
 
               %{paid}
 
@@ -106,7 +107,7 @@ en-NZ:
 
               =======================
 
-              %{course_url}
-              %{provider_url}
+              %{course_urls}
+              %{provider_urls}
 
               =======================

@@ -194,13 +194,15 @@ class Chalkler < ActiveRecord::Base
 
 
   
-  def send_notification(type, href, message, target = nil,from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil)
+  def send_notification(type, href, message, target = nil, from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil)
     
     ## GET AN IMAGE
     # if from a chalkler
     image = from.avatar if image.blank? && from.present? && from.respond_to?('avatar')
     # if from a booking
     image = target.image if image.blank? && target.present? && target.respond_to?('image')
+    # if from a collection (of bookings)
+    image = target.first.image if image.blank? && target.present? && target.is_a?(Enumerable) && target.first.respond_to?('image')
     # if from a course
     image = target.course_upload_image if image.blank? && target.present? && target.respond_to?('course_upload_image')
     

@@ -2,7 +2,7 @@ en-NZ:
   email:
     booking:
       confirmation:
-        to_teacher:
+        to_provider_admin:
           subject: "New booking on %{course_names}"
           body:
             first: |

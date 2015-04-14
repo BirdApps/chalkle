@@ -9,7 +9,8 @@ class NotificationPreference < ActiveRecord::Base
   ]
 
 
-  PROVIDER_OPTIONS = [ :booking_cancelled_to_provider] #, :booking_confirmation_to_provider, :course_cancelled_to_provider, :course_notice_new_from_chalkler_to_provider, :provider_inquiry ]
+  PROVIDER_OPTIONS = [ :booking_cancelled_to_provider, :booking_confirmation_to_provider # :course_cancelled_to_provider, :course_notice_new_from_chalkler_to_provider, :provider_inquiry 
+  ]
 
   SUPER_OPTIONS = [:new_partner_inquiry, :archived_partner_inquiry]
 
