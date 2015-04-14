@@ -1,6 +1,28 @@
 <%= 
-  paid_text = @course.paid? ? t("email.booking.confirmation.to_chalkler.paid") : ""
-    note_to_attendees = @course.note_to_attendees ? "Details for attendees:\n\n #{@course.note_to_attendees}" : nil
+  paid_text = @courses.map(&:paid?).include?(true) ? t("email.booking.confirmation.to_chalkler.paid") : ""
+  if @courses.select{|c| c.note_to_attendees}.any? 
+    
+    note_to_attendees = "Details for attendees: \n\n"
 
-  t("email.booking.confirmation.to_chalkler.body.text", booking_name: @booking.name, course_name: @course.name, course_url: tiny_course_url(@course), provider_name: @booking.provider.name, provider_url: provider_url(@booking.provider.url_name), venue: @course.venue, address: @course.address, note_to_attendees: note_to_attendees, start_at: day_ordinal_month(@course.start_at), time_range: pretty_time_range(@course.start_at, @course.end_at), paid: paid_text)
+    @courses.map(&:note_to_attendees).compact.each do |note| 
+      note_to_attendees.concat "#{note}\n\n"
+    end
+  else
+    note_to_attendees = ''
+  end
+
+  t("email.booking.confirmation.to_chalkler.body.text", 
+    booking_names: @bookings.map(&:name).uniq.join(', '), 
+    courses_links: @courses.map(&:name).uniq.join(', '), 
+    course_urls: @courses.map{|c| "#{c.name} – #{tiny_course_url(c)}" }.uniq.join(", \n"), 
+    course_names: @courses.map{|c| c.name }.uniq.join(','), 
+    provider_names: @bookings.map{|b| b.provider.name}.uniq.join(', '), 
+    provider_urls: @courses.map{|c| "#{c.provider.name} – #{provider_url(c.provider)}" }.uniq.join(", \n"), 
+    venue: @courses.map{|c| c.venue }.uniq.join(', '), 
+    address: @courses.map{|c| c.address }.uniq.join(', '), 
+    note_to_attendees: note_to_attendees, 
+    start_at: day_ordinal_month(@courses.map(&:start_at).min, false, true, true), 
+    time_range: pretty_time_range(@courses.map(&:start_at).min, @courses.map(&:end_at).min), 
+    paid: paid_text
+  )
 %>

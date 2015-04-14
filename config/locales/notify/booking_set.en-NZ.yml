@@ -4,5 +4,8 @@ en-NZ:
       declined: "The payment was **declined** for **%{course_name}**. Would you like to try again?"
       confirmation: 
         to_chalkler: "You have a new booking for **%{course_names}**"
-        to_teacher: "New booking on **%{course_names}** for **%{from_name}**"
-        to_provider_admin: "New booking on **%{course_names}** for **%{from_name}**"
+        to_teacher: "New booking on **%{course_names}** for **%{from_names}**"
+        to_provider_admin: "New booking on **%{course_names}** for **%{from_names}**"
+
+      booked_in: "You have a new booking for **%{course_names}**. The booking was made for you by **%{bookers}**"
+      booked_in_with_invite: "You have a new booking for **%{course_names}**. The booking was made for you by **%{bookers}**."

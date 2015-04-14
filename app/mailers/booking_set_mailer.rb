@@ -7,10 +7,15 @@ class BookingSetMailer < BaseChalkleMailer
     @chalkler = chalkler
     @courses = bookings.map(&:course)
     @mail_header_color = @bookings.first.provider.header_color(:hex)
-    mail(to: @chalkler.email,  subject: I18n.t("email.booking.confirmation.to_chalkler.subject"), name: @chalkler.first_name, course_name: @courses.map(&:name).join(', ')) do |format| 
+    mail(to: @chalkler.email, 
+      subject: I18n.t("email.booking.confirmation.to_chalkler.subject", 
+        name: @chalkler.first_name, 
+        course_names: @courses.map(&:name).uniq.join(', ')
+      ) 
+    ) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
-    end
+    end 
   end
 
   #for non chalklers
@@ -19,7 +24,12 @@ class BookingSetMailer < BaseChalkleMailer
     @booker = bookings.first.booker
     @courses = bookings.map(&:course)
     @mail_header_color = @bookings.first.provider.header_color(:hex)
-    mail(to: pseudo_chalkler_email,  subject: I18n.t("email.booking.confirmation.to_non_chalkler.subject"), name: pseudo_chalkler_email, course_name: @courses.map(&:name).join(', ')) do |format| 
+    mail(to: pseudo_chalkler_email,  
+      subject: I18n.t("email.booking.confirmation.to_non_chalkler.subject", 
+        booker_name: @booker.name, 
+        course_names: @courses.map(&:name).uniq.join(', ')
+      )
+    ) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
@@ -30,19 +40,27 @@ class BookingSetMailer < BaseChalkleMailer
     @teacher = bookings.first.teacher
     @courses = bookings.map &:course
     @mail_header_color = @bookings.first.provider.header_color(:hex)
-    mail(to: @teacher.email,  subject: I18n.t("email.booking.confirmation.to_teacher.subject"), course_name: @courses.map(&:name).uniq.join(", ")) do |format| 
+    mail(to: @teacher.email, 
+      subject: I18n.t("email.booking.confirmation.to_teacher.subject", 
+        course_names: @courses.map(&:name).uniq.join(", ")
+      )
+    ) do |format| 
       format.text { render layout: 'standard_mailer' }
       format.html { render layout: 'standard_mailer' }
     end
   end
 
-  def booking_confirmation_to_provider_admin(booking, provider_admin)
-    @booking = booking
-    @teacher = booking.teacher
-    @course = booking.course
+  def booking_confirmation_to_provider_admin(bookings, provider_admin)
+    @bookings = bookings
+    @teacher = bookings.first.teacher
+    @courses = bookings.map &:course
     @provider_admin = provider_admin
-    @mail_header_color = @booking.provider.header_color(:hex)
-    mail(to: @provider_admin.email, subject: I18n.t("email.booking.confirmation.to_provider_admin.subject", course_name: @course.name)) do |format| 
+    @mail_header_color = @bookings.first.provider.header_color(:hex)
+    mail(to: @provider_admin.email, 
+      subject: I18n.t("email.booking.confirmation.to_provider_admin.subject", 
+        course_names: @courses.map(&:name).uniq.join(", ")
+      )
+    ) do |format| 
       format.html { render layout: 'standard_mailer' }
     end
   end

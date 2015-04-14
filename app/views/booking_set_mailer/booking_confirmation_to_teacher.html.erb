@@ -1,5 +1,39 @@
 <markdown>
-  <%= 
-     t("email.booking.confirmation.to_teacher.body.html", booking_name: @booking.name, course_name: @course.name, course_url: tiny_course_url(@course), course_bookings_url: provider_course_bookings_url(@course.path_params), venue: @course.venue, address: @course.address, start_at: day_ordinal_month(@course.start_at, false, true, true), time_range: pretty_time_range(@course.start_at, @course.end_at)).to_html
+<%= 
+
+   t("email.booking.confirmation.to_teacher.body.first", 
+    booking_names: @bookings.map(&:name).uniq.join(', '), 
+    course_urls: @courses.map{|c| "(#{c.name})[#{tiny_course_url(c)}]" }.uniq.join(", \n"), 
+    course_booking_urls: @courses.map{|c| "(#{c.name})[#{provider_course_bookings_url(c.path_params)}]\n" }.uniq.join(', '), 
+    venue: @courses.map{|c| c.venue }.uniq.join(', '), 
+    address: @courses.map{|c| c.address }.uniq.join(', '), 
+    start_at: day_ordinal_month(@courses.map(&:start_at).min, false, true, true), 
+    time_range: pretty_time_range(@courses.map(&:start_at).min, @courses.map(&:end_at).min)
+  ).to_html
   %>
+  <%= 
+
+  @courses.uniq.map{ |course| 
+    t("email.booking.confirmation.to_teacher.body.bookings_for_course",
+      count: @bookings.count{|b| b.course == course }, 
+      course_url: "(#{course.name})[#{tiny_course_url(course)}]", 
+      course_booking_urls: @bookings.select{|b| b.course == course }.map{|b| 
+          "* (#{b.name})[#{provider_course_bookings_url(b.course.path_params)}]" 
+        }.join(", \n")
+    ) 
+  }.join("\n\n").to_html
+
+%>
+
+<%= t("email.booking.confirmation.to_teacher.body.second", 
+  booking_names: @bookings.map(&:name).uniq.join(', '), 
+  course_urls: @courses.map{|c| "(#{c.name})[#{tiny_course_url(c)}]" }.uniq.join(", \n"), 
+  course_booking_urls: @courses.map{|c| "(#{c.name})[#{provider_course_bookings_url(c.path_params)}]\n" }.uniq.join(', '), 
+  venue: @courses.map{|c| c.venue }.uniq.join(', '), 
+  address: @courses.map{|c| c.address }.uniq.join(', '), 
+  start_at: day_ordinal_month(@courses.map(&:start_at).min, false, true, true), 
+  time_range: pretty_time_range(@courses.map(&:start_at).min, @courses.map(&:end_at).min)
+).to_html
+%>
+
 </markdown>

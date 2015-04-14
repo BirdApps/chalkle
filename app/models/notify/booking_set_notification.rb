@@ -15,45 +15,20 @@ class Notify::BookingSetNotification < Notify::Notifier
 
 
   def declined
-    message = I18n.t('notify.booking_set.declined', 
-      course_name: @booking_set.course.name)
     @booking_set.booker.send_notification(Notification::REMINDER, 
-      declined_provider_course_bookings_path( 
-        @booking_set.course.path_params({ booking_ids: @booking_set.id }) ),
-        message, 
+      declined_provider_course_bookings_path(@booking_set.course.path_params({ booking_ids: @booking_set.id })),
+        I18n.t('notify.booking_set.declined', course_name: @booking_set.course.name), 
         @booking_set.course
       )
   end
 
   def confirmation
-    chalklers = @booking_set.bookings.collect(&:chalkler).uniq
-    pseudo_chalklers = @booking_set.bookings.collect(&:pseudo_chalkler_email).uniq
-    teachers = @booking_set.bookings.collect(&:course).collect(&:teacher).uniq
-    providers = @booking_set.bookings.collect(&:course).collect(&:provider).uniq
-
-    # get a collection of all the chalklers
-    chalkler_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.chalkler == c }  }
-    chalklers.map {|c| chalkler_bookings[c] }
-
-    # get a grouped collection of all of the pseudo chalklers (not registered yet)
-    pseudo_chalkler_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.pseudo_chalkler_email == c }  }
-    pseudo_chalklers.map {|c| pseudo_chalkler_bookings[c] }
-
-    # also a grouped collection of all of the teachers
-    teacher_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.course.teacher == c }  }
-    teachers.map {|c| teacher_bookings[c] }
-
-    # also a grouped collection of all of the providers & bookings
-    provider_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.course.provider == c }  }
-    providers.map {|p| provider_bookings[p] }
-
-
     #send confirmation to each chalkler in the booking set. One confirmation to each chalkler...
     chalkler_bookings.each do |chalkler, bookings|
       
       message = I18n.t(
         'notify.booking_set.confirmation.to_chalkler',
-        course_names: bookings.map(&:course).map(&:name).flatten.join(", ") # no guarantee that all bookings are from the same course, so list all the courses. 
+        course_names: bookings.map(&:course).map(&:name).uniq.flatten.join(", ") # no guarantee that all bookings are from the same course, so list all the courses. 
       )
       
       chalkler.send_notification(
@@ -72,9 +47,9 @@ class Notify::BookingSetNotification < Notify::Notifier
     # ... now deal with pseudo bookings
     pseudo_chalkler_bookings.each do |pseudo_chalkler_email, bookings| 
       
-      message = I18n.t('notify.booking.booked_in', 
-        course_name: bookings.map(&:course).map(&:name).uniq.join(", "),
-        booker: bookings.map(&:booker).map(&:name).uniq.join(", ")
+      message = I18n.t('notify.booking_set.booked_in', 
+        course_names: bookings.map(&:course).map(&:name).uniq.join(", "),
+        bookers: bookings.map(&:booker).map(&:name).uniq.join(", ")
       )
 
       BookingSetMailer.booking_confirmation_to_non_chalkler(bookings, pseudo_chalkler_email).deliver!
@@ -83,120 +58,59 @@ class Notify::BookingSetNotification < Notify::Notifier
         Chalkler.invite!( { email: pseudo_chalkler_email, 
                             name: bookings.map(&:name).uniq.join(", ")
                           }, 
-                          booking.booker
-                        )
-      end
-    end
-
-
-    #to teachers (probably only one, but handling the case with bookings from many courses for robustness)
-    teacher_bookings.each do |teacher, bookings|
-      message = I18n.t('notify.booking.confirmation.to_teacher', course_names: bookings.map(&:course).map(&:name).uniq.join(", "), from_name: bookings.map(&:booker).map(&:name).uniq.join(", "))
-
-      if teacher.chalkler
-        teacher.chalkler.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, @booking_set.course) 
-      end
-
-      if teacher.chalkler.blank? || teacher.chalkler.email_about?(:booking_confirmation_to_teacher)
-        BookingSetMailer.booking_confirmation_to_teacher(bookings).deliver!
-      end
-
-    end
-
-    provider_bookings.each do |provider, bookings| 
-
-      message = I18n.t('notify.booking.confirmation.to_provider_admin', course_names: bookings.map(&:course).map(&:name).uniq.join(", "), from_name: bookings.map(&:booker).map(&:name).uniq.join(", "))
-      
-      providers.provider_admins.each do |admin|
-        
-        teacher.chalkler.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, @booking_set.course) 
-      
-        if admin.email_about?(:booking_confirmation_to_provider_admin)
-          BookingSetMailer.booking_confirmation_to_provider_admin(bookings, admin).deliver!
-        end
-
-      end
-
-
-
-    end
-  
-  end
-
-
-
-  def confirmation
-    chalklers = @booking_set.bookings.collect(&:chalkler).uniq
-    pseudo_chalklers = @booking_set.bookings.collect(&:pseudo_chalkler_email).uniq
-    teachers = @booking_set.bookings.collect(&:course).collect(&:teacher).uniq
-
-    # get a collection of all the chalklers
-    chalkler_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.chalkler == c }  }
-    chalklers.map {|c| chalkler_bookings[c] }
-
-    # get a grouped collection of all of the pseudo chalklers (not registered yet)
-    pseudo_chalkler_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.pseudo_chalkler_email == c }  }
-    pseudo_chalklers.map {|c| pseudo_chalkler_bookings[c] }
-
-    # also a grouped collection of all of the teachers
-    teacher_bookings = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.course.teacher == c }  }
-    teachers.map {|c| teacher_bookings[c] }
-
-    #send confirmation to each chalkler in the booking set. One confirmation to each chalkler...
-    chalkler_bookings.each do |chalkler, bookings|
-      
-      message = I18n.t(
-        'notify.booking_set.confirmation.to_chalkler',
-        course_name: bookings.map(&:course).map(&:name).flatten.join(", ") # no guarantee that all bookings are from the same course, so list all the courses. 
-      )
-      
-      chalkler.send_notification(
-        Notification::REMINDER, 
-        provider_course_path(bookings.first.course.path_params), 
-        message, 
-        bookings
-      )
-
-      if chalkler.email_about? :booking_confirmation_to_chalkler
-        BookingSetMailer.booking_confirmation_to_chalkler(bookings, chalkler).deliver!  
-      end
-
-    end
-
-    # ... now deal with pseudo bookings
-    pseudo_chalkler_bookings.each do |pseudo_chalkler_email, bookings| 
-      
-      message = I18n.t('notify.booking.booked_in', 
-        course_name: bookings.map(&:course).map(&:name).uniq.join(", "),
-        booker: bookings.map(&:booker).map(&:name).uniq.join(", ")
-      )
-
-      BookingSetMailer.booking_confirmation_to_non_chalkler(bookings, pseudo_chalkler_email).deliver!
-
-      if bookings.map(&:invite_chalkler).include?(true)
-        Chalkler.invite!( { email: pseudo_chalkler_email, 
-                            name: bookings.map(&:name).uniq.join(", ")
-                          }, 
-                          booking.booker
-                        )
+          @booking_set.booker
+        )
       end
     end
     
 
-    #to teachers (probably only one, but handling the case with bookings from many courses for robustness)
-    teacher_bookings.each do |teacher, bookings|
-      message = I18n.t('notify.booking.confirmation.to_teacher', course_name: bookings.map(&:course).map(&:name).uniq.join(", "), from_name: bookings.map(&:booker).map(&:name).uniq.join(", "))
 
-      if teacher.chalkler
-        teacher.chalkler.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, bookings) 
-      end
-
-      if teacher.chalkler.blank? || teacher.chalkler.email_about?(:booking_confirmation_to_teacher)
-        BookingSetMailer.booking_confirmation_to_teacher(bookings).deliver!
-      end
-
-    end
   
+      #to provider admins. There can be many providers, nad many admins per provider. 
+    provider_bookings.each do |provider, bookings|
+      message = I18n.t('notify.booking_set.confirmation.to_provider_admin', 
+        course_names: bookings.map(&:course).map(&:name).uniq.join(", "), 
+        from_names: bookings.map(&:booker).map(&:name).uniq.join(", ")
+      )
+      provider.provider_admins.map(&:chalkler).each do |provider_admin|
+        provider_admin.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, @booking_set.course)
+
+          BookingSetMailer.booking_confirmation_to_provider_admin(bookings, provider_admin).deliver! if provider_admin.email_about? :booking_confirmation_to_provider
+
+      end
+    end
   end
+
+  private
+
+    # get a collection of all the chalklers
+    def chalkler_bookings
+      h = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.chalkler == c }  }
+      @booking_set.bookings.collect(&:chalkler).uniq.compact.map {|c| h[c] }
+      h
+    end
+
+    # get a grouped collection of all of the pseudo chalklers (not registered yet)
+    def pseudo_chalkler_bookings
+      
+      h = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.pseudo_chalkler_email == c }  }
+      @booking_set.bookings.collect(&:pseudo_chalkler_email).uniq.compact.map {|c| h[c] }
+      h
+    end
+
+
+    # also a grouped collection of all of the teachers
+    def teacher_bookings
+      h = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.course.teacher == c }  }
+      @booking_set.bookings.collect(&:course).collect(&:teacher).uniq.compact.map {|c| h[c] }
+      h
+    end
+
+    def provider_bookings
+    # also a grouped collection of all of the providers & bookings
+      h = Hash.new {|h, c| h[c] = @booking_set.bookings.select{|b| b.course.provider == c }  }
+      @booking_set.bookings.collect(&:course).collect(&:provider).uniq.compact.map {|p| h[p] }
+      h
+    end
 
 end

@@ -194,7 +194,7 @@ class Chalkler < ActiveRecord::Base
 
 
   
-  def send_notification(type, href, message, target = nil,from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil)
+  def send_notification(type, href, message, target = nil, from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil)
     
     ## GET AN IMAGE
     # if from a chalkler
