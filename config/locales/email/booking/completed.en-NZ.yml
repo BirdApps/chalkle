@@ -7,20 +7,18 @@ en-NZ:
           html: |
             Thanks for coming along to [%{course_name}](%{course_url}), we hope you had a great time and learned something new!
 
-            We’d love some feedback on how the class went and your experience using Chalkle.
-
-            Please let us know if there is anything you’d like to share.
+            If you would like to show your appreciation, share some photos, or follow up on anything else [do it here](%{discussion_url}).
 
             Cheers!
+
+            [Find more classes provided by %{provider_name}](provider_url)
           text: |
             Thanks for coming along to %{course_name}, we hope you had a great time and learned something new!
 
-            We’d love some feedback on how the class went and your experience using Chalkle.
-
-            Please let us know if there is anything you’d like to share.
+            If you would like to show your appreciation, share some photos, or follow up on anything else do it here  %{discussion_url}
 
             Cheers!
 
             ======================================
-            [Find more classes provided by %{provider_name}](provider_url)
+            Find more classes provided by %{provider_name} at %{provider_url}
             ======================================
