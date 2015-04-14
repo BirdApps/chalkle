@@ -46,7 +46,7 @@ class ProviderTeacher < ActiveRecord::Base
   end
 
   def tax_registered?
-    tax_number.present?
+    !!(tax_number.squish.present? if tax_number.present?)
   end
 
   def check_name
