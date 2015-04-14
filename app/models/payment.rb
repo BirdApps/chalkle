@@ -87,7 +87,7 @@ class Payment < ActiveRecord::Base
   end 
 
   def has_tax?
-    provider.tax_number.present? 
+    provider.tax_number.tax_registered?
   end
 
   def refundable?

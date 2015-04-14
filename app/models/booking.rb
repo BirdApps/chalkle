@@ -204,7 +204,7 @@ class Booking < ActiveRecord::Base
     end
 
     #TEACHER TAX
-    if course.teacher.present? && course.teacher.tax_number.present?
+    if course.teacher.present? && course.teacher.tax_registered?
       self.teacher_gst_number = course.teacher.tax_number
       self.teacher_gst = teacher_fee*3/23
       self.teacher_fee = teacher_fee-teacher_gst
@@ -215,7 +215,7 @@ class Booking < ActiveRecord::Base
 
     #PROVIDER
     self.provider_fee = course.provider_fee
-    if provider.tax_number.present?
+    if provider.tax_registered?
       self.provider_gst_number = provider.tax_number
       self.provider_gst = course.provider_fee*3/23
       self.provider_fee = self.provider_fee-self.provider_gst
@@ -252,8 +252,10 @@ class Booking < ActiveRecord::Base
       
       if adjustment_for_teacher != 0
         self.teacher_fee = teacher_fee+teacher_gst+adjustment_for_teacher
-        self.teacher_gst = teacher_fee*3/23
-        self.teacher_fee = teacher_fee-teacher_gst
+        if course.teacher.present? && course.teacher.tax_registered?
+          self.teacher_gst = teacher_fee*3/23
+          self.teacher_fee = teacher_fee-teacher_gst
+        end
       end
     end
 
