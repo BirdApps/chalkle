@@ -2,10 +2,10 @@ en-NZ:
   email:
     booking:
       reminder:
-        subject: "%{name}, your course is coming up soon!"
+        subject: "%{name}, your class is coming up soon!"
         body:
           html: |
-            Just a friendly reminder, your course is coming up really soon.
+            Just a friendly reminder, your class is coming up really soon.
 
             The booking details are as follows:
 
@@ -20,11 +20,11 @@ en-NZ:
 
             If you have any questions please contact the provider, [%{provider_name}](%{provider_url}), directly.
 
-            Check out the class noticeboard to make sure you have everything you need. If you have any questions please contact the course provider directly.
+            Check out the discussion board to make sure you have everything you need. If you have any questions please contact the class provider directly.
 
             Enjoy your class!
           text: |
-            Just a friendly reminder, your course is coming up really soon.
+            Just a friendly reminder, your class is coming up really soon.
 
             The booking details are as follows:
 
@@ -39,7 +39,7 @@ en-NZ:
 
             If you have any questions please contact the provider, %{provider_name}, directly.
 
-            Check out the class noticeboard to make sure you have everything you need. If you have any questions please contact the course provider directly.
+            Check out the discussion board to make sure you have everything you need. If you have any questions please contact the class provider directly.
 
             Enjoy your class!
 
