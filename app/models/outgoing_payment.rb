@@ -24,6 +24,8 @@ class OutgoingPayment < ActiveRecord::Base
   belongs_to :teacher, class_name: 'ProviderTeacher'
   belongs_to :provider
 
+  has_many :teachers, through: :provider_courses
+
   has_many :provider_courses,  class_name: 'Course', foreign_key: :provider_payment_id
   has_many :teacher_courses,  class_name: 'Course', foreign_key: :teacher_payment_id
 
@@ -190,14 +192,12 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def recalculate!(opts = { include_paid: false })
+    reset_ivars
     if !approved? || opts[:include_paid]
       self.tax_number = nil
       self.bank_account = nil
-      if for_teacher? 
-        teacher_bookings.map{ |b| b.apply_fees! }
-      else
-        provider_bookings.map{ |b| b.apply_fees! }
-      end
+      puts courses.map &:recalculate_bookings_fees!
+
       #remove any courses which are no longer marked as published or complete
       remove_courses = courses.where("status != '#{Course::STATUS_4}' AND status != '#{Course::STATUS_1}'")
       remove_courses.update_all(provider_payment_id: nil)
@@ -281,29 +281,11 @@ class OutgoingPayment < ActiveRecord::Base
     save
   end
 
-  #costings
-  def platform_tax
-    @platform_tax ||= bookings.sum(&:chalkle_gst) + bookings.sum(&:processing_gst)
-  end
+  #income
 
-  def processing_fees_for_course(course)
-    @processing_fees_for_course = Hash.new unless @processing_fees_for_course
-    @processing_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:processing_fee)
-  end
-
-  def booking_fees_for_course(course)
-    @booking_fees_for_course = Hash.new unless @booking_fees_for_course
-    @booking_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:chalkle_fee)
-  end
-
-  def platform_fees_for_course(course)
-    @platform_fees_for_course = Hash.new unless @platform_fees_for_course
-    @platform_fees_for_course[course.id] ||= (booking_fees_for_course(course) + processing_fees_for_course(course))
-  end
-
-  def platform_tax_for_course(course)
-    @platform_tax_for_course = Hash.new unless @platform_tax_for_course
-    @platform_tax_for_course[course.id] ||= ((bookings & course.bookings).sum(&:chalkle_gst) + (bookings & course.bookings).sum(&:processing_gst))
+  def total_sales_for_course(course)
+    @total_sales_for_course = Hash.new unless @total_sales_for_course
+    @total_sales_for_course[course.id] ||= (bookings & course.bookings).sum &:paid
   end
 
   def provider_fees_for_course(course)
@@ -311,14 +293,101 @@ class OutgoingPayment < ActiveRecord::Base
     @provider_fees_for_course[course.id] ||= (bookings & course.bookings).sum &:provider_fee
   end
 
-  def teacher_fees_for_course(course)
-    @teacher_fees_for_course = Hash.new unless @teacher_fees_for_course
-    @teacher_fees_for_course[course.id] ||= (bookings & course.bookings).sum &:teacher_fee
-  end
-
   def provider_tax_for_course(course)
     @provider_tax_for_course = Hash.new unless @provider_tax_for_course
     @provider_tax_for_course[course.id] ||= (bookings & course.bookings).sum &:provider_gst
+  end
+
+  def provider_total_for_course(course)
+    provider_fees_for_course(course) + provider_tax_for_course(course)
+  end
+
+
+  #costings
+
+  def platform_costs
+    platform_fees + platform_tax
+  end
+
+  def platform_fees
+    @platform_fees ||= bookings.sum(&:chalkle_fee) + bookings.sum(&:processing_fee)
+  end
+
+  def platform_tax
+    @platform_tax  ||= bookings.sum(&:chalkle_gst) + bookings.sum(&:processing_gst)
+  end
+
+  def teacher_fees(teacher)
+    @teacher_fees = Hash.new unless @teacher_fees
+    @teacher_fees[teacher.id] ||= bookings.joins(:course).where("courses.teacher_id = ?", teacher.id).sum(&:teacher_fee)
+  end
+
+  def teacher_tax(teacher)
+    @teacher_tax = Hash.new unless @teacher_tax
+    @teacher_tax[teacher.id] ||= bookings.joins(:course).where("courses.teacher_id = ?", teacher.id).sum(&:teacher_gst)
+  end
+
+  def teacher_costs(teacher)
+    teacher_fees(teacher) + teacher_tax(teacher)
+  end
+
+  def total_fees
+    @total_fees = bookings.sum(&:chalkle_fee) + bookings.sum(&:processing_fee) + bookings.sum(&:teacher_fee)
+  end
+
+  def total_tax
+    @total_tax ||= bookings.sum(&:chalkle_gst) + bookings.sum(&:processing_gst) + bookings.sum(&:teacher_gst)
+  end
+
+  def total_costs
+    total_fees + total_tax
+  end
+
+  #costings per course
+
+  def platform_fees_for_course(course)
+    processing_fees_for_course(course) + booking_fees_for_course(course)
+  end
+
+  def platform_tax_for_course(course)
+    processing_tax_for_course(course) + booking_tax_for_course(course)
+  end
+
+  def platform_cost_for_course(course)
+    platform_fees_for_course(course) + platform_tax_for_course*(course)
+  end
+
+  def processing_fees_for_course(course)
+    @processing_fees_for_course = Hash.new unless @processing_fees_for_course
+    @processing_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:processing_fee)
+  end
+
+  def processing_tax_for_course(course)
+    @processing_tax_for_course = Hash.new unless @processing_tax_for_course
+    @processing_tax_for_course[course.id] ||= (bookings & course.bookings).sum(&:processing_gst)
+  end
+
+  def processing_costs_for_course(course)
+    processing_fees_for_course(course) + processing_tax_for_course(course)
+  end
+
+  def booking_fees_for_course(course)
+    @booking_fees_for_course = Hash.new unless @booking_fees_for_course
+    @booking_fees_for_course[course.id] ||= (bookings & course.bookings).sum(&:chalkle_fee)
+  end
+
+  def booking_tax_for_course(course)
+    @booking_tax_for_course = Hash.new unless @booking_tax_for_course
+    @booking_tax_for_course[course.id] ||= (bookings & course.bookings).sum(&:chalkle_gst)
+  end
+
+  def booking_costs_for_course(course)
+    booking_fees_for_course(course) + booking_tax_for_course(course)
+  end
+
+  def teacher_fees_for_course(course)
+    @teacher_fees_for_course = Hash.new unless @teacher_fees_for_course
+    @teacher_fees_for_course[course.id] ||= (bookings & course.bookings).sum &:teacher_fee
   end
 
   def teacher_tax_for_course(course)
@@ -326,14 +395,29 @@ class OutgoingPayment < ActiveRecord::Base
     @teacher_tax_for_course[course.id] ||= (bookings & course.bookings).sum &:teacher_gst
   end
 
-  def total_costs_for_course(course)
+  def teacher_costs_for_course(course)
+    teacher_fees_for_course(course) + teacher_tax_for_course(course)
+  end
+
+   def total_fees_for_course(course)
     teacher_fees_for_course(course) +
     platform_fees_for_course(course)
   end
 
-  def total_sales_for_course(course)
-    @total_sales_for_course = Hash.new unless @total_sales_for_course
-    @total_sales_for_course[course.id] ||= (bookings & course.bookings).sum &:paid
+  def total_tax_paid_for_course(course)
+    teacher_tax_for_course(course) +
+    platform_tax_for_course(course)
   end
+
+  def total_costs_for_course(course)
+    total_fees_for_course(course) +
+    total_tax_paid_for_course(course)
+  end
+
+  private
+
+    def reset_ivars
+      @teacher_tax_for_course = @teacher_fees_for_course = @booking_tax_for_course = @booking_fees_for_course = @processing_tax_for_course = @processing_fees_for_course = @total_tax = @total_fees = @teacher_tax = @teacher_fees = @platform_tax = @platform_fees = nil
+    end
 
 end
