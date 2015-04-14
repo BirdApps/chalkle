@@ -137,7 +137,7 @@ class BookingSet
     end
 
     Notify.for(self).confirmation
-    Notify.for(self).send_recipt
+    Notify.for(self).send_receipt
 
     paid
   end

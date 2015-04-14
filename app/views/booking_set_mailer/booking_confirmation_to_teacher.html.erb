@@ -3,8 +3,8 @@
 
    t("email.booking.confirmation.to_teacher.body.first", 
     booking_names: @bookings.map(&:name).uniq.join(', '), 
-    course_urls: @courses.map{|c| "(#{c.name})[#{tiny_course_url(c)}]" }.uniq.join(", \n"), 
-    course_booking_urls: @courses.map{|c| "(#{c.name})[#{provider_course_bookings_url(c.path_params)}]\n" }.uniq.join(', '), 
+    course_urls: @courses.map{|c| "[#{c.name}](#{tiny_course_url(c)})" }.uniq.join(", \n"), 
+    course_booking_urls: @courses.map{|c| "[#{c.name}](#{provider_course_bookings_url(c.path_params)})\n" }.uniq.join(', '), 
     venue: @courses.map{|c| c.venue }.uniq.join(', '), 
     address: @courses.map{|c| c.address }.uniq.join(', '), 
     start_at: day_ordinal_month(@courses.map(&:start_at).min, false, true, true), 
@@ -16,9 +16,9 @@
   @courses.uniq.map{ |course| 
     t("email.booking.confirmation.to_teacher.body.bookings_for_course",
       count: @bookings.count{|b| b.course == course }, 
-      course_url: "(#{course.name})[#{tiny_course_url(course)}]", 
+      course_url: "[#{course.name}](#{tiny_course_url(course)})", 
       course_booking_urls: @bookings.select{|b| b.course == course }.map{|b| 
-          "* (#{b.name})[#{provider_course_bookings_url(b.course.path_params)}]" 
+          "* [#{b.name}](#{provider_course_bookings_url(b.course.path_params)})" 
         }.join(", \n")
     ) 
   }.join("\n\n").to_html
@@ -27,8 +27,8 @@
 
 <%= t("email.booking.confirmation.to_teacher.body.second", 
   booking_names: @bookings.map(&:name).uniq.join(', '), 
-  course_urls: @courses.map{|c| "(#{c.name})[#{tiny_course_url(c)}]" }.uniq.join(", \n"), 
-  course_booking_urls: @courses.map{|c| "(#{c.name})[#{provider_course_bookings_url(c.path_params)}]\n" }.uniq.join(', '), 
+  course_urls: @courses.map{|c| "[#{c.name}](#{tiny_course_url(c)})" }.uniq.join(", \n"), 
+  course_booking_urls: @courses.map{|c| "[#{c.name}](#{provider_course_bookings_url(c.path_params)})\n" }.uniq.join(', '), 
   venue: @courses.map{|c| c.venue }.uniq.join(', '), 
   address: @courses.map{|c| c.address }.uniq.join(', '), 
   start_at: day_ordinal_month(@courses.map(&:start_at).min, false, true, true), 
