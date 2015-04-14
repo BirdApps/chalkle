@@ -24,10 +24,16 @@ class BookingsController < ApplicationController
 
   def create
     @course = Course.find(params[:course_id])
+
+    unless current_chalkler.providers_following.include? @course.provider
+      Subscription.create chalkler: current_chalkler, provider: @course.provider
+    end
+
     @booking_set = BookingSet.new params[:booking_set], params[:note_to_teacher]
     waive_fees = policy(@course).admin? && params[:remove_fees] == '1'
     if @booking_set.save({ free: waive_fees, booker: current_chalkler })
       payment_pending = false
+     
       @booking_set.bookings.each do |booking|
         unless booking.free?
           payment_pending = true
