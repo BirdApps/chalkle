@@ -1,9 +1,9 @@
 class ProviderTeachersController < ApplicationController
-  before_filter :load_provider, :header_provider, :sidebar_administrate_provider
+  before_filter :header_provider, :sidebar_administrate_provider
   before_filter :load_teacher, only: [:show,:update,:edit]
 
   def index
-    
+    return not_found unless @provider
     @teachers = @provider.provider_teachers.sort_by{ |p| p.next_class.present? ? p.next_class.start_at : DateTime.current.advance(years: 100) }
 
     respond_to do |format|

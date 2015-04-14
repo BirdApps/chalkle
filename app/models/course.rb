@@ -659,7 +659,8 @@ class Course < ActiveRecord::Base
 
     def calc_provider_income(incl_tax)
       income = bookings.confirmed.paid.sum(&:provider_fee)
-      income - (incl_tax ? 0 : (provider.tax_registered? ? income*3/23 : 0))
+      income + bookings.confirmed.paid.sum(&:provider_gst) if incl_tax
+      income
     end
 
     def calc_provider_plan
@@ -671,14 +672,9 @@ class Course < ActiveRecord::Base
     end
 
     def calc_teacher_income(incl_tax)
-      if fee_per_attendee?
-        income = bookings.confirmed.paid.sum(&:teacher_fee)
-      elsif flat_fee?
-        income = teacher_cost || 0
-      else
-        income = 0
-      end
-      income - (incl_tax ? 0 : (teacher.tax_registered? ? income*3/23 : 0))
+      income = bookings.confirmed.paid.sum(&:teacher_fee)
+      income + bookings.confirmed.paid.sum(&:teacher_gst) if incl_tax
+      income
     end
 
     def save_first_lesson

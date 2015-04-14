@@ -130,13 +130,15 @@ class BookingSet
     bookings.each do |booking|
       booking.payment = payment
       if paid
-        book_result = booking.confirm!
-        Notify.for(booking).confirmation
+        booking.confirm!
       else
         #TODO: notify chalkle admin that payment didn't amount to booking cost
       end
     end
-    Notify.for(self).send_receipt
+
+    Notify.for(self).confirmation
+    Notify.for(self).send_recipt
+
     paid
   end
 

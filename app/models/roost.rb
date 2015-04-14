@@ -4,7 +4,7 @@ class Roost
 
   def initialize(initial_chalkler, message, path)
     aliases = [ "#{Rails.env}_#{initial_chalkler.id}" ]
-    @parameters = { alert: message, url: url_from_path(path), aliases: aliases }
+    @parameters = { alert: ActionView::Base.full_sanitizer.sanitize(message.to_html), url: url_from_path(path), aliases: aliases }
   end
 
   def deliver
