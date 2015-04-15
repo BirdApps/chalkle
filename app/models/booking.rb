@@ -79,7 +79,6 @@ class Booking < ActiveRecord::Base
   after_create :redistribute_flat_fee_between_bookings
 
   delegate :start_at, :flat_fee?, :fee_per_attendee?, :provider_pays_teacher?, :venue, :prerequisites, :teacher_id, :course_upload_image, to: :course
-  delegate :first_name, :last_name, to: :chalkler
   
   serialize :custom_fields
 
@@ -111,7 +110,13 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  def first_name
+    name ? name.split(' ')[0] : ''
+  end
 
+  def last_name
+    (name && name.split.count > 1) ? name.split(' ',2)[1] : ''
+  end
 
   def paid
     self.payment.present? ? payment.paid_per_booking : 0
@@ -394,7 +399,7 @@ class Booking < ActiveRecord::Base
   def self.csv_for(bookings, opts = {})
     
     if opts[:as] == :super
-      headings = %w{ id name email paid note_to_teacher }
+      headings = %w{ id first_name last_name email paid note_to_teacher }
     else
       headings = %w{ id name paid note_to_teacher }
     end
