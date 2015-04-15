@@ -4,6 +4,9 @@ require 'capistrano/setup'
 # Include default deployment tasks
 require 'capistrano/deploy'
 
+require 'capistrano/sidekiq'
+require 'capistrano/inspeqtor'
+
 require 'capistrano/rbenv'
 require 'capistrano/bundler'
 require 'capistrano/rails/assets'
@@ -11,10 +14,6 @@ require 'capistrano/rails/migrations'
 require 'capistrano3/unicorn'
 require "whenever/capistrano"
 require 'airbrake/capistrano3'
-
-require 'capistrano/sidekiq'
-require 'capistrano/sidekiq/monit'
-require 'capistrano/inspeqtor'
 
 
 require 'HTTParty'
