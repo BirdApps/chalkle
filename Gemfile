@@ -101,6 +101,9 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rbenv', '~> 2.0', require: false
   gem 'capistrano3-unicorn', group: :development
+  
+  gem 'capistrano-sidekiq'
+  gem 'capistrano-inspeqtor'
 
   # Helpful Rails Generators
   gem 'nifty-generators',  '~> 0.4.6',  require: false
