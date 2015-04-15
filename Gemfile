@@ -64,6 +64,7 @@ gem 'fog', ">= 1.3.1", require: false
 gem 'mini_magick'
 
 gem 'sidekiq'
+gem 'capistrano-sidekiq'
 
 gem 'omni_avatar', path: 'vendor/gems/omni_avatar'
 
