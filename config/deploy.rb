@@ -57,11 +57,9 @@ set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/ca
 set :keep_releases, 5
 
 
-
-
 namespace :deploy do
 
-  after   :starting, 'slack:deploy_starts'
+  after :starting, 'slack:deploy_starts'
   after :publishing, 'slack:deploy_complete'
   after :publishing, 'airbrake:deploy'
 
@@ -71,3 +69,36 @@ namespace :deploy do
   after :publishing, 'unicorn:restart'
 
 end
+
+# For capistrano 3
+namespace :sidekiq do
+  task :quiet do
+    on roles(:app) do
+      # Horrible hack to get PID without having to use terrible PID files
+      puts capture("kill -USR1 $(sudo initctl status workers | grep /running | awk '{print $NF}') || :") 
+    end
+  end
+  task :restart do
+    on roles(:app) do
+      execute :sudo, :initctl, :restart, :workers
+    end
+  end
+end
+
+after 'deploy:starting', 'sidekiq:quiet'
+after 'deploy:reverted', 'sidekiq:restart'
+after 'deploy:published', 'sidekiq:restart'
+
+# If you wish to use Inspeqtor to monitor Sidekiq
+# https://github.com/mperham/inspeqtor/wiki/Deployments
+namespace :inspeqtor do
+  task :start do
+    execute :inspeqtorctl, :start, :deploy
+  end
+  task :finish do
+    execute :inspeqtorctl, :finish, :deploy
+  end
+end
+
+before 'deploy:starting', 'inspeqtor:start'
+after 'deploy:finished', 'inspeqtor:finish'
