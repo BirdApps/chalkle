@@ -30,6 +30,6 @@ class Notify::OutgoingPaymentNotification < Notify::Notifier
 
     end
 
-    OutgoingPaymentMailer.remittance_advice(@outgoing_payment).deliver!
+    OutgoingPaymentMailer.delay.remittance_advice(@outgoing_payment)
   end
 end

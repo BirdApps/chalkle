@@ -7,7 +7,7 @@ class Notify::ProviderTeacherNotification < Notify::Notifier
 
   def added_to_provider(inviter)
 
-    ProviderTeacherMailer.added_to_provider(provider_teacher).deliver!
+    ProviderTeacherMailer.delay.added_to_provider(provider_teacher)
     if provider_teacher.chalkler #check if chalkler is already signed up. 
 
       message = I18n.t('notify.provider_teacher.added_to_provider', 

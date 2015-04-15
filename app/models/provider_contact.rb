@@ -27,6 +27,6 @@ class ProviderContact < ActiveRecord::Base
 private
 
   def send_email!
-    ProviderMailer.contact(self).deliver! unless to.blank?
+    ProviderMailer.delay.contact(self) unless to.blank?
   end
 end

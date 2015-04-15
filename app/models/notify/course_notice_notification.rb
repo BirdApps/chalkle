@@ -19,7 +19,7 @@ class Notify::CourseNoticeNotification < Notify::Notifier
         :course_notice_new_from_chalkler_to_chalkler
       end
 
-      DiscussionMailer.send('new_from_'+role.to_s, course_notice, chalkler).deliver! if chalkler.email_about? permission
+      DiscussionMailer.delay.send('new_from_'+role.to_s, course_notice, chalkler) if chalkler.email_about? permission
 
     end
 
@@ -30,7 +30,7 @@ class Notify::CourseNoticeNotification < Notify::Notifier
       end
 
       if course_notice.teacher.chalkler.blank? || course_notice.teacher.chalkler.email_about?(:course_notice_new_from_chalkler_to_teacher)
-        DiscussionMailer.send('new_from_'+role.to_s, course_notice, course_notice.teacher.email).deliver!
+        DiscussionMailer.delay.send('new_from_'+role.to_s, course_notice, course_notice.teacher.email)
       end
 
     end
