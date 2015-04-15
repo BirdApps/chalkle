@@ -65,8 +65,6 @@ gem 'mini_magick'
 
 gem 'sidekiq'
 
-gem 'capistrano-inspeqtor'
-
 gem 'omni_avatar', path: 'vendor/gems/omni_avatar'
 
 
