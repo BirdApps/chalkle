@@ -5,7 +5,7 @@ en-NZ:
       booked_in_with_invite: "You have a new booking for **%{course_name}**. The booking was made for you by **%{booker}**."
       refund: "A **full refund** will be provided."
       completed: "We hope you enjoyed **%{course_name}**!"
-      reminder: "**%{course_name}** is coming up shortly. Check the class notices for any important info you might need."
+      reminder: "**%{course_name}** is coming up shortly. Check the discussion board for any important info you might need."
       cancelled: 
         to_chalkler: "Your booking for **%{course_name}** has been **cancelled**. %{refund}"
         to_teacher: "Cancelled booking on **%{course_name}** for **%{from_name}**"

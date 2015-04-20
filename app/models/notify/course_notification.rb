@@ -27,7 +27,7 @@ class Notify::CourseNotification < Notify::Notifier
       Notify.for(booking).as(:teacher).cancelled
     end
 
-    CourseMailer.cancelled_to_teacher(course).deliver!
+    CourseMailer.delay.cancelled_to_teacher(course)
   end
 
   private

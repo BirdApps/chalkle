@@ -63,7 +63,10 @@ gem 'unf', require: false       # optional dependency used by fog for unicode st
 gem 'fog', ">= 1.3.1", require: false
 gem 'mini_magick'
 
+gem 'sidekiq'
+
 gem 'omni_avatar', path: 'vendor/gems/omni_avatar'
+
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -99,6 +102,8 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rbenv', '~> 2.0', require: false
   gem 'capistrano3-unicorn', group: :development
+
+  gem 'capistrano-sidekiq'
 
   # Helpful Rails Generators
   gem 'nifty-generators',  '~> 0.4.6',  require: false

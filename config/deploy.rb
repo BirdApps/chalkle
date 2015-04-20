@@ -57,11 +57,9 @@ set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/ca
 set :keep_releases, 5
 
 
-
-
 namespace :deploy do
 
-  after   :starting, 'slack:deploy_starts'
+  after :starting, 'slack:deploy_starts'
   after :publishing, 'slack:deploy_complete'
   after :publishing, 'airbrake:deploy'
 

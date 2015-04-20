@@ -12,6 +12,7 @@ require 'capistrano3/unicorn'
 require "whenever/capistrano"
 require 'airbrake/capistrano3'
 
+require 'capistrano/sidekiq'
 
 require 'HTTParty'
 

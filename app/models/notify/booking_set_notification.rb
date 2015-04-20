@@ -9,7 +9,7 @@ class Notify::BookingSetNotification < Notify::Notifier
   def send_receipt
     #to booker
     @booking_set.payments.uniq.compact.each do |payment|
-      PaymentMailer.receipt_to_chalkler(payment).deliver!
+      PaymentMailer.delay.receipt_to_chalkler(payment)
     end
   end
 
@@ -39,7 +39,7 @@ class Notify::BookingSetNotification < Notify::Notifier
       )
 
       if chalkler.email_about? :booking_confirmation_to_chalkler
-        BookingSetMailer.booking_confirmation_to_chalkler(bookings, chalkler).deliver!  
+        BookingSetMailer.delay.booking_confirmation_to_chalkler(bookings, chalkler)  
       end
 
     end
@@ -52,7 +52,7 @@ class Notify::BookingSetNotification < Notify::Notifier
         bookers: bookings.map(&:booker).map(&:name).uniq.join(", ")
       )
 
-      BookingSetMailer.booking_confirmation_to_non_chalkler(bookings, pseudo_chalkler_email).deliver!
+      BookingSetMailer.delay.booking_confirmation_to_non_chalkler(bookings, pseudo_chalkler_email)
 
       if bookings.map(&:invite_chalkler).include?(true)
         Chalkler.invite!( { email: pseudo_chalkler_email, 
@@ -72,10 +72,10 @@ class Notify::BookingSetNotification < Notify::Notifier
         course_names: bookings.map(&:course).map(&:name).uniq.join(", "), 
         from_names: bookings.map(&:booker).map(&:name).uniq.join(", ")
       )
-      provider.provider_admins.map(&:chalkler).each do |provider_admin|
+      provider.provider_admins.map(&:chalkler).compact.each do |provider_admin|
         provider_admin.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, @booking_set.course)
 
-          BookingSetMailer.booking_confirmation_to_provider_admin(bookings, provider_admin).deliver! if provider_admin.email_about? :booking_confirmation_to_provider
+          BookingSetMailer.delay.booking_confirmation_to_provider_admin(bookings, provider_admin) if provider_admin.email_about? :booking_confirmation_to_provider
 
       end
     end

@@ -13,7 +13,7 @@ class Notify::PartnerInquiryNotification < Notify::Notifier
     chalklers_to_notify.each do |chalkler|
       chalkler.send_notification Notification::MESSAGE, sudo_partner_inquiry_path(@partner_inquiry), message, @partner_inquiry
 
-      PartnerInquiryMailer.new_partner_inquiry(@partner_inquiry, chalkler).deliver! if chalkler.email_about? :new_partner_inquiry
+      PartnerInquiryMailer.delay.new_partner_inquiry(@partner_inquiry, chalkler) if chalkler.email_about? :new_partner_inquiry
     end
 
   end
@@ -26,7 +26,7 @@ class Notify::PartnerInquiryNotification < Notify::Notifier
     chalklers_to_notify.each do |chalkler|
       chalkler.send_notification Notification::MESSAGE, sudo_partner_inquiry_path(@partner_inquiry), message, @partner_inquiry
 
-      PartnerInquiryMailer.archived_partner_inquiry(@partner_inquiry, chalkler).deliver! if chalkler.email_about? :archive_partner_inquiry
+      PartnerInquiryMailer.delay.archived_partner_inquiry(@partner_inquiry, chalkler) if chalkler.email_about? :archive_partner_inquiry
     end
 
   end
