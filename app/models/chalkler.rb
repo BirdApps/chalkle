@@ -241,6 +241,10 @@ class Chalkler < ActiveRecord::Base
     self.notification_preference.send preference_attr
   end
 
+  def timezone
+     ActiveSupport::TimeZone.new("Pacific/Auckland")
+  end
+
   def recommended_providers
     common_followers = providers_following.map{ |p| p.followers }.flatten.uniq
     common_providers = common_followers.map{ |p| p.providers_following }.flatten.uniq

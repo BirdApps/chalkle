@@ -26,7 +26,7 @@ module ApplicationHelper
   end
 
   def datetime_to_nearest_5_minutes(t)
-    rounded = Time.at((t.to_time.to_i / 300.0).round * 300)
+    rounded = Time.at((t.to_time.to_i / 300.0).round * 300).in_time_zone(current_user.timezone)
     t.is_a?(DateTime) ? rounded.to_datetime : rounded
   end
   
