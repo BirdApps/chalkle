@@ -250,4 +250,13 @@ protected
     end
   end
 
+  # Overload handle_unverified_request to ensure that
+  # exception is raised each time a request does not
+  # pass validation.
+  # should be redundent after Rails 4 upgrade - read: https://blog.nvisium.com/2014/09/understanding-protectfromforgery.html
+  def handle_unverified_request
+    add_flash :error, "Invalid Authenticity Token, if trying again does not work then contact support"
+    redirect_to session[:previous_url] || root_path and return
+  end
+
 end
