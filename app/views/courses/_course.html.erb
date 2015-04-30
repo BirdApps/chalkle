@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="details inline col-xs-12 <%= "bg-#{course.status_color} unless course.published? " %>">
+    <div class="details inline col-xs-12 <%= "bg-#{course.status_color}" unless course.published? %>">
       <div class="col-xs-6 flush">
         <%= render partial: 'providers/provider_small', locals: { provider: course.provider } %>
       </div>
