@@ -17,10 +17,8 @@
     </div>
   </div> 
 
-  <% count = 0 %>
-  <% @bookings.each do |booking| %>
+  <% @bookings.each_with_index do |booking, count| %>
     <% next if !booking.confirmed? && @hide_unconfirmed == true %>
-    <% count+=1 %>
     <div class="col-xs-12 big clearfix <%= count%2 ==0 ? 'even' : 'odd'  %>">
       <div class="col-xs-2">
         <% unless current_user.super? %>
@@ -43,7 +41,9 @@
             <%= booking.name %>
           <% end %>
         <% end %>
-
+        <% if booking.chalkler.email %>
+          , <%= mail_to(booking.chalkler.email) %>
+        <% end %>
       </div>
       <div class="col-xs-6 col-sm-2 light">
         <span class="inline vmid">
