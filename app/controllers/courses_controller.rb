@@ -108,12 +108,13 @@ class CoursesController < ApplicationController
 
   def choose_provider
     if current_user.providers.count == 1
-      redirect_to new_provider_class_path(current_user.providers_adminable.first) and return
+      redirect_to new_provider_class_path(current_user.providers.first) and return
     end
   end
 
   def new
     @course = Course.new({name: "", provider: @provider})
+    authorize @course
     @teaching = Teaching.new current_user, @course
     header_provider
     sidebar_administrate_provider

@@ -26,6 +26,15 @@ class CoursePolicy < ApplicationPolicy
     edit?
   end
 
+  def new?
+    (@user.provider_teachers & @course.provider.provider_teachers.where(can_make_classes: true)).present?
+  end
+
+  def create?
+    new?
+  end
+
+
   def edit?
     @course.editable? && write?
   end
@@ -35,7 +44,9 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def change_status?
-    write?
+    user_provider_teachers = (@user.provider_teachers & @course.provider.provider_teachers)
+    teacher_write = user_provider_teachers.present? && user_provider_teachers.select{|c| c.can_make_classes? }
+    write? or teacher_write
   end
 
   def confirm_cancel?
@@ -59,6 +70,6 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def read?
-    @user.super? or (@user.provider_teachers.where(id: @course.teacher_id).present? or @user.provider_admins.where(provider_id: @course.provider_id).present?)
+    @user.super? or @user.provider_teachers.where(provider_id: @course.provider_id).present? or @user.provider_admins.where(provider_id: @course.provider_id).present?
   end
 end
