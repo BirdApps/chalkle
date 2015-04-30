@@ -72,10 +72,10 @@ class Notify::BookingSetNotification < Notify::Notifier
         course_names: bookings.map(&:course).map(&:name).uniq.join(", "), 
         from_names: bookings.map(&:booker).map(&:name).uniq.join(", ")
       )
-      provider.provider_admins.map(&:chalkler).each do |provider_admin|
+      provider.provider_admins.map(&:chalkler).compact.each do |provider_admin|
         provider_admin.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, @booking_set.course)
 
-          BookingSetMailer.delay.booking_confirmation_to_provider_admin(bookings, provider_admin) if provider_admin.email_about? :booking_confirmation_to_provider
+        BookingSetMailer.delay.booking_confirmation_to_provider_admin(bookings, provider_admin) if provider_admin.email_about? :booking_confirmation_to_provider
 
       end
     end
