@@ -482,6 +482,10 @@ class Course < ActiveRecord::Base
     spaces_left? && start_at && start_at > DateTime.current && status == STATUS_1
   end
 
+  def in_future?
+    start_at > DateTime.current 
+  end
+
   def spaces_left?
     !limited_spaces? || spaces_left > 0
   end
