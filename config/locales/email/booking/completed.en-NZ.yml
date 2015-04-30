@@ -11,7 +11,7 @@ en-NZ:
 
             Cheers!
 
-            [Find more classes provided by %{provider_name}](provider_url)
+            Find more classes provided by [%{provider_name}](%{provider_url})
           text: |
             Thanks for coming along to %{course_name}, we hope you had a great time and learned something new!
 

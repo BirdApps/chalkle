@@ -7,6 +7,7 @@ $(function(){
     var parts = ['#type','#details','#learning','#teaching','#summary','#submit'];
     var validate_off = false;
     var ready_to_submit = false;
+    var have_submitted = false;
     if(validate_off){
       alert("Warning: Validation is off");
     }
@@ -755,8 +756,9 @@ $(function(){
         if(location == '#summary'){
           summarize();
         }
-        if(location == '#submit'){
-          ready_to_submit = true;
+        if(location == '#submit' && !have_submitted){
+          ready_to_submit = have_submitted = true;
+          $('#new_teaching').unbind().submit();
           $('#new_teaching').submit();
         }
         if(scroll){

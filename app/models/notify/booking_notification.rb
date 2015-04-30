@@ -57,7 +57,7 @@ class Notify::BookingNotification < Notify::Notifier
       #to provider admin
       message = I18n.t('notify.booking.cancelled.to_provider_admin', course_name: booking.course.name, from_name: booking.name)
 
-      booking.provider.provider_admins.map(&:chalkler).each do |provider_admin|
+      booking.provider.provider_admins.map(&:chalkler).compact.each do |provider_admin|
         provider_admin.send_notification(Notification::REMINDER, provider_course_path(booking.course.path_params), message, booking)
         if provider_admin != booking.teacher.chalkler && provider_admin.email_about?(:booking_cancelled_to_provider)
           BookingMailer.delay.booking_cancelled_to_provider_admin(booking, provider_admin)
