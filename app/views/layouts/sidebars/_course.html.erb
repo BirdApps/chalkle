@@ -39,7 +39,8 @@
     <div class="col-xs-12 admin-list">
       <% @course.bookings.confirmed.each do |booking| %>
         <div class="admin-list-item">
-          <%= link_to booking.name, chalkler_path(booking.chalkler) %> <%= cancel_provider_course_booking_path('– cancel', booking.path_params) if policy(booking).cancel? %>
+          <%= link_to booking.name, chalkler_path(booking.chalkler) %> 
+          <%= link_to '×', cancel_provider_course_booking_path(booking.path_params), class: 'pull-right' if policy(booking).cancel? && booking.course.in_future? %>
         </div>
       <% end %>
     </div>
