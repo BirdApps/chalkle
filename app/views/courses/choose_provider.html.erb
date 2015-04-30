@@ -16,7 +16,7 @@
 
   <%= render partial: 'fancy_header', locals: { fancy_title: "Which provider is this course for?" } %>
 
-  <% current_user.providers_adminable.each do |provider| %>
+  <% current_user.providers.each do |provider| %>
     
 
     <div class="_provider">

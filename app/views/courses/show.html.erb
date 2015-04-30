@@ -42,7 +42,7 @@
             
             <%= render 'show_my_booking' %>
 
-            <% if @course.bookable? || policy(@course).write?(true) %>    
+            <% if @course.bookable? || policy(@course).read? %>    
               <a href="<%= new_provider_course_booking_path @course.path_params %>" class="join-link sign-in-first btn btn-default" title="New Booking" style="background-color: <%= @course.color %> ">
                 <%= current_user.attending?(@course) ? 'BRING A FRIEND' : 'BOOK NOW' %>
                 <div class="small light">

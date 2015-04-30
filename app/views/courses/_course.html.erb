@@ -17,12 +17,12 @@
             <%= course.cost_formatted true %>
           </a>
         </div>
-        
+        <%= "["+course.status+"]" unless course.published? %>
         <%= link_to limit_text(course.name, 40), provider_course_path(course.path_params) %>
       </div>
     </div>
 
-    <div class="details inline col-xs-12">
+    <div class="details inline col-xs-12 <%= "bg-#{course.status_color} unless course.published? " %>">
       <div class="col-xs-6 flush">
         <%= render partial: 'providers/provider_small', locals: { provider: course.provider } %>
       </div>
