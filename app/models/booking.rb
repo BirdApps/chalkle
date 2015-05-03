@@ -206,7 +206,7 @@ class Booking < ActiveRecord::Base
         self.teacher_fee = course.teacher_cost
       elsif flat_fee?
         #flat fees these are calculated on the outgoing_payment rather than per booking
-        self.teacher_fee = course.teacher_cost / course.bookings.confirmed.count
+        self.teacher_fee = course.teacher_cost / (course.bookings.confirmed.count + 1)
       end
     end
 
