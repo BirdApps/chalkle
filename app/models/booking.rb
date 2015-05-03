@@ -449,11 +449,24 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  def self.stats_for_date_and_range(date, range)
+    base_scope_for_stats = send("created_#{range}_of", date).confirmed
+    {
+      asp: asp_for( base_scope_for_stats ),
+      asp_only_paid: asp_for( base_scope_for_stats.where('provider_fee > 0') ),
+      revenue: base_scope_for_stats.inject(0){|sum, b| sum += b.cost }
+    }
+  end
 
   private
 
     def redistribute_flat_fee_between_bookings
       course.recalculate_bookings_fees! if course.flat_fee?
+    end
+
+    def self.asp_for(bookings)
+      return 0 unless bookings.any?
+      bookings.inject(0){|sum, b| sum += b.cost } / bookings.count
     end
 
     def set_free_course_attributes
