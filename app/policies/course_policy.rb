@@ -27,7 +27,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def new?
-    (@user.provider_teachers & @course.provider.provider_teachers.where(can_make_classes: true)).present?
+    admin? || (@user.provider_teachers & @course.provider.provider_teachers.where(can_make_classes: true)).present?
   end
 
   def create?
