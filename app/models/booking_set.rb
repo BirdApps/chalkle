@@ -65,7 +65,8 @@ class BookingSet
         booking.chalkler = options[:booker]
         booking.name = options[:booker].name unless booking.name.present?
       end
-      options[:free] ? booking.remove_fees : booking.apply_fees
+      booking.waive_fees = true if options[:free] 
+      booking.apply_fees
       bookings_valid = false unless booking.valid?
     end
 
