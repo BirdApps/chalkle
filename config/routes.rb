@@ -30,7 +30,7 @@ Chalkle::Application.routes.draw do
   match 'learn' => redirect("/classes")
 
   get 'c/:id' => 'courses#show', as: :tiny_course
-  match 'bookings/lpn', as: :lpn, to: 'bookings#lpn'
+  post 'bookings/lpn', as: :lpn, to: 'bookings#lpn'
   get 'bookings/payment_callback/:booking_ids', as: :payment_callback, to: 'bookings#payment_callback'
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
