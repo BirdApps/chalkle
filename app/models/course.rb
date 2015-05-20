@@ -47,7 +47,7 @@ class Course < ActiveRecord::Base
   
   #Time span for classes requiring attention
   PAST = 3
-  IMMEDIATE_FUTURE= 5
+  IMMEDIATE_FUTURE = 5
   WEEK = 7
 
   validates_presence_of :name
