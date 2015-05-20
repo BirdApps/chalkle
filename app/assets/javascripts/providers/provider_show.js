@@ -51,7 +51,7 @@ $(function(){
 
     function update_url(fetch_params){
       params = {};
-      if(fetch_params.past == true){
+      if(fetch_params.past == true || fetch_params.past == 'true'){
         params['past'] = fetch_params.past;
       }
       if(fetch_params.take != undefined && fetch_params.take != '30'){
@@ -60,18 +60,17 @@ $(function(){
       if(fetch_params.page != '1'){
         params['page'] = fetch_params.page;
       }
-
    
-        url = window.location.protocol+'//'+window.location.host+window.location.pathname;
-        if(Object.keys(params).length > 0) url += "?";
+      url = window.location.protocol+'//'+window.location.host+window.location.pathname;
+      if(Object.keys(params).length > 0) url += "?";
 
-        for (key in params){
-          url += (key +'='+params[key]+"&")
-        }
-        if(url[url.length-1] == '&'){
-          url = url.substring(0,url.length-1);
-        }
-        window.history.pushState(params, $('title').text().trim(),url);
+      for (key in params){
+        url += (key +'='+params[key]+"&")
+      }
+      if(url[url.length-1] == '&'){
+        url = url.substring(0,url.length-1);
+      }
+      window.history.pushState(params, $('title').text().trim(),url);
     }
 
     function paginate_init(){
