@@ -41,7 +41,7 @@
             <%= booking.name %>
           <% end %>
         <% end %>
-        <% if booking.chalkler.email %>
+        <% if booking.chalkler && booking.chalkler.email %>
           , <%= mail_to(booking.chalkler.email) %>
         <% end %>
       </div>
