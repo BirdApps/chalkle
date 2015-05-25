@@ -691,7 +691,11 @@ class Course < ActiveRecord::Base
     end
     
     def check_end_at
-      self.end_at = last_lesson.end_at if last_lesson.present? && last_lesson.valid?
+      if last_lesson.present? && last_lesson.valid?
+        self.end_at = last_lesson.end_at 
+      else
+        self.end_at = (self.start_at || DateTime.current) + 1.hour
+      end
     end
 
     def check_start_at
