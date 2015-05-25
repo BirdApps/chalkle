@@ -184,11 +184,12 @@ class Course < ActiveRecord::Base
   def complete
     check_end_at
     if end_at < DateTime.current
-      if bookings.present?
-        self.status = STATUS_4
-      else
-        self.status = STATUS_3
-      end
+      #if bookings.present?
+      self.status = STATUS_4
+      #else
+      #  self.status = STATUS_3
+      #end
+      # Horowhenua were adding bookings after it has finished and marked as preview. So we'll complete everything whether it has bookings or not as a quick solution.
     end
   end
 
