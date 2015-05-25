@@ -1,7 +1,7 @@
 <% 
   all = pending = complete = unconfirmed = 'btn btn-default'
   case params[:status]  
-  when 'pending'
+  when 'unverified'
     unconfirmed = 'btn btn-info'
   when 'refund_pending'
     pending = 'btn btn-info'
@@ -15,7 +15,7 @@
 <div class="hidden-xs hidden-sm">
   <%= link_to "All Bookings", sudo_bookings_path({status: 'all', take: 300}), class: all %>
 
-  <%= link_to "Unconfirmed Payments ("+Booking.unconfirmed.count.to_s+")", sudo_bookings_path({status: 'pending'}), class: unconfirmed%>
+  <%= link_to "Unverified Payments ("+Booking.unverified.count.to_s+")", sudo_bookings_path({status: 'unverified'}), class: unconfirmed %>
 
   <%= link_to "Pending Refunds ("+Booking.refund_pending.count.to_s+")", sudo_bookings_path({status: 'refund_pending'}), class: pending %>
 

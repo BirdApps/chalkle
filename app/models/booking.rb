@@ -57,6 +57,7 @@ class Booking < ActiveRecord::Base
 
   scope :unconfirmed, visible.where(status: STATUS_5)
   scope :confirmed, where(status: STATUS_1)
+  scope :unverified, where(status: STATUS_6)
 
   scope :course_visible, joins(:course).where('courses.visible = ?', true)
 
