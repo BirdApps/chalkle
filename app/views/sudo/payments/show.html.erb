@@ -33,6 +33,12 @@
   <div class="col-xs-6 col-sm-10">
     $<%= @payment.total %>
   </div>
+   <div class="col-xs-6 col-sm-2"> 
+    Swipe tx_id: 
+  </div>
+  <div class="col-xs-6 col-sm-10">
+    <%= @payment.swipe_transaction_id %>
+  </div>
 </div>
 
 <% if @payment.outgoings.present? %>

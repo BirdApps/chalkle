@@ -1,5 +1,8 @@
 
 <%= render 'sub_menu' %>
+<% if @booking.payment %>
+  <%= "Swipe tx_id: #{@booking.payment.swipe_transaction_id}" %>
+<% end %>
 <div>
   <%= "Booked on: "+day_ordinal_month(@booking.created_at,true,true) %>
 </div>
