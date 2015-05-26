@@ -381,12 +381,18 @@
         <% image_url =  f.object.course_upload_image unless f.object.course_upload_image.nil? %>
           <div class="course center">
             <p class="small grey">Your image will look like this</p>
-            <div class="porthole round image-preview">
-              <div class="img" style="background-image: url(<%= image_url %>);"></div>
+            <div class="_course_heading">
+              <div class=" avatar image-preview">
+                <div class="img" style="background-image: url(<%= image_url %>);"></div>
+              </div>
             </div>
              <p class="small grey">and like this</p>
-            <div class="porthole square image-preview">
-              <div class="img" style="background-image: url(<%= image_url %>);"></div>
+            <div class="_course">
+              <div class="_inner_course">
+                <div class="avatar image-preview">
+                  <div class="img" style="background-image: url(<%= image_url %>);"></div>
+                </div>
+              </div>
             </div>
              <p class="small grey">We recommend an image at least 300px by 300px, and preferable containly no text (it gets chopped off and looks really messy!)</p>
           </div>
