@@ -476,6 +476,13 @@ class Course < ActiveRecord::Base
 
   def image
     course_upload_image.image rescue nil
+    if course_upload_image.present?
+      course_upload_image 
+    elsif provider.logo.present?
+      provider.logo
+    elsif provider.hero.present?
+      provider.hero
+    end
   end
 
   # this should be a scope
