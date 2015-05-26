@@ -250,6 +250,15 @@ protected
     end
   end
 
+  def default_url_options(options={})
+    if Rails.env.titleize == "Production"
+      options[:protocol] = 'https://'
+    else
+      options[:protocol] = 'http://'
+    end
+    options
+  end 
+
   # Overload handle_unverified_request to ensure that
   # exception is raised each time a request does not
   # pass validation.
