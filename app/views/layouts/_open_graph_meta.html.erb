@@ -18,7 +18,9 @@
     <meta property="og:url"                   content="<%= provider_course_url(@course.path_params) -%>" /> 
     <meta property="product:price:amount"     content="<%= @course.cost -%>" /> 
     <meta property="product:price:currency"   content="NZD" />
-    <meta property="product:availability"     content="<%= @course.spaces_left -%>" /> 
+    <% if @course.spaces_left %>
+        <meta property="product:availability"     content="<%= @course.spaces_left -%>" />
+    <% end %> 
     <meta property="product:retailer_item_id" content="<%= @course.id -%>" />
     
 
