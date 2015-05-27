@@ -7,6 +7,7 @@ class BookingSetMailer < BaseChalkleMailer
     @chalkler = chalkler
     @courses = bookings.map(&:course)
     @mail_header_color = @bookings.first.provider.header_color(:hex)
+    attach_ics @courses
     mail(to: @chalkler.email, 
       subject: I18n.t("email.booking.confirmation.to_chalkler.subject", 
         name: @chalkler.first_name, 
@@ -24,6 +25,7 @@ class BookingSetMailer < BaseChalkleMailer
     @booker = bookings.first.booker
     @courses = bookings.map(&:course)
     @mail_header_color = @bookings.first.provider.header_color(:hex)
+    attach_ics @courses
     mail(to: pseudo_chalkler_email,  
       subject: I18n.t("email.booking.confirmation.to_non_chalkler.subject", 
         booker_name: @booker.name, 
@@ -64,5 +66,13 @@ class BookingSetMailer < BaseChalkleMailer
       format.html { render layout: 'standard_mailer' }
     end
   end
+
+  private
+  
+  def attach_ics(courses)
+    courses.each do |course|
+      attachments["#{course.url_name}.ics"] = {:mime_type => 'text/calendar', :content => course.ics.to_ical }
+    end
+  end  
 
 end

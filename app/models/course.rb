@@ -648,6 +648,24 @@ class Course < ActiveRecord::Base
     bookings.map{|b| b.apply_fees! }
   end
 
+  def ics
+    require 'icalendar'
+
+    # Create a calendar with an event (standard method)
+    cal = Icalendar::Calendar.new
+    cal.event do |e|
+      e.dtstart     = Icalendar::Values::Date.new(self.start_at.strftime('%Y%m%dT%H%M%S'))
+      e.dtend       = Icalendar::Values::Date.new(self.end_at.strftime('%Y%m%dT%H%M%S'))
+      e.summary     = self.name
+      e.description = self.do_during_class
+      e.location    = self.address
+      e.url         = "https://chalkle.com#{self.path}"
+    end
+
+    cal.publish
+    cal
+  end
+
   private
 
     def clear_ivars

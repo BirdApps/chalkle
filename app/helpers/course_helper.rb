@@ -2,6 +2,11 @@
 
 module CourseHelper
 
+  def calendar_details(course)
+    "#{course.do_during_class}
+     - more information at #{tiny_course_url(course)}"
+  end
+
   def pretty_duration(course)
     return unless course
     # when above 24 this should cover periods greater than a day in a more elegent way than n hours  - Josh

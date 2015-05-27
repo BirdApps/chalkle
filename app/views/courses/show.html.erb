@@ -37,84 +37,16 @@
           <%= render 'courses/social_links' %>
         </div>
         <%= render 'courses/heading' %>
-        <div class="col-xs-12 flush">
-          <div class="right-col">
-            
-            <%= render 'show_my_booking' %>
+        
+        <%= render 'courses/booking_module' %>
 
-            <% if @course.bookable? || policy(@course).read? %>    
-              <a href="<%= new_provider_course_booking_path @course.path_params %>" class="join-link sign-in-first btn btn-default" title="New Booking" style="background-color: <%= @course.color %> ">
-                <%= current_user.attending?(@course) ? 'BRING A FRIEND' : 'BOOK NOW' %>
-                <div class="small light">
-                  <% if @course.cost? %>
-                    $<%= @course.cost_formatted %>
-                  <% else %>
-                    FREE
-                  <% end %>
-                </div>
-              </a>
-            <% else %>
-              <a href="#" class="btn btn-default join-link">
-                Not Bookable
-              </a>
-            <% end %>
-
-            <div class="cost">
-              <% if @course.limited_spaces?  %>
-                <%= @course.spaces_left? ? @course.spaces_left.to_s + " spots left" : "Booked out" %> 
-              <% end %>
-            </div>
-
-            <div class="meta row">
-              <% if @course.reviews? %> 
-                <div class="reviews small grey">
-                  <span class="fa fa-heart"></span>
-                  <span class="text-right">
-                    <%= @course.review_percent || '?' %>%
-                  </span>
-                  <div class="small">
-                    <%= @course.reviews.count %> reviews
-                  </div>
-                </div>
-              <% end  %>
-              
-              <% if @course.next_class.present? && (@course.next_class.status == 'Published' || policy(@course).read?) %>
-                <div class="col-xs-12 center small grey class-repeats">
-                  <div class="upper">CLASS REPEATS</div>
-                  <div>- next class -</div>
-                  <div>
-                    <%= link_to quick_date_time(@course.next_class.start_at), @course.next_class.path %>
-                  </div>
-                </div>
-              <% elsif Course.similar_to(@course).count > 1 %>
-                <div class="col-xs-12 center small grey class-repeats">
-                  <%= link_to "Find similar #{ @course.type.pluralize }", course_series_provider_path(@course.provider.url_name, @course.url_name) %>
-                </div>
-              <% end %>
-              
-              
-              <% if @course.teacher.present? %>
-                <div class="col-xs-12 text-left">
-                  <%= render partial: 'provider_teachers/provider_teacher' , locals: { hide_next_date: true, provider_teacher: @course.teacher }  %>
-                </div>
-              <% end %>
-
-            </div>
-
-          </div>
-
-          <div class="left-col">
-            <div class="row flush">
-
-              <%= render partial: 'fancy_header', locals: { fancy_title: "Details", small: true } %>
-
-              <div class="col-xs-12">
-                <%= to_html @course.learning_outcomes %>
-              </div>
-
-            </div>
+        <div class="row">
+          <%= render partial: 'fancy_header', locals: { fancy_title: "Details", small: true } %>
+          <div class="col-xs-12">
+            <%= to_html @course.learning_outcomes %>
           </div>
         </div>
+
       </div>
     
 

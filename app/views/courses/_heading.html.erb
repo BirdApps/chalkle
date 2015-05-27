@@ -1,16 +1,19 @@
 <div class="_course_heading row">
+  
+  <%= render 'courses/show_my_booking' %>
+    
   <div class="col-xs-12">
   
-    <% if @course.course_upload_image.present? %>
-      <div  class="avatar pull-right" href="<%= @course.path %>" title="<%= @course.name %>">
-        <div class="img hidden-xs" style="background-image: url(<%= @course.course_upload_image %>)">
-        </div>
-         <div class="img visible-xs" style="background-image: url(<%= @course.course_upload_image %>)">
+    <% if @course.image.present? %>
+      <div class="right-col">
+        <div class="avatar" href="<%= @course.path %>" title="<%= @course.name %>">
+          <div class="img img-modal" style="background-image: url(<%= @course.image %>)">
+          </div>
         </div>
       </div>
     <% end %>
 
-    <div class="details">
+    <div class="details <%= 'left-col' if @course.image.present? %>">
       <h2 class="_heading_title flush">
         <% unless current_page? provider_course_path(@course.path_params)  %>
           <%= link_to @course.name, provider_course_path(@course.path_params) %>
@@ -59,11 +62,7 @@
           <% end %>
         </p>
       <% end %>
-      
-
     </div>
-
-
   </div>
 </div>
 

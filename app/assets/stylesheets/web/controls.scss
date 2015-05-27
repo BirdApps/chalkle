@@ -41,6 +41,12 @@ html {
       @include gradient_v(#b1b1b1, #bababa);
     }
 
+    .xs-full-width {
+      @media screen and (max-width: 769px) {
+        width: 100%;
+      }
+    }
+
     .number-picker {
       .fa {
         display: block;
@@ -384,6 +390,13 @@ html {
         border-width: 2px !important;
         background-color: transparent !important;
         padding: 4px 12px;
+      }
+      &.btn-small {
+        font-size: 0.8em !important;
+        .badge {
+          font-size: 0.8em;
+          top: 0;
+        }
       }
       a {
         color: inherit;

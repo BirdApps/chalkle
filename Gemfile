@@ -20,6 +20,7 @@ gem 'pundit'
 
 # Time / Date
 gem 'monthify', require: 'monthify'
+gem 'icalendar'
 
 gem 'airbrake',      '~> 4.1.0'
 gem 'jquery-rails'

@@ -165,6 +165,7 @@ Chalkle::Application.routes.draw do
     resources :classes, only: [:new, :create], controller: :courses
     resource :course, except: [:new, :create], path: ':course_url_name/:course_id' do
       member do 
+        get 'ical'
         get 'cancel',         to: 'courses#cancel'
         put 'cancel',         to: 'courses#confirm_cancel'
         post 'clone',          to: 'courses#clone'

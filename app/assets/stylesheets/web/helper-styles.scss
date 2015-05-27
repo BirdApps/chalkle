@@ -11,11 +11,14 @@
 .margin-bottom-20 { margin-bottom: 20px }
 .margin-top-20 { margin-top: 20px }
 .margin-top, .margin-top-10 { margin-top: 10px }
+.margin-right-5 { margin-right: 5px; }
 .pad-top-5 { padding-top: 5px }
 .pad-bottom-5 { padding-bottom: 5px }
+.pad-4  { padding: 4px !important; }
 .pad-10 { padding: 10px; }
 .pad-15 { padding: 15px; }
 .pad-20 { padding: 20px; }
+.margin-5 { margin: 5px; }
 .margin-10 { margin: 10px; }
 .margin-top-5 { margin-top: 5px }
 .no-label { label { display: none } }
@@ -47,3 +50,5 @@
 }
 a.link-line { text-decoration: underline  !important; }
 a.hover-link-line { &:hover, &:focus, &:active { text-decoration: underline !important; } }
+.text-google {  color: #d14836; }
+.text-apple { color: #298cda; }

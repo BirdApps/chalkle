@@ -36,11 +36,21 @@
       height: 250px;
     }
   }
+  .join-link {
+      width: 100%;
+      padding: 10px;
+      border-radius: 7px;
+      color: #fff;
+      border: 0px;
+      font-weight: 600;
+      font-size: 120%;
+      word-wrap: normal;
+      white-space: normal;
+      min-height: 68px;
+    }
   .left-col {
     @media screen and (min-width: 998px){
-      margin-right: 200px;
-      position: relative;
-      top: -32px;
+      margin-right: 220px;
     }
   }
   .right-col {
@@ -48,7 +58,7 @@
     @media screen and (min-width: 998px){
       float:right;
       padding-left: 20px;
-      width: 180px;
+      width: 200px;
     }
     >* {
       margin-bottom: 5px;
@@ -62,17 +72,6 @@
       line-height: 15px;
       padding: 8px 10px;
       text-align: center;
-    }
-    .join-link {
-      width: 100%;
-      padding:16px;
-      border-radius: 14px;
-      color: #fff;
-      border: 0px;
-      font-weight: 600;
-      font-size: 150%;
-      word-wrap: normal;
-      white-space: normal;
     }
     .meta {
       text-align: right;
