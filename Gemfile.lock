@@ -114,10 +114,6 @@ GEM
       image_optimizer (~> 1.2)
     celluloid (0.16.0)
       timers (~> 4.0.0)
-    chosen-rails (0.9.11.2)
-      coffee-rails (>= 3.2)
-      railties (>= 3.0)
-      sass-rails (>= 3.2)
     chronic (0.9.1)
     codeclimate-test-reporter (0.4.5)
       simplecov (>= 0.7.1, < 1.0.0)
@@ -655,7 +651,6 @@ DEPENDENCIES
   capybara
   carrierwave
   carrierwave-imageoptimizer
-  chosen-rails (~> 0.9.11.1)
   codeclimate-test-reporter
   coffee-rails (~> 3.2.2)
   color

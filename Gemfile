@@ -48,7 +48,6 @@ gem 'mandrill-rails'
 gem 'passbook'
 
 #interface
-gem 'chosen-rails',  '~> 0.9.11.1'
 gem 'haml', '~> 4.0.5'
 gem 'haml-rails',    '~> 0.4.0'
 gem 'simple_form', github: 'zlx/simple_form_bootstrap3', branch: 'rails_3'
