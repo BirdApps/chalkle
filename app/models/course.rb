@@ -649,8 +649,6 @@ class Course < ActiveRecord::Base
   end
 
   def ics
-    require 'icalendar'
-
     # Create a calendar with an event (standard method)
     cal = Icalendar::Calendar.new
     cal.event do |e|
