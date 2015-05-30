@@ -63,5 +63,26 @@ begin
       end
     end
 
+    desc "Ensure course data is valid"
+    task "validate_courses" => :environment do
+      EventLog.log('validate_courses') do
+        changed = (Course.all.map do |course|
+          course.status = 'Preview' unless course.lessons.present?
+          course.status = 'Preview' unless Course::VALID_STATUSES.include?(course.status)
+          course.start_at = (Time.current - 1.year) unless course.start_at.is_a?(Time)
+          course.send('check_end_at') unless course.end_at.is_a?(Time)
+          course.venue_address = "No address" if course.venue_address.nil?
+          course.teacher = course.provider.provider_teachers.first if course.teacher.nil?
+          if course.changed.present?
+            unless course.save
+              course.id
+            end
+          end
+        end ).compact.uniq
+        puts "#{changed.count} course's data were still not valid"  
+        puts "Their ids are as follows: #{changed.join(',')}"
+      end
+    end
+
   end
 end
