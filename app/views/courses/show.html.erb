@@ -32,9 +32,17 @@
             </div>
           <% end %>
         <% end %>
+        
 
-        <div class="text-right">
-          <%= render 'courses/social_links' %>
+        <div class="row">
+          <div class="col-sm-7 col-xs-12 text-right pull-right">
+            <%= render 'courses/social_links' %>
+          </div>
+          <div class="col-xs-12 col-sm-5 strong">
+            <div class="small">
+              <%= render partial: 'courses/calendar_add', locals: {course: @course} %>
+            </div>
+          </div>
         </div>
         <%= render 'courses/heading' %>
         

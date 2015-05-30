@@ -22,6 +22,23 @@
         <% end %>
       </h2>
 
+      <% if current_page? provider_course_path(@course.path_params) %>
+        <div>
+          <a href="#map-canvas">
+            <span class="fa fa-map-marker"></span>
+            <span class="small"><%= @course.address || to_html(@course.venue) %></span>
+          </a>
+        </div>
+      <% else %>
+         <p class="light">
+          <% if @course.cost? && @course.cost > 0 %>
+            <span class="big">$<%= @course.cost_formatted %></span> per attendee
+          <% else %>
+            This <%= @course.type %> is <strong>free to attend</strong>  
+          <% end %>
+        </p>
+      <% end %>
+
       <div class="add_info">
          <% if @course.class? %>
           <%= day_ordinal_month @course.start_at, true, true, true, false %> from <%= pretty_time @course.start_at %> to <%= pretty_time @course.end_at if @course.start_at && @course.end_at %>
@@ -45,23 +62,6 @@
           <br />
         <% end %>
       </div>
-      
-      <% if current_page? provider_course_path(@course.path_params) %>
-        <div>
-          <a href="#map-canvas">
-            <span class="fa fa-map-marker"></span>
-            <span class="small"><%= @course.address || to_html(@course.venue) %></span>
-          </a>
-        </div>
-      <% else %>
-         <p class="light">
-          <% if @course.cost? && @course.cost > 0 %>
-            <span class="big">$<%= @course.cost_formatted %></span> per attendee
-          <% else %>
-            This <%= @course.type %> is <strong>free to attend</strong>  
-          <% end %>
-        </p>
-      <% end %>
     </div>
   </div>
 </div>
