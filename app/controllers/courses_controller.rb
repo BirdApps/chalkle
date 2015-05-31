@@ -4,6 +4,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :take_me_to, only: [:index]
   before_filter :header_mine, only: :mine
+  after_filter :store_location, except: :ical
   
   def index
   end
