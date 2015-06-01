@@ -1,3 +1,4 @@
+
 $(window).load(function(){
   $('#wrapper').css('opacity',1);
 });
@@ -5,6 +6,13 @@ $(window).load(function(){
 $(function(){
 
   init();
+
+  window.setTimeout(function(){
+    if($('#wrapper').css('opacity') == '0'){
+      $('#wrapper').css('opacity',1);
+    }
+  }, 1000);
+
 
   function single_tap_links(){
 
