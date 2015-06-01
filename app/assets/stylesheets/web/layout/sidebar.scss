@@ -3,7 +3,7 @@
 .sidebar-padding {
   transition: margin-left 200ms ease-in-out;
   @media screen and (min-width: 769px) {
-    &.open {
+    &.sidebar-open {
       margin-left: 320px;
     }
   }
@@ -20,7 +20,7 @@
   height: 100%;
   width: 100%;
   z-index: 1;
-    
+  
   .sidebar-content{
     height: 100%;
     width: 100%;
@@ -28,8 +28,33 @@
     overflow-y: scroll;
     padding-bottom: 20px;
   }
-
+  .sidebar-switch {
+    transition: all 200ms ease-in-out;
+    background-color: $color-danger;
+    display: none;
+    text-align: center;
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    display: block !important;
+    top: $mobile-nav-height;
+    height: 49px;
+    width: $mobile-nav-height;
+    .fa {
+      font-size: 22px;
+      line-height: 32px;
+    }
+    @media screen and (min-width: 769px){
+      top: 0;
+      height: 40px;
+      width: 40px;
+      .fa {
+        line-height: 22px;
+      }
+    }
+  }
   .sidebar-tab {
+    padding-left: 50px;
     width: 100%;
     transition: all 200ms ease-in-out;
     cursor: pointer;
@@ -39,16 +64,16 @@
     border-bottom: 1px solid rgba(255,255,255,0.3);
     background-color: #1F1F1F;
     height: 50px;
-    .fa {
-      font-size: 14px;
-      padding-top: 4px;
+    .fa-2x {
+      font-size: 15px;
+      padding-top: 7px;
     }
     h4 {
-      margin: 6px 40px 0 0;
+      margin: 6px 20px 0 0;
       white-space: nowrap;
       overflow: hidden;
-      .open & { font-size: 14px; }
-      .open & { font-size: 14px; }
+      .sidebar-open & { font-size: 14px; }
+      .sidebar-open & { font-size: 14px; }
       text-align: center;
     }
     span {
@@ -58,16 +83,23 @@
       color: #fff;
       background-color: #5F5F5F;
     }
-    .open { display: none; }
-    .shut { display: block; }
+    .sidebar-open { display: none; }
+    .sidebar-shut { display: block; }
   }
 
-  &.open {
+  &.sidebar-open {
     height: 50px;
     padding-top: 0;
     .sidebar-tab {
-      .open { display: block; }
-      .shut { display: none; }
+      .sidebar-open { display: block; }
+      .sidebar-shut { display: none; }
+    }
+    .sidebar-switch {
+      display: block;
+      top: 0;
+      @media screen and (min-width: 769px){
+        top: $desktop-nav-height;
+      }
     }
   }
 
@@ -76,18 +108,18 @@
     height: 40px;
     padding-top: 0;
     .sidebar-tab {
-      padding: 5px 10px;
+      padding: 5px 10px 5px 45px;
       height: 40px;
-      .open { display: block; }
-      .shut { display: none; }
+      .sidebar-open { display: block; }
+      .sidebar-shut { display: none; }
     }
-    &.open {
+    &.sidebar-open {
       height: 100%;
       padding-top: $desktop-nav-height;
       .sidebar-tab {
         top: $desktop-nav-height;
-        .open { display: none; }
-        .shut { display: block; }
+        .sidebar-open { display: none; }
+        .sidebar-shut { display: block; }
       }
     }
   }
@@ -97,7 +129,7 @@
     background-color: #5F5F5F;
     border: 0px;
     margin-top: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     &.primary{
       margin: 20px 0;
     }
@@ -114,7 +146,7 @@
     text-align: center;
   }
 
-  .admin-sidebar{
+  .admin-sidebar {
     .admin-subtitle {
       margin-bottom: 20px;
       text-align: center;
@@ -125,42 +157,18 @@
     }
     .admin-section {
       margin-bottom: 20px;
-      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
       background-color: #1F1F1F;
-
-      &.admin-links {
-        a {
-          display: block;
-          color: #fff;
-          padding: 10px 5px;
-          width: 50%;
-          float: left;
-          &:hover {
-            background: rgba(255,255,255,0.3);
-          }
-          &.disabled {
-            color: #bbb;
-            &:hover {
-              background: rgba(255,255,255,0.2);
-            }
-          }
-        }
-        .border-bottom {
-          border-bottom: 1px solid #333;
-        }
-        .border-left {
-          border-left: 1px solid #333;
-        }
-      }
-      .admin-list {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        .admin-list-item {
-          text-align: left;
-          padding: 3px 15px 3px 0;
-          .delete {
-            float: right;
-          }
+    }
+    .admin-list {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      .admin-list-item {
+        text-align: left;
+        padding: 3px 15px 3px 0;
+        .delete {
+          float: right;
         }
       }
     }

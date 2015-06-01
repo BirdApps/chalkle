@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :load_course, :sidebar_administrate_course, :header_provider, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone, :ical]
+  before_filter :load_course, :header_provider, only: [:show, :tiny_url, :update, :edit, :confirm_cancel, :cancel, :bookings, :clone, :ical]
   before_filter :check_course_visibility, only: [:show]
   before_filter :authenticate_chalkler!, only: [:new, :mine]
   before_filter :take_me_to, only: [:index]
@@ -91,7 +91,6 @@ class CoursesController < ApplicationController
   def series
     load_provider
     header_provider
-    sidebar_administrate_provider
     not_found and return unless @provider.present?
     @courses_in_future = @provider.courses.where( url_name: course_name ).in_future.by_date.reverse
     @courses_in_past = @provider.courses.where( url_name: course_name ).in_past.by_date
@@ -123,7 +122,6 @@ class CoursesController < ApplicationController
     authorize @course
     @teaching = Teaching.new current_user, @course
     header_provider
-    sidebar_administrate_provider
   end
 
   def create

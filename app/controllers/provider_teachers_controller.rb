@@ -1,5 +1,5 @@
 class ProviderTeachersController < ApplicationController
-  before_filter :header_provider, :sidebar_administrate_provider
+  before_filter :header_provider
   before_filter :load_teacher, only: [:show,:update,:edit]
 
   def index

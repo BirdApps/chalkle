@@ -1,2 +1,8 @@
+<% if current_page? provider_outgoings_path(@provider) %>
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Remittance for teachers" } %>
+  <% @provider.provider_teachers.paid.each do |teacher| %>
+    <%= link_to "Remittance for #{teacher.name} <span class='badge'>#{teacher.outgoing_payments.paid.count}</span>".html_safe, provider_teacher_outgoings_path(teacher.specific_path_params), class: 'btn btn-grey btn-small btn-stub' %>
+  <% end %>
+<% end %>
 <%= render partial: 'fancy_header', locals: { fancy_title: @title } %>
 <%= render @outgoing_payments %>

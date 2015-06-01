@@ -1,0 +1,10 @@
+<% if current_user.providers.count > 1 %>
+  <div class="sidebar-switch">
+      <button class="btn no-btn" data-toggle="modal" data-target="#switch_provider_modal">
+        <span class="small hidden-xs">
+          <span class="fa fa-random"></span> Switch Providers
+        </span>
+        <span class="fa fa-random fa-2x strong visible-xs"></span>
+      </button>  
+  </div>
+<% end %>

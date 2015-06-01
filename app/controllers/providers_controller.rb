@@ -1,6 +1,7 @@
 class ProvidersController < ApplicationController
-  before_filter :authenticate_chalkler!, only: [:new, :create, :url_available]
-  before_filter :load_provider,:header_provider, :sidebar_administrate_provider, only: [:metrics, :show, :edit, :update, :destroy, :contact, :followers, :follower, :bookings, :about]
+  before_filter :authenticate_chalkler!, only: [:new, :create, :url_available, :set_current]
+  before_filter :load_provider, :header_provider, only: [:metrics, :show, :edit, :update, :destroy, :contact, :followers, :follower, :bookings, :about, :set_current]
+
   
   def index
   end
@@ -170,6 +171,7 @@ class ProvidersController < ApplicationController
         @provider = Provider.find_by_url_name(provider_name) 
       end
       not_found and return if @provider.blank?
+      current_user.set_current_provider!(@provider) if policy(@provider).read?
     end
 
 end

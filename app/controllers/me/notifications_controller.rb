@@ -1,7 +1,7 @@
 class Me::NotificationsController < Me::BaseController
   before_filter :page_titles
   before_filter :load_notification, only: [:show]
-  before_filter :load_chalkler, :header_chalkler, :sidebar_administrate_chalkler, only: [:index]
+  before_filter :load_chalkler, :header_chalkler, only: [:index]
   
   def index
     @notifications = current_user.notifications.visible.by_date

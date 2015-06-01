@@ -1,0 +1,76 @@
+<% if policy(@course).write? %>
+  <div class="alert alert-admin">
+    
+    <div class="row strong small">
+      <div class="col-xs-6">
+        Administrative Area
+      </div>
+      <div class="col-xs-6 text-right">
+        <span class="text-<%= @course.status_color %>">
+          <%= @course.status %> <span class="hidden-xs">Status</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6">
+        <% if @course.editable? %>
+          <%= link_to "Edit", edit_provider_course_path(@course.path_params), class: 'btn btn-grey btn-small btn-stub' %>
+        <% else %>
+          <a href="#" class="disabled btn btn-grey btn-small btn-stub" data-toggle="popover" data-placement="bottom" title="<%= @course.status %>" data-content="You cannot no longer edit this class. To run the class again, use 'Duplicate'.">
+            Edit
+          </a>
+        <% end %>
+        <%= link_to "Duplicate", clone_provider_course_path(@course.path_params), method: :post, class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+      <div class="col-xs-6 text-right">
+        <% change_status = if @course.publishable? 
+          { text: "Publish", path: change_status_provider_course_path(@course.path_params.merge(status: 'Published')) }
+        elsif @course.unpublishable?
+          { text: "Unpublish", path: change_status_provider_course_path(@course.path_params.merge(status: 'Preview')) }
+        elsif @course.cancellable?
+          { text: "Cancel Class", path: cancel_provider_course_path(@course.path_params) }
+        end %>
+        <%= link_to change_status[:text], change_status[:path], class: 'btn btn-grey btn-small btn-stub' if change_status %>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row small">
+      <div class="col-xs-6 strong">
+        Attendees
+      </div>
+      <div class="col-xs-6 text-right">
+        <%= @course.bookings.confirmed.count %> 
+        <span class="hidden-xs"> 
+          <%= "attendee".pluralize(@course.bookings.confirmed.count) %>
+        </span> 
+        confirmed
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 strong">
+        <%= link_to "+ New Booking", new_provider_course_booking_path(@course.path_params), class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+      <div class="col-xs-6 text-right">
+        <%= link_to provider_course_bookings_path(@course.path_params), class: 'btn btn-small btn-stub btn-grey' do %>
+          Booking Details
+        <% end %>
+      </div>
+    </div>
+    <br />
+    <% @course.bookings.confirmed.each do |booking| %>
+      <div class="row">
+        <div class="col-xs-5 col-sm-6 small">
+          <%= booking.name %>
+        </div>
+        <div class="col-xs-7 col-sm-6 text-right">
+          <%= link_to "Profile", chalkler_path(booking.chalkler), class: 'btn btn-small btn-stub btn-grey' %> 
+          <%= link_to 'Remove', cancel_provider_course_booking_path(booking.path_params), class: 'btn btn-small btn-stub btn-grey' if policy(booking).cancel? && booking.course.cancellable?  %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+<% end %>

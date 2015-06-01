@@ -33,7 +33,7 @@ class Chalkler < ActiveRecord::Base
   has_many :providers_adminable, through: :provider_admins, source: :provider
   has_many :courses_adminable, through: :providers_adminable, source: :courses
   has_many :courses_teaching, through: :provider_teachers, source: :courses
-  has_many :courses, through: :bookings
+  has_many :courses, through: :bookings, uniq: :true
   has_many :providers_attended, through: :bookings, source: :provider, uniq: true
   has_many :providers_following, through: :subscriptions, source: :provider
   has_many :provider_contacts
@@ -45,6 +45,7 @@ class Chalkler < ActiveRecord::Base
   has_many :course_notices
   has_many :courses_teaching, through: :provider_teachers, source: :courses
   has_one  :notification_preference
+  belongs_to  :current_provider, class_name: 'Provider', foreign_key: :current_provider_id
 
   after_create :create_provider_associations
   after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }

@@ -1,6 +1,6 @@
 class ChalklersController < ApplicationController
   before_filter :load_chalkler, only: [:show,:bookings,:preferences,:teaching]
-  before_filter :header_chalkler,:sidebar_administrate_chalkler, only: [:show,:preferences,:bookings,:teaching]
+  before_filter :header_chalkler, only: [:show,:preferences,:bookings,:teaching]
   before_filter :page_titles, only: [:show]
   
   def index

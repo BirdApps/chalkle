@@ -144,7 +144,6 @@ Chalkle::Application.routes.draw do
     get 'fetch', to: 'courses#fetch'    
     get 'edit'
     put 'edit', to: 'providers#update'
-
     get 'bookings'
 
     resources :subscriptions, only: [:index, :create, :destroy], path: 'followers'

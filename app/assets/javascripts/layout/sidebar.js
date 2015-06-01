@@ -2,7 +2,7 @@ $(function(){
   var sidebar = $('.sidebar');
   var sidebar_padded = $('.sidebar-padding')
   $('.sidebar-tab').click(function(){
-    if(sidebar.hasClass('open')){
+    if(sidebar.hasClass('sidebar-open')){
       sidebar_close();
     }else{
       sidebar_open();
@@ -11,14 +11,14 @@ $(function(){
   ensure_closed_on_mobile_load();
   
   function sidebar_open(){
-    sidebar.addClass('open')
-    sidebar_padded.addClass('open')
+    sidebar.addClass('sidebar-open')
+    sidebar_padded.addClass('sidebar-open')
     persist_sidebar_state(true);
   }
 
   function sidebar_close(){
-    sidebar.removeClass('open')
-    sidebar_padded.removeClass('open')
+    sidebar.removeClass('sidebar-open')
+    sidebar_padded.removeClass('sidebar-open')
     persist_sidebar_state(false);
   }
 
@@ -30,5 +30,11 @@ $(function(){
     if($(window).width() < 758){
       sidebar_open();
     }
+  }
+
+  function switch_teams(){
+    $('.sidebar-switch .btn').click(function(){
+      
+    });
   }
 });

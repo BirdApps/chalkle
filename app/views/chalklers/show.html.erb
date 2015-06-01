@@ -2,6 +2,9 @@
 
   <div class="col-xs-12">
  
+    <%= render 'chalkler_admin' %>
+    <%= render 'chalkler_teaching_admin' %>
+
     <% if current_user.chalkler == @chalkler || current_user.super?  %>
 
       <% if @chalkler.provider_teachers.any? %>

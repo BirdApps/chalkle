@@ -19,16 +19,22 @@
   <div class="row upcoming-previous-btns">
     <div class="col-xs-11 col-md-5 pull-right">
 
-      <div class="dropdown pull-right" style="font-size: 0.87em;">
+      <div class="dropdown pull-right small">
         <button id="dLabel" class="btn no-btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <%= params[:past]=='true' ? "Past Classes" : "Upcoming Classes" %> 
+          <%= params[:past]=='true' ? "Past classes" : "Upcoming classes" %> 
           <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="box-shadow: none;
-border: none;">
-          <a class="fetch_this pull-right pad-10" data-past="<%= params[:past]=='true' ? "false" : "true"  -%>">
-            <%= params[:past]=='true' ? "Upcoming" : "Past" %> Classes
-          </a>
+        <ul class="dropdown-menu plain-white-box" role="menu" aria-labelledby="dLabel">
+          <li>
+            <a class="fetch_this" data-past="<%= params[:past]=='true' ? "false" : "true"  -%>">
+              <%= params[:past]=='true' ? "Upcoming" : "Past" %> <span class="visible-xs">classes</span>
+            </a>
+          </li>
+          <li>
+            <a class="fetch_this" data-past="<%= params[:past]=='true' ? "true" : "false"  -%>">
+              <%= params[:past]=='true' ? "Past" : "Upcoming" %> <span class="visible-xs">classes</span>
+            </a>
+          </li>
         </ul>
       </div>
 

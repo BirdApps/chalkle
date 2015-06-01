@@ -1,7 +1,6 @@
 class ProviderAdminsController < ApplicationController
   before_filter :load_admin, only: [:edit, :update]
   before_filter :header_provider
-  before_filter :sidebar_administrate_provider
 
   def index
     authorize @provider, :admins_index?

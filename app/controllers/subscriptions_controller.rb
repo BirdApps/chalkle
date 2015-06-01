@@ -7,7 +7,6 @@ class SubscriptionsController < ApplicationController
   before_filter :authenticate_chalkler!
 
   before_filter :header_provider
-  before_filter :sidebar_administrate_provider
 
   def index
     @chalklers = @provider.chalklers

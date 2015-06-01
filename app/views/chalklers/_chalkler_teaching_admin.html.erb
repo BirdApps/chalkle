@@ -1,0 +1,75 @@
+
+<% if @chalkler.provider_teachers.present? && policy(@chalkler).admin? %>
+  <div class="alert alert-admin">
+    
+    <div class="row strong">
+      <div class="col-xs-12">
+        Teacher Area
+      </div>
+    </div>
+
+    <hr />
+    <div class="row">
+      <div class="col-xs-12 strong small">
+        Teacher Profiles <br />
+      </div>
+    </div>
+    <% @chalkler.provider_teachers.each do |teacher| %>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <%= link_to "#{teacher.provider.name}, #{teacher.name}", provider_teacher_path(teacher.path_params) %>
+        </div>
+        <div class="col-xs-12 col-sm-6 text-right">
+          <% if teacher.outgoing_payments.paid.any? %>
+            <%= link_to "Remittance <span class='badge'>#{teacher.outgoing_payments.paid.count}</span>".html_safe, provider_teacher_outgoings_path(teacher.specific_path_params), class: 'btn btn-grey btn-small btn-stub' %>
+          <% end %>
+          <%= link_to 'Edit Profile', edit_provider_teacher_path(teacher.path_params), class: 'btn btn-grey btn-small btn-stub' %>
+        </div>
+      </div>
+    <% end %>
+    
+    <hr />
+
+    <div class="row">
+      <div class="col-xs-6 strong small">
+        <% if @chalkler.courses_teaching.in_future.any? %>
+          Upcoming Classes
+        <% else %>
+          You're not teaching any classes in the future.
+        <% end %>
+      </div>
+      <div class="col-xs-6 text-right">
+        <%= link_to "History", teaching_chalkler_path(@chalkler), class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+    </div>
+    <div class="row">
+      <% unless @chalkler.courses_teaching.in_future.any? %>
+        <div class="col-xs-12 text-center">
+          <% if @chalkler.courses_teaching.any? %>
+          <div class="small">
+            <br /> Want to run the previous class again?
+            <% last_course = @chalkler.courses_teaching.last %>
+            <%= link_to "Duplicate '#{last_course.name}'", clone_provider_course_path(last_course.path_params), method: :post, class: 'link-line' %>
+            <br /> or
+          </div>
+          <% end %>
+          <%= link_to "Make a new class", new_course_path, class: 'btn btn-primary btn-small btn-stub'  %>
+        </div>
+      <% end %>
+      <div class="small">
+        <% @chalkler.courses_teaching.in_future.each  do |course| %>
+          <div class="col-xs-4 col-sm-2">
+            <%= day_ordinal_month course.start_at %>
+          </div>
+          <div class="col-xs-8 col-sm-5">
+            <%= link_to course.name, provider_course_path(course.path_params), class: 'link-line' %>
+          </div>
+          <div class="col-sm-12 hidden-xs text-right">
+            <span class="">Provided by</span>
+            <%= link_to course.provider.name, provider_path(course.provider), class: 'link-line' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

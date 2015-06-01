@@ -1,8 +1,6 @@
 class OutgoingPaymentsController < ApplicationController
   
   before_filter :load_outgoing_payment, only: [:show]
-  before_filter :sidebar_administrate_provider, :header_provider
-
 
   def index
     if params[:teacher_id].present?

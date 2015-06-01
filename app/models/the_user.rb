@@ -114,6 +114,17 @@ class TheUser
     )
   end
 
+  def set_current_provider!(provider)
+    if chalkler
+      chalkler.current_provider = provider
+      chalkler.save 
+    end
+  end
+
+  def current_provider
+    chalkler.current_provider || providers.first
+  end
+
   def teach_menu_badge_count
     @teach_menu_badge_count ||= chalkler? ? chalkler.upcoming_teaching.count : 0
   end

@@ -7,9 +7,7 @@ class ApplicationController < ActionController::Base
   
   layout 'layouts/application'
 
-  before_filter :set_locale
-  before_filter :load_provider
-  before_filter :check_user_data
+  before_filter :set_locale, :load_provider, :sidebar_setup, :check_user_data
   after_filter :store_location, except: :set_redirect
 
   def styleguide
@@ -201,6 +199,7 @@ protected
         @provider = Provider.find_by_url_name(provider_name)
       end
     end
+    current_user.set_current_provider!(@provider) if @provider.present? && policy(@provider).read?
   end
 
   def load_course
@@ -227,27 +226,8 @@ protected
     end
   end
 
-  def sidebar_administrate_chalkler
-    if @chalkler && policy(@chalkler).admin?
-      @sidebar_title = @chalkler.name
-      @sidebar = '/layouts/sidebars/chalkler'
-    end
-  end
-
-  def sidebar_administrate_provider
-    load_provider unless @provider
-    if @provider && policy(@provider).admin?
-      @sidebar = '/layouts/sidebars/provider'
-      @sidebar_title = @provider.name
-    end
-  end
-
-  def sidebar_administrate_course
-    load_course unless @course
-    if @course && policy(@course).admin? 
-      @sidebar_title = @course.name
-      @sidebar = '/layouts/sidebars/course'
-    end
+  def sidebar_setup
+    @sidebar = true if current_user.providers.present?
   end
 
   def default_url_options(options={})

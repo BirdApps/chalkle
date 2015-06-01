@@ -1,0 +1,52 @@
+<% if policy(@chalkler).admin? %>
+  <div class="alert alert-admin">
+    
+    <div class="row strong">
+      <div class="col-sm-6 col-xs-12">
+        Attendee Area
+      </div>
+      <div class="col-sm-6 col-xs-12 text-right">
+        <%= link_to "Edit Profile", preferences_chalkler_path(@chalkler), class: 'btn btn-grey btn-small btn-stub' %>
+        <%= link_to "Email Preferences", me_notification_preference_path, class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-xs-6 strong small">
+        Upcoming Classes 
+      </div>
+      <div class="col-xs-6 text-right">
+        <%= link_to "History", bookings_chalkler_path(@chalkler), class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+    </div>
+    <% unless @chalkler.courses.in_future.present? %>
+      <div class="col-xs-12 text-center">
+        <p>
+          <br />
+          <strong>Oh no!</strong>
+          <small>
+            <br /> You don't have any bookings coming up
+          </small>
+        </p>
+        <%= link_to "Find Classes", classes_path, class: 'btn btn-primary btn-small btn-stub' %>
+      </div>
+    <% end %>
+    <% @chalkler.courses.in_future.each  do |course| %>
+      <div class="row small">
+        <div class="col-xs-4 col-sm-2">
+          <%= day_ordinal_month course.start_at %>
+        </div>
+        <div class="col-xs-8 col-sm-5">
+        <%= link_to course.name, provider_course_path(course.path_params), class: 'link-line' %>
+        </div>
+        <div class="col-sm-12 hidden-xs text-right">
+          <span class="">Provided by</span>
+          <%= link_to course.provider.name, provider_path(course.provider), class: 'link-line' %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+<% end %>

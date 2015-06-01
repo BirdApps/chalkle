@@ -1,42 +1,66 @@
 <div class="admin-sidebar col-xs-12">
-  <%= link_to "New Class", new_provider_class_path(@provider), class: 'btn primary'  %>
-
-  <div class="admin-links admin-section row">
-    <%= link_to "Bookings <span class='badge'>#{@provider.bookings.confirmed.in_future.uniq.count}</span>".html_safe, bookings_provider_path(@provider) %>
-    <%= link_to "Followers <span class='badge'>#{@provider.subscriptions.count}</span>".html_safe, provider_subscriptions_path(@provider), class: 'border-left' %>
-
-    <%# link_to "Followers", provider_subscriptions_path(@provider), class: 'border-bottom border-left' %>
-    <%= link_to "Remittance", provider_outgoings_path(@provider) %>
-  </div>
   
-  <div class="admin-links admin-section row">
-    <%= link_to "Teachers <span class='badge'>#{@provider.provider_teachers.visible.count}</span>".html_safe, provider_teachers_path(@provider) %>
-    <%= link_to "New Teacher", new_provider_teacher_path(@provider), class: 'border-left' %>
-  </div>
 
-  <div class="admin-links admin-section row">  
-    <%= link_to "Admins <span class='badge'>#{@provider.provider_admins.visible.count}</span>".html_safe, provider_admins_path(@provider) %>
-    <%= link_to "New Admin", new_provider_admin_path(@provider), class: 'border-left' %>
-  </div>
+  <%= link_to "New Class", new_provider_class_path(provider), class: 'btn btn-grey'  %>
+  <%= link_to "Classes <span class='badge'>#{provider.courses.advertisable.in_future.count}</span>".html_safe, provider_subscriptions_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
+  <%= link_to "Followers <span class='badge'>#{provider.subscriptions.count}</span>".html_safe, provider_subscriptions_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
 
-  <% classes_teaching = current_user.courses_teaching.in_future.where(provider_id: @provider.id) %>
+  <% unless policy(provider).admin? %>
+    <%= link_to "Teachers <span class='badge'>#{provider.provider_teachers.visible.count}</span>".html_safe, provider_teachers_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
+    <%= link_to "Admins <span class='badge'>#{provider.provider_admins.visible.count}</span>".html_safe, provider_admins_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
+  <% end %>
+
+  <% if policy(provider).admin? %>
+    <div class="admin-section row">
+      <div class="col-xs-12">
+        <div class="strong small">
+          Admin Area <br />
+        </div>
+
+        <%= link_to "Provider Settings", edit_provider_path(provider), class: 'btn btn-grey btn-small btn-stub'  %>
+
+        <%= link_to "Upcoming Bookings <span class='badge'>#{provider.bookings.confirmed.in_future.uniq.count}</span>".html_safe, bookings_provider_path(provider), class: 'btn btn-grey btn-small btn-stub'  %>
+
+        <% if provider.outgoing_payments.paid.any? %>
+        <%= link_to "Remittance <span class='badge'>#{provider.outgoing_payments.paid.count}</span>".html_safe, provider_outgoings_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
+        <% end %>
+        
+      </div>
+      <div class="col-xs-8">
+        <%= link_to "Teachers <span class='badge'>#{provider.provider_teachers.visible.count}</span>".html_safe, provider_teachers_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+      <div class="col-xs-4">
+        <%= link_to "+ New", new_provider_teacher_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+      <div class="col-xs-8">
+        <%= link_to "Admins <span class='badge'>#{provider.provider_admins.visible.count}</span>".html_safe, provider_admins_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+      <div class="col-xs-4">
+        <%= link_to "+ New", new_provider_admin_path(provider), class: 'btn btn-grey btn-small btn-stub' %>
+      </div>
+    </div>
+  <% end %>
+
+
+  <% classes_teaching = current_user.courses_teaching.in_future.by_date.where(provider_id: provider.id) %>
   <% if classes_teaching.present? %>
     <h5>
-      <%= link_to "You're Teaching", provider_admins_path(@provider) %>
+      <%= link_to "You're Teaching", provider_admins_path(provider) %>
     </h5>
-
     <div class="admin-section row">
-      <div class="col-xs-12 admin-list">
+      <div class="admin-list col-xs-12">
         <% classes_teaching.each do |course| %>
-          <div class="admin-list-item">
-            <%= link_to course.name, provider_course_path(course.path_params) %>
+          <div class="admin-list-item small row">
+            <div class="col-xs-4 small">
+              <%= day_ordinal_month course.start_at %>
+            </div>
+            <div class="col-xs-8">
+              <%= link_to course.name, provider_course_path(course.path_params), class: 'link-line' %>
+            </div>
           </div>
         <% end %>
       </div>
     </div>
   <% end %>
-
-  <%= link_to "Settings", edit_provider_path(@provider), class: 'btn primary'  %>
-
 
 </div>

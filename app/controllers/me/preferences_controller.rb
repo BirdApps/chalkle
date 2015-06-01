@@ -1,7 +1,6 @@
 class Me::PreferencesController < Me::BaseController
 
   before_filter :load_chalkler, only: [:show,:update,:enter_email,:notifications,:update_notifications]
-  before_filter :sidebar_administrate_chalkler, only: [:show,:update,:notifications,:update_notifications]
   before_filter :header_chalkler, only: [:show,:update,:enter_email,:notifications,:update_notifications]
 
   def sidebar_open
