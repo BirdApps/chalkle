@@ -681,8 +681,8 @@ class Course < ActiveRecord::Base
     def calc_chalkle_fee(incl_tax)
       return 0 if free?
       single = course_class_type.nil? ? single_class? : course_class_type == 'course'
-      no_tax_fee = (single ? provider_plan.course_attendee_cost : provider_plan.class_attendee_cost);
-      incl_tax ? Finance.apply_sales_tax_to(no_tax_fee, country_code) : no_tax_fee
+      fee_with_tax = (single ? provider_plan.course_attendee_cost : provider_plan.class_attendee_cost);
+      !incl_tax ? Finance.remove_sales_tax_from(fee_with_tax, country_code) : fee_with_tax
     end
 
     def calc_provider_income(incl_tax)
