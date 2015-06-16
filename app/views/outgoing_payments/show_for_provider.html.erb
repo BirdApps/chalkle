@@ -236,14 +236,14 @@
             Chalkle Processing fees
           </div>
           <div class="col-xs-4 text-right">
-            <%= number_to_currency @outgoing_payment.processing_fees_for_course(course) %>
+            <%= number_to_currency @outgoing_payment.processing_costs_for_course(course) %>
           </div>
 
           <div class="col-xs-8">
             Chalkle Booking fees
           </div>
           <div class="col-xs-4 text-right">
-            <%= number_to_currency @outgoing_payment.booking_fees_for_course(course) %>
+            <%= number_to_currency @outgoing_payment.booking_costs_for_course(course) %>
           </div>
 
           
