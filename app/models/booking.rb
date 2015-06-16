@@ -273,8 +273,10 @@ class Booking < ActiveRecord::Base
           self.provider_gst = 0
         else
           self.provider_fee = provider_fee+provider_gst+adjustment_for_provider
-          self.provider_gst = provider_fee*3/23
-          self.provider_fee = provider_fee - provider_gst
+          if provider.tax_registered?
+            self.provider_gst = provider_fee*3/23
+            self.provider_fee = provider_fee - provider_gst
+          end
         end
         
         if adjustment_for_teacher != 0
