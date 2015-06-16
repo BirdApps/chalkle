@@ -332,7 +332,7 @@ class OutgoingPayment < ActiveRecord::Base
   end
 
   def total_fees
-    @total_fees = bookings.sum(&:chalkle_fee) + bookings.sum(&:processing_fee) + bookings.sum(&:teacher_fee)
+    @total_fees ||= bookings.sum(&:chalkle_fee) + bookings.sum(&:processing_fee) + bookings.sum(&:teacher_fee)
   end
 
   def total_tax
