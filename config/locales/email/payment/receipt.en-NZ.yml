@@ -34,7 +34,7 @@ en-NZ:
           subtotal: "Subtotal"
         provider:
           tax: "GST Number"
-          name: "Provider:"
-          email: "Email:"
-          phone: "Phone:"
-          address: "Address:"
+          name: "Provider"
+          email: "Email"
+          phone: "Phone"
+          address: "Address"
