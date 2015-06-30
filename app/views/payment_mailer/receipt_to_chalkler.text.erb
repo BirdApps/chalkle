@@ -1,36 +1,36 @@
 <%= 
-   t("payment.receipt.body.text_1", booker_name: @chalkler.name, provider_name: @provider.name, tx_id: @payment.swipe_transaction_id)
+   t("email.payment.receipt.body.text_1", booker_name: @chalkler.name, provider_name: @provider.name, tx_id: @payment.swipe_transaction_id)
 %>
 
-<%= t("payment.receipt.breakdown.details") %>
+<%= t("email.payment.receipt.breakdown.details") %>
 
-<%= t("payment.receipt.breakdown.item") %>: <%= @course.name %>
+<%= t("email.payment.receipt.breakdown.item") %>: <%= @course.name %>
 
-<%= t("payment.receipt.breakdown.count") %>: <%= @payment.bookings.count %>
+<%= t("email.payment.receipt.breakdown.count") %>: <%= @payment.bookings.count %>
 
-<%= t("payment.receipt.breakdown.price") %>: <%= number_to_currency @payment.paid_per_booking(false) %>
+<%= t("email.payment.receipt.breakdown.price") %>: <%= number_to_currency @payment.paid_per_booking(false) %>
 
-<%= t("payment.receipt.breakdown.subtotal") %>: <%= number_to_currency @payment.inital_amount_paid(false)  %>
+<%= t("email.payment.receipt.breakdown.subtotal") %>: <%= number_to_currency @payment.inital_amount_paid(false)  %>
 
-<%= t("payment.receipt.breakdown.tax") %>: <%= number_to_currency @payment.calculate_tax %>
+<%= t("email.payment.receipt.breakdown.tax") %>: <%= number_to_currency @payment.calculate_tax %>
 
 ==================================
 
-<%= t("payment.receipt.provider.name") %>: <%= @provider.name %>
+<%= t("email.payment.receipt.provider.name") %>: <%= @provider.name %>
 
 <% if @provider.tax_registered? %>
-  <%= t("payment.receipt.provider.tax") %>: <%= @provider.tax_number %>
+  <%= t("email.payment.receipt.provider.tax") %>: <%= @provider.tax_number %>
 <% end %>
 <% if @provider.has_location? %>
-  <%= t("payment.receipt.provider.address") %>: <%= @provider.physical_address %>
+  <%= t("email.payment.receipt.provider.address") %>: <%= @provider.physical_address %>
 <% end %>
 <% if @provider.has_phone? %>
-  <%= t("payment.receipt.provider.phone") %>: <%= @provider.phone %></td>
+  <%= t("email.payment.receipt.provider.phone") %>: <%= @provider.phone %></td>
 <% end %>
 <% if @provider.email.present? %>
-  <%= t("payment.receipt.provider.email") %>: <%= @provider.email %>
+  <%= t("email.payment.receipt.provider.email") %>: <%= @provider.email %>
 <% end %>
 
 ===================================
 
-<%= t("payment.receipt.body.text_2") %> <%= number_to_currency @payment.inital_amount_paid %>
+<%= t("email.payment.receipt.body.text_2") %> <%= number_to_currency @payment.inital_amount_paid %>
