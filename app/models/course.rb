@@ -69,8 +69,8 @@ class Course < ActiveRecord::Base
   scope :hidden, where(visible: false)
   scope :visible, where(visible: true)
   scope :start_at_between, ->(from,to) { where(:start_at => from.beginning_of_day..to.end_of_day) }
-  scope :recent, visible.start_at_between(DateTime.current.advance(days: PAST), DateTime.current.advance(days: IMMEDIATE_FUTURE))
-  scope :last_week, visible.start_at_between(DateTime.current.advance(weeks: -1), DateTime.current)
+  scope :recent, -> { visible.start_at_between(DateTime.current.advance(days: PAST), DateTime.current.advance(days: IMMEDIATE_FUTURE)) }
+  scope :last_week, -> { visible.start_at_between(DateTime.current.advance(weeks: -1), DateTime.current) }
   scope :in_month, ->(month){ start_at_between(month.first_day, month.last_day) }
   scope :in_week, -> (week){ start_at_between(week.first_day, week.last_day) }
   scope :in_fortnight, -> (week){ start_at_between(week.first_day, (week+1).last_day) }
@@ -79,7 +79,7 @@ class Course < ActiveRecord::Base
   scope :in_future, -> { where( "start_at >= ?", DateTime.current) }
   scope :previous, -> { where("start_at < ?", DateTime.current) }
   #TODO: replace references to previous with in_past - time consuming because previous is common word
-  scope :in_past, previous
+  scope :in_past, -> { previous }
   scope :by_date, order(:start_at)
   scope :by_date_desc, order('start_at DESC')
 
@@ -97,7 +97,7 @@ class Course < ActiveRecord::Base
   scope :free, where("cost IS NULL or cost = 0")
   scope :in_provider, -> (provider){ where(provider_id: provider.id) }
   scope :not_repeat_course, where(repeat_course_id: nil)
-  scope :popular, start_at_between(DateTime.current, DateTime.current.advance(days: 20))
+  scope :popular,  -> { start_at_between(DateTime.current, DateTime.current.advance(days: 20)) }
   scope :adminable_by, -> (chalkler){ joins(:provider => :provider_admins).where('provider_admins.chalkler_id = ?', chalkler.id)}
   scope :located_within_coordinates, -> (coordinate1, coordinate2) { 
     where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", 
@@ -110,11 +110,11 @@ class Course < ActiveRecord::Base
 
   scope :displayable, visible.published
 
-  scope :needs_completing, where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current)
+  scope :needs_completing,  -> { where("status = '#{STATUS_1}' AND end_at < ?", DateTime.current) }
 
   scope :similar_to, -> (course){ where(provider_id: course.provider_id, url_name: course.url_name).displayable.in_future.by_date }
 
-  scope :need_outgoing_payments, where("cost > 0 AND (status = '#{STATUS_4}' or status = '#{STATUS_1}') AND start_at < '#{DateTime.current.to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR provider_payment_id IS NULL)")
+  scope :need_outgoing_payments,  -> { where("cost > 0 AND (status = '#{STATUS_4}' or status = '#{STATUS_1}') AND start_at < '#{DateTime.current.to_formatted_s(:db)}' AND (teacher_payment_id IS NULL OR provider_payment_id IS NULL)") }
 
 
   before_create :set_url_name
