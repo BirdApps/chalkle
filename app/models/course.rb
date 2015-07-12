@@ -451,7 +451,7 @@ class Course < ActiveRecord::Base
   end
 
   def provider_min_income
-    if min_attendee.present?
+    if min_attendee.present? && provider_fee.present? && fixed_costs.present?
       provider_fee * min_attendee - fixed_costs
     else
       0
