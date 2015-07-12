@@ -336,6 +336,10 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def end_at
+    read_attribute(:end_at) || (start_at + 1.hour) if start_at
+  end
+
   #placeholder for when we go international
   def country_code
     :nz
@@ -451,7 +455,7 @@ class Course < ActiveRecord::Base
   end
 
   def provider_min_income
-    if min_attendee.present?
+    if min_attendee.present? && provider_fee.present? && fixed_costs.present?
       provider_fee * min_attendee - fixed_costs
     else
       0
