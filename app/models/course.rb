@@ -337,7 +337,7 @@ class Course < ActiveRecord::Base
   end
 
   def end_at
-    read_attribute(:end_at) || (start_at + 1.hour)
+    read_attribute(:end_at) || (start_at + 1.hour) if start_at
   end
 
   #placeholder for when we go international
