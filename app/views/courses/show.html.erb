@@ -49,55 +49,45 @@
         <%= render 'courses/booking_module' %>
 
         <div class="row">
-          <%= render partial: 'fancy_header', locals: { fancy_title: "Details", small: true } %>
           <div class="col-xs-12">
+            <%= render partial: 'fancy_header', locals: { fancy_title: "Details", small: true } %>
             <%= to_html @course.learning_outcomes %>
           </div>
         </div>
 
-      </div>
-    
-
-      <div class="row flush-xs">
-        <div class="col-xs-12">
-
-        <%= render partial: 'fancy_header', locals: { fancy_title: "What we'll be doing", small: true } %>
-            
-          <%= to_html @course.do_during_class %>
-        </div>
-
-        <% if @course.suggested_audience.present?  %>
+        
+        <div class="row">
           <div class="col-xs-12">
-          
-            <%= render partial: 'fancy_header', locals: { fancy_title: "Who this is suitable for", small: true } %>
-          
-            <%= to_html @course.suggested_audience %>
-          </div>
-        <% end %>
 
+          <%= render partial: 'fancy_header', locals: { fancy_title: "What we'll be doing", small: true } %>
+              
+            <%= to_html @course.do_during_class %>
+          </div>
+
+          <% if @course.suggested_audience.present?  %>
+            <div class="col-xs-12">
+            
+              <%= render partial: 'fancy_header', locals: { fancy_title: "Who this is suitable for", small: true } %>
+            
+              <%= to_html @course.suggested_audience %>
+            </div>
+          <% end %>
+        </div>
       </div>
 
       <div class="row flush-xs">
         <div class="row">
           <% if @course.prerequisites.present?  %>
-            <div class="col-md-6 col-xs-12">
-
+             <div class="col-xs-12">
               <%= render partial: 'fancy_header', locals: { fancy_title: "Be sure to bring", small: true } %>
-              
-              <div class="col-xs-12">
                 <%= to_html @course.prerequisites %>
-              </div>
             </div>
           <% end %>
 
           <% if @course.additional_comments.present?  %>
-            <div class="col-md-6 col-xs-12">
-              
+            <div class="col-xs-12">
               <%= render partial: 'fancy_header', locals: { fancy_title: "Additional information", small: true } %>
-              
-              <div class="col-xs-12">
-                <%= to_html @course.additional_comments %>
-              </div>
+              <%= to_html @course.additional_comments %>
             </div>
           <% end %>
         </div>
