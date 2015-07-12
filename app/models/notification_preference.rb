@@ -38,7 +38,7 @@ class NotificationPreference < ActiveRecord::Base
   end
 
   # We want to make the preference respond to all the possible notifications. 
-  # do this using dynaimic codes and defining a method for each possible notification. 
+  # do this using dynamic codes and defining a method for each possible notification. 
   # maybe too much clever for the sake of dry, but it means you can just add a value to the options arrays up there and it all just works. 
    
   ALL_NOTIFICATIONS.each do |notification|

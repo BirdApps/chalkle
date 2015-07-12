@@ -20,7 +20,6 @@ class Sudo::PartnerInquiriesController < Sudo::BaseController
       @hello.visible = true
     elsif new_status == 'hidden'
       @hello.visible = false
-      Notify.for(@hello).archived
     end
     @hello.save
     redirect_to sudo_partner_inquiries_path
