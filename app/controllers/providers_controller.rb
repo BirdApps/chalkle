@@ -171,7 +171,6 @@ class ProvidersController < ApplicationController
         @provider = Provider.find_by_url_name(provider_name) 
       end
       not_found and return if @provider.blank?
-      current_user.set_current_provider!(@provider) if policy(@provider).read?
     end
 
 end

@@ -11,10 +11,10 @@
   <div class="sidebar-tab">
     <span class="fa fa-expand fa-2x sidebar-open"></span>
     <span class="fa fa-compress fa-2x sidebar-shut"></span>
-    <h4><%= current_user.current_provider.name %></h4>
+    <h4><%= @provider.name %></h4>
   </div>
   <div class="sidebar-content">
-    <%= render partial: '/layouts/sidebars/provider', locals: { provider: current_user.current_provider } %>
+    <%= render partial: '/layouts/sidebars/provider', locals: { provider: @provider } %>
   </div>
 </div>
 
@@ -31,7 +31,7 @@
           <table class="table">
             <% current_user.providers.sort_by(&:name).each do |provider| %>
               <tr>
-                <td class="<%= 'active' if provider == current_user.current_provider %>">
+                <td class="<%= 'active' if provider == @provider %>">
                   <%= link_to provider.name, provider_path(provider), method: :put %>
                 </td>
               </tr>
