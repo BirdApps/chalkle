@@ -336,6 +336,10 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def end_at
+    read_attribute(:end_at) || (start_at + 1.hour)
+  end
+
   #placeholder for when we go international
   def country_code
     :nz
