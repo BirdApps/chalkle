@@ -3,6 +3,7 @@ class Payment < ActiveRecord::Base
 
   has_many :bookings
   has_many :courses, through: :bookings
+  has_many :providers, through: :courses
 
   belongs_to :chalkler #purchaser
   serialize :xero_data
@@ -99,11 +100,11 @@ class Payment < ActiveRecord::Base
   end
 
   def course
-    courses.first if courses
+    @course ||= courses.first
   end
 
   def provider
-    course.provider
+    @provider ||= providers.first
   end
 
   def set_metadata

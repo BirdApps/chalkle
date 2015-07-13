@@ -7,7 +7,7 @@ class PaymentMailer < BaseChalkleMailer
     @payment = payment
     @chalkler = payment.chalkler
     @course = payment.course
-    @provider = @course.provider
+    @provider = payment.provider
     @no_hello = true
     @skip_unsubscribe = true
     @mail_header_color = @course.provider.header_color(:hex)

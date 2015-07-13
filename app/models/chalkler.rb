@@ -45,7 +45,6 @@ class Chalkler < ActiveRecord::Base
   has_many :course_notices
   has_many :courses_teaching, through: :provider_teachers, source: :courses
   has_one  :notification_preference
-  belongs_to  :current_provider, class_name: 'Provider', foreign_key: :current_provider_id
 
   after_create :create_provider_associations
   after_create -> (chalkler) { NotificationPreference.create chalkler: chalkler }

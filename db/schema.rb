@@ -115,7 +115,6 @@ ActiveRecord::Schema.define(:version => 20150530085010) do
     t.string   "invited_by_type"
     t.string   "location"
     t.boolean  "sidebar_open",           :default => true,     :null => false
-    t.integer  "current_provider_id"
   end
 
   add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true
