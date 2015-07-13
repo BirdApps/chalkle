@@ -20,6 +20,10 @@
   height: 100%;
   width: 100%;
   z-index: 1;
+  div {
+    padding-top: 10px;
+    padding-bottom: 10px; 
+  }
   
   .sidebar-content{
     height: 100%;
@@ -128,8 +132,6 @@
     width: 100%;
     background-color: #5F5F5F;
     border: 0px;
-    margin-top: 10px;
-    margin-bottom: 10px;
     &.primary{
       margin: 20px 0;
     }
