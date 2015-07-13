@@ -5,17 +5,17 @@
       <%= link_to "New Class", new_provider_class_path(provider), class: 'btn btn-grey' %>
     </div>
     <div class="col-xs-12">
-      <%= link_to " <span class='badge'>#{provider.courses.advertisable.in_future.count}</span> Published Classes".html_safe, provider_path(provider), class: '' %>
+      <%= link_to " <span class='badge'>#{provider.courses.advertisable.in_future.count}</span> #{"Published Class".pluralize(provider.courses.advertisable.in_future.count)}".html_safe, provider_path(provider), class: '' %>
     </div>
     <div class="col-xs-12">
-      <%= link_to "<span class='badge'>#{provider.subscriptions.count}</span> Followers".html_safe, provider_subscriptions_path(provider), class: '' %>
+      <%= link_to "<span class='badge'>#{provider.subscriptions.count}</span> #{"Follower".pluralize(provider.subscriptions.count)}".html_safe, provider_subscriptions_path(provider), class: '' %>
     </div>
     <% unless policy(provider).admin? %>
       <div class="col-xs-12">
-        <%= link_to "<span class='badge'>#{provider.provider_teachers.visible.count}</span> Teachers".html_safe, provider_teachers_path(provider), class: '' %>
+        <%= link_to "<span class='badge'>#{provider.provider_teachers.visible.count}</span> #{"Teacher".pluralize(provider.provider_teachers.visible.count)}".html_safe, provider_teachers_path(provider), class: '' %>
       </div>
       <div  class="col-xs-12">
-        <%= link_to "<span class='badge'>#{provider.provider_admins.visible.count}</span> Admins".html_safe, provider_admins_path(provider), class: '' %>
+        <%= link_to "<span class='badge'>#{provider.provider_admins.visible.count}</span> #{"Admin".pluralize(provider.provider_admins.visible.count)}".html_safe, provider_admins_path(provider), class: '' %>
       </div>
     <% end %>
   </div>
@@ -23,37 +23,37 @@
 
   <% if policy(provider).admin? %>
     <div class="admin-section row">
-      <h3 class="strong small col-xs-12">
+      <h3 class="strong small col-xs-12 text-center">
         Admin Area
       </h3>
       <div class="col-xs-12">
-        <%= link_to "<span class='badge'>#{provider.bookings.confirmed.in_future.uniq.count}</span> Upcoming Bookings".html_safe, bookings_provider_path(provider), class: ''  %>
+        <%= link_to "<span class='badge'>#{provider.bookings.confirmed.in_future.uniq.count}</span> #{"Upcoming Bookings".pluralize(provider.bookings.confirmed.in_future.uniq.count)}".html_safe, bookings_provider_path(provider), class: ''  %>
       </div>
 
-      <% if provider.outgoing_payments.paid.any? %>
-        <div>
-          <div class="col-xs-12">
-            <%= "#{provider.name} has received #{provider.outgoing_payments.paid.count} #{"payment".pluralize(provider.outgoing_payments.paid.count)}" %>
-          </div>
-          <%= link_to "<span class='badge'>#{provider.outgoing_payments.paid.count}</span> Remittance".html_safe, provider_outgoings_path(provider), class: '' %>
+      <% if provider.outgoing_payments.paid.any? %>  
+        <div class="col-xs-12 text-center">
+          <%= "#{provider.name} has received #{provider.outgoing_payments.paid.count} #{"payment".pluralize(provider.outgoing_payments.paid.count)}" %>
+        </div>
+        <div class="col-xs-12">
+          <%= link_to "<span class='badge'>#{provider.outgoing_payments.paid.count}</span> #{"Remittance".pluralize(provider.outgoing_payments.paid.count)}".html_safe, provider_outgoings_path(provider), class: '' %>
         </div>
       <% end %> 
 
       <div class="col-xs-8">
-        <%= link_to "<span class='badge'>#{provider.provider_teachers.visible.count}</span> Teachers".html_safe, provider_teachers_path(provider), class: '' %>
+        <%= link_to "<span class='badge'>#{provider.provider_teachers.visible.count}</span> #{"Teacher".pluralize(provider.provider_teachers.visible.count)}".html_safe, provider_teachers_path(provider), class: '' %>
       </div>
       <div class="col-xs-4">
         <%= link_to "+ Teacher", new_provider_teacher_path(provider), class: 'btn btn-grey btn-small' %>
       </div>
       <div class="col-xs-8">
-        <%= link_to "<span class='badge'>#{provider.provider_admins.visible.count}</span> Admins".html_safe, provider_admins_path(provider), class: '' %>
+        <%= link_to "<span class='badge'>#{provider.provider_admins.visible.count}</span> #{"Admin".pluralize(provider.provider_admins.visible.count)}".html_safe, provider_admins_path(provider), class: '' %>
       </div>
       <div class="col-xs-4">
         <%= link_to "+ Admin", new_provider_admin_path(provider), class: 'btn btn-grey btn-small' %>
       </div>
 
       <div class="col-xs-12">
-        <%= link_to "Provider Settings", edit_provider_path(provider), class: 'btn btn-grey'  %>
+        <%= link_to "Provider Settings", edit_provider_path(provider), class: 'btn btn-grey btn-small'  %>
       </div>
 
 
