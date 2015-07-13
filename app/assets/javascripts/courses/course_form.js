@@ -308,7 +308,7 @@ $(function(){
     }
 
     /* initializes a div.class-count (a set of time and duration controls) */
-    function apply_start_at_controls(scope, clear_calender){
+    function apply_start_at_controls(scope, clear_calendar){
       var instance_time = "";
       var instance_date = "";
       var duration_hours  = "";
@@ -362,7 +362,7 @@ $(function(){
         update_durations();
         /*INIT DATE PICKER*/
         var date_picker = $(scope).find('.date-picker')[0];
-        if(clear_calender != undefined){
+        if(clear_calendar != undefined){
           $(date_picker).empty();
         }
 

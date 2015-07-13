@@ -1,2 +1,4 @@
-Add to <%= link_to "Google Calender", "//www.google.com/calendar/render?dates=#{course.start_at.strftime('%Y%m%dT%H%M%S')}/#{course.end_at.strftime('%Y%m%dT%H%M%S')}&action=TEMPLATE&text=#{course.name}&location=#{course.address}&details=#{calendar_details(course)}&sprop=#{tiny_course_url(course)}", target: '_blank', class: 'link-line' %> or 
-<%= link_to "another calendar", ical_provider_course_path(course.path_params), target: '_blank', class: 'link-line', title: "Downloads .ics file",  :'data-toggle' => "tooltip", :'data-placement' => "bottom"  %>
+<% if course.start_at %>
+  Add to <%= link_to "Google calendar", "//www.google.com/calendar/render?dates=#{course.start_at.strftime('%Y%m%dT%H%M%S')}/#{course.end_at.strftime('%Y%m%dT%H%M%S')}&action=TEMPLATE&text=#{course.name}&location=#{course.address}&details=#{calendar_details(course)}&sprop=#{tiny_course_url(course)}", target: '_blank', class: 'link-line' %> or 
+  <%= link_to "another calendar", ical_provider_course_path(course.path_params), target: '_blank', class: 'link-line', title: "Downloads .ics file",  :'data-toggle' => "tooltip", :'data-placement' => "bottom"  %>
+<% end %>
