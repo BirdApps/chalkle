@@ -34,12 +34,12 @@
     <header>
       <%= render 'layouts/navbar' %>
       
-      <div class="header-wrapper <%= 'sidebar-padding' if @provider.present? %> <%= 'sidebar-open' if current_user.sidebar_open %>">
+      <div class="header-wrapper <%= 'sidebar-padding' if @provider && policy(@provider).read? %> <%= 'sidebar-open' if current_user.sidebar_open %>">
         <%= render @header_partial if @header_partial.present? %>
       </div>
     </header>
 
-    <div class="body-content <%= 'sidebar-padding' if @provider.present? %>  <%= 'sidebar-open' if current_user.sidebar_open %>">
+    <div class="body-content <%= 'sidebar-padding' if @provider && policy(@provider).read? %>  <%= 'sidebar-open' if current_user.sidebar_open %>">
       <div id="wrapper">
         <div class="container-fluid <%= 'pad-top' if @header_partial %>" role="main">
           <%= yield %>
@@ -50,7 +50,7 @@
     <% if current_user.authenticated? %>
       <input id="current_user_id" type="hidden" value="<%= current_user.id %>" />
     <% end %>
-    <%= render 'layouts/sidebars/sidebar' if @provider.present? %>
+    <%= render 'layouts/sidebars/sidebar' if @provider && policy(@provider).read? %>
     <%= render 'sign_in_first' unless @current_user.authenticated? %>
     <%= render 'layouts/img_modal' %>
     <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
