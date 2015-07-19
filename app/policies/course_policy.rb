@@ -64,7 +64,7 @@ class CoursePolicy < ApplicationPolicy
   def write?(anytime=false)
     anytime = true if @course.status == "Preview"
     @user.super? or
-     ((@user.provider_teachers.where(id: @course.teacher_id, can_make_classes: true).present? or 
+     ((@user.provider_teachers.where(provider_id: @course.provider_id, can_make_classes: true).present? or 
       @user.provider_admins.where(provider_id: @course.provider_id).present?) and 
       (anytime ? true : (@course.end_at || @course.start_at) > DateTime.current))
   end
