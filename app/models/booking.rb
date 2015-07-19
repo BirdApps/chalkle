@@ -105,7 +105,7 @@ class Booking < ActiveRecord::Base
       booking_chalkler = Chalkler.exists email_address
       if booking_chalkler.present?
         self.chalkler = booking_chalkler
-        self.name = booking_chalkler.name
+        self.name = booking_chalkler.name unless self.name.present?
       else
         self.pseudo_chalkler_email = email_address
       end
