@@ -420,11 +420,7 @@ class Booking < ActiveRecord::Base
 
   def self.csv_for(bookings, opts = {})
     
-    if opts[:as] == :super
-      headings = %w{ id first_name last_name email paid note_to_teacher }
-    else
-      headings = %w{ id name paid note_to_teacher }
-    end
+    headings = %w{ id first_name last_name email paid note_to_teacher }
     
     basic_attr = headings.map &:to_s
     
