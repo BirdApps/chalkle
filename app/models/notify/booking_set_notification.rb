@@ -63,10 +63,21 @@ class Notify::BookingSetNotification < Notify::Notifier
       end
     end
     
+    # to provider_teachers
+    teacher_bookings.each do |teacher, bookings|
+      message = I18n.t('notify.booking_set.confirmation.to_teacher', 
+        course_names: bookings.map(&:course).map(&:name).uniq.join(", "), 
+        from_names: bookings.map(&:booker).map(&:name).uniq.join(", ")
+      )
+      
+      teacher.send_notification(Notification::REMINDER, provider_course_path(bookings.first.course.path_params), message, @booking_set.course)
 
+      BookingSetMailer.delay.booking_confirmation_to_teacher(bookings) if teacher.email_about? :booking_confirmation_to_teacher
+
+    end
 
   
-      #to provider admins. There can be many providers, nad many admins per provider. 
+    #to provider_admins. There can be many providers, and many admins per provider. 
     provider_bookings.each do |provider, bookings|
       message = I18n.t('notify.booking_set.confirmation.to_provider_admin', 
         course_names: bookings.map(&:course).map(&:name).uniq.join(", "), 
