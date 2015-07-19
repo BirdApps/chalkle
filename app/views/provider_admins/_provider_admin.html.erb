@@ -5,10 +5,10 @@
   </div> 
 
   <div class="chalkler_name">
-   <% if provider_admin.chalkler %>
+   <% if policy(provider_admin).edit? %>
       <%= link_to provider_admin.name, edit_provider_admin_path(provider_admin.path_params) %>
     <% else %>
-      <%= provider_admin.email %> <span class="small light">(user has not signed up)</span>
+      <%= link_to provider_admin.name, provider_admin_path(provider_admin.path_params) %>
     <% end %>
   </div>
 

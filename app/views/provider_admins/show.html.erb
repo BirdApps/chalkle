@@ -1,0 +1,7 @@
+<div class="new_form_wrapper col-xs-12 col-sm-8 col-sm-offset-2">
+  <%= bootstrap_form_for(@provider_admin, wrapper: :simple_bootstrap3, html: { method:  :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+    <%= render partial: 'fancy_header', locals: { fancy_title: "Provider Admin Details" } %>
+    <%= f.input :name, label: "Name", input_html: { readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
+    <%= f.input :email, as: :email, label: "Admin's Email", input_html: { readonly: 'readonly', disabled: 'disabled' }, wrapper: :horizontal %>
+  <% end  %>
+</div>

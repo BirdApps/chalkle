@@ -1,5 +1,5 @@
 class ProviderAdminsController < ApplicationController
-  before_filter :load_admin, only: [:edit, :update]
+  before_filter :load_admin, only: [:edit, :update, :show]
   before_filter :header_provider
 
   def index
@@ -15,6 +15,10 @@ class ProviderAdminsController < ApplicationController
       @provider_admin = ProviderAdmin.new provider: @provider
       authorize @provider_admin
       @page_title = "Admin"
+  end
+
+  def show
+    authorize @provider_admin
   end
 
   def create

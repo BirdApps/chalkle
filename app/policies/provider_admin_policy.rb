@@ -12,6 +12,10 @@ class ProviderAdminPolicy < ApplicationPolicy
   def new?
     create?
   end
+  
+  def show?
+    @provider_admin.provider.teaching_chalklers.include?(@user.chalkler) || admin?
+  end
 
   def edit?
     update?
