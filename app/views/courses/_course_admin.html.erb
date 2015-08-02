@@ -25,13 +25,13 @@
       </div>
       <div class="col-xs-6 text-right">
         <% change_status = if @course.publishable? 
-          { text: "Publish", path: change_status_provider_course_path(@course.path_params.merge(status: 'Published')) }
+          { text: "Publish", path: change_status_provider_course_path(@course.path_params.merge(status: 'Published')),  method: :post }
         elsif @course.unpublishable?
-          { text: "Unpublish", path: change_status_provider_course_path(@course.path_params.merge(status: 'Preview')) }
+          { text: "Unpublish", path: change_status_provider_course_path(@course.path_params.merge(status: 'Preview')), method: :post }
         elsif @course.cancellable?
-          { text: "Cancel Class", path: cancel_provider_course_path(@course.path_params) }
+          { text: "Cancel Class", path: cancel_provider_course_path(@course.path_params), method: :get }
         end %>
-        <%= link_to change_status[:text], change_status[:path], class: 'btn btn-grey btn-small btn-stub' if change_status %>
+        <%= link_to change_status[:text], change_status[:path], method: change_status[:method], class: 'btn btn-grey btn-small btn-stub' if change_status %>
       </div>
     </div>
 
