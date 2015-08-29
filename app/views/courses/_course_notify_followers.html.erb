@@ -1,0 +1,14 @@
+<% if @course.published? && @course.provider.followers.present? %>
+  <div class="alert alert-default margin-bottom-20">
+                
+      <h3 class="no-margin-top"><span class="fa fa-envelope text text-info"></span> Tell your followers about your class</h3>
+      <p> 
+        Chalkle can send <em><%= @course.provider.name %></em> followers an email about this class. <small><br /><strong>Note: </strong>You can do this whenever as you like, however no follower will be emailed more than once about the same class.</small>
+      </p>
+      <br />
+      <div class="text-right">
+        <%= link_to "Send to followers", notify_provider_course_path(@course), method: :post, class: 'btn btn-default' %>
+      </div>
+  </div>
+
+<% end %>
