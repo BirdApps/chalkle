@@ -177,7 +177,14 @@ class CoursesController < ApplicationController
   end
 
   def destroy
+  end
 
+  def notify_followers
+    course = Course.find_by_id params[:course_id]
+    authorize course
+    notifications = course.notify_followers
+    add_flash :success, "Your followers will be emailed about your class within 24 hours."
+    redirect_to course.path
   end
   
   def change_status
@@ -198,8 +205,8 @@ class CoursesController < ApplicationController
     when 'Preview'
       course.status = params[:status]
     end
-    flash_errors @course.errors if !course.save
-    redirect_to provider_course_path(course)
+    flash_errors course.errors unless course.save
+    redirect_to course.path
   end
 
   def bookings

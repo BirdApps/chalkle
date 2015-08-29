@@ -34,6 +34,9 @@ class CoursePolicy < ApplicationPolicy
     new?
   end
 
+  def notify_followers?
+    read?
+  end
 
   def edit?
     @course.editable? && write?

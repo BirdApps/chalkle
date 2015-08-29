@@ -2,15 +2,16 @@
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-xl-6 col-xl-offset-3">
       <div class="row flush-xs">
-        <%= render 'course_admin' %>
-      </div>
-      <div class="row flush-xs">
         
+        <% if policy(@course).notify_followers? %>
+          <%= render 'course_notify_followers' %>
+        <% end %>
+
         <% unless @course.published? %>
           <% if @course.has_public_status? || policy(@course).change_status?  %>
             <div class="alert alert-default  margin-bottom-20">
               
-                <h3 class="no-margin"><%= @course.status %></h3>
+                <h3 class="no-margin-top"> <span class="fa fa-exclamation-triangle text text-danger"></span> <%= @course.status %></h3>
                 <p> 
                   <% if @course.publishable? %>
                     Only admins and teachers of <%= @provider.name %> can see this page. When you are ready to accept bookings, <%= link_to "publish the class", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post %>.
@@ -35,6 +36,8 @@
           <% end %>
         <% end %>
         
+
+        <%= render 'course_admin' %>
 
         <div class="row">
           <div class="col-sm-7 col-xs-12 text-right pull-right">

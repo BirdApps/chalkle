@@ -193,6 +193,12 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def notify_followers
+    provider.followers.map do |chalkler|
+      ChalklerCourseNotification.create chalkler: chalkler, course: self
+    end
+  end
+
   def followers
     chalklers.uniq
   end
