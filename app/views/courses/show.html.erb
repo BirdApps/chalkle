@@ -6,7 +6,7 @@
       </div>
       <div class="row flush-xs">
         
-        <% if !@course.published? %>
+        <% unless @course.published? %>
           <% if @course.has_public_status? || policy(@course).change_status?  %>
             <div class="alert alert-default  margin-bottom-20">
               

@@ -181,7 +181,9 @@ class CoursesController < ApplicationController
   
   def change_status
     course = Course.find_by_id params[:course_id]
-    return not_found if !course
+    
+    return not_found unless course
+    
     authorize course
     case params[:status]
     when 'Published'
