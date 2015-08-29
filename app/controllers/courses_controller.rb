@@ -98,7 +98,8 @@ class CoursesController < ApplicationController
   end
 
   def show
-    redirect_to @course.path and return unless request.path == @course.path
+    course_path = provider_course_path(provider_url_name: @course.provider.url_name, course_url_name: @course.url_name, course_id: @course.id, new_status: params[:new_status])
+    redirect_to course_path and return unless request.path == @course.path
     respond_to do |format|
       format.html
       format.json { render json: { 
