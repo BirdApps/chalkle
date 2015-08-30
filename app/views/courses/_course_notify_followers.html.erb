@@ -1,18 +1,24 @@
-<%  %>
 <% if @course.published? && @course.provider.followers.present? %>
+  
   <div class="alert alert-default margin-bottom-20">
-      <% if @course.unnotified_followers.count > 0 %>
-        <h3 class="no-margin-top"><span class="fa fa-envelope text text-info"></span> Tell <%= @course.unnotified_followers.count %> followers about your class</h3>
-        <p> 
-          Chalkle can send <em><%= @course.provider.name %></em> followers an email about this class.
-        </p>
-        <br />
-        <div class="text-right">
-          <%= link_to "Send to followers", notify_provider_course_path(@course), method: :post, class: 'btn btn-default' %>
-        </div>
-      <% else %>
-        <h4 class="no-margin"><span class="fa fa-envelope text text-info"></span> You've emailed all <em><%= @course.provider.name %></em> followers about this class</h4>
-      <% end %>
+    
+    <% if @course.unnotified_followers.count > 0 %>
+      
+      <h3 class="no-margin-top"><span class="fa fa-envelope text text-info"></span> Tell <%= @course.unnotified_followers.count %> followers about your class</h3>
+      <p> 
+        Chalkle can send <em><%= @course.provider.name %></em> followers an email about this class.
+      </p>
+      <br />
+      <div class="text-right">
+        <%= link_to "Send to followers", notify_provider_course_path(@course), method: :post, class: 'btn btn-default' %>
+      </div>
+    
+    <% else %>
+
+      <h4 class="no-margin"><span class="fa fa-envelope text text-info"></span> You've emailed all <em><%= @course.provider.name %></em> followers about this class</h4>
+    
+    <% end %>
+
   </div>
 
 <% end %>
