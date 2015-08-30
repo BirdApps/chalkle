@@ -1,8 +1,9 @@
-class ClassDigest
+class CourseDigest::CourseDigest
   require 'engtagger'
-  def initilize(chalkler)
+
+  def initialize(chalkler)
     @chalkler = chalkler
-    @courses = recommended_courses
+    @courses = @chalkler.course_notifications.unsent.collect(&:course)
   end
 
   def tagger
@@ -17,16 +18,17 @@ class ClassDigest
     @courses_this_week ||= (chalkler.following_courses_in_next_week || [])
   end
 
-  def recommended_courses
-    @recommended_courses ||= (chalkler.recommended_courses - @courses_this_week || [])
-  end
-
   def courses
-    (courses_this_week.concat recommended_courses).uniq
+    #(courses_this_week.concat from_providers).uniq
+    @courses
   end
 
   def title
-    @title ||= generate_title
+    @title ||= I18n.t("email.digest.subject") #generate_title
+  end
+
+  def sent!
+    @chalkler.course_notifications.update_all(sent_at: DateTime.current)
   end
 
   private

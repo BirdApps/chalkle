@@ -1,0 +1,8 @@
+<% @digest.courses.each do |course| %>
+  <%= link_to course.name, provider_course_path(course.path_params) %>, 
+  Provided by: <%= link_to course.provider.name, provider_path(course.provider.url_name) %>,
+  Date: <%= day_ordinal_month(course.start_at, true, false, true, true) if course.start_at %>
+  Cost: <%= course.cost_formatted true %>
+
+  
+<% end %>

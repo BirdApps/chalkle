@@ -28,6 +28,10 @@ every :day, :at => '02:30pm' do
   rake "mailer:booking_completed"
 end
 
+every :day, :at => '05:30pm' do
+  rake "mailer:course_digest"
+end
+
 every :hour do
   path = "/apps/chalkle/db_backups/hourly/"
   filename = "chalk_prod_#{DateTime.now.strftime("%Y%m%d%H%M")}.sql"

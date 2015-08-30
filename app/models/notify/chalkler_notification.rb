@@ -13,6 +13,10 @@ class Notify::ChalklerNotification < Notify::Notifier
     ChalklerMailer.delay.welcome(chalkler) 
   end
 
+  def course_digest
+    DigestMailer.delay.course_digest(chalkler)
+  end
+
 
   private
     def chalkler

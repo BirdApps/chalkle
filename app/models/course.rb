@@ -32,6 +32,7 @@ class Course < ActiveRecord::Base
   has_many  :chalklers,     through: :bookings
   has_many  :payments,      through: :bookings
   has_many  :notices,       class_name: 'CourseNotice'
+  has_many  :course_notifications, class_name: 'CourseDigest::ChalklerCourseNotification'
   
   mount_uploader :course_upload_image, CourseUploadImageUploader
 
@@ -195,7 +196,7 @@ class Course < ActiveRecord::Base
 
   def notify_followers
     provider.followers.map do |chalkler|
-      ChalklerCourseNotification.create chalkler: chalkler, course: self
+      CourseDigest::ChalklerCourseNotification.create chalkler: chalkler, course: self
     end
   end
 
@@ -349,6 +350,15 @@ class Course < ActiveRecord::Base
   #placeholder for when we go international
   def country_code
     :nz
+  end
+
+  def unnotified_followers
+    already_notified = course_notifications.map(&:chalkler_id)
+    @unnotified_followers ||= if already_notified.present?
+      provider.followers.where("chalklers.id NOT IN (?)", already_notified )
+    else
+      provider.followers
+    end
   end
 
 

@@ -222,6 +222,27 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
   font-weight: bold;
 }
 
+/* --- Course Digest --- */
+
+.course {
+  margin-bottom: 20px;
+}
+.course_img {
+  width: 100%;
+  max-width: 500px;
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+  background-color: #ededed;
+}
+.course_title {
+  font-weight: bold;
+  margin: 5px 0;
+}
+.course_provider {
+  font-size: 0.8em;
+}
+
 /* ------------------------------------------- 
     PHONE
     For clients that support media queries.
