@@ -192,7 +192,7 @@
 
       <% if current_user.providers.count > 0  %>
         <div class="teacher_pay_type_wrapper">
-          <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee calculated</strong>?", input_html: { :'data-error-message' => "Please specify how the teacher fee is calculated", :'data-validate-complex' => :true }, wrapper: :horizontal %>
+          <%= f.input :teacher_pay_type, collection: Course.teacher_pay_types , include_blank: true, required: true, :label => "How does the <strong>teacher fee get calculated</strong>?", input_html: { :'data-error-message' => "Please specify how the teacher fee is calculated", :'data-validate-complex' => :true }, wrapper: :horizontal %>
           <div class="col-sm-4"></div>
           <div class="col-sm-7">
             <p class="small grey">We can pay the teacher out of a portion of the class fee, or the provider can pay for them outside of Chalkle</p>
