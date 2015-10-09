@@ -1,8 +1,11 @@
 en-NZ:
   email:
     digest:
-      subject: "New classes from providers you're following"
+      subject: "Join more classes from your favourite teachers!"
       body:
         introduction: |
-          There are new classes from providers you are following.
-        unfollow: Unfollow a provider if you do not want them to send you updates about new classes again. 
+          Your favourite teachers have some great classes coming up on Chalkle.
+        outro: |
+          **Want to request a class?** Head over to Chalkle and you can request a class directly from a providers page.
+        unfollow: |
+          **Don't want these updates?** Head to over to Chalkle and simply unfollow the providers you don't want to hear updates from anymore.
