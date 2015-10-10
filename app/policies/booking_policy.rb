@@ -26,7 +26,11 @@ class BookingPolicy < ApplicationPolicy
     admin?
   end
 
-  def take_rights
+  def resend_receipt?
+    admin? || (user == booking.booker)
+  end
+
+  def take_rights?
     @user == @booking.booker
   end
 
