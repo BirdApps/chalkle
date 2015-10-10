@@ -98,7 +98,8 @@ class CoursesController < ApplicationController
   end
 
   def show
-    redirect_to @course.path and return unless request.path == @course.path
+    course_path = provider_course_path(provider_url_name: @course.provider.url_name, course_url_name: @course.url_name, course_id: @course.id, new_status: params[:new_status])
+    redirect_to course_path and return unless request.path == @course.path
     respond_to do |format|
       format.html
       format.json { render json: { 
@@ -176,12 +177,21 @@ class CoursesController < ApplicationController
   end
 
   def destroy
+  end
 
+  def notify_followers
+    course = Course.find_by_id params[:course_id]
+    authorize course
+    notifications = course.notify_followers
+    add_flash :success, "Your followers will be emailed about your class within 24 hours."
+    redirect_to course.path
   end
   
   def change_status
     course = Course.find_by_id params[:course_id]
-    return not_found if !course
+    
+    return not_found unless course
+    
     authorize course
     case params[:status]
     when 'Published'
@@ -195,8 +205,8 @@ class CoursesController < ApplicationController
     when 'Preview'
       course.status = params[:status]
     end
-    flash_errors @course.errors if !course.save
-    redirect_to provider_course_path(course)
+    flash_errors course.errors unless course.save
+    redirect_to course.path
   end
 
   def bookings

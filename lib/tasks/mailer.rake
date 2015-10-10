@@ -23,5 +23,15 @@ begin
       end
     end
 
+
+    desc "Send DigestMailer#course_digest"
+    task "course_digest", [:frequency] => :environment do
+      EventLog.log("course_digests") do
+        chalklers = Chalkler.course_digest
+        chalklers.each do |chalkler|
+          Notify.for(chalkler).course_digest
+        end
+      end
+    end
   end
 end

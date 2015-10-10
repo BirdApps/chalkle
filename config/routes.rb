@@ -165,10 +165,11 @@ Chalkle::Application.routes.draw do
     resource :course, except: [:new, :create], path: ':course_url_name/:course_id' do
       member do 
         get 'ical'
-        get 'cancel',         to: 'courses#cancel'
-        put 'cancel',         to: 'courses#confirm_cancel'
-        post 'clone',          to: 'courses#clone'
-        post 'change_status',  to: 'courses#change_status'
+        get 'cancel',           to: 'courses#cancel'
+        put 'cancel',           to: 'courses#confirm_cancel'
+        post 'clone',           to: 'courses#clone'
+        post 'change_status',   to: 'courses#change_status'
+        post 'notify',          to: 'courses#notify_followers'
       end
       resources :course_notices, as: :notices, path: 'discussions'
 

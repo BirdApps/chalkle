@@ -1,0 +1,8 @@
+en-NZ:
+  email:
+    digest:
+      subject: "New classes from providers you're following"
+      body:
+        introduction: |
+          There are new classes from providers you are following.
+        unfollow: Unfollow a provider if you do not want them to send you updates about new classes again. 

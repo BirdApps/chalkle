@@ -21,6 +21,7 @@ class Chalkler < ActiveRecord::Base
 
   validate :passwords_match, on: :create
 
+  has_many :course_notifications, class_name: 'CourseDigest::ChalklerCourseNotification'
   has_many :subscriptions
   has_many :provider_teachers
   has_many :bookings
@@ -64,6 +65,7 @@ class Chalkler < ActiveRecord::Base
   scope :taught, includes(:provider_teachers).where("provider_teachers.id IS NOT NULL" )
   scope :provided, includes(:provider_admins).where("provider_admins.id IS NOT NULL" )
 
+  scope :course_digest, -> { joins(:course_notifications).where('chalkler_course_notifications.sent_at IS NULL').uniq }
 
   EMAIL_FREQUENCY_OPTIONS = %w(never daily weekly)
 
