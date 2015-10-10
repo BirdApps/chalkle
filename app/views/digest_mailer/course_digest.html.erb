@@ -2,14 +2,14 @@
 
 <% @courses.each do |course| %>
   <div class="course">
-    <%= link_to provider_course_path(course.path_params) do  %>
+    <%= link_to provider_course_url(course.path_params) do  %>
       <div class="course_img" style="background-image: url(<%= course.course_upload_image || course.provider.logo %>)"></div>
     <% end %>
     <div class="course_title">
-      <%= link_to course.name, provider_course_path(course.path_params) %>
+      <%= link_to course.name, provider_course_url(course.path_params) %>
     </div>
     <div class="course_provider">
-      Provided by <%= link_to course.provider.name, provider_path(course.provider.url_name) %>
+      Provided by <%= link_to course.provider.name, provider_url(course.provider.url_name) %>
       <br /><%= day_ordinal_month(course.start_at, true, false, true, true) if course.start_at %>, <strong><%= course.cost_formatted true %></strong>
     </div>
   </div>
