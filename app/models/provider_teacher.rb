@@ -83,7 +83,9 @@ class ProviderTeacher < ActiveRecord::Base
       if chalkler.present?
         chalkler.send(method, *args, &block)
       else
-        super
+        unless Chalkler.new.respond_to? 'send_notification' 
+          super
+        end
       end
     end  
 
