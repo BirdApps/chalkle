@@ -67,7 +67,9 @@
         </div>
         <div class="col-xs-7 col-sm-6 text-right">
           <%= link_to "Profile", chalkler_path(booking.chalkler), class: 'btn btn-small btn-stub btn-grey' %>
-          <%= link_to "Resend Receipt", resend_receipt_provider_course_booking_path(booking.path_params), method: :post, class: 'btn btn-small btn-stub btn-grey' %> 
+          <% if booking.payment.present? %>
+            <%= link_to "Resend Receipt", resend_receipt_provider_course_booking_path(booking.path_params), method: :post, class: 'btn btn-small btn-stub btn-grey' %> 
+          <% end %>
           <%= link_to 'Remove', cancel_provider_course_booking_path(booking.path_params), class: 'btn btn-small btn-stub btn-grey' if policy(booking).cancel? && booking.course.cancellable?  %>
         </div>
       </div>
