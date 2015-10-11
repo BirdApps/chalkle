@@ -170,7 +170,7 @@ class BookingsController < ApplicationController
   def resend_receipt
     authorize @booking
     if @booking.payment.present?
-      PaymentMailer.receipt_to_chalkler(@booking.payment, true)
+      PaymentMailer.delay.receipt_to_chalkler(@booking.payment, true)
       add_flash :success, "Receipt has been sent to the #{@booking.payment.chalkler.email}"
     else
       add_flash :error, "No payment was made for that booking"

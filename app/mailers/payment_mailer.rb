@@ -1,11 +1,11 @@
 # encoding: UTF-8
-class PaymentMailer < BaseChalkleMailer
+class PaymentMailer < ActionMailer::Base
 
   default from: '"chalkle°" <learn@chalkle.com>' 
 
   def receipt_to_chalkler(payment, resend=false)
     @payment = payment
-    @chalkler = payment.booking.booker
+    @chalkler = payment.chalkler
     @course = payment.course
     @provider = payment.provider
     @no_hello = true
