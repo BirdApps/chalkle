@@ -3,7 +3,7 @@ class BookingsController < ApplicationController
   before_filter :authenticate_chalkler!, except: [:lpn]
   before_filter :redirect_on_paid, :only => [:edit, :update]
   before_filter :class_available, :only => [:edit, :update, :new]
-  before_filter :load_booking, :only => [:show, :cancel, :confirm_cancel, :take_rights]
+  before_filter :load_booking, :only => [:show, :cancel, :confirm_cancel, :take_rights, :resend_receipt]
   before_filter :load_booking_set, only: [:payment_callback, :lpn, :declined]
   before_filter :header_provider, except:  [:payment_callback, :lpn]
 
@@ -164,6 +164,17 @@ class BookingsController < ApplicationController
     @booking.chalkler = current_chalkler
     @booking.save
     #TODO: email old owner telling them what happened to their booking
+    redirect_to @booking.course.path
+  end
+
+  def resend_receipt
+    authorize @booking
+    if @booking.payment.present?
+      PaymentMailer.receipt_to_chalkler(@booking.payment, true)
+      add_flash :success, "Receipt has been sent to the #{@booking.payment.chalkler.email}"
+    else
+      add_flash :error, "No payment was made for that booking"
+    end
     redirect_to @booking.course.path
   end
 

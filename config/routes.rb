@@ -180,6 +180,7 @@ Chalkle::Application.routes.draw do
         end
         member do
           get 'take_rights'
+          post 'resend_receipt'
           get 'cancel'
           put 'cancel', to: 'bookings#confirm_cancel', as: :cancel
         end
