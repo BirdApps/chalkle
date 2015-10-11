@@ -5,7 +5,7 @@ class PaymentMailer < BaseChalkleMailer
 
   def receipt_to_chalkler(payment, resend=false)
     @payment = payment
-    @chalkler = payment.chalkler
+    @chalkler = payment.booking.booker
     @course = payment.course
     @provider = payment.provider
     @no_hello = true
