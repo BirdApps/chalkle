@@ -208,10 +208,11 @@ class Booking < ActiveRecord::Base
         if fee_per_attendee?
           self.teacher_fee = course.teacher_cost
         elsif flat_fee?
-          if course.bookings.confirmed.count > 0
-            self.teacher_fee = course.teacher_cost / course.bookings.fees_not_waived.paid.confirmed.count
+          confirmed_booking_count = course.bookings.fees_not_waived.paid.confirmed.count
+          if confirmed_booking_count > 0
+            self.teacher_fee = course.teacher_cost / confirmed_booking_count
           else
-            self.teacher_fee = course.teacher_cost 
+            self.teacher_fee = course.teacher_cost
           end
         end
       end
