@@ -1,7 +1,5 @@
-<div class="hidden-xs col-sm-2">
-</div>
-<div class="new_form_wrapper col-xs-12 col-sm-8">
-  <%= bootstrap_form_for(@provider_teacher, wrapper: :simple_bootstrap3, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+<div class="new_form_wrapper col-xs-12 col-sm-8 col-sm-offset-2">
+  <%= bootstrap_form_for(@provider_teacher, wrapper: :simple_bootstrap3, html: { method: :post, class: 'form-horizontal', role: 'form' }) do |f| %>
 
     <%= render partial: 'fancy_header', locals: { fancy_title: "Add Teacher" } %>
 
@@ -55,5 +53,34 @@
     </div>
   <% end  %>
 </div>
-<div class="hidden-xs col-sm-2">
+
+
+
+<div class="col-xs-12 col-sm-8 col-sm-offset-2">
+
+
+  <%= render partial: 'fancy_header', locals: { fancy_title: "or" } %>
+  <div class="alert alert-default margin-bottom-20">
+    <p>
+      <strong>Upload from CSV</strong>
+      <br />
+      <%= bootstrap_form_for(:provider_teacher, wrapper: :simple_bootstrap3, url: csv_provider_teachers_path, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+        <input type="file" name="provider_teacher_csv" required="required" />
+        <div class="text-right">
+          <input type="submit" value="Upload CSV" class="btn btn-small btn-default" />
+        </div>
+      <% end %>
+      <br />
+    </p>
+    <p class="small strong">CSV layout should be | name | email |</p>
+    <p class="small strong"> Example:</p>
+    <table border="1" style="width: 100%; text-align: center">
+      <tr>
+        <td>Jane Smith</td><td>jane.smith@email.com</td>
+      </tr>
+      <tr>
+        <td>Joe Bloggs</td><td>joe.bloggs@email.com</td>
+      </tr>
+    </table>
+  </div>
 </div>

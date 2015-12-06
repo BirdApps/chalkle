@@ -74,6 +74,59 @@ class ProviderTeachersController < ApplicationController
       end
   end
 
+  def new_from_csv
+    redirect_to :new_provider_teacher, flash: { error: "CSV upload failed, no file attached" } and return unless params[:provider_teacher_csv]
+    @provider_teachers = []
+    csv =  CSV.read params[:provider_teacher_csv].path
+
+    csv.each do |row|
+      name = row[0]
+      email = row[1]
+      chalkler = Chalkler.find_by_email email
+
+      @provider_teachers << if chalkler
+        ProviderTeacher.new chalkler: chalkler, name: name
+      else
+        ProviderTeacher.new pseudo_chalkler_email: email, name: name 
+      end
+    end
+  end
+
+  def bulk_create
+    errors = []
+    warnings = []
+    @provider_teachers = []
+    params[:provider_teachers].each do |teacher|
+
+      chalkler = Chalkler.find_by_email teacher[:email]
+
+      existing_teacher = chalkler ? @provider.provider_teachers.find_by_chalkler_id(chalkler.id) : @provider.provider_teachers.find_by_pseudo_chalkler_email(teacher[:email])
+
+      unless existing_teacher
+
+         new_teacher = if chalkler 
+          ProviderTeacher.create chalkler: chalkler, name: teacher[:name], provider: @provider,can_make_classes: teacher[:can_make_classes]
+        else
+          ProviderTeacher.create pseudo_chalkler_email: teacher[:email], name: teacher[:name], provider: @provider, can_make_classes: teacher[:can_make_classes]
+        end
+        
+        unless new_teacher.persisted?
+          errors << "Problem occured creating teacher with email #{teacher[:email]}" 
+        else
+          @provider_teachers << new_teacher
+        end
+      else
+        warnings << "Teacher with email #{teacher[:email]} already exists" unless new_teacher
+      end
+    
+    end
+
+    render 'new_from_csv', flash: { errors: errors } and return if errors.present?
+
+    redirect_to provider_teachers_path, flash: { success: "#{@provider_teachers.count} teachers created", errors: warnings }
+
+  end
+
   private
     def load_teacher
       @provider_teacher = ProviderTeacher.find params[:id]

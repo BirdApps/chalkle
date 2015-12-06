@@ -1,0 +1,64 @@
+<div class="col-xs-12 col-sm-10 col-sm-offset-2">
+  <%= bootstrap_form_for(:provider_teachers, url: bulk_create_provider_teachers_path, wrapper: :simple_bootstrap3, html: { method: :post, class: 'form-horizontal', role: 'form' }) do |f| %>
+    
+    <div class="row">
+      <div class="alert alert-default">
+        <strong>Please review each teacher to be created.</strong><br />
+        <p>  
+          <span class="fa fa-check larger margin-top-5" style="color:green"></span>
+          If an email belongs to a current user they will receive a notification advising them of the action and granting them have access to their teacher profile.</p>
+
+        <p> 
+          <span class="larger margin-top-5" style="color:red"> – </span>
+
+          If an email does not belong to a current user, you can assign them as teacher of a class and they will receive emails about that class. If the person with that email signs up as a user at any future time they will have access to that teacher profile.
+        </p>
+      </div>
+    </div>
+
+    <div class="row small strong">
+      <div class="col-xs-2 text-center">
+       Current User?
+      </div>
+      <div class="col-xs-4">
+        Name
+      </div>
+      <div class="col-xs-4">
+        Email
+      </div>
+      <div class="col-xs-2">
+        Set Permissions
+      </div>
+    </div>
+    
+
+    <% @provider_teachers.each do |teacher| %>
+      <div class="row margin-top-5">
+        <div class="col-xs-2 text-center">
+          <% if teacher.chalkler? %>
+            <span class="fa fa-check larger margin-top-5" style="color:green"></span>
+          <% else %>
+            <span class="larger margin-top-5" style="color:red">–</span>
+          <% end %>
+        </div>
+        <div class="col-xs-4">
+          <input class="form-control" type="text" name="provider_teachers[][name]" value="<%= teacher.name %>" required="required" />
+        </div>
+        <div class="col-xs-4">
+          <input class="col-xs-6 form-control"  type="text" name="provider_teachers[][email]" value="<%= teacher.email %>" required="required" />
+        </div>
+
+        <div class="col-xs-2">
+          <select class="select required form-control" id="provider_teacher_can_make_classes" name="provider_teachers[][can_make_classes]" required="required">
+            <option value="true" selected="selected">Can Publish &amp; Manage Classes</option>
+            <option value="false">Cannot Publish or Manage Classes</option>
+          </select>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="text-right margin-top-20">
+      <input type="submit" value="Create Teachers" class="btn btn-default" />
+    </div>
+  <% end %>
+</div>

@@ -153,6 +153,10 @@ Chalkle::Application.routes.draw do
     resources :outgoing_payments, path: 'remittance', as: 'outgoings', only: [:index, :show]
 
     resources :provider_teachers, path: 'teachers', as: 'teachers' do
+      collection do
+        post :csv, to: 'provider_teachers#new_from_csv'
+        post :bulk_create
+      end
       member do 
         get 'fetch', to: 'courses#fetch'
       end

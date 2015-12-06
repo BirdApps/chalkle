@@ -24,6 +24,10 @@ class ProviderTeacher < ActiveRecord::Base
   scope :with_upcoming_class, joins(:courses).merge( Course.in_future.displayable )
   scope :paid, joins(:outgoing_payments).where("teacher_id = provider_teachers.id ").uniq
 
+  def chalkler?
+    chalkler.present?
+  end
+
   def email
     unless chalkler.nil?
       chalkler.email
