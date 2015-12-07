@@ -110,11 +110,14 @@ class ProviderTeachersController < ApplicationController
           ProviderTeacher.create pseudo_chalkler_email: teacher[:email], name: teacher[:name], provider: @provider, can_make_classes: teacher[:can_make_classes]
         end
         
+        @provider_teachers << new_teacher
+
         unless new_teacher.persisted?
           errors << "Problem occured creating teacher with email #{teacher[:email]}" 
         else
-          @provider_teachers << new_teacher
+          Notify.for(@provider_teacher).added_to_provider(current_user.chalkler)
         end
+        
       else
         warnings << "Teacher with email #{teacher[:email]} already exists" unless new_teacher
       end
