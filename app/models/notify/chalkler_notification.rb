@@ -17,7 +17,6 @@ class Notify::ChalklerNotification < Notify::Notifier
     DigestMailer.delay.course_digest(chalkler)
   end
 
-
   private
     def chalkler
       @chalkler

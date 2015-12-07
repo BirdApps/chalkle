@@ -1,0 +1,40 @@
+
+<div class="col-xs-12 col-sm-8 col-sm-offset-2">
+
+  <%= render partial: 'fancy_header', locals: { fancy_title: "Upload Followers" } %>
+  <p>
+        If you know the email address of a user, you may subscribe them to your class updates as a Follower of your provider.
+      </p>
+      <p>
+        If the email address does not belong to a current user, an invitation to create a user will be sent to that email address on your behalf. If they accept then they will become a follower and can receive class updates.
+      </p>
+      <p>
+        You are only allowed to upload email addresses whose owners have given you permission to contact.
+      </p>
+  <div class="alert alert-default margin-bottom-20">
+    <div>
+      <strong>Upload from CSV</strong>
+      <br />
+      <%= bootstrap_form_for(:provider_subscription, wrapper: :simple_bootstrap3, url: csv_provider_subscriptions_path, html: { method: :post, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+        <input type="file" name="followers_csv" required="required" />
+        <div class="text-right">
+          <input type="submit" value="Upload CSV" class="btn btn-small btn-default" />
+        </div>
+      <% end %>
+      <br />
+    </div>
+    <p class="small strong">CSV should include email per row, and no other columns</p>
+    <p class="small strong"> Example:</p>
+    <table border="1" style="width: 100%; text-align: center">
+      <tr>
+        <td>jane.smith@email.com</td>
+      </tr>
+      <tr>
+        <td>joe.bloggs@email.com</td>
+      </tr>
+      <tr>
+        <td>seeby.claire@email.com</td>
+      </tr>
+    </table>
+  </div>
+</div>

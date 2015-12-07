@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150802030308) do
+ActiveRecord::Schema.define(:version => 20151207001339) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -447,8 +447,9 @@ ActiveRecord::Schema.define(:version => 20150802030308) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "subscriptions", :force => true do |t|
-    t.integer "provider_id", :null => false
-    t.integer "chalkler_id", :null => false
+    t.integer "provider_id",           :null => false
+    t.integer "chalkler_id"
+    t.string  "pseudo_chalkler_email"
   end
 
   add_index "subscriptions", ["provider_id", "chalkler_id"], :name => "index_channel_chalklers_on_channel_id_and_chalkler_id", :unique => true

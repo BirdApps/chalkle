@@ -89,6 +89,7 @@ class Chalkler < ActiveRecord::Base
     ProviderTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     ProviderAdmin.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
     Booking.where(pseudo_chalkler_email: email, invite_chalkler: true).update_all(chalkler_id: id)
+    Subscription.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)
   end
 
   def attending?(course)

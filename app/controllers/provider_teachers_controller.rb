@@ -75,6 +75,8 @@ class ProviderTeachersController < ApplicationController
   end
 
   def new_from_csv
+    authorize @provider, :admin??
+
     redirect_to new_provider_teacher_path(@provider), flash: { error: "CSV upload failed, no file attached" } and return unless params[:provider_teacher_csv]
     @provider_teachers = []
     csv =  CSV.read params[:provider_teacher_csv].path
@@ -93,6 +95,9 @@ class ProviderTeachersController < ApplicationController
   end
 
   def bulk_create
+
+    authorize @provider, :admin??
+
     errors = []
     warnings = []
     @provider_teachers = []
@@ -119,7 +124,7 @@ class ProviderTeachersController < ApplicationController
         end
         
       else
-        warnings << "Teacher with email #{teacher[:email]} already exists" unless new_teacher
+        warnings << "Teacher with email #{teacher[:email]} already exists"
       end
     
     end

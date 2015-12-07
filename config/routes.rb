@@ -146,8 +146,12 @@ Chalkle::Application.routes.draw do
     put 'edit', to: 'providers#update'
     get 'bookings'
 
-    resources :subscriptions, only: [:index, :create, :destroy], path: 'followers'
-#    resources :bookings, only: [:index, :show]
+    resources :subscriptions, only: [:index, :create, :destroy, :new], path: 'followers' do
+      collection do
+        post :csv, to: 'subscriptions#new_from_csv'
+      end
+    end
+  
     resources :provider_admins, path: 'admins', as: 'admins'
 
     resources :outgoing_payments, path: 'remittance', as: 'outgoings', only: [:index, :show]

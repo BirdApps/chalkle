@@ -41,6 +41,12 @@ class ProviderPolicy < ApplicationPolicy
     admin?
   end
 
+  def subscribe_follower?
+    admin?
+  end
+
+
+
   def cancel?
     can_be = false
     can_be = true if @course.min_attendee > @course.bookings.confirmed.count

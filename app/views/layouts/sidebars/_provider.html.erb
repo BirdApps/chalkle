@@ -7,10 +7,17 @@
     <div class="col-xs-12">
       <%= link_to " <span class='badge'>#{provider.courses.advertisable.in_future.count}</span> #{"Published Class".pluralize(provider.courses.advertisable.in_future.count)}".html_safe, provider_path(provider), class: '' %>
     </div>
-    <div class="col-xs-12">
+
+    <div class="<%= policy(provider).admin? ? 'col-xs-7' : 'col-xs-12' %>">
       <%= link_to "<span class='badge'>#{provider.subscriptions.count}</span> #{"Follower".pluralize(provider.subscriptions.count)}".html_safe, provider_subscriptions_path(provider), class: '' %>
     </div>
-    <% unless policy(provider).admin? %>
+
+   
+    <% if policy(provider).admin? %>
+      <div class="col-xs-5">
+        <%= link_to "+ Followers", new_provider_subscription_path, class: 'btn btn-grey btn-small' %>
+      </div>
+
       <div class="col-xs-12">
         <%= link_to "<span class='badge'>#{provider.provider_teachers.visible.count}</span> #{"Teacher".pluralize(provider.provider_teachers.visible.count)}".html_safe, provider_teachers_path(provider), class: '' %>
       </div>
@@ -39,17 +46,17 @@
         </div>
       <% end %> 
 
-      <div class="col-xs-8">
+      <div class="col-xs-7">
         <%= link_to "<span class='badge'>#{provider.provider_teachers.visible.count}</span> #{"Teacher".pluralize(provider.provider_teachers.visible.count)}".html_safe, provider_teachers_path(provider), class: '' %>
       </div>
-      <div class="col-xs-4">
-        <%= link_to "+ Teacher", new_provider_teacher_path(provider), class: 'btn btn-grey btn-small' %>
+      <div class="col-xs-5">
+        <%= link_to "+ Teachers", new_provider_teacher_path(provider), class: 'btn btn-grey btn-small' %>
       </div>
-      <div class="col-xs-8">
+      <div class="col-xs-7">
         <%= link_to "<span class='badge'>#{provider.provider_admins.visible.count}</span> #{"Admin".pluralize(provider.provider_admins.visible.count)}".html_safe, provider_admins_path(provider), class: '' %>
       </div>
-      <div class="col-xs-4">
-        <%= link_to "+ Admin", new_provider_admin_path(provider), class: 'btn btn-grey btn-small' %>
+      <div class="col-xs-5">
+        <%= link_to "+ Admins", new_provider_admin_path(provider), class: 'btn btn-grey btn-small' %>
       </div>
 
       <div class="col-xs-12">
