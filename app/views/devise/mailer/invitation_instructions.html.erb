@@ -1,5 +1,3 @@
-<p>Hello <%= @resource.name %></p>
-
 <p><%= @resource.invited_by.name %> has invited you to <%= root_url %>, you can accept it through the link below.</p>
 
 <p><%= link_to 'Accept invitation', accept_invitation_url(@resource, :invitation_token => @resource.invitation_token) %></p>
