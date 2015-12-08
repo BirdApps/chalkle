@@ -9,7 +9,7 @@
     </div>
 
     <div class="<%= policy(provider).admin? ? 'col-xs-7' : 'col-xs-12' %>">
-      <%= link_to "<span class='badge'>#{provider.subscriptions.count}</span> #{"Follower".pluralize(provider.subscriptions.count)}".html_safe, provider_subscriptions_path(provider), class: '' %>
+      <%= link_to "<span class='badge'>#{provider.followers.count}</span> #{"Follower".pluralize(provider.subscriptions.count)}".html_safe, provider_subscriptions_path(provider), class: '' %>
     </div>
 
    
