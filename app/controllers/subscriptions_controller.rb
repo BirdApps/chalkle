@@ -48,7 +48,7 @@ class SubscriptionsController < ApplicationController
 
       unless existing_follower
 
-        new_follower = if chalkler
+        new_follower = if chalkler.present?
           Subscription.create chalkler: chalkler, provider: @provider
         else
           Subscription.create pseudo_chalkler_email: email, provider: @provider
@@ -57,7 +57,7 @@ class SubscriptionsController < ApplicationController
         unless new_follower.persisted?
           errors << "Problem occured creating follower with email #{email}" 
         else
-          #Notify.for(new_follower).subscribed_to(@provider)
+          #Notify.for(new_follower).subscribed_to(@provider, current_chalkler)
         end
 
         if new_follower.chalkler?

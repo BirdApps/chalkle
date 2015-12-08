@@ -84,7 +84,7 @@
         <tr>
           <td>
             <% unless @no_hello %>
-              <h2><%= t 'hello' %><%= @chalkler ? " "+@chalkler.first_name : "" %>,</h2>
+              <h2><%= t 'hello' %><%= @chalkler.present? ? " "+@chalkler.first_name : "" %>,</h2>
             <% end %>
             <p class="lead">
             </p>
