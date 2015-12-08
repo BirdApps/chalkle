@@ -40,7 +40,7 @@ class ProviderTeachersController < ApplicationController
   end
 
   def new
-      @provider_teacher =ProviderTeacher.new provider_id: @provider.id
+      @provider_teacher = ProviderTeacher.new provider_id: @provider.id
       authorize @provider_teacher 
       @page_title = "Teacher"
   end
