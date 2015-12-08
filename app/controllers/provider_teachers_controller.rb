@@ -75,7 +75,7 @@ class ProviderTeachersController < ApplicationController
   end
 
   def new_from_csv
-    authorize @provider, :admin??
+    authorize @provider, :admin?
 
     redirect_to new_provider_teacher_path(@provider), flash: { error: "CSV upload failed, no file attached" } and return unless params[:provider_teacher_csv]
     @provider_teachers = []
@@ -96,7 +96,7 @@ class ProviderTeachersController < ApplicationController
 
   def bulk_create
 
-    authorize @provider, :admin??
+    authorize @provider, :admin?
 
     errors = []
     warnings = []
