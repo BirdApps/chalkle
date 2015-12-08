@@ -9,7 +9,6 @@ class Notify::SubscriptionNotification < Notify::Notifier
     if subscription.chalkler?
       subscription.chalkler.send_notification Notification::FOLLOWING, provider_path(provider), "#{subscribed_by.name} added you as a follower of #{provider.name}", subscription
     else
-      @no_hello = true
       Chalkler.invite!( {email: subscription.pseudo_chalkler_email}, subscribed_by )
     end
   end

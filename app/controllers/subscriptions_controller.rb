@@ -41,7 +41,7 @@ class SubscriptionsController < ApplicationController
 
     csv.each do |row|
 
-      email = row[0].lstrip.chop
+      email = row[0].strip
       chalkler = Chalkler.find_by_email email
 
       existing_follower = chalkler ? @provider.subscriptions.find_by_chalkler_id(chalkler.id) : @provider.subscriptions.find_by_pseudo_chalkler_email(email)
@@ -57,7 +57,7 @@ class SubscriptionsController < ApplicationController
         unless new_follower.persisted?
           errors << "Problem occured creating follower with email #{email}" 
         else
-          Notify.for(new_follower).subscribed_to(@provider, current_chalkler)
+          #Notify.for(new_follower).subscribed_to(@provider, current_chalkler)
         end
 
         if new_follower.chalkler?
@@ -71,6 +71,7 @@ class SubscriptionsController < ApplicationController
       end
 
     end
+
 
     redirect_to provider_subscriptions_path, flash: { success: ["#{@followers.count} new followers", "#{@potential_followers.count} new pending followers" ], errors: warnings } and return
   end
