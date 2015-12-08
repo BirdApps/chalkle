@@ -82,8 +82,8 @@ class ProviderTeachersController < ApplicationController
     csv =  CSV.read params[:provider_teacher_csv].path
 
     csv.each do |row|
-      name = row[0]
-      email = row[1]
+      name = row[0].lstrip.chop
+      email = row[1].lstrip.chop
       chalkler = Chalkler.find_by_email email
 
       @provider_teachers << if chalkler

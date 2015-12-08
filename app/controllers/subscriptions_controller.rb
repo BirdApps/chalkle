@@ -41,7 +41,7 @@ class SubscriptionsController < ApplicationController
 
     csv.each do |row|
 
-      email = row[0]
+      email = row[0].lstrip.chop
       chalkler = Chalkler.find_by_email email
 
       existing_follower = chalkler ? @provider.subscriptions.find_by_chalkler_id(chalkler.id) : @provider.subscriptions.find_by_pseudo_chalkler_email(email)
