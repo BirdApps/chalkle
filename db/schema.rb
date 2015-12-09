@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151207001339) do
+ActiveRecord::Schema.define(:version => 20151208230631) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20151207001339) do
     t.string   "invited_by_type"
     t.string   "location"
     t.boolean  "sidebar_open",           :default => true,     :null => false
+    t.string   "deleted_email"
   end
 
   add_index "chalklers", ["invitation_token"], :name => "index_chalklers_on_invitation_token", :unique => true

@@ -1,6 +1,6 @@
 class ChalklersController < ApplicationController
-  before_filter :load_chalkler, only: [:show,:bookings,:preferences,:teaching]
-  before_filter :header_chalkler, only: [:show,:preferences,:bookings,:teaching]
+  before_filter :load_chalkler, only: [:show,:bookings,:preferences,:teaching,:delete,:destroy]
+  before_filter :header_chalkler, only: [:show,:preferences,:bookings,:teaching,:delete]
   before_filter :page_titles, only: [:show]
   
   def index
@@ -67,6 +67,20 @@ class ChalklersController < ApplicationController
     render json: {lng: lng, lat: lat, location: location};
   end
 
+  def delete
+    authorize @chalkler
+  end
+
+  def destroy
+    authorize @chalkler
+    @chalkler.obfuscate!
+    if @chalkler == current_chalkler
+      sign_out_and_redirect(current_chalkler)
+    else
+      redirect_to root_path, flash: { success: "Account has been deleted" }
+    end
+  end
+
   private
 
     def load_chalkler
@@ -75,8 +89,10 @@ class ChalklersController < ApplicationController
     end
 
     def page_titles
-      @page_title = @chalkler.name
-      @page_title_logo = @chalkler.avatar
+      if @chalkler.present?
+        @page_title = @chalkler.name
+        @page_title_logo = @chalkler.avatar
+      end
     end
 
 end

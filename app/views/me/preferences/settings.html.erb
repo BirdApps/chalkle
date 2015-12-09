@@ -1,2 +1,7 @@
 <% title "Email Preferences" %>
+<div class="row">
+  <div class="col-xs-12 text-right">
+    <%= link_to "Delete Account", delete_chalkler_path(current_chalkler), class: "btn btn-warning btn-small" %>
+  </div>
+</div>
 <%= render partial: 'me/preferences/chalkler_preferences' %>

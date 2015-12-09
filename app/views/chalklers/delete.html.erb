@@ -1,0 +1,15 @@
+<div class="new_form_wrapper col-xs-12 col-sm-8 col-sm-offset-2">
+
+  <h2>Delete Account</h2>
+  <p>
+    It is free to have a Chalkle account and it is fine to leave it unused on the off chance you may want it again to either attend a new class or just access data.
+  </p>
+  <p>
+    If you are receiving too many emails, you can opt out in <%= link_to "notification settings", me_notification_preference_path %>
+  </p>
+  <p>
+    If you delete your account all of your information will become inaccessible and you will no longer be able to log in without creating a new account.
+  </p>
+  <%= link_to "Opt out of emails", me_notification_preference_path, class: "btn btn-info" %> 
+  <%= link_to "Permanently Remove Account", chalkler_path, method: :delete, class: "btn btn-danger" %> 
+</div>

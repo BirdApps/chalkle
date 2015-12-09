@@ -84,6 +84,19 @@ class Chalkler < ActiveRecord::Base
     provider_admins.any?
   end
 
+  def obfuscate!
+    self.identities.delete_all
+    self.deleted_email = self.email
+    self.email = "#{SecureRandom.uuid}@emails.chalkle.com"
+    self.name = "Deleted User"
+    self.phone_number = nil
+    self.visible = false
+    self.address = nil
+    self.avatar = nil
+    self.location = nil
+    self.save
+  end
+
   def join_psuedo_identities!
     #TODO: make them method run on verify email, rather than on sign up
     ProviderTeacher.where(pseudo_chalkler_email: email).update_all(chalkler_id: id)

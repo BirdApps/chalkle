@@ -21,4 +21,12 @@ class ChalklerPolicy < ApplicationPolicy
     admin?
   end
 
+  def delete?
+    admin? || @chalkler.id == @user.id
+  end
+
+  def destroy?
+    admin? || @chalkler.id == @user.id
+  end
+
 end

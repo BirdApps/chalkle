@@ -51,11 +51,12 @@ Chalkle::Application.routes.draw do
 
   resources :provider_plans, path: 'plans'
 
-  resources :chalklers, path: 'people', only: [:index, :show] do
+  resources :chalklers, path: 'people', only: [:index, :show, :destroy] do
     member do
       get 'preferences'
       get 'bookings'
       get 'teaching'
+      get 'delete'
     end
 
     resources :notifications, only: [:index, :show]
