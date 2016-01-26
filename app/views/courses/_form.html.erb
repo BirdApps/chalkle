@@ -167,7 +167,7 @@
       <%= f.text_field :provider_id, type: :hidden, value: @provider.id %>
       <% if f.object.provider.provider_teachers.count > 1 %>
         <div class="teacher-select">
-          <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => f.object.provider.provider_teachers, wrapper: :horizontal %>
+          <%= f.input :teacher_id, :label => "<strong>Teacher</strong>", :collection => f.object.provider.provider_teachers.find(:all, :order => "LOWER(name)"), wrapper: :horizontal %>
         </div>
       <% end %>
 
