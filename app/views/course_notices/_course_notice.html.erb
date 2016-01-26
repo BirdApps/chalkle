@@ -44,7 +44,7 @@
   <% if policy(course_notice).update? %>
     <div class="edit-notice clearfix" style="display:none">
       <div class="new_form_wrapper">
-        <%= bootstrap_form_for(course_notice, wrapper: :simple_bootstrap3, url: edit_provider_course_notice_path(course_notice.path_params), html: { method: :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
+        <%= bootstrap_form_for(course_notice, wrapper: :simple_bootstrap3, url: provider_course_notice_path(course_notice.path_params), html: { method: :put, class: 'form-horizontal', role: 'form', enctype: "multipart/form-data" }) do |f| %>
           <%= f.text_area :body, class: 'discussion-box' %>
           <div class="margin-top">
             <%= image_tag(course_notice.photo, class: 'tiny-photo pull-left') if course_notice.photo.present? %>
