@@ -10,7 +10,10 @@
     <div class="_heading_title flush">
       <h2>
         <%= link_to @provider_teacher.name, provider_teacher_path(@provider_teacher.path_params) %>
-      </h2>      
+      </h2>     
+      <% if policy(@provider_teacher).edit? %>
+        <%= link_to "Edit", edit_provider_teacher_path(@provider_teacher.path_params), class: 'btn btn-danger pull-right btn-lg' %> 
+      <% end %>
     </div>
 
 
