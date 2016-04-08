@@ -76,7 +76,8 @@ Chalkle::Application.configure do
     :address => "smtp.mandrillapp.com",
     :port => 587,
     :domain => "chalkle.com",
-    :authentication => :plain,
+    :enable_starttls_auto => true,
+    :authentication => 'login',
     :user_name => "silvia@chalkle.com",
     :password => "QwfU_8o1hDmLc8eGo2xSmw"
   }
