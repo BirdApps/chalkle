@@ -671,13 +671,15 @@ class Course < ActiveRecord::Base
   def ics
     # Create a calendar with an event (standard method)
     cal = Icalendar::Calendar.new
-    cal.event do |e|
-      e.dtstart     = Icalendar::Values::Date.new(self.start_at.strftime('%Y%m%dT%H%M%S'))
-      e.dtend       = Icalendar::Values::Date.new(self.end_at.strftime('%Y%m%dT%H%M%S'))
-      e.summary     = self.name
-      e.description = self.do_during_class
-      e.location    = self.address
-      e.url         = "https://chalkle.com#{self.path}"
+    lessons.order(:start_at).each_with_index do |lesson,i|
+      cal.event do |e|
+        e.dtstart     = Icalendar::Values::Date.new(lesson.start_at.strftime('%Y%m%dT%H%M%S'))
+        e.dtend       = Icalendar::Values::Date.new(lesson.end_at.strftime('%Y%m%dT%H%M%S'))
+        e.summary     = "#{self.name} - part #{i+1}"
+        e.description = self.do_during_class
+        e.location    = self.address
+        e.url         = "https://chalkle.com#{self.path}"
+      end
     end
 
     cal.publish
