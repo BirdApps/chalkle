@@ -5,7 +5,7 @@
     
     note_to_attendees = "Details for attendees: \n\n"
 
-    @courses.map(&:note_to_attendees).compact.each do |note| 
+    @courses.map(&:note_to_attendees).compact.uniq.each do |note| 
       note_to_attendees.concat "#{note}\n\n"
     end
   else
