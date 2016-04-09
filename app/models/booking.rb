@@ -26,6 +26,7 @@ class Booking < ActiveRecord::Base
   belongs_to  :booker, class_name: "Chalkler", foreign_key: :booker_id
   belongs_to  :booking
   has_many    :bookings, as: :guests_bookings
+  has_many    :lessons, through: :course
   has_one     :provider, through: :course
   has_one     :teacher, through: :course
   
