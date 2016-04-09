@@ -14,11 +14,13 @@ class Roost
         headers: { 'Content-Type' => 'application/json' }, 
         basic_auth: keys
       )
-      result = JSON.parse(result.response.body)
-      if result['success']
-        Rails.logger.info "DESKTOP NOTIFICATION: Desktop notification sent to #{parameters[:aliases].to_s}"
-      else
-        raise ApiError.new(parameters, result) unless result['success']
+      if result.response.body.present?
+        result = JSON.parse(result.response.body)
+        if result['success']
+          Rails.logger.info "DESKTOP NOTIFICATION: Desktop notification sent to #{parameters[:aliases].to_s}"
+        else
+          raise ApiError.new(parameters, result) unless result['success']
+        end
       end
     rescue ApiError => e
       Airbrake.notify_or_ignore(e, parameters: e.params, error_class: e)
