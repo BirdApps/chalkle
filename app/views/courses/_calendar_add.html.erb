@@ -1,4 +1,49 @@
 <% if course.start_at %>
-  Add to <%= link_to "Google calendar", "//www.google.com/calendar/render?dates=#{course.start_at.strftime('%Y%m%dT%H%M%S')}/#{course.end_at.strftime('%Y%m%dT%H%M%S')}&action=TEMPLATE&text=#{course.name}&location=#{course.address}&details=#{calendar_details(course)}&sprop=#{tiny_course_url(course)}", target: '_blank', class: 'link-line' %> or 
-  <%= link_to "another calendar", ical_provider_course_path(course.path_params), target: '_blank', class: 'link-line', title: "Downloads .ics file",  :'data-toggle' => "tooltip", :'data-placement' => "bottom"  %>
+
+  <% ical_link = link_to "another calendar", ical_provider_course_path(course.path_params), target: '_blank', class: 'link-line', title: "Downloads .ics file",  :'data-toggle' => "tooltip", :'data-placement' => "bottom"  %>
+
+  <div class="hidden-xs">
+    
+    <% if @course.course? %>
+      <div class="modal fade" id="multipleClassDatesGoogleCalendarModal" tabindex="-1" role="dialog" aria-labelledby="multipleClassDatesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="multipleClassDatesModalLabel">Add the events you'll attend to Google Calendar</h4>
+            </div>
+            <div class="modal-body">
+              <% @course.classes.each_with_index do |lesson, lesson_i| %>
+                <div>
+                  Part <%= lesson_i+1 %>: 
+                  <% time_desc = "#{day_ordinal_month(lesson.start_at, true, true, true, false)}, #{pretty_time(lesson.start_at)} - #{pretty_time(lesson.end_at)}" %>
+                  <%= link_to time_desc, "//www.google.com/calendar/render?dates=#{lesson.start_at.strftime('%Y%m%dT%H%M%S')}/#{lesson.end_at.strftime('%Y%m%dT%H%M%S')}&action=TEMPLATE&text=#{course.name}&location=#{course.address}&details=#{calendar_details(course)}&sprop=#{tiny_course_url(course)}", target: '_blank', class: 'link-line' %>
+                </div>
+              <% end %>
+              <br />
+              or <%= link_to "download the .ics file", ical_provider_course_path(course.path_params), target: '_blank', class: 'link-line', title: "Downloads .ics file",  :'data-toggle' => "tooltip", :'data-placement' => "bottom"  %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      Add to
+      <a class="link-line" role="button" href="#" data-toggle="modal" data-target="#multipleClassDatesGoogleCalendarModal">
+        Google calendar
+      </a> 
+      or <%= ical_link %>
+
+    <% else %>
+
+      Add to 
+      <%= link_to "Google calendar", "//www.google.com/calendar/render?dates=#{course.start_at.strftime('%Y%m%dT%H%M%S')}/#{course.end_at.strftime('%Y%m%dT%H%M%S')}&action=TEMPLATE&text=#{course.name}&location=#{course.address}&details=#{calendar_details(course)}&sprop=#{tiny_course_url(course)}", target: '_blank', class: 'link-line' %> 
+      or <%= ical_link %>
+
+    <% end %>
+  </div>
+
+  <div class="visible-xs">
+    <%= link_to "Add to calendar", ical_provider_course_path(course.path_params), target: '_blank', class: 'link-line', title: "Downloads .ics file",  :'data-toggle' => "tooltip", :'data-placement' => "bottom"  %>
+  </div>
+
 <% end %>
