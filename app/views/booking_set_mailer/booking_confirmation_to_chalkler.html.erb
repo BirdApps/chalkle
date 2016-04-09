@@ -1,6 +1,6 @@
 <markdown>
   <%= 
-  
+    course = @courses.first
     paid_text = @courses.map(&:paid?).include?(true) ? t("email.booking.confirmation.to_chalkler.paid") : ""
     if @courses.select{|c| c.note_to_attendees}.any? 
       
@@ -13,18 +13,30 @@
       note_to_attendees = ''
     end
 
+    lessons = course.lessons.order(:start_at)
+    if lessons.count > 1
+      course_datetime = "Lessons: ".concat lessons.each_with_index.map { |lesson, lesson_i|
+        # lines below are intentional for markdown to work
+        "
+
+        #{quick_date(lesson.start_at, false, false)} #{pretty_time lesson.start_at} - #{pretty_time lesson.end_at}"
+      }.join
+    else
+      course_datetime = "#{day_ordinal_month(@courses.map(&:start_at).min, false, true, true)}, #{pretty_time_range(@courses.map(&:start_at).min, @courses.map(&:end_at).min)}"
+    end
+
     t("email.booking.confirmation.to_chalkler.body.html", 
       booking_names: @bookings.map(&:name).uniq.join(', '), 
       courses_links: @courses.map(&:name).uniq.join(', '), 
       course_urls: @courses.map{|c| "[#{c.name}](#{tiny_course_url(c)})" }.uniq.join(','), 
       course_names: @courses.map{|c| c.name }.uniq.join(','), 
       provider_names: @bookings.map{|b| b.provider.name}.uniq.join(', '), 
-      provider_urls: @courses.map{|c| "[#{c.provider.name}](#{provider_url(c.provider)})" }.uniq.join(','),
+      provider_urls: @courses.map{|c| "[#{c.provider.name}](#{contact_provider_url(c.provider)})" }.uniq.join(','),
       venue: @courses.map{|c| c.venue }.uniq.join(', '), 
       address: @courses.map{|c| c.address }.uniq.join(', '), 
-      note_to_attendees: note_to_attendees, 
-      start_at: day_ordinal_month(@courses.map(&:start_at).min, false, true, true), 
-      time_range: pretty_time_range(@courses.map(&:start_at).min, @courses.map(&:end_at).min), 
+      note_to_attendees: note_to_attendees,
+      course_datetime: course_datetime,
+      ics_link: ical_provider_course_url(course.path_params),
       paid: paid_text
     ).to_html
   %>

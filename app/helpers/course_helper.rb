@@ -49,10 +49,11 @@ module CourseHelper
     if relative && use_relative_day
       relative
     else
+      ordinalDay = date.day.ordinalize
       if include_year || date.year != DateTime.current.year
-        date.strftime("%d %b, %y")
+        date.strftime("#{ordinalDay} %b, %y")
       else
-        date.strftime("%d %b")
+        date.strftime("#{ordinalDay} %b")
       end
     end
   end

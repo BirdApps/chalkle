@@ -12,10 +12,12 @@ en-NZ:
 
               %{booking_names}
 
-              %{course_urls}
+              ### %{course_urls}
 
-              %{start_at}
-              %{time_range}
+              %{course_datetime}
+
+              [Add to Calendar](%{ics_link})
+
               %{address}
               %{venue}
 
@@ -35,8 +37,8 @@ en-NZ:
 
               course name – %{course_names}
 
-              %{start_at}
-              %{time_range}
+              %{course_datetime}
+
               %{address}
               %{venue}
 
@@ -54,6 +56,10 @@ en-NZ:
               %{course_urls}
               %{provider_urls}
 
+
+              Add to Calendar: %{ics_link}
+              
+
               =======================
         to_chalkler:
           paid: "You should have also received a payment receipt separately, unless you were invited by another person."
@@ -67,10 +73,12 @@ en-NZ:
 
               %{booking_names}
 
-              %{course_urls}
+              ### %{course_urls}
 
-              %{start_at}
-              %{time_range}
+              %{course_datetime}
+
+              [Add to Calendar](%{ics_link})
+
               %{address}
               %{venue}
 
@@ -91,8 +99,8 @@ en-NZ:
 
               %{course_names}
 
-              %{start_at}
-              %{time_range}
+              %{course_datetime}
+
               %{address}
               %{venue}
 
@@ -109,5 +117,7 @@ en-NZ:
 
               %{course_urls}
               %{provider_urls}
+
+              Add to Calendar: %{ics_link}
 
               =======================
