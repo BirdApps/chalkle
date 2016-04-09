@@ -40,34 +40,35 @@ class SubscriptionsController < ApplicationController
     csv = CSV.read params[:followers_csv].path
 
     csv.each do |row|
+      unless row[0].nil?
+        email = row[0].strip
+        chalkler = Chalkler.find_by_email email
 
-      email = row[0].strip
-      chalkler = Chalkler.find_by_email email
+        existing_follower = chalkler ? @provider.subscriptions.find_by_chalkler_id(chalkler.id) : @provider.subscriptions.find_by_pseudo_chalkler_email(email)
 
-      existing_follower = chalkler ? @provider.subscriptions.find_by_chalkler_id(chalkler.id) : @provider.subscriptions.find_by_pseudo_chalkler_email(email)
+        unless existing_follower
 
-      unless existing_follower
+          new_follower = if chalkler.present?
+            Subscription.create chalkler: chalkler, provider: @provider
+          else
+            Subscription.create pseudo_chalkler_email: email, provider: @provider
+          end
 
-        new_follower = if chalkler.present?
-          Subscription.create chalkler: chalkler, provider: @provider
-        else
-          Subscription.create pseudo_chalkler_email: email, provider: @provider
+          unless new_follower.persisted?
+            errors << "Problem occured creating follower with email #{email}" 
+          else
+            Notify.for(new_follower).subscribed_to(@provider, current_chalkler)
+          end
+
+          if new_follower.chalkler?
+            @followers << new_follower
+          else
+            @potential_followers << new_follower
+          end
+
+        elses
+          warnings << "#{email} has already been added as a follower"
         end
-
-        unless new_follower.persisted?
-          errors << "Problem occured creating follower with email #{email}" 
-        else
-          Notify.for(new_follower).subscribed_to(@provider, current_chalkler)
-        end
-
-        if new_follower.chalkler?
-          @followers << new_follower
-        else
-          @potential_followers << new_follower
-        end
-
-      else
-        warnings << "#{email} has already been added as a follower"
       end
 
     end
