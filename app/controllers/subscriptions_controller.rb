@@ -66,7 +66,7 @@ class SubscriptionsController < ApplicationController
             @potential_followers << new_follower
           end
 
-        elses
+        else
           warnings << "#{email} has already been added as a follower"
         end
       end
