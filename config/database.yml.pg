@@ -1,21 +1,19 @@
-# MySQL.  Versions 4.1 and 5.0 are recommended.
-#
-# Install the MySQL driver:
-#   gem install mysql2
-#
-# And be sure to use new-style password hashing:
+# postgres (PostgreSQL) 9.4.4 is recommended
+
 development:
   adapter: postgresql
   encoding: unicode
-  database: chalkle_development
-  username: test 
+  database: chalkle_dev
+  username: 
   password: 
   host: localhost
+  pool: 300
 
 test:
   adapter: postgresql
   encoding: unicode
   database: chalkle_test
-  username: test
+  username: 
   password: 
-  host: localhost   
+  host: localhost
+  pool: 300
