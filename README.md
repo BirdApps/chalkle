@@ -7,20 +7,21 @@ The online platform for Learners and teachers to connect.
 
 ### Requirements
 
-* ruby 1.9.3 – best to use [rb env](https://github.com/sstephenson/rbenv)
-* [qt](http://qt-project.org) – to install use homebrew: `brew install qt`
+* Ruby 2.1.5
+* PostgreSQL 9.4.4
 
 ### Instructions
 
 1. Run `bundle install`
-2. copy `config/database.yml.pg` to `config/database.yml` and modify to suit your particular postgres setup
-3. Create your databases using `rake db:create`
-4. Build the database schema using `rake db:schema:load` 
+1. copy `config/database.yml.pg` to `config/database.yml`, including your db's username/password
+1. Create your databases using `rake db:create`
+1. Build the database schema using `rake db:schema:load`
+
+# Contribution
+
+Enspiralites! Feel free to contribute by way or comments, issues, or pull requests :D Thanks!
 
 ## Deployment
 
-### Deploy to staging
-_TK_
-
-### Deploy to Production
-_TK_
+Deployment can currently be performed by Matthew Kerr (contact at matthew@chalkle.com)
+or by Josh Dean (contact at josh@chalkle.com)
