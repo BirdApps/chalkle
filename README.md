@@ -17,6 +17,11 @@ The online platform for Learners and teachers to connect.
 1. Create your databases using `rake db:create`
 1. Build the database schema using `rake db:schema:load`
 
+### Testing
+
+1. Run `rake db:test:prepare`
+1. Run `rspec spec`
+
 ### Data Structure
 
 **TODO**
