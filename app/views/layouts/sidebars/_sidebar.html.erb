@@ -1,10 +1,10 @@
 <div class="sidebar <%= 'sidebar-open' if current_user.sidebar_open %>">
-  
+
   <% if current_user.providers.count > 1 %>
     <div class="sidebar-switch">
         <button class="btn no-btn" data-toggle="modal" data-target="#switch_provider_modal">
           <span class="fa fa-random strong"></span>
-        </button>  
+        </button>
     </div>
   <% end %>
 
@@ -32,7 +32,7 @@
             <% current_user.providers.sort_by(&:name).each do |provider| %>
               <tr>
                 <td class="<%= 'active' if provider == @provider %>">
-                  <%= link_to provider.name, provider_path(provider), method: :put %>
+                  <%= link_to provider.name, provider_path(provider.id), method: :put %>
                 </td>
               </tr>
             <% end %>
