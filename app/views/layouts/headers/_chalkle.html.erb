@@ -1,18 +1,18 @@
 <% 
   nav_links = [{
       img_name: "bolt",
-      link: chalkle_about_path,
-      active: request.path == chalkle_about_path,
+      link: about_path,
+      active: request.path == about_path,
       title: "About"
     },{
       img_name: "people",
-      link: chalkle_team_path,
-      active: request.path == chalkle_team_path,
+      link: team_path,
+      active: request.path == team_path,
       title: "The Team"
     },{
       img_name: "contact",
-      link: chalkle_say_hello_path,
-      active: request.path == chalkle_say_hello_path || request.path == chalkle_said_hello_path,
+      link: say_hello_path,
+      active: request.path == say_hello_path || request.path == said_hello_path,
       title: "Contact"
     }]
 
@@ -32,14 +32,14 @@
 
 <div class="provider_header">
   <div class="container-fluid">
-    <a class="avatar block" href="<%= chalkle_about_path %>">
+    <a class="avatar block" href="<%= about_path %>">
       <div class="img" style="background-image: url(<%= asset_path('social-logo.jpg') %>)">
       </div>
     </a>
 
     <div class="provider_header_content">
       <h1 class="provider_header_name">
-        <%= link_to "chalkle°", chalkle_about_path %>
+        <%= link_to "chalkle°", about_path %>
       </h1>
     </div>
 

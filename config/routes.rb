@@ -36,8 +36,6 @@ Chalkle::Application.routes.draw do
 
   get '/styleguide' => 'application#styleguide', as: 'styleguide'
   get 'chalklers' => redirect("/")
-  get 'contact' => redirect("/chalkle/say_hello")
-  get 'about' => redirect("/chalkle/about")
 
 
   match 'classes', to: 'courses#index'
@@ -128,13 +126,10 @@ Chalkle::Application.routes.draw do
     end
   end
 
-  namespace :chalkle do
-    root to: 'partners#index'
-    get 'about', to: 'partners#index'
-    get 'team', to: 'partners#team'
-    get 'say_hello', to: 'partners#say_hello'
-    post 'say_hello', to: 'partners#said_hello', as: 'said_hello'
-  end
+  get 'about', to: 'partners#index'
+  get 'team', to: 'partners#team'
+  get 'say_hello', to: 'partners#say_hello'
+  post 'say_hello', to: 'partners#said_hello', as: 'said_hello'
 
   resources :providers, only: [:index, :create, :new]
 

@@ -1,4 +1,4 @@
-class Chalkle::PartnersController < ApplicationController
+class PartnersController < ApplicationController
   before_filter :header_partners
 
   # GET /partners
@@ -25,13 +25,13 @@ class Chalkle::PartnersController < ApplicationController
   def said_hello
     @page_title = "Let's get connected. Say Hello!"
     @partner_inquiry = PartnerInquiry.new params[:partner_inquiry]
-    
+
     if @partner_inquiry.save
       add_flash :success, "Thank you for your request. We will get in touch with you shortly."
       Notify.for(@partner_inquiry).created
       @partner_inquiry = PartnerInquiry.new
       render 'say_hello'
-    else 
+    else
       flash_errors @partner_inquiry.errors
       render 'say_hello'
     end
