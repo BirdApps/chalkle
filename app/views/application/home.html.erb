@@ -18,7 +18,7 @@
         <div class="location-spinner-wrapper"></div>
       </div>
     </div>
-    
+
     <div class="provider-preview">
     </div>
 
@@ -26,100 +26,71 @@
 
   <div class="row business">
 
-    <h2 class="col-xs-12 text-center">Build a learning business on Chalkle</h2>
+    <h2 class="col-xs-12 text-center">A better world of learning</h2>
 
-    <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-1">
-      <div class="media">
-        <div class="media-left media-middle">
-          <%= image_tag 'home/heart.png', class: 'media-object iconify' %> 
+    <div class="row">
+      <%= link_to learn_path do %>
+        <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-1 teach-link">
+          <div class="media">
+            <div class="media-body">
+              <h3>Learning</h3>
+              <small>Learn new skills from teachers near you.</small>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <%= link_to teach_path do %>
+        <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 teach-link">
+          <div class="media">
+            <div class="media-body">
+              <h3>Teaching & Organising</h3>
+              <small>Dicover the tools to help you run great classes and grow a learning business.</small>
+            </div>
+          </div>
         </div>
-        <div class="media-body">
-          <h3>Learners love using Chalkle almost as much as they enjoy your classes</h3>
-          <small>Chalkle takes care of bookings, payments, reminders, and more.</small>
+      <% end %>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-1 teach-link">
+        <div class="media">
+          <div class="media-body">
+            <h3>Sharing resources</h3>
+            <small>Explore free resources to help you run great classes and support you to grow your learning business.</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 teach-link">
+        <div class="media">
+          <div class="media-body">
+            <h3>Making a difference</h3>
+            <small>Stories and reflections from the chalkle community.</small>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2">
-      <div class="media">
-        <div class="media-left media-middle">
-          <%= image_tag 'teach/talk.png', class: 'media-object iconify' %> 
+
+    <div class="row">
+      <%= link_to about_path do %>
+        <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-1 teach-link">
+          <div class="media">
+            <div class="media-body">
+              <h3>About Chalkle</h3>
+              <small>Where did Chalkle come from?</small>
+            </div>
+          </div>
         </div>
-        <div class="media-body">
-          <h3>Be in touch</h3>
-          <small>Once a booking is made, keep all your learners up to date with class changes, and we send class reminders automatically</small>
-        </div>
-      </div>
+      <% end %>
     </div>
 
-    <%= link_to teach_path do %>
-      <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 text-center teach-link">
-        <h4>Setting up a provider is free.</h4>
-        <em>Find out more about being a provider on chalkle</em>
-      </div>
-    <% end %>
-
-  </div>
-
-  <div class="row praise">
-    <h2 class="col-xs-12 text-center">People are really getting into Chalkle</h2>
-      
-    <div class="text-center praise-bubble col-xs-12 col-md-8 col-lg-6">
-      <div class="text-center">
-        <%= image_tag 'home/optimal.png', class: 'iconify' %> 
-      </div>
-      More amazing the support from @ChalkleNZ today.
-      We use them for our public workshops 
-      <%= link_to 'http://chalkle.com/?topic=computers-technology' %> 
-      Such a great group to work with.
-      <div class="text-right attributation">
-        <strong>– Jack Prichard</strong>
-        <sub>@MagnumBI_</sub>
-      </div>
-    </div>
-
-    <div class="text-center praise-bubble col-xs-12 col-md-8 col-md-offset-4 col-lg-6 col-lg-offset-6">
-      <div class="text-center">
-        <%= image_tag 'home/doc.png', class: 'iconify' %> 
-      </div>
-      Working with the clever people from Chalkle comes highly recommended.
-      <div class="text-right attributation">
-        <strong>– Angeline Barnes</strong>
-        <sub>outreach and Education Co-ordinator, Department of Conservation</sub>
-      </div>
-    </div>
-
-    <div class="text-center praise-bubble col-xs-12 col-md-8 col-lg-6">
-      <div class="text-center">
-        <%= image_tag 'home/idealog.png', class: 'iconify' %> 
-      </div>
-      ...it allow local experts to make a buck on the side 
-      by capitalising on their knowledge of first aid, 
-      fruit trees, astronomy, cheese-making, importing, 
-      sign language, Wordpress and more
-      <div class="text-right attributation">
-        <strong>– Rebekah White</strong>
-        <sub>Idealog 03 Nov 2014</sub>
-      </div>
-    </div>
-
-
-    <div class="text-center praise-bubble col-xs-12 col-md-8 col-md-offset-4 col-lg-6 col-lg-offset-6">
-      <div class="text-center">
-        <%= image_tag 'home/tetakere.png', class: 'iconify' %> 
-      </div>
-      “[Chalkle helps] builds confidence in people, learning, belonging and making friends within the community for both students and teachers. It has aided in building community growth for all ages, has opened an air of things to do in the Horowhenua, and over the last couple of months Chalkle attendance numbers have increased. People are asking what is next.” 
-      <div class="text-right attributation">
-        <strong>– Kerry Fairless</strong>
-        <sub>Community Education Coordinator, Te Takere Library, Horowhenua</sub>
-      </div>
-    </div>
   </div>
 
   <% unless current_user.authenticated? %>
     <div class="col-xs-12 text-center">
       <h2>What are you waiting for?</h2>
       <br />
-      <%= link_to "Sign Up for Free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first' %> 
+      <%= link_to "Sign Up for Free", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first' %>
     </div>
     <div class="text-right col-xs-6">
         <%# link_to "learn more about putting your couses on chalkle", teach_path %>
