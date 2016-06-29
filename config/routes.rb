@@ -5,7 +5,7 @@ Chalkle::Application.routes.draw do
   match '(*any)' => redirect { |p, req| req.url.sub!('www.', '') } , :constraints => { :host => /^www\./ }
 
   devise_for :chalklers, path: 'people', controllers: { omniauth_callbacks: 'people/omniauth_callbacks', registrations: 'people/registrations', invitations: 'invitations' }
-  
+
   constraints(Subdomain) do
     match '/' => 'providers#show'
   end
@@ -27,7 +27,8 @@ Chalkle::Application.routes.draw do
   get 'terms/teacher' => 'terms#teacher', as: :teacher_terms
 
   match 'teach' => 'application#teach'
-  match 'learn' => redirect("/classes")
+  match 'learn', to: 'courses#index'
+  match 'resources' => 'application#resources'
 
   get 'c/:id' => 'courses#show', as: :tiny_course
   post 'bookings/lpn', as: :lpn, to: 'bookings#lpn'
@@ -41,7 +42,7 @@ Chalkle::Application.routes.draw do
 
   match 'classes', to: 'courses#index'
   match 'classes/calculate_cost', to: 'courses#calculate_cost'
-  get 'classes/new', to: 'courses#choose_provider', as: :new_course  
+  get 'classes/new', to: 'courses#choose_provider', as: :new_course
   get 'classes/fetch', to: 'courses#fetch'
   get 'classes/:id', to: 'courses#show', as: :old_course_path #backwards compatibility2
   get 'url_available/:url_name', to: 'providers#url_available'
@@ -63,7 +64,7 @@ Chalkle::Application.routes.draw do
     collection do
       post 'exists'
       post 'set_location'
-      get 'get_location' 
+      get 'get_location'
     end
   end
 
@@ -75,22 +76,22 @@ Chalkle::Application.routes.draw do
     get '/notifications/count' => 'notifications#list', as: :count_notifications
     get '/notifications/seen' => 'notifications#seen', as: :seen_notifications
     get '/notification/:id' => 'notifications#show', as: :show_notification
-    
+
 
     post '/preferences/sidebar_open' => 'preferences#sidebar_open', as: :sidebar_open
     get '/preferences' => 'preferences#show', as: :preferences
     put '/preferences' => 'preferences#update', as: :preferences
-    
+
     get '/enter_email' => 'preferences#enter_email', as: :enter_email
     put '/enter_email' => 'preferences#enter_email', as: :enter_email
-    
+
     get '/preferences/notifications' => 'preferences#notifications', as: :notification_preference
     put '/preferences/notifications' => 'preferences#update_notifications', as: :notification_preference
   end
 
   namespace :sudo do
     root to: 'metrics#index'
-    
+
     resources :metrics, only: :index do
       collection do
         match 'overview'
@@ -98,7 +99,7 @@ Chalkle::Application.routes.draw do
     end
 
     resources :partner_inquiries, path: 'hellos', only: [:index,:show,:edit]
-    
+
     resources :payments
 
     resources :chalklers do
@@ -111,7 +112,7 @@ Chalkle::Application.routes.draw do
         get 'csv'
       end
     end
-    
+
     resources :outgoing_payments, path: 'outgoings' do
       member do
         get 'approve'
@@ -142,7 +143,7 @@ Chalkle::Application.routes.draw do
     get 'about'
     get 'metrics'
     match 'contact', to: 'providers#contact'
-    get 'fetch', to: 'courses#fetch'    
+    get 'fetch', to: 'courses#fetch'
     get 'edit'
     put 'edit', to: 'providers#update'
     get 'bookings'
@@ -152,7 +153,7 @@ Chalkle::Application.routes.draw do
         post :csv, to: 'subscriptions#new_from_csv'
       end
     end
-  
+
     resources :provider_admins, path: 'admins', as: 'admins'
 
     resources :outgoing_payments, path: 'remittance', as: 'outgoings', only: [:index, :show]
@@ -162,7 +163,7 @@ Chalkle::Application.routes.draw do
         post :csv, to: 'provider_teachers#new_from_csv'
         post :bulk_create
       end
-      member do 
+      member do
         get 'fetch', to: 'courses#fetch'
       end
       resources :outgoing_payments, path: 'remittance', as: 'outgoings', only: [:index, :show]
@@ -172,7 +173,7 @@ Chalkle::Application.routes.draw do
 
     resources :classes, only: [:new, :create], controller: :courses
     resource :course, except: [:new, :create], path: ':course_url_name/:course_id' do
-      member do 
+      member do
         get 'ical'
         get 'cancel',           to: 'courses#cancel'
         put 'cancel',           to: 'courses#confirm_cancel'
@@ -200,7 +201,7 @@ Chalkle::Application.routes.draw do
 
   end
 
- 
+
   match '*a', :to => 'application#not_found'
 
 end
