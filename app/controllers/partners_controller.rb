@@ -7,13 +7,6 @@ class PartnersController < ApplicationController
     @hero_text = "A complete system for delivering \n great classes in the real world."
   end
 
-  # GET /partners/team
-  def team
-    @page_title = "The Team"
-    @hero_text = "What does a renaissance of learning look like?"
-    render 'team'
-  end
-
   # GET /partners/say_hello
   def say_hello
     @page_title = "Let's get connected. Say Hello!"
