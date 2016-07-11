@@ -42,24 +42,7 @@
         <%= link_to "chalkle°", about_path %>
       </h1>
     </div>
-
-    <div class="provider_header_links">
-      <nav>
-        <ul class="flush">
-        <% 
-          nav_links.each do |nav_link| %>
-            <li class="<%= "active" if nav_link[:active] %> col-xs-4 col-sm-3 col-md-2 flush">
-              <%= link_to nav_link[:link], title: nav_link[:title] do %>
-                  <%= nav_link[:title] %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      </nav>
-    </div>
-  </div>
-
-  <div class="provider_header_skirting">
+    
   </div>
 
 </div>
