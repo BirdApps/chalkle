@@ -1,7 +1,7 @@
 <section id="about" class="row">
 
-  <div class='col-sm-5 col-sm-offset-1 about-text col-aligned'>
-    <div class="">
+  <div class='col-sm-5 col-sm-offset-1'>
+    <div class="about-text">
         <p>
           Silvia Zuur and Linc Gasking started chalkle over a cup of coffee in mid 2012. A whirlwind of community organising followed and Chalkle classes exploded in Wellington, with Silvia organising over 600 classes in 12 months to serve a world where ‘anyone could teach and anyone could learn’.
         </p>
@@ -9,9 +9,11 @@
           Demand grew, the business evolved, technology was built. Now, with the same spirit of ‘anyone can...’ chalkle.com aims to give anyone who wants to start a learning business, everything they need to succeed.
         </p>
     </div>
+
+    <%= link_to "Get In Touch", say_hello_path, class: 'btn btn-primary btn-huge'%>
   </div>
 
-  <div class="col-sm-6 first-coffee col-aligned">
+  <div class="col-sm-6 first-coffee">
     <%= image_tag asset_path("partners/first-coffee.jpg"), class: 'img' %>
   </div>
 
@@ -64,16 +66,28 @@
   </section>
 
   <section class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12 text-center">
       <h1>Alumni</h1>
 
       <p>
         Since inception, a fantastic group of people have contributed to Chalkle. In order of appearance:
       </p>
       <p>
-        Linc Gasking, Joshua Vial, Brandon Mikel, Leticia Murillo Esteban, Amy Peng, Kiesia Carmine, Nanz Nair, Nicola Price, Hannah Varnell, Liz Willoughby-Martin, Craig Ambrose, Mitzi Borren, Sandra Otto, Karen Lee, Jack Tolley, Matthew Kerr, Josh Dean.
+        Linc Gasking, Joshua Vial, Brandon Mikel, Leticia Murillo Esteban, Amy Peng, Kiesia Carmine, </br>
+        Nanz Nair, Nicola Price, Hannah Varnell, Liz Willoughby-Martin, Craig Ambrose, Mitzi Borren, </br>
+        Sandra Otto, Karen Lee, Jack Tolley, Matthew Kerr, Josh Dean.
       </p>
     </div>
   </section>
+
+  <section id="legals">
+      <div class="text-center">
+        <h1>Legals</h1>
+        <p>Chalkle is commited to created a safe and happy environment for everyone.</p>
+        <a href="<%= terms_path %>">Terms & Conditions for Learners</a> <br />
+        <a href="<%= teacher_terms_path %>">Terms & Conditions for Teachers</a>  <br />
+        <a href="<%= provider_terms_path %>">Terms & Conditions for Providers</a>  <br />
+      </div>
+   </section>
 
 </div>
