@@ -26,6 +26,27 @@
     text-transform: uppercase;
   }
 
+  #who-banner {
+    h4 {
+      text-align: center;
+      height: 20px;
+      margin-bottom: 0px;
+    }
+    .teacher-hero, .community-hero, .business-hero, .library-hero, .ngo-hero {
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+      width:100%;
+      height: 238px;
+    }
+
+    .teacher-hero { background-image: image-url("partners/teacher.png"); }
+    .community-hero { background-image: image-url("partners/community-garden.png"); }
+    .business-hero { background-image: image-url("partners/business.png"); }
+    .library-hero { background-image: image-url("partners/library.png"); }
+    .ngo-hero { background-image: image-url("partners/ngo.png"); }
+  }
+
   #process {
     opacity: 0.89;
     font-size: 18px;
