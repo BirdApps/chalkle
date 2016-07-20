@@ -27,6 +27,15 @@
         <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li class="non-img-link">
+          <%= link_to "Teachers", teach_path %>
+        </li>
+        <li class="non-img-link">
+          <%= link_to "Resources", about_path %>
+        </li>
+        <li class="non-img-link">
+          <%= link_to "About", about_path %>
+        </li>
         <% if chalkler_signed_in? %>
           
           <li class="dropdown non-img-link notifications-drop">
