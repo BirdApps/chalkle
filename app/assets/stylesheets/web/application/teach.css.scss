@@ -47,6 +47,27 @@
     .ngo-hero { background-image: image-url("partners/ngo.png"); }
   }
 
+  #community {
+    background-position: top center;
+    background-size: cover;
+    color: gray;
+    font-weight: 700;
+    font-size: 16px;
+    background-image: image_url('partners/say-hello-hero.jpg');
+    text-align: center;
+    padding: 15% 0;
+    h3 {
+      margin-bottom: 5%;
+    }
+    .media {
+      padding: 0 20px;
+
+      &:last-child {
+        margin-top: 5%;
+      }
+    }
+  }
+
   #process {
     opacity: 0.89;
     font-size: 18px;
