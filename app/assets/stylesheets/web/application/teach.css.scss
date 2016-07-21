@@ -91,7 +91,7 @@
       }
       &.right {
         float: right;
-        margin: 23% 0;
+        margin: 23% 0 0 0;
       }
     }
   }
@@ -101,7 +101,10 @@
     font-size: 18px;
     color: #000000;
     letter-spacing: 1.5px;
-    padding-top: 32px;
+
+    .features-events {
+      padding: 5% 0;
+    }
 
     h2 {
       margin: 0 0 32px;
