@@ -47,33 +47,47 @@
     .ngo-hero { background-image: image-url("partners/ngo.png"); }
   }
 
-  #community {
-    background-position: top center;
-    background-size: cover;
+  .process {
     color: gray;
     font-weight: 700;
     font-size: 16px;
-    background-image: image_url('partners/say-hello-hero.jpg');
     text-align: center;
-    padding: 15% 0;
-    h3 {
-      margin-bottom: 5%;
-    }
-    .media {
-      padding: 0 20px;
+    font-size: 1.1em;
+    margin-bottom: 5%;
+    &-step {
+      padding: 0 10%;
+      margin: 10% 0 0 10%;
+      bold {
+        font-weight: 500;
+        font-size: 18px;
+        color: #337ab7;
+      }
 
-      &:last-child {
-        margin-top: 5%;
+      &-hero {
+        margin-top: 10%;
+        padding: 0;
+        strong {
+          color: black;
+          font-weight: 500;
+          font-size: 18px;
+        }
       }
     }
   }
 
-  #process {
+  #fire-banner {
+    background-image: image_url('partners/say-hello-hero.jpg');
+    background-position: top center;
+    background-size: cover;
+    padding: 30% 0;
+  }
+
+  #features {
     opacity: 0.89;
     font-size: 18px;
     color: #000000;
     letter-spacing: 1.5px;
-    padding-top: 32px; 
+    padding-top: 32px;
 
     h2 {
       margin: 0 0 32px;
