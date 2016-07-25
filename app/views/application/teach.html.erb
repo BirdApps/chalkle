@@ -1,58 +1,9 @@
-<%= render partial: '/application/teach/top_banner' %>
+<%= render partial: '/application/teach/provider_process' %>
 <section>
   <div id="fire-banner">
     <div class="white fire-header left">Everyone has something to teach</div>
     <div class="white fire-header right">Everyone has something to learn</div>
   </div>
 </section>
-<%= render partial: '/application/teach/features_banner' %>
-<section class="teach-section-pricing-contact">
-
-  <div class="row shaded_bg dark">
-
-
-    <div class="col-xs-12 text-center bottom-line">
-      <h2><strong>Chalkle</strong> is free to set up and join;<br /> We succeed when you succeed. Simple as that. </h2>
-    </div>
-
-    <div class="col-xs-12 text-center">
-      <div>No set up or subscription fees.<br /> No charge for running free classes.</div>
-      <%= link_to "Get Started", new_provider_path, class: 'btn btn-primary' %>
-    </div>
-
-
-    <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4 text-center plan">
-      <h3>Simple per Learner Plan</h3>
-      <div class="circle">
-        $2
-        <sub>+ 4%</sub>
-      </div>
-      <small>
-        <p>for each booking made through Chalkle.</p>
-      </small>
-    </div>
-
-    <div class="col-xs-12 text-center">
-      <%= link_to "Set Up Your Class", new_provider_path, class: 'btn btn-primary' %>
-    </div>
-
-    <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4 text-center">
-      More questions? Contact us directly - we're happy to help. <%= mail_to "hello@chalkle.com", "hello@chalkle.com", subject: 'Chalkle Services', class: 'btn btn-primary' %>
-    </div>
-
-    <%#  <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-1 text-center plan">
-      <h3>Chalkle Services</h3>
-      <div class="circle outline">
-        ?
-        <sub></sub>
-      </div>
-      <small>
-        <p>Need help developing up classes?</p>
-      </small>
-    </div>  %>
-
-
-  </div>
-
-
-</section>
+<%= render partial: '/application/teach/features' %>
+<%= render partial: '/application/teach/pricing_contact' %>

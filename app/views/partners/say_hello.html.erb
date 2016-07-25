@@ -4,7 +4,7 @@
   <div class="col-sm-8 col-sm-offset-2 text-center">
     <%= render partial: 'fancy_header', locals: { fancy_title: "Questions & Comments", small: true } %>
     <p>
-     For questions and comments please get in touch at  <%= mail_to "hello@chalkle.com", 'hello@chalkle.com' %>.
+     For general enquiries please get in touch at  <%= mail_to "hello@chalkle.com", 'hello@chalkle.com' %>.
     </p>
 
     <%= render partial: 'fancy_header', locals: { fancy_title: "Support", small: true } %>
@@ -14,51 +14,14 @@
 
     <%= render partial: 'fancy_header', locals: { fancy_title: "Use Chalkle to organise your classes", small: true } %>
     <p>
-      If you are thinking about using the Chalkle platform or organise your classes and want to learn more, please fill in the form below.
+      If you are interested in using Chalkle° to organise your classes or event and want to learn more, please contact us through the form below.
     </p>
   </div>
 
 </section>
 <br /><br />
 <section class="row" id="hello-form">
-
   <div class="col-sm-8 col-sm-offset-2 new_form_wrapper">
-
-
-    <%= bootstrap_form_for @partner_inquiry, wrapper: :simple_bootstrap3, url: said_hello_path, html: { method: :post, class: 'form-horizontal', role: 'form'} do |f| %> 
-      
-      <% if @partner_inquiry.errors.any? %>
-
-        <div class="col-sm-12 errors">
-          <h3>There were some problems: </h3>
-          <% @partner_inquiry.errors.full_messages.each do |msg| %>
-            <div class="error"><%= msg %></div>
-          <% end %>
-        </div>
-
-      <% end %>
-
-      <div class="col-sm-12 flush">
-
-        <%= f.input :name, label: "What is your name?", wrapper: :horizontal %>
-      
-        <%= f.input :contact_details, label: "What email or phone number is best used to contact you?", wrapper: :horizontal %>
-
-        <%= f.input :organisation, label: "What is your organisation called?", wrapper: :horizontal %>
-
-        <%= f.input :location, label: "Where city are you in?", wrapper: :horizontal %>
-        
-        <%= f.input :comment, as: :text, label: "What do you want to achieve with Chalkle°?", wrapper: :horizontal %>
-
-      </div>
-
-      <br />
-      
-      <div class="col-xs-12 col-sm-4 col-sm-offset-4">
-        <%= f.submit "Say Hello", class: 'submit_btn col-xs-12 part_link btn btn-primary'%> 
-      </div>
-
-    <% end %>
+    <%= render partial: 'say_hello_form'%>
   </div>
-
 </section>

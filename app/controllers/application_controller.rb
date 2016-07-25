@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
     @header_partial = '/layouts/headers/teach'
     @page_title =  "Teach"
     @meta_title = "Teach with "
+    @partner_inquiry = PartnerInquiry.new params[:partner_inquiry]
   end
 
   def resources
