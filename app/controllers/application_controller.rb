@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def teach
-    @hero = ActionController::Base.helpers.image_path('learn/bottle.jpg')
+    @hero = ActionController::Base.helpers.image_path('teach/rockpools.jpg')
     @header_partial = '/layouts/headers/teach'
     @page_title =  "Teach"
     @meta_title = "Teach with "
