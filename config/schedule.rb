@@ -7,7 +7,7 @@
 
 set :output, "/apps/chalkle/#{environment}/shared/log/cron.log"
 
-every :hour do 
+every :hour do
   rake "chalkle:complete_courses"
 end
 
@@ -33,14 +33,9 @@ every :day, :at => '05:30pm' do
 end
 
 every :hour do
-  path = "/apps/chalkle/db_backups/hourly/"
-  filename = "chalk_prod_#{DateTime.now.strftime("%Y%m%d%H%M")}.sql"
-  command "cd #{path} && ls | grep chalk_prod_ | xargs rm"
-  command "pg_dump -f #{path + filename} chalkle_production && gzip #{path + filename}"
+  command "backup perform -t chalkle_hourly"
 end
 
-every :day, :at => '04:30pm' do
-  path = "/apps/chalkle/db_backups/"
-  filename = "chalk_prod_#{DateTime.now.strftime("%Y%m%d%H%M")}.sql"
-  command "pg_dump -f #{path + filename} chalkle_production && gzip #{path + filename}"
+every :day, :at => '04:30am' do
+  command "backup perform -t chalkle_daily"
 end
