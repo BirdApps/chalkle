@@ -36,6 +36,6 @@ every :hour do
   command "backup perform -t chalkle_hourly"
 end
 
-every :day, :at => '04:30am' do
+every :day, :at => '04:30pm' do
   command "backup perform -t chalkle_daily"
 end
