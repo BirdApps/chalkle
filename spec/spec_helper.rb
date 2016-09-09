@@ -1,11 +1,11 @@
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
+
 require 'simplecov'
 require 'rubygems'
 require 'email_spec'
 require 'capybara/rspec'
 require "pundit/rspec"
-
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
 
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
