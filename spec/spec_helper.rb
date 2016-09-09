@@ -5,7 +5,7 @@ require 'simplecov'
 require 'rubygems'
 require 'email_spec'
 require 'capybara/rspec'
-require "pundit/rspec"
+require 'pundit/rspec'
 
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
