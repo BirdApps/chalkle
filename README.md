@@ -1,7 +1,9 @@
+[![Code Climate](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/badges/3bbdfdbfec9d58bcbe9c/gpa.svg)](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/feed) [![Code Climate](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/badges/3bbdfdbfec9d58bcbe9c/gpa.svg)](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/feed)
+
 # Chalkle
 *Taking learning out of the classroom*
 
-The online platform for Learners and teachers to connect. 
+The online platform for Learners and teachers to connect.
 
 ## Development Environment Setup
 
