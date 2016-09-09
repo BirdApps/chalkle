@@ -96,7 +96,7 @@ group :development do
   gem 'tomdoc',  '~> 0.2.5',  require: false
 
   # Testing emails
-  # gem 'mailcatcher',  '~> 0.5.10',  require: false
+  gem 'mailcatcher',  '~> 0.5.10',  require: false
 
   # Deployment
   gem 'capistrano', '~> 3.0',  require: false
@@ -114,9 +114,6 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller',  '0.7.2'
 
-  # Opening webpages during tests
-  gem 'launchy', '~> 2.1.2'
-
   gem 'guard'
   gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
   gem 'guard-livereload'
@@ -125,7 +122,6 @@ end
 group :test, :development do
   # Placed here so generators work
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
-
   gem 'pry-rails'
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
@@ -140,11 +136,6 @@ group :test do
   gem 'factory_girl_rails', '~> 4.7'
   gem "codeclimate-test-reporter", require: nil
   gem 'shoulda', '~> 3.5'
-
-  # gem 'mocha', '>= 0.14.0', require: false
-  # gem 'cucumber-rails',   '~> 1.3.0', require: false
-  # gem 'steak',               '~> 2.0.0'
-  # gem 'webrat',              '~> 0.7.3'
-  # gem 'faker'
-  # gem 'simplecov',  '~> 0.7.1', require: false
+  # Opening webpages during tests
+  gem 'launchy', '~> 2.1.2'
 end
