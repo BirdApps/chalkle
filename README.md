@@ -26,5 +26,4 @@ Enspiralites! Feel free to contribute by way or comments, issues, or pull reques
 
 ## Deployment
 
-Deployment can currently be performed by Matthew Kerr (contact at matthew@chalkle.com)
-or by Josh Dean (contact at josh@chalkle.com)
+Deployment can currently be performed by Genevieve Parkes (genevieve@enspiral.com)
