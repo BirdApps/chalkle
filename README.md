@@ -1,4 +1,5 @@
-[![Code Climate](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/badges/3bbdfdbfec9d58bcbe9c/gpa.svg)](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/feed) [![Code Climate](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/badges/3bbdfdbfec9d58bcbe9c/gpa.svg)](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/feed)
+[![Code Climate](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/badges/3bbdfdbfec9d58bcbe9c/gpa.svg)](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/feed)
+[![Test Coverage](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/badges/3bbdfdbfec9d58bcbe9c/coverage.svg)](https://codeclimate.com/repos/51e495cdc7f3a33ba7001482/coverage)
 
 # Chalkle
 *Taking learning out of the classroom*
