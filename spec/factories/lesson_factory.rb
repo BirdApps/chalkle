@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :lesson do
-    
+
     start_at Time.now + 2.days
     duration 5400
 
     factory :cancelled_lesson do
-      ignore do
+      transient do
         cancelled true
       end
     end

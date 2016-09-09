@@ -3,7 +3,7 @@ FactoryGirl.define do
     lessons { |i| [i.association(:lesson)]}
     provider { |i| i.association(:provider) }
     teacher { |i| i.association(:provider_teacher) }
-    
+
     name "Learn Foo with Bar"
     learning_outcomes "Bar the foo, it's all about how far you can boo"
     do_during_class "You will take a foo and bar it"
@@ -18,12 +18,12 @@ FactoryGirl.define do
       teacher_pay_type 'Flat fee'
     end
 
-    factory :free_course do 
+    factory :free_course do
       teacher_pay_type 'Flat fee'
     end
 
     factory :course_with_bookings do
-      ignore do
+      transient do
         bookings_count { rand(5) }
       end
 
