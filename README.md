@@ -12,6 +12,7 @@ The online platform for Learners and teachers to connect.
 
 * Ruby 2.1.5
 * PostgreSQL 9.4.4
+* Redis (Ubuntu/Debian: `apt-get install redis-server` OS X: `brew install redis`)
 
 ### Instructions
 
