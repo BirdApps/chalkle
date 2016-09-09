@@ -154,5 +154,4 @@ group :test do
 
   # Test coverage
   gem 'simplecov',  '~> 0.7.1', require: false
-
 end
