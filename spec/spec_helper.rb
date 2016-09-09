@@ -6,6 +6,7 @@ require 'rubygems'
 require 'email_spec'
 require 'capybara/rspec'
 require 'pundit/rspec'
+require 'webmock/rspec'
 
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'

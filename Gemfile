@@ -136,6 +136,7 @@ group :test do
   gem 'factory_girl_rails', '~> 4.7'
   gem "codeclimate-test-reporter", require: nil
   gem 'shoulda', '~> 3.5'
+  gem 'webmock', '~> 2.1'
   # Opening webpages during tests
   gem 'launchy', '~> 2.1.2'
 end
