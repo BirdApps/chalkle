@@ -134,14 +134,12 @@ end
 group :test do
   gem 'capybara', '~> 2.7', '>= 2.7.1'
   gem 'capybara-webkit', '~> 1.11', '>= 1.11.1'
-
-  # gem 'shoulda', '>= 3.5.0' # deprecated
-
   gem 'database_cleaner', '~> 1.5', '>= 1.5.3'
   gem 'timecop', '~> 0.8.1'
   gem 'email_spec', '~> 1.6'
   gem 'factory_girl_rails', '~> 4.7'
   gem "codeclimate-test-reporter", require: nil
+  gem 'shoulda', '~> 3.5'
 
   # gem 'mocha', '>= 0.14.0', require: false
   # gem 'cucumber-rails',   '~> 1.3.0', require: false
