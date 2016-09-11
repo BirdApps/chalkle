@@ -167,9 +167,6 @@ GEM
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
-    email_spec (1.6.0)
-      launchy (~> 2.1)
-      mail (~> 2.2)
     engtagger (0.2.0)
     entity_events (0.1.0)
       rails (~> 3.2)
@@ -642,7 +639,6 @@ DEPENDENCIES
   devise (~> 2.2.4)
   devise_invitable
   draper (~> 1.0)
-  email_spec (~> 1.6)
   engtagger
   entity_events
   execjs (~> 1.4.0)

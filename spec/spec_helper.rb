@@ -3,7 +3,6 @@ CodeClimate::TestReporter.start
 
 require 'simplecov'
 require 'rubygems'
-require 'email_spec'
 require 'capybara/rspec'
 require 'pundit/rspec'
 require 'webmock/rspec'
@@ -23,11 +22,9 @@ prefork = lambda {
 
   RSpec.configure do |config|
     config.infer_spec_type_from_file_location!
-    config.include(EmailSpec::Helpers)
-    config.include(EmailSpec::Matchers)
-    config.include Devise::TestHelpers, :type => :controller
-    config.extend ControllerMacros, :type => :controller
-    config.include IntegrationSpecHelper, :type => :request
+    config.include Devise::TestHelpers, type: :controller
+    config.extend ControllerMacros, type: :controller
+    config.include IntegrationSpecHelper, type: :request
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -48,7 +45,7 @@ prefork = lambda {
     #     --seed 1234
     config.order = "random"
 
-    config.before(:each, :js => true) do
+    config.before(:each, js: true) do
       DatabaseCleaner.strategy = :truncation
     end
 

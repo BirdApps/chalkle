@@ -132,7 +132,8 @@ group :test do
   gem 'capybara-webkit', '~> 1.11', '>= 1.11.1'
   gem 'database_cleaner', '~> 1.5', '>= 1.5.3'
   gem 'timecop', '~> 0.8.1'
-  gem 'email_spec', '~> 1.6'
+  # currently unused, but it should be..
+  # gem 'email_spec', '~> 1.6'
   gem 'factory_girl_rails', '~> 4.7'
   gem "codeclimate-test-reporter", require: nil
   gem 'shoulda', '~> 3.5'
