@@ -22,9 +22,11 @@ The online platform for Learners and teachers to connect.
 1. Build the database schema using `rake db:schema:load`
 
 ### Testing
-
+1. Start a redis instance by running `redis-server`
 1. Run `rake db:test:prepare`
 1. Run `rspec spec`
+
+Mailer specs are currently broken (14 failures) see improvement ticket [here](https://trello.com/c/JpLgdgQe/27-fix-mailer-tests)
 
 ### Data Structure
 
@@ -42,7 +44,7 @@ In the admin interface content only visible to Super Admin is visually identifie
 
 Enspiralites! Feel free to contribute by way or comments, issues, or pull requests :D Thanks!
 
-View open issues and upcoming features on [Jira](https://chalkle.atlassian.net/projects/CHAL/issues/CHAL-493?filter=allopenissues)
+View open issues and upcoming features on [trello](https://trello.com/b/gy3n5ZJs/chalkle-spark-sprint)
 Mandrill is used to view and send emails.
 Swipe HQ is used to accept payments.
 Contact Josh Dean (josh@chalkle.com) if access is needed to these services.
