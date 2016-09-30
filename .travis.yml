@@ -13,8 +13,5 @@ addons:
   code_climate:
     repo_token: 8628d4262a6292baebd033304722eed7ca05cfceeeafaca1b2efb5c5df59c620
 notifications:
-  email:
-    recipients:
-      # - matthew@chalkle.com
   slack: chalkle:Ogd5rawPEkbu9RRFECVXm6ic
     template: '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}'
