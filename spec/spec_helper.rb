@@ -1,11 +1,11 @@
-require 'simplecov'
-require 'rubygems'
-require 'email_spec'
-require 'capybara/rspec'
-require "pundit/rspec"
-
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
+
+require 'simplecov'
+require 'rubygems'
+require 'capybara/rspec'
+require 'pundit/rspec'
+require 'webmock/rspec'
 
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
@@ -18,14 +18,13 @@ prefork = lambda {
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-  RSpec.configure do |config|
+  Capybara.javascript_driver = :webkit
 
+  RSpec.configure do |config|
     config.infer_spec_type_from_file_location!
-    config.include(EmailSpec::Helpers)
-    config.include(EmailSpec::Matchers)
-    config.include Devise::TestHelpers, :type => :controller
-    config.extend ControllerMacros, :type => :controller
-    config.include IntegrationSpecHelper, :type => :request
+    config.include Devise::TestHelpers, type: :controller
+    config.extend ControllerMacros, type: :controller
+    config.include IntegrationSpecHelper, type: :request
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -46,9 +45,29 @@ prefork = lambda {
     #     --seed 1234
     config.order = "random"
 
+    config.before(:each, js: true) do
+      DatabaseCleaner.strategy = :truncation
+    end
+
     config.before(:suite) do
-      DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.clean_with(:truncation)
+    end
+
+    config.before(:each) do
+      DatabaseCleaner.strategy = :transaction
+    end
+
+    config.before(:each, type: :feature) do
+      # :rack_test driver's Rack app under test shares database connection
+      # with the specs, so continue to use transaction strategy for speed.
+      driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
+
+      if !driver_shares_db_connection_with_specs
+        # Driver is probably for an external browser with an app
+        # under test that does *not* share a database connection with the
+        # specs, so use truncation strategy.
+        DatabaseCleaner.strategy = :truncation
+      end
     end
 
     config.before(:each) do

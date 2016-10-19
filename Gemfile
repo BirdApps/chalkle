@@ -114,45 +114,30 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller',  '0.7.2'
 
-  # Opening webpages during tests
-  gem 'launchy', '~> 2.1.2'
-
   gem 'guard'
-  gem 'guard-rspec', require: false
-  # gem 'guard-zeus'
-  gem 'guard-cucumber'
+  gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
   gem 'guard-livereload'
 end
 
 group :test, :development do
   # Placed here so generators work
-  gem 'rspec-rails'
-
+  gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
   gem 'pry-rails'
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
 end
 
 group :test do
+  gem 'capybara', '~> 2.7', '>= 2.7.1'
+  gem 'capybara-webkit', '~> 1.11', '>= 1.11.1'
+  gem 'database_cleaner', '~> 1.5', '>= 1.5.3'
+  gem 'timecop', '~> 0.8.1'
+  # currently unused, but it should be..
+  # gem 'email_spec', '~> 1.6'
+  gem 'factory_girl_rails', '~> 4.7'
   gem "codeclimate-test-reporter", require: nil
-  gem 'shoulda', '>= 3.5.0'
-  gem 'mocha', '>= 0.14.0', require: false
-
-  # Core Testing
-  gem 'cucumber-rails',   '~> 1.3.0', require: false
-  gem 'capybara'
-  # gem 'capybara-webkit'
-
-  # Test Helpers
-  gem 'database_cleaner',    '~> 0.9.1'
-  gem 'timecop'
-  gem 'steak',               '~> 2.0.0'
-  gem 'webrat',              '~> 0.7.3'
-  gem 'email_spec'
-  gem 'factory_girl_rails',  '~> 4.2.1'
-  gem 'faker'
-
-  # Test coverage
-  gem 'simplecov',  '~> 0.7.1', require: false
-
+  gem 'shoulda', '~> 3.5'
+  gem 'webmock', '~> 2.1'
+  # Opening webpages during tests
+  gem 'launchy', '~> 2.1.2'
 end

@@ -24,7 +24,7 @@
         <div>
           <a href="#map-canvas">
             <span class="fa fa-map-marker"></span>
-            <span class="small"><%= @course.address || to_html(@course.venue) %></span>
+            <span class="large"><%= @course.address || to_html(@course.venue) %></span>
           </a>
         </div>
       <% else %>
@@ -45,18 +45,14 @@
          <% if @course.course? %>
           <a role="button" href="#" data-toggle="modal" data-target="#multipleClassDatesModal">
             <span class="fa fa-clock-o"></span>
-            <span class="small" >Dates/Times Details</span>
+            <span class="large" >Dates/Times Details</span>
           </a>
           <br />
-          <span class="small strong">
-            Start:
-          </span>
-          <%= day_ordinal_month @course.start_at, true, true, true, true  if @course.start_at %>
+          <span class="large strong">Start:</span>
+          <span class="large"><%= day_ordinal_month @course.start_at, true, true, true, true  if @course.start_at %></span>
           <br />
-          <span class="small strong">
-            End:
-          </span>
-          <%= day_ordinal_month @course.end_at, true, true, true, true  if @course.end_at %>
+          <span class="large strong">End:</span>
+          <span class="large"><%= day_ordinal_month @course.end_at, true, true, true, true  if @course.end_at %></span>
           <br />
         <% end %>
       </div>

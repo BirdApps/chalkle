@@ -1,4 +1,4 @@
-# workin' directory 
+# workin' directory
 working_directory '/apps/chalkle/production/current/'
 
 stderr_path '/apps/chalkle/production/shared/log/unicorn.log'
@@ -8,7 +8,7 @@ stdout_path '/apps/chalkle/production/shared/log/unicorn.log'
 listen 8080
 
 #workers
-worker_processes 6
+worker_processes 3
 
 timeout 64
 

@@ -164,6 +164,7 @@ $(function(){
       if($(first_booking_name).val() == $("#current_user_name").val()) {
         $(first_email).hide();
         $(first_booking_name).keyup(function(){
+          set_booking_names();
           $(first_email).fadeIn();
         });
         $(first_booking_name).change(function(){
