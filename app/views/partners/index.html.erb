@@ -1,93 +1,50 @@
-<section id="about" class="row">
+<div class="about-page">
+  <section id="about" class="row">
 
-  <div class='col-sm-5 col-sm-offset-1'>
-    <div class="about-text">
-        <p>
-          Silvia Zuur and Linc Gasking started chalkle over a cup of coffee in mid 2012. A whirlwind of community organising followed and Chalkle classes exploded in Wellington, with Silvia organising over 600 classes in 12 months to serve a world where ‘anyone could teach and anyone could learn’.
-        </p>
-        <p>
-          Demand grew, the business evolved, technology was built. Now, with the same spirit of ‘anyone can...’ chalkle.com aims to give anyone who wants to start a learning business, everything they need to succeed.
-        </p>
-    </div>
-
-    <%= link_to "Get In Touch", say_hello_path, class: 'btn btn-primary btn-huge'%>
-  </div>
-
-  <div class="col-sm-6 first-coffee">
-    <%= image_tag asset_path("partners/first-coffee.jpg"), class: 'img' %>
-  </div>
-
-</section>
-
-<div class="core-team-wrapper">
-  <section id="core-team" class="row">
-    <div class="col-xs-12">
-      <h1>Team</h1>
-
-      <p class="sub">
-        Chalkle is led by a committed team of impact driven entreprenuers from Enspiral. </br>
-        We are determined to support more adult learning in changing educational landscape.
-      </p>
-    </div>
-
-    <div class="col-sm-4">
-      <div class="founder-padding">
-        <%= image_tag asset_path("partners/sz.jpg"), class: "img" %>
-        <h2>Silvia Zuur</h2>
-        <sub>CEO AND FOUNDER</sub>
-        <p>
-          Silvia has supported many social entrepreneurs to move their ideas into reality – through cups of coffee, hosting retreats and conferences, and developing educational programmes. Her relentless quest for learning new things and asking difficult questions led her to start Chalkle in 2012. She is a skilled facilitator, problem hacker, people organiser and has a consuming passion for improving education, good wine and knitting.
-        </p>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="founder-padding">
-
-        <%= image_tag asset_path("partners/ak.jpg"), class: "img" %>
-        <h2>Anthony Cabraal</h2>
-        <sub>CHIEF EXPERIENCE OFFICER</sub>
-        <p>
-          Ants has a background in creative marketing strategy and client management in both Australia and New Zealand. He has been immersed in startup social enterprise and skinned his knees, both as a founder and manager of startup accelerator programmes. He loves to make good things go faster, has a bottle opener on his keyring and is always meeting new people.
-        </p>
+    <div class='col-sm-5 col-sm-offset-1'>
+      <h1>How can we create more opportunities for adult education?</h1>
+      <div class="about-text">
+        <p>Chalkle was started by Silvia Zuur and Linc Gasking within the Enspiral network as a successful meetup group in mid-2012 and has been supported to grow ever since.</p>
+        <p>Our shared mission remains the same.</p>
+        <p class="bold">To support more learning and teaching in our communities.</p>
+        <p>Since 2012 we have worked with a range of partners and collaborators to test new models for supporting community learning. We built chalkle.com to help give anyone the resources and technology they need organise classes in their community.</p>
       </div>
     </div>
 
-    <div class="col-sm-4">
-      <div class="founder-padding">
-        <%= image_tag asset_path("partners/mk.jpg"), class: "img" %>
-        <h2>Matthew Kerr</h2>
-        <sub>CHIEF PRODUCT OFFICER</sub>
-        <p>
-          Matthew has a background in design, and business. He has startup experience in Europe and New Zealand. He has had a hand in businesses for Film, and in health and safety. He loves building products that solve real problems in beautiful and elegant ways.
-        </p>
-      </div>
+    <div class="col-sm-6 first-coffee">
+      <%= image_tag asset_path("partners/first-coffee.jpg"), class: 'img' %>
     </div>
 
   </section>
 
-  <section class="row">
-    <div class="col-xs-12 text-center">
-      <h1>Alumni</h1>
-
+  <div class="row">
+    <section id="community" class="col-xs-6">
+      <h2>Supported by a community</h2>
       <p>
         Since inception, a fantastic group of people have contributed to Chalkle. In order of appearance:
       </p>
       <p>
-        Linc Gasking, Joshua Vial, Brandon Mikel, Leticia Murillo Esteban, Amy Peng, Kiesia Carmine, </br>
-        Nanz Nair, Nicola Price, Hannah Varnell, Liz Willoughby-Martin, Craig Ambrose, Mitzi Borren, </br>
-        Sandra Otto, Karen Lee, Jack Tolley, Matthew Kerr, Josh Dean.
+        Silvia Zuur, Linc Gasking, Joshua Vial, Brandon Mikel, Leticia Murillo Esteban, Amy Peng, Kiesia Carmine,
+        Nanz Nair, Nicola Price, Hannah Varnell, Liz Willoughby-Martin, Craig Ambrose, Anthony Cabraal, Mitzi Borren,
+        Sandra Otto, Karen Lee, Jack Tolley, Matthew Kerr, Josh Dean, Genevieve Parkes.
       </p>
-    </div>
-  </section>
+    </section>
 
+    <section id="contact" class="col-xs-6">
+      <h2>Open to partnerships</h2>
+      <p>If you're interested in supporting our work, partnering or contributing to the next wave of solutions for adult education in New Zealand or further afield, we would love to connect.</p>
+      <div class="text-center">
+        <a href="mailto:hello@chalkle.com" class='btn btn-primary say-hello-btn'>hello@chalkle.com</a>
+      </div>
+    </section>
+  </div>
   <section id="legals">
       <div class="text-center">
-        <h1>Legals</h1>
+        <h3>Legals</h3>
         <p>Chalkle is commited to created a safe and happy environment for everyone.</p>
         <a href="<%= terms_path %>">Terms & Conditions for Learners</a> <br />
         <a href="<%= teacher_terms_path %>">Terms & Conditions for Teachers</a>  <br />
         <a href="<%= provider_terms_path %>">Terms & Conditions for Providers</a>  <br />
       </div>
    </section>
-
 </div>
