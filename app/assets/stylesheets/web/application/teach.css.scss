@@ -156,8 +156,8 @@
     .card {
       flex: 1;
       flex-grow: 4;
-      padding-left: 1rem;
-      padding-right: 1rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
       margin: 1em;
       position: relative;
       float: left;
@@ -230,6 +230,7 @@
     }
 
     ul {
+      padding-left: 0;
       list-style: none;
       text-align: left;
       margin-top: 5%;
@@ -369,6 +370,7 @@
     transition: all 100ms ease-out;
     border: solid rgba(255,255,255,0.6) 1px;
     margin-top: 2.5em;
+    margin-bottom: 2.5em;
     // &:hover {
     //   background-color: rgba(80,80,80,0.4);
     //   transform: scale(1.05);

@@ -1,22 +1,22 @@
 <section id="contact">
 
   <div class="row shaded_bg dark pricing-contact">
-    <div class="col-xs-offset-1 col-xs-5 col-md-5 col-md-offset-1 text-center contact-container">
+    <div class="col-sm-offset-1 col-sm-5 text-center contact-container">
       <h3>More questions?</h3>
       <div class="fancy-header">
-        <h4>If you're interested in using Chalkle to organise your classes or event and want to know more, use this form to contact us directly - we're happy to help!</h4>
+        <h4>Ready to organise classes?</br>If you're interested in using Chalkle to organise your classes or events, use the form below to give us a bit of detail and we'll be in touch to get you started.</h4>
       </div>
       <%= render partial: 'partners/say_hello_form'%>
       <div class="col-sm-8 col-sm-offset-4 teach-contact-form-footer">
-        <h5>For general questions and comments please get in touch at</h5>
+        <h5>If it's easier you can also email directly</h5>
         <%= mail_to "hello@chalkle.com", "hello@chalkle.com", subject: 'Chalkle Services' %>
       </div>
     </div>
-    <div class="col-xs-6 text-center pricing-container">
+    <div class="col-sm-6 text-center pricing-container">
       <h3><strong>Chalkle</strong> is free to set up and join;<br/> We succeed when you succeed<br/> Simple as that</h3>
 
       <div class="row">
-        <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4 text-center plan">
+        <div class="col-xs-4 col-xs-offset-4 col-xs-6 col-sm-offset-3 col-md-4 col-md-offset-4 text-center plan">
           <div class="circle">
             $2
             <sub>+ 4%</sub>
@@ -25,7 +25,6 @@
         </div>
       </div>
       <div class="text-center"><h4>No charge for running<br/> free classes</h4></div>
-      <div class="text-center"><%= link_to "Set Up Your Class", new_provider_path, class: 'btn btn-primary' %></div>
     </div>
 
 
