@@ -49,14 +49,14 @@
       </div>
 
       <div class="row">
-        <%= link_to resources_path do %>
+        <a href="https://resources.chalkle.com">
           <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-2 image-card resources">
             <div class="image-card-content">
               <h3>Sharing resources</h3>
               <small>Explore free resources to help you run great classes and support you.</small>
             </div>
           </div>
-        <% end %>
+        </a>
 
         <%= link_to about_path do %>
           <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-0 col-md-4 col-md-offset-0 image-card about">
@@ -84,3 +84,4 @@
     </div>
   <% end %>
 </div>
+<%= render partial: 'layouts/footer' %>

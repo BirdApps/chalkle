@@ -28,16 +28,16 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="non-img-link">
-          <%= link_to "Teachers", teach_path %>
+          <%= link_to "Teach", teach_path %>
         </li>
         <li class="non-img-link">
-          <%= link_to "Resources", about_path %>
+          <a href="https://resources.chalkle.com">Resources</a>
         </li>
         <li class="non-img-link">
           <%= link_to "About", about_path %>
         </li>
         <% if chalkler_signed_in? %>
-          
+
           <li class="dropdown non-img-link notifications-drop">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
              <div class="text-center">
