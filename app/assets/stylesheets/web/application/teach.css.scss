@@ -24,6 +24,9 @@
     line-height: 58px;
     text-align: center;
     text-transform: uppercase;
+    @media screen and (max-width: 768px) {
+      font-size: 30px;
+    }
   }
 
   .providers {
@@ -34,7 +37,6 @@
     h3 {
       font-size: 18px;
       text-align: center;
-      height: 20px;
       margin-bottom: 0px;
     }
     .teacher-hero, .community-hero, .business-hero, .library-hero, .ngo-hero {
@@ -59,15 +61,13 @@
     text-align: center;
     margin-bottom: 5%;
     &-step {
+      border-radius: 12px;
       background-color: #E1E1E1;
       height: 140px;
+      margin-top: 24px;
+      margin-bottom: 12px;
       @media (min-width: 992px) {
         margin-right: 1%;
-      }
-      @media (max-width: 991px) {
-        &:first-child {
-          margin-bottom: 12px;
-        }
       }
       :before {
         content: '';
@@ -105,18 +105,22 @@
     background-size: cover;
     padding: 30% 0;
     margin: 0 -15px;
-
     .fire-header {
       color: #D6D0B8;
-      font-size: 2.4em;
       padding: 0 5%;
+      font-size: 1.2em;
       &.left {
         float: left;
-        margin: -25% 0;
+        margin: -5% 0;
       }
       &.right {
         float: right;
-        margin: 23% 0;
+        margin: 3% 0;
+      }
+    }
+    @media screen and (min-width: 769px) {
+      .fire-header {
+        font-size: 2.4em;
       }
     }
   }
@@ -128,10 +132,17 @@
     letter-spacing: 1.5px;
 
     .features-events {
-      padding: 5% 0;
-    }
-    h3 {
-      margin: 0 0 10px;
+      border-radius: 12px;
+      background-color: #E1E1E1;
+      height: 120px;
+      padding: 20px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      color: #337ab7;
+      @media (min-width: 667px) {
+        margin-right: 1%;
+      }
     }
     .iconify {
       width: 65px;
@@ -171,23 +182,23 @@
       border-radius:  25px;
       background-color: rgba(0,0,0,0.4);
       color: #fff;
-      transition: all 100ms ease-out;
-      border: solid rgba(255,255,255,0.6) 1px;
-
+      border: solid rgba(255,255,255,0.6) 2px;
+      min-height: 325px;
       &:hover {
         background-color: rgba(80,80,80,0.4);
         transform: scale(1.05);
-        .circle {
-          transform: scale(0.95);
-          box-shadow: 0 0 8px rgba(0,0,0,0.2);
-
-        }
+        border-width: 2.5px;
       }
       .fancy-header {
+        min-height: 78px;
         h3 {
         background-color: inherit;
-        margin-bottom: 1em;
+        padding: 0;
+        text-transform: uppercase;
         }
+      }
+      .btn-primary {
+        margin-top: 1em;
       }
     }
 
@@ -261,13 +272,19 @@
     background-image: image_url('teach/stars.jpg');
   }
 
+  h3 {
+    padding-top: 60px;
+  }
+
   .teach-contact-form-footer {
     text-align: left;
-    padding: 24px 6px;
+    padding: 0 6px 40px;
   }
 
   .pricing-container {
-    margin-top: -30px;
+    @media screen and (min-width: 769px) {
+      margin-top: -30px;
+    }
   }
 
   .bottom-line {
@@ -302,8 +319,11 @@
 
 
   }
-
+  // h3 {
+  //   padding-top: 62px;
+  // }
   .shaded_bg {
+    margin: 0 -15px;
     background-color: rgba(0,0,0,0.6);
     padding-top: 1.5em;
     padding-bottom: 1.5em;
@@ -312,26 +332,17 @@
     font-size: 20px;
     color: #FFFFFF;
     letter-spacing: 2.5px;
-    //
-    // &.icons {
-    //   img {
-    //     display: block;
-    //     float: left;
-    //     height: 52px;
-    //
-    //     margin-right: 15px;
-    //   }
-    // }
 
     &.dark {
 
       .contact-container {
-        margin-top: -30px;
-        margin-bottom: -30px;
         background-color: rgba(0,0,0,0.95);
         webkit-transition: all 100ms ease-out;
         transition: all 100ms ease-out;
-
+        @media screen and (min-width: 769px) {
+          margin-top: -30px;
+          margin-bottom: -30px;
+        }
         .fancy-header {
           h4 {
             background-color: transparent !important;
@@ -367,20 +378,21 @@
     border-radius:  25px;
     background-color: rgba(0,0,0,0.4);
     color: #fff;
-    transition: all 100ms ease-out;
     border: solid rgba(255,255,255,0.6) 1px;
     margin-top: 2.5em;
     margin-bottom: 2.5em;
-    // &:hover {
-    //   background-color: rgba(80,80,80,0.4);
-    //   transform: scale(1.05);
-    //   .circle {
-    //     transform: scale(0.95);
-    //     box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    &:hover {
+      background-color: rgba(80,80,80,0.4);
+      transform: scale(1.05);
+      .circle {
+        transform: scale(0.95);
+        box-shadow: 0 0 8px rgba(0,0,0,0.2);
 
-    //   }
-    // }
-
+      }
+    }
+    .circle-container {
+      width: 100%;
+    }
 
     .circle {
       height: 160px;
@@ -395,26 +407,27 @@
       color: #fff;
       border: solid #fff 2px;
       border-radius: 80px;
-
       margin: 18px 10px;
-
-      transition: all 100ms ease-out;
-
       small {
         bottom: 0;
         width: 100%;
         left: 0;
       }
 
-      @media screen and (max-width: 400px) {
-        height: 160px;
-        width: 160px;
-        font-size: 80px;
+      @media screen and (max-width: 600px) {
+        height: 120px;
+        width: 120px;
+        font-size: 60px;
+        padding-top: 0;
+        margin: 18px -3px;
       }
 
       sub {
         display: block;
         font-size: 22px;
+        @media screen and (max-width: 600px) {
+          bottom: 0.75em;
+        }
       }
 
     }

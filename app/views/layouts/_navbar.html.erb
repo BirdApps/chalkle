@@ -27,13 +27,13 @@
         <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="non-img-link">
+        <li class="non-img-link hidden-xs">
           <%= link_to "Teach", teach_path %>
         </li>
-        <li class="non-img-link">
+        <li class="non-img-link hidden-xs">
           <a href="https://resources.chalkle.com">Resources</a>
         </li>
-        <li class="non-img-link">
+        <li class="non-img-link hidden-xs">
           <%= link_to "About", about_path %>
         </li>
         <% if chalkler_signed_in? %>
@@ -64,11 +64,17 @@
               </li>
               <li class="divider flush"></li>
               <li>
-                <div class="col-xs-12 flush">
+                <div class="col-xs-12 visible-xs flush">
+                  <%= link_to "Contact Chalkle", say_hello_path %>
+                </div>
+                <div class="col-xs-12 visible-xs flush">
                   <%= link_to "About Chalkle", about_path  %>
                 </div>
-                <div class="col-xs-12 flush">
-                  <%= link_to "Contact Chalkle", say_hello_path %>
+                <div class="col-xs-12 visible-xs flush">
+                  <%= link_to "Teach with Chalkle", teach_path  %>
+                </div>
+                <div class="col-xs-12 visible-xs flush">
+                  <a href="https://resources.chalkle.com">Chalkle Resources</a>
                 </div>
               </li>
             </ul>
@@ -192,6 +198,19 @@
               </li>
               <li>
                 <%= link_to 'Sign up', new_chalkler_registration_path, class: 'sign-up-first' %>
+              </li>
+              <li class="divider flush"></li>
+              <li class="visible-xs">
+                <%= link_to "Contact Chalkle", say_hello_path %>
+              </li>
+              <li class="visible-xs">
+                <%= link_to "About Chalkle", about_path  %>
+              </li>
+              <li class="visible-xs">
+                <%= link_to "Teach with Chalkle", teach_path  %>
+              </li>
+              <li class="visible-xs">
+                <a href="https://resources.chalkle.com">Chalkle Resources</a>
               </li>
             </ul>
           </li>

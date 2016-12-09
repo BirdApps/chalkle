@@ -41,9 +41,7 @@
 
     <div class="body-content <%= 'sidebar-padding' if @provider && policy(@provider).read? %>  <%= 'sidebar-open' if current_user.sidebar_open %>">
       <div id="wrapper">
-        <div class="container-fluid <%= 'pad-top' if @header_partial %>" role="main">
-          <%= yield %>
-        </div>
+        <%= yield %>
        <%#  <div id="map_overlay" style="display: none"><div id="map_holder"></div></div> %>
       </div>
     </div>

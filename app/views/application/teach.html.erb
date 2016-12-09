@@ -1,10 +1,12 @@
-<%= render partial: '/application/teach/provider_process' %>
-<section>
-  <div id="fire-banner">
-    <div class="white fire-header left">Everyone has something to teach</div>
-    <div class="white fire-header right">Everyone has something to learn</div>
-  </div>
-</section>
-<%= render partial: '/application/teach/features' %>
-<%= render partial: '/application/teach/pricing_contact' %>
+<div class="container-fluid <%= 'pad-top' if @header_partial %>" role="main">
+  <%= render partial: '/application/teach/provider_process' %>
+  <section>
+    <div id="fire-banner">
+      <div class="white fire-header left">Everyone has something to teach</div>
+      <div class="white fire-header right">Everyone has something to learn</div>
+    </div>
+  </section>
+  <%= render partial: '/application/teach/features' %>
+  <%= render partial: '/application/teach/pricing_contact' %>
+</div>
 <%= render partial: 'layouts/footer' %>

@@ -1,87 +1,82 @@
-<div id="home">
-  <div class="providers-around-you row">
-    <div class="col-xs-12 text-center">
-      <h2>Search for a class near you</h2>
-    </div>
-
-
-    <div class="col-xs-12 col-sm-8 col-sm-offset-2 location_form">
-      <%= render partial: 'layouts/location', locals: { hide_prompt: true } %>
-    </div>
-
-    <div class="col-xs-12">
-      <div id="home_fetch_wrapper"></div>
-      <div class="provider-preview-loading text-center">
-        <p>
-          loading providers
-        </p>
-        <div class="location-spinner-wrapper"></div>
+<div class="container-fluid <%= 'pad-top' if @header_partial %>" role="main">
+  <div id="home">
+    <div class="providers-around-you row">
+      <div class="col-xs-12 text-center">
+        <h2>Search for a class near you</h2>
       </div>
+
+
+      <div class="col-xs-12 col-sm-8 col-sm-offset-2 location_form">
+        <%= render partial: 'layouts/location', locals: { hide_prompt: true } %>
+      </div>
+
+      <div class="col-xs-12">
+        <div id="home_fetch_wrapper"></div>
+        <div class="provider-preview-loading text-center">
+          <p>
+            loading providers
+          </p>
+          <div class="location-spinner-wrapper"></div>
+        </div>
+      </div>
+
+      <div class="provider-preview">
+      </div>
+
     </div>
 
-    <div class="provider-preview">
-    </div>
+    <div class="business">
 
+      <h2 class="col-xs-12 text-center">Let's create a better world of learning together</h2>
+      <div class="home-page-image-card-container">
+        <div class="row">
+          <%= link_to learn_path do %>
+            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-2 image-card learn">
+              <div class="image-card-content">
+                <h3>For Learners</h3>
+                <small>Discover great classes and learn new skills from teachers near you.</small>
+              </div>
+            </div>
+          <% end %>
+
+          <%= link_to teach_path do %>
+            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-4 col-md-offset-0 image-card teach">
+              <div class="image-card-content">
+                <h3>For Teachers and Organisers</h3>
+                <small>We offer you everything you need to run great classes and grow a learning business.</small>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="row">
+          <a href="https://resources.chalkle.com">
+            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-2 image-card resources">
+              <div class="image-card-content">
+                <h3>Sharing resources</h3>
+                <small>Explore free resources to help you run great classes and support you.</small>
+              </div>
+            </div>
+          </a>
+
+          <%= link_to about_path do %>
+            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-4 col-md-offset-0 image-card about">
+              <div class="image-card-content">
+                <h3>About</h3>
+                <small>Learn what drives Chalkle and what we stand for.</small>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <% unless current_user.authenticated? %>
+        <div class="col-xs-12 text-center">
+          <h2>Ready to set up your first class?</h2>
+          <a href="/teach#contact" class="btn btn-primary btn-huge">Let's get started</a>
+        </div>
+      <% end %>
+    </div>
   </div>
-
-  <div class="business">
-
-    <h2 class="col-xs-12 text-center">Let's create a better world of learning together</h2>
-    <div class="home-page-image-card-container">
-      <div class="row">
-        <%= link_to learn_path do %>
-          <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-2 image-card learn">
-            <div class="image-card-content">
-              <h3>For Learners</h3>
-              <small>Discover great classes and learn new skills from teachers near you.</small>
-            </div>
-          </div>
-        <% end %>
-
-        <%= link_to teach_path do %>
-          <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-0 col-md-4 col-md-offset-0 image-card teach">
-            <div class="image-card-content">
-              <h3>For Teachers and Organisers</h3>
-              <small>We offer you everything you need to run great classes and grow a learning business.</small>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="row">
-        <a href="https://resources.chalkle.com">
-          <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-2 image-card resources">
-            <div class="image-card-content">
-              <h3>Sharing resources</h3>
-              <small>Explore free resources to help you run great classes and support you.</small>
-            </div>
-          </div>
-        </a>
-
-        <%= link_to about_path do %>
-          <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-0 col-md-4 col-md-offset-0 image-card about">
-            <div class="image-card-content">
-              <h3>About</h3>
-              <small>What is chalkle all about? Where did chalkle come from?</small>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <% unless current_user.authenticated? %>
-    <div class="col-xs-12 text-center">
-      <h2>Ready to set up your first class?</h2>
-      <br />
-      <%= link_to "Let's get started", new_chalkler_registration_path, class: 'btn btn-primary btn-huge sign-up-first' %>
-    </div>
-    <div class="text-right col-xs-6">
-        <%# link_to "learn more about putting your couses on chalkle", teach_path %>
-    </div>
-    <div class=" col-xs-6">
-        <%# link_to "See all the courses in your area", classes_path %>
-    </div>
-  <% end %>
 </div>
 <%= render partial: 'layouts/footer' %>
