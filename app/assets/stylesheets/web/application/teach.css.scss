@@ -292,36 +292,7 @@
     padding-bottom: 32px;
 
   }
-
-  .icons {
-    .abl, .inspired {
-      background-size: cover;
-      background-position: center;
-
-      color: #fff;
-      opacity: 0.89;
-      font-size: 18px;
-      padding-top: 240px;
-      height: 450px;
-      background-position: right bottom;
-      background-image: image_url('learn/mic.jpg');
-      @media screen and (max-width: 400px) {
-        text-align: right;
-      }
-
-    }
-
-    .inspired {
-      background-position: top center;
-      background-image: image_url('partners/say-hello-hero.jpg');
-      * {  float: right; clear: both; width: 50%;  }
-    }
-
-
-  }
-  // h3 {
-  //   padding-top: 62px;
-  // }
+  
   .shaded_bg {
     margin: 0 -15px;
     background-color: rgba(0,0,0,0.6);
