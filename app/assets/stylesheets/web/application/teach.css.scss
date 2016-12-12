@@ -30,14 +30,12 @@
   }
 
   .providers {
-    h2 {
-      font-size: 24px;
-      font-weight: 600px;
-    }
     h3 {
       font-size: 18px;
       text-align: center;
-      margin-bottom: 0px;
+      margin-bottom: 0;
+      margin-top: 0;
+      min-height: 38px;
     }
     .teacher-hero, .community-hero, .business-hero, .library-hero, .ngo-hero {
       background-size: contain;
@@ -45,6 +43,7 @@
       background-repeat: no-repeat;
       width:100%;
       height: 238px;
+      margin-top: -15px;
     }
 
     .teacher-hero { background-image: image-url("partners/teacher.png"); }
@@ -91,8 +90,8 @@
         margin: 0 0 10% 0;
         padding: 0;
         text-align: center;
+        font-size: 24px;
         strong {
-          font-size: 18px;
           font-weight: 700;
         }
       }
@@ -137,7 +136,7 @@
       height: 120px;
       padding: 20px;
       margin-top: 24px;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
       text-transform: uppercase;
       color: #337ab7;
       @media (min-width: 667px) {
@@ -270,10 +269,10 @@
     background-size: cover;
     background-position: right bottom;
     background-image: image_url('teach/stars.jpg');
-  }
 
-  h3 {
-    padding-top: 60px;
+    h3 {
+      padding-top: 60px;
+    }
   }
 
   .teach-contact-form-footer {
@@ -292,9 +291,9 @@
     padding-bottom: 32px;
 
   }
-  
+
   .shaded_bg {
-    margin: 0 -15px;
+    margin: 0 -30px;
     background-color: rgba(0,0,0,0.6);
     padding-top: 1.5em;
     padding-bottom: 1.5em;
