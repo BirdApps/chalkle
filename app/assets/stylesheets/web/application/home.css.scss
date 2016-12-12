@@ -59,20 +59,21 @@
       text-align: center;
       height: 280px;
       padding: 8% 0;
-      background-size: 150%;
+      background-size: cover;
       background-repeat: no-repeat;
       box-shadow: inset 0 0 0 1000px rgba(68,132,211,.8);
       &.learn {
-        background-image: image-url('partners/team-bottom.jpeg');
+        background-image: image-url('partners/bw-bike-maintanence.jpg');
       }
       &.teach {
-        background-image: image-url('partners/team-bottom.jpeg');
+        background-image: image-url('partners/bw-bonsai.jpeg');
+        background-size: 130%;
       }
       &.resources {
-        background-image: image-url('partners/team-bottom.jpeg');
+        background-image: image-url('partners/sharing-resources.jpg');
       }
       &.about {
-        background-image: image-url('partners/team-bottom.jpeg');
+        background-image: image-url('partners/about-beach.jpg');
       }
       &:hover {
         box-shadow: none;
@@ -86,7 +87,7 @@
 
     background-color: rgba(0, 0, 0, 0.6);
     padding-top: 50px;
-    padding-bottom: 150px;
+    padding-bottom: 175px;
     margin: 0 -15px;
     h2 {
       font-weight: 300;
