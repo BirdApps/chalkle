@@ -34,8 +34,8 @@
       font-size: 18px;
       text-align: center;
       margin-bottom: 0;
-      margin-top: 0;
-      min-height: 38px;
+      margin-top: 5px;
+      min-height: 57px;
     }
     .teacher-hero, .community-hero, .business-hero, .library-hero, .ngo-hero {
       background-size: contain;
@@ -43,7 +43,7 @@
       background-repeat: no-repeat;
       width:100%;
       height: 238px;
-      margin-top: -15px;
+      margin-top: -10px;
     }
 
     .teacher-hero { background-image: image-url("partners/teacher.png"); }
@@ -87,7 +87,7 @@
       }
 
       &-hero {
-        margin: 0 0 10% 0;
+        margin: 24px 0 48px 0;
         padding: 0;
         text-align: center;
         font-size: 24px;
@@ -98,6 +98,19 @@
     }
   }
 
+  .features-events {
+    border-radius: 12px;
+    background-color: #E1E1E1;
+    height: 120px;
+    padding: 20px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    color: #337ab7;
+    @media (min-width: 667px) {
+      margin-right: 1%;
+    }
+  }
   #fire-banner {
     background-image: image_url('partners/say-hello-hero.jpg');
     background-position: top center;
@@ -110,7 +123,6 @@
       font-size: 1.2em;
       &.left {
         float: left;
-        margin: -5% 0;
       }
       &.right {
         float: right;
@@ -123,26 +135,12 @@
       }
     }
   }
-
   #features {
     opacity: 0.89;
     font-size: 18px;
     color: #000000;
     letter-spacing: 1.5px;
 
-    .features-events {
-      border-radius: 12px;
-      background-color: #E1E1E1;
-      height: 120px;
-      padding: 20px;
-      margin-top: 24px;
-      margin-bottom: 24px;
-      text-transform: uppercase;
-      color: #337ab7;
-      @media (min-width: 667px) {
-        margin-right: 1%;
-      }
-    }
     .iconify {
       width: 65px;
       margin-right: 10px;
