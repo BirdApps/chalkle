@@ -1,18 +1,18 @@
-<% 
+<%
   nav_links = [{
       img_name: "bolt",
-      link: chalkle_about_path,
-      active: request.path == chalkle_about_path,
+      link: about_path,
+      active: request.path == about_path,
       title: "About"
     },{
       img_name: "people",
-      link: chalkle_team_path,
-      active: request.path == chalkle_team_path,
+      link: about_path,
+      active: request.path == about_path,
       title: "The Team"
     },{
       img_name: "contact",
-      link: chalkle_say_hello_path,
-      active: request.path == chalkle_say_hello_path || request.path == chalkle_said_hello_path,
+      link: say_hello_path,
+      active: request.path == say_hello_path || request.path == said_hello_path,
       title: "Contact"
     }]
 
@@ -32,34 +32,12 @@
 
 <div class="provider_header">
   <div class="container-fluid">
-    <a class="avatar block" href="<%= chalkle_about_path %>">
-      <div class="img" style="background-image: url(<%= asset_path('social-logo.jpg') %>)">
-      </div>
-    </a>
-
-    <div class="provider_header_content">
+    <div class="provider_header_content" style="margin: 40px">
       <h1 class="provider_header_name">
-        <%= link_to "chalkle°", chalkle_about_path %>
+        <%= link_to "chalkle°", about_path %>
       </h1>
     </div>
 
-    <div class="provider_header_links">
-      <nav>
-        <ul class="flush">
-        <% 
-          nav_links.each do |nav_link| %>
-            <li class="<%= "active" if nav_link[:active] %> col-xs-4 col-sm-3 col-md-2 flush">
-              <%= link_to nav_link[:link], title: nav_link[:title] do %>
-                  <%= nav_link[:title] %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      </nav>
-    </div>
-  </div>
-
-  <div class="provider_header_skirting">
   </div>
 
 </div>

@@ -23,8 +23,8 @@ SimpleForm.setup do |config|
   config.wrappers :horizontal, tag: 'div', class: 'form-group clearfix', error_class: 'error' do |b|
     b.use :html5
     b.use :placeholder
-    b.use :label, wrap_with: { :class => 'control-label col-sm-4' }
-    b.use :input, wrap_with: { :class => 'col-sm-8 col-md-7' }
+    b.use :label, wrap_with: { :class => 'control-label col-xs-4' }
+    b.use :input, wrap_with: { :class => 'col-xs-8 col-md-7' }
     b.use :error, wrap_with: { tag: 'span', class: 'help-inline' }
     b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
   end

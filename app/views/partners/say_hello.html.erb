@@ -1,0 +1,29 @@
+<div class="container-fluid <%= 'pad-top' if @header_partial %>" role="main">
+  <section id="hello" class="row">
+
+
+    <div class="col-sm-8 col-sm-offset-2 text-center">
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Questions & Comments", small: true } %>
+      <p>
+       For general enquiries please get in touch at  <%= mail_to "hello@chalkle.com", 'hello@chalkle.com' %>.
+      </p>
+
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Support", small: true } %>
+      <p>
+       For support enquries please email  <%= mail_to "support@chalkle.com", 'support@chalkle.com' %>.
+      </p>
+
+      <%= render partial: 'fancy_header', locals: { fancy_title: "Use Chalkle to organise your classes", small: true } %>
+      <p>
+        If you are interested in using Chalkle° to organise your classes or event and want to learn more, please contact us through the form below.
+      </p>
+    </div>
+
+    <div class="row" id="hello-form">
+      <div class="col-sm-8 col-sm-offset-2 new_form_wrapper">
+        <%= render partial: 'say_hello_form'%>
+      </div>
+    </div>
+  </section>
+</div>
+<%= render partial: 'layouts/footer' %>

@@ -7,10 +7,7 @@
     background-image: image_url('learn/diver.jpg');
     background-size: cover;
     background-position: center center;
-    padding-top: 50px;
-    @media screen and (min-width: 769px){
-      padding-top: 50px; 
-    }
+    min-height: 100vh;
     @media screen and (max-width: 768px){
       padding-top: 0; 
     }
@@ -166,49 +163,5 @@
       margin: 0;
     }
 
-    &#inspired {
-      background-position: right top;
-      background-image: image_url('learn/bottle.jpg');
-      * {  float: right; clear: both; width: 50%;  }
-    }
-
-    &#join {
-      background-position: right bottom;
-      background-image: image_url('learn/stars.jpg');
-      * {  float: left; clear: both; width: 50%;
-        margin-left: 20px;
-      }
-    }
-
-    &#abl {
-      padding-top: 250px;
-      min-height: 600px;
-      height: auto;
-      background-position: right bottom;
-      background-image: image_url('learn/mic.jpg');
-      .text, h2 {   color: #333;}
-
-    }
-  }
-
-  .sign-up-footer {
-
-    margin-top: 0;
-    margin-bottom: -75px;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    color: #fff;
-
-    background: rgba(55,55,55,1.0); 
-
-
-    .form-inputs label {
-      font-weight: 300;
-    }
-    h2 {
-      margin: 0;
-      text-align: center;
-      color: #fff;
-    }
   }
 }

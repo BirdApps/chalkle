@@ -1,0 +1,36 @@
+<section id="contact">
+
+  <div class="row shaded_bg dark pricing-contact">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-offset-1 col-sm-5 text-center contact-container">
+      <h3>More questions?</h3>
+      <div class="fancy-header">
+        <h4>If you're interested in using Chalkle to organise your classes or events, use the form below to give us a bit of detail and we'll be in touch to get you started.</h4>
+      </div>
+      <%= render partial: 'partners/say_hello_form'%>
+      <div class="pull-right col-xs-8 col-xs-offset-3 col-sm-8 col-sm-offset-4 teach-contact-form-footer">
+        <h5>If it's easier you can also email directly</h5>
+        <%= mail_to "hello@chalkle.com", "hello@chalkle.com", subject: 'Chalkle Services'%>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 text-center pricing-container">
+      <h3><strong>Chalkle</strong> is free to set up and join;<br/> We succeed when you succeed.<br/> Simple as that</h3>
+
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-4 col-sm-6 col-sm-offset-3 text-center plan">
+          <div class="circle-container">
+            <div class="circle">
+              $2
+              <sub>+ 4%</sub>
+            </div>
+          </div>
+          <small>for each booking made through Chalkle</small>
+        </div>
+      </div>
+      <div class="text-center"><h4>No charge for running<br/> free classes</h4></div>
+    </div>
+
+
+  </div>
+
+
+</section>

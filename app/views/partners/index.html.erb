@@ -1,0 +1,44 @@
+<div class="container-fluid <%= 'pad-top' if @header_partial %>" role="main">
+  <div class="about-page">
+    <section id="about" class="row">
+
+      <div class='col-sm-5 col-sm-offset-1'>
+        <h1>How can we create more opportunities for adult education?</h1>
+        <div class="about-text">
+          <p>Chalkle was started by Silvia Zuur and Linc Gasking within the Enspiral network as a successful meetup group in mid-2012 and has been supported to grow ever since.</p>
+          <p>Our shared mission remains the same.</p>
+          <p class="bold">To support more learning and teaching in our communities.</p>
+          <p>Since 2012 we have worked with a range of partners and collaborators to test new models for supporting community learning. We built chalkle.com to help give anyone the resources and technology they need organise classes in their community.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 first-coffee">
+        <%= image_tag asset_path("partners/first-coffee.jpg"), class: 'img' %>
+      </div>
+
+    </section>
+
+    <div class="row" style="padding-bottom: 80px;">
+      <section id="community" class="col-xs-6">
+        <h2>Supported by a community</h2>
+        <p>
+          Since inception, a fantastic group of people have contributed to Chalkle. In order of appearance:
+        </p>
+        <p>
+          Silvia Zuur, Linc Gasking, Joshua Vial, Brandon Mikel, Leticia Murillo Esteban, Amy Peng, Kiesia Carmine,
+          Nanz Nair, Nicola Price, Hannah Varnell, Liz Willoughby-Martin, Craig Ambrose, Anthony Cabraal, Mitzi Borren,
+          Sandra Otto, Karen Lee, Jack Tolley, Matthew Kerr, Josh Dean, Genevieve Parkes.
+        </p>
+      </section>
+
+      <section id="contact" class="col-xs-6">
+        <h2>Open to partnerships</h2>
+        <p>If you're interested in supporting our work, partnering or contributing to the next wave of solutions for adult education in New Zealand or further afield, we would love to connect.</p>
+        <div class="text-center">
+          <a href="mailto:hello@chalkle.com" class='btn btn-primary say-hello-btn'>hello@chalkle.com</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<%= render partial: 'layouts/footer' %>

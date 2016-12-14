@@ -1,0 +1,29 @@
+<%= bootstrap_form_for @partner_inquiry, wrapper: :simple_bootstrap3, url: said_hello_path, html: { method: :post, class: 'form-horizontal', role: 'form'} do |f| %>
+
+  <% if @partner_inquiry.errors.any? %>
+
+    <div class="col-sm-12 errors">
+      <h3>There were some problems: </h3>
+      <% @partner_inquiry.errors.full_messages.each do |msg| %>
+        <div class="error"><%= msg %></div>
+      <% end %>
+    </div>
+
+  <% end %>
+
+  <div class="col-sm-12 flush">
+
+    <%= f.input :name, label: "Name", wrapper: :horizontal %>
+
+    <%= f.input :contact_details, label: "Email or Phone", wrapper: :horizontal %>
+
+    <%= f.input :organisation, label: "Organisation", wrapper: :horizontal %>
+
+    <%= f.input :location, label: "City", wrapper: :horizontal %>
+
+    <%= f.input :comment, as: :text, label: "Message", wrapper: :horizontal, placeholder: "Let us know a few details about the classes and courses you would like to run on Chalkle and we'll be in touch"%>
+
+    <%= f.submit "Send", class: 'submit_btn part_link btn btn-primary say_hello_form_submit_btn col-xs-8 col-xs-offset-4 col-md-7', wrapper: :horizontal %>
+  </div>
+
+<% end %>

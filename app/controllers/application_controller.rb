@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
   rescue_from Pundit::NotDefinedError, with: :not_found
-  
+
   layout 'layouts/application'
 
   before_filter :set_locale, :load_provider, :check_user_data
@@ -16,14 +16,21 @@ class ApplicationController < ActionController::Base
 
   def home
     @hero = ActionController::Base.helpers.image_path('teach/reward.jpg')
-    @header_partial = '/layouts/headers/home'                                             
+    @header_partial = '/layouts/headers/home'
   end
 
   def teach
-    @hero = ActionController::Base.helpers.image_path('learn/bottle.jpg')
+    @hero = ActionController::Base.helpers.image_path('teach/rockpools.jpg')
     @header_partial = '/layouts/headers/teach'
     @page_title =  "Teach"
     @meta_title = "Teach with "
+    @partner_inquiry = PartnerInquiry.new params[:partner_inquiry]
+  end
+
+  def resources
+    @header_partial = '/layouts/headers/resources'
+    @page_title =  "Resources"
+    @meta_title = "Resources from "
   end
 
   def color_scheme
@@ -46,7 +53,7 @@ class ApplicationController < ActionController::Base
   end
 
 protected
-  
+
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
     return if @not_found
@@ -64,7 +71,7 @@ protected
             request.path == chalkler_invitation_path         ||
             request.path == new_chalkler_invitation_path     ||
             request.path == chalkler_omniauth_authorize_path(:facebook) )
-      session[:previous_url] = request.fullpath 
+      session[:previous_url] = request.fullpath
     end
   end
 
@@ -186,7 +193,7 @@ protected
 
   def course_name
     @course_name ||= params[:course_url_name].encode("UTF-8", "ISO-8859-1").parameterize if params[:course_url_name].present?
-    rescue ArgumentError 
+    rescue ArgumentError
       nil
   end
 
@@ -232,7 +239,7 @@ protected
       options[:protocol] = 'http://'
     end
     options
-  end 
+  end
 
   # Overload handle_unverified_request to ensure that
   # exception is raised each time a request does not
