@@ -18,6 +18,7 @@
     <%= javascript_include_tag "application" %>
     <% if chalkler_signed_in? && !!!Rails.env.development? %>
       <script src='//cdn.goroost.com/roostjs/<%= Roost.site_id -%>' async></script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&callback=initMap" type="text/javascript"></script>
       <script>
         var _roost = _roost || [];
         _roost.push(["alias", "<%= "#{Rails.env}_#{current_user.id}" %>"]);
