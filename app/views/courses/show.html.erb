@@ -2,17 +2,17 @@
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-xl-6 col-xl-offset-3">
       <div class="row flush-xs">
-        
+
         <% if policy(@course).notify_followers? %>
           <%= render 'course_notify_followers' %>
         <% end %>
 
         <% unless @course.published? %>
-          <% if @course.has_public_status? || policy(@course).change_status?  %>
+          <% if @course.has_public_status? && @course.displayable? || policy(@course).change_status?  %>
             <div class="alert alert-default  margin-bottom-20">
-              
+
                 <h3 class="no-margin-top"> <span class="fa fa-exclamation-triangle text text-danger"></span> <%= @course.status %></h3>
-                <p> 
+                <p>
                   <% if @course.publishable? %>
                     Only admins and teachers of <%= @provider.name %> can see this page. When you are ready to accept bookings, <%= link_to "publish the class", change_status_provider_course_path(@course.path_params.merge(status: 'Published')), method: :post %>.
                   <% end %>
@@ -35,7 +35,7 @@
             </div>
           <% end %>
         <% end %>
-        
+
 
         <%= render 'course_admin' %>
 
@@ -52,7 +52,7 @@
 
         <%= render 'courses/show_my_booking' %>
         <%= render 'courses/heading' %>
-        
+
         <%= render 'courses/booking_module' %>
 
         <div class="row">
@@ -62,20 +62,20 @@
           </div>
         </div>
 
-        
+
         <div class="row">
           <div class="col-xs-12">
 
           <%= render partial: 'fancy_header', locals: { fancy_title: "What we'll be doing", small: true } %>
-              
+
             <%= to_html @course.do_during_class %>
           </div>
 
           <% if @course.suggested_audience.present?  %>
             <div class="col-xs-12">
-            
+
               <%= render partial: 'fancy_header', locals: { fancy_title: "Who this is suitable for", small: true } %>
-            
+
               <%= to_html @course.suggested_audience %>
             </div>
           <% end %>
@@ -101,7 +101,7 @@
       </div>
 
     </div>
-  
+
   </div>
 
   <br /> <hr /> <br />
@@ -112,7 +112,7 @@
   <hr />
   <br />
   <div class="row">
-    <div class="map-wrap"> 
+    <div class="map-wrap">
       <div class="col-sm-6 col-xs-12 map-overlay">
         <div class="col-xs-12 xol-sm-10 col-sm-offset-2">
           <p class="grey light">
