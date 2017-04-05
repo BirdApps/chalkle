@@ -10,7 +10,7 @@
                 <!-- ATTENTION in March 17 the decision was taken to shut down chalkle.com and prevent new signups and users creating or booking classes, this sign_in_first modal has been replaced -->
                 <h1>Announcement</h1>
                 <div class="col-xs-12">
-                  <p class="lead text-center">Chalkle is no longer accepting public users or providers on its platform.</br>You can read our learnings from the last five years in the New Zealand Adult Education space here.</br>If you have any questions please get in touch: <%= mail_to "hello@chalkle.com", "hello@chalkle.com", subject: 'Chalkle Questions'%></p>
+                  <p class="lead text-center">Chalkle is no longer accepting public users or providers on its platform.</br>You can read our learnings from the last five years in the New Zealand Adult Education space <a target="_blank" href="https://medium.com/enspiral-tales/next-steps-on-the-road-to-reignite-adult-education-in-new-zealand-3cb33bdd9720">here</a>.</br>If you have any questions please get in touch: <%= mail_to "hello@chalkle.com", "hello@chalkle.com", subject: 'Chalkle Questions'%></p>
                 </div>
                 <!-- <h1>Login</h1>
 
@@ -33,13 +33,13 @@
                         </label>
                       </div>
                     </div>
-                    
+
                     <div class="col-sm-6 hidden-xs">
                       <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
                       <a href="#" class="link-line sign_up_first">Sign up now</a>
                       <br /><br />
                     </div>
-        
+
                     <div class="col-xs-12 col-sm-6 flush-xs">
                       <br class="visible-xs" />
                       <input type="submit" value="Login Now" class="btn btn-lg btn-primary col-xs-12" />
@@ -50,13 +50,13 @@
                       <h5 class="alternative no-margin pad-top">Not a member yet?</h5>
                       <a href="#" class="link-line sign_up_first">Sign up now</a>
                     </div>
-                    
+
 
                   <% end %>
                 </div>
-                
-         
-                
+
+
+
                 <div class="col-xs-12">
                   <br />
                     <%= render "devise/shared/links" %>
@@ -80,31 +80,31 @@
               <!-- ATTENTION in March 17 the decision was taken to shut down chalkle.com and prevent new signups and users creating or booking classes, this sign_up_first modal has been replaced -->
               <h1>Announcement</h1>
               <div class="col-xs-12">
-                <p class="lead text-center">Chalkle is no longer accepting public users or providers on its platform.</br>You can read our learnings from the last five years in the New Zealand Adult Education space here.</br>If you have any questions please get in touch: <%= mail_to "hello@chalkle.com", "hello@chalkle.com", subject: 'Chalkle Questions'%></p>
+                <p class="lead text-center">Chalkle is no longer accepting public users or providers on its platform.</br>You can read our learnings from the last five years in the New Zealand Adult Education space <a target="_blank" href="https://medium.com/enspiral-tales/next-steps-on-the-road-to-reignite-adult-education-in-new-zealand-3cb33bdd9720">here</a>.</br>If you have any questions please get in touch: <%= mail_to "hello@chalkle.com", "hello@chalkle.com", subject: 'Chalkle Questions'%></p>
               </div>
               <!-- <div class="col-xs-12 text-center">
                 <%= bootstrap_form_for(Chalkler.new, as: :chalkler, url: registration_path(:chalkler)) do |f| %>
                   <h1>Sign up</h1>
 
                   <%= render partial: '/devise/sessions/omniauth_buttons' %>
-                
+
                   <h4>– Or –</h4>
                   <br />
-                  
+
                   <div class="form-inputs text-left">
                     <%= f.input :name, :required => true, placeholder: 'Name' %>
                     <%= f.input :email, as: :email, :required => true, placeholder: 'Email' %>
                     <%= f.input :password, :required => true, placeholder: 'Password' %>
                     <%= f.input :password_confirmation, :required => true, placeholder: 'Confirm Password' %>
                   </div>
-                
+
                   <div class="col-xs-12 flush-xs">
                     <div class="col-sm-6 hidden-xs">
                       <h5 class="alternative no-margin pad-top">Already signed up?</h5>
                       <a href="#" class="link-line sign_in_first">Login now</a>
                       <br /><br />
                     </div>
-        
+
                     <div class="col-xs-12 col-sm-6 flush-xs">
                       <br class="visible-xs" />
                       <button class="btn btn-lg btn-primary col-xs-12">
