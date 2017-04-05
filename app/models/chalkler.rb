@@ -208,10 +208,17 @@ class Chalkler < ActiveRecord::Base
     _available_notifications
   end
 
+  # ATTENTION in March 17 the decision was taken to shut down chalkle.com and prevent new signups and users creating or booking classes
 
-  
+  def active_for_authentication?
+    super and self.super?
+  end
+  def inactive_message
+    "Chalkle is no longer accepting public users or providers on its platform. <a href='#'>Learn more</a> or be in touch with any questions <a href='mailto:hello@chalkle.com?Subject=Chalkle%20Questions' target='_top'>hello@chalkle.com".html_safe
+  end
+
   def send_notification(type, href, message, target = nil, from = nil, image = nil, valid_from = DateTime.current.advance(minutes: -1), valid_till = nil)
-    
+
     ## GET AN IMAGE
     # if from a chalkler
     image = from.avatar if image.blank? && from.present? && from.respond_to?('avatar')
